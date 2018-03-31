@@ -44,7 +44,7 @@ ifndef LOCAL_SDL_LIB
 
 # using system SDL library
 
-SDL_CONFIG  ?= sdl-config
+SDL_CONFIG  ?= sdl2-config
 ifndef CFLAGS_SDL
 CFLAGS_SDL  := $(shell $(SDL_CONFIG) --cflags)
 endif

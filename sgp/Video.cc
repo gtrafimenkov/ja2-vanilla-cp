@@ -30,6 +30,8 @@
 
 #include "slog/slog.h"
 
+#define TAG "Video"
+
 #define BUFFER_READY      0x00
 #define BUFFER_DIRTY      0x02
 
@@ -126,7 +128,7 @@ static void GetRGBDistribution();
 
 void InitializeVideoManager(void)
 {
-	SLOGD(SLOG_DEBUG, "Initializing the video manager");
+	SLOGD(TAG, "Initializing the video manager");
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
@@ -138,15 +140,15 @@ void InitializeVideoManager(void)
 	GameRenderer = SDL_CreateRenderer(g_game_window, -1, 0);
 	SDL_RenderSetLogicalSize(GameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-  SDL_Surface* windowIcon = SDL_CreateRGBSurfaceFrom(
-			(void*)gWindowIconData.pixel_data,
-			gWindowIconData.width,
-			gWindowIconData.height,
-			gWindowIconData.bytes_per_pixel*8,
-			gWindowIconData.bytes_per_pixel*gWindowIconData.width,
-			0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
-		SDL_SetWindowIcon(g_game_window, windowIcon);
-		SDL_FreeSurface(windowIcon);
+//   SDL_Surface* windowIcon = SDL_CreateRGBSurfaceFrom(
+// 			(void*)gWindowIconData.pixel_data,
+// 			gWindowIconData.width,
+// 			gWindowIconData.height,
+// 			gWindowIconData.bytes_per_pixel*8,
+// 			gWindowIconData.bytes_per_pixel*gWindowIconData.width,
+// 			0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+// 		SDL_SetWindowIcon(g_game_window, windowIcon);
+// 		SDL_FreeSurface(windowIcon);
 
 
   ClippingRect.set(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -163,7 +165,7 @@ void InitializeVideoManager(void)
   );
 
   if (ScreenBuffer == NULL) {
-    SLOGE(DEBUG_TAG_VIDEO, "SDL_CreateRGBSurface for ScreenBuffer failed: %s\n", SDL_GetError());
+    SLOGE(TAG, "SDL_CreateRGBSurface for ScreenBuffer failed: %s\n", SDL_GetError());
   }
 
   ScreenTexture = SDL_CreateTexture(GameRenderer,
@@ -172,7 +174,7 @@ void InitializeVideoManager(void)
                                     SCREEN_WIDTH, SCREEN_HEIGHT);
 
   if (ScreenTexture == NULL) {
-    SLOGE(DEBUG_TAG_VIDEO, "SDL_CreateTexture for ScreenTexture failed: %s\n", SDL_GetError());
+    SLOGE(TAG, "SDL_CreateTexture for ScreenTexture failed: %s\n", SDL_GetError());
   }
 
 	FrameBuffer = SDL_CreateRGBSurface(
@@ -182,7 +184,7 @@ void InitializeVideoManager(void)
 
 	if (FrameBuffer == NULL)
 	{
-		SLOGE(DEBUG_TAG_VIDEO, "SDL_CreateRGBSurface for FrameBuffer failed: %s\n", SDL_GetError());
+		SLOGE(TAG, "SDL_CreateRGBSurface for FrameBuffer failed: %s\n", SDL_GetError());
 	}
 
 	MouseCursor = SDL_CreateRGBSurface(
@@ -193,7 +195,7 @@ void InitializeVideoManager(void)
 
 	if (MouseCursor == NULL)
 	{
-		SLOGE(DEBUG_TAG_VIDEO, "SDL_CreateRGBSurface for MouseCursor failed: %s\n", SDL_GetError());
+		SLOGE(TAG, "SDL_CreateRGBSurface for MouseCursor failed: %s\n", SDL_GetError());
   }
 
 	SDL_ShowCursor(SDL_DISABLE);
