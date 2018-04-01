@@ -1,19 +1,3 @@
-#
-# See COMPILATION.txt for instructions.
-# Please update COMPILATION.txt if necessary after changing this file.
-#
-
--include Makefile.config
-# Makefile.config can be empty.  In this case application is build
-# to be executed from the current directory.
-#
-# Or Makefile.config may contain the following values:
-#   BINARY_DIR
-#   MANPAGE_DIR
-#   FULL_PATH_EXTRA_DATA_DIR
-#   INSTALLABLE                := "yes"
-# In this case application can be installed.
-
 
 # By default build the project with unit tests.
 # If you want to build without them, use make WITH_UNITTESTS=0
@@ -21,12 +5,15 @@ WITH_UNITTESTS ?= 1
 
 WITH_LPTHREAD ?= 1
 
-BINARY    ?= ja2
+BINARY    ?= ja2-ve
 
-VERSION := 0.14.xx
-GAME_VERSION := v$(VERSION)
+VERSION := 1.0.xx
+GAME_VERSION := $(VERSION)
 CFLAGS += -DGAME_VERSION=\"$(GAME_VERSION)\"
 
+ifdef TARGET_PLATFORM_WINDOWS
+CFLAGS += -DTARGET_PLATFORM_WINDOWS="$(TARGET_PLATFORM_WINDOWS)"
+endif
 
 ############################################################
 # SDL Library settings.
@@ -36,8 +23,8 @@ CFLAGS += -DGAME_VERSION=\"$(GAME_VERSION)\"
 
 
 ifdef LOCAL_SDL_LIB
-CFLAGS_SDL= -I./$(LOCAL_SDL_LIB)/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main
-LDFLAGS_SDL=-L./$(LOCAL_SDL_LIB)/lib -lmingw32 -lSDLmain -lSDL -mwindows
+CFLAGS_SDL= -I./$(LOCAL_SDL_LIB)/include/SDL2 -D_GNU_SOURCE=1 -Dmain=SDL_main
+LDFLAGS_SDL=-L./$(LOCAL_SDL_LIB)/lib -lmingw32 -lSDL2main -lSDL2 -mwindows
 endif
 
 ifndef LOCAL_SDL_LIB
@@ -73,7 +60,7 @@ CXX=$(MINGW_PREFIX)-g++
 CPP=$(MINGW_PREFIX)-cpp
 RANLIB=$(MINGW_PREFIX)-ranlib
 
-CFLAGS += -mwindows -mconsole
+CFLAGS += -mwindows -mconsole -static-libgcc -static-libstdc++
 
 endif
 
@@ -97,7 +84,6 @@ CFLAGS += -I Build/TileEngine
 CFLAGS += -I Build/Utils
 CFLAGS += -I sgp
 CFLAGS += -I src
-CFLAGS += -I _build/lib-MicroIni/include
 CFLAGS += -I _build/lib-boost
 CFLAGS += -I _build/lib-rapidjson
 CFLAGS += -I _build/lib-slog
@@ -113,7 +99,6 @@ CFLAGS += -Wunused-variable
 CFLAGS += -Wwrite-strings
 
 CFLAGS += -DJA2
-CFLAGS += -DMICROINI_STATIC
 
 
 ifdef WITH_FIXMES
@@ -516,11 +501,6 @@ SRCS += src/internals/enums.cc
 SRCS += src/policy/DefaultGamePolicy.cc
 SRCS += src/policy/DefaultIMPPolicy.cc
 
-SRCS += _build/lib-MicroIni/src/MicroIni/File.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Line.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Section.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Value.cpp
-
 SRCS += _build/lib-boost/libs/system/src/error_code.cpp
 SRCS += _build/lib-boost/libs/filesystem/src/codecvt_error_category.cpp
 SRCS += _build/lib-boost/libs/filesystem/src/operations.cpp
@@ -605,166 +585,27 @@ clean distclean:
 	@echo '===> CLEAN'
 	$(Q)rm -fr $(DEPS) $(OBJS) $(BINARY)
 
-install: $(BINARY)
-	test -z "$(INSTALLABLE)" || install -d $(BINARY_DIR)
-	test -z "$(INSTALLABLE)" || install -d $(MANPAGE_DIR)
-	test -z "$(INSTALLABLE)" || install -d $(FULL_PATH_EXTRA_DATA_DIR)
-	test -z "$(INSTALLABLE)" || install -m 555 $(BINARY) $(BINARY_DIR)
-	test -z "$(INSTALLABLE)" || cp -R externalized $(FULL_PATH_EXTRA_DATA_DIR)
-	test -z "$(INSTALLABLE)" || cp -R mods         $(FULL_PATH_EXTRA_DATA_DIR)
-	test -z "$(INSTALLABLE)" || cp -R _unittests   $(FULL_PATH_EXTRA_DATA_DIR)
-	test -z "$(INSTALLABLE)" || install -m 444 ja2_manpage $(MANPAGE_DIR)/ja2.6
-
-	@test -n "$(INSTALLABLE)" || echo "------------------------------------------------------------------------------"
-	@test -n "$(INSTALLABLE)" || echo "This build doesn't support installation."
-	@test -n "$(INSTALLABLE)" || echo "You can run the game right from this directory, like this: ./$(BINARY)"
-	@test -n "$(INSTALLABLE)" || echo "If you want a local installation, do:"
-	@test -n "$(INSTALLABLE)" || echo "  ./configure"
-	@test -n "$(INSTALLABLE)" || echo "  make"
-	@test -n "$(INSTALLABLE)" || echo "  sudo make install"
-	@test -n "$(INSTALLABLE)" || echo "------------------------------------------------------------------------------"
-
-deinstall:
-	test -z "$(INSTALLABLE)" || rm $(MANPAGE_DIR)/ja2.6
-	test -z "$(INSTALLABLE)" || rm $(BINARY_DIR)/$(BINARY)
-	test -z "$(INSTALLABLE)" || test -d $(FULL_PATH_EXTRA_DATA_DIR)
-	test -z "$(INSTALLABLE)" || rm -rf $(FULL_PATH_EXTRA_DATA_DIR)/externalized
-	test -z "$(INSTALLABLE)" || rm -rf $(FULL_PATH_EXTRA_DATA_DIR)/mods
-	test -z "$(INSTALLABLE)" || rm -rf $(FULL_PATH_EXTRA_DATA_DIR)/_unittests
-	test -z "$(INSTALLABLE)" || rmdir $(FULL_PATH_EXTRA_DATA_DIR)
-
-	@test -n "$(INSTALLABLE)" || echo "------------------------------------------------------------------------------"
-	@test -n "$(INSTALLABLE)" || echo "This build doesn't support deinstallation"
-	@test -n "$(INSTALLABLE)" || echo "------------------------------------------------------------------------------"
-
 rebuild-tags:
 	-rm TAGS
 	find . -type f \( -name "*.c" -o -iname "*.cc" -o -name "*.h" \) | xargs etags --append
 
-rebuild-tags-win:
-	-rm TAGS
-	find . -type f \( -name "*.c" -o -iname "*.cc" -o -name "*.h" \) | xargs /cygdrive/c/Programs/emacs-23.3/bin/etags.exe --append
-
-fix-permissions:
-	chmod +x _build/solution-vs10e/Debug/exe/SDL.dll
-	chmod +x _build/solution-vs10e/Release/exe/SDL.dll
-
-WIN_RELEASE_BASE_DIR := "release-win-mingw-cross"
-ifdef BETA
-WIN_RELEASE_NAME := "ja2-$(GAME_VERSION)-win-beta"
-else
-WIN_RELEASE_NAME := "ja2-$(GAME_VERSION)-win"
-endif
-WIN_RELEASE := $(WIN_RELEASE_BASE_DIR)/$(WIN_RELEASE_NAME)
-WIN_RELEASE_ZIP := $(WIN_RELEASE_BASE_DIR)/$(WIN_RELEASE_NAME).zip
-
-MAC_RELEASE_BASE_DIR := "release-mac"
-MAC_RELEASE_NAME := "ja2-$(GAME_VERSION)-macos"
-MAC_RELEASE := $(MAC_RELEASE_BASE_DIR)/$(MAC_RELEASE_NAME)
-MAC_RELEASE_ZIP := $(MAC_RELEASE_BASE_DIR)/$(MAC_RELEASE_NAME).zip
-
-SRC_RELEASE_BASE_DIR := "release-src"
-
-build-beta-win-release-on-linux:
-	make BETA=1 build-win-release-on-linux
-
 # sudo apt-get install gcc-mingw-w64 g++-mingw-w64
-build-win-release-on-linux:
-	-rm -rf $(WIN_RELEASE) $(WIN_RELEASE_ZIP)
-	mkdir -p $(WIN_RELEASE)
-	make USE_MINGW=1 MINGW_PREFIX=i686-w64-mingw32 LOCAL_SDL_LIB=_build/lib-SDL-devel-1.2.15-mingw32 WITH_LPTHREAD=0
-	mv ./ja2 $(WIN_RELEASE)/ja2.exe
-	cp _build/lib-SDL-devel-1.2.15-mingw32/bin/SDL.dll $(WIN_RELEASE)
-	cp _build/distr-files-win/*.bat $(WIN_RELEASE)
-	cp _build/distr-files-win/*.txt $(WIN_RELEASE)
-	cp _build/distr-files-win-mingw/*.dll $(WIN_RELEASE)
-	cp -R _unittests $(WIN_RELEASE)
-	cp -R externalized $(WIN_RELEASE)
-	cp Changelog $(WIN_RELEASE)/Changelog.txt
-	cp changes.md $(WIN_RELEASE)/changes.md
-	cd $(WIN_RELEASE_BASE_DIR) && zip -r $(WIN_RELEASE_NAME).zip $(WIN_RELEASE_NAME)
-
-# Building i386 release on MAC
-#
-# Using precompiled static SDL library since it is quite difficult for
-# end users to setup the library.  LGPL allows static linking if we
-# provide source codes for our application.
-MACOS_SDL_STATIC=./_build/lib-SDL-devel-1.2.15-macos-i386
-MACOS_STATIC_CFLAGS_SDL=-arch i386 -I$(MACOS_SDL_STATIC)/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE
-MACOS_STATIC_LDFLAGS_SDL=$(MACOS_SDL_STATIC)/lib/libSDLmain.a $(MACOS_SDL_STATIC)/lib/libSDL.a  -Wl,-framework,OpenGL -Wl,-framework,Cocoa -Wl,-framework,ApplicationServices -Wl,-framework,Carbon -Wl,-framework,AudioToolbox -Wl,-framework,AudioUnit -Wl,-framework,IOKit
-build-release-on-mac:
-	-rm -rf $(MAC_RELEASE) $(MAC_RELEASE_ZIP)
-	mkdir -p $(MAC_RELEASE)
-	make "CFLAGS_SDL=$(MACOS_STATIC_CFLAGS_SDL)" "LDFLAGS_SDL=$(MACOS_STATIC_LDFLAGS_SDL)"
-	mv ./ja2 $(MAC_RELEASE)/ja2
-	cp _build/distr-files-mac/*.command $(MAC_RELEASE)
-	cp _build/distr-files-mac/*.txt $(MAC_RELEASE)
-	cp -R _unittests $(MAC_RELEASE)
-	cp -R externalized $(MAC_RELEASE)
-	cp Changelog $(MAC_RELEASE)/Changelog.txt
-	cp changes.md $(MAC_RELEASE)/changes.md
-	cd $(MAC_RELEASE_BASE_DIR) && zip -r $(MAC_RELEASE_NAME).zip $(MAC_RELEASE_NAME)
+build-win-on-linux:
+	make \
+		USE_MINGW=1 \
+		MINGW_PREFIX=i686-w64-mingw32 \
+		LOCAL_SDL_LIB=_build/lib-SDL2-mingw/i686-w64-mingw32 \
+		WITH_LPTHREAD=0 \
+		BINARY=ja2-ve.exe \
+		TARGET_PLATFORM_WINDOWS=1
+	cp _build/lib-SDL2-mingw/i686-w64-mingw32/bin/SDL2.dll .
 
 build-on-mac:
 	make "CFLAGS_SDL=$(MACOS_STATIC_CFLAGS_SDL)" "LDFLAGS_SDL=$(MACOS_STATIC_LDFLAGS_SDL)"
 
 build-on-win:
-	PATH=/cygdrive/c/MinGW/bin:$$PATH make all USE_MINGW=1 MINGW_PREFIX=/cygdrive/c/MinGW/bin/mingw32 LOCAL_SDL_LIB=_build/lib-SDL-devel-1.2.15-mingw32
-	cp /cygdrive/c/MinGW/bin/libstdc++-6.dll .
-	cp /cygdrive/c/MinGW/bin/libgcc_s_dw2-1.dll .
-	cp _build/lib-SDL-devel-1.2.15-mingw32/bin/SDL.dll .
-
-SOURCE_DIR_NAME := ja2-stracciatella_$(VERSION)
-build-source-archive:
-	mkdir -p $(SRC_RELEASE_BASE_DIR)
-	git archive HEAD --prefix=$(SOURCE_DIR_NAME)/ | gzip >$(SRC_RELEASE_BASE_DIR)/$(SOURCE_DIR_NAME).tar.gz
-
-DEB_PKG_BUILD_FOLDER ?= _deb
-
-# sudo apt-get install pbuilder
-build-debian-package: build-source-archive
-	-rm -rf $(DEB_PKG_BUILD_FOLDER)
-	mkdir $(DEB_PKG_BUILD_FOLDER)
-	cp $(SRC_RELEASE_BASE_DIR)/$(SOURCE_DIR_NAME).tar.gz $(DEB_PKG_BUILD_FOLDER)/$(SOURCE_DIR_NAME).orig.tar.gz
-	cd $(DEB_PKG_BUILD_FOLDER) && tar -xzf $(SOURCE_DIR_NAME).orig.tar.gz
-	cp -R _build/deb-package/debian $(DEB_PKG_BUILD_FOLDER)/$(SOURCE_DIR_NAME)
-	cd $(DEB_PKG_BUILD_FOLDER)/$(SOURCE_DIR_NAME) && debuild -us -uc
-	mkdir -p release-deb-packages
-	cp $(DEB_PKG_BUILD_FOLDER)/$(SOURCE_DIR_NAME)-*.deb release-deb-packages
-# To debug build issues, go to $(DEB_PKG_BUILD_FOLDER)/$(SOURCE_DIR_NAME) directory and try:
-# $ fakeroot debian/rules clean
-# $ fakeroot debian/rules binary
-
-# Build Debian packages and the Windows release in
-# a totally controlled environment using Vagrant (http://www.vagrantup.com)
-build-releases:
-	$(MAKE) build-deb-package-on-u1204_i386
-	$(MAKE) build-deb-package-on-u1204_amd64
-	$(MAKE) build-win-release-on-u1204_amd64_win
-
-build-deb-package-on-u1204_i386:
-	$(MAKE) clean
-	cd _build/buildboxes/u1204_i386 && vagrant up
-	cd _build/buildboxes/u1204_i386 && vagrant ssh -c "make -C /home/vagrant/strac build-debian-package DEB_PKG_BUILD_FOLDER=/home/vagrant/_deb_build_folder"
-	cd _build/buildboxes/u1204_i386 && vagrant ssh -c "sudo shutdown -h now"
-
-build-deb-package-on-u1204_amd64:
-	$(MAKE) clean
-	cd _build/buildboxes/u1204_amd64 && vagrant up
-	cd _build/buildboxes/u1204_amd64 && vagrant ssh -c "make -C /home/vagrant/strac build-debian-package DEB_PKG_BUILD_FOLDER=/home/vagrant/_deb_build_folder"
-	cd _build/buildboxes/u1204_amd64 && vagrant ssh -c "sudo shutdown -h now"
-
-build-win-release-on-u1204_amd64_win:
-	$(MAKE) clean
-	cd _build/buildboxes/u1204_amd64_win && vagrant up
-	cd _build/buildboxes/u1204_amd64_win && vagrant ssh -c "make -C /home/vagrant/strac build-win-release-on-linux"
-	cd _build/buildboxes/u1204_amd64_win && vagrant ssh -c "sudo shutdown -h now"
-
-# Check compilation on different operation systems
-check-compilation:
-	$(MAKE) check-compilation-on-u1404
-	$(MAKE) check-compilation-on-freebsd10
-	$(MAKE) check-compilation-on-openbsd55
+	PATH=/cygdrive/c/MinGW/bin:$$PATH make all USE_MINGW=1 MINGW_PREFIX=/cygdrive/c/MinGW/bin/mingw32 LOCAL_SDL_LIB=_build/lib-SDL2-mingw/i686-w64-mingw32
+	cp _build/lib-SDL2-mingw/i686-w64-mingw32/bin/SDL.dll .
 
 check-compilation-on-u1404:
 	$(MAKE) clean
@@ -772,38 +613,12 @@ check-compilation-on-u1404:
 	cd _build/buildboxes/u1404_amd64 && vagrant ssh -c "make -C /home/vagrant/strac -j2"
 	cd _build/buildboxes/u1404_amd64 && vagrant ssh -c "sudo shutdown -h now"
 
-# VirtualBox shared folder cannot be mounted on FreeBSD guest system,
-# so we need to copy sources to the box over ssh before compiling them
-check-compilation-on-freebsd10:
-	$(MAKE) clean
-	cd _build/buildboxes/freebsd-10.0 && vagrant up
-	cd _build/buildboxes/freebsd-10.0 && vagrant ssh-config >/tmp/strac-freebsd10-ssh-config
-	scp -F /tmp/strac-freebsd10-ssh-config _build/buildboxes/freebsd-10.0/bootstrap.sh default:/usr/home/vagrant
-	ssh -F /tmp/strac-freebsd10-ssh-config default "/usr/home/vagrant/bootstrap.sh"
-	ssh -F /tmp/strac-freebsd10-ssh-config default "rm -rf /usr/home/vagrant/strac"
-	ssh -F /tmp/strac-freebsd10-ssh-config default "mkdir /usr/home/vagrant/strac"
-	scp -F /tmp/strac-freebsd10-ssh-config -r * default:/usr/home/vagrant/strac
-	ssh -F /tmp/strac-freebsd10-ssh-config default "gmake CXX=c++ -C /usr/home/vagrant/strac -j2"
-	ssh -F /tmp/strac-freebsd10-ssh-config default "sudo shutdown -p now"
-
-check-compilation-on-openbsd55:
-	$(MAKE) clean
-	cd _build/buildboxes/openbsd-5.5 && vagrant up
-	cd _build/buildboxes/openbsd-5.5 && vagrant ssh-config >/tmp/strac-openbsd55-ssh-config
-	scp -F /tmp/strac-openbsd55-ssh-config _build/buildboxes/openbsd-5.5/bootstrap.sh default:/home/vagrant
-	ssh -F /tmp/strac-openbsd55-ssh-config default "/home/vagrant/bootstrap.sh"
-	ssh -F /tmp/strac-openbsd55-ssh-config default "rm -rf /home/vagrant/strac"
-	ssh -F /tmp/strac-openbsd55-ssh-config default "mkdir /home/vagrant/strac"
-	scp -F /tmp/strac-openbsd55-ssh-config -r * default:/home/vagrant/strac
-	ssh -F /tmp/strac-openbsd55-ssh-config default "gmake CC=egcc CXX=eg++ -C /home/vagrant/strac -j2"
-	ssh -F /tmp/strac-openbsd55-ssh-config default "sudo shutdown -hp now"
-
 rebuild-contributors-list:
 	git log --pretty=format:'%an <%ae>' | \
 		sed "s/Gennady <gennady@aspire.(none)>/Gennady Trafimenkov <gennady.trafimenkov@gmail.com>/g" | \
 		sed "s/Peinthor Rene <rp@regalis.localdomain>/Peinthor Rene <peinthor@gmail.com>/g" | \
-		sed "s/tron <tron@5e31c081-6ce3-0310-bb30-f584a8092234>//g" | \
-		sed "s/wolf <wolf@5e31c081-6ce3-0310-bb30-f584a8092234>/wolf (committer to the original Tron's svn repository)/g" | \
+		sed "s/tron <tron@5e31c081-6ce3-0310-bb30-f584a8092234>/Tron/g" | \
+		sed "s/wolf <wolf@5e31c081-6ce3-0310-bb30-f584a8092234>/Wolf/g" | \
 		sed "s|Czcibor <foo@foo.com>|Agatae (https://bitbucket.org/Agatae)|g" | \
 		sed "s|Czcibór <foo@foo.com>|Agatae (https://bitbucket.org/Agatae)|g" | \
 		sort | uniq >/tmp/contributors.txt
@@ -811,18 +626,7 @@ rebuild-contributors-list:
 	echo "mgl from The Bear's Pit Forum"                    >>/tmp/contributors.txt
 	echo "sunshine from The Bear's Pit Forum"               >>/tmp/contributors.txt
 	echo "JAsmine-ja2 (https://bitbucket.org/JAsmine-ja2)"  >>/tmp/contributors.txt
-	echo "Primal author of the project"                             >contributors.txt
-	echo "----------------------------"                             >>contributors.txt
-	echo ""                                                         >>contributors.txt
-	echo "Tron"                                                     >>contributors.txt
-	echo ""                                                         >>contributors.txt
-	echo ""                                                         >>contributors.txt
-	echo "Contributors (sorted alphabetically)"                     >>contributors.txt
-	echo "------------------------------------"                     >>contributors.txt
-	cat /tmp/contributors.txt | sort >>contributors.txt
-	echo ""                                                         >>contributors.txt
-	echo ""                                                         >>contributors.txt
-	echo "(*) Please feel free to send update for this list to the project maintainer." >>contributors.txt
+	cat /tmp/contributors.txt | sort >contributors.txt
 
 
 # How to
@@ -832,33 +636,9 @@ rebuild-contributors-list:
 # ----------------
 #
 #  make clean
-#  make all WITH_DEBUGINFO=1
+#  make all WITH_DEBUGINFO=1 -j4
 #
 #  gdb ./ja2
 #
 #  (gdb) run
 #  (gdb) backtrace
-#
-#
-# Check man page
-# --------------
-#  man ./ja2_manpage
-#
-#
-# Build releases for distribution
-#--------------------------------
-#
-#  Windows release on Linux:
-#
-#    $ make clean
-#    $ make build-win-release-on-linux
-#
-#  On Mac:
-#    $ make clean
-#    $ make build-release-on-mac
-#
-#  Debian packages:
-#
-#    For the current architecture:
-#      $ make build-debian-package
-#

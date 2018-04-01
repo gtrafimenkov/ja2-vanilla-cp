@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "*.ipp": "cpp",
+        "cctype": "cpp",
+        "cmath": "cpp",
+        "csetjmp": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "iosfwd": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp"
+    },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+}

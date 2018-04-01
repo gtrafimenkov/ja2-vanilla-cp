@@ -7,7 +7,7 @@
 #ifdef JA2BETAVERSION
   #define FULL_VERSION "Beta v. 0.98";
 #else
-  #define FULL_VERSION "Stracciatella " GAME_VERSION
+  #define FULL_VERSION "Vanilla Experience " GAME_VERSION
 #endif
 
 //

@@ -140,7 +140,6 @@ static void LoadEncryptedData(STRING_ENC_TYPE encType, SGPFile* const File, wcha
 }
 
 DefaultContentManager::DefaultContentManager(GameVersion gameVersion,
-                                             const std::string &configFolder,
                                              const std::string &gameResRootPath,
                                              const std::string &externalizedDataPath
   )
@@ -155,7 +154,6 @@ DefaultContentManager::DefaultContentManager(GameVersion gameVersion,
    * exist we should use them.  If doesn't exist, then use lowercased names.
    */
 
-  m_configFolder = configFolder;
   m_gameResRootPath = gameResRootPath;
   m_externalizedDataPath = externalizedDataPath;
 
@@ -194,14 +192,14 @@ std::vector<std::string> DefaultContentManager::getListOfGameResources() const
   return libraries;
 }
 
-void DefaultContentManager::initGameResouces(const std::string &configPath, const std::vector<std::string> &libraries)
+void DefaultContentManager::initGameResouces(const std::vector<std::string> &libraries)
 {
   const char *failedLib = m_libraryDB->InitializeFileDatabase(m_dataDir, libraries);
   if(failedLib)
   {
     std::string message = FormattedString(
-      "Library '%s' is not found in folder '%s'.\n\nPlease make sure that '%s' contains files of the original game.  You can change this path by editing file '%s'.\n",
-      failedLib, m_dataDir.c_str(), m_gameResRootPath.c_str(), configPath.c_str());
+      "Library '%s' is not found in folder '%s'.\n\nPlease make sure that '%s' contains files of the original game.\n",
+      failedLib, m_dataDir.c_str(), m_gameResRootPath.c_str());
     throw LibraryFileNotFoundException(message);
   }
 }
@@ -485,18 +483,18 @@ bool DefaultContentManager::doesGameResExists(const std::string &filename) const
 
 std::string DefaultContentManager::getScreenshotFolder() const
 {
-  return m_configFolder;
+  return m_gameResRootPath;;
 }
 
 std::string DefaultContentManager::getVideoCaptureFolder() const
 {
-  return m_configFolder;
+  return m_gameResRootPath;;
 }
 
 /** Get folder for saved games. */
 std::string DefaultContentManager::getSavedGamesFolder() const
 {
-  return FileMan::joinPaths(m_configFolder, "SavedGames");
+  return FileMan::joinPaths(m_gameResRootPath, "SavedGames");
 }
 
 /** Load encrypted string from game resource file. */

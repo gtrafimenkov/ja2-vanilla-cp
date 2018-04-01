@@ -21,7 +21,6 @@ class DefaultContentManager : public ContentManager, public IGameDataLoader
 public:
 
   DefaultContentManager(GameVersion gameVersion,
-                        const std::string &configFolder,
                         const std::string &gameResRootPath,
                         const std::string &externalizedDataPath);
 
@@ -31,7 +30,7 @@ public:
   virtual std::vector<std::string> getListOfGameResources() const;
 
   /** Initialize game resources. */
-  virtual void initGameResouces(const std::string &configPath, const std::vector<std::string> &libraries);
+  virtual void initGameResouces(const std::vector<std::string> &libraries);
 
   /** Load the game data. */
   bool loadGameData();
@@ -142,7 +141,6 @@ public:
 protected:
   std::string m_dataDir;
   std::string m_tileDir;
-  std::string m_configFolder;
   std::string m_gameResRootPath;
   std::string m_externalizedDataPath;
 

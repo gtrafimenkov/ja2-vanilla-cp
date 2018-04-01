@@ -12,10 +12,9 @@
 ModPackContentManager::ModPackContentManager(GameVersion gameVersion,
                                              const std::string &modName,
                                              const std::string &modResFolder,
-                                             const std::string &configFolder,
                                              const std::string &gameResRootPath,
                                              const std::string &externalizedDataPath)
-  :DefaultContentManager(gameVersion, configFolder, gameResRootPath, externalizedDataPath)
+  :DefaultContentManager(gameVersion, gameResRootPath, externalizedDataPath)
 {
   m_modName = modName;
   m_modResFolder = modResFolder;
@@ -68,7 +67,7 @@ SGPFile* ModPackContentManager::openGameResForReading(const std::string& filenam
 std::string ModPackContentManager::getSavedGamesFolder() const
 {
   std::string folderName = std::string("SavedGames-") + m_modName;
-  return FileMan::joinPaths(m_configFolder, folderName);
+  return FileMan::joinPaths(m_gameResRootPath, folderName);
 }
 
 /** Load dialogue quote from file. */

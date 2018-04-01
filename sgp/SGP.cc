@@ -5,8 +5,6 @@
 #	define BROKEN_SWPRINTF
 #endif
 
-#include "../ja2config.h"
-
 #if defined BROKEN_SWPRINTF
 #	include <locale.h>
 #endif
@@ -41,7 +39,6 @@
 #include "DefaultContentManager.h"
 #include "GameInstance.h"
 #include "JsonUtility.h"
-#include "MicroIni/MicroIni.hpp"
 #include "ModPackContentManager.h"
 #include "policy/GamePolicy.h"
 #include "sgp/UTF8String.h"
@@ -296,6 +293,7 @@ struct CommandLineParams
     doUnitTests = false;
     showDebugMessages = false;
     resourceVersionGiven = false;
+    gameDirPathGiven = false;
   }
 
 #ifdef WITH_MODS
@@ -308,6 +306,9 @@ struct CommandLineParams
 
   bool doUnitTests;
   bool showDebugMessages;
+
+  bool gameDirPathGiven;
+  std::string gameDirPath;
 };
 
 static BOOLEAN ParseParameters(int argc, char* const argv[],
@@ -378,16 +379,11 @@ try
 	InitializeMemoryManager();
 
   FastDebugMsg("Initializing Game Resources");
-  std::string configFolderPath = FileMan::findConfigFolderAndSwitchIntoIt();
-  std::string configPath = FileMan::joinPaths(configFolderPath, "ja2.ini");
-  std::string gameResRootPath = findRootGameResFolder(configPath);
-
-  std::string extraDataDir = EXTRA_DATA_DIR;
-  if(extraDataDir.empty())
-  {
-    // use location of the exe file
-    extraDataDir = exeFolder;
+  if(!params.gameDirPathGiven) {
+    params.gameDirPath = exeFolder;
   }
+
+  std::string extraDataDir = exeFolder;
 
   std::string externalizedDataPath = FileMan::joinPaths(extraDataDir, "externalized");
 
@@ -399,11 +395,10 @@ try
     std::string modName = params.modName;
     std::string modResFolder = FileMan::joinPaths(FileMan::joinPaths(FileMan::joinPaths(extraDataDir, "mods"), modName), "data");
     cm = new ModPackContentManager(version,
-                                   modName, modResFolder, configFolderPath,
-                                   gameResRootPath, externalizedDataPath);
+                                   modName, modResFolder,
+                                   params.gameDirPath, externalizedDataPath);
     LOG_INFO("------------------------------------------------------------------------------\n");
-    LOG_INFO("Configuration file:            '%s'\n", configPath.c_str());
-    LOG_INFO("Root game resources directory: '%s'\n", gameResRootPath.c_str());
+    LOG_INFO("Root game resources directory: '%s'\n", params.gameDirPath.c_str());
     LOG_INFO("Extra data directory:          '%s'\n", extraDataDir.c_str());
     LOG_INFO("Data directory:                '%s'\n", cm->getDataDir().c_str());
     LOG_INFO("Tilecache directory:           '%s'\n", cm->getTileDir().c_str());
@@ -416,12 +411,9 @@ try
   else
 #endif
   {
-    cm = new DefaultContentManager(version,
-                                   configFolderPath,
-                                   gameResRootPath, externalizedDataPath);
+    cm = new DefaultContentManager(version, params.gameDirPath, externalizedDataPath);
     LOG_INFO("------------------------------------------------------------------------------\n");
-    LOG_INFO("Configuration file:            '%s'\n", configPath.c_str());
-    LOG_INFO("Root game resources directory: '%s'\n", gameResRootPath.c_str());
+    LOG_INFO("Root game resources directory: '%s'\n", params.gameDirPath.c_str());
     LOG_INFO("Extra data directory:          '%s'\n", extraDataDir.c_str());
     LOG_INFO("Data directory:                '%s'\n", cm->getDataDir().c_str());
     LOG_INFO("Tilecache directory:           '%s'\n", cm->getTileDir().c_str());
@@ -430,7 +422,7 @@ try
   }
 
   std::vector<std::string> libraries = cm->getListOfGameResources();
-  cm->initGameResouces(configPath, libraries);
+  cm->initGameResouces(libraries);
 
   if(!cm->loadGameData())
   {
@@ -584,31 +576,23 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
   {
     bool haveNextParameter = (i + 1) < argc;
 
-		if (strcmp(argv[i], "-fullscreen") == 0)
-		{
-			VideoSetFullScreen(TRUE);
-		}
-		else if (strcmp(argv[i], "-nosound") == 0)
+		if (strcmp(argv[i], "--nosound") == 0)
 		{
 			SoundEnableSound(FALSE);
 		}
-		else if (strcmp(argv[i], "-window") == 0)
-		{
-			VideoSetFullScreen(FALSE);
-		}
 #ifdef WITH_UNITTESTS
-    else if (strcmp(argv[i], "-unittests") == 0)
+    else if (strcmp(argv[i], "--unittests") == 0)
     {
       params->doUnitTests = true;
       return true;
     }
 #endif
-    else if (strcmp(argv[i], "-debug") == 0)
+    else if (strcmp(argv[i], "--debug") == 0)
     {
       params->showDebugMessages = true;
       return true;
     }
-		else if (strcmp(argv[i], "-res") == 0)
+		else if (strcmp(argv[i], "--res") == 0)
 		{
       if(haveNextParameter)
       {
@@ -617,7 +601,7 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
         int readFields = sscanf(argv[++i], "%dx%d", &width, &height);
         if(readFields != 2)
         {
-          LOG_ERROR("Invalid value for command-line key '-res'\n");
+          LOG_ERROR("Invalid value for command-line key '--res'\n");
           success = FALSE;
         }
         else
@@ -632,12 +616,12 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
       }
       else
       {
-        LOG_ERROR("Missing value for command-line key '-res'\n");
+        LOG_ERROR("Missing value for command-line key '--res'\n");
         success = FALSE;
       }
 		}
 #ifdef WITH_MODS
-    else if (strcmp(argv[i], "-mod") == 0)
+    else if (strcmp(argv[i], "--mod") == 0)
     {
       if(haveNextParameter)
       {
@@ -646,32 +630,33 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
       }
       else
       {
-        LOG_ERROR("Missing value for command-line key '-res'\n");
+        LOG_ERROR("Missing value for command-line key '--mod'\n");
         success = FALSE;
       }
     }
 #endif
-#if defined JA2BETAVERSION
-		else if (strcmp(argv[i], "-quicksave") == 0)
-		{
-			/* This allows the QuickSave Slots to be autoincremented, i.e. everytime
-			 * the user saves, there will be a new quick save file */
-			gfUseConsecutiveQuickSaveSlots = TRUE;
-		}
-		else if (strcmp(argv[i], "-domaps") == 0)
-		{
-      GameState::setMode(GAME_MODE_MAP_UTILITY);
-		}
-#endif
-		else if (strcmp(argv[i], "-editor") == 0)
+    else if (strcmp(argv[i], "--gamedir") == 0)
+    {
+      if(haveNextParameter)
+      {
+        params->gameDirPathGiven = true;
+        params->gameDirPath = argv[++i];
+      }
+      else
+      {
+        LOG_ERROR("Missing value for command-line key '-gamedir'\n");
+        success = FALSE;
+      }
+    }
+		else if (strcmp(argv[i], "--editor") == 0)
 		{
       GameState::getInstance()->setEditorMode(false);
 		}
-		else if (strcmp(argv[i], "-editorauto") == 0)
+		else if (strcmp(argv[i], "--editorauto") == 0)
 		{
       GameState::getInstance()->setEditorMode(true);
 		}
-    else if (strcmp(argv[i], "-resversion") == 0)
+    else if (strcmp(argv[i], "--resversion") == 0)
     {
       if(haveNextParameter)
       {
@@ -686,7 +671,7 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
     }
 		else
 		{
-			if (strcmp(argv[i], "-help") != 0)
+			if (strcmp(argv[i], "--help") != 0)
 			{
 				fprintf(stderr, "Unknown switch \"%s\"\n", argv[i]);
 			}
@@ -699,71 +684,41 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
 		fprintf(stderr,
 			"Usage: %s [options]\n"
 			"\n"
-			"  -res WxH     Screen resolution, e.g. 800x600. Default value is 640x480\n"
-			"\n"
-			"  -resversion  Version of the game resources.\n"
-			"                 Possible values: DUTCH, ENGLISH, FRENCH, GERMAN, ITALIAN, POLISH, RUSSIAN, RUSSIAN_GOLD\n"
-			"                 Default value is ENGLISH\n"
-			"                 RUSSIAN is for BUKA Agonia Vlasty release\n"
-			"                 RUSSIAN_GOLD is for Gold release\n"
+			"  --resversion  Version of the game resources.\n"
+			"                Possible values: DUTCH, ENGLISH, FRENCH, GERMAN, ITALIAN, POLISH, RUSSIAN, RUSSIAN_GOLD\n"
+			"                Default value is ENGLISH\n"
+			"                RUSSIAN is for BUKA Agonia Vlasty release\n"
+			"                RUSSIAN_GOLD is for Gold release\n"
 #ifdef WITH_MODS
       "\n"
-      "  -mod NAME    Start one of the game modifications, bundled into the game.\n"
-      "               NAME is the name of modification, e.g. 'from-russia-with-love'.\n"
-      "               See folder mods for possible options\n"
+      "  --mod NAME    Start one of the game modifications, bundled into the game.\n"
+      "                NAME is the name of modification, e.g. 'from-russia-with-love'.\n"
+      "                See folder mods for possible options\n"
 #endif
+      "\n"
+			"  --res WxH     Screen resolution, e.g. 800x600.  Default value is 640x480\n"
 			"\n"
-			"  -debug       Show debug messages\n"
+      "  --gamedir     Directory where the original game resources can be found.\n"
+      "                By default the directory where the executable file is located.\n"
+			"\n"
+			"  --debug       Show debug messages\n"
 #ifdef WITH_UNITTESTS
-      "  -unittests   Perform unit tests\n"
-      "                 ja2.exe -unittests [gtest options]\n"
-      "                 E.g. ja2.exe -unittests --gtest_output=\"xml:report.xml\" --gtest_repeat=2\n"
+			"\n"
+      "  --unittests   Perform unit tests\n"
+      "                  ja2-ve --unittests [gtest options]\n"
+      "                  E.g. ja2-ve --unittests --gtest_output=\"xml:report.xml\" --gtest_repeat=2\n"
+			"\n"
 #endif
-			"  -editor      Start the map editor (Editor.slf is required)\n"
-			"  -editorauto  Start the map editor and load sector A9 (Editor.slf is required)\n"
-			"  -fullscreen  Start the game in the fullscreen mode\n"
-			"  -help        Display this information\n"
-			"  -nosound     Turn the sound and music off\n"
-			"  -window      Start the game in a window\n"
+			"  --editor      Start the map editor (Editor.slf is required)\n"
+			"  --editorauto  Start the map editor and load sector A9 (Editor.slf is required)\n"
+			"  --help        Display this information\n"
+			"  --nosound     Turn the sound and music off\n"
             ,
 			name
 		);
 	}
 	return success;
 }
-
-static std::string findRootGameResFolder(const std::string &configPath)
-{
-  MicroIni::File configFile;
-  if(!configFile.load(configPath) || !configFile[""].has("data_dir"))
-  {
-    LOG_WARNING("WARNING: Could not open configuration file (\"%s\").\n", configPath.c_str());
-    WriteDefaultConfigFile(configPath.c_str());
-    configFile.load(configPath);
-  }
-
-  return configFile[""]["data_dir"];
-}
-
-static void WriteDefaultConfigFile(const char* ConfigFile)
-{
-	FILE* const IniFile = fopen(ConfigFile, "a");
-	if (IniFile != NULL)
-	{
-		fprintf(IniFile, "#Tells ja2-stracciatella where the binary datafiles are located\n");
-#ifdef _WIN32
-    fprintf(IniFile, "data_dir = C:\\Program Files\\Jagged Alliance 2");
-#else
-    fprintf(IniFile, "data_dir = /some/place/where/the/data/is");
-#endif
-		fclose(IniFile);
-		fprintf(stderr, "Please edit \"%s\" to point to the binary data.\n", ConfigFile);
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////
-// some data convertion
-////////////////////////////////////////////////////////////////////////////
 
 static void convertDialogQuotesToJson(const DefaultContentManager *cm,
                                       STRING_ENC_TYPE encType,
