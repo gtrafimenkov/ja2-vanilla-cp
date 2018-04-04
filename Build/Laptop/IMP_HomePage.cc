@@ -230,28 +230,21 @@ static void GetPlayerKeyBoardInputForIMPHomePage(void)
 	InputAtom					InputEvent;
 	while (DequeueEvent(&InputEvent))
   {
-		if(	!HandleTextInput( &InputEvent ) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT || InputEvent.usEvent == KEY_UP ) )
+		if(	!HandleTextInput( &InputEvent ) && (InputEvent.usEvent != KEY_UP) )
 		{
 		  switch( InputEvent.usParam )
 			{
 				case SDLK_RETURN:
-					if(InputEvent.usEvent == KEY_UP)
-					{
-						// return hit, check to see if current player activation string is a valid one
-						ProcessPlayerInputActivationString( );
-
-					  fNewCharInActivationString = TRUE;
-					}
-				break;
+					// return hit, check to see if current player activation string is a valid one
+					ProcessPlayerInputActivationString( );
+					fNewCharInActivationString = TRUE;
+					break;
 
 				case SDLK_ESCAPE: HandleLapTopESCKey(); break;
 
 				default:
-					if(InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT )
-					{
-						HandleTextEvent(&InputEvent);
-					}
-				break;
+					HandleTextEvent(&InputEvent);
+					break;
 			}
 		}
 	}
