@@ -600,19 +600,6 @@ build-win-on-linux:
 		TARGET_PLATFORM_WINDOWS=1
 	cp _build/lib-SDL2-mingw/i686-w64-mingw32/bin/SDL2.dll .
 
-build-on-mac:
-	make "CFLAGS_SDL=$(MACOS_STATIC_CFLAGS_SDL)" "LDFLAGS_SDL=$(MACOS_STATIC_LDFLAGS_SDL)"
-
-build-on-win:
-	PATH=/cygdrive/c/MinGW/bin:$$PATH make all USE_MINGW=1 MINGW_PREFIX=/cygdrive/c/MinGW/bin/mingw32 LOCAL_SDL_LIB=_build/lib-SDL2-mingw/i686-w64-mingw32
-	cp _build/lib-SDL2-mingw/i686-w64-mingw32/bin/SDL.dll .
-
-check-compilation-on-u1404:
-	$(MAKE) clean
-	cd _build/buildboxes/u1404_amd64 && vagrant up
-	cd _build/buildboxes/u1404_amd64 && vagrant ssh -c "make -C /home/vagrant/strac -j2"
-	cd _build/buildboxes/u1404_amd64 && vagrant ssh -c "sudo shutdown -h now"
-
 rebuild-contributors-list:
 	git log --pretty=format:'%an <%ae>' | \
 		sed "s/Gennady <gennady@aspire.(none)>/Gennady Trafimenkov <gennady.trafimenkov@gmail.com>/g" | \
