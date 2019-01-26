@@ -117,36 +117,3 @@ strlcpy(char *dst, const char *src, size_t siz)
 }
 
 #endif
-
-
-#ifdef _WIN32
-
-int WINsnprintf(char* const s, size_t const n, const char* const fmt, ...)
-{
-	va_list arg;
-	va_start(arg, fmt);
-	int const ret = _vsnprintf(s, n, fmt, arg);
-	va_end(arg);
-	if (n != 0) s[n - 1] = '\0'; // _vsnprintf() does not guarantee NUL termination
-	return ret;
-}
-
-
-int WINswprintf(wchar_t* const s, size_t const n, const wchar_t* const fmt, ...)
-{
-	va_list arg;
-	va_start(arg, fmt);
-	int const ret = WINvswprintf(s, n, fmt, arg);
-	va_end(arg);
-	return ret;
-}
-
-
-int WINvswprintf(wchar_t* const s, size_t const n, const wchar_t* const fmt, va_list const arg)
-{
-	int const ret = _vsnwprintf(s, n, fmt, arg);
-	if (n != 0) s[n - 1] = L'\0'; // _vsnwprintf() does not guarantee NUL termination
-	return ret;
-}
-
-#endif

@@ -15,20 +15,4 @@ size_t strlcpy(char* dst, const char* src, size_t size);
 
 #endif
 
-
-#ifdef _WIN32
-
-#include <stdarg.h>
-
-
-int WINsnprintf(char* s, size_t n, const char* fmt, ...);
-int WINswprintf(wchar_t* s, size_t n, const wchar_t* fmt, ...);
-int WINvswprintf(wchar_t* s, size_t n, const wchar_t* fmt, va_list arg);
-
-#define snprintf  WINsnprintf
-#define swprintf  WINswprintf
-#define vswprintf WINvswprintf
-
-#endif
-
 #endif
