@@ -37,7 +37,6 @@
 #include "Isometric_Utils.h"
 #include "Scheduling.h"
 #include "Debug.h"
-#include "UILayout.h"
 
 
 // the amounts of time to wait for hover stuff
@@ -839,15 +838,15 @@ static void HandleSkyRiderMonologueEvent(SkyriderMonologueEvent const uiEventCod
 	switch( uiEventCode )
 	{
 		case( SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE ):
-			SetExternMapscreenSpeechPanelXY( DEFAULT_EXTERN_PANEL_X_POS, STD_SCREEN_Y + 117 );
+			SetExternMapscreenSpeechPanelXY( DEFAULT_EXTERN_PANEL_X_POS, 117 );
 			HandleSkyRiderMonologueAboutDrassenSAMSite( uiSpecialCode );
 			break;
 		case SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL:
-			SetExternMapscreenSpeechPanelXY( DEFAULT_EXTERN_PANEL_X_POS, STD_SCREEN_Y + 172 );
+			SetExternMapscreenSpeechPanelXY( DEFAULT_EXTERN_PANEL_X_POS, 172 );
 			HandleSkyRiderMonologueAboutCambriaHospital( uiSpecialCode );
 			break;
 		case( SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES ):
-			SetExternMapscreenSpeechPanelXY( STD_SCREEN_X + 335, DEFAULT_EXTERN_PANEL_Y_POS );
+			SetExternMapscreenSpeechPanelXY( 335, DEFAULT_EXTERN_PANEL_Y_POS );
 			HandleSkyRiderMonologueAboutOtherSAMSites( uiSpecialCode );
 			break;
 		case( SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL ):

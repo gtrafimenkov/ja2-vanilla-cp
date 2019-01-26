@@ -6,8 +6,6 @@
 #include "MouseSystem.h"
 #include "Soldier_Control.h"
 
-#include "UILayout.h"
-
 struct ItemModel;
 
 
@@ -22,6 +20,14 @@ struct ItemModel;
 #define		LEGS_INV_SLOT_HEIGHT			24
 #define		HEAD_INV_SLOT_WIDTH				43
 #define		HEAD_INV_SLOT_HEIGHT			24
+
+
+// USED TO SETUP REGION POSITIONS, ETC
+struct INV_REGION_DESC
+{
+	INT16			sX;
+	INT16			sY;
+};
 
 
 // Itempickup stuff

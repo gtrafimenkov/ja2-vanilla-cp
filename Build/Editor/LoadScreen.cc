@@ -49,7 +49,6 @@
 #include "VSurface.h"
 #include "Video.h"
 #include "WorldDef.h"
-#include "UILayout.h"
 #include "GameState.h"
 #include "GameRes.h"
 #include <boost/foreach.hpp>

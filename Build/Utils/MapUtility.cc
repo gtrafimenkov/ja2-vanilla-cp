@@ -24,7 +24,6 @@
 #include "MemMan.h"
 #include "Video.h"
 #include "Quantize.h"
-#include "UILayout.h"
 #include <boost/foreach.hpp>
 
 #include "ContentManager.h"

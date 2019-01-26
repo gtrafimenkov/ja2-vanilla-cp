@@ -27,7 +27,6 @@
 #include "Strategic_Mines.h"
 #include "Random.h"
 #include "FileMan.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"

@@ -104,7 +104,6 @@
 #include "Debug.h"
 #include "ScreenIDs.h"
 #include "Items.h"
-#include "UILayout.h"
 
 
 //Used by PickGridNoToWalkIn

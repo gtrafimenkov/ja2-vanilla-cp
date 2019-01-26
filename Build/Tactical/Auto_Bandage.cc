@@ -34,7 +34,6 @@
 #include "VSurface.h"
 #include "MemMan.h"
 #include "Button_System.h"
-#include "UILayout.h"
 
 #include "Soldier.h"
 

@@ -29,7 +29,6 @@
 #include "MapScreen.h"
 #include "Map_Screen_Interface_Map_Inventory.h"
 #include "VSurface.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"

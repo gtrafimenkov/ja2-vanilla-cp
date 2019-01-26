@@ -19,7 +19,6 @@
 #include "VSurface.h"
 #include "Video.h"
 #include "WordWrap.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"

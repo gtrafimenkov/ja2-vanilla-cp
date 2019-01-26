@@ -38,7 +38,6 @@
 #include "Tile_Surface.h"
 #include "Button_System.h"
 #include "Video.h"
-#include "UILayout.h"
 #include "GameState.h"
 
 #include "ContentManager.h"
@@ -251,10 +250,6 @@ static void DisplayMercNameInOverhead(SOLDIERTYPE const& s)
 	INT16 x;
 	INT16 y;
 	GetOverheadScreenXYFromGridNo(s.sGridNo, &x, &y);
-
-  x += STD_SCREEN_X;
-  y += STD_SCREEN_Y;
-
 	y -= s.sHeightAdjustment / 5 + 13;
 
 	INT16 sX;
@@ -279,7 +274,7 @@ void HandleOverheadMap(void)
 
 	RestoreBackgroundRects();
 
-	RenderOverheadMap(0, WORLD_COLS / 2, STD_SCREEN_X, STD_SCREEN_Y, STD_SCREEN_X + 640, STD_SCREEN_Y + 320, FALSE);
+	RenderOverheadMap(0, WORLD_COLS / 2, 0, 0, SCREEN_WIDTH, 320, FALSE);
 
 	HandleTalkingAutoFaces();
 
@@ -381,9 +376,9 @@ void GoIntoOverheadMap( )
 {
 	gfInOverheadMap = TRUE;
 
-	MSYS_DefineRegion(&OverheadBackgroundRegion, STD_SCREEN_X, STD_SCREEN_Y, STD_SCREEN_X + 640, STD_SCREEN_Y + 360, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+	MSYS_DefineRegion(&OverheadBackgroundRegion, 0, 0, SCREEN_WIDTH, 360, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-	MSYS_DefineRegion(&OverheadRegion, STD_SCREEN_X, STD_SCREEN_Y, STD_SCREEN_X + 640, STD_SCREEN_Y + 320, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, ClickOverheadRegionCallback);
+	MSYS_DefineRegion(&OverheadRegion, 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, ClickOverheadRegionCallback);
 
 	// LOAD CLOSE ANIM
 	uiOVERMAP = AddVideoObjectFromFile(INTERFACEDIR "/map_bord.sti");
@@ -730,7 +725,7 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M, I
 
 	if (!fFromMapUtility)
 	{ // Render border!
-		BltVideoObject(FRAME_BUFFER, uiOVERMAP, 0, STD_SCREEN_X + 0, STD_SCREEN_Y + 0);
+		BltVideoObject(FRAME_BUFFER, uiOVERMAP, 0, 0, 0);
 	}
 
 	// Update the save buffer
@@ -765,9 +760,6 @@ static void RenderOverheadOverlays(void)
 		INT16 sY;
 		GetOverheadScreenXYFromGridNo(s.sGridNo, &sX, &sY);
 		//Now, draw his "doll"
-
-    sX += STD_SCREEN_X;
-    sY += STD_SCREEN_Y;
 
 		//adjust for position.
 		sX += 2;
@@ -812,9 +804,6 @@ static void RenderOverheadOverlays(void)
 			INT16 sX;
 			INT16 sY;
 			GetOverheadScreenXYFromGridNo(wi->sGridNo, &sX, &sY);
-
-      sX += STD_SCREEN_X;
-      sY += STD_SCREEN_Y;
 
 			//adjust for position.
 			sY += 6;
@@ -881,8 +870,8 @@ static GridNo InternalGetOverheadMouseGridNo(const INT dy)
 	if (!(OverheadRegion.uiFlags & MSYS_MOUSE_IN_AREA)) return NOWHERE;
 
 	// ATE: Adjust alogrithm values a tad to reflect map positioning
-	INT16 const sWorldScreenX = (gusMouseXPos - STD_SCREEN_X - gsStartRestrictedX -  5) * 5;
-	INT16       sWorldScreenY = (gusMouseYPos - STD_SCREEN_Y - gsStartRestrictedY + dy) * 5;
+	INT16 const sWorldScreenX = (gusMouseXPos - gsStartRestrictedX -  5) * 5;
+	INT16       sWorldScreenY = (gusMouseYPos - gsStartRestrictedY + dy) * 5;
 
 	// Get new proposed center location.
 	const GridNo grid_no = GetMapPosFromAbsoluteScreenXY(sWorldScreenX, sWorldScreenY);

@@ -1119,7 +1119,10 @@ void RecompileLocalMovementCosts( INT16 sCentreGridNo )
 		for( sGridX = sCentreGridX - LOCAL_RADIUS - 1; sGridX < sCentreGridX + LOCAL_RADIUS + 1; sGridX++ )
 		{
 			usGridNo = MAPROWCOLTOPOS( sGridY, sGridX );
-      CompileTileMovementCosts( usGridNo );
+			if (usGridNo < WORLD_MAX)
+			{
+				CompileTileMovementCosts( usGridNo );
+			}
 		}
 	}
 }

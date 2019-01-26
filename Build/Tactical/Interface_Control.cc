@@ -42,7 +42,6 @@
 #include "Line.h"
 #include "Map_Screen_Interface.h"
 #include "Civ_Quotes.h"
-#include "UILayout.h"
 
 
 static SGPRect gOldClippingRect;

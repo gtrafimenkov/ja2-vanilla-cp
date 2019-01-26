@@ -16,7 +16,6 @@
 #include "Video.h"
 #include "VSurface.h"
 #include "ScreenIDs.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"

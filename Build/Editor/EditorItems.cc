@@ -292,7 +292,7 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 	//copy a blank chunk of the editor interface to the new buffer.
 	for (i = 0; i < w; i += 60)
 	{
-		SGPBox const r = { 100, EDITOR_TASKBAR_POS_Y, 60, 80 };
+		SGPBox const r = { 100, 360, 60, 80 };
 		BltVideoSurface(eInfo.uiBuffer, FRAME_BUFFER, i, 0, &r);
 	}
 
@@ -492,7 +492,7 @@ static void drawItemWithOutline(INT16 min_idx, INT16 end_idx, INT16 scroll_idx, 
   if (min_idx <= itemIndex && itemIndex < end_idx)
   {
     INT16   const  x    = (itemIndex / 2 - scroll_idx) * 60 + 110;
-    INT16   const  y    = EDITOR_TASKBAR_POS_Y + (itemIndex % 2) * 40;
+    INT16   const  y    = 360 + (itemIndex % 2) * 40;
     const ItemModel *item = GCM->getItem(eInfo.pusItemIndex[itemIndex]);
     DrawItemCentered(item, FRAME_BUFFER, x, y + 2, outline);
   }
@@ -503,8 +503,8 @@ void RenderEditorItemsInfo()
 {
 	if (!eInfo.fActive) return;
 
-	if ((gusMouseXPos < 110) || (480 < gusMouseXPos) ||
-			(gusMouseYPos < EDITOR_TASKBAR_POS_Y) || (EDITOR_TASKBAR_POS_Y + 80 < gusMouseYPos))
+	if (gusMouseXPos < 110 || 480 < gusMouseXPos ||
+			gusMouseYPos < 360 || 440 < gusMouseYPos)
 	{ // Mouse has moved out of the items display region -- so nothing can be highlighted.
 		eInfo.sHilitedItemIndex = -1;
 	}
@@ -512,7 +512,7 @@ void RenderEditorItemsInfo()
 	INT16 const scroll_idx = eInfo.sScrollIndex;
 
 	SGPBox const r = { 60 * scroll_idx, 0, 360, 80 };
-	BltVideoSurface(FRAME_BUFFER, eInfo.uiBuffer, 110, EDITOR_TASKBAR_POS_Y, &r);
+	BltVideoSurface(FRAME_BUFFER, eInfo.uiBuffer, 110, 360, &r);
 
 	/* Calculate the min and max index that is currently shown.  This determines
 	 * if the highlighted and/or selected items are drawn with the outlines. */
@@ -534,7 +534,7 @@ void RenderEditorItemsInfo()
 		if (n_items == 0) continue;
 
 		INT16 const x = (i / 2 - scroll_idx) * 60 + 110;
-		INT16 const y = EDITOR_TASKBAR_POS_Y + (i % 2) * 40;
+		INT16 const y = 360 + (i % 2) * 40;
 		SetFontAttributes(FONT10ARIAL, FONT_YELLOW);
 		if (n_items == quantity)
 		{
@@ -618,7 +618,7 @@ void HandleItemsPanel( UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent )
 	//Calc base index from scrolling index
 	sIndex = eInfo.sScrollIndex * 2;
 	//Determine if the index is in the first row or second row from mouse YPos.
-	if( usScreenY >= EDITOR_TASKBAR_POS_Y + 40 )
+	if( usScreenY >= 400 )
 		sIndex++;
 	//Add the converted mouse's XPos into a relative index;
 	//Calc:  starting from 110, for every 60 pixels, add 2 to the index
@@ -1461,5 +1461,5 @@ void DisplayItemStatistics()
 	INT16          const idx        = highlited != -1 ? highlited : eInfo.sSelItemIndex;
 	UINT8          const foreground = idx == highlited ? FONT_LTRED : FONT_YELLOW;
 	wchar_t const* const item_name  = ItemNames[eInfo.pusItemIndex[idx]];
-	DisplayWrappedString(2, EDITOR_TASKBAR_POS_Y + 41, 97, 2, SMALLCOMPFONT, foreground, item_name, FONT_BLACK, CENTER_JUSTIFIED);
+	DisplayWrappedString(2, 401, 97, 2, SMALLCOMPFONT, foreground, item_name, FONT_BLACK, CENTER_JUSTIFIED);
 }

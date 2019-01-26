@@ -46,45 +46,45 @@ struct FinanceUnit
 #define TOP_X 0+LAPTOP_SCREEN_UL_X
 #define TOP_Y LAPTOP_SCREEN_UL_Y
 #define BLOCK_HEIGHT 10
-#define TOP_DIVLINE_Y (102 + STD_SCREEN_Y)
-#define DIVLINE_X (130 + STD_SCREEN_X)
-#define MID_DIVLINE_Y (205 + STD_SCREEN_Y)
-#define BOT_DIVLINE_Y (180 + STD_SCREEN_Y)
-#define MID_DIVLINE_Y2 (263 + 20 + STD_SCREEN_Y)
+#define TOP_DIVLINE_Y 102
+#define DIVLINE_X 130
+#define MID_DIVLINE_Y 205
+#define BOT_DIVLINE_Y 180
+#define MID_DIVLINE_Y2 263 + 20
 #define BOT_DIVLINE_Y2 MID_DIVLINE_Y2 + MID_DIVLINE_Y - BOT_DIVLINE_Y
-#define TITLE_X (140 + STD_SCREEN_X)
-#define TITLE_Y (33 + STD_SCREEN_Y)
-#define TEXT_X (140 + STD_SCREEN_X)
+#define TITLE_X 140
+#define TITLE_Y 33
+#define TEXT_X 140
 #define PAGE_SIZE 17
 
 // yesterdyas/todays income and balance text positions
-#define YESTERDAYS_INCOME               (STD_SCREEN_Y + 114)
-#define YESTERDAYS_OTHER                (STD_SCREEN_Y + 138)
-#define YESTERDAYS_DEBITS               (STD_SCREEN_Y + 162)
-#define YESTERDAYS_BALANCE              (STD_SCREEN_Y + 188)
-#define TODAYS_INCOME                   (STD_SCREEN_Y + 215)
-#define TODAYS_OTHER                    (STD_SCREEN_Y + 239)
-#define TODAYS_DEBITS                   (STD_SCREEN_Y + 263)
-#define TODAYS_CURRENT_BALANCE          (STD_SCREEN_Y + 263 + 28)
-#define TODAYS_CURRENT_FORCAST_INCOME   (STD_SCREEN_Y + 330)
-#define TODAYS_CURRENT_FORCAST_BALANCE  (STD_SCREEN_Y + 354)
+#define YESTERDAYS_INCOME 114
+#define YESTERDAYS_OTHER 138
+#define YESTERDAYS_DEBITS 162
+#define YESTERDAYS_BALANCE 188
+#define TODAYS_INCOME 215
+#define TODAYS_OTHER 239
+#define TODAYS_DEBITS  263
+#define TODAYS_CURRENT_BALANCE  263 + 28
+#define TODAYS_CURRENT_FORCAST_INCOME  330
+#define TODAYS_CURRENT_FORCAST_BALANCE 354
 #define FINANCE_HEADER_FONT FONT14ARIAL
 #define FINANCE_TEXT_FONT FONT12ARIAL
 #define NUM_RECORDS_PER_PAGE PAGE_SIZE
 
 // records text positions
-#define RECORD_CREDIT_WIDTH (106-47)
+#define RECORD_CREDIT_WIDTH 106-47
 #define RECORD_DEBIT_WIDTH RECORD_CREDIT_WIDTH
 #define RECORD_DATE_X TOP_X+10
 #define RECORD_TRANSACTION_X RECORD_DATE_X+RECORD_DATE_WIDTH
 #define RECORD_TRANSACTION_WIDTH 500-280
 #define RECORD_DEBIT_X RECORD_TRANSACTION_X+RECORD_TRANSACTION_WIDTH
 #define RECORD_CREDIT_X RECORD_DEBIT_X+RECORD_DEBIT_WIDTH
-#define RECORD_Y (107-10 + STD_SCREEN_Y)
+#define RECORD_Y 107-10
 #define RECORD_DATE_WIDTH 47
 #define RECORD_BALANCE_X RECORD_DATE_X+385
 #define RECORD_BALANCE_WIDTH 479-385
-#define RECORD_HEADER_Y (90 + STD_SCREEN_Y)
+#define RECORD_HEADER_Y 90
 
 
 #define PAGE_NUMBER_X				TOP_X+297 //345
@@ -102,11 +102,11 @@ enum{
 
 // button positions
 
-#define	FIRST_PAGE_X		(STD_SCREEN_X + 505)
-#define NEXT_BTN_X			(STD_SCREEN_X + 553)
-#define PREV_BTN_X			(STD_SCREEN_X + 529)
-#define	LAST_PAGE_X			(STD_SCREEN_X + 577)
-#define BTN_Y           (STD_SCREEN_Y +  53)
+#define	FIRST_PAGE_X		505
+#define NEXT_BTN_X			553//577
+#define PREV_BTN_X			529//553
+#define	LAST_PAGE_X			577
+#define BTN_Y 53
 
 
 
@@ -320,7 +320,7 @@ void RenderFinances(void)
 
   DisplayFinancePageNumberAndDateRange( );
 
-	BltVideoObject(FRAME_BUFFER, guiLaptopBACKGROUND, 0, STD_SCREEN_X + 108, STD_SCREEN_Y + 23);
+	BltVideoObject(FRAME_BUFFER, guiLaptopBACKGROUND, 0, 108, 23);
 
 	BlitTitleBarIcons(  );
 }
@@ -574,14 +574,14 @@ static void DrawSummaryText(void)
 
 	// yesterdays income
 	SPrintMoneyNoDollarOnZero(pString, GetPreviousDaysIncome());
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, YESTERDAYS_INCOME, pString);
 
 	SetFontForeground( FONT_BLACK );
 
 	// yesterdays other
 	SPrintMoneyNoDollarOnZero(pString, GetYesterdaysOtherDeposits());
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, YESTERDAYS_OTHER, pString);
 
 	SetFontForeground( FONT_RED );
@@ -595,7 +595,7 @@ static void DrawSummaryText(void)
 	}
 
 	SPrintMoneyNoDollarOnZero(pString, iBalance);
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, YESTERDAYS_DEBITS, pString);
 
 	SetFontForeground( FONT_BLACK );
@@ -610,21 +610,21 @@ static void DrawSummaryText(void)
 	}
 
 	SPrintMoneyNoDollarOnZero(pString, iBalance);
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, YESTERDAYS_BALANCE, pString);
 
 	SetFontForeground( FONT_BLACK );
 
 	// todays income
 	SPrintMoneyNoDollarOnZero(pString, GetTodaysDaysIncome());
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_INCOME, pString);
 
 	SetFontForeground( FONT_BLACK );
 
 	// todays other
 	SPrintMoneyNoDollarOnZero(pString, GetTodaysOtherDeposits());
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_OTHER, pString);
 
 	SetFontForeground( FONT_RED );
@@ -639,7 +639,7 @@ static void DrawSummaryText(void)
 	}
 
 	SPrintMoneyNoDollarOnZero(pString, iBalance);
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_DEBITS, pString);
 
 	SetFontForeground( FONT_BLACK );
@@ -653,14 +653,14 @@ static void DrawSummaryText(void)
 	}
 
 	SPrintMoneyNoDollarOnZero(pString, iBalance);
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_CURRENT_BALANCE, pString);
 
   SetFontForeground( FONT_BLACK );
 
 	// todays forcast income
 	SPrintMoneyNoDollarOnZero(pString, GetProjectedTotalDailyIncome());
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_CURRENT_FORCAST_INCOME, pString);
 
 	SetFontForeground( FONT_BLACK );
@@ -675,7 +675,7 @@ static void DrawSummaryText(void)
 	}
 
 	SPrintMoneyNoDollarOnZero(pString, iBalance);
-	FindFontRightCoordinates(STD_SCREEN_X, 0, 580, 0,pString,FINANCE_TEXT_FONT, &usX, &usY);
+	FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
 	MPrint(usX, TODAYS_CURRENT_FORCAST_BALANCE, pString);
 
   SetFontForeground( FONT_BLACK );

@@ -15,7 +15,6 @@
 #include "VObject.h"
 #include "VSurface.h"
 #include "Video.h"
-#include "UILayout.h"
 
 
 #define WHEEL_MOVE_FRACTION 32

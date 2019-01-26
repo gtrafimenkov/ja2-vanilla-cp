@@ -19,7 +19,6 @@
 #include "VObject.h"
 #include "Video.h"
 #include "VSurface.h"
-#include "UILayout.h"
 
 #ifndef JA2BETAVERSION
 #	include "GameSettings.h"
@@ -372,7 +371,7 @@ static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay)
 	if( iIndexOfFlicToPlay != -1 )
 	{
 		//start playing a flic
-		gpSmackFlic = SmkPlayFlic( gpzSmackerFileNames[ iIndexOfFlicToPlay ], STD_SCREEN_X, STD_SCREEN_Y , TRUE );
+		gpSmackFlic = SmkPlayFlic( gpzSmackerFileNames[ iIndexOfFlicToPlay ], 0, 0 , TRUE );
 
 		if( gpSmackFlic != NULL )
 		{
@@ -411,7 +410,7 @@ void SetIntroType( INT8 bIntroType )
 static void DisplaySirtechSplashScreen(void)
 {
 	FRAME_BUFFER->Fill(0);
-	BltVideoObjectOnce(FRAME_BUFFER, INTERFACEDIR "/sirtechsplash.sti", 0, STD_SCREEN_X, STD_SCREEN_Y);
+	BltVideoObjectOnce(FRAME_BUFFER, INTERFACEDIR "/sirtechsplash.sti", 0, 0, 0);
 	InvalidateScreen();
 	RefreshScreen();
 }

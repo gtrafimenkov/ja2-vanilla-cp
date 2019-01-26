@@ -67,13 +67,12 @@
 #include "VSurface.h"
 #include "EMail.h"
 #include "Items.h"
-#include "UILayout.h"
 
 
 // number of LINKED LISTS for sets of leave items (each slot holds an unlimited # of items)
 #define NUM_LEAVE_LIST_SLOTS 20
 
-#define SELECTED_CHAR_ARROW_X (STD_SCREEN_X + 8)
+#define SELECTED_CHAR_ARROW_X 8
 
 #define SIZE_OF_UPDATE_BOX 20
 
@@ -258,6 +257,18 @@ BOOLEAN fShowSquadMenu = FALSE;
 BOOLEAN fShowContractMenu = FALSE;
 
 static BOOLEAN fRebuildMoveBox = FALSE;
+
+// positions for all the pop up boxes
+SGPPoint ContractPosition={120,50};
+SGPPoint AttributePosition={220,150};
+SGPPoint TrainPosition={160,150};
+SGPPoint VehiclePosition={160,150};
+
+SGPPoint RepairPosition={160,150};
+
+SGPPoint AssignmentPosition = { 120, 150 };
+SGPPoint SquadPosition ={ 160, 150 };
+
 
 // at least one merc was hired at some time
 BOOLEAN gfAtLeastOneMercWasHired = FALSE;
@@ -2305,7 +2316,7 @@ static void AddStringsToMoveBox(PopUpBox*);
 
 static void CreatePopUpBoxForMovementBox(void)
 {
-  SGPPoint const MovePosition = { STD_SCREEN_X + 450, STD_SCREEN_Y + 100 };
+  SGPPoint const MovePosition = { 450, 100 };
 
 	// create the pop up box and mouse regions for movement list
 	PopUpBox* const box = CreatePopUpBox(MovePosition, POPUP_BOX_FLAG_RESIZE, FRAME_BUFFER, guiPOPUPBORDERS, guiPOPUPTEX, 6, 6, 4, 4, 2);
@@ -3345,12 +3356,12 @@ void DisplaySoldierUpdateBox( )
 	iUpdatePanelHeight = ( iNumberHigh + 1 ) * TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS;
 
 	// get the x,y offsets on the screen of the panel
-	iX = STD_SCREEN_X + 290 + ( 336 - iUpdatePanelWidth ) / 2;
+	iX = 290 + ( 336 - iUpdatePanelWidth ) / 2;
 
 //	iY = 28 + ( 288 - iUpdatePanelHeight ) / 2;
 
 	// Have the bottom of the box ALWAYS a set distance from the bottom of the map ( so user doesnt have to move mouse far )
-	iY = STD_SCREEN_Y + 280 - iUpdatePanelHeight;
+	iY = 280 - iUpdatePanelHeight;
 
 	const SGPVObject* const hBackGroundHandle = guiUpdatePanelTactical;
 

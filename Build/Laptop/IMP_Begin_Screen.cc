@@ -28,7 +28,6 @@
 #include "VSurface.h"
 #include "ScreenIDs.h"
 #include "Font_Control.h"
-#include "UILayout.h"
 
 #if defined JA2BETAVERSION && defined _DEBUG
 #	include "Campaign_Types.h"
@@ -741,7 +740,7 @@ static void RenderGender(void)
 static void Print8CharacterOnlyString(void)
 {
 	SetFontAttributes(FONT12ARIAL, FONT_BLACK, NO_SHADOW);
-	MPrint(STD_SCREEN_X + 430, STD_SCREEN_Y + LAPTOP_SCREEN_WEB_DELTA_Y + 228, pIMPBeginScreenStrings);
+	MPrint(430, LAPTOP_SCREEN_WEB_DELTA_Y + 228, pIMPBeginScreenStrings);
 	SetFontShadow(DEFAULT_SHADOW);
 }
 

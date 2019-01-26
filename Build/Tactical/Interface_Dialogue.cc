@@ -84,7 +84,6 @@
 #include "Debug.h"
 #include "ScreenIDs.h"
 #include "Files.h"
-#include "UILayout.h"
 #include "GameRes.h"
 
 #include "ContentManager.h"

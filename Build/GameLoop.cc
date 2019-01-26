@@ -29,7 +29,6 @@
 #include "MemMan.h"
 #include "Button_System.h"
 #include "Font_Control.h"
-#include "UILayout.h"
 #include "GameState.h"
 
 #include "sgp/FileMan.h"

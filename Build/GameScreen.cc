@@ -57,7 +57,6 @@
 #include "Debug.h"
 #include "Video.h"
 #include "JAScreens.h"
-#include "UILayout.h"
 #include "GameState.h"
 
 #ifdef JA2TESTVERSION

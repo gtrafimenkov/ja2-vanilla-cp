@@ -34,7 +34,6 @@
 #include "VSurface.h"
 #include "WCheck.h"
 #include <math.h>
-#include "UILayout.h"
 #include "GameState.h"
 
 
@@ -120,32 +119,35 @@ static const UINT8 gsGlowFrames[] =
 };
 
 
-INT16 gsTopLeftWorldX;                                  /**< Top left corner of the visible portion of the map (in map coordiantes). */
-INT16 gsTopLeftWorldY;                                  /**< Top left corner of the visible portion of the map (in map coordiantes). */
-INT16 gsBottomRightWorldX;                              /**< Bottom right corner of the visible portion of the map (in map coordiantes). */
-INT16 gsBottomRightWorldY;                              /**< Bottom right corner of the visible portion of the map (in map coordiantes). */
+const INT16 gsVIEWPORT_START_X        = 0;
+const INT16 gsVIEWPORT_START_Y        = 0;
+const INT16 gsVIEWPORT_END_X          = SCREEN_WIDTH;
+const INT16 gsVIEWPORT_END_Y          = SCREEN_HEIGHT - 120;
+INT16       gsVIEWPORT_WINDOW_START_Y = 0;
+INT16       gsVIEWPORT_WINDOW_END_Y   = SCREEN_HEIGHT - 120;
+
+INT16 gsTopLeftWorldX;
+INT16 gsTopLeftWorldY;
+INT16 gsBottomRightWorldX;
+INT16 gsBottomRightWorldY;
 BOOLEAN gfIgnoreScrolling = FALSE;
 
 BOOLEAN gfIgnoreScrollDueToCenterAdjust = FALSE;
 
-// Map coordiante system
-// ---------------------
-//   Center of the map independently of its size is always (0, 1625).
-//
 
 // GLOBAL SCROLLING PARAMS
 INT16 gCenterWorldX;
 INT16 gCenterWorldY;
-INT16 gsTLX;                            /**< Top left corner of the current map in screen coordinates. */
-INT16 gsTLY;                            /**< Top left corner of the current map in screen coordinates. */
-INT16 gsTRX;                            /**< Top right corner of the current map in screen coordinates. */
-INT16 gsTRY;                            /**< Top right corner of the current map in screen coordinates. */
-INT16 gsBLX;                            /**< Bottom left corner of the current map in screen coordinates. */
-INT16 gsBLY;                            /**< Bottom left corner of the current map in screen coordinates. */
-INT16 gsBRX;                            /**< Bottom right corner of the current map in screen coordinates. */
-INT16 gsBRY;                            /**< Bottom right corner of the current map in screen coordinates. */
-INT16 gsCX;                             /**< Center of the map in screen coordinates (seems to be always 0). */
-INT16 gsCY;                             /**< Center of the map in screen coordinates (seems to be always 1625). */
+INT16 gsTLX;
+INT16 gsTLY;
+INT16 gsTRX;
+INT16 gsTRY;
+INT16 gsBLX;
+INT16 gsBLY;
+INT16 gsBRX;
+INT16 gsBRY;
+INT16 gsCX;
+INT16 gsCY;
 double gdScaleX;
 double gdScaleY;
 
@@ -182,7 +184,7 @@ INT16 gsScrollYIncrement;
 // Rendering flags (full, partial, etc.)
 static RenderFlags gRenderFlags = RENDER_FLAG_NONE;
 
-#define gClippingRect (g_ui.m_wordlClippingRect)
+static SGPRect gClippingRect = { 0, 0, SCREEN_WIDTH, 360 };
 static SGPRect gOldClipRect;
 INT16   gsRenderCenterX;
 INT16   gsRenderCenterY;
@@ -650,8 +652,8 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
 									float dTempY_S;
 									FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-									sXPos = g_ui.m_tacticalMapCenterX + (INT16)dTempX_S;
-									sYPos = g_ui.m_tacticalMapCenterY + (INT16)dTempY_S - sTileHeight;
+									sXPos = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (INT16)dTempX_S;
+									sYPos = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (INT16)dTempY_S - sTileHeight;
 
 									// Adjust for offset position on screen
 									sXPos -= gsRenderWorldOffsetX;
@@ -703,8 +705,8 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
 									float dTempY_S;
 									FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-									sXPos = g_ui.m_tacticalMapCenterX + (INT16)dTempX_S;
-									sYPos = g_ui.m_tacticalMapCenterY + (INT16)dTempY_S;
+									sXPos = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (INT16)dTempX_S;
+									sYPos = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (INT16)dTempY_S;
 
 									// Adjust for offset position on screen
 									sXPos -= gsRenderWorldOffsetX;
@@ -1004,8 +1006,8 @@ zlevel_topmost:
 								float dTempY_S;
 								FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-								sXPos = g_ui.m_tacticalMapCenterX + (INT16)dTempX_S;
-								sYPos = g_ui.m_tacticalMapCenterY + (INT16)dTempY_S - sTileHeight;
+								sXPos = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (INT16)dTempX_S;
+								sYPos = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (INT16)dTempY_S - sTileHeight;
 
 								// Adjust for offset position on screen
 								sXPos -= gsRenderWorldOffsetX;
@@ -1642,14 +1644,7 @@ static void ScrollBackground(INT16 sScrollXIncrement, INT16 sScrollYIncrement)
 }
 
 
-enum ScrollType {
-  ScrollType_Undefined,
-  ScrollType_Horizontal,
-  ScrollType_Vertical
-};
-
-static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly,
-                              ScrollType scrollType=ScrollType_Undefined);
+static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly);
 static void ClearMarkedTiles(void);
 static void ExamineZBufferRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
 static void RenderDynamicWorld(void);
@@ -1974,7 +1969,6 @@ static void RenderDynamicWorld(void)
 
 static BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, INT16 sScrollYStep, BOOLEAN fCheckOnly)
 {
-  // printf("HandleScrollDirections: %d, (%4d, %4d), %d\n", ScrollFlags, sScrollXStep, sScrollYStep, fCheckOnly);
 	INT16 scroll_x = 0;
 	if (ScrollFlags & SCROLL_LEFT)  scroll_x -= sScrollXStep;
 	if (ScrollFlags & SCROLL_RIGHT) scroll_x += sScrollXStep;
@@ -1991,7 +1985,7 @@ static BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, IN
 		FromScreenToCellCoordinates(scroll_x, 0, &sTempX_W, &sTempY_W);
 		const INT16 sTempRenderCenterX = gsRenderCenterX + sTempX_W;
 		const INT16 sTempRenderCenterY = gsRenderCenterY + sTempY_W;
-		if (!ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly, ScrollType_Horizontal))
+		if (!ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly))
 		{
 			scroll_x = 0;
 		}
@@ -2005,7 +1999,7 @@ static BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, IN
 		FromScreenToCellCoordinates(0, scroll_y, &sTempX_W, &sTempY_W);
 		const INT16 sTempRenderCenterX = gsRenderCenterX + sTempX_W;
 		const INT16 sTempRenderCenterY = gsRenderCenterY + sTempY_W;
-		if (!ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly, ScrollType_Vertical))
+		if (!ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly))
 		{
 			scroll_y = 0;
 		}
@@ -2281,85 +2275,116 @@ void InitRenderParams(UINT8 ubRestrictionID)
 static void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16* pSNewX, INT16* pSNewY);
 
 
-/** This function checks whether the render screen can be moved to new position. */
-static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly,
-                              ScrollType scrollType)
+static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly)
 {
-  // printf("~ %4d, %4d\n", sTempRenderCenterX, sTempRenderCenterY);
-
 	// Make sure it's a multiple of 5
 	sTempRenderCenterX = sTempRenderCenterX / CELL_X_SIZE * CELL_X_SIZE + CELL_X_SIZE / 2;
 	sTempRenderCenterY = sTempRenderCenterY / CELL_X_SIZE * CELL_Y_SIZE + CELL_Y_SIZE / 2;
 
+	// Find the diustance from render center to true world center
+	const INT16 sDistToCenterX = sTempRenderCenterX - gCenterWorldX;
+	const INT16 sDistToCenterY = sTempRenderCenterY - gCenterWorldY;
+
 	// From render center in world coords, convert to render center in "screen" coords
 	INT16 sScreenCenterX;
 	INT16 sScreenCenterY;
-	FromCellToScreenCoordinates(sTempRenderCenterX, sTempRenderCenterY, &sScreenCenterX, &sScreenCenterY);
+	FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, &sScreenCenterX, &sScreenCenterY);
+
+	// Subtract screen center
+	sScreenCenterX += gsCX;
+	sScreenCenterY += gsCY;
 
 	// Adjust for offset position on screen
 	sScreenCenterX -=  0;
 	sScreenCenterY -= 10;
 
-	const INT16 sX_S = g_ui.m_tacticalMapCenterX;
-	const INT16 sY_S = g_ui.m_tacticalMapCenterY;
-
 	// Get corners in screen coords
 	// TOP LEFT
+	const INT16 sX_S = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
+	const INT16 sY_S = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
+
 	const INT16 sTopLeftWorldX = sScreenCenterX - sX_S;
 	const INT16 sTopLeftWorldY = sScreenCenterY - sY_S;
 
 	const INT16 sTopRightWorldX = sScreenCenterX + sX_S;
-	// const INT16 sTopRightWorldY = sScreenCenterY - sY_S;
+	const INT16 sTopRightWorldY = sScreenCenterY - sY_S;
 
-	// const INT16 sBottomLeftWorldX = sScreenCenterX - sX_S;
+	const INT16 sBottomLeftWorldX = sScreenCenterX - sX_S;
 	const INT16 sBottomLeftWorldY = sScreenCenterY + sY_S;
 
 	const INT16 sBottomRightWorldX = sScreenCenterX + sX_S;
 	const INT16 sBottomRightWorldY = sScreenCenterY + sY_S;
 
-#define TILE_SIZE 10
+	BOOLEAN fOutLeft   = FALSE;
+	BOOLEAN fOutRight  = FALSE;
+	BOOLEAN fOutTop    = FALSE;
+	BOOLEAN fOutBottom = FALSE;
 
-  // Checking if screen shows areas outside of the map
-	BOOLEAN fOutLeft   = (gsTLX > sTopLeftWorldX);
-	BOOLEAN fOutRight  = (gsTRX < sTopRightWorldX);
-	BOOLEAN fOutTop    = (gsTLY >= sTopLeftWorldY);            /* top of the screen is above top of the map */
-	BOOLEAN fOutBottom = (gsBLY < sBottomLeftWorldY);          /* bottom of the screen is below bottom if the map */
+	double dOpp;
+	double dAdj;
+	double dAngle;
 
-  int mapHeight = gsBLY - gsTLY;
-  int screenHeight = gsVIEWPORT_END_Y - gsVIEWPORT_START_Y;
+	// Get angles
+	// TOP LEFT CORNER FIRST
+	dOpp = sTopLeftWorldY - gsTLY;
+	dAdj = sTopLeftWorldX - gsTLX;
 
-  int mapWidth = gsTRX - gsTLX;
-  int screenWidth = gsVIEWPORT_END_X - gsVIEWPORT_START_X;
+	dAngle = atan2(dAdj, dOpp);
+	if (dAngle < 0)
+	{
+		fOutLeft = TRUE;
+	}
+	else if (dAngle > PI / 2)
+	{
+		fOutTop = TRUE;
+	}
+
+	// TOP RIGHT CORNER
+	dOpp = sTopRightWorldY - gsTRY;
+	dAdj = gsTRX - sTopRightWorldX;
+
+	dAngle = atan2(dAdj, dOpp);
+	if (dAngle < 0)
+	{
+		fOutRight = TRUE;
+	}
+	else if (dAngle > PI / 2)
+	{
+		fOutTop = TRUE;
+	}
+
+	// BOTTOM LEFT CORNER
+	dOpp = gsBLY - sBottomLeftWorldY;
+	dAdj = sBottomLeftWorldX - gsBLX;
+
+	dAngle = atan2(dAdj, dOpp);
+	if (dAngle < 0)
+	{
+		fOutLeft = TRUE;
+	}
+	else if (dAngle > PI / 2)
+	{
+		fOutBottom = TRUE;
+	}
+
+	// BOTTOM RIGHT CORNER
+	dOpp = gsBRY - sBottomRightWorldY;
+	dAdj = gsBRX - sBottomRightWorldX;
+
+	dAngle = atan2(dAdj, dOpp);
+
+	if (dAngle < 0)
+	{
+		fOutRight = TRUE;
+	}
+	else if (dAngle > PI / 2)
+	{
+		fOutBottom = TRUE;
+	}
 
 	BOOLEAN fScrollGood = FALSE;
 
-	if (!fOutRight && !fOutLeft && !fOutTop && !fOutBottom)
-  {
-    // Nothing goes outside the borders of the map.
-    // Can change render center.
-    fScrollGood = TRUE;
-  }
-  else
-  {
-    // Something is outside the border.
-    // Let's check if we can move horizontally or vertically.
-
-    if((scrollType == ScrollType_Horizontal)
-       && (((sTempRenderCenterX < gsRenderCenterX) && !fOutLeft)                /** moving left */
-           || ((sTempRenderCenterX > gsRenderCenterX) && !fOutRight)))            /** moving right */
-    {
-      // can move
-      fScrollGood = TRUE;
-    }
-
-    if((scrollType == ScrollType_Vertical)
-       && (((sTempRenderCenterY < gsRenderCenterY) && !fOutTop)
-           || ((sTempRenderCenterY > gsRenderCenterY) && !fOutBottom)))
-    {
-      // can move
-      fScrollGood = TRUE;
-    }
-  }
+	if (!fOutRight && !fOutLeft && !fOutTop && !fOutBottom) fScrollGood = TRUE;
 
 	// If in editor, anything goes
 	if (gfEditMode && _KeyDown(SHIFT)) fScrollGood = TRUE;
@@ -2374,43 +2399,63 @@ static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY
 	{
 		if (fForceAdjust)
 		{
-      INT16 newScreenCenterX = sScreenCenterX;
-      INT16 newScreenCenterY = sScreenCenterY;
+			if (fOutTop)
+			{
+				// Adjust screen coordinates on the Y!
+				INT16 sNewScreenX;
+				INT16 sNewScreenY;
+				CorrectRenderCenter(sScreenCenterX, gsTLY + sY_S, &sNewScreenX, &sNewScreenY);
+				INT16 sTempPosX_W;
+				INT16 sTempPosY_W;
+				FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
 
-			if (screenHeight > mapHeight)
-      {
-        // printf("screen height is bigger than map height\n");
-        newScreenCenterY = gsCY;
-      }
-			else if (fOutTop)
-			{
-        newScreenCenterY = gsTLY + sY_S;
-			}
-			else if (fOutBottom)
-			{
-        newScreenCenterY = gsBLY - sY_S - 50;
+				sTempRenderCenterX = sTempPosX_W;
+				sTempRenderCenterY = sTempPosY_W;
+				fScrollGood = TRUE;
 			}
 
-			if (screenWidth > mapWidth)
-      {
-        // printf("screen width is bigger than map width\n");
-        newScreenCenterX = gsCX;
-      }
-			else if (fOutLeft)
+			if (fOutBottom)
 			{
-        newScreenCenterX = gsTLX + sX_S;
-			}
-			else if (fOutRight)
-			{
-        newScreenCenterX = gsTRX - sX_S;
+				// OK, Ajust this since we get rounding errors in our two different calculations.
+				INT16 sNewScreenX;
+				INT16 sNewScreenY;
+				CorrectRenderCenter(sScreenCenterX, gsBLY - sY_S - 50, &sNewScreenX, &sNewScreenY);
+				INT16 sTempPosX_W;
+				INT16 sTempPosY_W;
+				FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+
+				sTempRenderCenterX = sTempPosX_W;
+				sTempRenderCenterY = sTempPosY_W;
+				fScrollGood = TRUE;
 			}
 
-			INT16 sTempPosX_W;
-			INT16 sTempPosY_W;
-      FromScreenToCellCoordinates(newScreenCenterX, newScreenCenterY, &sTempPosX_W, &sTempPosY_W);
-      sTempRenderCenterX = sTempPosX_W;
-      sTempRenderCenterY = sTempPosY_W;
-      fScrollGood = TRUE;
+			if (fOutLeft)
+			{
+				INT16 sNewScreenX;
+				INT16 sNewScreenY;
+				CorrectRenderCenter(gsTLX + sX_S, sScreenCenterY, &sNewScreenX, &sNewScreenY);
+				INT16 sTempPosX_W;
+				INT16 sTempPosY_W;
+				FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+
+				sTempRenderCenterX = sTempPosX_W;
+				sTempRenderCenterY = sTempPosY_W;
+				fScrollGood = TRUE;
+			}
+
+			if (fOutRight)
+			{
+				INT16 sNewScreenX;
+				INT16 sNewScreenY;
+				CorrectRenderCenter(gsTRX - sX_S, sScreenCenterY, &sNewScreenX, &sNewScreenY);
+				INT16 sTempPosX_W;
+				INT16 sTempPosY_W;
+				FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+
+				sTempRenderCenterX = sTempPosX_W;
+				sTempRenderCenterY = sTempPosY_W;
+				fScrollGood = TRUE;
+			}
 		}
 		else
 		{
@@ -4633,8 +4678,8 @@ static void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16* pSNewX, I
 	sScreenY += 10;
 
 	// Adjust to viewport start!
-	sScreenX -= g_ui.m_tacticalMapCenterX;
-	sScreenY -= g_ui.m_tacticalMapCenterY;
+	sScreenX -= (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
+	sScreenY -= (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
 
 	//Make sure these coordinates are multiples of scroll steps
 	const UINT  speed   = ScrollSpeed();
@@ -4645,8 +4690,8 @@ static void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16* pSNewX, I
 	sScreenY = sScreenY / speed_y * speed_y;
 
 	// Adjust back
-	sScreenX += g_ui.m_tacticalMapCenterX;
-	sScreenY += g_ui.m_tacticalMapCenterY;
+	sScreenX += (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
+	sScreenY += (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
 
 	*pSNewX = sScreenX;
 	*pSNewY = sScreenY;
@@ -5615,8 +5660,8 @@ static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sB
 
 	// STEP THREE - determine starting point in world coords
 	// a) Determine where in screen coords to start rendering
-	gsStartPointX_S = g_ui.m_tacticalMapCenterX - (sLeft - VIEWPORT_XOFFSET_S);
-	gsStartPointY_S = g_ui.m_tacticalMapCenterY - (sTop  - VIEWPORT_YOFFSET_S);
+	gsStartPointX_S = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 - (sLeft - VIEWPORT_XOFFSET_S);
+	gsStartPointY_S = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 - (sTop  - VIEWPORT_YOFFSET_S);
 
 
 	// b) Convert these distances into world distances
@@ -5664,8 +5709,8 @@ static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sB
 
 		// STEP THREE - determine starting point in world coords
 	// a) Determine where in screen coords to start rendering
-	gsLStartPointX_S = g_ui.m_tacticalMapCenterX - (sLeft - LARGER_VIEWPORT_XOFFSET_S);
-	gsLStartPointY_S = g_ui.m_tacticalMapCenterY - (sTop  - LARGER_VIEWPORT_YOFFSET_S);
+	gsLStartPointX_S = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 - (sLeft - LARGER_VIEWPORT_XOFFSET_S);
+	gsLStartPointY_S = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 - (sTop  - LARGER_VIEWPORT_YOFFSET_S);
 
 
 	// b) Convert these distances into world distances

@@ -23,15 +23,14 @@
 #include "VSurface.h"
 #include "MemMan.h"
 #include "Font_Control.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"
 
 #define MAX_MESSAGES_PAGE 18 // max number of messages per page
 
-#define VIEWER_X (155 + STD_SCREEN_X)
-#define VIEWER_Y (70 + 21 + STD_SCREEN_Y)
+#define VIEWER_X 155
+#define VIEWER_Y 70 + 21
 #define MAIL_STRING_SIZE 320
 
 
@@ -89,7 +88,7 @@ SGPVObject* guiEmailWarning;
 #define EMAIL_TOP_BAR_HEIGHT 22
 
 #define MIDDLE_X 0+LAPTOP_SCREEN_UL_X
-#define MIDDLE_Y (72 + EMAIL_TOP_BAR_HEIGHT + STD_SCREEN_Y)
+#define MIDDLE_Y 72 + EMAIL_TOP_BAR_HEIGHT
 #define MIDDLE_WIDTH 19
 
 
@@ -103,7 +102,7 @@ SGPVObject* guiEmailWarning;
 
 #define SUBJECT_X LAPTOP_SCREEN_UL_X+175
 #define SUBJECT_WIDTH					254	//526-245
-#define INDIC_X (128 + STD_SCREEN_X)
+#define INDIC_X 128
 
 #define LINE_WIDTH 592-121
 
@@ -117,8 +116,8 @@ SGPVObject* guiEmailWarning;
 #define MESSAGE_HEADER_X VIEWER_X+4
 
 
-#define EMAIL_WARNING_X (210 + STD_SCREEN_X)
-#define EMAIL_WARNING_Y (140 + STD_SCREEN_Y)
+#define EMAIL_WARNING_X 210
+#define EMAIL_WARNING_Y 140
 #define EMAIL_WARNING_WIDTH 254
 #define EMAIL_WARNING_HEIGHT 138
 
@@ -136,23 +135,23 @@ SGPVObject* guiEmailWarning;
 #define MAX_NUMBER_EMAIL_PAGES 100
 
 #define NEXT_PAGE_X LAPTOP_UL_X + 562
-#define NEXT_PAGE_Y (51 + STD_SCREEN_Y)
+#define NEXT_PAGE_Y 51
 
 #define PREVIOUS_PAGE_X NEXT_PAGE_X - 21
 
-#define ENVELOPE_BOX_X (116 + STD_SCREEN_X)
+#define ENVELOPE_BOX_X 116
 
-#define FROM_BOX_X (166 + STD_SCREEN_X)
+#define FROM_BOX_X 166
 
-#define SUBJECT_BOX_X (276 + STD_SCREEN_X)
+#define SUBJECT_BOX_X 276
 
-#define DATE_BOX_X (530 + STD_SCREEN_X)
+#define DATE_BOX_X 530
 
-#define FROM_BOX_Y (51 + EMAIL_TOP_BAR_HEIGHT + STD_SCREEN_Y)
+#define FROM_BOX_Y 51 + EMAIL_TOP_BAR_HEIGHT
 
 #define EMAIL_TITLE_FONT FONT14ARIAL
-#define EMAIL_TITLE_X (140 + STD_SCREEN_X)
-#define EMAIL_TITLE_Y (33 + STD_SCREEN_Y)
+#define EMAIL_TITLE_X 140
+#define EMAIL_TITLE_Y 33
 #define VIEWER_MESSAGE_BODY_START_Y VIEWER_Y+72
 #define MIN_MESSAGE_HEIGHT_IN_LINES 5
 
@@ -162,8 +161,8 @@ SGPVObject* guiEmailWarning;
 #define INDENT_X_WIDTH ( 544 - 481 )
 
 // the position of the page number being displayed in the email program
-#define PAGE_NUMBER_X (516 + STD_SCREEN_X)
-#define PAGE_NUMBER_Y (58 + STD_SCREEN_Y)
+#define PAGE_NUMBER_X 516
+#define PAGE_NUMBER_Y 58
 
 // defines for location of message 'title'/'headers'
 
@@ -477,7 +476,7 @@ void RenderEmail( void )
   // redraw line dividers
   DrawLineDividers( );
 
-	BltVideoObject(FRAME_BUFFER, guiLaptopBACKGROUND, 0, STD_SCREEN_X + 108, STD_SCREEN_Y + 23);
+	BltVideoObject(FRAME_BUFFER, guiLaptopBACKGROUND, 0, 108, 23);
 
 	ReDisplayBoxes( );
 
@@ -1016,11 +1015,8 @@ static INT32 DisplayEmailMessage(Email* const m)
 		BltVideoObject(FRAME_BUFFER, guiEmailMessage, 1, VIEWER_X, y);
 		y += h;
 	}
-
-  BOOLEAN onlyOnePage = giNumberOfPagesToCurrentEmail <= 2;
-
 	// The bottom piece to the message viewer
-	BltVideoObject(FRAME_BUFFER, guiEmailMessage, onlyOnePage ? 2 : 3, VIEWER_X, y);
+	BltVideoObject(FRAME_BUFFER, guiEmailMessage, giNumberOfPagesToCurrentEmail <= 2 ? 2 : 3, VIEWER_X, y);
 
 	/* Draw body of text. Any particular email can encompass more than one
 	 * "record" in the email file. Draw each record (length is number of records)
@@ -1039,10 +1035,7 @@ static INT32 DisplayEmailMessage(Email* const m)
 		}
 	}
 
-  if(!onlyOnePage)
-  {
-    DisplayNumberOfPagesToThisEmail(by);
-  }
+	DisplayNumberOfPagesToThisEmail(by);
 
 	InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y);
 

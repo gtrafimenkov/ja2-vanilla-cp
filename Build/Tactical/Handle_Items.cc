@@ -65,7 +65,6 @@
 #include "VSurface.h"
 #include "MemMan.h"
 #include "Debug.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"
@@ -2221,8 +2220,8 @@ void RenderTopmostFlashingItems(void)
 		FLOAT dTempY_S;
 		FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-		INT16 sXPos = g_ui.m_tacticalMapCenterX + (INT16)dTempX_S;
-		INT16 sYPos = g_ui.m_tacticalMapCenterY + (INT16)dTempY_S - gpWorldLevelData[wi.sGridNo].sHeight;
+		INT16 sXPos = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (INT16)dTempX_S;
+		INT16 sYPos = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (INT16)dTempY_S - gpWorldLevelData[wi.sGridNo].sHeight;
 
 		// Adjust for offset position on screen
 		sXPos -= gsRenderWorldOffsetX;

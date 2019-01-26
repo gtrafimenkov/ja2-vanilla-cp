@@ -30,7 +30,6 @@
 #include "Video.h"
 #include "VSurface.h"
 #include <SDL.h>
-#include "UILayout.h"
 #include "GameRes.h"
 #include "Logger.h"
 #include "GameState.h"
@@ -592,34 +591,6 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
       params->showDebugMessages = true;
       return true;
     }
-		else if (strcmp(argv[i], "--res") == 0)
-		{
-      if(haveNextParameter)
-      {
-        int width = 0;
-        int height = 0;
-        int readFields = sscanf(argv[++i], "%dx%d", &width, &height);
-        if(readFields != 2)
-        {
-          LOG_ERROR("Invalid value for command-line key '--res'\n");
-          success = FALSE;
-        }
-        else
-        {
-          bool result = g_ui.setScreenSize(width, height);
-          if(!result)
-          {
-            LOG_ERROR("Failed to set screen resolution %d x %d\n", width, height);
-            success = FALSE;
-          }
-        }
-      }
-      else
-      {
-        LOG_ERROR("Missing value for command-line key '--res'\n");
-        success = FALSE;
-      }
-		}
 #ifdef WITH_MODS
     else if (strcmp(argv[i], "--mod") == 0)
     {
@@ -695,8 +666,6 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
       "                NAME is the name of modification, e.g. 'from-russia-with-love'.\n"
       "                See folder mods for possible options\n"
 #endif
-      "\n"
-			"  --res WxH     Screen resolution, e.g. 800x600.  Default value is 640x480\n"
 			"\n"
       "  --gamedir     Directory where the original game resources can be found.\n"
       "                By default the directory where the executable file is located.\n"

@@ -20,7 +20,6 @@
 #include "VSurface.h"
 #include "HImage.h"
 #include "Video.h"
-#include "UILayout.h"
 
 #include "ContentManager.h"
 #include "GameInstance.h"

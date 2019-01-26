@@ -12,7 +12,6 @@
 #include <stdarg.h>
 #include "MemMan.h"
 #include "Debug.h"
-#include "UILayout.h"
 
 #include <vector>
 
@@ -57,7 +56,7 @@ static VIDEO_OVERLAY* gVideoOverlays;
 		if (iter##__next = iter->next, iter->fDisabled) continue; else
 
 
-SGPRect gDirtyClipRect;
+SGPRect gDirtyClipRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 
 static BOOLEAN gfViewportDirty = FALSE;
@@ -300,10 +299,7 @@ void FreeBackgroundRect(BACKGROUND_SAVE* const b)
 
 void FreeBackgroundRectPending(BACKGROUND_SAVE* const b)
 {
-  if(b)
-  {
-    b->fPendingDelete = TRUE;
-  }
+	b->fPendingDelete = TRUE;
 }
 
 
@@ -335,7 +331,6 @@ void FreeBackgroundRectType(BackgroundFlags const uiFlags)
 void InitializeBackgroundRects(void)
 {
 	guiNumBackSaves = 0;
-  gDirtyClipRect.set(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 

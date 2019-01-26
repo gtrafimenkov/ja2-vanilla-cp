@@ -13,7 +13,6 @@
 #include "Render_Dirty.h"
 #include "Video.h"
 #include "MemMan.h"
-#include "UILayout.h"
 
 
 #define		TEXT_POPUP_GAP_BN_LINES						10

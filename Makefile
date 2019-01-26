@@ -152,7 +152,6 @@ endif
 SRCS :=
 SRCS += Build/AniViewScreen.cc
 SRCS += Build/Credits.cc
-SRCS += Build/UILayout.cc
 
 SRCS += Build/Editor/Cursor_Modes.cc
 SRCS += Build/Editor/EditScreen.cc

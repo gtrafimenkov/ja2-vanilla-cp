@@ -42,7 +42,6 @@
 #include "VSurface.h"
 #include "FileMan.h"
 #include "Campaign_Init.h"
-#include "UILayout.h"
 
 #if defined JA2BETAVERSION
 #include "Soldier_Init_List.h"
@@ -84,8 +83,8 @@
 
 #define		SLG_SAVELOCATION_WIDTH							605
 #define		SLG_SAVELOCATION_HEIGHT							30//46
-#define		SLG_FIRST_SAVED_SPOT_X							(STD_SCREEN_X + 17)
-#define		SLG_FIRST_SAVED_SPOT_Y							(STD_SCREEN_Y + 49)
+#define		SLG_FIRST_SAVED_SPOT_X							17
+#define		SLG_FIRST_SAVED_SPOT_Y							49
 #define		SLG_GAP_BETWEEN_LOCATIONS						35//47
 
 
@@ -103,13 +102,13 @@
 #define		SLG_SAVE_GAME_DESC_X								318//320//204
 #define		SLG_SAVE_GAME_DESC_Y								SLG_DATE_OFFSET_Y//SLG_DATE_OFFSET_Y + 7
 
-#define		SLG_TITLE_POS_X											(STD_SCREEN_X)
-#define		SLG_TITLE_POS_Y											(STD_SCREEN_Y)
+#define		SLG_TITLE_POS_X											0
+#define		SLG_TITLE_POS_Y											0
 
-#define SLG_SAVE_CANCEL_POS_X   (226 + STD_SCREEN_X)
-#define SLG_LOAD_CANCEL_POS_X   (329 + STD_SCREEN_X)
-#define SLG_SAVE_LOAD_BTN_POS_X (123 + STD_SCREEN_X)
-#define SLG_BTN_POS_Y           (438 + STD_SCREEN_Y)
+#define SLG_SAVE_CANCEL_POS_X   226//329
+#define SLG_LOAD_CANCEL_POS_X   329
+#define SLG_SAVE_LOAD_BTN_POS_X 123
+#define SLG_BTN_POS_Y           438
 
 #define		SLG_SELECTED_SLOT_GRAPHICS_NUMBER		3
 #define		SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER	2
@@ -539,7 +538,7 @@ static void RenderSaveLoadScreen(void)
 	// If we are going to be instantly leaving the screen, don't draw the numbers
 	if (gfLoadGameUponEntry) return;
 
-	BltVideoObject(FRAME_BUFFER, guiSlgBackGroundImage, 0, STD_SCREEN_X, STD_SCREEN_Y);
+	BltVideoObject(FRAME_BUFFER, guiSlgBackGroundImage, 0, 0, 0);
 
 	// Display the Title
 	UINT16 const gfx = gfSaveGame ? 1 : 0;
@@ -1300,7 +1299,7 @@ static void DisplayOnScreenNumber(BOOLEAN display)
 	// Start at 1 - don't diplay it for the quicksave
 	for (INT8 bLoopNum = 1; bLoopNum < NUM_SAVE_GAMES; ++bLoopNum)
 	{
-		const UINT16 usPosX = STD_SCREEN_X + 6;
+		const UINT16 usPosX = 6;
 		const UINT16 usPosY = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * bLoopNum;
 
 		BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, usPosX, usPosY + SLG_DATE_OFFSET_Y, 10, 10);

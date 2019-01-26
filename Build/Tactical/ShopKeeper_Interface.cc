@@ -59,7 +59,6 @@
 #include "MemMan.h"
 #include "Debug.h"
 #include "Items.h"
-#include "UILayout.h"
 
 #ifdef JA2TESTVERSION
 #	include "Soldier_Create.h"

@@ -11,7 +11,6 @@
 #include "VObject.h"
 #include "Video.h"
 #include "VSurface.h"
-#include "UILayout.h"
 
 
 static ScreenID guiExitScreen;
