@@ -5,7 +5,7 @@
 // Make sure the application has a name
 //
 
-#define APPLICATION_NAME      "Jagged Alliance 2"
+#define APPLICATION_NAME      "Jagged Alliance 2 (Vanilla Experience)"
 
 //
 // Basic defines for the video manager. These represent the starting values
