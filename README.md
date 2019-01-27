@@ -40,7 +40,8 @@ version, you will need to pass `--resversion NAME` key to the executable.  See
 ## Bug reports and pull requests
 
 Bug reports are welcome: please file an issue.  Bugs of the original game will probably not
-be fixed though.
+be fixed though because the goal of the project is to provide the vanilla experience and
+it's very easy to introduce new bugs.
 
 Pull requests with bug fixes are welcome.  Pull requests with new features and modifications
 are not welcome because the goal of the project is to provide the vanilla experience.
