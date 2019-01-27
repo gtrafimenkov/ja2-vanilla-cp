@@ -46,6 +46,10 @@ it's very easy to introduce new bugs.
 Pull requests with bug fixes are welcome.  Pull requests with new features and modifications
 are not welcome because the goal of the project is to provide the vanilla experience.
 
+## Other projects
+
+- [ja2-stracciatella](https://github.com/ja2-stracciatella/ja2-stracciatella)
+
 ## License
 
 Original Jagged Alliance source codes were released by Strategy First Inc. in
