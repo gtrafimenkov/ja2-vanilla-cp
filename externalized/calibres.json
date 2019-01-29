@@ -1,7 +1,7 @@
 [
     {
         "index": 0,
-        "internalName": "NOAMMO",
+        "description": "NOAMMO",
         "burstSoundString": "",
         "showInHelpText": false,
         "monsterWeapon": false,
@@ -9,7 +9,7 @@
     },
     {
         "index": 1,
-        "internalName": "AMMO38",
+        "description": "AMMO38",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -17,7 +17,7 @@
     },
     {
         "index": 2,
-        "internalName": "AMMO9",
+        "description": "AMMO9",
         "burstSoundString": "9mm burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -25,7 +25,7 @@
     },
     {
         "index": 3,
-        "internalName": "AMMO45",
+        "description": "AMMO45",
         "burstSoundString": "45 caliber burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -33,7 +33,7 @@
     },
     {
         "index": 4,
-        "internalName": "AMMO357",
+        "description": "AMMO357",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -41,7 +41,7 @@
     },
     {
         "index": 5,
-        "internalName": "AMMO12G",
+        "description": "AMMO12G",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -49,7 +49,7 @@
     },
     {
         "index": 6,
-        "internalName": "AMMOCAWS",
+        "description": "AMMOCAWS",
         "burstSoundString": "shotgun burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -57,7 +57,7 @@
     },
     {
         "index": 7,
-        "internalName": "AMMO545",
+        "description": "AMMO545",
         "burstSoundString": "5,45 burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -65,7 +65,7 @@
     },
     {
         "index": 8,
-        "internalName": "AMMO556",
+        "description": "AMMO556",
         "burstSoundString": "5,56 burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -73,7 +73,7 @@
     },
     {
         "index": 9,
-        "internalName": "AMMO762N",
+        "description": "AMMO762N",
         "burstSoundString": "7,62 nato burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -81,7 +81,7 @@
     },
     {
         "index": 10,
-        "internalName": "AMMO762W",
+        "description": "AMMO762W",
         "burstSoundString": "7,62 wp burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -89,7 +89,7 @@
     },
     {
         "index": 11,
-        "internalName": "AMMO47",
+        "description": "AMMO47",
         "burstSoundString": "4,7 caliber burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -97,7 +97,7 @@
     },
     {
         "index": 12,
-        "internalName": "AMMO57",
+        "description": "AMMO57",
         "burstSoundString": "5,7 burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -105,7 +105,7 @@
     },
     {
         "index": 13,
-        "internalName": "AMMOMONST",
+        "description": "AMMOMONST",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": true,
@@ -113,7 +113,7 @@
     },
     {
         "index": 14,
-        "internalName": "AMMOROCKET",
+        "description": "AMMOROCKET",
         "burstSoundString": "rl automatic ",
         "showInHelpText": false,
         "monsterWeapon": false,
@@ -121,7 +121,7 @@
     },
     {
         "index": 15,
-        "internalName": "AMMODART",
+        "description": "AMMODART",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -129,7 +129,7 @@
     },
     {
         "index": 16,
-        "internalName": "AMMOFLAME",
+        "description": "AMMOFLAME",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
