@@ -27,7 +27,6 @@ struct MagazineModel : ItemModel
   virtual void serializeTo(JsonObject &obj) const;
 
   static MagazineModel* deserialize(JsonObjectReader &obj,
-                                    const std::vector<const CalibreModel*> &calibreMap,
                                     const std::map<std::string, const AmmoTypeModel*> &ammoTypeMap);
 
 

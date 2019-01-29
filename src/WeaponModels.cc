@@ -11,6 +11,9 @@
 #include "slog/slog.h"
 #define TAG "Weapons"
 
+#include "ContentManager.h"
+#include "GameInstance.h"
+
 // exact gun types
 // used as an index in WeaponType[] string array
 enum
@@ -91,8 +94,7 @@ void WeaponModel::serializeAttachments(JsonObject &obj) const
   obj.addOptionalBool("attachment_GunBarrelExtender",        attachGunBarrelExtender);
 }
 
-WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
-                                      const std::vector<const CalibreModel*> &calibreMap)
+WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
 {
   WeaponModel *wep = NULL;
   int itemIndex = obj.GetInt("itemIndex");
@@ -106,7 +108,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "PISTOL"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -138,7 +140,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "M_PISTOL"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -173,7 +175,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "SMG"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -208,7 +210,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "SN_RIFLE"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -240,7 +242,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "RIFLE"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -272,7 +274,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "ASRIFLE"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -307,7 +309,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "SHOTGUN"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -342,7 +344,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "LMG"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -377,7 +379,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "BLADE"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     // uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -404,7 +406,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "THROWINGBLADE"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     // uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -431,7 +433,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "PUNCHWEAPON"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     // uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -457,7 +459,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "LAUNCHER"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -486,7 +488,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "LAW"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -515,7 +517,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "CANNON"))
   {
-    // const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    // const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");
@@ -544,7 +546,7 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj,
   }
   else if(!strcmp(internalType, "MONSTSPIT"))
   {
-    const CalibreModel *calibre = getCalibre(obj.GetInt("calibreId"), calibreMap);
+    const CalibreModel *calibre = GCM->getCalibre(obj.GetInt("calibreId"));
     // uint8_t  ReadyTime       = obj.GetInt("ubReadyTime");
     uint8_t  ShotsPer4Turns  = obj.GetInt("ubShotsPer4Turns");
     // uint8_t  ShotsPerBurst   = obj.GetInt("ubShotsPerBurst");

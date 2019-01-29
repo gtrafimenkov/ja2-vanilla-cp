@@ -35,5 +35,3 @@ struct CalibreModel
   bool monsterWeapon;
   int silencerSound;
 };
-
-const CalibreModel* getCalibre(uint16_t index, const std::vector<const CalibreModel*> &calibreMap);

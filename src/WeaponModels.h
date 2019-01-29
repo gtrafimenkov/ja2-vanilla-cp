@@ -31,8 +31,7 @@ struct WeaponModel : ItemModel
 
   virtual void serializeTo(JsonObject &obj) const;
 
-  static WeaponModel* deserialize(JsonObjectReader &obj,
-                                  const std::vector<const CalibreModel*> &calibreMap);
+  static WeaponModel* deserialize(JsonObjectReader &obj);
 
   virtual const WeaponModel* asWeapon() const   { return this; }
 

@@ -51,12 +51,11 @@ void MagazineModel::serializeTo(JsonObject &obj) const
 
 MagazineModel* MagazineModel::deserialize(
   JsonObjectReader &obj,
-  const std::vector<const CalibreModel*> &calibreMap,
   const std::map<std::string, const AmmoTypeModel*> &ammoTypeMap)
 {
   int itemIndex                 = obj.GetInt("itemIndex");
   const char *internalName      = obj.GetString("internalName");
-  const CalibreModel *calibre   = getCalibre(obj.GetInt("calibreId"), calibreMap);
+  const CalibreModel *calibre   = GCM->getCalibre(obj.GetInt("calibreId"));
   uint16_t capacity             = obj.GetInt("capacity");
   const AmmoTypeModel *ammoType = getAmmoType(obj.GetString("ammoType"), ammoTypeMap);
   bool dontUseAsDefaultMagazine = obj.getOptionalBool("dontUseAsDefaultMagazine");

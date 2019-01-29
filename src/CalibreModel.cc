@@ -55,12 +55,3 @@ const CalibreModel* CalibreModel::getNoCalibreObject()
   static CalibreModel noCalibre(NOAMMO, "", false, false, -1);
   return &noCalibre;
 }
-
-const CalibreModel* getCalibre(uint16_t index, const std::vector<const CalibreModel*> &calibres)
-{
-  const CalibreModel* cm = calibres[index];
-  if(!cm) {
-    throw std::runtime_error(FormattedString("calibre '%d' is not found", index));
-  }
-  return cm;
-}

@@ -572,7 +572,11 @@ const std::vector<const MagazineModel*>& DefaultContentManager::getMagazines() c
 
 const CalibreModel* DefaultContentManager::getCalibre(uint8_t index)
 {
-  return m_calibres[index];
+  const CalibreModel* cm = m_calibres[index];
+  if(!cm) {
+    throw std::runtime_error(FormattedString("calibre '%d' is not found", index));
+  }
+  return cm;
 }
 
 const UTF8String* DefaultContentManager::getCalibreName(uint8_t index) const
@@ -608,7 +612,7 @@ bool DefaultContentManager::loadWeapons()
       for (rapidjson::SizeType i = 0; i < a.Size(); i++)
       {
         JsonObjectReader obj(a[i]);
-        WeaponModel *w = WeaponModel::deserialize(obj, m_calibres);
+        WeaponModel *w = WeaponModel::deserialize(obj);
         SLOGD(TAG, "Loaded weapon %d %s", w->getItemIndex(), w->getInternalName().c_str());
 
         if((w->getItemIndex() < 0) || (w->getItemIndex() > MAX_WEAPONS))
@@ -644,7 +648,7 @@ bool DefaultContentManager::loadMagazines()
       for (rapidjson::SizeType i = 0; i < a.Size(); i++)
       {
         JsonObjectReader obj(a[i]);
-        MagazineModel *mag = MagazineModel::deserialize(obj, m_calibres, m_ammoTypeMap);
+        MagazineModel *mag = MagazineModel::deserialize(obj, m_ammoTypeMap);
         SLOGD(TAG, "Loaded magazine %d %s", mag->getItemIndex(), mag->getInternalName().c_str());
 
         if((mag->getItemIndex() < FIRST_AMMO) || (mag->getItemIndex() > LAST_AMMO))
