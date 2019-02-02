@@ -60,3 +60,13 @@ std::string readOptionalString(JsonObjectReader &obj, const char *fieldName)
   }
   return val;
 }
+
+int readOptionalInt(JsonObjectReader &obj, const char *fieldName)
+{
+  return obj.getOptionalInt(fieldName);
+}
+
+bool readOptionalBool(JsonObjectReader &obj, const char *fieldName)
+{
+  return obj.getOptionalBool(fieldName);
+}

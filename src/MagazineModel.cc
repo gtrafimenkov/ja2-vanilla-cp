@@ -85,6 +85,8 @@ MagazineModel* MagazineModel::deserialize(
     mag->standardReplacement = replacement;
   }
 
+  mag->alwaysSuitableForTrading = readOptionalBool(obj, "alwaysSuitableForTrading");
+
   return mag;
 }
 

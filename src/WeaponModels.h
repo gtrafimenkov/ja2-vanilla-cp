@@ -71,6 +71,7 @@ struct WeaponModel : ItemModel
 	UINT8    ubShotsPer4Turns; // maximum (mechanical) firing rate
 	UINT8    ubShotsPerBurst;
 	UINT8    ubBurstPenalty;   // % penalty per shot after first
+  UINT8    fixedBurstAP;
 	UINT8    ubBulletSpeed;    // bullet's travelling speed
 	UINT8    ubImpact;         // weapon's max damage impact (size & speed)
 	UINT8    ubDeadliness;     // comparative ratings of guns

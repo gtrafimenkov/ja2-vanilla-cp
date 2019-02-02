@@ -26,6 +26,7 @@
 #include "BobbyRMailOrder.h"
 
 #include "ContentManager.h"
+#include "policy/GamePolicy.h"
 #include "GameInstance.h"
 
 
@@ -111,7 +112,7 @@ void BobbyRayPurchaseEventCallback(const UINT8 ubOrderID)
 		usNumberOfItems += purchase->ubNumberPurchased;
 
 		//if any items are AutoMags
-		if (purchase->usItemIndex == AUTOMAG_III)
+		if (purchase->usItemIndex == GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentWeapon)->getItemIndex())
 		{
 			//This shipment is from John Kulba, dont add an email from bobby ray
 			fThisShipmentIsFromJohnKulba = TRUE;
@@ -376,25 +377,25 @@ static void HandleDelayedItemsArrival(UINT32 uiReason)
 			{
 				case 0:
 					// 1 in 10 chance of a badly damaged gas mask
-					CreateItem( GASMASK, (INT8) (20 + Random( 10 )), &Object );
+					CreateItem( GCM->getItemByName(GCM->getGamePolicy()->stolenGoodsReturnItem1)->getItemIndex(), (INT8) (20 + Random( 10 )), &Object );
 					break;
 				case 1:
 				case 2:
 					// 2 in 10 chance of a battered Desert Eagle
-					CreateItem( DESERTEAGLE, (INT8) (40 + Random( 10 )), &Object );
+					CreateItem( GCM->getItemByName(GCM->getGamePolicy()->stolenGoodsReturnItem2)->getItemIndex(), (INT8) (40 + Random( 10 )), &Object );
 					break;
 				case 3:
 				case 4:
 				case 5:
 					// 3 in 10 chance of a stun grenade
-					CreateItem( STUN_GRENADE, (INT8) (70 + Random( 10 )), &Object );
+					CreateItem( GCM->getItemByName(GCM->getGamePolicy()->stolenGoodsReturnItem3)->getItemIndex(), (INT8) (70 + Random( 10 )), &Object );
 					break;
 				case 6:
 				case 7:
 				case 8:
 				case 9:
 					// 4 in 10 chance of two 38s!
-					CreateItems( SW38, (INT8) (90 + Random( 10 )), 2, &Object );
+					CreateItems( GCM->getItemByName(GCM->getGamePolicy()->stolenGoodsReturnItem4)->getItemIndex(), (INT8) (90 + Random( 10 )), 2, &Object );
 					break;
 			}
 			if ( ( gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X ) && ( gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y ) && ( gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z ) )

@@ -518,7 +518,8 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || usItem == G11)
+	const WeaponModel* wep = GCM->getWeapon(usItem);
+	if (wep->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || wep->fixedBurstAP > 0)
 	{
 		zTemp = g_langRes->Message[STR_FAST_BURST];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -527,7 +528,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubMagSize > EXCEPTIONAL_MAGAZINE)
+	if (wep->ubMagSize > EXCEPTIONAL_MAGAZINE)
 	{
 		zTemp = g_langRes->Message[STR_LARGE_AMMO_CAPACITY];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -2473,7 +2474,7 @@ void RenderItemDescriptionBox(void)
 
 		if (w->ubShotsPerBurst > 0)
 		{
-			HighlightIf(w->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || obj.usItem == G11);
+			HighlightIf(w->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || w->fixedBurstAP > 0);
 			swprintf(pStr, lengthof(pStr), L"%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, obj));
 			FindFontRightCoordinates(dx + ids[5].sX + ids[5].sValDx, dy + ids[5].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 			MPrint(usX, usY, pStr);

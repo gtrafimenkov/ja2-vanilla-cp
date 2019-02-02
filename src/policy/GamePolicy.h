@@ -38,6 +38,17 @@ public:
 
   int8_t enemy_weapon_minimal_status;   /**< Minimal status of the enemy weapon (0 - 100). */
 
+  std::string johnCulbaPresentWeapon;
+  std::string johnCulbaPresentAmmo;
+
+  std::string stolenGoodsReturnItem1;
+  std::string stolenGoodsReturnItem2;
+  std::string stolenGoodsReturnItem3;
+  std::string stolenGoodsReturnItem4;
+
+  std::string weaponToShotEliot;
+  std::string tankMachineGun;
+
   ////////////////////////////////////////////////////////////
   //
   ////////////////////////////////////////////////////////////

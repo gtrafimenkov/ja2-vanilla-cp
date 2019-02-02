@@ -25,6 +25,7 @@ ItemModel::ItemModel(uint16_t itemIndex,
   this->bReliability          = 0;
   this->bRepairEase           = 0;
   this->fFlags                = 0;
+  this->alwaysSuitableForTrading = false;
 }
 
 ItemModel::ItemModel(uint16_t   itemIndex,
