@@ -50,7 +50,7 @@ static const FIXEDPT gqStandardWindowBottomHeight = INT32_TO_FIXEDPT(WINDOW_BOTT
 static const FIXEDPT gqStandardWindowTopHeight    = INT32_TO_FIXEDPT(WINDOW_TOP_HEIGHT_UNITS);
 
 
-static const DOUBLE ddShotgunSpread[3][BUCKSHOT_SHOTS][2] =
+static const DOUBLE ddShotgunSpread[2][BUCKSHOT_SHOTS][2] =
 {
 	{
 		// spread of about 2 degrees in all directions
@@ -78,20 +78,6 @@ static const DOUBLE ddShotgunSpread[3][BUCKSHOT_SHOTS][2] =
 		{	-0.032,	 0.0 },
 		{	+0.032,	 0.0 },
 	},
-	{
-		// flamethrower more spread out
-		// Horiz,	 Vert
-		{	 0.0,		 0.0 },
-		{ -0.120,	 0.0 },
-		{ +0.120,	 0.0 },
-		{  0.0,		-0.120},
-		{  0.0,		+0.120},
-		{	-0.080,	-0.080},
-		{ -0.080,	+0.080},
-		{ +0.080,	-0.080},
-		{ +0.080,	+0.080}
-	},
-
 };
 
 static const UINT8 gubTreeSightReduction[ANIM_STAND + 1] =
@@ -3304,11 +3290,6 @@ INT8 FireBulletGivenTarget(SOLDIERTYPE* const pFirer, const FLOAT dEndX, const F
 	else if ( usHandItem == ROCKET_RIFLE || usHandItem == AUTO_ROCKET_RIFLE )
 	{
 		usBulletFlags |= BULLET_FLAG_SMALL_MISSILE;
-	}
-	else if ( usHandItem == FLAMETHROWER )
-	{
-		usBulletFlags |= BULLET_FLAG_FLAME;
-		ubSpreadIndex = 2;
 	}
 
 	ubImpact = GCM->getWeapon( usHandItem )->ubImpact;

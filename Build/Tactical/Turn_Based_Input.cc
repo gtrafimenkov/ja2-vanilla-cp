@@ -1636,14 +1636,6 @@ static void HandleModCtrl(UINT32 const key, UIEventKind* const new_event)
 			}
 			break;
 
-		case 'w':
-			if (CHEATER_CHEAT_LEVEL())
-			{
-				SOLDIERTYPE* const sel = GetSelectedMan();
-				if (sel) CreateItem(FLAMETHROWER, 100, &sel->inv[HANDPOS]);
-			}
-			break;
-
 		case 'z': if (INFORMATION_CHEAT_LEVEL()) ToggleZBuffer(); break;
 
 		case SDLK_PAGEUP:
