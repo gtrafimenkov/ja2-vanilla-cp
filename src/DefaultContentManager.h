@@ -159,7 +159,7 @@ protected:
 
   /** Mapping of calibre names to objects. */
   std::map<std::string, const AmmoTypeModel*> m_ammoTypeMap;
-  std::map<std::string, const CalibreModel*> m_calibreMap;
+
   std::map<std::string, const MagazineModel*> m_magazineMap;
   std::map<std::string, const WeaponModel*> m_weaponMap;
   std::map<std::string, const ItemModel*> m_itemMap;
