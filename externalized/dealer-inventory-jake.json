@@ -2,8 +2,8 @@
         "FIRSTAIDKIT": 4,
         "MEDICKIT": 3,
 
-        "SW38": 1,
-        "CLIP38_6": 5,
+        "GURZA": 1,
+        "CLIP_GURZA": 5,
 
         "JAR": 3,
         "CANTEEN": 2,
@@ -15,7 +15,7 @@
         "COMBAT_KNIFE": 1,
         "THROWING_KNIFE": 1,
         "BRASS_KNUCKLES": 1,
-        "MACHETE": 1,
+        "KATANA": 1,
 
         "BREAK_LIGHT": 5,
 
@@ -31,7 +31,7 @@
         "XRAY_BULB": 1,
 
         "GLOCK_17": 1,
-        "GLOCK_18": 1,
+        "GLOCK_19": 1,
         "BERETTA_92F": 1,
         "BERETTA_93R": 1,
         "BARRACUDA": 1,
