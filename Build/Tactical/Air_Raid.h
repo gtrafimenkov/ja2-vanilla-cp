@@ -42,7 +42,6 @@ enum AIR_RAID_STATES
 
 void HandleAirRaid(void);
 
-BOOLEAN BeginAirRaid(void);
 BOOLEAN InAirRaid(void);
 
 BOOLEAN HandleAirRaidEndTurn(UINT8 ubTeam);

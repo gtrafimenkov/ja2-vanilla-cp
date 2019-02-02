@@ -213,7 +213,6 @@ BOOLEAN ExecuteStrategicEvent( STRATEGICEVENT *pEvent )
 			MakeCivGroupHostileOnNextSectorEntrance( (UINT8)pEvent->uiParam );
 			break;
 		case EVENT_BEGIN_AIR_RAID:
-			BeginAirRaid( );
 			break;
 		case EVENT_MEANWHILE:
 			if( !DelayEventIfBattleInProgress( pEvent ) )
