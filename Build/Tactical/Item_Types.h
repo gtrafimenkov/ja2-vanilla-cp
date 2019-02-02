@@ -253,7 +253,7 @@ enum ITEMDEFINE
 	__ITEM_19,      // M24,
 	__ITEM_20,      // AUG,
 
-	G41,
+	__ITEM_21,
 	__ITEM_22,      // MINI14,
 	__ITEM_23,      // C7,
 	__ITEM_24,      // FAMAS,

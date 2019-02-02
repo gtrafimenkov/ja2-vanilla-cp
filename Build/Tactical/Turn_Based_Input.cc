@@ -1787,6 +1787,7 @@ static void HandleModAlt(UINT32 const key, UIEventKind* const new_event)
 			}
 			break;
 
+/* XXX: I am not sure if this G41 addition is a cheat or not
 		case 'y':
 			if (CHEATER_CHEAT_LEVEL())
 			{
@@ -1801,6 +1802,7 @@ static void HandleModAlt(UINT32 const key, UIEventKind* const new_event)
 				AutoPlaceObject(robot, &o, FALSE);
 			}
 			break;
+*/
 
 		case 'z': // Toggle squad's stealth mode
 		{
