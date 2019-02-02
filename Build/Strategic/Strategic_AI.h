@@ -128,9 +128,4 @@ struct GARRISON_GROUP
 	INT8 bPadding[10]; // XXX HACK000B
 };
 
-#if defined JA2BETAVERSION
-void ValidatePlayersAreInOneGroupOnly(void);
-void SAIReportError(const wchar_t* wErrorString);
-#endif
-
 #endif

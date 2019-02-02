@@ -293,10 +293,6 @@ enum MapEvent
 	MAP_EVENT_CLICK_SECTOR,
 	MAP_EVENT_PLOT_PATH,
 	MAP_EVENT_CANCEL_PATH,
-
-#ifdef JA2BETAVERSION
-	MAP_EVENT_VIEWAI
-#endif
 };
 
 
@@ -2163,10 +2159,6 @@ try
 		ActivatePreBattleEnterSectorAction();
 	}
 
-#ifdef JA2BETAVERSION
-	DebugValidateSoldierData( );
-#endif
-
 	if ( gfRequestGiveSkyriderNewDestination )
 	{
 		RequestGiveSkyriderNewDestination();
@@ -2684,14 +2676,6 @@ static UINT32 HandleMapUI(void)
 				}
 			}
 			break;
-
-//Kris -- added hook so I can access AIView in non-release mode.
-#ifdef JA2BETAVERSION
-		case MAP_EVENT_VIEWAI:
-			SetPendingNewScreen( AIVIEWER_SCREEN );
-			CreateDestroyMapInvButton();
-			break;
-#endif
 	}
 
 
@@ -2956,10 +2940,6 @@ static void HandleModNone(UINT32 const key, MapEvent& new_event)
 		case SDLK_F4:
 		case SDLK_F5:
 		case SDLK_F6: ChangeCharacterListSortMethod(key - SDLK_F1); break;
-
-#if defined JA2BETAVERSION
-		case SDLK_F12: new_event = MAP_EVENT_VIEWAI; break;
-#endif
 
 		case '+':
 		case '=':
@@ -6891,10 +6871,6 @@ void TellPlayerWhyHeCantCompressTime( void )
 	// if we're locked into paused time compression by some event that enforces that
 	if ( PauseStateLocked() )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time, pause state locked (reason %d). OK unless permanent.", guiLockPauseStateLastReasonId );
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) If permanent, take screenshot now, send with *previous* save & describe what happened since.");
-#endif
 	}
 	else if (!gfAtLeastOneMercWasHired)
 	{
@@ -6913,27 +6889,15 @@ void TellPlayerWhyHeCantCompressTime( void )
 	}
 	else if ( gfContractRenewalSquenceOn )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while contract renewal sequence is on.");
-#endif
 	}
 	else if( fDisableMapInterfaceDueToBattle )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while disabled due to battle.");
-#endif
 	}
 	else if( fDisableDueToBattleRoster )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while in battle roster.");
-#endif
 	}
 	else if ( fMapInventoryItem )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while still holding an inventory item.");
-#endif
 	}
 	else if( fShowMapInventoryPool )
 	{

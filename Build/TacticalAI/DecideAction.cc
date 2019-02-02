@@ -391,9 +391,6 @@ static INT8 DecideActionSchedule(SOLDIERTYPE* pSoldier)
 
 					if (pSoldier->usActionData == NOWHERE)
 					{
-#ifdef JA2BETAVERSION
-						ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Civilian could not find path to map edge!" );
-#endif
 						DoneScheduleAction( pSoldier );
 						return( AI_ACTION_NONE );
 					}
