@@ -26,10 +26,6 @@
 #include "Soldier_Tile.h"
 #include "Weapons.h"
 #include "Meanwhile.h"
-#ifdef JA2TESTVERSION
-#	include "Quest_Debug_System.h"
-#	include "QuestText.h"
-#endif
 #include "SkillCheck.h"
 #include "Render_Fun.h"
 #include "StrategicMap.h"
@@ -163,20 +159,11 @@ static NPCQuoteInfo* gpNPCQuoteInfoArray[NUM_PROFILES];
 static NPCQuoteInfo* gpBackupNPCQuoteInfoArray[NUM_PROFILES];
 static NPCQuoteInfo* gpCivQuoteInfoArray[NUM_CIVQUOTE_SECTORS];
 
-#ifdef JA2TESTVERSION
-// Warning: cheap hack approaching
-static BOOLEAN gfTriedToLoadQuoteInfoArray[NUM_PROFILES];
-#endif
-
 INT8 const gbFirstApproachFlags[] = { 0x01, 0x02, 0x04, 0x08 };
 
 
 static UINT8 const gubAlternateNPCFileNumsForQueenMeanwhiles[]  = { 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176 };
 static UINT8 const gubAlternateNPCFileNumsForElliotMeanwhiles[] = { 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196 };
-
-#ifdef JA2BETAVERSION
-static BOOLEAN gfDisplayScreenMsgOnRecordUsage = FALSE;
-#endif
 
 
 static NPCQuoteInfo* ExtractNPCQuoteInfoArrayFromFile(HWFILE const f)
@@ -385,18 +372,6 @@ static NPCQuoteInfo* EnsureQuoteFileLoaded(UINT8 const ubNPC)
 	if (load_file)
 	{
 		q = LoadQuoteFile(ubNPC);
-#ifdef JA2TESTVERSION
-		if (!q)
-		{
-			if (!gfTriedToLoadQuoteInfoArray[ubNPC]) // don't report the error a second time
-			{
-
-				ScreenMsg( MSG_FONT_RED, MSG_DEBUG, L"ERROR: NPC.C - NPC needs NPC file: %d.", ubNPC );
-				gfTriedToLoadQuoteInfoArray[ubNPC] = TRUE;
-			}
-			// error message at this point!
-		}
-#endif
 	}
 
 	return q;
@@ -1153,19 +1128,8 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 
 	pNPCQuoteInfo = &(pNPCQuoteInfoArray[ubQuoteNum]);
 
-	#ifdef JA2TESTVERSION
-		if ( ubNPC != NO_PROFILE && ubMerc != NO_PROFILE )
-		{
-			NpcRecordLoggingInit( ubNPC, ubMerc, ubQuoteNum, ubApproach );
-		}
-	#endif
-
 	if (CHECK_FLAG( pNPCQuoteInfo->fFlags, QUOTE_FLAG_SAID ))
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-			NpcRecordLogging( ubApproach, "Quote Already Said, leaving");
-		#endif
 		// skip quotes already said
 		return( FALSE );
 	}
@@ -1173,11 +1137,6 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	// if the quote is quest-specific, is the player on that quest?
 	if (pNPCQuoteInfo->ubQuest != NO_QUEST)
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-			NpcRecordLogging( ubApproach, "Quest(%d:'%ls') Must be in Progress, status is %d. %s", pNPCQuoteInfo->ubQuest, QuestDescText[ pNPCQuoteInfo->ubQuest ], gubQuest[pNPCQuoteInfo->ubQuest], (gubQuest[pNPCQuoteInfo->ubQuest] != QUESTINPROGRESS) ? "False, return" : "True" );
-		#endif
-
 		if (pNPCQuoteInfo->ubQuest > QUEST_DONE_NUM)
 		{
 			if (gubQuest[pNPCQuoteInfo->ubQuest - QUEST_DONE_NUM] != QUESTDONE)
@@ -1205,25 +1164,14 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	if (pNPCQuoteInfo->usFactMustBeTrue != NO_FACT)
 	{
 		fTrue = CheckFact((Fact)pNPCQuoteInfo->usFactMustBeTrue, ubNPC);
-#ifdef JA2TESTVERSION
-		//Add entry to the quest debug file
-		NpcRecordLogging(ubApproach, "Fact (%d:'%ls') Must be True, status is %s", pNPCQuoteInfo->usFactMustBeTrue, FactDescText[pNPCQuoteInfo->usFactMustBeTrue], fTrue ? "True" : "False, returning");
-#endif
 		if (!fTrue) return FALSE;
 	}
 
 	if (pNPCQuoteInfo->usFactMustBeFalse != NO_FACT)
 	{
 		fTrue = CheckFact((Fact)pNPCQuoteInfo->usFactMustBeFalse, ubNPC);
-
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-			NpcRecordLogging( ubApproach, "Fact(%d:'%ls') Must be False status is  %s", pNPCQuoteInfo->usFactMustBeFalse, FactDescText[pNPCQuoteInfo->usFactMustBeFalse], (fTrue == TRUE) ? "True, return" : "FALSE" );
-		#endif
-
 		if (fTrue == TRUE)
 		{
-
 			return( FALSE );
 		}
 	}
@@ -1233,11 +1181,6 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	// with the other value that is stored!
 	if ( pNPCQuoteInfo->ubApproachRequired || !(ubApproach == APPROACH_FRIENDLY || ubApproach == APPROACH_DIRECT || ubApproach == TRIGGER_NPC ) )
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-		NpcRecordLogging( ubApproach, "Approach Taken(%d) must equal required Approach(%d) = %s", ubApproach, pNPCQuoteInfo->ubApproachRequired, (ubApproach != pNPCQuoteInfo->ubApproachRequired) ? "TRUE, return" : "FALSE" );
-		#endif
-
 		if ( pNPCQuoteInfo->ubApproachRequired == APPROACH_ONE_OF_FOUR_STANDARD )
 		{
 			// friendly to recruit will match
@@ -1262,11 +1205,6 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	// check time constraints on the quotes
 	if (pNPCProfile != NULL && pNPCQuoteInfo->ubFirstDay == MUST_BE_NEW_DAY)
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-			NpcRecordLogging( ubApproach, "Time constraints. Current Day(%d) must <= Day last spoken too (%d) : %s", uiDay, pNPCProfile->ubLastDateSpokenTo, (uiDay <= pNPCProfile->ubLastDateSpokenTo) ? "TRUE, return" : "FALSE" );
-		#endif
-
 		if (uiDay <= pNPCProfile->ubLastDateSpokenTo)
 		{
 			// too early!
@@ -1275,21 +1213,12 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	}
 	else if (uiDay < pNPCQuoteInfo->ubFirstDay)
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-		NpcRecordLogging( ubApproach, "Current Day(%d) is before Required first day(%d) = %s", uiDay, pNPCQuoteInfo->ubFirstDay, (uiDay < pNPCQuoteInfo->ubFirstDay) ? "False, returning" : "True" );
-		#endif
 		// too early!
 		return( FALSE );
 	}
 
 	if (uiDay > pNPCQuoteInfo->ubLastDay && uiDay < 255 )
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-		NpcRecordLogging( ubApproach, "Current Day(%d) is after Required first day(%d) = %s", uiDay, pNPCQuoteInfo->ubFirstDay, (uiDay > pNPCQuoteInfo->ubLastDay) ? "TRUE, returning" : "FALSE" );
-		#endif
-
 		// too late!
 		return( FALSE );
 	}
@@ -1297,23 +1226,11 @@ static UINT8 NPCConsiderQuote(UINT8 const ubNPC, UINT8 const ubMerc, Approach co
 	// check opinion required
 	if ((pNPCQuoteInfo->ubOpinionRequired != IRRELEVANT) && (ubApproach != TRIGGER_NPC))
 	{
-		#ifdef JA2TESTVERSION
-			//Add entry to the quest debug file
-		NpcRecordLogging( ubApproach, "Opinion Required.  Talk Desire (%d), Opinion Required(%d) : %s", ubTalkDesire, pNPCQuoteInfo->ubOpinionRequired, (ubTalkDesire < pNPCQuoteInfo->ubOpinionRequired) ? "False, return" : "False, continue" );
-		#endif
-
 		if (ubTalkDesire < pNPCQuoteInfo->ubOpinionRequired )
 		{
 			return( FALSE );
 		}
 	}
-
-
-
-	#ifdef JA2TESTVERSION
-		//Add entry to the quest debug file
-	NpcRecordLogging( ubApproach, "Return the quote opinion value! = TRUE");
-	#endif
 
 	// Return the quote opinion value!
 	return( TRUE );
@@ -1734,13 +1651,6 @@ void ConverseFull(UINT8 const ubNPC, UINT8 const ubMerc, Approach bApproach, UIN
 			}
 			else
 			{
-#ifdef JA2BETAVERSION
-				if ( gfDisplayScreenMsgOnRecordUsage )
-				{
-					ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, L"Using record %d for %ls", ubRecordNum, gMercProfiles[ubNPC].zNickname);
-				}
-#endif
-
 				// turn before speech?
 				if ( pQuotePtr->sActionData <= -NPC_ACTION_TURN_TO_FACE_NEAREST_MERC )
 				{
@@ -2414,12 +2324,6 @@ BOOLEAN NPCHasUnusedHostileRecord(UINT8 const ubNPC, Approach const approach)
 		if (!NPCConsiderQuote(ubNPC, 0, approach, i, 0, quotes)) continue;
 		NPCQuoteInfo const& q = quotes[i];
 		if (q.usFactMustBeTrue == FACT_NPC_HOSTILE_OR_PISSED_OFF) continue;
-#ifdef JA2BETAVERSION
-		if (!(q.fFlags & QUOTE_FLAG_ERASE_ONCE_SAID))
-		{
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, L"Warning: possible infinite quote loop to follow.");
-		}
-#endif
 		return TRUE;
 	}
 	return FALSE;
@@ -2748,22 +2652,6 @@ BOOLEAN HandleShopKeepHasBeenShutDown( UINT8 ubCharNum )
 
 	return( FALSE );
 }
-
-#ifdef JA2BETAVERSION
-void ToggleNPCRecordDisplay( void )
-{
-	if ( gfDisplayScreenMsgOnRecordUsage )
-	{
-		gfDisplayScreenMsgOnRecordUsage = FALSE;
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, L"Turning record reporting OFF" );
-	}
-	else
-	{
-		gfDisplayScreenMsgOnRecordUsage = TRUE;
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, L"Turning record reporting ON" );
-	}
-}
-#endif
 
 void UpdateDarrelScriptToGoTo( SOLDIERTYPE * pSoldier )
 {

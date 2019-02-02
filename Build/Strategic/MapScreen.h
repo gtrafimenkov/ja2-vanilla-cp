@@ -116,8 +116,4 @@ void MakeDialogueEventEnterMapScreen();
 
 void SetMapCursorItem();
 
-#ifdef JA2TESTVERSION
-void DumpSectorDifficultyInfo(void);
-#endif
-
 #endif

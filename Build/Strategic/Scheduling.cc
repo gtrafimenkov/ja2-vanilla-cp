@@ -164,18 +164,12 @@ void ProcessTacticalSchedule( UINT8 ubScheduleID )
 	pSchedule = GetSchedule( ubScheduleID );
 	if( !pSchedule )
 	{
-		#ifdef JA2BETAVERSION
-			ScreenMsg( FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Schedule ID of %d not found.", ubScheduleID );
-		#endif
 		return;
 	}
 	//Attempt to access the soldier involved
 	SOLDIERTYPE* const pSoldier = pSchedule->soldier;
 	if (pSoldier == NULL)
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Illegal NULL soldier.");
-#endif
 		return;
 	}
 
@@ -188,9 +182,6 @@ void ProcessTacticalSchedule( UINT8 ubScheduleID )
 
 	if ( !pSoldier->bActive )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Soldier isn't active.  Name is %ls.", pSoldier->name);
-#endif
 	}
 
 	//Okay, now we have good pointers to the soldier and the schedule.
@@ -198,9 +189,6 @@ void ProcessTacticalSchedule( UINT8 ubScheduleID )
 	fAutoProcess = FALSE;
 	if( guiCurrentScreen != GAME_SCREEN )
 	{
-		#ifdef JA2TESTVERSION
-			//ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Schedule callback occurred outside of tactical -- Auto processing!" );
-		#endif
 		fAutoProcess = TRUE;
 	}
 	else
@@ -209,18 +197,12 @@ void ProcessTacticalSchedule( UINT8 ubScheduleID )
 		{
 			if( pSchedule->usTime[ iScheduleIndex ] == GetWorldMinutesInDay() )
 			{
-				#ifdef JA2TESTVERSION
-					//ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Processing schedule on time -- AI processing!" );
-				#endif
 				break;
 			}
 		}
 		if( iScheduleIndex == MAX_SCHEDULE_ACTIONS )
 		{
 			fAutoProcess = TRUE;
-			#ifdef JA2TESTVERSION
-				//ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Possible timewarp causing schedule callback to occur late -- Auto processing!" );
-			#endif
 		}
 	}
 	if ( fAutoProcess )

@@ -33,11 +33,6 @@
 #include "ContentManager.h"
 #include "GameInstance.h"
 
-#ifdef JA2BETAVERSION
-#	include "Debug.h"
-#endif
-
-
 extern void PrintDate( void );
 extern void PrintNumberOnTeam( void );
 extern void PrintBalance( void );
@@ -823,11 +818,7 @@ static void SetSizeAndPropertiesOfHelpScreen(void)
 			break;
 
 		default:
-			#ifdef JA2BETAVERSION
-				AssertMsg( 0, "Error in help screen.  DF 0" );
-      #else
         break;
-			#endif
 	}
 
 	//if there are buttons
@@ -924,21 +915,6 @@ static void GetHelpScreenUserInput(void)
 				case SDLK_RIGHT:
 					ChangeToHelpScreenSubPage( (INT8)( gHelpScreen.bCurrentHelpScreenActiveSubPage + 1 ) );
 					break;
-
-#ifdef JA2TESTVERSION
-				//rerender the hepl screen
-				case 'r':
-					gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_ALL;
-					break;
-
-				case 'i':
-					InvalidateScreen();
-					break;
-
-				case 'd':
-				  InvalidateRegion( gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, gHelpScreen.usScreenLocX+gHelpScreen.usScreenWidth, gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight );
-					break;
-#endif
 			}
 		}
 
@@ -997,11 +973,7 @@ static void HelpScreenSpecialExitCode(void)
 			break;
 
 		default:
-			#ifdef JA2BETAVERSION
-				AssertMsg( 0, "Error in help screen.  DF 0" );
-      #else
         break;
-			#endif
 	}
 }
 
@@ -1040,11 +1012,7 @@ static void SpecialHandlerCode(void)
 			break;
 
 		default:
-			#ifdef JA2BETAVERSION
-				AssertMsg( 0, "Error in help screen:  SpecialHandlerCode().  DF 0" );
-      #else
         break;
-			#endif
 	}
 }
 
@@ -1091,12 +1059,7 @@ static UINT16 RenderSpecificHelpScreen(void)
 			break;
 
 		default:
-#if defined JA2BETAVERSION
-			SetFontDestBuffer(FRAME_BUFFER);
-			AssertMsg(0, "Error in help screen:  RenderSpecificHelpScreen().  DF 0");
-#else
 			break;
-#endif
 	}
 
 	SetFontDestBuffer(FRAME_BUFFER);
@@ -1142,11 +1105,7 @@ static void DisplayCurrentScreenTitleAndFooter(void)
 		case HELP_SCREEN_LOAD_GAME:                  break;
 
 		default:
-			#ifdef JA2BETAVERSION
-				AssertMsg( 0, "Error in help screen:  DisplayCurrentScreenTitleAndFooter().  DF 0" );
-      #else
         break;
-			#endif
 	}
 
 //	GetHelpScreenTextPositions( NULL, NULL, &usWidth );

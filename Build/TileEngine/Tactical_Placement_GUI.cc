@@ -97,106 +97,6 @@ static bool gfSouth;
 static bool gfWest;
 
 
-#ifdef JA2BETAVERSION
-
-BOOLEAN gfNorthValid, gfEastValid, gfSouthValid, gfWestValid;
-BOOLEAN gfChangedEntrySide = FALSE;
-
-
-static void FindValidInsertionCode(UINT8* pubStrategicInsertionCode)
-{
-	if( gMapInformation.sNorthGridNo == -1 &&
-			gMapInformation.sEastGridNo == -1 &&
-			gMapInformation.sSouthGridNo == -1 &&
-			gMapInformation.sWestGridNo == -1 )
-	{
-		AssertMsg( 0, "Map has no entry points at all.  Can't generate edge points.  LC:1" );
-	}
-	if( gMapInformation.sNorthGridNo	!= -1 && !gps1stNorthEdgepointArray	||
-			gMapInformation.sEastGridNo		!= -1 && !gps1stEastEdgepointArray		||
-			gMapInformation.sSouthGridNo	!= -1 && !gps1stSouthEdgepointArray	||
-			gMapInformation.sWestGridNo		!= -1 && !gps1stWestEdgepointArray		 )
-	{
-		InvalidateScreen();
-		DrawTextToScreen(L"Map doesn't has entrypoints without corresponding edgepoints. LC:1", 30, 150, 600, FONT10ARIALBOLD, FONT_RED,    FONT_MCOLOR_BLACK, LEFT_JUSTIFIED | MARK_DIRTY);
-		DrawTextToScreen(L"GENERATING MAP EDGEPOINTS!  Please wait...",                         30, 160, 600, FONT10ARIALBOLD, FONT_YELLOW, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED | MARK_DIRTY);
-
-		RefreshScreen();
-		GenerateMapEdgepoints();
-		switch( *pubStrategicInsertionCode )
-		{
-			case INSERTION_CODE_NORTH:
-				if( !gps1stNorthEdgepointArray )
-					AssertMsg( 0, "Map Edgepoint generation failed.  KM : 0 -- send map" );
-				break;
-			case INSERTION_CODE_EAST:
-				if( !gps1stEastEdgepointArray )
-					AssertMsg( 0, "Map Edgepoint generation failed.  KM : 0 -- send map" );
-				break;
-			case INSERTION_CODE_SOUTH:
-				if( !gps1stSouthEdgepointArray )
-					AssertMsg( 0, "Map Edgepoint generation failed.  KM : 0 -- send map" );
-				break;
-			case INSERTION_CODE_WEST:
-				if( !gps1stWestEdgepointArray )
-					AssertMsg( 0, "Map Edgepoint generation failed.  KM : 0 -- send map" );
-				break;
-		}
-		return;
-	}
-	if( gMapInformation.sNorthGridNo != -1 )
-	{
-		*pubStrategicInsertionCode = INSERTION_CODE_NORTH;
-		gfChangedEntrySide = TRUE;
-	}
-	else if( gMapInformation.sEastGridNo != -1 )
-	{
-		*pubStrategicInsertionCode = INSERTION_CODE_EAST;
-		gfChangedEntrySide = TRUE;
-	}
-	else if( gMapInformation.sSouthGridNo != -1 )
-	{
-		*pubStrategicInsertionCode = INSERTION_CODE_SOUTH;
-		gfChangedEntrySide = TRUE;
-	}
-	else if( gMapInformation.sWestGridNo != -1 )
-	{
-		*pubStrategicInsertionCode = INSERTION_CODE_WEST;
-		gfChangedEntrySide = TRUE;
-	}
-	else
-	{
-		AssertMsg( 0, "No maps edgepoints at all! KM, LC : 1" );
-	}
-}
-
-
-static void CheckForValidMapEdge(UINT8* pubStrategicInsertionCode)
-{
-	switch( *pubStrategicInsertionCode )
-	{
-		case INSERTION_CODE_NORTH:
-			if( !gps1stNorthEdgepointArray )
-				FindValidInsertionCode( pubStrategicInsertionCode );
-			break;
-		case INSERTION_CODE_EAST:
-			if( !gps1stEastEdgepointArray )
-				FindValidInsertionCode( pubStrategicInsertionCode );
-			break;
-		case INSERTION_CODE_SOUTH:
-			if( !gps1stSouthEdgepointArray )
-				FindValidInsertionCode( pubStrategicInsertionCode );
-			break;
-		case INSERTION_CODE_WEST:
-			if( !gps1stWestEdgepointArray )
-				FindValidInsertionCode( pubStrategicInsertionCode );
-			break;
-	}
-}
-
-#endif
-
-
 static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t* text, const wchar_t* help)
 {
 	GUIButtonRef const btn = QuickCreateButton(giOverheadButtonImages[idx], 11, y, MSYS_PRIORITY_HIGH, click);
@@ -223,13 +123,6 @@ void InitTacticalPlacementGUI()
 	gfTacticalPlacementGUIDirty  = TRUE;
 	gfValidLocationsChanged      = TRUE;
 	gfTacticalPlacementFirstTime = TRUE;
-#ifdef JA2BETAVERSION
-	gfNorthValid = FALSE;
-	gfEastValid  = FALSE;
-	gfSouthValid = FALSE;
-	gfWestValid  = FALSE;
-	gfChangedEntrySide = FALSE;
-#endif
 
 	GoIntoOverheadMap();
 
@@ -300,9 +193,6 @@ void InitTacticalPlacementGUI()
 		INT32 const y = 361 + i % 2 * 51;
 		MSYS_DefineRegion(&m.region, x, y, x + 54, y + 62, MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
 
-#ifdef JA2BETAVERSION
-		CheckForValidMapEdge(&s->ubStrategicInsertionCode);
-#endif
 		switch (s->ubStrategicInsertionCode)
 		{
 			case INSERTION_CODE_NORTH: gfNorth = true; break;
@@ -514,10 +404,6 @@ void TacticalPlacementHandle()
 		{
 			switch( InputEvent.usParam )
 			{
-#ifdef JA2TESTVERSION
-				case SDLK_ESCAPE: KillTacticalPlacementGUI(); break;
-#endif
-
 				case SDLK_RETURN:
 					if (iTPButtons[DONE_BUTTON]->Enabled())
 					{
@@ -652,13 +538,6 @@ static void KillTacticalPlacementGUI(void)
 
 	PrepareLoadedSector();
 	EnableScrollMessages();
-
-	#ifdef JA2BETAVERSION
-	if( gfChangedEntrySide )
-	{
-		ScreenMsg( FONT_RED, MSG_ERROR, L"Substituted different entry side due to invalid entry points or map edgepoints.  KM, LC : 1" );
-	}
-	#endif
 }
 
 

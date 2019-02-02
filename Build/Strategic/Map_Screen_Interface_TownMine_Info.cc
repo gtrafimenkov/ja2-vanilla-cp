@@ -316,13 +316,6 @@ static void AddTextToMineBox(PopUpBox* const box, INT8 const mine)
 		AddMonoString(box, buf);
 		AddSecondColumnMonoString(box, status.ubMineType == SILVER_MINE ? pwMineStrings[1] : pwMineStrings[2]);
 	}
-
-#ifdef _DEBUG
-	// Dollar amount remaining in mine
-	AddMonoString(box, L"Remaining (DEBUG):");
-	SPrintMoney(buf, GetTotalLeftInMine(mine));
-	AddSecondColumnMonoString(box, buf);
-#endif
 }
 
 

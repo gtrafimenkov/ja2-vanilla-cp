@@ -2129,9 +2129,6 @@ static void RemoveOneOpponent(SOLDIERTYPE* pSoldier)
  if ( pSoldier->bOppCnt < 0 )
  {
 	 DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Oppcnt for %d (%ls) tried to go below 0", pSoldier->ubID, pSoldier->name ) );
-	 #ifdef JA2BETAVERSION
-		ScreenMsg( MSG_FONT_YELLOW, MSG_UI_FEEDBACK,  L"Opponent counter dropped below 0 for person %d (%ls).  Please inform Sir-tech of this, and what has just been happening in the game.", pSoldier->ubID, pSoldier->name );
-	 #endif
 	 pSoldier->bOppCnt = 0;
  }
 
@@ -4499,14 +4496,6 @@ static void TellPlayerAboutNoise(SOLDIERTYPE* const s, SOLDIERTYPE const* const 
 		volume < 12 ? 2 : // 8-11: loud noise
 		3;                // 12+:  very loud noise
 
-#ifdef JA2BETAVERSION
-	if (noise_maker && s->bTeam == OUR_TEAM && s->bTeam == noise_maker->bTeam)
-	{
-		ScreenMsg(MSG_FONT_RED, MSG_ERROR, L"ERROR! TAKE SCREEN CAPTURE AND TELL CAMFIELD NOW!");
-		ScreenMsg(MSG_FONT_RED, MSG_ERROR, L"%ls (%d) heard noise from %ls (%d), noise at %dL%d, type %d", s->name, s->ubID, noise_maker->name, noise_maker->ubID, sGridNo, level, noise_type);
-	}
-#endif
-
 	/* display a message about a noise, e.g. Sidney hears a loud splash from/to?
 	 * the north. */
 	wchar_t const* const direction =
@@ -5178,14 +5167,6 @@ INT8 GetWatchedLocPoints( UINT8 ubID, INT16 sGridNo, INT8 bLevel )
 	bLoc = FindWatchedLoc( ubID, sGridNo, bLevel );
 	if (bLoc != -1)
 	{
-		#ifdef JA2BETAVERSION
-			/*
-			if (gubWatchedLocPoints[ ubID ][ bLoc ] > 1)
-			{
-				ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Soldier %d getting %d points for interrupt in watched location", ubID, gubWatchedLocPoints[ ubID ][ bLoc ] - 1 );
-			}
-			*/
-		#endif
 		// one loc point is worth nothing, so return number minus 1
 
 		// experiment with 1 loc point being worth 1 point

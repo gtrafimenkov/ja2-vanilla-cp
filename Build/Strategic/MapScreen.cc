@@ -97,13 +97,6 @@
 #include "policy/GamePolicy.h"
 
 
-#ifdef JA2TESTVERSION
-#	include "Map_Information.h"
-#	include "Soldier_Create.h"
-#	include "Strategic_Status.h"
-#endif
-
-
 #define MAX_SORT_METHODS					6
 
 // Cursors
@@ -293,10 +286,6 @@ enum MapEvent
 	MAP_EVENT_CLICK_SECTOR,
 	MAP_EVENT_PLOT_PATH,
 	MAP_EVENT_CANCEL_PATH,
-
-#ifdef JA2BETAVERSION
-	MAP_EVENT_VIEWAI
-#endif
 };
 
 
@@ -481,11 +470,6 @@ extern INT16 gsCiviliansEatenByMonsters;
 extern BOOLEAN			gfFadeOutDone;
 
 extern BOOLEAN gfMilitiaPopupCreated;
-
-#ifdef JA2TESTVERSION
-	extern INT16 MSYS_CurrentMX;
-	extern INT16 MSYS_CurrentMY;
-#endif
 
 
 void CancelMapUIMessage( void );
@@ -1996,24 +1980,6 @@ try
 
 	RenderClock();
 
-	#ifdef JA2TESTVERSION
-	if( !gfWorldLoaded )
-	{
-		SetFont( FONT10ARIAL );
-		if( GetJA2Clock() % 1000 < 500 )
-			SetFontForeground( FONT_DKRED );
-		else
-			SetFontForeground( FONT_RED );
-		MPrint(530, 2, L"TESTVERSION MSG");
-		if( GetJA2Clock() % 1000 < 500 )
-			SetFontForeground( FONT_DKYELLOW );
-		else
-			SetFontForeground( FONT_YELLOW );
-		MPrint(530, 12, L"NO WORLD LOADED");
-		InvalidateRegion( 530, 2, 640, 23 );
-	}
-	#endif
-
 	if (fEndShowInventoryFlag)
 	{
 		if (InKeyRingPopup())
@@ -2162,10 +2128,6 @@ try
 		gfHotKeyEnterSector = FALSE;
 		ActivatePreBattleEnterSectorAction();
 	}
-
-#ifdef JA2BETAVERSION
-	DebugValidateSoldierData( );
-#endif
 
 	if ( gfRequestGiveSkyriderNewDestination )
 	{
@@ -2684,14 +2646,6 @@ static UINT32 HandleMapUI(void)
 				}
 			}
 			break;
-
-//Kris -- added hook so I can access AIView in non-release mode.
-#ifdef JA2BETAVERSION
-		case MAP_EVENT_VIEWAI:
-			SetPendingNewScreen( AIVIEWER_SCREEN );
-			CreateDestroyMapInvButton();
-			break;
-#endif
 	}
 
 
@@ -2957,10 +2911,6 @@ static void HandleModNone(UINT32 const key, MapEvent& new_event)
 		case SDLK_F5:
 		case SDLK_F6: ChangeCharacterListSortMethod(key - SDLK_F1); break;
 
-#if defined JA2BETAVERSION
-		case SDLK_F12: new_event = MAP_EVENT_VIEWAI; break;
-#endif
-
 		case '+':
 		case '=':
 			if (!CommonTimeCompressionChecks()) RequestIncreaseInTimeCompression();
@@ -2981,12 +2931,6 @@ static void HandleModNone(UINT32 const key, MapEvent& new_event)
 				if (!CommonTimeCompressionChecks()) RequestToggleTimeCompression();
 			}
 			break;
-
-#if defined JA2TESTVERSION
-		case '?':
-			MapScreenMessage(0, MSG_DEBUG, L"Mouse X,Y = %d,%d", MSYS_CurrentMX, MSYS_CurrentMY);
-			break;
-#endif
 
 		case '0':
 		case '1':
@@ -3096,29 +3040,6 @@ static void HandleModCtrl(UINT const key)
 {
 	switch (key)
 	{
-#if defined JA2TESTVERSION
-		case SDLK_F7:
-			if (SOLDIERTYPE* const s = GetSelectedInfoChar())
-			{
-				OBJECTTYPE& o = s->inv[HANDPOS];
-				if (o.usItem != 0) o.usItem = GUN_BARREL_EXTENDER;
-			}
-			break;
-
-		case '`':
-		{
-			SOLDIERTYPE* const s = GetSelectedInfoChar();
-			if (s) TownMilitiaTrainingCompleted(s, sSelMapX, sSelMapY);
-			break;
-		}
-
-		case '\\': DumpItemsList(); break;
-
-		case '?':
-			MapScreenMessage(0, MSG_DEBUG, L"JA2Clock = %d", GetJA2Clock());
-			break;
-#endif
-
 		case 'a':
 			if (CHEATER_CHEAT_LEVEL())
 			{
@@ -3129,27 +3050,6 @@ static void HandleModCtrl(UINT const key)
 				ScreenMsg(FONT_WHITE, MSG_TESTVERSION, msg);
 			}
 			break;
-
-#if defined JA2TESTVERSION
-		case 'f':
-		{ // Refuel vehicle
-			SOLDIERTYPE* const s = GetSelectedInfoChar();
-			if (s && s->uiStatusFlags & SOLDIER_VEHICLE)
-			{
-				s->sBreathRed = 10000;
-				s->bBreath    = 100;
-				ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, L"Vehicle refueled");
-
-				fTeamPanelDirty = TRUE;
-				fCharacterInfoPanelDirty = TRUE;
-			}
-			break;
-		}
-#endif
-
-#if defined JA2TESTVERSION
-		case 'i': fDisableJustForIan = !fDisableJustForIan; break;
-#endif
 
   case 'i':
     if(GCM->getGamePolicy()->isHotkeyEnabled(UI_Map, HKMOD_CTRL, 'i'))
@@ -3164,22 +3064,6 @@ static void HandleModCtrl(UINT const key)
 			RequestTriggerExitFromMapscreen(MAP_EXIT_TO_LOAD);
 			break;
 
-#if defined JA2TESTVERSION
-		case 'n':
-		{
-			static UINT16 gQuoteNum = 0;
-			// Get Soldier
-			if (giHighLine != -1)
-			{
-				TacticalCharacterDialogue(gCharactersList[giHighLine].merc, gQuoteNum++);
-			}
-			break;
-		}
-
-		// Display player's highest progress percentage
-		case 'p': DumpSectorDifficultyInfo(); break;
-#endif
-
 		case 's':
 			// go to SAVE screen
 			gfSaveGame = TRUE;
@@ -3187,15 +3071,6 @@ static void HandleModCtrl(UINT const key)
 			break;
 
 		case 't': if (CHEATER_CHEAT_LEVEL()) Teleport(); break;
-
-#if defined SGP_VIDEO_DEBUGGING
-		case 'v':
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VObjects:  %d",  guiVObjectSize);
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VSurfaces:  %d", guiVSurfaceSize);
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"SGPVideoDump.txt updated...");
-			PerformVideoInfoDumpIntoFile("SGPVideoDump.txt", TRUE);
-			break;
-#endif
 
 		case 'z':
 			if (CHEATER_CHEAT_LEVEL())
@@ -3215,50 +3090,6 @@ static void HandleModAlt(UINT32 const key)
 {
 	switch (key)
 	{
-#if defined JA2TESTVERSION
-		case SDLK_F7:
-			if (SOLDIERTYPE* const s = GetSelectedInfoChar())
-			{
-				OBJECTTYPE& o = s->inv[HANDPOS];
-				if (o.usItem != NOTHING) o.bStatus[0] = 2;
-			}
-			break;
-
-		case SDLK_F8:
-			// Reduce balance to $500
-			AddTransactionToPlayersBook(PAYMENT_TO_NPC, SKYRIDER, GetWorldTotalMin(), -LaptopSaveInfo.iCurrentBalance + 500);
-			break;
-
-		case SDLK_F9:
-			// Reveal all SAM sites
-			for (UINT8 i = 0; i != NUMBER_OF_SAM_SITES; ++i) SetSAMSiteAsFound(i);
-			break;
-
-		case SDLK_F10:
-		{ // Force selected character asleep (ignores breathmax)
-			SOLDIERTYPE* const s = GetSelectedInfoChar();
-			if (s) PutMercInAsleepState(*s);
-			break;
-		}
-
-#if 0 // XXX was commented out
-		case SDLK_F11:
-			// Make all sectors player controlled
-			ClearMapControlledFlags();
-			fMapPanelDirty = TRUE;
-			break;
-#endif
-#endif
-
-#if defined JA2TESTVERSION
-		case '/':
-		{
-			SOLDIERTYPE* const s = GetSelectedInfoChar();
-			if (s) StatChange(*s, EXPERAMT, 1000, FROM_SUCCESS);
-			break;
-		}
-#endif
-
 		case 'a':
 			if (giHighLine != -1)
 			{
@@ -3278,13 +3109,6 @@ static void HandleModAlt(UINT32 const key)
 			}
 			break;
 
-#if defined JA2TESTVERSION
-		case 'd':
-			// prints out a text file in C:\TEMP telling you how many stat change chances/successes each profile merc got
-			TestDumpStatChanges();
-			break;
-#endif
-
 		case 'f':
 			if (INFORMATION_CHEAT_LEVEL())
 			{ // Toggle Frame Rate Display
@@ -3293,75 +3117,10 @@ static void HandleModAlt(UINT32 const key)
 			}
 			break;
 
-#if defined JA2TESTVERSION
-		case 'h':
-			// set up the helicopter over Omerta (if it's not already set up)
-			SetUpHelicopterForPlayer(9, 1);
-			// raise Drassen loyalty to minimum that will allow Skyrider to fly
-			if (gTownLoyalty[DRASSEN].fStarted && gTownLoyalty[DRASSEN].ubRating < LOYALTY_LOW_THRESHOLD)
-			{
-				SetTownLoyalty(DRASSEN, LOYALTY_LOW_THRESHOLD);
-			}
-			TurnOnAirSpaceMode();
-			break;
-#endif
-
-#if defined JA2TESTVERSION
-#if 0 // XXX was commented out
-		case 'i':
-			if (fAlt)
-			{
-				InitializeMines();
-				fMapPanelDirty = TRUE;
-			}
-			else
-			break;
-#endif
-#endif
-
 		case 'l':
 			// Although we're not actually going anywhere, we must still be in a state where this is permitted
 			if (AllowedToExitFromMapscreenTo(MAP_EXIT_TO_LOAD)) DoQuickLoad();
 			break;
-
-#if defined JA2TESTVERSION
-		case 'n':
-		{
-			static UINT16 gQuoteNum = 0;
-			TacticalCharacterDialogue(GetSelectedInfoChar(), gQuoteNum);
-			gQuoteNum++;
-			break;
-		}
-#endif
-
-#if defined JA2TESTVERSION
-		case 'o':
-			// Toggle if Orta & Tixa have been found
-			fFoundOrta     = !fFoundOrta;
-			fFoundTixa     = !fFoundTixa;
-			fMapPanelDirty = TRUE;
-			break;
-#endif
-
-#if defined JA2TESTVERSION
-		case 'p':
-			if (SOLDIERTYPE* const s = GetSelectedInfoChar())
-			{ // Make the selected character a POW
-				EnemyCapturesPlayerSoldier(s);
-				if (s->bInSector) RemoveSoldierFromTacticalSector(*s);
-				fTeamPanelDirty          = TRUE;
-				fCharacterInfoPanelDirty = TRUE;
-				fMapPanelDirty           = TRUE;
-			}
-			break;
-
-		case 'q':
-			// initialize miners if not already done so (fakes entering Drassen mine first)
-			HandleQuestCodeOnSectorEntry(13, 4, 0);
-			// test miner quote system
-			IssueHeadMinerQuote(1 + Random(MAX_NUMBER_OF_MINES - 1), static_cast<HeadMinerQuote>(1 + Random(2)));
-			break;
-#endif
 
 		case 's':
 			// although we're not actually going anywhere, we must still be in a state where this is permitted
@@ -3381,26 +3140,7 @@ static void HandleModAlt(UINT32 const key)
 			}
 			break;
 
-#if defined JA2TESTVERSION
-		case 'u':
-			// Initialize miners if not already done so (fakes entering Drassen mine first)
-			HandleQuestCodeOnSectorEntry(13, 4, 0);
-			// Test running out
-			for (UINT32 i = 0; i != 10; ++i)
-			{
-				HandleIncomeFromMines();
-			}
-			break;
-#endif
-
 		case 'x': HandleShortCutExitState(); break;
-
-#if defined JA2TESTVERSION
-		case 'y':
-			// Toggle SAM sites disable
-			fSAMSitesDisabledFromAttackingPlayer = !fSAMSitesDisabledFromAttackingPlayer;
-			break;
-#endif
 	}
 }
 
@@ -6891,10 +6631,6 @@ void TellPlayerWhyHeCantCompressTime( void )
 	// if we're locked into paused time compression by some event that enforces that
 	if ( PauseStateLocked() )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time, pause state locked (reason %d). OK unless permanent.", guiLockPauseStateLastReasonId );
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) If permanent, take screenshot now, send with *previous* save & describe what happened since.");
-#endif
 	}
 	else if (!gfAtLeastOneMercWasHired)
 	{
@@ -6913,27 +6649,15 @@ void TellPlayerWhyHeCantCompressTime( void )
 	}
 	else if ( gfContractRenewalSquenceOn )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while contract renewal sequence is on.");
-#endif
 	}
 	else if( fDisableMapInterfaceDueToBattle )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while disabled due to battle.");
-#endif
 	}
 	else if( fDisableDueToBattleRoster )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while in battle roster.");
-#endif
 	}
 	else if ( fMapInventoryItem )
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while still holding an inventory item.");
-#endif
 	}
 	else if( fShowMapInventoryPool )
 	{
@@ -8174,34 +7898,6 @@ static void HandleMilitiaRedistributionClick(void)
 		}
 	}
 }
-
-
-#ifdef JA2TESTVERSION
-void DumpSectorDifficultyInfo(void)
-{
-	// NOTE: This operates on the selected map sector!
-	wchar_t wSectorName[ 128 ];
-
-	ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Playing Difficulty: %ls", gzGIOScreenText[GIO_DIF_LEVEL_TEXT + gGameOptions.ubDifficultyLevel]);
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Highest Progress (0-100) = %d%%", HighestPlayerProgressPercentage() );
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Player Kills = %d", gStrategicStatus.usPlayerKills );
-
-	GetSectorIDString(sSelMapX, sSelMapY, (INT8)iCurrentMapSectorZ, wSectorName, lengthof(wSectorName), TRUE);
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"SECTOR: %ls", wSectorName );
-
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Pyth. Distance From Meduna (0-20) = %d", GetPythDistanceFromPalace( sSelMapX, sSelMapY ) );
-
-	if ( ( gWorldSectorX == sSelMapX ) && ( gWorldSectorY == sSelMapY ) && ( gbWorldSectorZ == iCurrentMapSectorZ ) )
-	{
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Enemy Difficulty Factor (0 to 100) = %d%%", CalcDifficultyModifier( SOLDIER_CLASS_ARMY ) );
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Avg Regular Enemy Exp. Level (2-6) = %d", 2 + ( CalcDifficultyModifier( SOLDIER_CLASS_ARMY ) / 20 ) );
-	}
-	else
-	{
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"--Must load sector to calculate difficulty--" );
-	}
-}
-#endif
 
 
 static void StartChangeSectorArrivalMode(void)

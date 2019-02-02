@@ -70,48 +70,14 @@ INT8 gbDiff[MAX_DIFF_PARMS][5] =
  };
 
 
-#ifdef JA2BETAVERSION
-void DebugAI(const char* szOutput)
-{
-	// Send regular debug msg AND AI debug message
-	FILE *		DebugFile;
-
-	DebugMsg( TOPIC_JA2, DBG_LEVEL_3, szOutput );
-	if ((DebugFile = fopen("aidebug.txt", "a+")) != NULL)
-	{
-		fputs( szOutput, DebugFile );
-		fputs( "\n", DebugFile );
-		fclose( DebugFile );
-	}
-}
-#endif
-
-
 void InitAI(void)
 {
-#ifdef _DEBUG
-	if (gfDisplayCoverValues)
-	{
-		memset( gsCoverValue, 0x7F, sizeof( INT16 ) * WORLD_MAX );
-	}
-#endif
-
 	//If we are not loading a saved game ( if we are, this has already been called )
 	if( !( gTacticalStatus.uiFlags & LOADING_SAVED_GAME ) )
 	{
 		//init the panic system
 		InitPanicSystem();
 	}
-
-#ifdef JA2TESTVERSION
-	// Clear the AI debug txt file to prevent it from getting huge
-	FILE* const DebugFile = fopen("aidebug.txt", "w");
-	if (DebugFile != NULL)
-	{
-		fputs( "\n", DebugFile );
-		fclose( DebugFile );
-	}
-#endif
 }
 
 
@@ -176,9 +142,6 @@ void HandleSoldierAI( SOLDIERTYPE *pSoldier )
 
 		if ( pSoldier->bTeam != gTacticalStatus.ubCurrentTeam )
 		{
-			#ifdef JA2BETAVERSION
-				ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Turning off AI flag for %d because trying to act out of turn", pSoldier->ubID );
-			#endif
 			pSoldier->uiStatusFlags &= ~SOLDIER_UNDERAICONTROL;
 			return;
 		}
@@ -427,31 +390,17 @@ void HandleSoldierAI( SOLDIERTYPE *pSoldier )
 	if (gfTurnBasedAI)
 	{
 		if (GetJA2Clock() - gTacticalStatus.uiTimeSinceMercAIStart > DEADLOCK_DELAY
-#ifdef JA2TESTVERSION
-				&& gUIDeadlockedSoldier == NOBODY
-#endif
 			)
 		{
       // ATE: Display message that deadlock occured...
       LiveMessage( "Breaking Deadlock" );
 
-#ifdef JA2TESTVERSION
-			// display deadlock message
-			gUIDeadlockedSoldier = pSoldier->ubID;
-			DebugAI(String("DEADLOCK soldier %d action %hs ABC %d", pSoldier->ubID, gzActionStr[pSoldier->bAction], gTacticalStatus.ubAttackBusyCount));
-#else
-
-			// If we are in beta version, also report message!
-#ifdef JA2BETAVERSION
-			ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Aborting AI deadlock for %d. Please sent DEBUG.TXT file and SAVE.", pSoldier->ubID );
-#endif
 			// just abort
 			EndAIDeadlock();
 			if ( !(pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL) )
 			{
 				return;
 			}
-#endif
 		}
 	}
 
@@ -1914,9 +1863,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier)
 			ItemHandleResult const iRetCode = HandleItem(pSoldier, pSoldier->usActionData, 0, pSoldier->inv[HANDPOS].usItem, FALSE);
 			if ( iRetCode != ITEM_HANDLE_OK)
 			{
-#ifdef JA2BETAVERSION
-				ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"AI %d got error code %d from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
-#endif
 				CancelAIAction(pSoldier);
 				#ifdef TESTAICONTROL
 					if (gfTurnBasedAI)
@@ -1950,9 +1896,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier)
 				pStructure = FindStructure( sDoorGridNo, STRUCTURE_ANYDOOR );
 				if (pStructure == NULL)
 				{
-#ifdef JA2TESTVERSION
-					ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"AI %d tried to open door it could not then find in %d", pSoldier->ubID, sDoorGridNo );
-#endif
 					CancelAIAction(pSoldier);
 					#ifdef TESTAICONTROL
 						if (gfTurnBasedAI)
@@ -2095,9 +2038,6 @@ void HandleInitialRedAlert(INT8 bTeam)
 {
 	if (!gTacticalStatus.Team[bTeam].bAwareOfOpposition)
  {
-	#ifdef JA2TESTVERSION
-		ScreenMsg( FONT_MCOLOR_RED, MSG_ERROR, L"Enemies on team %d prompted to go on RED ALERT!", bTeam );
-	#endif
  }
 
 	// if there is a stealth mission in progress here, and a panic trigger exists

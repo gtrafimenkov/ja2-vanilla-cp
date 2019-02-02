@@ -1310,10 +1310,6 @@ static vector_3 FindBestForceForTrajectory(INT16 sSrcGridNo, INT16 sGridNo, INT1
 		(*pdMagForce) = dForce;
 	}
 
-#ifdef JA2TESTVERSION
-	//ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Number of integration: %d", iNumChecks );
-#endif
-
 	return( vForce );
 }
 
@@ -1865,11 +1861,6 @@ void CalculateLaunchItemParamsForThrow(SOLDIERTYPE* const pSoldier, INT16 sGridN
 			bMissBy = MIN_MISS_BY;
 		}
 
-		// Adjust position, force, angle
-#ifdef JA2TESTVERSION
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Throw miss by: %d", bMissBy );
-#endif
-
     // Default to max radius...
     bMaxRadius = 5;
 
@@ -2058,10 +2049,6 @@ static BOOLEAN AttemptToCatchObject(REAL_OBJECT* pObject)
 	// OK, get chance to catch
 	// base it on...? CC? Dexterity?
 	ubChanceToCatch = 50 + EffectiveDexterity(pObject->target) / 2;
-
-#ifdef JA2TESTVERSION
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Chance To Catch: %d", ubChanceToCatch );
-#endif
 
 	pObject->fCatchCheckDone = TRUE;
 

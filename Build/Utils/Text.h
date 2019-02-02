@@ -135,11 +135,7 @@ extern FLOAT GetWeightBasedOnMetricOption( UINT32 uiObjectWeight );
 #define SkiMessageBoxText_SIZE 7
 #define zOptionsText_SIZE 9
 
-#ifdef JA2BETAVERSION
-#define zSaveLoadText_SIZE 23
-#else
 #define zSaveLoadText_SIZE 21
-#endif
 
 #define zMarksMapScreenText_SIZE 23
 #define pMilitiaConfirmStrings_SIZE 10
@@ -151,11 +147,7 @@ extern FLOAT GetWeightBasedOnMetricOption( UINT32 uiObjectWeight );
 #define pDeliveryLocationStrings_SIZE 17
 #define pPausedGameText_SIZE 3
 
-#ifdef JA2BETAVERSION
-#define pMessageStrings_SIZE 69
-#else
 #define pMessageStrings_SIZE 68
-#endif
 
 #define pDoctorWarningString_SIZE 2
 #define pMilitiaButtonsHelpText_SIZE 4
@@ -781,9 +773,6 @@ enum
 	MSG_PACKAGE_ARRIVES,
 	MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP,
 	MSG_HISTORY_UPDATED,
-#ifdef JA2BETAVERSION
-	MSG_END_TURN_AUTO_SAVE,
-#endif
 };
 
 

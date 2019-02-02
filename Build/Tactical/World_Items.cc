@@ -23,10 +23,6 @@
 #include "MemMan.h"
 #include "FileMan.h"
 
-#ifdef JA2BETAVERSION
-#	include "Message.h"
-#endif
-
 #include "ContentManager.h"
 #include "GameInstance.h"
 #include "MagazineModel.h"
@@ -197,10 +193,6 @@ INT32 AddItemToWorld(INT16 sGridNo, const OBJECTTYPE* const pObject, const UINT8
 	// ATE: Check if the gridno is OK
 	if (sGridNo == NOWHERE)
 	{
-#ifdef JA2BETAVERSION
-		// Display warning.....
-		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Error: Item %d was given invalid grid location %d. Please report", pObject->usItem, sGridNo);
-#endif
 		return -1;
 	}
 

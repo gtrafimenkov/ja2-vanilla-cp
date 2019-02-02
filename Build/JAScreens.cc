@@ -174,19 +174,7 @@ ScreenID InitScreenHandle(void)
 		const INT32 x = 10;
 		const INT32 y = SCREEN_HEIGHT;
 
-#ifdef JA2BETAVERSION
-		MPrint(x, y - 60, L"(Beta version error reporting enabled)");
-#endif
-
-#ifdef _DEBUG
-		mprintf(x, y - 50, L"%ls: %hs (Debug %hs)", pMessageStrings[MSG_VERSION], g_version_label, g_version_number);
-#else
 		mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
-#endif
-
-#ifdef _DEBUG
-		mprintf(x, y - 40, L"SOLDIERTYPE: %d bytes", sizeof(SOLDIERTYPE));
-#endif
 
 		InvalidateScreen( );
 

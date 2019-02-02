@@ -25,13 +25,6 @@
 #include "Lighting.h"
 #include "Soldier_Macros.h"
 
-#ifdef _DEBUG
-#	include "Font.h"
-#	include "Font_Control.h"
-#	include "Timer_Control.h"
-#	include "Video.h"
-#endif
-
 /* view directions */
 #define DLEFT           0
 #define DRIGHT          1
@@ -45,11 +38,6 @@
 
 UINT8		gubGridNoMarkers[ WORLD_MAX ];
 UINT8		gubGridNoValue			= 254;
-
-
-#ifdef _DEBUG
-UINT8		gubFOVDebugInfoInfo[ WORLD_MAX ];
-#endif
 
 
 UINT8  ViewPath[MAXVIEWPATHS][VIEWPATHLENGTH] ={
@@ -375,16 +363,6 @@ void RevealRoofsAndItems(SOLDIERTYPE* const pSoldier, const BOOLEAN fShowLocator
 	 fRevealItems = TRUE;
 	 fStopRevealingItemsAfterThisTile = FALSE;
 
-#ifdef _DEBUG
-		if (_KeyDown(SDLK_NUMLOCKCLEAR))
-	 {
-		 memset( gubFOVDebugInfoInfo, 0, sizeof( gubFOVDebugInfoInfo ) );
-
-		 SetRenderFlags( RENDER_FLAG_FULL );
-		 RenderWorld( );
-	 }
-#endif
-
    for (markercnt = 0; markercnt < range; markercnt++)
    {
 
@@ -464,31 +442,6 @@ void RevealRoofsAndItems(SOLDIERTYPE* const pSoldier, const BOOLEAN fShowLocator
 		 {
 			 break;
 		 }
-
-#ifdef _DEBUG
-			if (_KeyDown(SDLK_NUMLOCKCLEAR))
-		 {
-			 int cnt = GetJA2Clock( );
-
-			 gubFOVDebugInfoInfo[ marker ] = (UINT8)markercnt;
-
-			 RenderFOVDebug( );
-
-			 SetFontAttributes(LARGEFONT1, FONT_MCOLOR_WHITE);
-			 mprintf( 10,  10 , L"%d", maincnt  );
-			 //mprintf( 10,  20 , L"%d", marker  );
-			 //mprintf( 50,  20 , L"%d", pSoldier->sGridNo  );
-
-			 InvalidateScreen( );
-			 RefreshScreen();
-
-			 do
-			 {
-
-			 } while( ( GetJA2Clock( ) - cnt ) < 250 );
-
-		 }
-#endif
 
 		 // Check if we can get to this gridno from our direction in
 		 ubMovementCost = gubWorldMovementCosts[ marker ][ Dir[ markerDir ] ][ ubLevel ];

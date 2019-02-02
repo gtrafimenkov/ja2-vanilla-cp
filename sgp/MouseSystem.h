@@ -17,9 +17,7 @@
 #include "Types.h"
 
 
-#ifdef JA2
 #define _JA2_RENDER_DIRTY		// Undef this if not using the JA2 Dirty Rectangle System.
-#endif
 
 
 // Mouse Region Flags

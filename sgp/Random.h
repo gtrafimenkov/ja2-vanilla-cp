@@ -10,11 +10,7 @@ extern UINT32 Random( UINT32 uiRange );
 //Chance( 74 ) returns TRUE 74% of the time.  If uiChance >= 100, then it will always return TRUE.
 extern BOOLEAN Chance( UINT32 uiChance );
 
-//Wizardry can use it too, but I'm saving them a K in the meantime...
-//If Wizardry wants it, then removing the #ifdef JA2 will make it work.
-#ifdef JA2
-	#define PRERANDOM_GENERATOR
-#endif
+#define PRERANDOM_GENERATOR
 
 #ifdef PRERANDOM_GENERATOR
 	//Returns a pregenerated random number.
@@ -27,11 +23,6 @@ extern BOOLEAN Chance( UINT32 uiChance );
 	#define MAX_PREGENERATED_NUMS			256
 	extern UINT32 guiPreRandomIndex;
 	extern UINT32 guiPreRandomNums[ MAX_PREGENERATED_NUMS ];
-
-#	ifdef JA2BETAVERSION
-		void CountRandomCalls(BOOLEAN fStart);
-		void GetRandomCalls(UINT32* puiRandoms, UINT32* puiPreRandoms);
-#	endif
 #endif
 
 #endif

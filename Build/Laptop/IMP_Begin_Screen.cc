@@ -29,13 +29,6 @@
 #include "ScreenIDs.h"
 #include "Font_Control.h"
 
-#if defined JA2BETAVERSION && defined _DEBUG
-#	include "Campaign_Types.h"
-#	include "Soldier_Profile.h"
-#	include "Strategic.h"
-#endif
-
-
 #define FULL_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 138
 #define NICK_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 195
 #define MALE_BOX_X 2 + 192 + LAPTOP_SCREEN_UL_X
@@ -747,7 +740,7 @@ static void Print8CharacterOnlyString(void)
 
 static BOOLEAN CheckCharacterInputForEgg(void)
 {
-#if defined JA2BETAVERSION && defined _DEBUG
+/*
 	if (wcscmp(pFullNameString, L"retraC kraM") == 0 && wcscmp(pNickNameString, L"BdyCnt"))
 	{
 		wcscpy(pFullNameString, L"Mark Carter");
@@ -1000,7 +993,6 @@ static BOOLEAN CheckCharacterInputForEgg(void)
 
 	iCurrentImpPage = IMP_FINISH;
 	return TRUE;
-#else
+*/
 	return FALSE;
-#endif
 }

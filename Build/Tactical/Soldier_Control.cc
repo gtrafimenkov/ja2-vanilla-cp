@@ -91,11 +91,6 @@
 #include "Soldier.h"
 #include "WeaponModels.h"
 
-#if defined JA2BETAVERSION
-#	include "Strategic_AI.h"
-#endif
-
-
 #define		PALETTEFILENAME							BINARYDATADIR "/ja2pal.dat"
 
 #define		LOW_MORALE_BATTLE_SND_THREASHOLD	35
@@ -5675,10 +5670,6 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE* const pSoldier, INT16 sLifeDeduct, INT16 sB
 			sChanceToDrop -= 30;
 		}
 
-#ifdef JA2TESTVERSION
-		//ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Chance To Drop Weapon: str: %d Dam: %d Chance: %d", sTestOne, sTestTwo, sChanceToDrop );
-#endif
-
 		if ( Random( 100 ) < (UINT16) sChanceToDrop )
 		{
 			// OK, drop item in main hand...
@@ -8906,89 +8897,6 @@ void CrowsFlyAway(const UINT8 ubTeam)
 		}
 	}
 }
-
-
-#ifdef JA2BETAVERSION
-void DebugValidateSoldierData( )
-{
-	wchar_t sString[ 1024 ];
-	BOOLEAN fProblemDetected = FALSE;
-	static UINT32 uiFrameCount = 0;
-
-
-	// this function is too slow to run every frame, so do the check only every 50 frames
-	if ( uiFrameCount++ < 50 )
-	{
-		return;
-	}
-
-	// reset frame counter
-	uiFrameCount = 0;
-
-	CFOR_EACH_IN_TEAM(s, OUR_TEAM)
-	{
-		// OK, first check for alive people
-		// Don't do this check if we are a vehicle...
-		if (s->bLife > 0 && !(s->uiStatusFlags & SOLDIER_VEHICLE))
-		{
-			// Alive -- now check for proper group IDs
-			if (s->ubGroupID   == 0 &&
-					s->bAssignment != IN_TRANSIT &&
-					s->bAssignment != ASSIGNMENT_POW &&
-					!(s->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)))
-			{
-				// This is bad!
-				swprintf(sString, lengthof(sString), L"Soldier Data Error: Soldier %d is alive but has a zero group ID.", s->ubID);
-				fProblemDetected = TRUE;
-			}
-			else if (s->ubGroupID != 0 && GetGroup(s->ubGroupID) == NULL)
-			{
-				// This is bad!
-				swprintf(sString, lengthof(sString), L"Soldier Data Error: Soldier %d has an invalid group ID of %d.", s->ubID, s->ubGroupID);
-				fProblemDetected = TRUE;
-			}
-		}
-		else
-		{
-			if (s->ubGroupID != 0 && s->uiStatusFlags & SOLDIER_DEAD)
-			{
-				// Dead guys should have 0 group IDs
-				//swprintf(sString, L"GroupID Error: Soldier %d is dead but has a non-zero group ID.", s->ubID);
-				//fProblemDetected = TRUE;
-			}
-		}
-
-		// check for invalid sector data
-		if (s->bAssignment != IN_TRANSIT &&
-				(
-					s->sSectorX <= 0 || 17 <= s->sSectorX ||
-					s->sSectorY <= 0 || 17 <= s->sSectorY ||
-					s->bSectorZ <  0 ||  3 <  s->bSectorZ
-				))
-		{
-			swprintf(sString, lengthof(sString), L"Soldier Data Error: Soldier %d is located at %d/%d/%d.", s->ubID, s->sSectorX, s->sSectorY, s->bSectorZ);
-			fProblemDetected = TRUE;
-		}
-
-		if (fProblemDetected)
-		{
-			SAIReportError(sString);
-/*
-			if ( guiCurrentScreen == MAP_SCREEN )
-				DoMapMessageBox( MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback );
-			else
-				DoMessageBox( MSG_BOX_BASIC_STYLE, sString, GAME_SCREEN, ( UINT8 )MSG_BOX_FLAG_OK, NULL, NULL );
-*/
-			break;
-		}
-	}
-
-
-	// also do this
-	ValidatePlayersAreInOneGroupOnly();
-}
-#endif
-
 
 
 void BeginTyingToFall( SOLDIERTYPE *pSoldier )

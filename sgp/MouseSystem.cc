@@ -65,16 +65,6 @@ static const INT16 gsFastHelpDelay = 600; // In timer ticks
 
 static BOOLEAN gfRefreshUpdate = FALSE;
 
-//Kris:  December 3, 1997
-//Special internal debugging utilities that will ensure that you don't attempt to delete
-//an already deleted region.  It will also ensure that you don't create an identical region
-//that already exists.
-//TO REMOVE ALL DEBUG FUNCTIONALITY:  simply comment out MOUSESYSTEM_DEBUGGING definition
-#if defined _DEBUG && !defined BOUNDS_CHECKER
-#	define MOUSESYSTEM_DEBUGGING
-#endif
-
-
 static void MSYS_TrashRegList(void);
 
 
@@ -123,7 +113,6 @@ void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord)
 		case LEFT_BUTTON_DOWN:  action |= MSYS_DO_LBUTTON_DWN; goto update_buttons;
 
 		case LEFT_BUTTON_UP:
-#ifdef JA2
 			/* Kris:
 			 * Used only if applicable.  This is used for that special button that is
 			 * locked with the mouse press -- just like windows.  When you release the
@@ -133,7 +122,6 @@ void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord)
 			 * NOTE:  It has to be here, because the mouse can be released anywhere
 			 *        regardless of regions, buttons, etc. */
 			ReleaseAnchorMode();
-#endif
 			action |= MSYS_DO_LBUTTON_UP;
 			goto update_buttons;
 
@@ -651,9 +639,7 @@ void MOUSE_REGION::SetFastHelpText(wchar_t const* const text)
   /* ATE: We could be replacing already existing, active text so let's remove
    * the region so it be rebuilt */
 
-#ifdef JA2
 	if (guiCurrentScreen == MAP_SCREEN) return;
-#endif
 
 #ifdef _JA2_RENDER_DIRTY
 	if (uiFlags & MSYS_GOT_BACKGROUND) FreeBackgroundRectPending(FastHelpRect);

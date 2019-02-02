@@ -20,10 +20,8 @@
 #include "Video.h"
 #include "VSurface.h"
 
-#ifndef JA2BETAVERSION
-#	include "GameSettings.h"
-#	include "MessageBoxScreen.h"
-#endif
+#include "GameSettings.h"
+#include "MessageBoxScreen.h"
 
 
 static BOOLEAN gfIntroScreenEntry = TRUE;
@@ -144,14 +142,6 @@ static void EnterIntroScreen(void)
 	// Don't play music....
 	SetMusicMode( MUSIC_NONE );
 
-#ifdef JA2BETAVERSION
-	if( FileExists( "../NoIntro.txt" ) )
-	{
-		PrepareToExitIntroScreen();
-		return;
-	}
-#endif
-
 	SmkInitialize();
 
 	//get the index opf the first video to watch
@@ -230,17 +220,6 @@ static void GetIntroScreenUserInput(void)
 			{
 				case SDLK_ESCAPE: PrepareToExitIntroScreen(); break;
 				case SDLK_SPACE:  SmkCloseFlic(gpSmackFlic);  break;
-
-#ifdef JA2TESTVERSION
-
-				case 'r':
-					break;
-
-				case 'i':
-					InvalidateScreen();
-					break;
-
-#endif
 			}
 		}
 	}
@@ -380,11 +359,7 @@ static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay)
 		else
 		{
 			//do a check
-#ifdef JA2BETAVERSION
-			PrepareToExitIntroScreen();
-#else
 			DoScreenIndependantMessageBox(gzIntroScreen, MSG_BOX_FLAG_OK, CDromEjectionErrorMessageBoxCallBack);
-#endif
 		}
 	}
 }
