@@ -65,3 +65,8 @@ int readOptionalInt(JsonObjectReader &obj, const char *fieldName)
 {
   return obj.getOptionalInt(fieldName);
 }
+
+bool readOptionalBool(JsonObjectReader &obj, const char *fieldName)
+{
+  return obj.getOptionalBool(fieldName);
+}

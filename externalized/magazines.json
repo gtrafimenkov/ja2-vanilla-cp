@@ -11,6 +11,7 @@
         "ubPerPocket": 8,
         "usPrice": 15,
         "ubCoolness": 2,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -26,6 +27,7 @@
         "ubPerPocket": 4,
         "usPrice": 30,
         "ubCoolness": 4,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -101,6 +103,7 @@
         "ubPerPocket": 8,
         "usPrice": 5,
         "ubCoolness": 1,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -146,6 +149,7 @@
         "ubPerPocket": 8,
         "usPrice": 10,
         "ubCoolness": 2,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -161,6 +165,7 @@
         "ubPerPocket": 4,
         "usPrice": 45,
         "ubCoolness": 3,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -236,6 +241,7 @@
         "ubPerPocket": 8,
         "usPrice": 10,
         "ubCoolness": 1,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -251,6 +257,7 @@
         "ubPerPocket": 8,
         "usPrice": 15,
         "ubCoolness": 1,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -344,6 +351,7 @@
         "usPrice": 100,
         "ubCoolness": 4,
         "standardReplacement": "CLIP556_30_HP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
@@ -375,6 +383,7 @@
         "ubPerPocket": 4,
         "usPrice": 100,
         "ubCoolness": 3,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -425,6 +434,7 @@
         "usPrice": 40,
         "ubCoolness": 5,
         "standardReplacement": "CLIP762N_5_HP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
@@ -442,6 +452,7 @@
         "usPrice": 120,
         "ubCoolness": 3,
         "standardReplacement": "CLIP762N_20_HP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
@@ -488,6 +499,7 @@
         "ubPerPocket": 6,
         "usPrice": 20,
         "ubCoolness": 6,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -503,6 +515,7 @@
         "ubPerPocket": 4,
         "usPrice": 80,
         "ubCoolness": 5,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -563,6 +576,7 @@
         "ubPerPocket": 6,
         "usPrice": 20,
         "ubCoolness": 3,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "dontUseAsDefaultMagazine": true
@@ -579,6 +593,7 @@
         "ubPerPocket": 6,
         "usPrice": 20,
         "ubCoolness": 3,
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },

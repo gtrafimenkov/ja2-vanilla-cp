@@ -38,5 +38,4 @@ struct MagazineModel : ItemModel
   const uint16_t capacity;
   const AmmoTypeModel *ammoType;
   const bool dontUseAsDefaultMagazine;
-
 };

@@ -86,6 +86,8 @@ struct ItemModel
   std::string bobbyRayNameOverride;
   std::string bobbyRayDescriptionOverride;
 
+  bool alwaysSuitableForTrading;
+
 protected:
   uint16_t   itemIndex;
   std::string internalName;

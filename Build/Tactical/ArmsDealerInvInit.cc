@@ -79,14 +79,16 @@ static UINT8 GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer, UINT16
 		return(ITEM_SUITABILITY_NONE);
 	}
 
+  const ItemModel* item = GCM->getItem(usItemIndex);
+
 	// items normally not sold at shops are unsuitable
-	if ( GCM->getItem(usItemIndex)->getFlags() & ITEM_NOT_BUYABLE )
+	if ( item->getFlags() & ITEM_NOT_BUYABLE )
 	{
 		return(ITEM_SUITABILITY_NONE);
 	}
 
 
-	ubItemCoolness = GCM->getItem(usItemIndex)->getCoolness();
+	ubItemCoolness = item->getCoolness();
 
 	if (ubItemCoolness == 0)
 	{
@@ -95,24 +97,12 @@ static UINT8 GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer, UINT16
 	}
 
 	// the following staple items are always deemed highly suitable regardless of player's progress:
+  if(item->alwaysSuitableForTrading)
+  {
+    return(ITEM_SUITABILITY_ALWAYS);
+  }
 	switch (usItemIndex)
 	{
-		case CLIP38_6:
-		case CLIP9_15:
-		case CLIP9_30:
-		case CLIP357_6:
-		case CLIP357_9:
-		case CLIP45_7:
-		case CLIP45_30:
-		case CLIP12G_7:
-		case CLIP12G_7_BUCKSHOT:
-		case CLIP545_30_HP:
-		case CLIP556_30_HP:
-		case CLIP762W_10_HP:
-		case CLIP762W_30_HP:
-		case CLIP762N_5_HP:
-		case CLIP762N_20_HP:
-
 		case FIRSTAIDKIT:
 		case MEDICKIT:
 		case TOOLKIT:
