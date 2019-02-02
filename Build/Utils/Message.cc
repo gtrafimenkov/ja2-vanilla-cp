@@ -470,7 +470,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, const wchar_t* pStringA,
 	switch (ubPriority)
 	{
 		case MSG_BETAVERSION:
-#if defined JA2BETAVERSION || defined JA2TESTVERSION
+#if defined JA2TESTVERSION
 			WriteMessageToFile(DestString);
 			usColor = BETAVERSION_COLOR;
 			break;
@@ -794,12 +794,6 @@ void ClearTacticalMessageQueue(void)
 
 static void WriteMessageToFile(const wchar_t* pString)
 {
-#ifdef JA2BETAVERSION
-	FILE* fp = fopen("DebugMessage.txt", "a");
-	if (fp == NULL) return;
-	fprintf(fp, "%ls\n", pString);
-	fclose(fp);
-#endif
 }
 
 

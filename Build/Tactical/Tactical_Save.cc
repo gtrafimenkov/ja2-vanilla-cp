@@ -1176,17 +1176,6 @@ static void SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(INT16 cons
 		MemFree(pTotalSectorList);
 	}
 
-#ifdef JA2BETAVERSION
-	if (check_consistency)
-	{
-		const UINT32 uiReported = GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX, sMapY, bMapZ);
-		if (uiItemCount != uiReported)
-		{
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"SynchronizeItemTempFile()  Error!  Reported %d, should be %d", uiReported, uiItemCount);
-		}
-	}
-#endif
-
 	SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX, sMapY, bMapZ, uiItemCount);
 }
 

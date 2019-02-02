@@ -70,23 +70,6 @@ INT8 gbDiff[MAX_DIFF_PARMS][5] =
  };
 
 
-#ifdef JA2BETAVERSION
-void DebugAI(const char* szOutput)
-{
-	// Send regular debug msg AND AI debug message
-	FILE *		DebugFile;
-
-	DebugMsg( TOPIC_JA2, DBG_LEVEL_3, szOutput );
-	if ((DebugFile = fopen("aidebug.txt", "a+")) != NULL)
-	{
-		fputs( szOutput, DebugFile );
-		fputs( "\n", DebugFile );
-		fclose( DebugFile );
-	}
-}
-#endif
-
-
 void InitAI(void)
 {
 #ifdef _DEBUG
@@ -438,10 +421,6 @@ void HandleSoldierAI( SOLDIERTYPE *pSoldier )
 			DebugAI(String("DEADLOCK soldier %d action %hs ABC %d", pSoldier->ubID, gzActionStr[pSoldier->bAction], gTacticalStatus.ubAttackBusyCount));
 #else
 
-			// If we are in beta version, also report message!
-#ifdef JA2BETAVERSION
-			ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Aborting AI deadlock for %d. Please sent DEBUG.TXT file and SAVE.", pSoldier->ubID );
-#endif
 			// just abort
 			EndAIDeadlock();
 			if ( !(pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL) )
@@ -1911,9 +1890,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier)
 			ItemHandleResult const iRetCode = HandleItem(pSoldier, pSoldier->usActionData, 0, pSoldier->inv[HANDPOS].usItem, FALSE);
 			if ( iRetCode != ITEM_HANDLE_OK)
 			{
-#ifdef JA2BETAVERSION
-				ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"AI %d got error code %d from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
-#endif
 				CancelAIAction(pSoldier);
 				#ifdef TESTAICONTROL
 					if (gfTurnBasedAI)

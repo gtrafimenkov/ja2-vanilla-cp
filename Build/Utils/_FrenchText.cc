@@ -3104,9 +3104,6 @@ static const wchar_t *s_fr_pMessageStrings[pMessageStrings_SIZE] =
 	L"Un colis vient d'arriver à Drassen.",
  	L"%ls devrait arriver au point d'entrée (secteur %ls) en jour %d vers %ls.",		//first %ls is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
 	L"Historique mis à jour.",
-#ifdef JA2BETAVERSION
-	L"Partie enregistrée dans l'emplacement de sauvegarde automatique.",
-#endif
 };
 
 

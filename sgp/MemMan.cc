@@ -52,10 +52,6 @@ static const wchar_t* const gzJA2ScreenNames[] =
 	L"DEMO_EXIT_SCREEN",
 	L"INTRO_SCREEN",
 	L"CREDIT_SCREEN",
-#	ifdef JA2BETAVERSION
-	L"AIVIEWER_SCREEN",
-	L"QUEST_DEBUG_SCREEN",
-#	endif
 };
 #endif
 
@@ -120,23 +116,6 @@ void ShutdownMemoryManager(void)
 		DebugMsg(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, "***** WARNING - WARNING - WARNING *****");
 		DebugMsg(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, "***** WARNING - WARNING - WARNING *****");
 		DebugMsg(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, " ");
-
-#if !defined EXTREME_MEMORY_DEBUGGING && defined JA2BETAVERSION
-		FILE* fp = fopen("MemLeakInfo.txt", "a");
-		if (fp)
-		{
-			fprintf(fp, "\n\n");
-			fprintf(fp, ">>>>> MEMORY LEAK DETECTED!!! <<<<<\n");
-			fprintf(fp, "  %d bytes memory total was allocated\n", guiMemAlloced);
-			fprintf(fp, "- %d bytes memory total was freed\n", guiMemFreed);
-			fprintf(fp, "_______________________________________________\n");
-			fprintf(fp, "%d bytes memory total STILL allocated\n", guiMemTotal);
-			fprintf(fp, "%d memory blocks still allocated\n", MemDebugCounter);
-			fprintf(fp, "guiScreenExitedFrom = %ls\n", gzJA2ScreenNames[gMsgBox.uiExitScreen]);
-			fprintf(fp, "\n\n");
-			fclose(fp);
-		}
-#endif
 	}
 
 	fMemManagerInit = FALSE;

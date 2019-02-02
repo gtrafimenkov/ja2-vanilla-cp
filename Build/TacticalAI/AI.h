@@ -146,11 +146,7 @@ INT16 ClosestKnownOpponent(SOLDIERTYPE *pSoldier, INT16 * psGridNo, INT8 * pbLev
 INT16 ClosestPC(const SOLDIERTYPE* pSoldier, INT16* psDistance);
 BOOLEAN CanAutoBandage( BOOLEAN fDoFullCheck );
 
-#ifdef JA2BETAVERSION
-void DebugAI(const char* szOutput);
-#else
-#	define DebugAI(x) (void)0
-#endif
+#define DebugAI(x) (void)0
 
 INT8	DecideAction(SOLDIERTYPE *pSoldier);
 INT8 DecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK);

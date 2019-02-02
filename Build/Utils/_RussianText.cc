@@ -3164,9 +3164,6 @@ static const wchar_t *s_rus_pMessageStrings[pMessageStrings_SIZE] =
 	L"Груз снаряжения прибыл в Драссен.",
 	L"%ls прибудет в указанное место высадки (сектор %ls) в день %d, примерно в %ls.",		//first %ls is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
 	L"Журнал событий обновлен.",
-#ifdef JA2BETAVERSION
-	L"Игра сохранена в ячейку авто-сохранения.",
-#endif
 };
 
 

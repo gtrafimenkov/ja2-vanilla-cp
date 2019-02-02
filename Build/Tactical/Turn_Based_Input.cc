@@ -100,10 +100,6 @@
 #	include "MapScreen.h"
 #endif
 
-#ifdef JA2BETAVERSION
-#	include "Strategic_AI.h"
-#endif
-
 #ifdef SGP_VIDEO_DEBUGGING
 #	include "VObject.h"
 #endif
@@ -1570,18 +1566,6 @@ static void HandleModShift(UINT32 const key, UIEventKind* const new_event)
 			}
 			break;
 
-#ifdef JA2BETAVERSION
-		case 'l':
-		{
-			gfDisplayStrategicAILogs ^= TRUE;
-			wchar_t const* const msg = gfDisplayStrategicAILogs ?
-				L"Strategic AI Log visually enabled." :
-				L"Strategic AI Log visually disabled.";
-			ScreenMsg(FONT_LTKHAKI, MSG_INTERFACE, msg);
-			break;
-		}
-#endif
-
   case 'n':
     if(GCM->getGamePolicy()->isHotkeyEnabled(UI_Tactical, HKMOD_CTRL, 'n'))
     {
@@ -1649,9 +1633,6 @@ static void HandleModCtrl(UINT32 const key, UIEventKind* const new_event)
 			break;
 
 		case 'h': if (CHEATER_CHEAT_LEVEL()) *new_event = I_TESTHIT;   break;
-#ifdef JA2BETAVERSION
-		case 'j': if (CHEATER_CHEAT_LEVEL()) ToggleNPCRecordDisplay(); break;
-#endif
 		case 'k': if (CHEATER_CHEAT_LEVEL()) GrenadeTest2();           break;
 
 		case 'l':
@@ -2307,12 +2288,6 @@ void GetKeyboardInput(UIEventKind* const puiNewEvent)
 			}
 			else if ( InputEvent.usKeyState & CTRL_DOWN )
       {
-#ifdef JA2BETAVERSION
-				if ( CHEATER_CHEAT_LEVEL( ) )
-				{
-					LeaveTacticalScreen( ANIEDIT_SCREEN );
-				}
-#endif
       }
       else
 			{
@@ -2816,9 +2791,6 @@ static void SwitchHeadGear(bool dayGear)
 
 static void ObliterateSector()
 {
-#ifdef JA2BETAVERSION
-	ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Obliterating Sector!");
-#endif
 	FOR_EACH_NON_PLAYER_SOLDIER(s)
 	{
 		if (s->bNeutral || s->bSide == OUR_TEAM) continue;
