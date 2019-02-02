@@ -72,13 +72,6 @@ INT8 gbDiff[MAX_DIFF_PARMS][5] =
 
 void InitAI(void)
 {
-#ifdef _DEBUG
-	if (gfDisplayCoverValues)
-	{
-		memset( gsCoverValue, 0x7F, sizeof( INT16 ) * WORLD_MAX );
-	}
-#endif
-
 	//If we are not loading a saved game ( if we are, this has already been called )
 	if( !( gTacticalStatus.uiFlags & LOADING_SAVED_GAME ) )
 	{

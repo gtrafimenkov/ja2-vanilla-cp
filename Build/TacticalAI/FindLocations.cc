@@ -20,9 +20,6 @@
 #include "Boxing.h"
 #include "Text.h"
 #include "Structure_Wrap.h"
-#ifdef _DEBUG
-#	include "Video.h"
-#endif
 #include "WorldMan.h"
 #include "StrategicMap.h"
 #include "Environment.h"
@@ -33,15 +30,6 @@
 #include "ContentManager.h"
 #include "GameInstance.h"
 #include "WeaponModels.h"
-
-#ifdef _DEBUG
-	INT16 gsCoverValue[WORLD_MAX];
-	INT16	gsBestCover;
-	#ifndef PATHAI_VISIBLE_DEBUG
-		// NB Change this to true to get visible cover debug -- CJC
-		BOOLEAN gfDisplayCoverValues = FALSE;
-	#endif
-#endif
 
 INT8	gubAIPathCosts[19][19];
 

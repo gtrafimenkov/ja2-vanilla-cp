@@ -128,9 +128,4 @@ void InvalidateWorldRedundency(void);
 
 void SetRenderCenter(INT16 sNewX, INT16 sNewY);
 
-#if defined _DEBUG
-void RenderFOVDebug(void);
-void RenderCoverDebug(void);
-#endif
-
 #endif

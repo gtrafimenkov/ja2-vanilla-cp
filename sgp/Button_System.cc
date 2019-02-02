@@ -37,18 +37,6 @@
 #define GUI_BTN_DUPLICATE_VOBJ 1
 
 
-/* Kris:  December 2, 1997
- * Special internal debugging utilities that will ensure that you don't attempt
- * to delete an already deleted button, or it's images, etc.  It will also
- * ensure that you don't create the same button that already exists.
- * TO REMOVE ALL DEBUG FUNCTIONALITY: simply comment out BUTTONSYSTEM_DEBUGGING
- * definition
- */
-#if defined _DEBUG
-#	define BUTTONSYSTEM_DEBUGGING
-#endif
-
-
 #define FOR_EACH_BUTTON(iter) \
 	FOR_EACH(GUI_BUTTON*, iter, ButtonList) \
 		if (!*iter) continue; else

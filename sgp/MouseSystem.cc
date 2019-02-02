@@ -65,16 +65,6 @@ static const INT16 gsFastHelpDelay = 600; // In timer ticks
 
 static BOOLEAN gfRefreshUpdate = FALSE;
 
-//Kris:  December 3, 1997
-//Special internal debugging utilities that will ensure that you don't attempt to delete
-//an already deleted region.  It will also ensure that you don't create an identical region
-//that already exists.
-//TO REMOVE ALL DEBUG FUNCTIONALITY:  simply comment out MOUSESYSTEM_DEBUGGING definition
-#if defined _DEBUG && !defined BOUNDS_CHECKER
-#	define MOUSESYSTEM_DEBUGGING
-#endif
-
-
 static void MSYS_TrashRegList(void);
 
 
