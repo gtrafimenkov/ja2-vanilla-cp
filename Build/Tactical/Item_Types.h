@@ -235,7 +235,7 @@ enum ITEMDEFINE
 	__ITEM_2,
 	__ITEM_3,       // BERETTA_92F,
 	__ITEM_4,       // BERETTA_93R,
-	SW38,
+	__ITEM_5,
 	__ITEM_6,       // BARRACUDA,
 	__ITEM_7,
 	__ITEM_8,       // M1911,

@@ -47,7 +47,8 @@ void InitArmyGunTypes(void)
 	}
 
 	// avoid auto-drops for the gun class with the crappiest guns in it
-	MarkAllWeaponsOfSameGunClassAsDropped( SW38 );
+  const std::vector<std::vector<const WeaponModel*> > & gunChoice = GCM->getExtendedGunChoice();
+	MarkAllWeaponsOfSameGunClassAsDropped( gunChoice[0][0]->getItemIndex() );
 }
 
 
