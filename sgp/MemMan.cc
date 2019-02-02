@@ -21,7 +21,6 @@
 #endif
 
 
-#ifdef JA2
 #	include "MouseSystem.h"
 #	include "MessageBoxScreen.h"
 
@@ -53,7 +52,6 @@ static const wchar_t* const gzJA2ScreenNames[] =
 	L"INTRO_SCREEN",
 	L"CREDIT_SCREEN",
 };
-#endif
 
 #ifdef EXTREME_MEMORY_DEBUGGING
 struct MEMORY_NODE

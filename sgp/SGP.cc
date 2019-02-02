@@ -59,9 +59,7 @@
 #include "Multi_Language_Graphic_Utils.h"
 
 
-#ifdef JA2
 extern BOOLEAN gfPauseDueToPlayerGamePause;
-#endif
 
 
 #define WITH_MODS (1)
@@ -441,9 +439,7 @@ try
     FastDebugMsg("Initializing Video Surface Manager");
     InitializeVideoSurfaceManager();
 
-#ifdef JA2
     InitJA2SplashScreen();
-#endif
 
     // Initialize Font Manager
     FastDebugMsg("Initializing the Font Manager");
@@ -480,12 +476,10 @@ try
 
     ////////////////////////////////////////////////////////////
 
-#if defined JA2
     if(isEnglishVersion())
     {
       SetIntroType(INTRO_SPLASH);
     }
-#endif
 
     FastDebugMsg("Running Game");
 
