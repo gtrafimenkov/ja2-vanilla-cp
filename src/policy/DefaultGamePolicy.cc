@@ -24,6 +24,11 @@ DefaultGamePolicy::DefaultGamePolicy(rapidjson::Document *json)
 
   johnCulbaPresentWeapon        = (*json)["johnCulbaPresentWeapon"].GetString();
   johnCulbaPresentAmmo          = (*json)["johnCulbaPresentAmmo"].GetString();
+  stolenGoodsReturnItem1        = (*json)["stolenGoodsReturnItem1"].GetString();
+  stolenGoodsReturnItem2        = (*json)["stolenGoodsReturnItem2"].GetString();
+  stolenGoodsReturnItem3        = (*json)["stolenGoodsReturnItem3"].GetString();
+  stolenGoodsReturnItem4        = (*json)["stolenGoodsReturnItem4"].GetString();
+  weaponToShotEliot             = (*json)["weaponToShotEliot"].GetString();
 }
 
 /** Check if a hotkey is enabled. */

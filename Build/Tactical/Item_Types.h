@@ -237,7 +237,7 @@ enum ITEMDEFINE
 	__ITEM_4,       // BERETTA_93R,
 	SW38,
 	__ITEM_6,       // BARRACUDA,
-	DESERTEAGLE,
+	__ITEM_7,
 	__ITEM_8,       // M1911,
 	__ITEM_9,       // MP5K,
 	__ITEM_10,      // MAC10,

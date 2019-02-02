@@ -41,6 +41,13 @@ public:
   std::string johnCulbaPresentWeapon;
   std::string johnCulbaPresentAmmo;
 
+  std::string stolenGoodsReturnItem1;
+  std::string stolenGoodsReturnItem2;
+  std::string stolenGoodsReturnItem3;
+  std::string stolenGoodsReturnItem4;
+
+  std::string weaponToShotEliot;
+
   ////////////////////////////////////////////////////////////
   //
   ////////////////////////////////////////////////////////////

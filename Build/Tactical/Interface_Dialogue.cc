@@ -87,6 +87,7 @@
 #include "GameRes.h"
 
 #include "ContentManager.h"
+#include "policy/GamePolicy.h"
 #include "GameInstance.h"
 
 
@@ -3060,7 +3061,7 @@ action_punch_pc:
 						pSoldier->bAimShotLocation = AIM_SHOT_HEAD;
 
 						// Add gun to inventory.....
-						CreateItem( (UINT16) (DESERTEAGLE), 100, &( pSoldier->inv[ HANDPOS ] ) );
+						CreateItem( GCM->getItemByName(GCM->getGamePolicy()->weaponToShotEliot)->getItemIndex(), 100, &( pSoldier->inv[ HANDPOS ] ) );
 
 						// Make shoot
 						pSoldier->bNextAction = AI_ACTION_FIRE_GUN;
