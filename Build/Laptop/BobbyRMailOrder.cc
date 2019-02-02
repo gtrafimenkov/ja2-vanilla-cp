@@ -32,6 +32,7 @@
 #include "FileMan.h"
 
 #include "ContentManager.h"
+#include "policy/GamePolicy.h"
 #include "GameInstance.h"
 #include "Text_Utils.h"
 
@@ -774,7 +775,6 @@ void DisplayPurchasedItems( BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16
 	UINT16  i;
 	wchar_t	sTemp[20];
 	UINT16	usPosY;
-	UINT32	uiStartLoc=0;
 	UINT32	uiTotal;
 
 	//Output the qty
@@ -1843,7 +1843,7 @@ void AddJohnsGunShipment()
 
 	// want to add two guns (Automags, AUTOMAG_III), and four clips of ammo.
 
-	Temp[0].usItemIndex = AUTOMAG_III;
+	Temp[0].usItemIndex = GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentWeapon)->getItemIndex();
 	Temp[0].ubNumberPurchased = 2;
 	Temp[0].bItemQuality = 100;
 	Temp[0].usBobbyItemIndex = 0;// does this get used anywhere???
@@ -1851,7 +1851,7 @@ void AddJohnsGunShipment()
 
 //	LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[cnt].BobbyRayPurchase[0] = Temp;
 
-	Temp[1].usItemIndex = CLIP762N_5_AP;
+	Temp[1].usItemIndex = GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentAmmo)->getItemIndex();
 	Temp[1].ubNumberPurchased = 2;
 	Temp[1].bItemQuality = 5;
 	Temp[1].usBobbyItemIndex = 0;// does this get used anywhere???

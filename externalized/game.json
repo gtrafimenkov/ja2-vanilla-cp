@@ -15,5 +15,8 @@
         "drop_everything":   false,
         "all_drops_visible": false,
 
+        "johnCulbaPresentWeapon": "AUTOMAG_III",
+        "johnCulbaPresentAmmo": "CLIP762N_5_AP",
+
         "enemy_weapon_minimal_status": 0
 }

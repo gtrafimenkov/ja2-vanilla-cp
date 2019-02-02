@@ -26,6 +26,7 @@
 #include "BobbyRMailOrder.h"
 
 #include "ContentManager.h"
+#include "policy/GamePolicy.h"
 #include "GameInstance.h"
 
 
@@ -111,7 +112,7 @@ void BobbyRayPurchaseEventCallback(const UINT8 ubOrderID)
 		usNumberOfItems += purchase->ubNumberPurchased;
 
 		//if any items are AutoMags
-		if (purchase->usItemIndex == AUTOMAG_III)
+		if (purchase->usItemIndex == GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentWeapon)->getItemIndex())
 		{
 			//This shipment is from John Kulba, dont add an email from bobby ray
 			fThisShipmentIsFromJohnKulba = TRUE;
