@@ -587,9 +587,6 @@ static void SetLastTimePlayerWasInSector(void)
 		UNDERGROUND_SECTORINFO* const u = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 		if (!u)
 		{
-#ifdef JA2TESTVERSION
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Failed to Set the 'uiTimeCurrentSectorWasLastLoaded' for an underground sector");
-#endif
 			return;
 		}
 		u->uiTimeCurrentSectorWasLastLoaded = GetWorldTotalMin();
@@ -608,9 +605,6 @@ static UINT32 GetLastTimePlayerWasInSector(void)
 		UNDERGROUND_SECTORINFO const* const u = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 		if (!u)
 		{
-#ifdef JA2TESTVERSION
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Failed to Get the 'uiTimeCurrentSectorWasLastLoaded' from an underground sector");
-#endif
 			return 0;
 		}
 		return u->uiTimeCurrentSectorWasLastLoaded;

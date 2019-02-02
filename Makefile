@@ -100,7 +100,6 @@ CFLAGS += -Wwrite-strings
 
 CFLAGS += -DJA2
 
-
 ifdef WITH_FIXMES
   CFLAGS += -DWITH_FIXMES
 endif
@@ -111,17 +110,6 @@ endif
 
 ifdef WITH_SOUND_DEBUG
   CFLAGS += -DWITH_SOUND_DEBUG
-endif
-
-ifdef _DEBUG
-  CFLAGS += -D_DEBUG
-  ifndef JA2TESTVERSION
-    JA2TESTVERSION := yes
-  endif
-endif
-
-ifdef JA2TESTVERSION
-  CFLAGS += -DJA2TESTVERSION
 endif
 
 CCFLAGS += $(CFLAGS)

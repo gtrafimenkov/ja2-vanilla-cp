@@ -980,11 +980,7 @@ static void AutoResolveBattleCallback(GUI_BUTTON* btn, INT32 reason)
 	{
 		if( reason & MSYS_CALLBACK_REASON_LBUTTON_UP )
 		{
-			#ifdef JA2TESTVERSION
-				if( _KeyDown( ALT ) )
-			#else
 				if( _KeyDown( ALT ) && CHEATER_CHEAT_LEVEL() )
-			#endif
 				{
 					if( !gfPersistantPBI )
 					{
@@ -1021,11 +1017,7 @@ static void GoToSectorCallback(GUI_BUTTON* btn, INT32 reason)
 	{
 		if( reason & MSYS_CALLBACK_REASON_LBUTTON_UP )
 		{
-			#ifdef JA2TESTVERSION
-				if( _KeyDown( ALT ) )
-			#else
 				if( _KeyDown( ALT ) && CHEATER_CHEAT_LEVEL() )
-			#endif
 				{
 					if( !gfPersistantPBI )
 					{

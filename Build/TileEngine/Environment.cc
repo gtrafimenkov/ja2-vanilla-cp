@@ -467,10 +467,6 @@ void EnvBeginRainStorm( UINT8 ubIntensity )
 	{
 		gfDoLighting = TRUE;
 
-  #ifdef JA2TESTVERSION
-	  ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Starting Rain...."  );
-  #endif
-
 	  if ( ubIntensity == 1 )
 	  {
 		  // Turn on rain storms
@@ -487,11 +483,6 @@ void EnvBeginRainStorm( UINT8 ubIntensity )
 void EnvEndRainStorm( )
 {
 	gfDoLighting = TRUE;
-
-#ifdef JA2TESTVERSION
-	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Ending Rain...."  );
-#endif
-
 	guiEnvWeather	&= (~WEATHER_FORECAST_THUNDERSHOWERS );
 	guiEnvWeather	&= (~WEATHER_FORECAST_SHOWERS );
 }

@@ -1200,10 +1200,6 @@ void LoadSavedGame(UINT8 const save_slot_id)
 
 	SetMusicMode(gMusicModeToPlay);
 
-#ifndef JA2TESTVERSION
-	RESET_CHEAT_LEVEL();
-#endif
-
 	// reset once-per-convo records for everyone in the loaded sector
 	ResetOncePerConvoRecordsForAllNPCsInLoadedSector();
 

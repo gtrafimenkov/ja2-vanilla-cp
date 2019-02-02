@@ -316,10 +316,6 @@ INT16			gUIDisplayActionPointsOffY			= 0;
 INT16			gUIDisplayActionPointsOffX			= 0;
 BOOLEAN		gfUIHandleSelection							= FALSE;
 
-#ifdef JA2TESTVERSION
-UINT8 gUIDeadlockedSoldier = NOBODY;
-#endif
-
 BOOLEAN		gfUIHandleShowMoveGrid					= FALSE;
 UINT16		gsUIHandleShowMoveGridLocation  = NOWHERE ;
 GridNo    gfUIOverItemPoolGridNo          = NOWHERE;

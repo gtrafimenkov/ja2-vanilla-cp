@@ -45,11 +45,6 @@
 
 #define	MIN_FLIGHT_PREP_TIME	6
 
-#ifdef JA2TESTVERSION
-	BOOLEAN	gForceHireMerc=FALSE;
-	void SetFlagToForceHireMerc( BOOLEAN fForceHire );
-#endif
-
 extern BOOLEAN		gfTacticalDoHeliRun;
 extern BOOLEAN		gfFirstHeliRun;
 
@@ -65,9 +60,6 @@ INT8 HireMerc(MERC_HIRE_STRUCT& h)
 	MERCPROFILESTRUCT& p   = GetProfile(pid);
 
 	// If we are to disregard the status of the merc
-#ifdef JA2TESTVERSION
-	if (!gForceHireMerc)
-#endif
 	{
 		switch (p.bMercStatus)
 		{
@@ -412,14 +404,6 @@ void HandleMercArrivesQuotes(SOLDIERTYPE& s)
 		}
 	}
 }
-
-
-#ifdef JA2TESTVERSION
-void SetFlagToForceHireMerc( BOOLEAN fForceHire )
-{
-	gForceHireMerc = fForceHire;
-}
-#endif
 
 
 UINT32 GetMercArrivalTimeOfDay( )

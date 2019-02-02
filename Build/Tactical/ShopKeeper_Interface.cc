@@ -60,10 +60,6 @@
 #include "Debug.h"
 #include "Items.h"
 
-#ifdef JA2TESTVERSION
-#	include "Soldier_Create.h"
-#endif
-
 #include "CalibreModel.h"
 #include "ContentManager.h"
 #include "GameInstance.h"
@@ -387,12 +383,6 @@ static MOUSE_REGION gArmsDealersFaceMouseRegions;
 
 //Region to allow the user to drop items to the ground
 static MOUSE_REGION gArmsDealersDropItemToGroundMouseRegions;
-
-
-#ifdef JA2TESTVERSION
-static BOOLEAN gfTestDisplayDealerCash = FALSE;
-#endif
-
 
 //
 // screen handler functions
@@ -740,9 +730,7 @@ static void EnterShopKeeperInterface(void)
 static BOOLEAN InitShopKeepersFace(UINT8 ubMercID)
 {
 	SOLDIERTYPE* const pSoldier = FindSoldierByProfileID(ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID);
-#if !defined JA2TESTVERSION
 	if (pSoldier == NULL) return FALSE;
-#endif
 
 	FACETYPE& f = InitFace(ubMercID, pSoldier, FACE_BIGFACE);
 	giShopKeeperFaceIndex = &f;
@@ -839,9 +827,6 @@ static void ExitShopKeeperInterface(void)
 }
 
 
-#ifdef JA2TESTVERSION
-static void DisplayAllDealersCash(void);
-#endif
 static void DisplayArmsDealerCurrentInventoryPage(void);
 static void DisplayArmsDealerOfferArea(void);
 static void DisplayPlayersOfferArea(void);
@@ -945,11 +930,6 @@ static void HandleShopKeeperInterface(void)
 
 		gfAlreadySaidTooMuchToRepair = FALSE;
 	}
-
-#ifdef JA2TESTVERSION
-	if ( gfTestDisplayDealerCash )
-		DisplayAllDealersCash();
-#endif
 
 	//if the Ski dirty flag was changed to a lower value, make sure it is set properly
 	if( ubStatusOfSkiRenderDirtyFlag > gubSkiDirtyLevel )
@@ -1084,11 +1064,6 @@ static void GetShopKeeperInterfaceUserInput(void)
 				case SDLK_ESCAPE:
 					// clean exits - does quotes, shuts up shopkeeper, etc.
 					ExitSKIRequested();
-
-#ifdef JA2TESTVERSION
-					//Instant exit - doesn't clean up much
-//					gfSKIScreenExit = TRUE;
-#endif
 					break;
 
 				case 'x':
@@ -1110,50 +1085,10 @@ static void GetShopKeeperInterfaceUserInput(void)
 						gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
 					}
 					break;
-
-#ifdef JA2TESTVERSION
-
-				case 'r':
-					gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
-					break;
-				case 'i':
-					InvalidateScreen();
-					break;
-
-				case 'd':
-					//Test key to toggle the display of the money each dealer has on hand
-					gfTestDisplayDealerCash ^= 1;
-					break;
-
-#endif
 			}
 		}
 	}
 }
-
-
-#ifdef JA2TESTVERSION
-static void DisplayAllDealersCash(void)
-{
-	INT8		bArmsDealer;
-	UINT16	usPosY=0;
-	wchar_t	zTemp[512];
-	UINT8		ubForeColor;
-
-	//loop through all the shopkeeper's and display their money
-	for( bArmsDealer=0; bArmsDealer<NUM_ARMS_DEALERS; bArmsDealer++ )
-	{
-		//Display the shopkeeper's name
-		DrawTextToScreen(gMercProfiles[ArmsDealerInfo[bArmsDealer].ubShopKeeperID].zNickname, 540, usPosY, 0, FONT10ARIAL, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED | MARK_DIRTY);
-
-		//Display the arms dealer cash on hand
-		SPrintMoney(zTemp, gArmsDealerStatus[bArmsDealer].uiArmsDealersCash);
-		ubForeColor = ( UINT8 ) ( ( bArmsDealer == gbSelectedArmsDealerID ) ? SKI_BUTTON_COLOR : SKI_TITLE_COLOR );
-		DrawTextToScreen(zTemp, 590, usPosY, 0, FONT10ARIAL, ubForeColor, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED | MARK_DIRTY);
-		usPosY += 17;
-	}
-}
-#endif
 
 
 static void EnableDisableDealersInventoryPageButtons(void);
@@ -5786,34 +5721,6 @@ BOOLEAN CanMercInteractWithSelectedShopkeeper(const SOLDIERTYPE* pSoldier)
 
 	return( FALSE );
 }
-
-
-
-#ifdef JA2TESTVERSION
-
-void AddShopkeeperToGridNo( UINT8 ubProfile, INT16 sGridNo )
-{
-	SOLDIERCREATE_STRUCT		MercCreateStruct;
-
-	memset( &MercCreateStruct, 0, sizeof( MercCreateStruct ) );
-	MercCreateStruct.bTeam				= CIV_TEAM;
-	MercCreateStruct.ubProfile		= ubProfile;
-	MercCreateStruct.sSectorX			= gWorldSectorX;
-	MercCreateStruct.sSectorY			= gWorldSectorY;
-	MercCreateStruct.bSectorZ			= gbWorldSectorZ;
-	MercCreateStruct.sInsertionGridNo		= sGridNo;
-
-	SOLDIERTYPE* const s = TacticalCreateSoldier(MercCreateStruct);
-	if (s != NULL)
-	{
-		AddSoldierToSector(s);
-
-		// So we can see them!
-		AllTeamsLookForAll(NO_INTERRUPTS);
-	}
-}
-
-#endif
 
 
 static void ExitSKIRequested(void)

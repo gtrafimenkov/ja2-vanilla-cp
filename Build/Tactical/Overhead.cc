@@ -1417,9 +1417,6 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving, BOOLEA
 		}
 		else
 		{
-#ifdef JA2TESTVERSION
-			ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"ERROR: Invalid Direction to approach door. (Soldier loc: %d, dir: %d).", pSoldier->sGridNo, bDirection );
-#endif
 			DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "HandleGotoNewGridNo() Failed: Open door - invalid approach direction");
 
 			HaltGuyFromNewGridNoBecauseOfNoAPs(*pSoldier);
@@ -1432,9 +1429,6 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving, BOOLEA
 		STRUCTURE* const pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
 		if (pStructure == NULL)
 		{
-#ifdef JA2TESTVERSION
-			ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"ERROR: Told to open door that does not exist at %d.", sDoorGridNo );
-#endif
 			DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "HandleGotoNewGridNo() Failed: Door does not exist");
 			HaltGuyFromNewGridNoBecauseOfNoAPs(*pSoldier);
 			pSoldier->bEndDoorOpenCode = FALSE;
@@ -5427,12 +5421,6 @@ BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE* const pSoldier, SOLDIERTYPE* 
 
 		if ( pTarget->ubCivilianGroup && ( (pTarget->bTeam == OUR_TEAM) || pTarget->bNeutral ) )
 		{
-#ifdef JA2TESTVERSION
-			if (pTarget->uiStatusFlags & SOLDIER_PC)
-			{
-				ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%ls is changing teams", pTarget->name);
-			}
-#endif
 			// member of a civ group, either recruited or neutral, so should
 			// change sides individually or all together
 

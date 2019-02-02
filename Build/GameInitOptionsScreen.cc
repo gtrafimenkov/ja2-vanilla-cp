@@ -25,10 +25,6 @@
 #include "Video.h"
 #include "WordWrap.h"
 
-#ifdef JA2TESTVERSION
-#	include "Soldier_Profile.h"
-#endif
-
 
 #define		GIO_TITLE_FONT											FONT16ARIAL//FONT14ARIAL
 #define		GIO_TITLE_COLOR											FONT_MCOLOR_WHITE
@@ -506,17 +502,6 @@ static void GetGIOScreenUserInput(void)
 			switch (Event.usParam)
 			{
 				case SDLK_ESCAPE: gubGameOptionScreenHandler = GIO_CANCEL; break;
-
-#ifdef JA2TESTVERSION
-				case 'r':
-					gfReRenderGIOScreen = TRUE;
-					break;
-
-				case 'i':
-					InvalidateScreen();
-					break;
-#endif
-
 				case SDLK_RETURN: gubGameOptionScreenHandler = GIO_EXIT; break;
 			}
 		}
@@ -739,19 +724,6 @@ static void DoneFadeOutForExitGameInitOptionScreen(void)
 	gubGIOExitScreen = INTRO_SCREEN;
 
 	//set the fact that we should do the intro videos
-#ifdef JA2TESTVERSION
-	if (_KeyDown(ALT))
-	{
-		if (_KeyDown(CTRL))
-		{
-			gMercProfiles[MIGUEL].bMercStatus   = MERC_IS_DEAD;
-			gMercProfiles[SKYRIDER].bMercStatus = MERC_IS_DEAD;
-		}
-
-		SetIntroType(INTRO_ENDING);
-	}
-	else
-#endif
 		SetIntroType(INTRO_BEGINING);
 
 	ExitGIOScreen();

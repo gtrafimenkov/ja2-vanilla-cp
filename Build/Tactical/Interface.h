@@ -137,11 +137,7 @@ void RestoreInterface(void);
 void RenderArrows(void);
 void EraseRenderArrows(void);
 
-#ifdef JA2TESTVERSION
-void EndDeadlockMsg(void);
-#else
-#	define EndDeadlockMsg() ((void)0)
-#endif
+#define EndDeadlockMsg() ((void)0)
 
 void DirtyMercPanelInterface(SOLDIERTYPE const*, DirtyLevel);
 
