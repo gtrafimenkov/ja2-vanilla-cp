@@ -313,7 +313,7 @@
     },
     {
         "itemIndex": 90,
-        "internalName": "CLIP_556_HP",
+        "internalName": "CLIP_545_AP",
         "name": "Обойма 5,45 ББ",
         "shortName": "Обойма 5,45 ББ",
         "description": "30 патронов калибра 5,45 ББ моментально успокоят навсегда любого бронированного врага.",
@@ -328,6 +328,8 @@
         "ubPerPocket": 4,
         "usPrice": 150,
         "ubCoolness": 3,
+        "standardReplacement": "CLIP_556_AP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -348,6 +350,8 @@
         "ubPerPocket": 2,
         "usPrice": 350,
         "ubCoolness": 6,
+        "standardReplacement": "BOX_556_AP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
@@ -370,6 +374,7 @@
         "usPrice": 140,
         "ubCoolness": 2,
         "standardReplacement": "CLIP_556_HP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true
     },
@@ -466,7 +471,7 @@
         "ubPerPocket": 4,
         "usPrice": 180,
         "ubCoolness": 4,
-        "standardReplacement": "BOX_762N_120_AP",
+        "standardReplacement": "CLIP_762N_20_AP",
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
@@ -501,7 +506,7 @@
         "ubPerPocket": 4,
         "usPrice": 120,
         "ubCoolness": 3,
-        "standardReplacement": "BOX_762N_120_HP",
+        "standardReplacement": "CLIP_762N_20_HP",
         "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
