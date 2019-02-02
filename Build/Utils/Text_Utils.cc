@@ -7,16 +7,9 @@
 #include "Build/GameRes.h"
 #include "ContentManager.h"
 #include "GameInstance.h"
+#include "sgp/UTF8String.h"
 
 #define ITEMSTRINGFILENAME BINARYDATADIR "/itemdesc.edt"
-
-
-void LoadItemInfo(UINT16 const ubIndex, wchar_t Info[])
-{
-	UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex;
-	GCM->loadEncryptedString(ITEMSTRINGFILENAME, Info, Seek + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_INFO);
-}
-
 
 static void LoadAllItemNames(void)
 {
@@ -24,9 +17,19 @@ static void LoadAllItemNames(void)
 	for (UINT32 i = 0; i < MAXITEMS; i++)
 	{
 		UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * i;
-		GCM->loadEncryptedString(File, ShortItemNames[i], Seek, SIZE_SHORT_ITEM_NAME);
-		GCM->loadEncryptedString(File, ItemNames[i], Seek + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_NAME);
-	}
+
+    const ItemModel* im = GCM->getItem(i);
+
+    // don't replace already loaded values
+    if(im->nameOverride.empty())
+    {
+      GCM->loadEncryptedString(File, ShortItemNames[i], Seek, SIZE_SHORT_ITEM_NAME);
+    }
+    if(im->shortNameOverride.empty())
+    {
+      GCM->loadEncryptedString(File, ItemNames[i], Seek + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_NAME);
+    }
+  }
 }
 
 
@@ -64,4 +67,34 @@ FLOAT GetWeightBasedOnMetricOption( UINT32 uiObjectWeight )
 	}
 
 	return( fWeight );
+}
+
+#define BOBBYRDESCFILE BINARYDATADIR "/braydesc.edt"
+
+void LoadBobbyRayItemName(uint16_t index, wchar_t *buf, int bufSize)
+{
+  const ItemModel* im = GCM->getItem(index);
+  if(im->bobbyRayNameOverride.empty())
+  {
+    int startLoc = BOBBYR_ITEM_DESC_FILE_SIZE * index;
+    GCM->loadEncryptedString(BOBBYRDESCFILE, buf, startLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
+  }
+  else
+  {
+    wcsncpy(buf, &UTF8String(im->bobbyRayNameOverride.c_str()).getWCHAR()[0], BOBBYR_ITEM_DESC_NAME_SIZE);
+  }
+}
+
+void LoadBobbyRayItemDescription(uint16_t index, wchar_t *buf, int bufSize)
+{
+  const ItemModel* im = GCM->getItem(index);
+  if(im->bobbyRayDescriptionOverride.empty())
+  {
+    int startLoc = BOBBYR_ITEM_DESC_FILE_SIZE * index;
+    GCM->loadEncryptedString(BOBBYRDESCFILE, buf, startLoc, BOBBYR_ITEM_DESC_INFO_SIZE);
+  }
+  else
+  {
+    wcsncpy(buf, &UTF8String(im->bobbyRayDescriptionOverride.c_str()).getWCHAR()[0], BOBBYR_ITEM_DESC_NAME_SIZE);
+  }
 }

@@ -6,6 +6,7 @@
 
 #include "CalibreModel.h"
 #include "JsonObject.h"
+#include "JsonUtility.h"
 #include "MagazineModel.h"
 
 #include "slog/slog.h"
@@ -579,6 +580,13 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
   {
     SLOGE(TAG, "Weapon type '%s' is not found", internalType);
   }
+
+  wep->nameOverride = readOptionalString(obj, "name");
+  wep->shortNameOverride = readOptionalString(obj, "shortName");
+  wep->descriptionOverride = readOptionalString(obj, "description");
+
+  wep->bobbyRayNameOverride = readOptionalString(obj, "bobbyRayName");
+  wep->bobbyRayDescriptionOverride = readOptionalString(obj, "bobbyRaydescription");
 
   wep->ubGraphicType    = obj.GetInt("ubGraphicType");
   wep->ubGraphicNum     = obj.GetInt("ubGraphicNum");

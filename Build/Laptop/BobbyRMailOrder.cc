@@ -33,6 +33,7 @@
 
 #include "ContentManager.h"
 #include "GameInstance.h"
+#include "Text_Utils.h"
 
 struct BobbyROrderLocationStruct
 {
@@ -842,25 +843,25 @@ void DisplayPurchasedItems( BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16
 			DrawTextToScreen(sTemp, usGridX + BOBBYR_GRID_SECOND_COLUMN_X - 2, usPosY, BOBBYR_GRID_SECOND_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT, BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
 
 			//Display Items Name
+			int itemIndex;
 			if( pBobbyRayPurchase[i].fUsed )
 			{
-				uiStartLoc = BOBBYR_ITEM_DESC_FILE_SIZE * LaptopSaveInfo.BobbyRayUsedInventory[ pBobbyRayPurchase[i].usBobbyItemIndex ].usItemIndex;
+				itemIndex = LaptopSaveInfo.BobbyRayUsedInventory[ pBobbyRayPurchase[i].usBobbyItemIndex ].usItemIndex;
 			}
 			else
 			{
-				uiStartLoc = BOBBYR_ITEM_DESC_FILE_SIZE * LaptopSaveInfo.BobbyRayInventory[ pBobbyRayPurchase[i].usBobbyItemIndex ].usItemIndex;
+				itemIndex = LaptopSaveInfo.BobbyRayInventory[ pBobbyRayPurchase[i].usBobbyItemIndex ].usItemIndex;
 			}
-
 
 			wchar_t	sText[BOBBYR_ITEM_DESC_NAME_SIZE + 2];
 			if( pBobbyRayPurchase[i].fUsed )
 			{
 				wchar_t	sBack[BOBBYR_ITEM_DESC_NAME_SIZE];
-				GCM->loadEncryptedString(BOBBYRDESCFILE, sBack, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
+				LoadBobbyRayItemName(itemIndex, sBack, BOBBYR_ITEM_DESC_NAME_SIZE);
 				swprintf(sText, lengthof(sText), L"* %ls", sBack);
 			}
 			else
-				GCM->loadEncryptedString(BOBBYRDESCFILE, sText, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
+				LoadBobbyRayItemName(itemIndex, sText, BOBBYR_ITEM_DESC_NAME_SIZE);
 
 			ReduceStringLength(sText, lengthof(sText), BOBBYR_GRID_THIRD_COLUMN_WIDTH - 4, BOBBYR_ORDER_DYNAMIC_TEXT_FONT);
 

@@ -3,6 +3,7 @@
 #include "AmmoTypeModel.h"
 #include "CalibreModel.h"
 #include "JsonObject.h"
+#include "JsonUtility.h"
 
 MagazineModel::MagazineModel(uint16_t itemIndex_,
                              const char* internalName_,
@@ -61,6 +62,13 @@ MagazineModel* MagazineModel::deserialize(
   bool dontUseAsDefaultMagazine = obj.getOptionalBool("dontUseAsDefaultMagazine");
   MagazineModel *mag = new MagazineModel(itemIndex, internalName, calibre, capacity, ammoType,
                                          dontUseAsDefaultMagazine);
+
+  mag->nameOverride = readOptionalString(obj, "name");
+  mag->shortNameOverride = readOptionalString(obj, "shortName");
+  mag->descriptionOverride = readOptionalString(obj, "description");
+
+  mag->bobbyRayNameOverride = readOptionalString(obj, "bobbyRayName");
+  mag->bobbyRayDescriptionOverride = readOptionalString(obj, "bobbyRaydescription");
 
   mag->fFlags = mag->deserializeFlags(obj);
 

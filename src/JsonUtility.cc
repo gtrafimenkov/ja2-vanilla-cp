@@ -52,3 +52,11 @@ bool JsonUtility::parseListStrings(const rapidjson::Value &value, std::vector<st
   return false;
 }
 
+std::string readOptionalString(JsonObjectReader &obj, const char *fieldName)
+{
+  const char *val = obj.getOptionalString(fieldName);
+  if(!val) {
+    return "";
+  }
+  return val;
+}

@@ -211,7 +211,7 @@ static UINT32 guiCurrentItemDescriptionScreen=0;
 OBJECTTYPE	*gpItemDescObject = NULL;
 static BOOLEAN gfItemDescObjectIsAttachment = FALSE;
 static const wchar_t* gzItemName;
-static wchar_t gzItemDesc[SIZE_ITEM_INFO];
+static UTF8String itemDescription("");
 static wchar_t gzItemPros[SIZE_ITEM_PROS];
 static wchar_t gzItemCons[SIZE_ITEM_CONS];
 static INT16 gsInvDescX;
@@ -1991,7 +1991,7 @@ static void ReloadItemDesc(void)
 		Item = MONEY_FOR_PLAYERS_ACCOUNT;
 	}
 	gzItemName = ItemNames[Item];
-	LoadItemInfo(Item, gzItemDesc);
+	itemDescription = GCM->getItemDescription(Item);
 }
 
 
@@ -2347,7 +2347,7 @@ void RenderItemDescriptionBox(void)
 
 	{
 		SGPBox const& box = in_map ? g_map_itemdesc_desc_box : g_itemdesc_desc_box;
-		DisplayWrappedString(dx + box.x, dy + box.y, box.w, 2, ITEMDESC_FONT, FONT_BLACK, gzItemDesc, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
+		DisplayWrappedString(dx + box.x, dy + box.y, box.w, 2, ITEMDESC_FONT, FONT_BLACK, &itemDescription.getWCHAR()[0], FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 	}
 
 	if (ITEM_PROS_AND_CONS(obj.usItem))

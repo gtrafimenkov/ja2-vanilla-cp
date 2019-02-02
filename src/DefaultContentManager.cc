@@ -29,6 +29,7 @@
 #include "WeaponModels.h"
 #include "policy/DefaultGamePolicy.h"
 #include "policy/DefaultIMPPolicy.h"
+#include "Text.h"
 
 #include "boost/foreach.hpp"
 
@@ -622,6 +623,16 @@ bool DefaultContentManager::loadWeapons()
         }
 
         m_items[w->getItemIndex()] = w;
+
+        if(!w->nameOverride.empty())
+        {
+          wcsncpy(ItemNames[w->getItemIndex()], &UTF8String(w->nameOverride.c_str()).getWCHAR()[0], SIZE_ITEM_NAME);
+        }
+        if(!w->shortNameOverride.empty())
+        {
+          wcsncpy(ShortItemNames[w->getItemIndex()], &UTF8String(w->shortNameOverride.c_str()).getWCHAR()[0], SIZE_SHORT_ITEM_NAME);
+        }
+
         m_weaponMap.insert(std::make_pair(w->getInternalName(), w));
       }
     }
@@ -917,6 +928,24 @@ const ItemModel* DefaultContentManager::getItemByName(const std::string &interna
     throw std::runtime_error(FormattedString("item '%s' is not found", internalName.c_str()));
   }
   return it->second;
+}
+
+// TODO: remove duplication
+#define ITEMSTRINGFILENAME BINARYDATADIR "/itemdesc.edt"
+#define SIZE_ITEM_NAME        80
+#define SIZE_SHORT_ITEM_NAME  80
+#define SIZE_ITEM_INFO       240
+
+const UTF8String DefaultContentManager::getItemDescription(uint16_t itemIndex) {
+  if (!getItem(itemIndex)->descriptionOverride.empty())
+  {
+    return UTF8String(getItem(itemIndex)->descriptionOverride.c_str());
+  }
+
+  wchar_t info[SIZE_ITEM_INFO];
+  UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * itemIndex;
+  loadEncryptedString(ITEMSTRINGFILENAME, info, Seek + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_INFO);
+  return UTF8String(info);
 }
 
 const DealerInventory* DefaultContentManager::getDealerInventory(int dealerId) const

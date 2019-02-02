@@ -125,6 +125,7 @@ public:
 
   virtual const ItemModel* getItem(uint16_t index) const;
   virtual const ItemModel* getItemByName(const std::string &internalName) const;
+  virtual const UTF8String getItemDescription(uint16_t itemIndex);
 
   virtual const std::vector<std::vector<const WeaponModel*> > & getNormalGunChoice() const;
   virtual const std::vector<std::vector<const WeaponModel*> > & getExtendedGunChoice() const;
