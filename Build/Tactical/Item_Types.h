@@ -232,7 +232,7 @@ enum ITEMDEFINE
 
 	// weapons
 	GLOCK_17							= FIRST_WEAPON,
-	GLOCK_18,
+	__ITEM_2,
 	__ITEM_3,       // BERETTA_92F,
 	__ITEM_4,       // BERETTA_93R,
 	SW38,
@@ -269,7 +269,7 @@ enum ITEMDEFINE
 	__ITEM_33,      // CAWS,
 	MINIMI,
 	__ITEM_35,      // RPK74,
-	HK21E,
+	__ITEM_36,
 	COMBAT_KNIFE,
 	THROWING_KNIFE,
 	ROCK,
