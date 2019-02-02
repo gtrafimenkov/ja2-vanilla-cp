@@ -47,6 +47,7 @@ public:
   std::string stolenGoodsReturnItem4;
 
   std::string weaponToShotEliot;
+  std::string tankMachineGun;
 
   ////////////////////////////////////////////////////////////
   //

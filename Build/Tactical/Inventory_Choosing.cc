@@ -1884,7 +1884,7 @@ static void EquipTank(SOLDIERCREATE_STRUCT* pp)
 	pp->Inv[ HANDPOS ].fFlags |= OBJECT_UNDROPPABLE;
 
 	// machine gun
-	CreateItems( MINIMI, ( INT8 )( 80 + Random( 21 ) ), 1, &Object );
+	CreateItems( GCM->getItemByName(GCM->getGamePolicy()->tankMachineGun)->getItemIndex(), ( INT8 )( 80 + Random( 21 ) ), 1, &Object );
 	Object.fFlags |= OBJECT_UNDROPPABLE;
 	PlaceObjectInSoldierCreateStruct( pp, &Object );
 

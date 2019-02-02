@@ -22,6 +22,7 @@
         "stolenGoodsReturnItem3": "STUN_GRENADE",
         "stolenGoodsReturnItem4": "SW38",
         "weaponToShotEliot": "DESERTEAGLE",
+        "tankMachineGun": "MINIMI",
 
         "enemy_weapon_minimal_status": 0
 }

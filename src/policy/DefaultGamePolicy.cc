@@ -29,6 +29,7 @@ DefaultGamePolicy::DefaultGamePolicy(rapidjson::Document *json)
   stolenGoodsReturnItem3        = (*json)["stolenGoodsReturnItem3"].GetString();
   stolenGoodsReturnItem4        = (*json)["stolenGoodsReturnItem4"].GetString();
   weaponToShotEliot             = (*json)["weaponToShotEliot"].GetString();
+  tankMachineGun                = (*json)["tankMachineGun"].GetString();
 }
 
 /** Check if a hotkey is enabled. */

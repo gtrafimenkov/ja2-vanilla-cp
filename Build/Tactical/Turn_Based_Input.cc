@@ -1153,7 +1153,6 @@ void GetPolledKeyboardInput(UIEventKind* puiNewEvent)
 
 
 static void ChangeCurrentSquad(INT32 iSquad);
-static void ChangeSoldiersBodyType(SoldierBodyType, BOOLEAN fCreateNewPalette);
 static void CreateNextCivType(void);
 static void CreatePlayerControlledMonster(void);
 static void CreateRandomItem(void);
@@ -1663,10 +1662,7 @@ static void HandleModAlt(UINT32 const key, UIEventKind* const new_event)
 			MusicSetVolume(vol > 20 ? vol - 20 : 0);
 			break;
 		}
-		case '2': if (CHEATER_CHEAT_LEVEL()) ChangeSoldiersBodyType(INFANT_MONSTER, TRUE);                      break;
 		case '3': if (CHEATER_CHEAT_LEVEL()) EVENT_InitNewSoldierAnim(GetSelectedMan(), KID_SKIPPING, 0, TRUE); break;
-		case '4': if (CHEATER_CHEAT_LEVEL()) ChangeSoldiersBodyType(CRIPPLECIV,     TRUE);                      break;
-		case '5': if (CHEATER_CHEAT_LEVEL()) ChangeSoldiersBodyType(YAM_MONSTER,    TRUE);                      break;
 
 		case 'b': if (CHEATER_CHEAT_LEVEL()) *new_event = I_NEW_BADMERC; break;
 		case 'c': if (CHEATER_CHEAT_LEVEL()) CreateNextCivType();        break;
@@ -2478,46 +2474,6 @@ static void RefreshSoldier(void)
 	// CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
 	SOLDIERTYPE* const tgt = gUIFullTarget;
 	if (tgt != NULL) ReviveSoldier(tgt);
-}
-
-
-static void ChangeSoldiersBodyType(SoldierBodyType const ubBodyType, BOOLEAN const fCreateNewPalette)
-{
-	SOLDIERTYPE* const sel = GetSelectedMan();
-	if (sel == NULL) return;
-
-	sel->ubBodyType = ubBodyType;
-	EVENT_InitNewSoldierAnim(sel, STANDING, 0 , TRUE);
-	if (fCreateNewPalette)
-	{
-		CreateSoldierPalettes(*sel);
-
-		switch (ubBodyType)
-		{
-			case ADULTFEMALEMONSTER:
-			case AM_MONSTER:
-			case YAF_MONSTER:
-			case YAM_MONSTER:
-			case LARVAE_MONSTER:
-			case INFANT_MONSTER:
-			case QUEENMONSTER:
-				sel->uiStatusFlags |= SOLDIER_MONSTER;
-				memset(&sel->inv, 0, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
-				AssignCreatureInventory(sel);
-				CreateItem(CREATURE_YOUNG_MALE_SPIT, 100, &sel->inv[HANDPOS]);
-				break;
-
-			case TANK_NW:
-			case TANK_NE:
-				sel->uiStatusFlags |= SOLDIER_VEHICLE;
-				//sel->inv[HANDPOS].usItem = TANK_CANNON;
-				sel->inv[HANDPOS].usItem = MINIMI;
-				sel->bVehicleID = AddVehicleToList(sel->sSectorX, sel->sSectorY, sel->bSectorZ, HUMMER);
-				break;
-            default:
-                break;
-		}
-	}
 }
 
 

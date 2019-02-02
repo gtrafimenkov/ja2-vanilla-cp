@@ -267,7 +267,7 @@ enum ITEMDEFINE
 	__ITEM_31,      // M870,
 	__ITEM_32,      // SPAS15,
 	__ITEM_33,      // CAWS,
-	MINIMI,
+	__ITEM_34,
 	__ITEM_35,      // RPK74,
 	__ITEM_36,
 	COMBAT_KNIFE,
