@@ -95,11 +95,6 @@
 #include "Soldier.h"
 #include "policy/GamePolicy.h"
 
-#ifdef SGP_VIDEO_DEBUGGING
-#	include "VObject.h"
-#endif
-
-
 static BOOLEAN gfFirstCycleMovementStarted = FALSE;
 
 const SOLDIERTYPE* gUITargetSoldier = NULL;
@@ -1640,15 +1635,6 @@ static void HandleModCtrl(UINT32 const key, UIEventKind* const new_event)
 				}
 			}
 			break;
-
-#ifdef SGP_VIDEO_DEBUGGING
-		case 'v':
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VObjects:  %d", guiVObjectSize);
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VSurfaces:  %d", guiVSurfaceSize);
-			ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"SGPVideoDump.txt updated...");
-			PerformVideoInfoDumpIntoFile("SGPVideoDump.txt", TRUE);
-			break;
-#endif
 
 		case 'w':
 			if (CHEATER_CHEAT_LEVEL())

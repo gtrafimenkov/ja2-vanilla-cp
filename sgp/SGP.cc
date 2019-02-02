@@ -169,17 +169,9 @@ static void deinitGameAndExit()
   ShutdownSoundManager();
 #endif
 
-#ifdef SGP_VIDEO_DEBUGGING
-	PerformVideoInfoDumpIntoFile( "SGPVideoShutdownDump.txt", FALSE );
-#endif
-
 	ShutdownVideoSurfaceManager();
   ShutdownVideoObjectManager();
   ShutdownVideoManager();
-
-#ifdef EXTREME_MEMORY_DEBUGGING
-	DumpMemoryInfoIntoFile( "ExtremeMemoryDump.txt", FALSE );
-#endif
 
   ShutdownMemoryManager();  // must go last, for MemDebugCounter to work right...
 
