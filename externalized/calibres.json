@@ -9,7 +9,7 @@
     },
     {
         "index": 1,
-        "description": "AMMO38",
+        "description": "9мм for Gurza",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
@@ -49,8 +49,8 @@
     },
     {
         "index": 6,
-        "description": "AMMOCAWS",
-        "burstSoundString": "shotgun burst ",
+        "description": "Vintorez",
+        "burstSoundString": "silencer burst ",
         "showInHelpText": true,
         "monsterWeapon": false,
         "silencerSound": 157
@@ -129,7 +129,15 @@
     },
     {
         "index": 16,
-        "description": "AMMOFLAME",
+        "description": "AMMOSVD762",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 17,
+        "description": "AMMOMP7",
         "burstSoundString": "",
         "showInHelpText": true,
         "monsterWeapon": false,
