@@ -1178,6 +1178,7 @@
         "ubShotsPer4Turns": 13,
         "ubShotsPerBurst": 3,
         "ubBurstPenalty": 0,
+        "fixedBurstAP": 1,
         "ubBulletSpeed": 20,
         "ubImpact": 27,
         "ubDeadliness": 40,

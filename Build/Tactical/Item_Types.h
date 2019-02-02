@@ -262,7 +262,7 @@ enum ITEMDEFINE
 	__ITEM_27,      // M14,
 	__ITEM_28,      // FNFAL,
 	__ITEM_29,      // G3A3,
-	G11,
+	__ITEM_30,
 
 	__ITEM_31,      // M870,
 	__ITEM_32,      // SPAS15,
