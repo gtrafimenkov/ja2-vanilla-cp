@@ -3464,7 +3464,7 @@ static INT8 ChanceToGetThrough(SOLDIERTYPE* const pFirer, const GridNo end_pos, 
 	else
 	{
 		// fake it
-		weapon    = GLOCK_17;
+		weapon    = FIRST_WEAPON;
 		buck_shot = FALSE;
 	}
 

@@ -231,7 +231,7 @@ enum ITEMDEFINE
 	NONE									= 0,
 
 	// weapons
-	GLOCK_17							= FIRST_WEAPON,
+	__ITEM_1							= FIRST_WEAPON,
 	__ITEM_2,
 	__ITEM_3,       // BERETTA_92F,
 	__ITEM_4,       // BERETTA_93R,
