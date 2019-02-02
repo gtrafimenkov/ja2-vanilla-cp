@@ -910,9 +910,6 @@ void ExecuteOverhead(void)
 											STRUCTURE* const pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 											if (pStructure == NULL)
 											{
-#ifdef JA2BETAVERSION
-												ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Told to open struct at %d and none was found", sGridNo);
-#endif
 												fKeepMoving = FALSE;
 											}
 											else
@@ -994,9 +991,6 @@ void ExecuteOverhead(void)
 										// ATE: Pop up warning....
 										if (pSoldier->usPathDataSize != MAX_PATH_LIST_SIZE)
 										{
-#ifdef JA2BETAVERSION
-											ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Path for %ls ( %d ) did not make merc get to dest .", pSoldier->name, pSoldier->ubID);
-#endif
 										}
 
 										// In case this is an AI person with the path-stored flag set,
@@ -1159,9 +1153,6 @@ void ExecuteOverhead(void)
 			if (GetJA2Clock() - guiWaitingForAllMercsToExitTimer > 2500)
 			{
 				// OK, set num waiting to 0
-#if defined JA2BETAVERSION
-				ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_DEBUG, L"Waiting too long for Mercs to exit...forcing entry.");
-#endif
 				gbNumMercsUntilWaitingOver = 0;
 
 				// Reset all waitng codes
@@ -5548,9 +5539,6 @@ static SOLDIERTYPE* InternalReduceAttackBusyCount(SOLDIERTYPE* const pSoldier, c
 		if ( (gTacticalStatus.uiFlags & INCOMBAT) )
 		{
 			DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "!!!!!!! &&&&&&& Problem with attacker busy count decrementing past 0.... preventing wrap-around.");
-			#ifdef JA2BETAVERSION
-				ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Attack busy problem. Save, exit and send debug.txt + save file to Sir-Tech." );
-			#endif
 		}
 	}
 	else
@@ -5898,9 +5886,6 @@ void RemoveManFromTeam(const INT8 bTeam)
 	if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
 	if (!IsTeamActive(bTeam))
 	{
-#ifdef JA2BETAVERSION
-		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Number of people on team %d dropped to %d", bTeam, gTacticalStatus.Team[bTeam].bMenInSector);
-#endif
 		return;
 	}
 	--gTacticalStatus.Team[bTeam].bMenInSector;

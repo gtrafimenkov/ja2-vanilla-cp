@@ -875,9 +875,7 @@ static BOOLEAN GetDialogue(const MercProfile &profile, UINT16 usQuoteNum, wchar_
 			if (!success)
 			{
 				swprintf(zDialogueText, Length, L"I have no text in the EDT file (%d) %hs", usQuoteNum, pFilename);
-#ifndef JA2BETAVERSION
 				return( FALSE );
-#endif
 			}
    }
 
