@@ -446,11 +446,6 @@ static void EnterLaptop(void)
 	if (gRadarRegion.uiFlags & MSYS_REGION_ENABLED)
 	{
 		gRadarRegion.Disable();
-/*
-		#ifdef JA2BETAVERSION
-			DoLapTopMessageBox( MSG_BOX_LAPTOP_DEFAULT, L"Mapscreen's radar region is still active, please tell Dave how you entered Laptop.", LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL );
-		#endif
-*/
 	}
 
 	gfDontStartTransitionFromLaptop = FALSE;
@@ -2922,12 +2917,6 @@ void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usK
 #if defined JA2TESTVERSION
 		case 'w':
 			DemoHiringOfMercs();
-			break;
-#endif
-
-#if defined JA2BETAVERSION
-		case 'e':
-			if (usKeyState & ALT_DOWN && CHEATER_CHEAT_LEVEL()) AddAllEmails();
 			break;
 #endif
 

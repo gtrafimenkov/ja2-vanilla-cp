@@ -67,10 +67,6 @@
 #include "Debug.h"
 #include "WeaponModels.h"
 
-#ifdef JA2BETAVERSION
-#	include "Cheats.h"
-#endif
-
 #include "ContentManager.h"
 #include "GameInstance.h"
 
@@ -500,10 +496,6 @@ static void DoTransitionFromPreBattleInterfaceToAutoResolve(void)
 
 void EnterAutoResolveMode( UINT8 ubSectorX, UINT8 ubSectorY )
 {
-	#ifdef JA2BETAVERSION
-		CountRandomCalls( TRUE );
-	#endif
-
 	//Set up mapscreen for removal
 	SetPendingNewScreen( AUTORESOLVE_SCREEN );
 	CreateDestroyMapInvButton();
@@ -543,9 +535,6 @@ void EnterAutoResolveMode( UINT8 ubSectorX, UINT8 ubSectorY )
 			break;
 		default:
 			//shouldn't happen
-			#ifdef JA2BETAVERSION
-				ScreenMsg( FONT_RED, MSG_ERROR, L"Autoresolving with entering enemy sector code %d -- illegal KM:1", gubEnemyEncounterCode );
-			#endif
 			break;
 	}
 }
@@ -590,12 +579,6 @@ ScreenID AutoResolveScreenHandle()
 	{
 		gfEnteringMapScreen = TRUE;
 		RemoveAutoResolveInterface(true);
-		#ifdef JA2BETAVERSION
-		{
-			UINT32 uiRandoms, uiPreRandoms;
-			GetRandomCalls( &uiRandoms, &uiPreRandoms );
-		}
-		#endif
 		return MAP_SCREEN;
 	}
 	if( gpAR->fPendingSurrender )
@@ -1383,10 +1366,6 @@ static void RenderAutoResolve(void)
 	yp += 11;
 	MPrint(xp, yp, str);
 
-#ifdef JA2BETAVERSION
-	if (gpAR->fAllowCapture) MPrint(2, 2, L"Enemy capture enabled.");
-#endif
-
 	if( gpAR->fPendingSurrender )
 	{
 		DisplayWrappedString(gpAR->sCenterStartX + 16, 230 + gpAR->bVerticalOffset, 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, LEFT_JUSTIFIED);
@@ -1873,9 +1852,6 @@ static void RemoveAutoResolveInterface(bool const delete_for_good)
 			case SOLDIER_CLASS_REG_MILITIA:   current_rank = REGULAR_MILITIA; break;
 			case SOLDIER_CLASS_ELITE_MILITIA: current_rank = ELITE_MILITIA;   break;
 			default:
-#ifdef JA2BETAVERSION
-				ScreenMsg(FONT_RED, MSG_ERROR, L"Removing autoresolve militia with invalid ubSoldierClass %d.", s.ubSoldierClass);
-#endif
 				break;
 		}
 		if (delete_for_good)
@@ -2536,185 +2512,6 @@ static void HandleAutoResolveInput(void)
 						HandleShortCutExitState( );
 					}
 					break;
-				#ifdef JA2BETAVERSION
-				case 'c':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->fAllowCapture ^= TRUE;
-						gpAR->fPlayerRejectedSurrenderOffer = FALSE;
-						gStrategicStatus.uiFlags &= ~STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE;
-						gpAR->fRenderAutoResolve = TRUE;
-					}
-					break;
-
-				case SDLK_F5: if (CHEATER_CHEAT_LEVEL()) gpAR->fDebugInfo     ^= TRUE; break;
-				case SDLK_F6: if (CHEATER_CHEAT_LEVEL()) gpAR->fSound         ^= TRUE; break;
-				case SDLK_F7: if (CHEATER_CHEAT_LEVEL()) gpAR->fInstantFinish ^= TRUE; break;
-
-				case SDLK_BACKSPACE: if (CHEATER_CHEAT_LEVEL()) fResetAutoResolve = TRUE; break;
-
-				case 'd':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( _KeyDown( ALT ) )
-						{
-							if ( gpAR->ubBattleStatus == BATTLE_IN_PROGRESS )
-							{
-								PlayAutoResolveSample(EXPLOSION_1, HIGHVOLUME, 1, MIDDLEPAN);
-								EliminateAllFriendlies();
-							}
-						}
-					}
-					break;
-				case 'z':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( _KeyDown( ALT ) )
-						{
-							if ( gpAR->ubBattleStatus == BATTLE_IN_PROGRESS )
-							{
-								PlayAutoResolveSample(EXPLOSION_1, HIGHVOLUME, 1, MIDDLEPAN);
-								EliminateAllMercs();
-							}
-						}
-					}
-					break;
-				case 'o':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( _KeyDown( ALT ) )
-						{
-							if ( gpAR->ubBattleStatus == BATTLE_IN_PROGRESS )
-							{
-								PlayAutoResolveSample(EXPLOSION_1, HIGHVOLUME, 1, MIDDLEPAN);
-								// this is not very accurate, any enemies already dead will be counted as killed twice
-								gStrategicStatus.usPlayerKills += NumEnemiesInSector( gpAR->ubSectorX, gpAR->ubSectorY );
-								EliminateAllEnemies( gpAR->ubSectorX, gpAR->ubSectorY );
-							}
-						}
-					}
-					break;
-				case '{':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubMercs = 0;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case '}':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubMercs = MAX_STRATEGIC_TEAM_SIZE;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case '[':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubMercs )
-						{
-							gpAR->ubMercs--;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case ']':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubMercs < MAX_STRATEGIC_TEAM_SIZE )
-						{
-							gpAR->ubMercs++;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case ':':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubCivs = 0;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case '"':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubCivs = MAX_ALLOWABLE_MILITIA_PER_SECTOR;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case ';':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubCivs )
-						{
-							gpAR->ubCivs--;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case 39: // ' quote
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubCivs < MAX_ALLOWABLE_MILITIA_PER_SECTOR )
-						{
-							gpAR->ubCivs++;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case '<':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubEnemies = 1;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case '>':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubEnemies = 32;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case ',':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubEnemies > 1 )
-						{
-							gpAR->ubEnemies--;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case '.':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						if( gpAR->ubEnemies < 32 )
-						{
-							gpAR->ubEnemies++;
-							fResetAutoResolve = TRUE;
-						}
-					}
-					break;
-				case '/':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubMercs = 1;
-						gpAR->ubCivs = 0;
-						gpAR->ubEnemies = 1;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				case '?':
-					if( CHEATER_CHEAT_LEVEL() )
-					{
-						gpAR->ubMercs = 20;
-						gpAR->ubCivs = MAX_ALLOWABLE_MILITIA_PER_SECTOR;
-						gpAR->ubEnemies = 32;
-						fResetAutoResolve = TRUE;
-					}
-					break;
-				#endif
 			}
 		}
 	}

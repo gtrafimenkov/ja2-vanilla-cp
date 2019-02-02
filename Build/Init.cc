@@ -106,10 +106,6 @@ try
 
 	switch (GameState::getInstance()->getMode())
 	{
-#if defined JA2BETAVERSION
-		case GAME_MODE_MAP_UTILITY: return MAPUTILITY_SCREEN;
-#endif
-
 		case GAME_MODE_EDITOR:
 			DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Beginning JA2 using -editor commandline argument...");
 			gfAutoLoadA9 = FALSE;

@@ -1442,13 +1442,6 @@ static void CheckGridNoOfItemsInMapScreenMapInventory(void)
 			uiNumFlagsNotSet++;
 		}
 	}
-
-#ifdef JA2BETAVERSION
-	if( uiNumFlagsNotSet > 0 )
-	{
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Item with invalid gridno doesnt have flag set.", uiNumFlagsNotSet );
-	}
-#endif
 }
 
 

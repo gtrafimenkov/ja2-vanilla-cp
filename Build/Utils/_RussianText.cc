@@ -2833,23 +2833,8 @@ static const wchar_t *s_rus_zSaveLoadText[zSaveLoadText_SIZE] =
 	L"Версия сохраненной игры отличается от текущей. Скорее всего, игра загрузится нормально. Загрузить?",
 	L"Файлы сохраненной игры возможно испорчены. Стереть все?",
 
-	//Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
-	//is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
-	//used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-	L"Версия сохранения изменилась. Сообщите, если будут проблемы. Продолжить?",
-#else
 	L"Попытка загрузки старой версии сохранения. Обновить автоматически и загрузить?",
-#endif
-
-	//Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
-	//is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
-	//used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-	L"Версия сохранения изменилась. Сообщите, если будут проблемы. Продолжить?",
-#else
 	L"Попытка загрузки старой версии сохранения. Обновить автоматически и загрузить?",
-#endif
 
 	L"Вы уверены, что хотите перезаписать сохраненную игру #%d?",
 
