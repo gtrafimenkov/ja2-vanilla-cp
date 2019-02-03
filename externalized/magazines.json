@@ -472,6 +472,7 @@
         "usPrice": 180,
         "ubCoolness": 4,
         "standardReplacement": "CLIP_762N_20_AP",
+        "alwaysSuitableForTrading": true,
         "bMetal": true,
         "bSinks": true,
         "bBigGunList": true
