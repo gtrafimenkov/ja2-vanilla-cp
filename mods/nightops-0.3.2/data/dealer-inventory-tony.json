@@ -1,42 +1,45 @@
 {
         "ROCKET_RIFLE": 0,
         "AUTO_ROCKET_RIFLE": 0,
-        "AUTOMAG_III": 0,
+
+        "VINTOREZ": 1,
+        "ASVAL": 1,
 
         "GLOCK_17": 1,
-        "GLOCK_18": 1,
+        "GLOCK_19": 1,
         "BERETTA_92F": 1,
         "BERETTA_93R": 1,
-        "SW38": 1,
+        "GURZA": 1,
         "BARRACUDA": 1,
         "DESERTEAGLE": 1,
         "M1911": 1,
-        "MP5K": 1,
+        "MP5SD3": 1,
         "MAC10": 1,
 
-        "THOMPSON": 1,
-        "COMMANDO": 1,
-        "MP53": 1,
-        "AKSU74": 1,
-        "TYPE85": 1,
-        "SKS": 1,
-        "DRAGUNOV": 1,
-        "M24": 1,
-        "AUG": 1,
-
-        "G41": 1,
-        "MINI14": 1,
-        "C7": 1,
-        "FAMAS": 1,
+        "UMP45": 1,
+        "G36C": 1,
+        "HK53": 1,
+        "AKS74U": 1,
         "AK74": 1,
         "AKM": 1,
+        "SKS45": 1,
+        "SVDm": 1,
+        "HKMSG": 1,
+        "AUG": 1,
+
+        "G36": 1,
+        "M16A2": 1,
+        "C7": 1,
+        "L85A1": 1,
+        "AEK971": 1,
+        "AEK973": 1,
         "M14": 1,
-        "G3A3": 1,
+        "HKMP7": 1,
         "FNFAL": 1,
 
         "MINIMI": 1,
         "RPK74": 1,
-        "HK21E": 1,
+        "M60e3": 1,
 
         "M870": 1,
         "SPAS15": 1,
@@ -47,7 +50,6 @@
         "MORTAR": 1,
 
         "G11": 1,
-        "CAWS": 1,
         "P90": 1,
 
         "DART_GUN": 1,
@@ -59,9 +61,9 @@
         "CLIP9_15_HP": 3,
         "CLIP9_30_HP": 3,
 
-        "CLIP38_6": 10,
-        "CLIP38_6_AP": 5,
-        "CLIP38_6_HP": 5,
+        "CLIP_GURZA": 10,
+        "CLIP_SVD": 5,
+        "CLIP_MP7": 5,
 
         "CLIP45_7": 6,
 
@@ -73,26 +75,26 @@
 
         "CLIP357_6": 6,
         "CLIP357_9": 5,
-        "CLIP357_6_AP": 3,
-        "CLIP357_9_AP": 3,
-        "CLIP357_6_HP": 3,
-        "CLIP357_9_HP": 3,
+        "CLIP_556_AP": 3,
+        "BOX_556_AP": 3,
+        "CLIP_556_HP": 3,
+        "DISK_545_AP": 3,
 
-        "CLIP545_30_AP": 6,
-        "CLIP545_30_HP": 3,
+        "CLIP_545_HP": 6,
+        "DISK_545_HP": 3,
 
-        "CLIP556_30_AP": 6,
-        "CLIP556_30_HP": 3,
+        "CLIP_556_HP": 6,
+        "BOX_556_HP": 3,
 
         "CLIP762W_10_AP": 6,
         "CLIP762W_30_AP": 5,
         "CLIP762W_10_HP": 3,
         "CLIP762W_30_HP": 3,
 
-        "CLIP762N_5_AP": 8,
-        "CLIP762N_20_AP": 5,
-        "CLIP762N_5_HP": 3,
-        "CLIP762N_20_HP": 3,
+        "CLIP_762N_20_AP": 8,
+        "BOX_762N_120_AP": 5,
+        "CLIP_762N_20_HP": 3,
+        "BOX_762N_120_HP": 3,
 
         "CLIP47_50_SAP": 5,
 
@@ -102,8 +104,8 @@
         "CLIP12G_7": 9,
         "CLIP12G_7_BUCKSHOT": 9,
 
-        "CLIPCAWS_10_SAP": 5,
-        "CLIPCAWS_10_FLECH": 3,
+        "VINT_20_SAP": 5,
+        "VINT_10_SAP": 3,
 
         "CLIPROCKET_AP": 3,
         "CLIPROCKET_HE": 1,
@@ -120,7 +122,7 @@
         "COMBAT_KNIFE": 3,
         "THROWING_KNIFE": 6,
         "BRASS_KNUCKLES": 1,
-        "MACHETE": 1,
+        "KATANA": 1,
 
         "SILENCER": 3,
         "SNIPERSCOPE": 3,

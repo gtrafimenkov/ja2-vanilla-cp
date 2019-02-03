@@ -15,12 +15,12 @@
         "drop_everything":   false,
         "all_drops_visible": false,
 
-        "johnCulbaPresentWeapon": "AUTOMAG_III",
-        "johnCulbaPresentAmmo": "CLIP762N_5_AP",
+        "johnCulbaPresentWeapon": "VINTOREZ",
+        "johnCulbaPresentAmmo": "VINT_10_SAP",
         "stolenGoodsReturnItem1": "GASMASK",
         "stolenGoodsReturnItem2": "DESERTEAGLE",
         "stolenGoodsReturnItem3": "STUN_GRENADE",
-        "stolenGoodsReturnItem4": "SW38",
+        "stolenGoodsReturnItem4": "GLOCK_17",
         "weaponToShotEliot": "DESERTEAGLE",
         "tankMachineGun": "MINIMI",
 
