@@ -695,7 +695,7 @@
         "ubWeight": 6,
         "ubPerPocket": 6,
         "usPrice": 100,
-        "ubCoolness": 1,
+        "ubCoolness": 4,
         "bMetal": true,
         "bSinks": true,
         "dontUseAsDefaultMagazine": true
