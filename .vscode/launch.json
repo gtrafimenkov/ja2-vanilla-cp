@@ -11,6 +11,8 @@
       "program": "${workspaceFolder}/ja2-ve",
       "args": [
         "--debug",
+        "--mod",
+        "nightops-0.3.2"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

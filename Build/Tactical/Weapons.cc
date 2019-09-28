@@ -659,6 +659,12 @@ static UINT16 ModifyExpGainByTarget(const UINT16 exp_gain, const SOLDIERTYPE* co
 
 static BOOLEAN WillExplosiveWeaponFail(const SOLDIERTYPE* pSoldier, const OBJECTTYPE* pObj);
 
+static bool isMainWeaponSilenced(SOLDIERTYPE* pSoldier)
+{
+  UINT16 usItemNum = pSoldier->usAttackingWeapon;
+  return GCM->getWeapon( usItemNum )->hasIntegratedSilencer()
+          || FindAttachment( &( pSoldier->inv[ pSoldier->ubAttackingHand ] ), SILENCER ) != NO_SLOT;
+}
 
 static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 {
@@ -691,7 +697,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 			if ( GCM->getWeapon( usItemNum )->hasBurstSound() )
 			{
 				// IF we are silenced?
-				if( FindAttachment( &( pSoldier->inv[ pSoldier->ubAttackingHand ] ), SILENCER ) != NO_SLOT )
+				if( isMainWeaponSilenced(pSoldier) )
 				{
 					// Pick sound file baed on how many bullets we are going to fire...
 					sprintf( zBurstString, SOUNDSDIR "/weapons/silencer burst %d.wav", pSoldier->bBulletsLeft );
@@ -742,7 +748,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 		if ( GCM->getWeapon( usItemNum )->hasSound() && GCM->getItem(usItemNum)->getItemClass() != IC_THROWING_KNIFE )
 		{
 			// Switch on silencer...
-			if( FindAttachment( &( pSoldier->inv[ pSoldier->ubAttackingHand ] ), SILENCER ) != NO_SLOT )
+      if( isMainWeaponSilenced(pSoldier) )
 			{
 				SoundID uiSound = (SoundID) GCM->getWeapon( usItemNum )->calibre->silencerSound;
 				PlayLocationJA2Sample(pSoldier->sGridNo, uiSound, HIGHVOLUME, 1);

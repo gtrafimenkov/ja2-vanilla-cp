@@ -1,0 +1,146 @@
+[
+    {
+        "index": 0,
+        "description": "NOAMMO",
+        "burstSoundString": "",
+        "showInHelpText": false,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 1,
+        "description": "9мм for Gurza",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 156
+    },
+    {
+        "index": 2,
+        "description": "AMMO9",
+        "burstSoundString": "9mm burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 156
+    },
+    {
+        "index": 3,
+        "description": "AMMO45",
+        "burstSoundString": "45 caliber burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 4,
+        "description": "AMMO357",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 5,
+        "description": "AMMO12G",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 6,
+        "description": "Vintorez",
+        "burstSoundString": "silencer burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 7,
+        "description": "AMMO545",
+        "burstSoundString": "5,45 burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 8,
+        "description": "AMMO556",
+        "burstSoundString": "5,56 burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 9,
+        "description": "AMMO762N",
+        "burstSoundString": "7,62 nato burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 10,
+        "description": "AMMO762W",
+        "burstSoundString": "7,62 wp burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 11,
+        "description": "AMMO47",
+        "burstSoundString": "4,7 caliber burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 12,
+        "description": "AMMO57",
+        "burstSoundString": "5,7 burst ",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 156
+    },
+    {
+        "index": 13,
+        "description": "AMMOMONST",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": true,
+        "silencerSound": 157
+    },
+    {
+        "index": 14,
+        "description": "AMMOROCKET",
+        "burstSoundString": "rl automatic ",
+        "showInHelpText": false,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 15,
+        "description": "AMMODART",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 16,
+        "description": "AMMOSVD762",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    },
+    {
+        "index": 17,
+        "description": "AMMOMP7",
+        "burstSoundString": "",
+        "showInHelpText": true,
+        "monsterWeapon": false,
+        "silencerSound": 157
+    }
+]
