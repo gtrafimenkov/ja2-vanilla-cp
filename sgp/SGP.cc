@@ -1,48 +1,37 @@
-/* The implementation of swprintf() is broken on FreeBSD and sometimes fails if
- * LC_TYPE is not set to UTF-8.  This happens when characters, which cannot be
- * represented by the current LC_CTYPE, are printed. */
-#if defined __FreeBSD__
-#	define BROKEN_SWPRINTF
-#endif
-
-#if defined BROKEN_SWPRINTF
-#	include <locale.h>
-#endif
-
 #include <exception>
 #include <new>
 
+#include <SDL.h>
+
+#include "Build/GameLoop.h"
+#include "Build/GameRes.h"
+#include "Build/GameState.h"
+#include "Build/Init.h"
+#include "Build/Intro.h"
+#include "Build/JA2_Splash.h"
+#include "Build/SaveLoadGame.h"
+#include "ModPackContentManager.h"
 #include "sgp/Button_System.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/Font.h"
-#include "Build/GameLoop.h"
-#include "Build/Init.h" // XXX should not be used in SGP
 #include "sgp/Input.h"
-#include "Build/Intro.h"
-#include "Build/JA2_Splash.h"
+#include "sgp/Logger.h"
 #include "sgp/MemMan.h"
 #include "sgp/Random.h"
 #include "sgp/SGP.h"
-#include "Build/SaveLoadGame.h" // XXX should not be used in SGP
 #include "sgp/SoundMan.h"
-#include "sgp/VObject.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include <SDL.h>
-#include "Build/GameRes.h"
-#include "sgp/Logger.h"
-#include "Build/GameState.h"
 #include "sgp/Timer.h"
-
+#include "sgp/UTF8String.h"
+#include "sgp/Video.h"
+#include "sgp/VObject.h"
+#include "sgp/VSurface.h"
+#include "slog/slog.h"
 #include "src/DefaultContentManager.h"
 #include "src/GameInstance.h"
 #include "src/JsonUtility.h"
-#include "ModPackContentManager.h"
 #include "src/policy/GamePolicy.h"
-#include "sgp/UTF8String.h"
 
-#include "slog/slog.h"
 #define TAG "SGP"
 
 #ifdef WITH_UNITTESTS
@@ -306,13 +295,6 @@ int main(int argc, char* argv[])
 try
 {
   std::string exeFolder = FileMan::getParentPath(argv[0], true);
-
-#if defined BROKEN_SWPRINTF
-	if (setlocale(LC_CTYPE, "UTF-8") == NULL)
-	{
-		fprintf(stderr, "WARNING: Failed to set LC_CTYPE to UTF-8. Some strings might get garbled.\n");
-	}
-#endif
 
   // init logging
   SLOG_Init(SLOG_STDERR, "ja2.log");
