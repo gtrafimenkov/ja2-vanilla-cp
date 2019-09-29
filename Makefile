@@ -3,6 +3,8 @@
 # If you want to build without them, use make WITH_UNITTESTS=0
 WITH_UNITTESTS ?= 1
 
+WITH_DEBUGINFO ?= 1
+
 WITH_LPTHREAD ?= 1
 
 BINARY    ?= ja2-ve
@@ -571,6 +573,7 @@ rebuild-tags:
 
 # sudo apt-get install gcc-mingw-w64 g++-mingw-w64
 build-win-on-linux:
+	make clean
 	make \
 		USE_MINGW=1 \
 		MINGW_PREFIX=i686-w64-mingw32 \
