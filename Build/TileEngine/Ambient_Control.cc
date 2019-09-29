@@ -11,15 +11,15 @@
 #include "ContentManager.h"
 #include "GameInstance.h"
 
+#include "sgp/StrUtils.h"
+
 AMBIENTDATA_STRUCT		gAmbData[ MAX_AMBIENT_SOUNDS ];
 INT16									gsNumAmbData = 0;
-
 
 static BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID)
 try
 {
-	SGPFILENAME zFilename;
-	sprintf(zFilename, AMBIENTDIR "/%d.bad", ubAmbientID);
+	std::string zFilename = FormattedString(AMBIENTDIR "/%d.bad", ubAmbientID);
 
 	AutoSGPFile hFile(GCM->openGameResForReading(zFilename));
 
@@ -30,9 +30,8 @@ try
 	for (INT32 cnt = 0; cnt < gsNumAmbData; cnt++)
 	{
 		FileRead(hFile, &gAmbData[cnt], sizeof(AMBIENTDATA_STRUCT));
-
-		sprintf(zFilename, AMBIENTDIR "/%s", gAmbData[cnt].zFilename);
-		strcpy(gAmbData[cnt].zFilename, zFilename);
+    std::string filename = FormattedString(AMBIENTDIR "/%s", gAmbData[cnt].zFilename);
+    strcpy(gAmbData[cnt].zFilename, filename.c_str());
 	}
 
 	return TRUE;

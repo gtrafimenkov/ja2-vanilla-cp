@@ -209,7 +209,7 @@ void DoMessageBox(MessageBoxStyleID const ubStyle, wchar_t const* const zString,
 
 			for (UINT i = 0; i < 4; ++i)
 			{
-				wchar_t text[] = { '1' + i, '\0' };
+				wchar_t text[] = { wchar_t('1' + i), '\0' };
 				GUIButtonRef const btn = MakeButton(text, font_colour, shadow_colour, x + dx * i, y, NumberedMsgBoxCallback, cursor);
 				gMsgBox.uiButton[i] = btn;
 				btn->SetUserData(i + 1);

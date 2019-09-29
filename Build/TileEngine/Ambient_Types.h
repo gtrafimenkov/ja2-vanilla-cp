@@ -1,6 +1,8 @@
 #ifndef _AMBIENT_TYPES_H
 #define _AMBIENT_TYPES_H
 
+#include <string>
+
 #include "Types.h"
 
 
@@ -17,7 +19,7 @@ struct AMBIENTDATA_STRUCT
 	UINT32				uiMinTime;
 	UINT32				uiMaxTime;
 	UINT8					ubTimeCatagory;
-	SGPFILENAME		zFilename;
+	SGPFILENAME   zFilename;
 	UINT32				uiVol;
 };
 

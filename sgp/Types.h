@@ -83,12 +83,12 @@ typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
 
 struct SGPBox
 {
-	INT16 x;
-	INT16 y;
-	INT16 w;
-	INT16 h;
+	int32_t x;
+	int32_t y;
+	int32_t w;
+	int32_t h;
 
-  void set(INT16 _x, INT16 _y, INT16 _w, INT16 _h)
+  void set(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
   {
     x = _x;
     y = _y;

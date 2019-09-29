@@ -371,7 +371,7 @@ static UINT16* pMapDKGreenPalette;
 static SGPVObject* guiMapBorderHeliSectors;
 
 
-static INT16 const sBaseSectorList[] =
+static uint16_t const sBaseSectorList[] =
 {
 	// NOTE: These co-ordinates must match the top left corner of the 3x3 town tiles cutouts in interface/militiamaps.sti!
 	SECTOR(  9, 1 ), // Omerta

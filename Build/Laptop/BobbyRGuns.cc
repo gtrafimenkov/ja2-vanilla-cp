@@ -871,8 +871,6 @@ static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobby
 	wchar_t	sTemp[20];
 	UINT8	ubPurchaseNumber;
 
-  const ItemModel* im = GCM->getItem(usIndex);
-
 	{
 		//Display Items Name
 		wchar_t sText[BOBBYR_ITEM_DESC_NAME_SIZE];

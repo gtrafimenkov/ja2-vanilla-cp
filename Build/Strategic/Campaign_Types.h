@@ -6,11 +6,11 @@
 
 
 //Macro to convert sector coordinates (1-16,1-16) to 0-255
-static inline UINT SECTOR(UINT const x, UINT const y)
+static inline uint16_t SECTOR(int32_t const x, int32_t const y)
 {
 	Assert(1 <= x && x <= 16);
 	Assert(1 <= y && y <= 16);
-	return (y - 1) * 16 + x - 1;
+	return uint16_t((y - 1) * 16 + x - 1);
 }
 
 #define SECTORX(SectorID) ((SectorID % 16) + 1)
