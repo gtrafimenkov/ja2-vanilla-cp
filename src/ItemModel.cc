@@ -1,8 +1,8 @@
-#include "ItemModel.h"
+#include "src/ItemModel.h"
 
-#include "JsonObject.h"
-#include "MagazineModel.h"
-#include "WeaponModels.h"
+#include "src/JsonObject.h"
+#include "src/MagazineModel.h"
+#include "src/WeaponModels.h"
 
 
 ItemModel::ItemModel(uint16_t itemIndex,

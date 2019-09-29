@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "JsonUtility.h"
+#include "src/JsonUtility.h"
 
 TEST(JsonUtilityTest, parseListOfStrings)
 {

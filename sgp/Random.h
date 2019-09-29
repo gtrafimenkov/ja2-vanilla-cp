@@ -1,7 +1,7 @@
 #ifndef __RANDOM_
 #define __RANDOM_
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 extern void InitializeRandom(void);

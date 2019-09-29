@@ -1,8 +1,8 @@
-#include "Debug.h"
-#include "FileMan.h"
-#include "LoadSaveBasicSoldierCreateStruct.h"
-#include "LoadSaveData.h"
-#include "Soldier_Create.h"
+#include "Build/Tactical/LoadSaveBasicSoldierCreateStruct.h"
+#include "Build/Tactical/Soldier_Create.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 
 
 void ExtractBasicSoldierCreateStructFromFile(HWFILE const f, BASIC_SOLDIERCREATE_STRUCT& b)

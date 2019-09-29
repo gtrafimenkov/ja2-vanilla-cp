@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "DefaultContentManager.h"
+#include "src/DefaultContentManager.h"
 
 class ModPackContentManager : public DefaultContentManager
 {

@@ -1,9 +1,8 @@
-#include "DefaultIMPPolicy.h"
-
 #include <string>
 
-#include "ItemSystem.h"
-#include "JsonUtility.h"
+#include "src/ItemSystem.h"
+#include "src/JsonUtility.h"
+#include "src/policy/DefaultIMPPolicy.h"
 
 struct ItemModel;
 

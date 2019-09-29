@@ -5,9 +5,9 @@
 #include <vector>
 
 /* XXX */
-#include "ItemModel.h"
+#include "src/ItemModel.h"
 
-#include "ItemSystem.h"
+#include "src/ItemSystem.h"
 
 class DealerInventory;
 class GamePolicy;

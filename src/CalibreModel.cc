@@ -1,4 +1,4 @@
-#include "CalibreModel.h"
+#include "src/CalibreModel.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -7,10 +7,10 @@
 #include "sgp/StrUtils.h"
 #include "sgp/UTF8String.h"
 
-#include "JsonObject.h"
+#include "src/JsonObject.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 CalibreModel::CalibreModel(uint16_t index_,
                            const char* burstSoundString_,

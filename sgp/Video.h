@@ -2,7 +2,7 @@
 #define VIDEO_H
 
 #include <SDL_video.h>
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 #define VIDEO_NO_CURSOR 0xFFFF

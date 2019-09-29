@@ -1,8 +1,8 @@
 #ifndef __CAMPAIGN_H
 #define __CAMPAIGN_H
 
-#include "JA2Types.h"
-#include "Soldier_Profile_Type.h"
+#include "Build/JA2Types.h"
+#include "Build/Tactical/Soldier_Profile_Type.h"
 
 
 enum StatKind

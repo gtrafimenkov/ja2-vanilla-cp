@@ -1,6 +1,6 @@
-#include "Local.h"
-#include "SysUtil.h"
-#include "VSurface.h"
+#include "Build/Local.h"
+#include "Build/TileEngine/SysUtil.h"
+#include "sgp/VSurface.h"
 
 
 SGPVSurface* guiSAVEBUFFER;

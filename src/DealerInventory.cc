@@ -1,11 +1,11 @@
-#include "DealerInventory.h"
+#include "src/DealerInventory.h"
 
 #include <stdexcept>
 
 #include "sgp/StrUtils.h"
 
-#include "ItemModel.h"
-#include "ItemSystem.h"
+#include "src/ItemModel.h"
+#include "src/ItemSystem.h"
 
 DealerInventory::DealerInventory(rapidjson::Document *json, const ItemSystem *itemSystem)
 {

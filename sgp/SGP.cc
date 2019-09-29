@@ -12,34 +12,34 @@
 #include <exception>
 #include <new>
 
-#include "Button_System.h"
-#include "Debug.h"
-#include "FileMan.h"
-#include "Font.h"
-#include "GameLoop.h"
-#include "Init.h" // XXX should not be used in SGP
-#include "Input.h"
-#include "Intro.h"
-#include "JA2_Splash.h"
-#include "MemMan.h"
-#include "Random.h"
-#include "SGP.h"
-#include "SaveLoadGame.h" // XXX should not be used in SGP
-#include "SoundMan.h"
-#include "VObject.h"
-#include "Video.h"
-#include "VSurface.h"
+#include "sgp/Button_System.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/Font.h"
+#include "Build/GameLoop.h"
+#include "Build/Init.h" // XXX should not be used in SGP
+#include "sgp/Input.h"
+#include "Build/Intro.h"
+#include "Build/JA2_Splash.h"
+#include "sgp/MemMan.h"
+#include "sgp/Random.h"
+#include "sgp/SGP.h"
+#include "Build/SaveLoadGame.h" // XXX should not be used in SGP
+#include "sgp/SoundMan.h"
+#include "sgp/VObject.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 #include <SDL.h>
-#include "GameRes.h"
-#include "Logger.h"
-#include "GameState.h"
-#include "Timer.h"
+#include "Build/GameRes.h"
+#include "sgp/Logger.h"
+#include "Build/GameState.h"
+#include "sgp/Timer.h"
 
-#include "DefaultContentManager.h"
-#include "GameInstance.h"
-#include "JsonUtility.h"
+#include "src/DefaultContentManager.h"
+#include "src/GameInstance.h"
+#include "src/JsonUtility.h"
 #include "ModPackContentManager.h"
-#include "policy/GamePolicy.h"
+#include "src/policy/GamePolicy.h"
 #include "sgp/UTF8String.h"
 
 #include "slog/slog.h"
@@ -56,7 +56,7 @@
 #	include "Local.h"
 #endif
 
-#include "Multi_Language_Graphic_Utils.h"
+#include "Build/Utils/Multi_Language_Graphic_Utils.h"
 
 
 extern BOOLEAN gfPauseDueToPlayerGamePause;
@@ -68,10 +68,10 @@ extern BOOLEAN gfPauseDueToPlayerGamePause;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-// #include "JsonObject.h"
-// #include "MagazineModel.h"
-// #include "WeaponModels.h"
-// #include "Weapons.h"
+// #include "src/JsonObject.h"
+// #include "src/MagazineModel.h"
+// #include "src/WeaponModels.h"
+// #include "Build/Tactical/Weapons.h"
 // #include "rapidjson/document.h"
 // #include "rapidjson/filestream.h"
 // #include "rapidjson/prettywriter.h"

@@ -1,7 +1,7 @@
 #ifndef _GAME_SETTINGS__H_
 #define _GAME_SETTINGS__H_
 
-#include "MessageBoxScreen.h"
+#include "Build/MessageBoxScreen.h"
 
 
 //If you add any options, MAKE sure you add the corresponding string to the Options Screen string array

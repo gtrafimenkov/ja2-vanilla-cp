@@ -1,8 +1,8 @@
 #ifndef _EXPLOSION_CONTROL_H
 #define _EXPLOSION_CONTROL_H
 
-#include "JA2Types.h"
-#include "Weapons.h"
+#include "Build/JA2Types.h"
+#include "Build/Tactical/Weapons.h"
 
 #define MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES 2
 

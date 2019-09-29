@@ -9,7 +9,7 @@
 // XXX
 #include "Build/Tactical/Weapons.h"
 
-#include "ItemModel.h"
+#include "src/ItemModel.h"
 
 class JsonObject;
 class JsonObjectReader;

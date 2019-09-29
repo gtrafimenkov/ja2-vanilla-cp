@@ -3,7 +3,7 @@
 #ifndef BUTTON_SYSTEM_H
 #define BUTTON_SYSTEM_H
 
-#include "MouseSystem.h"
+#include "sgp/MouseSystem.h"
 
 
 #define MAX_BUTTONS     400

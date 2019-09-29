@@ -1,7 +1,7 @@
 #ifndef __SGP_
 #define __SGP_
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 /** Request game exit.
  * Call this function if you want to exit the game. */

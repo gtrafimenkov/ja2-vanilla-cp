@@ -1,8 +1,8 @@
 #ifndef _LAPTOP_SAVE_H_
 #define _LAPTOP_SAVE_H_
 
-#include "Item_Types.h"
-#include "Store_Inventory.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/Laptop/Store_Inventory.h"
 
 #define		MAX_BOOKMARKS											20
 

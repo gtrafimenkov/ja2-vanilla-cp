@@ -1,20 +1,20 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Directories.h"
-#include "HImage.h"
-#include "Structure.h"
-#include "TileDef.h"
-#include "Animation_Cache.h"
-#include "Animation_Data.h"
-#include "Debug_Control.h"
+#include "Build/Directories.h"
+#include "sgp/HImage.h"
+#include "Build/TileEngine/Structure.h"
+#include "Build/TileEngine/TileDef.h"
+#include "Build/Tactical/Animation_Cache.h"
+#include "Build/Tactical/Animation_Data.h"
+#include "Build/Utils/Debug_Control.h"
 #include "Tile_Surface.h"
-#include "Tile_Cache.h"
-#include "FileMan.h"
-#include "MemMan.h"
+#include "Build/TileEngine/Tile_Cache.h"
+#include "sgp/FileMan.h"
+#include "sgp/MemMan.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 struct TILE_CACHE_STRUCT
 {

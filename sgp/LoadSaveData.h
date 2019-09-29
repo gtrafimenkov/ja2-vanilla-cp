@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "Types.h"
-#include "UTF8String.h"
+#include "sgp/Types.h"
+#include "sgp/UTF8String.h"
 #include "IEncodingCorrector.h"
 
 #define EXTR_STR(S, D, Size)  memcpy((D), (S), Size); (S) += (Size);

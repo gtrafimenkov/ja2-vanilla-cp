@@ -1,7 +1,7 @@
 #ifndef __SOUNDMAN_
 #define __SOUNDMAN_
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 #define MAXVOLUME 127

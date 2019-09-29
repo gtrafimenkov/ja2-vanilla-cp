@@ -1,7 +1,7 @@
 #ifndef LOADSAVESMOKEEFFECT_H
 #define LOADSAVESMOKEEFFECT_H
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 void ExtractSmokeEffectFromFile(HWFILE, SMOKEEFFECT*);

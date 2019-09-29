@@ -1,7 +1,7 @@
 #ifndef __BUTTON_SOUND_CONTROL_H
 #define __BUTTON_SOUND_CONTROL_H
 
-#include "Button_System.h"
+#include "sgp/Button_System.h"
 
 enum ButtonSoundScheme
 {

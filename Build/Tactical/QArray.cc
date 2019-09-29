@@ -1,4 +1,4 @@
-#include "QArray.h"
+#include "Build/Tactical/QArray.h"
 
 
 BOOLEAN QuoteExp_HeadShotOnly[75] =

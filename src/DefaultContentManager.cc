@@ -1,38 +1,31 @@
-#include "DefaultContentManager.h"
-
-#include <stdexcept>
 #include <memory>
+#include <stdexcept>
 
 #include "Build/Directories.h"
+#include "Build/GameRes.h"
+#include "Build/GameState.h"
 #include "Build/Strategic/Strategic_Status.h"
 #include "Build/Tactical/Arms_Dealer.h"
 #include "Build/Tactical/Items.h"
 #include "Build/Tactical/Weapons.h"
-
-// XXX: GameRes.h should be integrated to ContentManager
-#include "Build/GameRes.h"
-
-// XXX
-#include "Build/GameState.h"
-
+#include "Build/Utils/Text.h"
 #include "sgp/FileMan.h"
 #include "sgp/LibraryDataBase.h"
 #include "sgp/MemMan.h"
 #include "sgp/StrUtils.h"
 #include "sgp/UTF8String.h"
-
-#include "AmmoTypeModel.h"
-#include "CalibreModel.h"
-#include "DealerInventory.h"
-#include "JsonObject.h"
-#include "JsonUtility.h"
-#include "MagazineModel.h"
-#include "WeaponModels.h"
-#include "policy/DefaultGamePolicy.h"
-#include "policy/DefaultIMPPolicy.h"
-#include "Text.h"
-
 #include "slog/slog.h"
+#include "src/AmmoTypeModel.h"
+#include "src/CalibreModel.h"
+#include "src/DealerInventory.h"
+#include "src/DefaultContentManager.h"
+#include "src/JsonObject.h"
+#include "src/JsonUtility.h"
+#include "src/MagazineModel.h"
+#include "src/policy/DefaultGamePolicy.h"
+#include "src/policy/DefaultIMPPolicy.h"
+#include "src/WeaponModels.h"
+
 #define TAG "DefaultCM"
 
 #define BASEDATADIR    "data"

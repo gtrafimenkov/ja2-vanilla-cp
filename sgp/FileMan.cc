@@ -1,19 +1,20 @@
 #include <stdexcept>
-
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "FileMan.h"
-#include "LibraryDataBase.h"
-#include "MemMan.h"
-#include "PODObj.h"
-#include "Logger.h"
+
+#include "sgp/FileMan.h"
+#include "sgp/LibraryDataBase.h"
+#include "sgp/Logger.h"
+#include "sgp/MemMan.h"
+#include "sgp/PODObj.h"
 
 #include "boost/filesystem.hpp"
 
 #include "slog/slog.h"
+
 #define TAG "FileMan"
 
 #if _WIN32

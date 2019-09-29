@@ -1,11 +1,11 @@
 // MODULE FOR SOUND SYSTEM
 
-#include "Directories.h"
-#include "Sound_Control.h"
-#include "SoundMan.h"
-#include "Overhead.h"
-#include "Isometric_Utils.h"
-#include "RenderWorld.h"
+#include "Build/Directories.h"
+#include "Build/Utils/Sound_Control.h"
+#include "sgp/SoundMan.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/TileEngine/Isometric_Utils.h"
+#include "Build/TileEngine/RenderWorld.h"
 #include <math.h>
 
 

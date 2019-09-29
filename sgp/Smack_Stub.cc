@@ -3,9 +3,9 @@
   #include <strings.h>
 #endif
 #include "Smack_Stub.h"
-#include "Sound_Control.h"
-#include "SoundMan.h"
-#include "FileMan.h"
+#include "Build/Utils/Sound_Control.h"
+#include "sgp/SoundMan.h"
+#include "sgp/FileMan.h"
 
 extern "C" {
 #include "smacker.h"

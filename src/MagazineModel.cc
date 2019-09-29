@@ -1,9 +1,9 @@
-#include "MagazineModel.h"
+#include "src/MagazineModel.h"
 
-#include "AmmoTypeModel.h"
-#include "CalibreModel.h"
-#include "JsonObject.h"
-#include "JsonUtility.h"
+#include "src/AmmoTypeModel.h"
+#include "src/CalibreModel.h"
+#include "src/JsonObject.h"
+#include "src/JsonUtility.h"
 
 MagazineModel::MagazineModel(uint16_t itemIndex_,
                              const char* internalName_,
@@ -18,9 +18,9 @@ MagazineModel::MagazineModel(uint16_t itemIndex_,
 {
 }
 
-#include "ContentManager.h"
-#include "GameInstance.h"
-#include "Items.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
+#include "Build/Tactical/Items.h"
 
 void MagazineModel::serializeTo(JsonObject &obj) const
 {

@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "LoadSaveData.h"
+#include "sgp/LoadSaveData.h"
 
 #include "src/TestUtils.h"
 

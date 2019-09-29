@@ -1,4 +1,4 @@
-#include "EncodingCorrectors.h"
+#include "sgp/EncodingCorrectors.h"
 
 /** Fix one UTF-16 code point. */
 uint16_t RussianEncodingCorrector::fix(uint16_t codePoint) const

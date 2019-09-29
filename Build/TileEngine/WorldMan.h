@@ -3,7 +3,7 @@
 
 #include <exception>
 
-#include "WorldDef.h"
+#include "Build/TileEngine/WorldDef.h"
 
 // memory-accounting function
 void CountLevelNodes( void );

@@ -1,6 +1,6 @@
-#include "HImage.h"
-#include "Shading.h"
-#include "VObject.h"
+#include "sgp/HImage.h"
+#include "sgp/Shading.h"
+#include "sgp/VObject.h"
 
 UINT16 IntensityTable[65536];
 UINT16 ShadeTable[65536];

@@ -7,22 +7,22 @@
 //
 //------------------------------------------------------------------------------
 
-#include "Cinematics.h"
-#include "Debug.h"
-#include "FileMan.h"
-#include "Intro.h"
-#include "Local.h"
+#include "Build/Utils/Cinematics.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "Build/Intro.h"
+#include "Build/Local.h"
 //#include "Smack.h" // XXX
 
 #include "Smack_Stub.h" // XXX
-#include "SoundMan.h"
-#include "Types.h"
-#include "VSurface.h"
-#include "HImage.h"
-#include "Video.h"
+#include "sgp/SoundMan.h"
+#include "sgp/Types.h"
+#include "sgp/VSurface.h"
+#include "sgp/HImage.h"
+#include "sgp/Video.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 struct SMKFLIC
 {

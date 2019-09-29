@@ -1,7 +1,7 @@
 #ifndef MEDICAL_H
 #define MEDICAL_H
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 // Can this soldier autobandage others in sector

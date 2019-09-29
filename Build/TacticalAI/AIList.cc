@@ -12,13 +12,13 @@
 #include <stdexcept>
 
 #include "AIList.h"
-#include "Animation_Data.h"
-#include "Overhead.h"
-#include "Debug.h"
-#include "AIInternals.h"
-#include "AI.h"
-#include "OppList.h"
-#include "Interface.h"
+#include "Build/Tactical/Animation_Data.h"
+#include "Build/Tactical/Overhead.h"
+#include "sgp/Debug.h"
+#include "Build/TacticalAI/AIInternals.h"
+#include "Build/TacticalAI/AI.h"
+#include "Build/Tactical/OppList.h"
+#include "Build/Tactical/Interface.h"
 
 
 #define MAX_AI_PRIORITY 100

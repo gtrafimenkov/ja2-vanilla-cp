@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "ItemModel.h"
+#include "src/ItemModel.h"
 
 class ItemSystem;
 

@@ -1,8 +1,8 @@
-#include "Debug.h"
-#include "FileMan.h"
+#include "Build/Tactical/Overhead.h"
 #include "LoadSaveBullet.h"
-#include "LoadSaveData.h"
-#include "Overhead.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 
 
 void ExtractBulletFromFile(HWFILE const file, BULLET* const b)

@@ -1,6 +1,6 @@
 #include "ModPackContentManager.h"
 
-#include "JsonUtility.h"
+#include "src/JsonUtility.h"
 #include "sgp/FileMan.h"
 #include "sgp/UTF8String.h"
 

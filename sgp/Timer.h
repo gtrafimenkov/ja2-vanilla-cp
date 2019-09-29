@@ -1,7 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include "Types.h"
+#include "sgp/Types.h"
 #include <SDL.h>
 
 static inline UINT32 GetClock(void)

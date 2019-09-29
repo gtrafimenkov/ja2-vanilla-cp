@@ -4,31 +4,31 @@
 #include <ctime>
 #include <stdexcept>
 
-#include "Debug.h"
-#include "Fade_Screen.h"
-#include "FileMan.h"
-#include "HImage.h"
-#include "Input.h"
-#include "Local.h"
-#include "MemMan.h"
-#include "RenderWorld.h"
-#include "Render_Dirty.h"
-#include "Timer.h"
-#include "Timer_Control.h"
-#include "Types.h"
-#include "VObject_Blitters.h"
-#include "VSurface.h"
-#include "Video.h"
+#include "sgp/Debug.h"
+#include "Build/Fade_Screen.h"
+#include "sgp/FileMan.h"
+#include "sgp/HImage.h"
+#include "sgp/Input.h"
+#include "Build/Local.h"
+#include "sgp/MemMan.h"
+#include "Build/TileEngine/RenderWorld.h"
+#include "Build/TileEngine/Render_Dirty.h"
+#include "sgp/Timer.h"
+#include "Build/Utils/Timer_Control.h"
+#include "sgp/Types.h"
+#include "sgp/VObject_Blitters.h"
+#include "sgp/VSurface.h"
+#include "sgp/Video.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdarg.h>
 
 #include "PlatformIO.h"
 #include "PlatformSDL.h"
-#include "Font.h"
+#include "sgp/Font.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 #include "slog/slog.h"
 

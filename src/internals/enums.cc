@@ -1,4 +1,4 @@
-#include "internals/enums.h"
+#include "src/internals/enums.h"
 
 #include "Build/Tactical/Animation_Control.h"
 #include "Build/Tactical/Soldier_Control.h"

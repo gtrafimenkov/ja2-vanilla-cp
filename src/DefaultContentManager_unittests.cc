@@ -5,7 +5,7 @@
 
 #include "sgp/FileMan.h"
 
-#include "DefaultContentManager.h"
+#include "src/DefaultContentManager.h"
 #include "DefaultContentManagerUT.h"
 
 #define TMPDIR "temp"

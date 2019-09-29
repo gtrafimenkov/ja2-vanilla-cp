@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "SaveLoadGame.h"
-#include "FileMan.h"
+#include "Build/SaveLoadGame.h"
+#include "sgp/FileMan.h"
 #include "src/TestUtils.h"
 
 const uint8_t s_savedGameHeaderVanilla[] = {

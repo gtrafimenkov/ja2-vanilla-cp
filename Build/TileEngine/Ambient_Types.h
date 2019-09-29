@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 #define MAX_AMBIENT_SOUNDS		100

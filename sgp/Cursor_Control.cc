@@ -1,10 +1,10 @@
-#include "Cursor_Control.h"
-#include "Debug.h"
-#include "HImage.h"
-#include "Timer.h"
-#include "VObject.h"
-#include "Video.h"
-#include "VSurface.h"
+#include "sgp/Cursor_Control.h"
+#include "sgp/Debug.h"
+#include "sgp/HImage.h"
+#include "sgp/Timer.h"
+#include "sgp/VObject.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,9 +1,9 @@
-#include "Debug.h"
-#include "FileMan.h"
-#include "LoadSaveData.h"
-#include "LoadSaveObjectType.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
+#include "Build/Tactical/LoadSaveObjectType.h"
 #include "LoadSaveRealObject.h"
-#include "Overhead.h"
+#include "Build/Tactical/Overhead.h"
 
 
 void ExtractRealObjectFromFile(HWFILE const file, REAL_OBJECT* const o)

@@ -1,8 +1,8 @@
 #ifndef		_SAVELOADMAP__H_
 #define		_SAVELOADMAP__H_
 
-#include "WorldDef.h"
-#include "Exit_Grids.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/TileEngine/Exit_Grids.h"
 
 //Used for the ubType in the MODIFY_MAP struct
 enum

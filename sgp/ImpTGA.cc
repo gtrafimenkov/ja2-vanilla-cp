@@ -1,16 +1,16 @@
 #include <stdexcept>
 
-#include "Buffer.h"
-#include "HImage.h"
-#include "LoadSaveData.h"
-#include "Types.h"
-#include "FileMan.h"
+#include "sgp/Buffer.h"
+#include "sgp/HImage.h"
+#include "sgp/LoadSaveData.h"
+#include "sgp/Types.h"
+#include "sgp/FileMan.h"
 #include "ImpTGA.h"
-#include "MemMan.h"
-#include "Debug.h"
+#include "sgp/MemMan.h"
+#include "sgp/Debug.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 static SGPImage* ReadRLEColMapImage(   HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);
 static SGPImage* ReadRLERGBImage(      HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);

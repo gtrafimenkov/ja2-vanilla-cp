@@ -1,15 +1,15 @@
 #include <stdexcept>
 
-#include "Types.h"
-#include "Debug.h"
-#include "FileMan.h"
-#include "HImage.h"
+#include "sgp/Types.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/HImage.h"
 #include "ImpTGA.h"
 #include "PCX.h"
 #include "STCI.h"
-#include "WCheck.h"
-#include "VObject.h"
-#include "MemMan.h"
+#include "sgp/WCheck.h"
+#include "sgp/VObject.h"
+#include "sgp/MemMan.h"
 
 
 // This is the color substituted to keep a 24bpp -> 16bpp color

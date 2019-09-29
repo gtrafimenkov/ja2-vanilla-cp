@@ -1,7 +1,7 @@
 #ifndef ___LINE___H
 #define ___LINE___H
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 /* Example Usage:

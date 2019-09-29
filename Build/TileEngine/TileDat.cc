@@ -1,6 +1,6 @@
-#include "TileDat.h"
-#include "TileDef.h"
-#include "WorldDef.h"
+#include "Build/TileEngine/TileDat.h"
+#include "Build/TileEngine/TileDef.h"
+#include "Build/TileEngine/WorldDef.h"
 
 
 INT16 const gOpenDoorList[] =

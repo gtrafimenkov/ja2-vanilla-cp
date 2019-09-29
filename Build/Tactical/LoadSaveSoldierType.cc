@@ -1,11 +1,11 @@
 #include <stdexcept>
 
-#include "Debug.h"
-#include "LoadSaveData.h"
-#include "LoadSaveObjectType.h"
-#include "LoadSaveSoldierType.h"
-#include "Overhead.h"
-#include "Tactical_Save.h"
+#include "Build/Tactical/LoadSaveObjectType.h"
+#include "Build/Tactical/LoadSaveSoldierType.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/Tactical/Tactical_Save.h"
+#include "sgp/Debug.h"
+#include "sgp/LoadSaveData.h"
 
 
 static UINT32 MercChecksum(SOLDIERTYPE const& s)

@@ -1,7 +1,7 @@
 #ifndef __GAME_EVENTS_H
 #define __GAME_EVENTS_H
 
-#include "Game_Event_Hook.h"
+#include "Build/Strategic/Game_Event_Hook.h"
 
 
 #define SEF_DELETION_PENDING	0x02

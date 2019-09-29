@@ -5,7 +5,7 @@
 #include "Build/Directories.h"
 #include "Build/Tactical/Soldier_Profile.h"
 #include "Build/Tactical/Soldier_Profile_Type.h"
-#include "MercProfile.h"
+#include "src/MercProfile.h"
 
 const char* Content::GetDialogueTextFilename(const MercProfile &profile,
                                              bool useAlternateDialogueFile,

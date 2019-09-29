@@ -1,10 +1,10 @@
 #ifndef __PHYSICS_H
 #define	__PHYSICS_H
 
-#include "Item_Types.h"
-#include "JA2Types.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/JA2Types.h"
 #include "Phys_Math.h"
-#include "WorldDef.h"
+#include "Build/TileEngine/WorldDef.h"
 
 
 extern UINT32 guiNumObjectSlots;

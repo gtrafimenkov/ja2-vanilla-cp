@@ -1,13 +1,13 @@
 #include <stdint.h>
-#include "Debug.h"
-#include "HImage.h"
-#include "Local.h"
-#include "MemMan.h"
-#include "Shading.h"
-#include "VObject.h"
-#include "VObject_Blitters.h"
-#include "VSurface.h"
-#include "WCheck.h"
+#include "sgp/Debug.h"
+#include "sgp/HImage.h"
+#include "Build/Local.h"
+#include "sgp/MemMan.h"
+#include "sgp/Shading.h"
+#include "sgp/VObject.h"
+#include "sgp/VObject_Blitters.h"
+#include "sgp/VSurface.h"
+#include "sgp/WCheck.h"
 
 
 SGPRect	ClippingRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };

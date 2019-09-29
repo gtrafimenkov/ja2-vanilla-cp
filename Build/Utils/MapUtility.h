@@ -1,7 +1,7 @@
 #ifndef MAPUTILITY_H
 #define MAPUTILITY_H
 
-#include "ScreenIDs.h"
+#include "Build/ScreenIDs.h"
 
 
 ScreenID MapUtilScreenHandle(void);

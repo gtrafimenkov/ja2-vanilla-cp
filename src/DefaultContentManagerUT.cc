@@ -1,6 +1,6 @@
 #include "DefaultContentManagerUT.h"
 
-#include "GameRes.h"
+#include "Build/GameRes.h"
 #include "sgp/FileMan.h"
 
 #include "src/DefaultContentManager.h"

@@ -1,7 +1,7 @@
 #ifndef __DEBUG_MANAGER_
 #define __DEBUG_MANAGER_
 
-#include "Types.h"
+#include "sgp/Types.h"
 #include "TopicIDs.h"
 
 

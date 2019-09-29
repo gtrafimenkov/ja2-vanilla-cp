@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "Item_Types.h"
-#include "JA2Types.h"
-#include "Weapons.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/JA2Types.h"
+#include "Build/Tactical/Weapons.h"
 
 struct CalibreModel;
 struct ItemModel;

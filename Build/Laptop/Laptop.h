@@ -1,10 +1,10 @@
 #ifndef LAPTOP_H
 #define LAPTOP_H
 
-#include "MessageBoxScreen.h"
-#include "MouseSystem.h"
-#include "ScreenIDs.h"
-#include "Types.h"
+#include "Build/MessageBoxScreen.h"
+#include "sgp/MouseSystem.h"
+#include "Build/ScreenIDs.h"
+#include "sgp/Types.h"
 
 
 void ExitLaptop(void);

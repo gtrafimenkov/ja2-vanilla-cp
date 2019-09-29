@@ -1,6 +1,6 @@
-#include "Campaign_Types.h"
-#include "Strategic_Movement.h"
-#include "Strategic_Movement_Costs.h"
+#include "Build/Strategic/Campaign_Types.h"
+#include "Build/Strategic/Strategic_Movement.h"
+#include "Build/Strategic/Strategic_Movement_Costs.h"
 
 
 #define A  SAND

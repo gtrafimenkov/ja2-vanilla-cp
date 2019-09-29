@@ -1,5 +1,5 @@
-#include "Types.h"
-#include "Debug_Control.h"
+#include "sgp/Types.h"
+#include "Build/Utils/Debug_Control.h"
 
 
 #ifdef _ANIMSUBSYSTEM_DEBUG

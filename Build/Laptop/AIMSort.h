@@ -1,9 +1,10 @@
 #ifndef __AIMSORT_H_
 #define __AIMSORT_H_
 
+#include <cstdint>
 
-extern UINT8 gubCurrentSortMode;
-extern UINT8 gubCurrentListMode;
+extern uint8_t gubCurrentSortMode;
+extern uint8_t gubCurrentListMode;
 
 
 #define		AIM_ASCEND									6

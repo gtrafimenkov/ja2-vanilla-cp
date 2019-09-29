@@ -1,15 +1,15 @@
-#include "Types.h"
-#include "Store_Inventory.h"
-#include "Random.h"
-#include "Debug.h"
-#include "LaptopSave.h"
-#include "ShopKeeper_Interface.h"
-#include "ArmsDealerInvInit.h"
+#include "sgp/Types.h"
+#include "Build/Laptop/Store_Inventory.h"
+#include "sgp/Random.h"
+#include "sgp/Debug.h"
+#include "Build/Laptop/LaptopSave.h"
+#include "Build/Tactical/ShopKeeper_Interface.h"
+#include "Build/Tactical/ArmsDealerInvInit.h"
 
-#include "ContentManager.h"
-#include "DealerInventory.h"
-#include "GameInstance.h"
-#include "ItemModel.h"
+#include "src/ContentManager.h"
+#include "src/DealerInventory.h"
+#include "src/GameInstance.h"
+#include "src/ItemModel.h"
 
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items

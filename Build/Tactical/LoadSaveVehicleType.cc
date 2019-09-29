@@ -1,10 +1,10 @@
-#include "Debug.h"
-#include "FileMan.h"
-#include "LoadSaveVehicleType.h"
-#include "LoadSaveData.h"
-#include "Soldier_Control.h"
-#include "Soldier_Profile.h"
-#include "Vehicles.h"
+#include "Build/Tactical/LoadSaveVehicleType.h"
+#include "Build/Tactical/Soldier_Control.h"
+#include "Build/Tactical/Soldier_Profile.h"
+#include "Build/Tactical/Vehicles.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 
 
 void ExtractVehicleTypeFromFile(HWFILE const file, VEHICLETYPE* const v, UINT32 const savegame_version)

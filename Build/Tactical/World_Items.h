@@ -1,8 +1,8 @@
 #ifndef __WORLD_ITEMS
 #define __WORLD_ITEMS
 
-#include "Debug.h"
-#include "Item_Types.h"
+#include "sgp/Debug.h"
+#include "Build/Tactical/Item_Types.h"
 
 
 #define	WORLD_ITEM_DONTRENDER												0x0001

@@ -1,7 +1,7 @@
 #ifndef LOADSAVESTRATEGICMAPELEMENT_H
 #define LOADSAVESTRATEGICMAPELEMENT_H
 
-#include "StrategicMap.h"
+#include "Build/Strategic/StrategicMap.h"
 
 
 void ExtractStrategicMapElementFromFile(HWFILE, StrategicMapElement&);

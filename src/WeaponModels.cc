@@ -1,19 +1,19 @@
-#include "WeaponModels.h"
+#include "src/WeaponModels.h"
 
 #include "Build/Tactical/Items.h"
 #include "Build/Tactical/Points.h"
 #include "Build/Utils/Sound_Control.h"
 
-#include "CalibreModel.h"
-#include "JsonObject.h"
-#include "JsonUtility.h"
-#include "MagazineModel.h"
+#include "src/CalibreModel.h"
+#include "src/JsonObject.h"
+#include "src/JsonUtility.h"
+#include "src/MagazineModel.h"
 
 #include "slog/slog.h"
 #define TAG "Weapons"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 // exact gun types
 // used as an index in WeaponType[] string array

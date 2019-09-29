@@ -2,12 +2,12 @@
 
 #include "gtest/gtest.h"
 
-#include "EncodingCorrectors.h"
-#include "FileMan.h"
-#include "IMP_Compile_Character.h"
-#include "LoadSaveMercProfile.h"
-#include "Soldier_Profile.h"
-#include "Soldier_Profile_Type.h"
+#include "sgp/EncodingCorrectors.h"
+#include "sgp/FileMan.h"
+#include "Build/Laptop/IMP_Compile_Character.h"
+#include "Build/Tactical/LoadSaveMercProfile.h"
+#include "Build/Tactical/Soldier_Profile.h"
+#include "Build/Tactical/Soldier_Profile_Type.h"
 
 #include "src/TestUtils.h"
 

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <string>
 
-#include "ItemModel.h"
+#include "src/ItemModel.h"
 
 class JsonObject;
 class JsonObjectReader;

@@ -19,9 +19,9 @@
 #include <stdexcept>
 
 #include "Container.h"
-#include "Debug.h"
-#include "MemMan.h"
-#include "Types.h"
+#include "sgp/Debug.h"
+#include "sgp/MemMan.h"
+#include "sgp/Types.h"
 
 
 struct ListHeader

@@ -13,8 +13,8 @@
 #ifndef _MOUSE_SYSTEM_H_
 #define _MOUSE_SYSTEM_H_
 
-#include "JA2Types.h"
-#include "Types.h"
+#include "Build/JA2Types.h"
+#include "sgp/Types.h"
 
 
 #define _JA2_RENDER_DIRTY		// Undef this if not using the JA2 Dirty Rectangle System.

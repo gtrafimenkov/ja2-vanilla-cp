@@ -1,7 +1,7 @@
 #ifndef PODOBJ_H
 #define PODOBJ_H
 
-#include "MemMan.h"
+#include "sgp/MemMan.h"
 
 
 namespace SGP

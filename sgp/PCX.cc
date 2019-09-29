@@ -1,13 +1,13 @@
 #include <stdexcept>
 
-#include "Buffer.h"
-#include "HImage.h"
+#include "sgp/Buffer.h"
+#include "sgp/HImage.h"
 #include "PCX.h"
-#include "MemMan.h"
-#include "FileMan.h"
+#include "sgp/MemMan.h"
+#include "sgp/FileMan.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 struct PcxHeader
 {

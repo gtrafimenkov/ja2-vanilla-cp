@@ -1,10 +1,10 @@
 #ifndef _DIALOG_CONTROL_H
 #define _DIALOG_CONTROL_H
 
-#include "Faces.h"
-#include "GameScreen.h"
+#include "Build/Tactical/Faces.h"
+#include "Build/GameScreen.h"
 
-#include "MercProfile.h"
+#include "src/MercProfile.h"
 
 // An enumeration for dialog quotes
 enum DialogQuoteIDs

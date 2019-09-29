@@ -1,15 +1,15 @@
 #include <stdarg.h>
-#include "HImage.h"
-#include "Local.h"
-#include "Types.h"
-#include "MemMan.h"
-#include "Font.h"
-#include "Debug.h"
-#include "TranslationTable.h"
-#include "VSurface.h"
-#include "VObject.h"
-#include "VObject_Blitters.h"
-#include "GameRes.h"
+#include "sgp/HImage.h"
+#include "Build/Local.h"
+#include "sgp/Types.h"
+#include "sgp/MemMan.h"
+#include "sgp/Font.h"
+#include "sgp/Debug.h"
+#include "sgp/TranslationTable.h"
+#include "sgp/VSurface.h"
+#include "sgp/VObject.h"
+#include "sgp/VObject_Blitters.h"
+#include "Build/GameRes.h"
 
 
 typedef UINT8 GlyphIdx;

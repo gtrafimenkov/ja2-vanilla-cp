@@ -1,22 +1,22 @@
 // Rewritten mostly by Kris Morness
 #include  <stdexcept>
 
-#include "Button_Sound_Control.h"
-#include "Button_System.h"
-#include "Debug.h"
-#include "Font.h"
-#include "HImage.h"
-#include "Input.h"
-#include "MemMan.h"
-#include "VObject.h"
-#include "VObject_Blitters.h"
-#include "VSurface.h"
-#include "Video.h"
-#include "WCheck.h"
-#include "WordWrap.h"
+#include "Build/Utils/WordWrap.h"
+#include "sgp/Button_Sound_Control.h"
+#include "sgp/Button_System.h"
+#include "sgp/Debug.h"
+#include "sgp/Font.h"
+#include "sgp/HImage.h"
+#include "sgp/Input.h"
+#include "sgp/MemMan.h"
+#include "sgp/Video.h"
+#include "sgp/VObject_Blitters.h"
+#include "sgp/VObject.h"
+#include "sgp/VSurface.h"
+#include "sgp/WCheck.h"
 
 #ifdef _JA2_RENDER_DIRTY
-#	include "Font_Control.h"
+#include "Build/Utils/Font_Control.h"
 #endif
 
 

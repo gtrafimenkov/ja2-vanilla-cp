@@ -1,4 +1,4 @@
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 enum BloodKind

@@ -1,20 +1,20 @@
-#include "Cursors.h"
-#include "Directories.h"
-#include "Font.h"
-#include "Laptop.h"
-#include "AIMSort.h"
-#include "AIM.h"
-#include "VObject.h"
-#include "WordWrap.h"
-#include "Soldier_Profile.h"
-#include "Game_Clock.h"
-#include "Text.h"
-#include "Multi_Language_Graphic_Utils.h"
-#include "Button_System.h"
-#include "Video.h"
-#include "VSurface.h"
-#include "Debug.h"
-#include "Font_Control.h"
+#include "Build/Directories.h"
+#include "Build/Laptop/AIM.h"
+#include "Build/Laptop/AIMSort.h"
+#include "Build/Laptop/Laptop.h"
+#include "Build/Strategic/Game_Clock.h"
+#include "Build/Tactical/Soldier_Profile.h"
+#include "Build/Utils/Cursors.h"
+#include "Build/Utils/Font_Control.h"
+#include "Build/Utils/Multi_Language_Graphic_Utils.h"
+#include "Build/Utils/Text.h"
+#include "Build/Utils/WordWrap.h"
+#include "sgp/Button_System.h"
+#include "sgp/Debug.h"
+#include "sgp/Font.h"
+#include "sgp/Video.h"
+#include "sgp/VObject.h"
+#include "sgp/VSurface.h"
 
 
 //#define
@@ -99,8 +99,8 @@ static AIMSortInfo g_aim_sort_info[str_aim_sort_list_SIZE] =
 	{ AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 17, RIGHT_JUSTIFIED, 8, SelectDescendBoxRegionCallBack    }
 };
 
-UINT8			gubCurrentSortMode;
-UINT8			gubCurrentListMode;
+uint8_t			gubCurrentSortMode;
+uint8_t			gubCurrentListMode;
 
 // Mouse stuff
 //Clicking on To Mugshot
@@ -135,7 +135,7 @@ static void SelectToStatsRegionCallBack(MOUSE_REGION* pRegion, INT32 iReason);
 void EnterAimSort()
 {
 	//Everytime into Aim Sort, reset array.
-	for (UINT8 i = 0; i < MAX_NUMBER_MERCS; ++i)
+	for (uint8_t i = 0; i < MAX_NUMBER_MERCS; ++i)
 	{
 		AimMercArray[i] = i;
 	}
@@ -221,7 +221,7 @@ void ExitAimSort()
 }
 
 
-static void DrawSelectLight(UINT8 ubMode, UINT8 ubImage);
+static void DrawSelectLight(uint8_t ubMode, uint8_t ubImage);
 
 
 void RenderAimSort()
@@ -293,7 +293,7 @@ static void SelectToArchiveRegionCallBack(MOUSE_REGION* pRegion, INT32 iReason)
 }
 
 
-static void SetSortCriterion(const UINT8 criterion)
+static void SetSortCriterion(const uint8_t criterion)
 {
 	if (gubCurrentSortMode == criterion) return;
 	DrawSelectLight(gubCurrentSortMode, AIM_SORT_OFF);
@@ -338,7 +338,7 @@ static void SelectMechanicalBoxRegionCallBack(MOUSE_REGION* pRegion, INT32 iReas
 }
 
 
-static void SetSortOrder(const UINT8 order)
+static void SetSortOrder(const uint8_t order)
 {
 	if (gubCurrentListMode == order) return;
 	DrawSelectLight(gubCurrentListMode, AIM_SORT_OFF);
@@ -359,7 +359,7 @@ static void SelectDescendBoxRegionCallBack(MOUSE_REGION* pRegion, INT32 iReason)
 }
 
 
-static void DrawSelectLight(const UINT8 ubMode, const UINT8 ubImage)
+static void DrawSelectLight(const uint8_t ubMode, const uint8_t ubImage)
 {
 	const AIMSortInfo* const asi = &g_aim_sort_info[ubMode];
 	const INT32 x = asi->x;
@@ -374,14 +374,14 @@ static INT32 QsortCompare(const void* pNum1, const void* pNum2);
 
 static void SortMercArray(void)
 {
-	qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(UINT8), QsortCompare);
+	qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(uint8_t), QsortCompare);
 }
 
 
 static INT32 QsortCompare(const void* pNum1, const void* pNum2)
 {
-	MERCPROFILESTRUCT const& p1 = GetProfile(*(UINT8*)pNum1);
-	MERCPROFILESTRUCT const& p2 = GetProfile(*(UINT8*)pNum2);
+	MERCPROFILESTRUCT const& p1 = GetProfile(*(uint8_t*)pNum1);
+	MERCPROFILESTRUCT const& p2 = GetProfile(*(uint8_t*)pNum2);
 
 	INT32 v1;
 	INT32 v2;

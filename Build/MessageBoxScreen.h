@@ -1,10 +1,10 @@
 #ifndef MESSAGEBOXSCREEN_H
 #define MESSAGEBOXSCREEN_H
 
-#include "Button_System.h"
-#include "JA2Types.h"
-#include "MouseSystem.h"
-#include "ScreenIDs.h"
+#include "Build/JA2Types.h"
+#include "Build/ScreenIDs.h"
+#include "sgp/Button_System.h"
+#include "sgp/MouseSystem.h"
 
 
 // Message box flags

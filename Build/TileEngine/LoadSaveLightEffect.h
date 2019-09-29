@@ -1,7 +1,7 @@
 #ifndef LOADSAVELIGHTEFFECT_H
 #define LOADSAVELIGHTEFFECT_H
 
-#include "LightEffects.h"
+#include "Build/TileEngine/LightEffects.h"
 
 
 void ExtractLightEffectFromFile(HWFILE, LIGHTEFFECT* l);

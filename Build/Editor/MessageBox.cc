@@ -1,12 +1,12 @@
-#include "Directories.h"
-#include "Local.h"
-#include "Video.h"
-#include "Font.h"
-#include "Font_Control.h"
+#include "Build/Directories.h"
+#include "Build/Local.h"
+#include "sgp/Video.h"
+#include "sgp/Font.h"
+#include "Build/Utils/Font_Control.h"
 #include "MessageBox.h"
-#include "Input.h"
-#include "English.h"
-#include "Button_System.h"
+#include "sgp/Input.h"
+#include "sgp/English.h"
+#include "sgp/Button_System.h"
 
 
 GUIButtonRef iMsgBoxBgrnd;

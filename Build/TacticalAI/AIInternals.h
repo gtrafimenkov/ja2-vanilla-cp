@@ -1,7 +1,7 @@
-#include "Types.h"
-#include "Overhead.h"
-#include "Random.h"
-#include "Points.h"
+#include "sgp/Types.h"
+#include "Build/Tactical/Overhead.h"
+#include "sgp/Random.h"
+#include "Build/Tactical/Points.h"
 
 
 extern BOOLEAN gfTurnBasedAI;

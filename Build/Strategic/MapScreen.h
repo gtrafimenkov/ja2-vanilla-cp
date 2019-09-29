@@ -1,11 +1,11 @@
 #ifndef __MAPSCREEN_H
 #define __MAPSCREEN_H
 
-#include "Button_System.h"
-#include "Item_Types.h"
-#include "JA2Types.h"
-#include "MessageBoxScreen.h"
-#include "ScreenIDs.h"
+#include "sgp/Button_System.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/JA2Types.h"
+#include "Build/MessageBoxScreen.h"
+#include "Build/ScreenIDs.h"
 
 
 // Sector name identifiers

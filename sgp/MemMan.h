@@ -6,7 +6,7 @@
 #ifndef _MEMMAN_H
 #define _MEMMAN_H
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 void InitializeMemoryManager(void);

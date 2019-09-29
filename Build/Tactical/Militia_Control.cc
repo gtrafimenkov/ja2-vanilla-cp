@@ -1,11 +1,11 @@
-#include "Soldier_Control.h"
-#include "Militia_Control.h"
-#include "Town_Militia.h"
-#include "Soldier_Init_List.h"
-#include "Campaign_Types.h"
-#include "Overhead.h"
-#include "StrategicMap.h"
-#include "PreBattle_Interface.h"
+#include "Build/Strategic/Campaign_Types.h"
+#include "Build/Strategic/PreBattle_Interface.h"
+#include "Build/Strategic/StrategicMap.h"
+#include "Build/Strategic/Town_Militia.h"
+#include "Build/Tactical/Militia_Control.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/Tactical/Soldier_Control.h"
+#include "Build/Tactical/Soldier_Init_List.h"
 
 
 BOOLEAN gfStrategicMilitiaChangesMade = FALSE;

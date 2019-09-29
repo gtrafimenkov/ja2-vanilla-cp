@@ -1,7 +1,7 @@
 #ifndef _SQUADS_H
 #define _SQUADS_H
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 // header for squad management system

@@ -1,7 +1,7 @@
 #ifndef LOADSAVESOLIDERCREATE_H
 #define LOADSAVESOLIDERCREATE_H
 
-#include "Soldier_Create.h"
+#include "Build/Tactical/Soldier_Create.h"
 
 
 UINT16 CalcSoldierCreateCheckSum(const SOLDIERCREATE_STRUCT* const s);

@@ -2,7 +2,7 @@
 #define __STRATEGIC_H
 // header for strategic structure
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 enum InsertionCode

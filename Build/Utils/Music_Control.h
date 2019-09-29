@@ -1,7 +1,7 @@
 #ifndef _MUSIC_CONTROL_H_
 #define _MUSIC_CONTROL_H_
 
-#include "SoundMan.h"
+#include "sgp/SoundMan.h"
 
 enum MusicList {
 	MARIMBAD2_MUSIC,

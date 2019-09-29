@@ -1,8 +1,8 @@
 #ifndef __JASCREENS_H_
 #define __JASCREENS_H_
 
-#include "ScreenIDs.h"
-#include "Types.h"
+#include "Build/ScreenIDs.h"
+#include "sgp/Types.h"
 
 
 ScreenID ErrorScreenHandle(void);

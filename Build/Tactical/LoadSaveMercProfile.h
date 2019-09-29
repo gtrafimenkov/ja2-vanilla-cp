@@ -1,7 +1,7 @@
 #ifndef LOADSAVEMERCPROFILE_H
 #define LOADSAVEMERCPROFILE_H
 
-#include "Soldier_Profile_Type.h"
+#include "Build/Tactical/Soldier_Profile_Type.h"
 #include "IEncodingCorrector.h"
 
 #define MERC_PROFILE_SIZE               (716)           /**< Vanilla Merc profile size */

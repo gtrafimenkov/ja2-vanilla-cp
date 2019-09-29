@@ -1,10 +1,10 @@
-#include "AmmoTypeModel.h"
+#include "src/AmmoTypeModel.h"
 
 #include <stdexcept>
 
 #include "sgp/StrUtils.h"
 
-#include "JsonObject.h"
+#include "src/JsonObject.h"
 
 AmmoTypeModel::AmmoTypeModel(uint16_t index_,
                              const char* internalName_

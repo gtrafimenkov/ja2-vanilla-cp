@@ -1,7 +1,7 @@
 #ifndef __FONT_CONTROL_H
 #define __FONT_CONTROL_H
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 extern Font gp10PointArial;

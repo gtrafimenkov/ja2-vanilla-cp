@@ -1,10 +1,10 @@
-#include "Debug.h"
-#include "LoadSaveSoldierCreate.h"
-#include "FileMan.h"
-#include "LoadSaveData.h"
-#include "LoadSaveObjectType.h"
-
+#include "Build/Tactical/LoadSaveObjectType.h"
+#include "Build/Tactical/LoadSaveSoldierCreate.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 #include "slog/slog.h"
+
 #define TAG "LoadSave"
 
 

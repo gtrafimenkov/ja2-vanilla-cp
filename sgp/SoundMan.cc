@@ -6,17 +6,18 @@
 * Derek Beland, May 28, 1997
 *********************************************************************************/
 
-#include "Buffer.h"
-#include "Debug.h"
-#include "FileMan.h"
-#include "Random.h"
-#include "SoundMan.h"
-#include "Timer.h"
-#include <SDL.h>
 #include <assert.h>
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include <SDL.h>
+
+#include "sgp/Buffer.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/Random.h"
+#include "sgp/SoundMan.h"
+#include "sgp/Timer.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 
 // Uncomment this to disable the startup of sound hardware

@@ -1,8 +1,8 @@
 #ifndef __SCREEN_MANAGER
 #define __SCREEN_MANAGER
 
-#include "ScreenIDs.h"
-#include "Types.h"
+#include "Build/ScreenIDs.h"
+#include "sgp/Types.h"
 
 
 // Each screen in the game comes with a Status flag (what was the last thing the screen was doing), an Initialization

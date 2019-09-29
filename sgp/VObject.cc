@@ -1,11 +1,11 @@
 #include <stdexcept>
 
-#include "Debug.h"
-#include "HImage.h"
-#include "MemMan.h"
-#include "VObject.h"
-#include "VObject_Blitters.h"
-#include "VSurface.h"
+#include "sgp/Debug.h"
+#include "sgp/HImage.h"
+#include "sgp/MemMan.h"
+#include "sgp/VObject.h"
+#include "sgp/VObject_Blitters.h"
+#include "sgp/VSurface.h"
 
 
 // ******************************************************************************

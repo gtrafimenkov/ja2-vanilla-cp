@@ -1,4 +1,4 @@
-#include "TranslationTable.h"
+#include "sgp/TranslationTable.h"
 
 #include <string.h>
 

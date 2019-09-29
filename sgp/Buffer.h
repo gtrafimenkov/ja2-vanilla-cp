@@ -1,7 +1,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include "MemMan.h"
+#include "sgp/MemMan.h"
 
 
 namespace SGP

@@ -1,18 +1,16 @@
-#include "GameRes.h"
-
 #include <locale.h>
 #include <stdexcept>
 
+#include "Build/Directories.h"
+#include "Build/GameRes.h"
+#include "Build/GameState.h"
+#include "Build/Utils/Multi_Language_Graphic_Utils.h"
+#include "Build/Utils/Text.h"
+#include "sgp/EncodingCorrectors.h"
 #include "sgp/FileMan.h"
-
-#include "Directories.h"
-#include "Logger.h"
-#include "Multi_Language_Graphic_Utils.h"
-#include "Text.h"
-#include "TranslationTable.h"
-#include "GameState.h"
-#include "EncodingCorrectors.h"
-#include "StrUtils.h"
+#include "sgp/Logger.h"
+#include "sgp/StrUtils.h"
+#include "sgp/TranslationTable.h"
 
 
 extern LanguageRes g_LanguageResDutch;

@@ -1,9 +1,8 @@
-#include "Debug.h"
-#include "LoadSaveObjectType.h"
-#include "LoadSaveData.h"
-
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "Build/Tactical/LoadSaveObjectType.h"
+#include "sgp/Debug.h"
+#include "sgp/LoadSaveData.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 
 const BYTE* ExtractObject(const BYTE* const data, OBJECTTYPE* const o)

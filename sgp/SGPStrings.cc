@@ -1,4 +1,4 @@
-#include "SGPStrings.h"
+#include "sgp/SGPStrings.h"
 
 #if defined(__linux__) || defined(_WIN32)
 

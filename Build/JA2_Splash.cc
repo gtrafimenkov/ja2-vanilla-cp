@@ -1,10 +1,10 @@
-#include "Directories.h"
-#include "JA2_Splash.h"
-#include "VSurface.h"
-#include "Timer_Control.h"
-#include "MainMenuScreen.h"
-#include "Video.h"
-#include "GameRes.h"
+#include "Build/Directories.h"
+#include "Build/GameRes.h"
+#include "Build/JA2_Splash.h"
+#include "Build/MainMenuScreen.h"
+#include "Build/Utils/Timer_Control.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 
 UINT32 guiSplashFrameFade = 10;
 UINT32 guiSplashStartTime = 0;

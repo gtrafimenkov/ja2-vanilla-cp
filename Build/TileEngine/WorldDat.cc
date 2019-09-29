@@ -1,13 +1,13 @@
-#include "Directories.h"
-#include "WorldDat.h"
-#include "WorldDef.h"
-#include "TileDef.h"
-#include "Sys_Globals.h"
+#include "Build/Directories.h"
+#include "Build/TileEngine/WorldDat.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/TileEngine/TileDef.h"
+#include "Build/Sys_Globals.h"
 #include "Tile_Surface.h"
-#include "FileMan.h"
+#include "sgp/FileMan.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 

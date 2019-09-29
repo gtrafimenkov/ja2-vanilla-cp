@@ -8,32 +8,32 @@
 	Date            :       1997-NOV
 */
 
-#include "Font_Control.h"
-#include "Isometric_Utils.h"
-#include "Overhead.h"
-#include "MemMan.h"
-#include "Overhead_Types.h"
-#include "Soldier_Control.h"
-#include "Animation_Cache.h"
-#include "Animation_Data.h"
-#include "Animation_Control.h"
-#include "Interface.h"
-#include "Input.h"
-#include "English.h"
-#include "Structure.h"
-#include "TileDef.h"
-#include "WorldDef.h"
-#include "WorldMan.h"
-#include "PathAI.h"
-#include "PathAIDebug.h"
-#include "Points.h"
-#include "AI.h"
-#include "Random.h"
-#include "Message.h"
-#include "Structure_Wrap.h"
-#include "Keys.h"
-#include "GameSettings.h"
-#include "Buildings.h"
+#include "Build/GameSettings.h"
+#include "Build/Tactical/Animation_Cache.h"
+#include "Build/Tactical/Animation_Control.h"
+#include "Build/Tactical/Animation_Data.h"
+#include "Build/Tactical/Interface.h"
+#include "Build/Tactical/Keys.h"
+#include "Build/Tactical/Overhead_Types.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/Tactical/PathAI.h"
+#include "Build/Tactical/PathAIDebug.h"
+#include "Build/Tactical/Points.h"
+#include "Build/Tactical/Soldier_Control.h"
+#include "Build/Tactical/Structure_Wrap.h"
+#include "Build/TacticalAI/AI.h"
+#include "Build/TileEngine/Buildings.h"
+#include "Build/TileEngine/Isometric_Utils.h"
+#include "Build/TileEngine/Structure.h"
+#include "Build/TileEngine/TileDef.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/TileEngine/WorldMan.h"
+#include "Build/Utils/Font_Control.h"
+#include "Build/Utils/Message.h"
+#include "sgp/English.h"
+#include "sgp/Input.h"
+#include "sgp/MemMan.h"
+#include "sgp/Random.h"
 
 
 // skiplist has extra level of pointers every 4 elements, so a level 5is optimized for
@@ -44,7 +44,7 @@
 //#define PATHAI_SKIPLIST_DEBUG
 
 #ifdef PATHAI_VISIBLE_DEBUG
-#include "Video.h"
+#include "sgp/Video.h"
 
 extern INT16 gsCoverValue[WORLD_MAX];
 BOOLEAN gfDisplayCoverValues = TRUE;

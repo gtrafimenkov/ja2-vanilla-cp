@@ -1,10 +1,10 @@
 #ifndef VSURFACE_H
 #define VSURFACE_H
 
-#include "AutoObj.h"
-#include "AutoPtr.h"
-#include "Buffer.h"
-#include "Types.h"
+#include "sgp/AutoObj.h"
+#include "sgp/AutoPtr.h"
+#include "sgp/Buffer.h"
+#include "sgp/Types.h"
 #include <SDL.h>
 
 

@@ -1,14 +1,14 @@
 #include <stdexcept>
 
-#include "Font.h"
-#include "Local.h"
-#include "PopUpBox.h"
-#include "SysUtil.h"
-#include "Debug.h"
-#include "VObject.h"
-#include "Video.h"
-#include "MemMan.h"
-#include "VSurface.h"
+#include "sgp/Font.h"
+#include "Build/Local.h"
+#include "Build/Utils/PopUpBox.h"
+#include "Build/TileEngine/SysUtil.h"
+#include "sgp/Debug.h"
+#include "sgp/VObject.h"
+#include "sgp/Video.h"
+#include "sgp/MemMan.h"
+#include "sgp/VSurface.h"
 
 #define MAX_POPUP_BOX_COUNT 20
 

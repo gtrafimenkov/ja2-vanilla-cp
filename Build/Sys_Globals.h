@@ -4,6 +4,8 @@
 #define				SHOW_MIN_FPS			0
 #define				SHOW_FULL_FPS			1
 
+#include "sgp/Types.h"
+
 extern char    gubErrorText[200];
 extern BOOLEAN gfAniEditMode;
 extern BOOLEAN gfEditMode;

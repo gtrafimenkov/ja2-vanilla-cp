@@ -1,7 +1,7 @@
 #ifndef LOADSAVEBULLET_H
 #define LOADSAVEBULLET_H
 
-#include "Bullets.h"
+#include "Build/Tactical/Bullets.h"
 
 
 void ExtractBulletFromFile(HWFILE, BULLET*);

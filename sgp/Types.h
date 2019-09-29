@@ -3,12 +3,12 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+
 #include <SDL_video.h>
 
-#include "Platform.h"
-#include "SGPStrings.h"
+#include "sgp/Platform.h"
+#include "sgp/SGPStrings.h"
 
-#include <stdlib.h> // for abort()
 #define UNIMPLEMENTED \
 	fprintf(stderr, "===> %s:%d: %s() is not implemented\n", __FILE__, __LINE__, __func__); \
 	abort();

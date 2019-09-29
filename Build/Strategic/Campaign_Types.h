@@ -1,8 +1,8 @@
 #ifndef __CAMPAIGN_TYPES_H
 #define __CAMPAIGN_TYPES_H
 
-#include "Debug.h"
-#include "Types.h"
+#include "sgp/Debug.h"
+#include "sgp/Types.h"
 
 
 //Macro to convert sector coordinates (1-16,1-16) to 0-255

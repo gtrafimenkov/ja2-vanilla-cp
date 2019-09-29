@@ -3,13 +3,13 @@
 
 #include "Build/Tactical/Items.h"
 
-#include "AmmoTypeModel.h"
-#include "CalibreModel.h"
-#include "DefaultContentManager.h"
+#include "src/AmmoTypeModel.h"
+#include "src/CalibreModel.h"
+#include "src/DefaultContentManager.h"
 #include "DefaultContentManagerUT.h"
-#include "GameInstance.h"
-#include "MagazineModel.h"
-#include "WeaponModels.h"
+#include "src/GameInstance.h"
+#include "src/MagazineModel.h"
+#include "src/WeaponModels.h"
 
 TEST(Items, weaponsLoading)
 {

@@ -5,7 +5,12 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceFolder}"
+                "${workspaceFolder}",
+                "${workspaceFolder}/_build/lib-boost",
+                "${workspaceFolder}/_build/lib-rapidjson",
+                "${workspaceFolder}/_build/lib-slog",
+                "${workspaceFolder}/_build/lib-smacker/libsmacker",
+                "${workspaceFolder}/_build/lib-utf8cpp/source"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

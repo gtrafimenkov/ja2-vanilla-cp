@@ -1,7 +1,7 @@
 #ifndef __INPUT_
 #define __INPUT_
 
-#include "Types.h"
+#include "sgp/Types.h"
 #include "SDL_events.h"
 #include "SDL_keyboard.h"
 

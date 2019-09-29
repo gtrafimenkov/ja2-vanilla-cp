@@ -1,9 +1,9 @@
 #ifndef		_KEYS_H_
 #define		_KEYS_H_
 
-#include "Handle_Items.h"
-#include "Item_Types.h"
-#include "Types.h"
+#include "Build/Tactical/Handle_Items.h"
+#include "Build/Tactical/Item_Types.h"
+#include "sgp/Types.h"
 
 
 struct KEY

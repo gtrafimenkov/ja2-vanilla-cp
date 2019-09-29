@@ -54,7 +54,7 @@ enum LoadingScreenID
 extern LoadingScreenID gubLastLoadingScreenID;
 
 // Return the loading screen ID for the specified sector.
-LoadingScreenID GetLoadScreenID(INT16 x, INT16 y, INT8 z);
+LoadingScreenID GetLoadScreenID(uint16_t x, uint16_t y, uint8_t z);
 
 /* Set up the loadscreen with specified ID, draw it to the FRAME_BUFFER, and
  * refresh the screen with it. */

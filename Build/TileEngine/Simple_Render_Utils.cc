@@ -1,6 +1,6 @@
 #include "Simple_Render_Utils.h"
-#include "Isometric_Utils.h"
-#include "RenderWorld.h"
+#include "Build/TileEngine/Isometric_Utils.h"
+#include "Build/TileEngine/RenderWorld.h"
 
 
 void MarkMapIndexDirty( INT32 iMapIndex )

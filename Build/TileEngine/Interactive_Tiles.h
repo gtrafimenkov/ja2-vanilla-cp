@@ -1,9 +1,9 @@
 #ifndef __INTERACTIVE_TILES_H
 #define __INTERACTIVE_TILES_H
 
-#include "Interface_Cursors.h"
-#include "JA2Types.h"
-#include "WorldDef.h"
+#include "Build/Tactical/Interface_Cursors.h"
+#include "Build/JA2Types.h"
+#include "Build/TileEngine/WorldDef.h"
 
 
 #define INTTILE_DOOR_OPENSPEED	70

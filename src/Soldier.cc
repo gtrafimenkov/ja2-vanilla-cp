@@ -1,7 +1,5 @@
 #include <memory>
 
-#include "Soldier.h"
-
 #include "Build/Tactical/Animation_Control.h"
 #include "Build/Tactical/Handle_Items.h"
 #include "Build/Tactical/Interface.h"
@@ -14,14 +12,14 @@
 #include "Build/Utils/Message.h"
 #include "Build/Utils/Text.h"
 #include "sgp/UTF8String.h"
-
-#include "ContentManager.h"
-#include "GameInstance.h"
-#include "content/NewStrings.h"
-#include "content/npcs.h"
-#include "internals/enums.h"
-
 #include "slog/slog.h"
+#include "src/content/NewStrings.h"
+#include "src/content/npcs.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
+#include "src/internals/enums.h"
+#include "src/Soldier.h"
+
 #define TAG "Soldier"
 
 Soldier:: Soldier(SOLDIERTYPE* s)

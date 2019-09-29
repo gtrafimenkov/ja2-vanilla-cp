@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform.h"
+#include "sgp/Platform.h"
 
 /* Platform and compiler-specifics */
 

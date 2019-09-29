@@ -1,7 +1,7 @@
 #ifndef __SOLDIER_INIT_LIST_H
 #define __SOLDIER_INIT_LIST_H
 
-#include "Soldier_Create.h"
+#include "Build/Tactical/Soldier_Create.h"
 
 struct SOLDIERINITNODE
 {

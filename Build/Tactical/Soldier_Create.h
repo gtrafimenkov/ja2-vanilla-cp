@@ -1,10 +1,10 @@
 #ifndef _SOLDIER_CREATE_H
 #define _SOLDIER_CREATE_H
 
-#include "JA2Types.h"
-#include "Overhead_Types.h"
-#include "Item_Types.h"
-#include "Soldier_Control.h"
+#include "Build/JA2Types.h"
+#include "Build/Tactical/Overhead_Types.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/Tactical/Soldier_Control.h"
 
 
 //Kris:  SERIALIZING INFORMATION

@@ -1,7 +1,7 @@
 #ifndef __UI_CURSORS_H
 #define __UI_CURSORS_H
 
-#include "Interface_Cursors.h"
+#include "Build/Tactical/Interface_Cursors.h"
 
 
 #define REFINE_PUNCH_1				0

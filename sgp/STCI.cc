@@ -1,15 +1,15 @@
 #include <stdexcept>
 
-#include "Buffer.h"
-#include "MemMan.h"
-#include "FileMan.h"
+#include "sgp/Buffer.h"
+#include "sgp/MemMan.h"
+#include "sgp/FileMan.h"
 #include "ImgFmt.h"
-#include "HImage.h"
-#include "Debug.h"
+#include "sgp/HImage.h"
+#include "sgp/Debug.h"
 #include "STCI.h"
 
-#include "ContentManager.h"
-#include "GameInstance.h"
+#include "src/ContentManager.h"
+#include "src/GameInstance.h"
 
 static SGPImage* STCILoadIndexed(UINT16 contents, HWFILE, STCIHeader const*);
 static SGPImage* STCILoadRGB(    UINT16 contents, HWFILE, STCIHeader const*);

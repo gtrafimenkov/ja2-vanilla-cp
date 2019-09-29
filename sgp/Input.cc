@@ -1,11 +1,11 @@
-#include "UTF8String.h"
-#include "Types.h"
-#include "Input.h"
-#include "MemMan.h"
-#include "English.h"
-#include "Timer.h"
-#include "Video.h"
-#include "Local.h"
+#include "sgp/UTF8String.h"
+#include "sgp/Types.h"
+#include "sgp/Input.h"
+#include "sgp/MemMan.h"
+#include "sgp/English.h"
+#include "sgp/Timer.h"
+#include "sgp/Video.h"
+#include "Build/Local.h"
 
 
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling

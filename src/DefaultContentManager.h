@@ -7,7 +7,7 @@
 
 #include "Build/GameRes.h"
 
-#include "ContentManager.h"
+#include "src/ContentManager.h"
 #include "IGameDataLoader.h"
 #include "StringEncodingTypes.h"
 

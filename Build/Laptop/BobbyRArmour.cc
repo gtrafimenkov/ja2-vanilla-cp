@@ -1,13 +1,13 @@
-#include "Directories.h"
-#include "Laptop.h"
+#include "Build/Directories.h"
+#include "Build/Laptop/Laptop.h"
 #include "BobbyRArmour.h"
-#include "BobbyRGuns.h"
-#include "BobbyR.h"
-#include "VObject.h"
-#include "Text.h"
-#include "Button_System.h"
-#include "Video.h"
-#include "VSurface.h"
+#include "Build/Laptop/BobbyRGuns.h"
+#include "Build/Laptop/BobbyR.h"
+#include "sgp/VObject.h"
+#include "Build/Utils/Text.h"
+#include "sgp/Button_System.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 
 
 static SGPVObject* guiArmourBackground;

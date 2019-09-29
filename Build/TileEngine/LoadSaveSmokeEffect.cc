@@ -1,9 +1,9 @@
-#include "Debug.h"
-#include "FileMan.h"
-#include "LoadSaveData.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 #include "LoadSaveSmokeEffect.h"
-#include "Overhead.h"
-#include "SmokeEffects.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/TileEngine/SmokeEffects.h"
 
 
 void ExtractSmokeEffectFromFile(HWFILE const file, SMOKEEFFECT* const s)

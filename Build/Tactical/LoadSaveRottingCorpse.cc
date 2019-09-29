@@ -1,7 +1,7 @@
-#include "Debug.h"
-#include "FileMan.h"
 #include "LoadSaveRottingCorpse.h"
-#include "LoadSaveData.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/LoadSaveData.h"
 
 
 void ExtractRottingCorpseFromFile(HWFILE const file, ROTTING_CORPSE_DEFINITION* const c)

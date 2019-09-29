@@ -1,7 +1,8 @@
 #ifndef FADE_SCREEN_H
 #define FADE_SCREEN_H
 
-#include "ScreenIDs.h"
+#include "Build/ScreenIDs.h"
+#include "sgp/Types.h"
 
 
 #define	FADE_OUT_REALFADE					5

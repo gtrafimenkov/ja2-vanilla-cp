@@ -1,7 +1,7 @@
 #ifndef GAP_H
 #define GAP_H
 
-#include "Faces.h"
+#include "Build/Tactical/Faces.h"
 
 
 void    AudioGapListDone(AudioGapList* pGapList);

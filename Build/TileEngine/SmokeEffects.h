@@ -1,7 +1,7 @@
 #ifndef __SMOKE_EFFECTS
 #define __SMOKE_EFFECTS
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 // Smoke effect types
 enum SmokeEffectKind

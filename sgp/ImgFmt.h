@@ -7,7 +7,7 @@
 // *		SubRectInfo's (usNumberOfRects > 0, size = usNumberOfSubRects * sizeof(SubRectInfo) ), uncompressed
 // *		Bytes of image data, possibly compressed
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 #define STCI_ID_STRING       "STCI"
 #define STCI_ID_LEN          4

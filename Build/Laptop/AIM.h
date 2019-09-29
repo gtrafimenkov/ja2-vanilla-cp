@@ -1,12 +1,14 @@
 #ifndef __AIM_H
 #define __AIM_H
 
+#include <cstdint>
+
 #define	AIMHISTORYFILE BINARYDATADIR "/aimhist.edt"
 #define AIM_HISTORY_LINE_SIZE 400
 
 
 #define		MAX_NUMBER_MERCS							40
-extern UINT8 AimMercArray[MAX_NUMBER_MERCS];
+extern uint8_t AimMercArray[MAX_NUMBER_MERCS];
 
 #define		NUM_AIM_SCREENS								6
 

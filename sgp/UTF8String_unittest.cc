@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "UTF8String.h"
+#include "sgp/UTF8String.h"
 
 // Disable Visual Studio Warning
 #if defined(_MSC_VER)

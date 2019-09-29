@@ -1,7 +1,7 @@
 #ifndef _MERC_HIRING_H_
 #define _MERC_HIRING_H_
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 
 //

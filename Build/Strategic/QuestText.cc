@@ -1,6 +1,6 @@
-#include "Types.h"
-#include "QuestText.h"
-#include "Quests.h"
+#include "sgp/Types.h"
+#include "Build/Strategic/QuestText.h"
+#include "Build/Strategic/Quests.h"
 
 
 const wchar_t* const QuestDescText[] =

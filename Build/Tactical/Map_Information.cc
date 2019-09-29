@@ -1,21 +1,21 @@
-#include "FileMan.h"
-#include "Types.h"
-#include "Map_Information.h"
-#include "Soldier_Init_List.h"
-#include "Random.h"
-#include "WorldDef.h"
-#include "RenderWorld.h"
-#include "EditorMercs.h"
-#include "Exit_Grids.h"
-#include "Isometric_Utils.h"
-#include "Animation_Data.h"
-#include "Road_Smoothing.h"
-#include "Weapons.h"
-#include "Environment.h"
-#include "Lighting.h"
-#include "Animated_ProgressBar.h"
-#include "Debug.h"
-#include "World_Items.h"
+#include "Build/Editor/EditorMercs.h"
+#include "Build/Editor/Road_Smoothing.h"
+#include "Build/Tactical/Animation_Data.h"
+#include "Build/Tactical/Map_Information.h"
+#include "Build/Tactical/Soldier_Init_List.h"
+#include "Build/Tactical/Weapons.h"
+#include "Build/Tactical/World_Items.h"
+#include "Build/TileEngine/Environment.h"
+#include "Build/TileEngine/Exit_Grids.h"
+#include "Build/TileEngine/Isometric_Utils.h"
+#include "Build/TileEngine/Lighting.h"
+#include "Build/TileEngine/RenderWorld.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/Utils/Animated_ProgressBar.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/Random.h"
+#include "sgp/Types.h"
 
 
 BOOLEAN gfWorldLoaded;
@@ -552,7 +552,7 @@ void ValidateAndUpdateMapVersionIfNecessary()
 	AutoCalculateItemNoOverwriteStatus() ;
 }
 
-#include "Summary_Info.h"
+#include "Build/Editor/Summary_Info.h"
 //This function is used to avoid conflicts between minor version updates and sector summary info.
 //By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 //and really prevent major map updates.

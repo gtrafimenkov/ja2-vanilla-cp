@@ -1,7 +1,7 @@
 #ifndef CURSOR_CONTROL_H
 #define CURSOR_CONTROL_H
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 void    CursorDatabaseClear(void);

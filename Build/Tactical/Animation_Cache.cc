@@ -1,10 +1,10 @@
-#include "Overhead.h"
-#include "Types.h"
-#include "Animation_Cache.h"
-#include "Animation_Data.h"
-#include "Animation_Control.h"
-#include "Debug_Control.h"
-#include "MemMan.h"
+#include "Build/Tactical/Animation_Cache.h"
+#include "Build/Tactical/Animation_Control.h"
+#include "Build/Tactical/Animation_Data.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/Utils/Debug_Control.h"
+#include "sgp/MemMan.h"
+#include "sgp/Types.h"
 
 
 #define EMPTY_CACHE_ENTRY		65000

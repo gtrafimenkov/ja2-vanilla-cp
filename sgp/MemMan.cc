@@ -8,10 +8,10 @@
 #include <stdexcept>
 #include <new> // std::bad_alloc
 
-#include "Types.h"
+#include "sgp/Types.h"
 #include <stdlib.h>
-#include "MemMan.h"
-#include "Debug.h"
+#include "sgp/MemMan.h"
+#include "sgp/Debug.h"
 
 #	include "MouseSystem.h"
 #	include "MessageBoxScreen.h"

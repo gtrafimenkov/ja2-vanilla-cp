@@ -1,7 +1,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include "Types.h"
+#include "sgp/Types.h"
 
 
 #define		DEFAULT_SHADOW			2

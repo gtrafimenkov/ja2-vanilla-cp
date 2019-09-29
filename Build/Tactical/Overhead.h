@@ -1,8 +1,8 @@
 #ifndef __OVERHEAD_H
 #define __OVERHEAD_H
 
-#include "Debug.h"
-#include "Soldier_Control.h"
+#include "sgp/Debug.h"
+#include "Build/Tactical/Soldier_Control.h"
 
 
 #define MAX_REALTIME_SPEED_VAL 10

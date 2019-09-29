@@ -1,13 +1,13 @@
 #ifndef __TACTICAL_SAVE_H_
 #define __TACTICAL_SAVE_H_
 
-#include "Campaign_Types.h"
-#include "Handle_Items.h"
-#include "World_Items.h"
-#include "WorldDef.h"
-#include "Rotting_Corpses.h"
+#include "Build/Strategic/Campaign_Types.h"
+#include "Build/Tactical/Handle_Items.h"
+#include "Build/Tactical/World_Items.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/Tactical/Rotting_Corpses.h"
 
-#include "Soldier_Profile_Type.h"
+#include "Build/Tactical/Soldier_Profile_Type.h"
 
 
 //Load the Map modifications from the saved game file

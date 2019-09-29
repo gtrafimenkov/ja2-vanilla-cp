@@ -1,4 +1,4 @@
-#include "MercProfile.h"
+#include "src/MercProfile.h"
 
 #include "Build/Tactical/Soldier_Profile.h"
 #include "Build/Tactical/Soldier_Profile_Type.h"

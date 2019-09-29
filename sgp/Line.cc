@@ -1,4 +1,4 @@
-#include "Line.h"
+#include "sgp/Line.h"
 
 
 static int giImageWidth = 0;

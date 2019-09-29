@@ -1,17 +1,17 @@
 #include <stdexcept>
 
-#include "Font.h"
-#include "Local.h"
-#include "WorldDef.h"
-#include "RenderWorld.h"
-#include "VSurface.h"
-#include "Render_Dirty.h"
-#include "SysUtil.h"
-#include "Video.h"
-#include "VObject_Blitters.h"
+#include "sgp/Font.h"
+#include "Build/Local.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/TileEngine/RenderWorld.h"
+#include "sgp/VSurface.h"
+#include "Build/TileEngine/Render_Dirty.h"
+#include "Build/TileEngine/SysUtil.h"
+#include "sgp/Video.h"
+#include "sgp/VObject_Blitters.h"
 #include <stdarg.h>
-#include "MemMan.h"
-#include "Debug.h"
+#include "sgp/MemMan.h"
+#include "sgp/Debug.h"
 
 #include <vector>
 

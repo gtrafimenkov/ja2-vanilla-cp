@@ -1,18 +1,18 @@
-#include "PODObj.h"
-#include "Structure.h"
-#include "TileDef.h"
-#include "WorldDef.h"
-#include "WorldMan.h"
+#include "sgp/PODObj.h"
+#include "Build/TileEngine/Structure.h"
+#include "Build/TileEngine/TileDef.h"
+#include "Build/TileEngine/WorldDef.h"
+#include "Build/TileEngine/WorldMan.h"
 #include "Smooth.h"
-#include "Input.h"
-#include "Debug.h"
-#include "Isometric_Utils.h"
-#include "EditScreen.h"
+#include "sgp/Input.h"
+#include "sgp/Debug.h"
+#include "Build/TileEngine/Isometric_Utils.h"
+#include "Build/Editor/EditScreen.h"
 #include "Editor_Undo.h"
-#include "Render_Fun.h"  //for access to gubWorldRoomInfo;
+#include "Build/TileEngine/Render_Fun.h"  //for access to gubWorldRoomInfo;
 #include "Cursor_Modes.h"
-#include "Exit_Grids.h"
-#include "MemMan.h"
+#include "Build/TileEngine/Exit_Grids.h"
+#include "sgp/MemMan.h"
 
 
 /*

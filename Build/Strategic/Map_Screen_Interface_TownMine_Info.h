@@ -1,7 +1,7 @@
 #ifndef __MS_I_TOWNMINE_INFO_H
 #define __MS_I_TOWNMINE_INFO_H
 
-#include "JA2Types.h"
+#include "Build/JA2Types.h"
 
 extern BOOLEAN fShowTownInfo;
 

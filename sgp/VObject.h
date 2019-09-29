@@ -1,9 +1,9 @@
 #ifndef __VOBJECT_H
 #define __VOBJECT_H
 
-#include "AutoPtr.h"
-#include "Buffer.h"
-#include "Types.h"
+#include "sgp/AutoPtr.h"
+#include "sgp/Buffer.h"
+#include "sgp/Types.h"
 
 
 // Defines for HVOBJECT limits

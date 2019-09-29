@@ -1,9 +1,9 @@
 #ifndef __IMAGE_H
 #define __IMAGE_H
 
-#include "AutoPtr.h"
-#include "Buffer.h"
-#include "Types.h"
+#include "sgp/AutoPtr.h"
+#include "sgp/Buffer.h"
+#include "sgp/Types.h"
 
 // The HIMAGE module provides a common interface for managing image data. This module
 // includes:

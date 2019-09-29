@@ -1,13 +1,13 @@
 #include <stdexcept>
 
-#include "Event_Manager.h"
-#include "Timer_Control.h"
-#include "Event_Pump.h"
-#include "Soldier_Control.h"
-#include "Overhead.h"
-#include "Weapons.h"
-#include "OppList.h"
-#include "Debug.h"
+#include "Build/Utils/Event_Manager.h"
+#include "Build/Utils/Timer_Control.h"
+#include "Build/Utils/Event_Pump.h"
+#include "Build/Tactical/Soldier_Control.h"
+#include "Build/Tactical/Overhead.h"
+#include "Build/Tactical/Weapons.h"
+#include "Build/Tactical/OppList.h"
+#include "sgp/Debug.h"
 
 
 static void AddGameEventToQueue(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, EventQueueID ubQueueID);

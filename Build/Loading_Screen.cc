@@ -1,23 +1,23 @@
-#include "Campaign_Types.h"
-#include "Debug.h"
-#include "Directories.h"
-#include "Font.h"
-#include "Font_Control.h"
-#include "Game_Clock.h"
-#include "Loading_Screen.h"
-#include "Local.h"
-#include "Random.h"
-#include "Render_Dirty.h"
-#include "StrategicMap.h"
-#include "Strategic_Movement.h"
-#include "VSurface.h"
-#include "Video.h"
+#include "Build/Directories.h"
+#include "Build/Fade_Screen.h"
+#include "Build/Loading_Screen.h"
+#include "Build/Local.h"
+#include "Build/Strategic/Campaign_Types.h"
+#include "Build/Strategic/Game_Clock.h"
+#include "Build/Strategic/Strategic_Movement.h"
+#include "Build/Strategic/StrategicMap.h"
+#include "Build/TileEngine/Render_Dirty.h"
+#include "Build/Utils/Font_Control.h"
+#include "sgp/Debug.h"
+#include "sgp/Font.h"
+#include "sgp/Random.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 
 
 LoadingScreenID gubLastLoadingScreenID = LOADINGSCREEN_NOTHING;
 
-
-LoadingScreenID GetLoadScreenID(INT16 const x, INT16 const y, INT8 const z)
+LoadingScreenID GetLoadScreenID(uint16_t x, uint16_t y, uint8_t z)
 {
 	bool  const night     = NightTime();
 	UINT8 const sector_id = SECTOR(x, y);

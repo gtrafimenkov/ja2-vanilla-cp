@@ -1,7 +1,7 @@
 #ifndef __EXIT_GRIDS_H
 #define __EXIT_GRIDS_H
 
-#include "WorldDef.h"
+#include "Build/TileEngine/WorldDef.h"
 
 struct EXITGRID //for exit grids (object level)
 { //if an item pool is also in same gridno, then this would be a separate levelnode

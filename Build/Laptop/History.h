@@ -1,6 +1,8 @@
 #ifndef __HISTORY_H
 #define __HISTORY_H
 
+#include <cstdint>
+
 void GameInitHistory(void);
 void EnterHistory(void);
 void ExitHistory(void);
@@ -91,7 +93,7 @@ enum{
 	HISTORY_MERC_KILLED_CHARACTER,
 };
 
-void AddHistoryToPlayersLog(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSectorX, INT16 sSectorY);
-UINT32 GetTimeQuestWasStarted( UINT8 ubCode );
+void AddHistoryToPlayersLog(uint8_t ubCode, uint8_t ubSecondCode, uint32_t uiDate, int16_t sSectorX, int16_t sSectorY);
+uint32_t GetTimeQuestWasStarted( uint8_t ubCode );
 
 #endif

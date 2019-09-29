@@ -1,7 +1,7 @@
 #ifndef LOADSAVELIGHTSPRITE_H
 #define LOADSAVELIGHTSPRITE_H
 
-#include "Lighting.h"
+#include "Build/TileEngine/Lighting.h"
 
 
 void ExtractLightSprite(HWFILE, UINT32 light_time);

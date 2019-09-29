@@ -5,7 +5,7 @@
 
 /* Game resources */
 
-#include "Types.h"
+#include "sgp/Types.h"
 #include "IEncodingCorrector.h"
 
 #include "StringEncodingTypes.h"

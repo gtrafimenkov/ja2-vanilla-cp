@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "Build/GameState.h"
 
 /** Get instance of the object. */
 GameState* GameState::getInstance()

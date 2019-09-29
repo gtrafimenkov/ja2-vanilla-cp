@@ -2,8 +2,8 @@
 #define _ARMS_DEALERS_INIT__H_
 
 #include "Arms_Dealer.h"
-#include "Item_Types.h"
-#include "JA2Types.h"
+#include "Build/Tactical/Item_Types.h"
+#include "Build/JA2Types.h"
 
 
 //the enums for the different kinds of arms dealers
