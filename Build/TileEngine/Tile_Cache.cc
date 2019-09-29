@@ -12,7 +12,6 @@
 #include "Tile_Cache.h"
 #include "FileMan.h"
 #include "MemMan.h"
-#include <boost/foreach.hpp>
 
 #include "ContentManager.h"
 #include "GameInstance.h"
@@ -48,7 +47,7 @@ void InitTileCache(void)
 	// Look for JSD files in the tile cache directory and load any we find
   std::vector<std::string> jsdFiles = GCM->getAllTilecache();
 
-  BOOST_FOREACH(const std::string &file, jsdFiles)
+  for(const std::string &file: jsdFiles)
   {
 		TILE_CACHE_STRUCT tc;
     tc.rootName = FileMan::getFileNameWithoutExt(file);

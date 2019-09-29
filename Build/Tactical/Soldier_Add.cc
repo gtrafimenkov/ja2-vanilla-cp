@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Soldier_Control.h"
 #include "Overhead.h"
 #include "Overhead_Types.h"
@@ -1127,7 +1129,7 @@ static void AddSoldierToSectorGridNo(SOLDIERTYPE* const s, INT16 const sGridNo, 
 {
 	// Add merc to gridno
 
-  SoldierSP soldier = GetSoldier(s);
+  std::shared_ptr<Soldier> soldier(new Soldier(s));
 
 	// Set reserved location!
 	s->sReservedMovementGridNo = NOWHERE;

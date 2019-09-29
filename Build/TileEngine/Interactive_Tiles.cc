@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Animation_Data.h"
 #include "Cursors.h"
 #include "Font_Control.h"
@@ -83,7 +85,7 @@ void StartInteractiveObject(GridNo const gridno, STRUCTURE const& structure, SOL
 	if (s.usAnimState == BEGIN_OPENSTRUCT)          return;
 	if (s.usAnimState == BEGIN_OPENSTRUCT_CROUCHED) return;
 
-  SoldierSP soldier = GetSoldier(&s);
+  std::shared_ptr<Soldier> soldier(new Soldier(&s));
 
 	// Add soldier event for opening door/struct
   soldier->setPendingAction(structure.fFlags & STRUCTURE_ANYDOOR ? MERC_OPENDOOR : MERC_OPENSTRUCT);

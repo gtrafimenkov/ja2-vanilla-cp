@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Directories.h"
 #include "Font.h"
 #include "Font_Control.h"
@@ -153,9 +155,9 @@ void HandleAutoBandagePending( )
 		}
 
 		// Do any guys have pending actions...?
-		CFOR_EACH_IN_TEAM(s, OUR_TEAM)
+		FOR_EACH_IN_TEAM(s, OUR_TEAM)
 		{
-      boost::shared_ptr<const Soldier> soldier = GetSoldier(s);
+      std::unique_ptr<const Soldier> soldier(new Soldier(s));
 			if (s->sSectorX == gWorldSectorX &&
 					s->sSectorY == gWorldSectorY &&
 					s->bSectorZ == gbWorldSectorZ &&

@@ -1,3 +1,4 @@
+#include <memory>
 
 #include "Font_Control.h"
 #include "Handle_Items.h"
@@ -114,7 +115,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 	BOOLEAN				bWeaponJammed;
   UINT16        usUIMovementMode;
 
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
   do
   {

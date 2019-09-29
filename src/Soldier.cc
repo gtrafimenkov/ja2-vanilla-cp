@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Soldier.h"
 
 #include "Build/Tactical/Animation_Control.h"
@@ -19,22 +21,8 @@
 #include "content/npcs.h"
 #include "internals/enums.h"
 
-#include "boost/make_shared.hpp"
-
 #include "slog/slog.h"
 #define TAG "Soldier"
-
-/** Get soldier object from the structure. */
-boost::shared_ptr<Soldier> GetSoldier(struct SOLDIERTYPE* s)
-{
-  return boost::make_shared<Soldier>(s);
-}
-
-/** Get soldier object from the structure. */
-boost::shared_ptr<const Soldier> GetSoldier(const struct SOLDIERTYPE* s)
-{
-  return boost::make_shared<const Soldier>((struct SOLDIERTYPE*)s);
-}
 
 Soldier:: Soldier(SOLDIERTYPE* s)
   :mSoldier(s)

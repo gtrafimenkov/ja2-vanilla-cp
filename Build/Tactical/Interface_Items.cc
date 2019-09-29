@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Directories.h"
 #include "FileMan.h"
 #include "Font.h"
@@ -3404,7 +3406,7 @@ BOOLEAN HandleItemPointerClick( UINT16 usMapPos )
 							// CHECK IF WE ARE AT THIS GRIDNO NOW
 							if ( gpItemPointerSoldier->sGridNo != sActionGridNo )
 							{
-                SoldierSP soldier = GetSoldier(gpItemPointerSoldier);
+                std::unique_ptr<Soldier> soldier(new Soldier(gpItemPointerSoldier));
 
                 soldier->setPendingAction(MERC_RELOADROBOT);
 

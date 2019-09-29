@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Handle_Doors.h"
 #include "Handle_Items.h"
 #include "MapScreen.h"
@@ -593,7 +595,7 @@ void ExecuteOverhead(void)
 		for (UINT32 cnt = 0; cnt < guiNumMercSlots; ++cnt)
 		{
 			SOLDIERTYPE* pSoldier = MercSlots[cnt];
-      SoldierSP soldier = GetSoldier(pSoldier);
+      std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 			// Syncronize for upcoming soldier counters
 			SYNCTIMECOUNTER();
@@ -1211,7 +1213,7 @@ void ExecuteOverhead(void)
 
 static void HaltGuyFromNewGridNoBecauseOfNoAPs(SOLDIERTYPE& s)
 {
-  SoldierSP soldier = GetSoldier(&s);
+  std::shared_ptr<Soldier> soldier(new Soldier(&s));
 
 	HaltMoveForSoldierOutOfPoints(s);
   soldier->removePendingAnimation();
@@ -1790,7 +1792,7 @@ static void HandleJohnArrival(SOLDIERTYPE* pSoldier)
 
 static BOOLEAN HandleAtNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving)
 {
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	// ATE; Handle bad guys, as they fade, to cancel it if
 	// too long...
@@ -4043,7 +4045,7 @@ void ExitCombatMode( )
 
 	FOR_EACH_SOLDIER(pSoldier)
 	{
-    SoldierSP soldier = GetSoldier(pSoldier);
+    std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 		if ( pSoldier->bInSector )
 		{
 			// Reset some flags

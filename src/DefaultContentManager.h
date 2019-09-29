@@ -11,7 +11,7 @@
 #include "IGameDataLoader.h"
 #include "StringEncodingTypes.h"
 
-#include "boost/smart_ptr.hpp"
+// #include "boost/smart_ptr.hpp"
 #include "rapidjson/document.h"
 
 class LibraryDB;

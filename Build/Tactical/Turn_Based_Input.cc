@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Handle_Items.h"
 #include "Real_Time_Input.h"
 #include "Soldier_Find.h"
@@ -2557,7 +2559,7 @@ static void SwitchHeadGear(bool dayGear)
     if(s->bAssignment == ASSIGNMENT_DEAD) continue;
     if(s->uiStatusFlags & SOLDIER_VEHICLE) continue;
 
-    SoldierSP sel = GetSoldier(s);
+    std::shared_ptr<Soldier> sel(new Soldier(s));
 
     if(dayGear)
     {
@@ -2684,7 +2686,7 @@ static void CreatePlayerControlledMonster(void)
 
 static bool CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE& s, BOOLEAN const fMovementMode)
 {
-  SoldierSP soldier = GetSoldier(&s);
+  std::shared_ptr<Soldier> soldier(new Soldier(&s));
 	SOLDIERTYPE const* const tgt = gUIFullTarget;
 	if (!tgt)                          return false;
 	if (!OK_ENTERABLE_VEHICLE(tgt))    return false;

@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Font.h"
 #include "Items.h"
 #include "Action_Items.h"
@@ -187,7 +189,7 @@ static void StartBombMessageBox(SOLDIERTYPE* pSoldier, INT16 sGridNo);
 
 ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLevel, const UINT16 usHandItem, const BOOLEAN fFromUI)
 {
-  SoldierSP soldier = GetSoldier(s);
+  std::shared_ptr<Soldier> soldier(new Soldier(s));
 
   soldier->removePendingAction();
 
@@ -1083,7 +1085,7 @@ void SoldierGiveItem( SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, OBJECT
 	INT16 sActionGridNo, sAdjustedGridNo;
 	UINT8	ubDirection;
 
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
   soldier->removePendingAction();
 
@@ -1136,7 +1138,7 @@ void SoldierDropItem(SOLDIERTYPE* const pSoldier, OBJECTTYPE* const pObj)
 void SoldierPickupItem( SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel )
 {
 	INT16							sActionGridNo;
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
   soldier->removePendingAction();
 

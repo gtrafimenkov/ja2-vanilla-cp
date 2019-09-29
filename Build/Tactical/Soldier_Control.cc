@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdexcept>
 
 #include "Directories.h"
@@ -913,7 +914,7 @@ void EVENT_InitNewSoldierAnim(SOLDIERTYPE* const pSoldier, UINT16 usNewState, UI
 
 	CHECKV(usNewState < NUMANIMATIONSTATES);
 
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	///////////////////////////////////////////////////////////////////////
 	//			DO SOME CHECKS ON OUR NEW ANIMATION!
@@ -7273,7 +7274,7 @@ void GivingSoldierCancelServices( SOLDIERTYPE *pSoldier )
 
 void HaultSoldierFromSighting( SOLDIERTYPE *pSoldier, BOOLEAN fFromSightingEnemy )
 {
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	// If we are a 'specialmove... ignore...
 	if ( ( gAnimControl[ pSoldier->usAnimState ].uiFlags & ANIM_SPECIALMOVE ) )
@@ -7366,7 +7367,7 @@ void EVENT_StopMerc(SOLDIERTYPE* const s)
 // Halt event is used to stop a merc - networking should check / adjust to gridno?
 void EVENT_StopMerc(SOLDIERTYPE* const s, GridNo const grid_no, INT8 const direction)
 {
-  SoldierSP soldier = GetSoldier(s);
+  std::shared_ptr<Soldier> soldier(new Soldier(s));
 
 	if (!s->fDelayedMovement)
 	{
@@ -8401,7 +8402,7 @@ void EVENT_SoldierBeginReloadRobot( SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 
 static void ChangeToFlybackAnimation(SOLDIERTYPE* pSoldier, INT8 bDirection)
 {
 	UINT16 usNewGridNo;
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	// Get dest gridno, convert to center coords
 	usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(OppositeDirection(bDirection)));
@@ -8426,7 +8427,7 @@ static void ChangeToFlybackAnimation(SOLDIERTYPE* pSoldier, INT8 bDirection)
 void ChangeToFallbackAnimation( SOLDIERTYPE *pSoldier, INT8 bDirection )
 {
 	UINT16 usNewGridNo;
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	// Get dest gridno, convert to center coords
 	usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(OppositeDirection(bDirection)));
@@ -8487,7 +8488,7 @@ void MercStealFromMerc(SOLDIERTYPE* const pSoldier, const SOLDIERTYPE* const pTa
 		INT16 sActionGridNo, sGridNo, sAdjustedGridNo;
 		UINT8	ubDirection;
 
-    SoldierSP soldier = GetSoldier(pSoldier);
+    std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 		// OK, find an adjacent gridno....
 		sGridNo = pTarget->sGridNo;
@@ -8767,7 +8768,7 @@ static void HandleSoldierTakeDamageFeedback(SOLDIERTYPE* const s)
 
 void HandleSystemNewAISituation(SOLDIERTYPE* const pSoldier)
 {
-  SoldierSP soldier = GetSoldier(pSoldier);
+  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 	// Are we an AI guy?
 	if ( gTacticalStatus.ubCurrentTeam != OUR_TEAM && pSoldier->bTeam != OUR_TEAM )

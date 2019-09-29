@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "FileMan.h"
 #include "Font_Control.h"
 #include "Handle_Doors.h"
@@ -1397,7 +1399,7 @@ static ScreenID UIHandleAOnTerrain(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return GAME_SCREEN;
 
-  SoldierSP selSoldier = GetSoldier(sel);
+  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
 
 	// ATE: Add stuff here to display a system message if we are targeting smeothing and
 	//  are out of range.
@@ -1555,7 +1557,7 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel != NULL)
 	{
-    SoldierSP selSoldier = GetSoldier(sel);
+    std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
 
 		fAllMove = gfUIAllMoveOn;
 		gfUIAllMoveOn = FALSE;
@@ -1574,7 +1576,7 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 			// TODO: Only our squad!
 			FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 			{
-        SoldierSP soldier = GetSoldier(pSoldier);
+        std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 				if (OkControllableMerc(pSoldier) && pSoldier->bAssignment == CurrentSquad() && !pSoldier->fMercAsleep)
 				{
@@ -4106,7 +4108,7 @@ static BOOLEAN HandleMultiSelectionMove(INT16 sDestGridNo)
 
 	FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 	{
-    SoldierSP soldier = GetSoldier(pSoldier);
+    std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 		if (pSoldier->bInSector)
 		{
 			if ( pSoldier->uiStatusFlags & SOLDIER_MULTI_SELECTED )
@@ -4292,7 +4294,7 @@ static ScreenID UIHandleJumpOver(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return GAME_SCREEN;
 
-  SoldierSP selSoldier = GetSoldier(sel);
+  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
 
 	const GridNo usMapPos = GetMouseMapPos();
 	if (usMapPos == NOWHERE) return GAME_SCREEN;
@@ -4490,7 +4492,7 @@ BOOLEAN HandleTalkInit(  )
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return FALSE;
 
-  SoldierSP selSoldier = GetSoldier(sel);
+  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
 
 	const GridNo usMapPos = GetMouseMapPos();
 	if (usMapPos == NOWHERE) return FALSE;
