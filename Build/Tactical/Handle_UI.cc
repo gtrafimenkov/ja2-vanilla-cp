@@ -4948,23 +4948,6 @@ BOOLEAN SelectedGuyInBusyAnimation( )
 }
 
 
-void ClimbUpOrDown()
-{
-  SOLDIERTYPE* const s = GetSelectedMan();
-  if (s)
-  {
-    INT8 direction;
-    if (FindHigherLevel(s, &direction))
-    {
-      BeginSoldierClimbUpRoof(s);
-    }
-    else
-    {
-      BeginSoldierClimbDownRoof(s);
-    }
-  }
-}
-
 void GotoHigherStance(SOLDIERTYPE* const s)
 {
 	switch (gAnimControl[s->usAnimState].ubEndHeight)
