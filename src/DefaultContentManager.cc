@@ -663,15 +663,6 @@ bool DefaultContentManager::loadMagazines()
         m_magazines.push_back(mag);
         m_items[mag->getItemIndex()] = mag;
         m_magazineMap.insert(std::make_pair(mag->getInternalName(), mag));
-
-        if(!mag->nameOverride.empty())
-        {
-          wcsncpy(ItemNames[mag->getItemIndex()], &UTF8String(mag->nameOverride.c_str()).getWCHAR()[0], SIZE_ITEM_NAME);
-        }
-        if(!mag->shortNameOverride.empty())
-        {
-          wcsncpy(ShortItemNames[mag->getItemIndex()], &UTF8String(mag->shortNameOverride.c_str()).getWCHAR()[0], SIZE_SHORT_ITEM_NAME);
-        }
       }
     }
   }
