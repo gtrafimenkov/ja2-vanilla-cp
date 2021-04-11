@@ -1,23 +1,23 @@
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/ArmsDealerInvInit.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Weapons.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/Types.h"
-#include "src/ContentManager.h"
-#include "src/DealerInventory.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/WeaponModels.h"
+#include "LoadSaveData.h"
+#include "Types.h"
+#include "Arms_Dealer_Init.h"
+#include "Debug.h"
+#include "Random.h"
+#include "Weapons.h"
+#include "FileMan.h"
+#include "Game_Clock.h"
+#include "ArmsDealerInvInit.h"
+#include "Soldier_Profile.h"
+#include "Handle_Items.h"
+#include "Quests.h"
+#include "Scheduling.h"
+#include "MemMan.h"
+#include "Items.h"
+
+#include "ContentManager.h"
+#include "GameInstance.h"
+#include "MagazineModel.h"
+#include "WeaponModels.h"
 
 // To reduce memory fragmentation from frequent MemRealloc(), we allocate memory for more than one special slot each
 // time we run out of space.  Odds are that if we need one, we'll need another soon.
@@ -2204,15 +2204,8 @@ static BOOLEAN IsItemInfoSpecial(SPECIAL_ITEM_INFO* pSpclItemInfo)
 
 static bool DoesItemAppearInDealerInventoryList(ArmsDealerID const ubArmsDealer, UINT16 const usItemIndex, BOOLEAN const fPurchaseFromPlayer)
 {
-  if(GCM->getDealerInventory(ubArmsDealer)->hasItem(GCM->getItem(usItemIndex)))
-  {
-    int maxAmount = GetDealersMaxItemAmount(ubArmsDealer, usItemIndex);
-    return (maxAmount > 0) || fPurchaseFromPlayer;
-  }
-  else
-  {
-    return false;
-  }
+  int maxAmount = GetDealersMaxItemAmount(ubArmsDealer, usItemIndex);
+  return (maxAmount > 0) || fPurchaseFromPlayer;
 }
 
 
