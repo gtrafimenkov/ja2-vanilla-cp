@@ -41,7 +41,6 @@ struct WeaponModel : ItemModel
 
   bool hasSound() const;
   bool hasBurstSound() const;
-  bool hasIntegratedSilencer() const;
 
   /** Check if the given attachment can be attached to the item. */
   virtual bool canBeAttached(uint16_t attachment) const;
@@ -62,7 +61,6 @@ struct WeaponModel : ItemModel
   bool attachUnderGLauncher;
   bool attachSpringAndBoltUpgrade;
   bool attachGunBarrelExtender;
-  bool integratedSilencer;
   int m_rateOfFire;
 
   char     internalType[20];

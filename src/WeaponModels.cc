@@ -94,7 +94,6 @@ void WeaponModel::serializeAttachments(JsonObject &obj) const
   obj.addOptionalBool("attachment_UnderGLauncher",           attachUnderGLauncher);
   obj.addOptionalBool("attachment_SpringAndBoltUpgrade",     attachSpringAndBoltUpgrade);
   obj.addOptionalBool("attachment_GunBarrelExtender",        attachGunBarrelExtender);
-  obj.addOptionalBool("integratedSilencer",                  integratedSilencer);
 }
 
 WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
@@ -610,7 +609,6 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
   wep->attachUnderGLauncher         = obj.getOptionalBool("attachment_UnderGLauncher");
   wep->attachSpringAndBoltUpgrade   = obj.getOptionalBool("attachment_SpringAndBoltUpgrade");
   wep->attachGunBarrelExtender      = obj.getOptionalBool("attachment_GunBarrelExtender");
-  wep->integratedSilencer           = obj.getOptionalBool("integratedSilencer");
 
   if(obj.getOptionalBool("thrown"))
   {
@@ -655,14 +653,10 @@ bool WeaponModel::hasBurstSound() const
   return burstSound.compare(NO_WEAPON_SOUND_STR) != 0;
 }
 
-bool WeaponModel::hasIntegratedSilencer() const {
-  return integratedSilencer;
-}
-
 /** Check if the given attachment can be attached to the item. */
 bool WeaponModel::canBeAttached(uint16_t attachment) const
 {
-  return (attachSilencer && !integratedSilencer && (attachment == SILENCER))
+  return (attachSilencer && (attachment == SILENCER))
     || (attachSniperScope && (attachment == SNIPERSCOPE))
     || (attachLaserScope && (attachment == LASERSCOPE))
     || (attachBipod && (attachment == BIPOD))
