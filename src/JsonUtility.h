@@ -4,7 +4,6 @@
 #include <string>
 
 #include "rapidjson/document.h"
-#include "src/JsonObject.h"
 
 namespace JsonUtility
 {
@@ -17,5 +16,3 @@ namespace JsonUtility
   /** Parse value as list of strings. */
   bool parseListStrings(const rapidjson::Value &value, std::vector<std::string> &strings);
 }
-
-std::string readOptionalString(JsonObjectReader &obj, const char *fieldName);

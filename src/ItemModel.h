@@ -79,13 +79,6 @@ struct ItemModel
   /** Check if the given attachment can be attached to the item. */
   virtual bool canBeAttached(uint16_t attachment) const;
 
-  std::string nameOverride;
-  std::string shortNameOverride;
-  std::string descriptionOverride;
-
-  std::string bobbyRayNameOverride;
-  std::string bobbyRayDescriptionOverride;
-
 protected:
   uint16_t   itemIndex;
   std::string internalName;

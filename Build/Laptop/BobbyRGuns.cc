@@ -20,17 +20,16 @@
 #include "sgp/Font.h"
 #include "sgp/HImage.h"
 #include "sgp/UTF8String.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/CalibreModel.h"
-#include "src/ContentManager.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/policy/GamePolicy.h"
-#include "src/WeaponModels.h"
+
+#include "CalibreModel.h"
+#include "ContentManager.h"
+#include "GameInstance.h"
+#include "MagazineModel.h"
+#include "WeaponModels.h"
+
+#include "ContentManager.h"
+#include "GameInstance.h"
+#include "policy/GamePolicy.h"
 
 #define		BOBBYR_GRID_PIC_WIDTH							118
 #define		BOBBYR_GRID_PIC_HEIGHT						69
@@ -866,12 +865,14 @@ static UINT16 DisplayCaliber(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight)
 static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed)
 {
 	wchar_t	sTemp[20];
+	UINT32 uiStartLoc;
 	UINT8	ubPurchaseNumber;
 
 	{
 		//Display Items Name
 		wchar_t sText[BOBBYR_ITEM_DESC_NAME_SIZE];
-    LoadBobbyRayItemName(usIndex, sText, BOBBYR_ITEM_DESC_NAME_SIZE);
+		uiStartLoc = BOBBYR_ITEM_DESC_FILE_SIZE * usIndex;
+		GCM->loadEncryptedString(BOBBYRDESCFILE, sText, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
 		ReduceStringLength(sText, lengthof(sText), BOBBYR_GRID_PIC_WIDTH - 6, BOBBYR_ITEM_NAME_TEXT_FONT);
 		DrawTextToScreen(sText, BOBBYR_ITEM_NAME_X, usPosY + BOBBYR_ITEM_NAME_Y_OFFSET, 0, BOBBYR_ITEM_NAME_TEXT_FONT, BOBBYR_ITEM_NAME_TEXT_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 	}
@@ -890,6 +891,9 @@ static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobby
 		}
 	}
 
+
+
+
 	//if it's a used item, display how damaged the item is
 	if( fUsed )
 	{
@@ -900,7 +904,8 @@ static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobby
 	{
 		//Display Items description
 		wchar_t sText[BOBBYR_ITEM_DESC_INFO_SIZE];
-    LoadBobbyRayItemDescription(usIndex, sText, BOBBYR_ITEM_DESC_INFO_SIZE);
+		uiStartLoc += BOBBYR_ITEM_DESC_NAME_SIZE;
+		GCM->loadEncryptedString(BOBBYRDESCFILE, sText, uiStartLoc, BOBBYR_ITEM_DESC_INFO_SIZE);
 		DisplayWrappedString(BOBBYR_ITEM_DESC_START_X, usPosY, BOBBYR_ITEM_DESC_START_WIDTH, 2, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_ITEM_DESC_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 	}
 }

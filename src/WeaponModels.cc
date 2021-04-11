@@ -4,10 +4,9 @@
 #include "Build/Tactical/Points.h"
 #include "Build/Utils/Sound_Control.h"
 
-#include "src/CalibreModel.h"
-#include "src/JsonObject.h"
-#include "src/JsonUtility.h"
-#include "src/MagazineModel.h"
+#include "CalibreModel.h"
+#include "JsonObject.h"
+#include "MagazineModel.h"
 
 #include "slog/slog.h"
 #define TAG "Weapons"
@@ -580,13 +579,6 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
   {
     SLOGE(TAG, "Weapon type '%s' is not found", internalType);
   }
-
-  wep->nameOverride = readOptionalString(obj, "name");
-  wep->shortNameOverride = readOptionalString(obj, "shortName");
-  wep->descriptionOverride = readOptionalString(obj, "description");
-
-  wep->bobbyRayNameOverride = readOptionalString(obj, "bobbyRayName");
-  wep->bobbyRayDescriptionOverride = readOptionalString(obj, "bobbyRaydescription");
 
   wep->ubGraphicType    = obj.GetInt("ubGraphicType");
   wep->ubGraphicNum     = obj.GetInt("ubGraphicNum");
