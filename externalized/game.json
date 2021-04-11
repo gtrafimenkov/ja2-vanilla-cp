@@ -15,14 +15,5 @@
         "drop_everything":   false,
         "all_drops_visible": false,
 
-        "johnCulbaPresentWeapon": "AUTOMAG_III",
-        "johnCulbaPresentAmmo": "CLIP762N_5_AP",
-        "stolenGoodsReturnItem1": "GASMASK",
-        "stolenGoodsReturnItem2": "DESERTEAGLE",
-        "stolenGoodsReturnItem3": "STUN_GRENADE",
-        "stolenGoodsReturnItem4": "SW38",
-        "weaponToShotEliot": "DESERTEAGLE",
-        "tankMachineGun": "MINIMI",
-
         "enemy_weapon_minimal_status": 0
 }

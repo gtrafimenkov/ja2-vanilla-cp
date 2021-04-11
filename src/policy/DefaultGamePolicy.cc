@@ -21,15 +21,6 @@ DefaultGamePolicy::DefaultGamePolicy(rapidjson::Document *json)
   f_all_dropped_visible = (*json)["all_drops_visible"].GetBool();
 
   enemy_weapon_minimal_status   = (*json)["enemy_weapon_minimal_status"].GetInt();
-
-  johnCulbaPresentWeapon        = (*json)["johnCulbaPresentWeapon"].GetString();
-  johnCulbaPresentAmmo          = (*json)["johnCulbaPresentAmmo"].GetString();
-  stolenGoodsReturnItem1        = (*json)["stolenGoodsReturnItem1"].GetString();
-  stolenGoodsReturnItem2        = (*json)["stolenGoodsReturnItem2"].GetString();
-  stolenGoodsReturnItem3        = (*json)["stolenGoodsReturnItem3"].GetString();
-  stolenGoodsReturnItem4        = (*json)["stolenGoodsReturnItem4"].GetString();
-  weaponToShotEliot             = (*json)["weaponToShotEliot"].GetString();
-  tankMachineGun                = (*json)["tankMachineGun"].GetString();
 }
 
 /** Check if a hotkey is enabled. */

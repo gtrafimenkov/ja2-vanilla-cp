@@ -44,7 +44,6 @@ WeaponModel::WeaponModel(uint32_t itemClass, uint8_t weaponType, uint8_t cursor,
   ubShotsPer4Turns     = 0;
   ubShotsPerBurst      = 0;
   ubBurstPenalty       = 0;
-  fixedBurstAP         = 0;
   ubBulletSpeed        = 0;
   ubImpact             = 0;
   ubDeadliness         = 0;
@@ -581,8 +580,6 @@ WeaponModel* WeaponModel::deserialize(JsonObjectReader &obj)
   {
     SLOGE(TAG, "Weapon type '%s' is not found", internalType);
   }
-
-  wep->fixedBurstAP = readOptionalInt(obj, "fixedBurstAP");
 
   wep->nameOverride = readOptionalString(obj, "name");
   wep->shortNameOverride = readOptionalString(obj, "shortName");

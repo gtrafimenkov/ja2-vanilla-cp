@@ -65,18 +65,6 @@ public:
     return m_value[name].GetBool();
   }
 
-  int getOptionalInt(const char *name) const
-  {
-    if(m_value.HasMember(name))
-    {
-      return m_value[name].GetInt();
-    }
-    else
-    {
-      return 0;
-    }
-  }
-
   bool getOptionalBool(const char *name) const
   {
     if(m_value.HasMember(name))

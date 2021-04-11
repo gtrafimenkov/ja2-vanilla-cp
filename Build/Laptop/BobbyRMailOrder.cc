@@ -1,39 +1,39 @@
-#include "Build/Directories.h"
-#include "Build/Laptop/BobbyR.h"
-#include "Build/Laptop/BobbyRGuns.h"
-#include "Build/Laptop/BobbyRMailOrder.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Local.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "Build/Utils/Text_Utils.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Button_System.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "sgp/Input.h"
-#include "sgp/Line.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/policy/GamePolicy.h"
+#include "Directories.h"
+#include "Font.h"
+#include "HImage.h"
+#include "Laptop.h"
+#include "BobbyRMailOrder.h"
+#include "BobbyR.h"
+#include "Local.h"
+#include "MessageBoxScreen.h"
+#include "VObject.h"
+#include "WordWrap.h"
+#include "Cursors.h"
+#include "BobbyRGuns.h"
+#include "Finances.h"
+#include "Game_Clock.h"
+#include "Game_Event_Hook.h"
+#include "Random.h"
+#include "LaptopSave.h"
+#include "Soldier_Profile.h"
+#include "Input.h"
+#include "Line.h"
+#include "Text.h"
+#include "Campaign_Types.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "StrategicMap.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "ScreenIDs.h"
+#include "Font_Control.h"
+#include "FileMan.h"
+
+#include "ContentManager.h"
+#include "GameInstance.h"
+#include "Text_Utils.h"
 
 struct BobbyROrderLocationStruct
 {
@@ -774,6 +774,7 @@ void DisplayPurchasedItems( BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16
 	UINT16  i;
 	wchar_t	sTemp[20];
 	UINT16	usPosY;
+	UINT32	uiStartLoc=0;
 	UINT32	uiTotal;
 
 	//Output the qty
@@ -1842,7 +1843,7 @@ void AddJohnsGunShipment()
 
 	// want to add two guns (Automags, AUTOMAG_III), and four clips of ammo.
 
-	Temp[0].usItemIndex = GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentWeapon)->getItemIndex();
+	Temp[0].usItemIndex = AUTOMAG_III;
 	Temp[0].ubNumberPurchased = 2;
 	Temp[0].bItemQuality = 100;
 	Temp[0].usBobbyItemIndex = 0;// does this get used anywhere???
@@ -1850,7 +1851,7 @@ void AddJohnsGunShipment()
 
 //	LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[cnt].BobbyRayPurchase[0] = Temp;
 
-	Temp[1].usItemIndex = GCM->getItemByName(GCM->getGamePolicy()->johnCulbaPresentAmmo)->getItemIndex();
+	Temp[1].usItemIndex = CLIP762N_5_AP;
 	Temp[1].ubNumberPurchased = 2;
 	Temp[1].bItemQuality = 5;
 	Temp[1].usBobbyItemIndex = 0;// does this get used anywhere???

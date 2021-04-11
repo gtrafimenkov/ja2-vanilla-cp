@@ -18,6 +18,4 @@ namespace JsonUtility
   bool parseListStrings(const rapidjson::Value &value, std::vector<std::string> &strings);
 }
 
-int readOptionalInt(JsonObjectReader &obj, const char *fieldName);
-bool readOptionalBool(JsonObjectReader &obj, const char *fieldName);
 std::string readOptionalString(JsonObjectReader &obj, const char *fieldName);

@@ -46,8 +46,7 @@ void InitArmyGunTypes(void)
 	}
 
 	// avoid auto-drops for the gun class with the crappiest guns in it
-  const std::vector<std::vector<const WeaponModel*> > & gunChoice = GCM->getExtendedGunChoice();
-	MarkAllWeaponsOfSameGunClassAsDropped( gunChoice[0][0]->getItemIndex() );
+	MarkAllWeaponsOfSameGunClassAsDropped( SW38 );
 }
 
 
@@ -1883,7 +1882,7 @@ static void EquipTank(SOLDIERCREATE_STRUCT* pp)
 	pp->Inv[ HANDPOS ].fFlags |= OBJECT_UNDROPPABLE;
 
 	// machine gun
-	CreateItems( GCM->getItemByName(GCM->getGamePolicy()->tankMachineGun)->getItemIndex(), ( INT8 )( 80 + Random( 21 ) ), 1, &Object );
+	CreateItems( MINIMI, ( INT8 )( 80 + Random( 21 ) ), 1, &Object );
 	Object.fFlags |= OBJECT_UNDROPPABLE;
 	PlaceObjectInSoldierCreateStruct( pp, &Object );
 

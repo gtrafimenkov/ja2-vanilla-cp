@@ -790,10 +790,10 @@ static INT16 GetBreathPerAP(SOLDIERTYPE* pSoldier, UINT16 usAnimState)
 
 UINT8 CalcAPsToBurst(INT8 const bBaseActionPoints, OBJECTTYPE const& o)
 {
-	int fixedAP = GCM->getWeapon(o.usItem)->fixedBurstAP;
-	if (fixedAP > 0)
+	// base APs is what you'd get from CalcActionPoints();
+	if (o.usItem == G11)
 	{
-		return (uint8_t)fixedAP;
+		return( 1 );
 	}
 	else
 	{
