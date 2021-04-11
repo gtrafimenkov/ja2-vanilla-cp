@@ -1,18 +1,17 @@
-#include "Build/Directories.h"
-#include "Build/Tactical/Real_Time_Input.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Spread_Burst.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "sgp/Cursor_Control.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
+#include "Directories.h"
+#include "Real_Time_Input.h"
+#include "Spread_Burst.h"
+#include "VObject.h"
+#include "Soldier_Control.h"
+#include "Weapons.h"
+#include "Cursor_Control.h"
+#include "Soldier_Find.h"
+#include "Isometric_Utils.h"
+#include "RenderWorld.h"
+#include "Render_Dirty.h"
+#include "VSurface.h"
+#include "UILayout.h"
+
 
 #define		MAX_BURST_LOCATIONS		50
 
@@ -73,7 +72,7 @@ void PickBurstLocations( SOLDIERTYPE *pSoldier )
 	// OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
 	// Get shots per burst
-	ubShotsPerBurst = GCM->getWeapon( pSoldier->inv[ HANDPOS].usItem)->ubShotsPerBurst;
+	ubShotsPerBurst = Weapon[ pSoldier->inv[ HANDPOS ].usItem ].ubShotsPerBurst;
 
 	// Use # gridnos accululated and # burst shots to determine accululator
 	dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
@@ -105,7 +104,7 @@ void AIPickBurstLocations( SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pT
 	// OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
 	// Get shots per burst
-	ubShotsPerBurst = GCM->getWeapon( pSoldier->inv[ HANDPOS].usItem)->ubShotsPerBurst;
+	ubShotsPerBurst = Weapon[ pSoldier->inv[ HANDPOS ].usItem ].ubShotsPerBurst;
 
 	// Use # gridnos accululated and # burst shots to determine accululator
 	//dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;

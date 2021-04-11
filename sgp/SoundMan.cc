@@ -8,17 +8,6 @@
 
 #include <assert.h>
 
-#include <SDL.h>
-
-#include "sgp/Buffer.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/Random.h"
-#include "sgp/SoundMan.h"
-#include "sgp/Timer.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-
 
 // Uncomment this to disable the startup of sound hardware
 //#define SOUND_DISABLE
@@ -251,7 +240,7 @@ try
 	SOUNDTAG* const channel = SoundGetFreeChannel();
 	if (channel == NULL) return SOUND_ERROR;
 
-	AutoSGPFile hFile(GCM->openForReadingSmart(pFilename, true));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(pFilename, true));
 
 	// MSS cannot determine which provider to play if you don't give it a real filename
 	// so if the file isn't in a library, play it normally
@@ -744,7 +733,7 @@ try
 {
 	Assert(pFilename != NULL);
 
-	AutoSGPFile hFile(GCM->openGameResForReading(pFilename));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(pFilename, true));
 
 	UINT32 uiSize = FileGetSize(hFile);
 
@@ -1186,7 +1175,7 @@ static UINT32 SoundGetUniqueID(void)
 static BOOLEAN SoundPlayStreamed(const char* pFilename)
 try
 {
-	AutoSGPFile hDisk(GCM->openGameResForReading(pFilename));
+	AutoSGPFile hDisk(FileMan::openForReadingSmart(pFilename, true));
 	return FileGetSize(hDisk) >= guiSoundCacheThreshold;
 }
 catch (...) { return FALSE; }

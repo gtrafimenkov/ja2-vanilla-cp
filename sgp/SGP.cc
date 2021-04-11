@@ -1,38 +1,32 @@
 #include <exception>
 #include <new>
 
-#include <SDL.h>
-
-#include "Build/GameLoop.h"
-#include "Build/GameRes.h"
-#include "Build/GameState.h"
-#include "Build/Init.h"
-#include "Build/Intro.h"
-#include "Build/JA2_Splash.h"
-#include "Build/SaveLoadGame.h"
-#include "ModPackContentManager.h"
-#include "sgp/Button_System.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/Input.h"
-#include "sgp/Logger.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/SGP.h"
-#include "sgp/SoundMan.h"
-#include "sgp/Timer.h"
-#include "sgp/UTF8String.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
 #include "slog/slog.h"
-#include "src/DefaultContentManager.h"
-#include "src/GameInstance.h"
-#include "src/JsonUtility.h"
-#include "src/policy/GamePolicy.h"
 
-#define TAG "SGP"
+#include "Button_System.h"
+#include "Debug.h"
+#include "FileMan.h"
+#include "Font.h"
+#include "GameLoop.h"
+#include "Init.h" // XXX should not be used in SGP
+#include "Input.h"
+#include "Intro.h"
+#include "JA2_Splash.h"
+#include "MemMan.h"
+#include "Random.h"
+#include "SGP.h"
+#include "SaveLoadGame.h" // XXX should not be used in SGP
+#include "SoundMan.h"
+#include "VObject.h"
+#include "Video.h"
+#include "VSurface.h"
+#include <SDL.h>
+#include "UILayout.h"
+#include "GameRes.h"
+#include "Logger.h"
+#include "GameState.h"
+#include "Exceptions.h"
+#include "Timer.h"
 
 #ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
@@ -126,17 +120,70 @@ extern BOOLEAN gfPauseDueToPlayerGamePause;
 ////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////
+/**
+ * Number of milliseconds for one game cycle.
+ * 25 ms gives approx. 40 cycles per second (and 40 frames per second, since the screen
+ * is updated on every cycle). */
+#define MS_PER_GAME_CYCLE               (25)
+
 
 static BOOLEAN gfGameInitialized = FALSE;
 
 
-static bool getResourceVersion(const char *versionName, GameVersion *version);
-static std::string findRootGameResFolder(const std::string &configPath);
-static void WriteDefaultConfigFile(const char* ConfigFile);
+static void InitializeStandardGamingPlatform(void)
+{
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_EnableUNICODE(SDL_ENABLE);
 
-static void convertDialogQuotesToJson(const DefaultContentManager *cm,
-                                      STRING_ENC_TYPE encType,
-                                      const char *dialogFile, const char *outputFile);
+#ifdef SGP_DEBUG
+	// Initialize the Debug Manager - success doesn't matter
+	InitializeDebugManager();
+#endif
+
+  // this one needs to go ahead of all others (except Debug), for MemDebugCounter to work right...
+	FastDebugMsg("Initializing Memory Manager");
+	// Initialize the Memory Manager
+	InitializeMemoryManager();
+
+	FastDebugMsg("Initializing File Manager");
+	InitializeFileManager();
+
+	FastDebugMsg("Initializing Video Manager");
+	InitializeVideoManager();
+
+	FastDebugMsg("Initializing Video Object Manager");
+	InitializeVideoObjectManager();
+
+	FastDebugMsg("Initializing Video Surface Manager");
+	InitializeVideoSurfaceManager();
+
+  InitGameResources();
+
+#ifdef JA2
+	InitJA2SplashScreen();
+#endif
+
+	// Initialize Font Manager
+	FastDebugMsg("Initializing the Font Manager");
+	// Init the manager and copy the TransTable stuff into it.
+	InitializeFontManager();
+
+	FastDebugMsg("Initializing Sound Manager");
+#ifndef UTIL
+	InitializeSoundManager();
+#endif
+
+	FastDebugMsg("Initializing Random");
+  // Initialize random number generator
+  InitializeRandom(); // no Shutdown
+
+	FastDebugMsg("Initializing Game Manager");
+	// Initialize the Game
+	InitializeGame();
+
+	gfGameInitialized = TRUE;
+}
+
 
 /** Deinitialize the game an exit. */
 static void deinitGameAndExit()
@@ -178,7 +225,7 @@ void requestGameExit()
   SDL_PushEvent(&event);
 }
 
-static void MainLoop(int msPerGameCycle)
+static void MainLoop()
 {
 	BOOLEAN s_doGameCycles = TRUE;
 
@@ -226,9 +273,9 @@ static void MainLoop(int msPerGameCycle)
 				GameLoop();
         gameCycleMS = GetClock() - gameCycleMS;
 
-        if(gameCycleMS < msPerGameCycle)
+        if(gameCycleMS < MS_PER_GAME_CYCLE)
         {
-          SDL_Delay(msPerGameCycle - gameCycleMS);
+          SDL_Delay(MS_PER_GAME_CYCLE - gameCycleMS);
         }
 
 #if DEBUG_PRINT_GAME_CYCLE_TIME
@@ -256,27 +303,15 @@ static int Failure(char const* const msg, bool showInfoIcon=false)
 
 ////////////////////////////////////////////////////////////
 
-ContentManager *GCM = NULL;
-
-////////////////////////////////////////////////////////////
-
 struct CommandLineParams
 {
   CommandLineParams()
   {
-#ifdef WITH_MODS
-    useMod = false;
-#endif
     doUnitTests = false;
     showDebugMessages = false;
     resourceVersionGiven = false;
     gameDirPathGiven = false;
   }
-
-#ifdef WITH_MODS
-  bool useMod;
-  std::string modName;
-#endif
 
   bool resourceVersionGiven;
   std::string resourceVersion;
@@ -289,29 +324,38 @@ struct CommandLineParams
 };
 
 static BOOLEAN ParseParameters(int argc, char* const argv[],
-                               CommandLineParams *params);
+                               bool *doUnitTests,
+                               bool *showDebugMessages);
+
 
 int main(int argc, char* argv[])
 try
 {
   std::string exeFolder = FileMan::getParentPath(argv[0], true);
+#if defined BROKEN_SWPRINTF
+	if (setlocale(LC_CTYPE, "UTF-8") == NULL)
+	{
+		fprintf(stderr, "WARNING: Failed to set LC_CTYPE to UTF-8. Some strings might get garbled.\n");
+	}
+#endif
 
   // init logging
-  SLOG_Init(SLOG_STDERR, "ja2.log");
+  SLOG_Init(SLOG_STDERR, NULL);
   SLOG_SetLevel(SLOG_WARNING, SLOG_WARNING);
 
   setGameVersion(GV_ENGLISH);
 
-  CommandLineParams params;
-	if (!ParseParameters(argc, argv, &params)) return EXIT_FAILURE;
+  bool doUnitTests = false;
+  bool showDebugMessages = false;
+	if (!ParseParameters(argc, argv, &doUnitTests, &showDebugMessages)) return EXIT_FAILURE;
 
-  if(params.showDebugMessages)
+  if(showDebugMessages)
   {
     SLOG_SetLevel(SLOG_DEBUG, SLOG_DEBUG);
   }
 
 #ifdef WITH_UNITTESTS
-  if(params.doUnitTests)
+  if(doUnitTests)
   {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
@@ -359,28 +403,6 @@ try
 
   DefaultContentManager *cm;
 
-#ifdef WITH_MODS
-  if(params.useMod)
-  {
-    std::string modName = params.modName;
-    std::string modResFolder = FileMan::joinPaths(FileMan::joinPaths(FileMan::joinPaths(extraDataDir, "mods"), modName), "data");
-    cm = new ModPackContentManager(version,
-                                   modName, modResFolder, configFolderPath,
-                                   configPath, gameResRootPath,
-                                   externalizedDataPath);
-    LOG_INFO("------------------------------------------------------------------------------\n");
-    LOG_INFO("Root game resources directory: '%s'\n", params.gameDirPath.c_str());
-    LOG_INFO("Extra data directory:          '%s'\n", extraDataDir.c_str());
-    LOG_INFO("Data directory:                '%s'\n", cm->getDataDir().c_str());
-    LOG_INFO("Tilecache directory:           '%s'\n", cm->getTileDir().c_str());
-    LOG_INFO("Saved games directory:         '%s'\n", cm->getSavedGamesFolder().c_str());
-    LOG_INFO("------------------------------------------------------------------------------\n");
-    LOG_INFO("MOD name:                      '%s'\n", modName.c_str());
-    LOG_INFO("MOD resource directory:        '%s'\n", modResFolder.c_str());
-    LOG_INFO("------------------------------------------------------------------------------\n");
-  }
-  else
-#endif
   {
     cm = new DefaultContentManager(version,
                                    configFolderPath, configPath,
@@ -394,9 +416,14 @@ try
     LOG_INFO("------------------------------------------------------------------------------\n");
   }
 
+	// InitializeStandardGamingPlatform();
+
   if(!cm->loadGameData())
+
+#if defined JA2
+  if(isEnglishVersion())
   {
-    LOG_INFO("Failed to load the game data.\n");
+    SetIntroType(INTRO_SPLASH);
   }
   else
   {
@@ -414,15 +441,10 @@ try
 
     InitJA2SplashScreen();
 
-    // Initialize Font Manager
-    FastDebugMsg("Initializing the Font Manager");
-    // Init the manager and copy the TransTable stuff into it.
-    InitializeFontManager();
+	FastDebugMsg("Running Game");
 
     FastDebugMsg("Initializing Sound Manager");
-#ifndef UTIL
     InitializeSoundManager();
-#endif
 
     FastDebugMsg("Initializing Random");
     // Initialize random number generator
@@ -462,10 +484,12 @@ try
     MainLoop(GCM->getGamePolicy()->ms_per_game_cycle);
   }
 
-  SLOG_Deinit();
+	/* At this point the SGP is set up, which means all I/O, Memory, tools, etc.
+	 * are available. All we need to do is attend to the gaming mechanics
+	 * themselves */
+	MainLoop();
 
-  delete cm;
-  GCM = NULL;
+  SLOG_Deinit();
 
 	return EXIT_SUCCESS;
 }
@@ -490,49 +514,52 @@ catch (...)
 
 
 /** Set game resources version. */
-static bool getResourceVersion(const char *versionName, GameVersion *version)
+static BOOLEAN setResourceVersion(const char *version)
 {
-  if(strcasecmp(versionName, "ENGLISH") == 0)
+  if(strcasecmp(version, "ENGLISH") == 0)
   {
-    *version = GV_ENGLISH;
+    setGameVersion(GV_ENGLISH);
   }
-  else if(strcasecmp(versionName, "DUTCH") == 0)
+  else if(strcasecmp(version, "DUTCH") == 0)
   {
-    *version = GV_DUTCH;
+    setGameVersion(GV_DUTCH);
   }
-  else if(strcasecmp(versionName, "FRENCH") == 0)
+  else if(strcasecmp(version, "FRENCH") == 0)
   {
-    *version = GV_FRENCH;
+    setGameVersion(GV_FRENCH);
   }
-  else if(strcasecmp(versionName, "GERMAN") == 0)
+  else if(strcasecmp(version, "GERMAN") == 0)
   {
-    *version = GV_GERMAN;
+    setGameVersion(GV_GERMAN);
   }
-  else if(strcasecmp(versionName, "ITALIAN") == 0)
+  else if(strcasecmp(version, "ITALIAN") == 0)
   {
-    *version = GV_ITALIAN;
+    setGameVersion(GV_ITALIAN);
   }
-  else if(strcasecmp(versionName, "POLISH") == 0)
+  else if(strcasecmp(version, "POLISH") == 0)
   {
-    *version = GV_POLISH;
+    setGameVersion(GV_POLISH);
   }
-  else if(strcasecmp(versionName, "RUSSIAN") == 0)
+  else if(strcasecmp(version, "RUSSIAN") == 0)
   {
-    *version = GV_RUSSIAN;
+    setGameVersion(GV_RUSSIAN);
   }
-  else if(strcasecmp(versionName, "RUSSIAN_GOLD") == 0)
+  else if(strcasecmp(version, "RUSSIAN_GOLD") == 0)
   {
-    *version = GV_RUSSIAN_GOLD;
+    setGameVersion(GV_RUSSIAN_GOLD);
   }
   else
   {
+    LOG_ERROR("Unknown version of the game: %s\n", version);
     return false;
   }
+  LOG_INFO("Game version: %s\n", version);
   return true;
 }
 
 static BOOLEAN ParseParameters(int argc, char* const argv[],
-                               CommandLineParams *params)
+                               bool *doUnitTests,
+                               bool *showDebugMessages)
 {
 	const char* const name = *argv;
 	if (name == NULL) return TRUE; // argv does not even contain the program name
@@ -549,13 +576,13 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
 #ifdef WITH_UNITTESTS
     else if (strcmp(argv[i], "--unittests") == 0)
     {
-      params->doUnitTests = true;
+      *doUnitTests = true;
       return true;
     }
 #endif
     else if (strcmp(argv[i], "--debug") == 0)
     {
-      params->showDebugMessages = true;
+      *showDebugMessages = true;
       return true;
     }
 #ifdef WITH_MODS
@@ -587,6 +614,20 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
       }
     }
 		else if (strcmp(argv[i], "--editor") == 0)
+		}
+#if defined JA2BETAVERSION
+		else if (strcmp(argv[i], "-quicksave") == 0)
+		{
+			/* This allows the QuickSave Slots to be autoincremented, i.e. everytime
+			 * the user saves, there will be a new quick save file */
+			gfUseConsecutiveQuickSaveSlots = TRUE;
+		}
+		else if (strcmp(argv[i], "-domaps") == 0)
+		{
+      GameState::setMode(GAME_MODE_MAP_UTILITY);
+		}
+#endif
+		else if (strcmp(argv[i], "-editor") == 0)
 		{
       GameState::getInstance()->setEditorMode(false);
 		}
@@ -598,8 +639,7 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
     {
       if(haveNextParameter)
       {
-        params->resourceVersionGiven = true;
-        params->resourceVersion = argv[++i];
+        success = setResourceVersion(argv[++i]);
       }
       else
       {
@@ -627,12 +667,6 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
 			"                Default value is ENGLISH\n"
 			"                RUSSIAN is for BUKA Agonia Vlasty release\n"
 			"                RUSSIAN_GOLD is for Gold release\n"
-#ifdef WITH_MODS
-      "\n"
-      "  --mod NAME    Start one of the game modifications, bundled into the game.\n"
-      "                NAME is the name of modification, e.g. 'from-russia-with-love'.\n"
-      "                See folder mods for possible options\n"
-#endif
 			"\n"
       "  --gamedir     Directory where the original game resources can be found.\n"
       "                By default the directory where the executable file is located.\n"
@@ -655,23 +689,3 @@ static BOOLEAN ParseParameters(int argc, char* const argv[],
 	}
 	return success;
 }
-
-static void convertDialogQuotesToJson(const DefaultContentManager *cm,
-                                      STRING_ENC_TYPE encType,
-                                      const char *dialogFile, const char *outputFile)
-{
-  std::vector<UTF8String*> quotes;
-  std::vector<std::string> quotes_str;
-  cm->loadAllDialogQuotes(encType, dialogFile, quotes);
-  for(int i = 0; i < quotes.size(); i++)
-  {
-    quotes_str.push_back(std::string(quotes[i]->getUTF8()));
-    delete quotes[i];
-    quotes[i] = NULL;
-  }
-  JsonUtility::writeToFile(outputFile, quotes_str);
-}
-
-////////////////////////////////////////////////////////////////////////////
-//
-////////////////////////////////////////////////////////////////////////////

@@ -40,8 +40,6 @@
 #include "sgp/Video.h"
 #include "Build/GameState.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #include "Build/Tactical/Soldier_Init_List.h"
 extern SOLDIERINITNODE *gpSelected;
@@ -103,16 +101,17 @@ void InitNewOverheadDB(TileSetID const ubTilesetID)
 			use_tileset = GENERIC_1;
 		}
 
-		std::string adjusted_file(GCM->getTilesetResourceName(use_tileset, std::string("t/") + filename));
+		char adjusted_file[128];
+		sprintf(adjusted_file, TILESETSDIR "/%d/t/%s", use_tileset, filename);
 		SGPVObject* vo;
 		try
 		{
-			vo = AddVideoObjectFromFile(adjusted_file.c_str());
+			vo = AddVideoObjectFromFile(adjusted_file);
 		}
 		catch (...)
 		{
 			// Load one we know about
-			vo = AddVideoObjectFromFile(GCM->getTilesetResourceName(0, std::string("t/") + "grass.sti").c_str());
+			vo = AddVideoObjectFromFile(TILESETSDIR "/0/t/grass.sti");
 		}
 
 		gSmTileSurf[i].vo = vo;

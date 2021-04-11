@@ -1,22 +1,22 @@
-#include "Build/Directories.h"
-#include "Build/Laptop/AIM.h"
-#include "Build/Laptop/EMail.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Button_System.h"
-#include "sgp/Font.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Cursors.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Laptop.h"
+#include "AIM.h"
+#include "VObject.h"
+#include "Timer_Control.h"
+#include "WordWrap.h"
+#include "Encrypted_File.h"
+#include "EMail.h"
+#include "Game_Clock.h"
+#include "Text.h"
+#include "LaptopSave.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Button_System.h"
+#include "Font_Control.h"
+
 
 UINT8			AimMercArray[ MAX_NUMBER_MERCS ];
 
@@ -440,7 +440,7 @@ static void SelectAimLogoRegionCallBack(MOUSE_REGION* pRegion, INT32 iReason)
 
 static void LoadAIMText(wchar_t buf[], UINT32 entry)
 {
-	GCM->loadEncryptedString(AIMHISTORYFILE, buf, AIM_HISTORY_LINE_SIZE * entry, AIM_HISTORY_LINE_SIZE);
+	LoadEncryptedDataFromFile(AIMHISTORYFILE, buf, AIM_HISTORY_LINE_SIZE * entry, AIM_HISTORY_LINE_SIZE);
 }
 
 

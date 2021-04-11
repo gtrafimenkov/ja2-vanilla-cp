@@ -1,27 +1,26 @@
-#include "Build/Directories.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/Files.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "sgp/LoadSaveData.h"
-#include "Build/MercPortrait.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "sgp/VObject.h"
-#include "sgp/Debug.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/VSurface.h"
-#include "sgp/MemMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "sgp/FileMan.h"
+#include "Directories.h"
+#include "Font.h"
+#include "HImage.h"
+#include "Laptop.h"
+#include "Files.h"
+#include "Game_Clock.h"
+#include "LoadSaveData.h"
+#include "MercPortrait.h"
+#include "Soldier_Control.h"
+#include "Soldier_Profile.h"
+#include "VObject.h"
+#include "Debug.h"
+#include "WordWrap.h"
+#include "Render_Dirty.h"
+#include "Encrypted_File.h"
+#include "Cursors.h"
+#include "Text.h"
+#include "Button_System.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "Font_Control.h"
+#include "FileMan.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 struct FilesUnit
 {
@@ -358,7 +357,7 @@ static void OpenAndReadFilesFile(void)
 	AutoSGPFile f;
 	try
 	{
-		f = GCM->openGameResForReading(FILES_DAT_FILE);
+		f = FileMan::openForReadingSmart(FILES_DAT_FILE, true);
 	}
 	catch (...) { return; /* XXX TODO0019 ignore */ }
 
@@ -652,11 +651,11 @@ static FileString* LoadStringsIntoFileList(char const* const filename, UINT32 of
 {
 	FileString*  head   = 0;
 	FileString** anchor = &head;
-	AutoSGPFile f(GCM->openGameResForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 	for (; n != 0; ++offset, --n)
 	{
 		wchar_t str[FILE_STRING_SIZE];
-		GCM->loadEncryptedString(f, str, lengthof(str) * offset, lengthof(str));
+		LoadEncryptedData(f, str, lengthof(str) * offset, lengthof(str));
 
 		FileString* const fs = MALLOC(FileString);
 		fs->Next    = 0;

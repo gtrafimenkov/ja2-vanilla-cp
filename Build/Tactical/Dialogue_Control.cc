@@ -1,62 +1,59 @@
-#include <queue>
+#include "Directories.h"
+#include "Font.h"
+#include "Font_Control.h"
+#include "GameLoop.h"
+#include "Handle_UI.h"
+#include "Isometric_Utils.h"
+#include "MapScreen.h"
+#include "MessageBoxScreen.h"
+#include "Soldier_Control.h"
+#include "Encrypted_File.h"
+#include "Faces.h"
+#include "VObject.h"
+#include "VSurface.h"
+#include "WCheck.h"
+#include "Overhead.h"
+#include "Dialogue_Control.h"
+#include "Message.h"
+#include "Render_Dirty.h"
+#include "Soldier_Profile.h"
+#include "WordWrap.h"
+#include "AIMMembers.h"
+#include "Mercs.h"
+#include "Interface_Dialogue.h"
+#include "MercTextBox.h"
+#include "RenderWorld.h"
+#include "Soldier_Macros.h"
+#include "Squads.h"
+#include "ScreenIDs.h"
+#include "Interface_Utils.h"
+#include "StrategicMap.h"
+#include "PreBattle_Interface.h"
+#include "Game_Clock.h"
+#include "Quests.h"
+#include "Cursors.h"
+#include "GameScreen.h"
+#include "Random.h"
+#include "GameSettings.h"
+#include "ShopKeeper_Interface.h"
+#include "Map_Screen_Interface.h"
+#include "Meanwhile.h"
+#include "SkillCheck.h"
+#include "Interface_Control.h"
+#include "Civ_Quotes.h"
+#include "OppList.h"
+#include "AI.h"
+#include "WorldMan.h"
+#include "LOS.h"
+#include "QArray.h"
+#include "JAScreens.h"
+#include "Video.h"
+#include "SoundMan.h"
+#include "Container.h"
+#include "GameRes.h"
+#include "UILayout.h"
 
-#include "Build/Directories.h"
-#include "Build/GameLoop.h"
-#include "Build/GameRes.h"
-#include "Build/GameScreen.h"
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/Laptop/AIMMembers.h"
-#include "Build/Laptop/Mercs.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Civ_Quotes.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Faces.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/QArray.h"
-#include "Build/Tactical/ShopKeeper_Interface.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/MercTextBox.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/WordWrap.h"
-#include "content/Dialogs.h"
-#include "sgp/Font.h"
-#include "sgp/Random.h"
-#include "sgp/SoundMan.h"
-#include "sgp/UTF8String.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "sgp/WCheck.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MercProfile.h"
-
+#define DIALOGUESIZE 240
 #define   QUOTE_MESSAGE_SIZE		520
 
 #define		DIALOGUE_DEFAULT_SUBTITLE_WIDTH		200
@@ -123,6 +120,7 @@ BOOLEAN			gfFacePanelActive = FALSE;
 static UINT32         guiScreenIDUsedWhenUICreated;
 static MOUSE_REGION   gTextBoxMouseRegion;
 static MOUSE_REGION   gFacePopupMouseRegion;
+static BOOLEAN        gfUseAlternateDialogueFile = FALSE;
 
 // set the top position value for merc dialogue pop up boxes
 static INT16 gsTopPosition = 20;
@@ -637,7 +635,7 @@ void CharacterDialogue(UINT8 const character, UINT16 const quote, FACETYPE* cons
 				gTacticalStatus.ubLastQuoteSaid       = quote_;
 				gTacticalStatus.ubLastQuoteProfileNUm = character_;
 
-				ExecuteCharacterDialogue(character_, quote_, face, dialogue_handler_, from_soldier_, false);
+				ExecuteCharacterDialogue(character_, quote_, face, dialogue_handler_, from_soldier_);
 
 				s = FindSoldierByProfileID(character_);
 				if (s && s->bTeam == OUR_TEAM)
@@ -676,8 +674,10 @@ void CharacterDialogueUsingAlternateFile(SOLDIERTYPE& s, UINT16 const quote, Dia
 			{
 				if (!MayExecute()) return true;
 
+				gfUseAlternateDialogueFile = TRUE;
 				SOLDIERTYPE const& s = soldier_;
-				ExecuteCharacterDialogue(s.ubProfile, quote_, s.face, handler_, TRUE, true);
+				ExecuteCharacterDialogue(s.ubProfile, quote_, s.face, handler_, TRUE);
+				gfUseAlternateDialogueFile = FALSE;
 				return false;
 			}
 
@@ -691,11 +691,11 @@ void CharacterDialogueUsingAlternateFile(SOLDIERTYPE& s, UINT16 const quote, Dia
 
 
 static void    CreateTalkingUI(DialogueHandler, FACETYPE&, UINT8 ubCharacterNum, const wchar_t* zQuoteStr);
-static BOOLEAN GetDialogue(const MercProfile &profile, UINT16 usQuoteNum, wchar_t* zDialogueText, size_t Length, CHAR8* zSoundString, bool useAlternateDialogueFile);
+static BOOLEAN GetDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, UINT32 iDataSize, wchar_t* zDialogueText, size_t Length, CHAR8* zSoundString);
 
 
 // execute specific character dialogue
-BOOLEAN ExecuteCharacterDialogue(UINT8 const ubCharacterNum, UINT16 const usQuoteNum, FACETYPE* const face, DialogueHandler const bUIHandlerID, BOOLEAN const fFromSoldier, bool useAlternateDialogueFile)
+BOOLEAN ExecuteCharacterDialogue(UINT8 const ubCharacterNum, UINT16 const usQuoteNum, FACETYPE* const face, DialogueHandler const bUIHandlerID, BOOLEAN const fFromSoldier)
 {
 	gpCurrentTalkingFace = face;
 	gubCurrentTalkingID  = ubCharacterNum;
@@ -793,13 +793,21 @@ BOOLEAN ExecuteCharacterDialogue(UINT8 const ubCharacterNum, UINT16 const usQuot
 	CHECKF(face != NULL);
 
 	wchar_t gzQuoteStr[QUOTE_MESSAGE_SIZE];
-  if (!GetDialogue(MercProfile(ubCharacterNum), usQuoteNum, gzQuoteStr, lengthof(gzQuoteStr), zSoundString,
-        useAlternateDialogueFile))
+  if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, lengthof(gzQuoteStr), zSoundString))
   {
     return( FALSE );
   }
 
-  SetFaceTalking(*face, zSoundString, gzQuoteStr);
+	if( bUIHandlerID == DIALOGUE_EXTERNAL_NPC_UI )
+	{
+		// external NPC
+		SetFaceTalking(*face, zSoundString, gzQuoteStr);
+	}
+	else
+	{
+		// start "talking" system (portrait animation and start wav sample)
+		SetFaceTalking(*face, zSoundString, gzQuoteStr);
+	}
 	CreateTalkingUI(bUIHandlerID, *face, ubCharacterNum, gzQuoteStr);
 
 	// Set global handleer ID value, used when face desides it's done...
@@ -849,26 +857,102 @@ static void CreateTalkingUI(DialogueHandler const bUIHandlerID, FACETYPE& f, UIN
 	}
 }
 
-static BOOLEAN GetDialogue(const MercProfile &profile, UINT16 usQuoteNum, wchar_t* zDialogueText, size_t Length, CHAR8* zSoundString, bool useAlternateDialogueFile)
+
+const char* GetDialogueDataFilename(UINT8 ubCharacterNum, UINT16 usQuoteNum, BOOLEAN fWavFile)
 {
-   // first things first  - gDIALOGUESIZErab the text (if player has SUBTITLE PREFERENCE ON)
+	static char zFileName[164];
+	UINT8		ubFileNumID;
+
+	// Are we an NPC OR an RPC that has not been recruited?
+	// ATE: Did the || clause here to allow ANY RPC that talks while the talking menu is up to use an npc quote file
+	if ( gfUseAlternateDialogueFile )
+	{
+		if ( fWavFile )
+		{
+			// build name of wav file (characternum + quotenum)
+			sprintf(zFileName, NPC_SPEECHDIR "/d_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+		}
+		else
+		{
+			// assume EDT files are in EDT directory on HARD DRIVE
+			sprintf(zFileName, NPCDATADIR "/d_%03d.edt", ubCharacterNum);
+		}
+	}
+	else if ( ubCharacterNum >= FIRST_RPC &&
+			( !( gMercProfiles[ ubCharacterNum ].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED )
+			|| ProfileCurrentlyTalkingInDialoguePanel( ubCharacterNum )
+			|| (gMercProfiles[ ubCharacterNum ].ubMiscFlags & PROFILE_MISC_FLAG_FORCENPCQUOTE) )
+			)
+	{
+		ubFileNumID = ubCharacterNum;
+
+		// ATE: If we are merc profile ID #151-154, all use 151's data....
+		if (ubCharacterNum >= HERVE && ubCharacterNum <= CARLO)
+		{
+			ubFileNumID = HERVE;
+		}
+
+		// If we are character #155, check fact!
+		if ( ubCharacterNum == MANNY && !gubFact[FACT_MANNY_IS_BARTENDER] )
+		{
+			ubFileNumID = MANNY;
+		}
+
+
+		if ( fWavFile )
+		{
+			sprintf(zFileName, NPC_SPEECHDIR "/%03d_%03d.wav", ubFileNumID, usQuoteNum);
+		}
+		else
+		{
+		// assume EDT files are in EDT directory on HARD DRIVE
+			sprintf(zFileName, NPCDATADIR "/%03d.edt", ubFileNumID);
+		}
+	}
+	else
+	{
+		if ( fWavFile )
+		{
+      if(isRussianVersion() || isRussianGoldVersion())
+      {
+        if (ubCharacterNum >= FIRST_RPC && gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED)
+        {
+          sprintf(zFileName, SPEECHDIR "/r_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+        }
+        else
+        {
+          // build name of wav file (characternum + quotenum)
+          sprintf(zFileName, SPEECHDIR "/%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+        }
+      }
+      else
+      {
+        // build name of wav file (characternum + quotenum)
+				sprintf(zFileName, SPEECHDIR "/%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+      }
+		}
+		else
+		{
+			// assume EDT files are in EDT directory on HARD DRIVE
+			sprintf(zFileName, MERCEDTDIR "/%03d.edt", ubCharacterNum);
+		}
+	}
+
+	return( zFileName );
+}
+
+
+static BOOLEAN GetDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, UINT32 iDataSize, wchar_t* zDialogueText, size_t Length, CHAR8* zSoundString)
+{
+   // first things first  - grab the text (if player has SUBTITLE PREFERENCE ON)
    //if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
    {
-     const char* pFilename = Content::GetDialogueTextFilename(
-       profile,
-       useAlternateDialogueFile,
-       ProfileCurrentlyTalkingInDialoguePanel(profile.getNum()));
-
-			bool success = false;
+			const char* pFilename = GetDialogueDataFilename(ubCharacterNum, 0, FALSE);
+			bool success;
 			try
 			{
-        UTF8String* quote = GCM->loadDialogQuoteFromFile(pFilename, usQuoteNum);
-        if(quote)
-        {
-          wcsncpy(zDialogueText, quote->getWCHAR().data(), Length);
-          delete quote;
-          success = zDialogueText[0] != L'\0';
-        }
+				LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
+				success = zDialogueText[0] != L'\0';
 			}
 			catch (...) { success = false; }
 			if (!success)
@@ -879,11 +963,7 @@ static BOOLEAN GetDialogue(const MercProfile &profile, UINT16 usQuoteNum, wchar_
    }
 
 	// CHECK IF THE FILE EXISTS, IF NOT, USE DEFAULT!
-   const char* pFilename = Content::GetDialogueVoiceFilename(
-     profile, usQuoteNum, useAlternateDialogueFile,
-     ProfileCurrentlyTalkingInDialoguePanel(profile.getNum()),
-     isRussianVersion() || isRussianGoldVersion());
-
+	const char* pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, TRUE);
 	strcpy( zSoundString, pFilename );
  return(TRUE);
 }

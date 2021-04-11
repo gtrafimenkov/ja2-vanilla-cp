@@ -10,15 +10,15 @@
 #include "Build/Utils/Cursors.h"
 #include "sgp/Line.h"
 #include "Insurance_Text.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
+#include "Encrypted_File.h"
+#include "Text.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Font_Control.h"
+#include "UILayout.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define INSURANCE_TEXT_SINGLE_FILE BINARYDATADIR "/insurancesingle.edt"
 #define INSURANCE_TEXT_MULTI_FILE  BINARYDATADIR "/insurancemulti.edt"
@@ -310,13 +310,13 @@ void GetInsuranceText(const UINT8 ubNumber, wchar_t* const pString)
 	{
 		//Get and display the card saying
 		uiStartLoc = INSURANCE_TEXT_SINGLE_LINE_SIZE * ubNumber;
-		GCM->loadEncryptedString(INSURANCE_TEXT_SINGLE_FILE, pString, uiStartLoc, INSURANCE_TEXT_SINGLE_LINE_SIZE);
+		LoadEncryptedDataFromFile(INSURANCE_TEXT_SINGLE_FILE, pString, uiStartLoc, INSURANCE_TEXT_SINGLE_LINE_SIZE);
 	}
 	else
 	{
 		//Get and display the card saying
 		uiStartLoc = INSURANCE_TEXT_MULTI_LINE_SIZE * ( ubNumber - INS_MULTI_LINE_BEGINS - 1 );
-		GCM->loadEncryptedString(INSURANCE_TEXT_MULTI_FILE, pString, uiStartLoc, INSURANCE_TEXT_MULTI_LINE_SIZE);
+		LoadEncryptedDataFromFile(INSURANCE_TEXT_MULTI_FILE, pString, uiStartLoc, INSURANCE_TEXT_MULTI_LINE_SIZE);
 	}
 }
 

@@ -21,8 +21,6 @@
 #include "sgp/HImage.h"
 #include "sgp/Video.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 struct SMKFLIC
 {
@@ -137,7 +135,7 @@ try
 		return NULL;
 	}
 
-	AutoSGPFile file(GCM->openGameResForReading(filename));
+	AutoSGPFile file(FileMan::openForReadingSmart(filename, true));
 
 	//FILE* const f = GetRealFileHandleFromFileManFileHandle(file);
 

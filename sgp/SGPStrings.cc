@@ -117,3 +117,68 @@ strlcpy(char *dst, const char *src, size_t siz)
 }
 
 #endif
+
+
+#ifdef _WIN32
+
+int WINsnprintf(char* const s, size_t const n, const char* const fmt, ...)
+{
+	va_list arg;
+	va_start(arg, fmt);
+	int const ret = _vsnprintf(s, n, fmt, arg);
+	va_end(arg);
+	if (n != 0) s[n - 1] = '\0'; // _vsnprintf() does not guarantee NUL termination
+	return ret;
+}
+
+
+int WINswprintf(wchar_t* const s, size_t const n, const wchar_t* const fmt, ...)
+{
+	va_list arg;
+	va_start(arg, fmt);
+	int const ret = WINvswprintf(s, n, fmt, arg);
+	va_end(arg);
+	return ret;
+}
+
+
+int WINvswprintf(wchar_t* const s, size_t const n, const wchar_t* const fmt, va_list const arg)
+{
+	int const ret = _vsnwprintf(s, n, fmt, arg);
+	if (n != 0) s[n - 1] = L'\0'; // _vsnwprintf() does not guarantee NUL termination
+	return ret;
+}
+
+#endif
+
+
+void ReplacePath(char* const buf, size_t const size, char const* path, char const* const filename, char const* const ext)
+{
+	char const* base    = filename;
+	char const* old_ext = 0;
+	for (char const* i = filename;; ++i)
+	{
+		switch (*i)
+		{
+			case '.':
+				old_ext = i;
+				break;
+
+			case '/':
+			case '\\':
+				base    = i + 1;
+				old_ext = 0;
+				break;
+
+			case '\0':
+				if (!path)
+				{
+					base = filename;
+					path = "";
+				}
+				int const n = (int)((old_ext ? old_ext : i) - base);
+				snprintf(buf, size, "%s%.*s%s", path, n, base, ext);
+				return;
+		}
+	}
+}

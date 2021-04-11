@@ -1,49 +1,50 @@
-#include "sgp/Buffer.h"
-#include "Build/Directories.h"
-#include "Build/Utils/Font_Control.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/Types.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "sgp/FileMan.h"
-#include "sgp/Random.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Tile.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Utils/Text.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "sgp/MemMan.h"
-#include "sgp/Debug.h"
-#include "Build/GameRes.h"
+#include "Buffer.h"
+#include "Directories.h"
+#include "Font_Control.h"
+#include "LoadSaveData.h"
+#include "Types.h"
+#include "Overhead.h"
+#include "AI.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Control.h"
+#include "NPC.h"
+#include "Isometric_Utils.h"
+#include "Quests.h"
+#include "Interface_Dialogue.h"
+#include "Game_Clock.h"
+#include "FileMan.h"
+#include "Random.h"
+#include "Items.h"
+#include "Interface.h"
+#include "Assignments.h"
+#include "Soldier_Macros.h"
+#include "Dialogue_Control.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Message.h"
+#include "Timer_Control.h"
+#include "Soldier_Add.h"
+#include "Soldier_Tile.h"
+#include "Weapons.h"
+#include "Meanwhile.h"
+#ifdef JA2TESTVERSION
+#	include "Quest_Debug_System.h"
+#	include "QuestText.h"
+#endif
+#include "SkillCheck.h"
+#include "Render_Fun.h"
+#include "StrategicMap.h"
+#include "Text.h"
+#include "Arms_Dealer_Init.h"
+#include "Interface_Items.h"
+#include "OppList.h"
+#include "Animation_Control.h"
+#include "Scheduling.h"
+#include "Tactical_Save.h"
+#include "Campaign_Types.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "GameRes.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 #define NUM_NPC_QUOTE_RECORDS  50
 #define NUM_CIVQUOTE_SECTORS   20
@@ -314,7 +315,7 @@ try
 
 	}
 
-	AutoSGPFile f(GCM->openGameResForReading(zFileName));
+	AutoSGPFile f(FileMan::openForReadingSmart(zFileName, true));
 	return ExtractNPCQuoteInfoArrayFromFile(f);
 }
 catch (...) { return 0; }
@@ -444,7 +445,7 @@ static NPCQuoteInfo* LoadCivQuoteFile(UINT8 const idx)
 		sprintf(buf, NPCDATADIR "/%c%d.npc", 'A' + gsCivQuoteSector[idx][1] - 1, gsCivQuoteSector[idx][0]);
 		filename = buf;
 	}
-	AutoSGPFile f(GCM->openGameResForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 	return ExtractNPCQuoteInfoArrayFromFile(f);
 }
 
@@ -523,7 +524,7 @@ static INT32 CalcThreateningEffectiveness(UINT8 const ubMerc)
 
 	UINT16 const item_idx = s->inv[HANDPOS].usItem;
 	INT32 deadliness =
-		GCM->getItem(item_idx)->isWeapon() ? GCM->getWeapon(item_idx)->ubDeadliness :
+		Item[item_idx].usItemClass & IC_WEAPON ? Weapon[item_idx].ubDeadliness :
 		0;
 
 	if (deadliness == 0) deadliness = -30; // penalize!
@@ -737,9 +738,9 @@ static UINT8 NPCConsiderReceivingItemFromMerc(UINT8 const ubNPC, UINT8 const ubM
 	UINT8 const ubTalkDesire = CalcDesireToTalk(ubNPC, ubMerc, APPROACH_GIVINGITEM);
 
 	UINT16 item_to_consider = o->usItem;
-	if (GCM->getItem(item_to_consider)->getItemClass() == IC_GUN && item_to_consider != ROCKET_LAUNCHER)
+	if (Item[item_to_consider].usItemClass == IC_GUN && item_to_consider != ROCKET_LAUNCHER)
 	{
-		UINT8 const weapon_class = GCM->getWeapon(item_to_consider)->ubWeaponClass;
+		UINT8 const weapon_class = Weapon[item_to_consider].ubWeaponClass;
 		if (weapon_class == RIFLECLASS || weapon_class == MGCLASS)
 		{
 			item_to_consider = ANY_RIFLE; // treat all rifles the same
@@ -848,11 +849,11 @@ static UINT8 NPCConsiderReceivingItemFromMerc(UINT8 const ubNPC, UINT8 const ubM
 			case ANGEL:
 				if (item_to_consider == MONEY && q.sActionData == NPC_ACTION_ANGEL_GIVEN_CASH)
 				{
-					if (o->uiMoneyAmount < GCM->getItem(LEATHER_JACKET_W_KEVLAR)->getPrice())
+					if (o->uiMoneyAmount < Item[LEATHER_JACKET_W_KEVLAR].usPrice)
 					{ // refuse, bet too low - record 8
 						return UseQuote(pNPCQuoteInfoArray, ppResultQuoteInfo, pubQuoteNum, 8);
 					}
-					else if (o->uiMoneyAmount > GCM->getItem(LEATHER_JACKET_W_KEVLAR)->getPrice())
+					else if (o->uiMoneyAmount > Item[LEATHER_JACKET_W_KEVLAR].usPrice)
 					{ // refuse, bet too high - record 9
 						return UseQuote(pNPCQuoteInfoArray, ppResultQuoteInfo, pubQuoteNum, 9);
 					}
@@ -2244,7 +2245,7 @@ static void TriggerClosestMercWhoCanSeeNPC(UINT8 ubNPC, NPCQuoteInfo* pQuotePtr)
 						if (!MayExecute()) return true;
 
 						SOLDIERTYPE const& s = soldier_;
-						ExecuteCharacterDialogue(s.ubProfile, QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO, s.face, DIALOGUE_TACTICAL_UI, TRUE, false);
+						ExecuteCharacterDialogue(s.ubProfile, QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO, s.face, DIALOGUE_TACTICAL_UI, TRUE);
 
 						// Setup face with data!
 						FACETYPE& f = *gpCurrentTalkingFace;

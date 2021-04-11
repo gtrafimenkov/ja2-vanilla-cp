@@ -1,29 +1,29 @@
-#include "Build/Directories.h"
-#include "Build/Laptop/History.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/QuestText.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Button_System.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/MemMan.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Font_Control.h"
+#include "Laptop.h"
+#include "LoadSaveData.h"
+#include "History.h"
+#include "Game_Clock.h"
+#include "Quests.h"
+#include "Soldier_Control.h"
+#include "VObject.h"
+#include "Debug.h"
+#include "WordWrap.h"
+#include "Render_Dirty.h"
+#include "Encrypted_File.h"
+#include "Cursors.h"
+#include "Soldier_Profile.h"
+#include "StrategicMap.h"
+#include "QuestText.h"
+#include "Text.h"
+#include "Message.h"
+#include "LaptopSave.h"
+#include "Button_System.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "FileMan.h"
+
 
 #define HISTORY_QUEST_TEXT_SIZE 80
 
@@ -345,7 +345,7 @@ static void OpenAndReadHistoryFile(void)
 {
 	ClearHistoryList();
 
-	AutoSGPFile f(GCM->openGameResForReading(HISTORY_DATA_FILE));
+	AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
 	UINT entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
 	while (entry_count-- > 0)
@@ -687,7 +687,7 @@ try
 	// check if bad page
 	if (uiPage == 0) return FALSE;
 
-	AutoSGPFile f(GCM->openGameResForReading(HISTORY_DATA_FILE));
+	AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
 	UINT       entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
 	UINT const skip        = (uiPage - 1) * NUM_RECORDS_PER_PAGE;
@@ -795,20 +795,20 @@ uint32_t GetTimeQuestWasStarted( uint8_t ubCode )
 static void GetQuestStartedString(const UINT8 ubQuestValue, wchar_t* const sQuestString)
 {
 	// open the file and copy the string
-	GCM->loadEncryptedString(BINARYDATADIR "/quests.edt", sQuestString, HISTORY_QUEST_TEXT_SIZE * ubQuestValue * 2, HISTORY_QUEST_TEXT_SIZE);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/quests.edt", sQuestString, HISTORY_QUEST_TEXT_SIZE * ubQuestValue * 2, HISTORY_QUEST_TEXT_SIZE);
 }
 
 
 static void GetQuestEndedString(const UINT8 ubQuestValue, wchar_t* const sQuestString)
 {
 	// open the file and copy the string
-	GCM->loadEncryptedString(BINARYDATADIR "/quests.edt", sQuestString, HISTORY_QUEST_TEXT_SIZE * (ubQuestValue * 2 + 1), HISTORY_QUEST_TEXT_SIZE);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/quests.edt", sQuestString, HISTORY_QUEST_TEXT_SIZE * (ubQuestValue * 2 + 1), HISTORY_QUEST_TEXT_SIZE);
 }
 
 
 static INT32 GetNumberOfHistoryPages(void)
 {
-	AutoSGPFile f(GCM->openGameResForReading(HISTORY_DATA_FILE));
+	AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
 	const UINT32 uiFileSize = FileGetSize(f);
 

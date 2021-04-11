@@ -1,41 +1,38 @@
-#include "Build/Directories.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "Build/Local.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/TileEngine/Radar_Screen.h"
-#include "sgp/Line.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Overhead_Map.h"
-#include "Build/Tactical/Squads.h"
-#include "sgp/MouseSystem.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Font_Control.h"
-#include "sgp/VObject.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/JAScreens.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "sgp/Button_System.h"
-#include "Build/ScreenIDs.h"
+#include "Directories.h"
+#include "Font.h"
+#include "HImage.h"
+#include "Local.h"
+#include "MapScreen.h"
+#include "Radar_Screen.h"
+#include "Line.h"
+#include "RenderWorld.h"
+#include "Isometric_Utils.h"
+#include "Interface.h"
+#include "Overhead.h"
+#include "Soldier_Control.h"
+#include "Timer_Control.h"
+#include "SysUtil.h"
+#include "Render_Dirty.h"
+#include "Overhead_Map.h"
+#include "Squads.h"
+#include "MouseSystem.h"
+#include "Text.h"
+#include "Font_Control.h"
+#include "VObject.h"
+#include "Interface_Control.h"
+#include "Game_Clock.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "Environment.h"
+#include "Meanwhile.h"
+#include "StrategicMap.h"
+#include "Animation_Data.h"
+#include "JAScreens.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Button_System.h"
+#include "ScreenIDs.h"
+#include "UILayout.h"
 
-#include "sgp/FileMan.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 extern INT32 iCurrentMapSectorZ;
 
@@ -86,9 +83,9 @@ void LoadRadarScreenBitmap(const char* const filename)
 	ClearOutRadarMapImage();
 
 	// Grab the Map image
-  std::string image_filename(GCM->getRadarMapResourceName(FileMan::replaceExtension(FileMan::getFileName(filename), ".sti")));
-
-	SGPVObject* const radar = AddVideoObjectFromFile(image_filename.c_str());
+	SGPFILENAME image_filename;
+	ReplacePath(image_filename, lengthof(image_filename), RADARMAPSDIR "/", filename, ".sti");
+	SGPVObject* const radar = AddVideoObjectFromFile(image_filename);
 	gusRadarImage = radar;
 
 	// ATE: Add a shade table!

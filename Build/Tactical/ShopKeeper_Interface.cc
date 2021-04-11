@@ -1678,7 +1678,7 @@ static void SelectPlayersOfferSlotsRegionCallBack(MOUSE_REGION* pRegion, INT32 i
 				SetSkiCursor( EXTERN_CURSOR );
 
 				//if the item we are adding is money
-				if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+				if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 				{
 					//Since money is always evaluated
 					o->uiFlags     |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
@@ -2003,16 +2003,14 @@ static UINT32 DisplayInvSlot(UINT8 const slot_num, UINT16 const item_idx, UINT16
 	RestoreExternBackgroundRect(x, y, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT);
 
 	{ // Display the item graphic
-		const ItemModel * item = GCM->getItem(item_idx);
+		INVTYPE     const& item    = Item[item_idx];
 		SGPVObject  const& item_vo = GetInterfaceGraphicForItem(item);
-		ETRLEObject const& e       = item_vo.SubregionProperties(item->getGraphicNum());
+		ETRLEObject const& e       = item_vo.SubregionProperties(item.ubGraphicNum);
 		INT16              cen_x   = x + 7 + abs(SKI_INV_WIDTH - 3 - e.usWidth)  / 2 - e.sOffsetX;
 		INT16              cen_y   = y +     abs(SKI_INV_HEIGHT    - e.usHeight) / 2 - e.sOffsetY;
-    if(GCM->getGamePolicy()->f_draw_item_shadow)
-    {
-      BltVideoObjectOutlineShadow(FRAME_BUFFER, &item_vo, item->getGraphicNum(), cen_x - 2, cen_y + 2);
-    }
-		BltVideoObjectOutline(      FRAME_BUFFER, &item_vo, item->getGraphicNum(), cen_x,     cen_y, outline);	}
+		BltVideoObjectOutlineShadow(FRAME_BUFFER, &item_vo, item.ubGraphicNum, cen_x - 2, cen_y + 2);
+		BltVideoObjectOutline(      FRAME_BUFFER, &item_vo, item.ubGraphicNum, cen_x,     cen_y, outline);
+	}
 
 	{ // Display the status of the item
 		UINT16 const colour = Get16BPPColor(FROMRGB(140, 136, 119));
@@ -2360,7 +2358,7 @@ static BOOLEAN RepairIsDone(UINT16 usItemIndex, UINT8 ubElement)
 		{
 /* ARM: Can now repair with removeable attachments still attached...
 			// If the attachment is a permanent one
-			if ( GCM->getItem(RepairItem.ItemObject.usAttachItem[ ubCnt ])->getFlags() & ITEM_INSEPARABLE )
+			if ( Item[ RepairItem.ItemObject.usAttachItem[ ubCnt ] ].fFlags & ITEM_INSEPARABLE )
 */
 			if ( CanDealerRepairItem( gbSelectedArmsDealerID, RepairItem.ItemObject.usAttachItem[ ubCnt ] ) )
 			{
@@ -2428,7 +2426,7 @@ static UINT32 CalcShopKeeperItemPrice(BOOLEAN fDealerSelling, BOOLEAN fUnitPrice
 
 
 	// add up value of the main item(s), exact procedure depends on its item class
-	switch ( GCM->getItem(usItemID)->getItemClass() )
+	switch ( Item [ usItemID ].usItemClass )
 	{
 		case IC_GUN:
 			// add value of the gun
@@ -2440,7 +2438,7 @@ static UINT32 CalcShopKeeperItemPrice(BOOLEAN fDealerSelling, BOOLEAN fUnitPrice
 			if( pItemObject->usGunAmmoItem != NONE)
 			{
 				// if it's regular ammo
-				if( GCM->getItem(pItemObject->usGunAmmoItem)->getItemClass() == IC_AMMO )
+				if( Item[ pItemObject->usGunAmmoItem ].usItemClass == IC_AMMO )
 				{
 					// add value of its remaining ammo
 					uiUnitPrice += (UINT32)( CalcValueOfItemToDealer( gbSelectedArmsDealerID, pItemObject->usGunAmmoItem, fDealerSelling ) *
@@ -2512,7 +2510,7 @@ static UINT32 CalcShopKeeperItemPrice(BOOLEAN fDealerSelling, BOOLEAN fUnitPrice
 	if ( gpSMCurrentMerc->ubProfile == FLO )
 	{
 		// if it's a GUN or AMMO (but not Launchers, and all attachments and payload is included)
-		switch ( GCM->getItem(usItemID)->getItemClass() )
+		switch ( Item [ usItemID ].usItemClass )
 		{
 			case IC_GUN:
 			case IC_AMMO:
@@ -2569,10 +2567,10 @@ static FLOAT ItemConditionModifier(UINT16 usItemIndex, INT8 bStatus)
 	FLOAT dConditionModifier = 1.0f;
 
 	//if the item is ammo, the condition modifier is based on how many shots are left
-	if( GCM->getItem(usItemIndex)->getItemClass() == IC_AMMO )
+	if( Item[ usItemIndex ].usItemClass == IC_AMMO )
 	{
 		// # bullets left / max magazine capacity
-		dConditionModifier = ( bStatus / (FLOAT) GCM->getItem(usItemIndex)->asAmmo()->capacity);
+		dConditionModifier = ( bStatus / (FLOAT) Magazine[ Item[ usItemIndex ].ubClassIndex ].ubMagSize );
 	}
 	else	// non-ammo
 	{
@@ -2584,7 +2582,7 @@ static FLOAT ItemConditionModifier(UINT16 usItemIndex, INT8 bStatus)
 
 		// an item at 100% is worth full price...
 
-		if ( GCM->getItem(usItemIndex)->getFlags() & ITEM_REPAIRABLE )
+		if ( Item[ usItemIndex ].fFlags & ITEM_REPAIRABLE )
 		{
 			// a REPAIRABLE item at 0% is still worth 50% of its full price, not 0%
 			dConditionModifier = 0.5f + ( bStatus / (FLOAT)200 );
@@ -2828,7 +2826,7 @@ static INT8 AddItemToPlayersOfferArea(UINT8 ubProfileID, const INVENTORY_IN_SLOT
 
 
 			//if the item we are adding is money
-			if( GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY )
+			if( Item[ o->sItemIndex ].usItemClass == IC_MONEY )
 			{
 				//Since money is always evaluated
 				o->uiFlags     |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
@@ -2902,7 +2900,7 @@ static void DisplayPlayersOfferArea(void)
 		if (o->fActive)
 		{
 			//if the item is money
-			if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+			if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 			{
 				//get an updated status from the amount in the pocket
 				if (o->bSlotIdInOtherLocation != -1 && o->ubIdOfMercWhoOwnsTheItem != NO_PROFILE)
@@ -3051,7 +3049,7 @@ static UINT32 CalculateTotalPlayersValue(void)
 		if (o->fActive && o->uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_VALUE)
 		{
 			//Calculate a price for the item
-			if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+			if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 			{
 				uiTotal += o->ItemObject.uiMoneyAmount;
 			}
@@ -3439,7 +3437,7 @@ static void MovePlayerOfferedItemsOfValueToArmsDealersInventory(void)
 				IfMercOwnedRemoveItemFromMercInv(o);
 
 				//if the item is money
-				if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+				if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 				{
 					//add the money to the dealers 'cash'
 					gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash += o->ItemObject.uiMoneyAmount;
@@ -3821,7 +3819,7 @@ static INT8 AddInventoryToSkiLocation(const INVENTORY_IN_SLOT* pInv, UINT8 ubSpo
 				IfMercOwnedCopyItemToMercInv( pInv );
 
 				//if the item is money
-				if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+				if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 				{
 					//Since money is always evaluated
 					o->uiFlags     |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
@@ -4081,29 +4079,29 @@ static bool IsGunOrAmmoOfSameTypeSelected(OBJECTTYPE const& o)
 {
 	if (!gpHighLightedItemObject) return false; // No item selected
 	OBJECTTYPE const& highlighted_o    = *gpHighLightedItemObject;
-	const ItemModel * highlighted_item = GCM->getItem(highlighted_o.usItem);
-	const ItemModel * o_item = GCM->getItem(o.usItem);
+	INVTYPE    const& highlighted_item = Item[highlighted_o.usItem];
+	INVTYPE    const& o_item           = Item[o.usItem];
 
 	// Is one ammo for the other?
-	if (highlighted_item->getItemClass() == IC_AMMO)
+	if (highlighted_item.usItemClass == IC_AMMO)
 	{
-		if (o_item->getItemClass() == IC_GUN &&
-				GCM->getWeapon(o.usItem)->matches(highlighted_item->asAmmo()->calibre))
+		if (o_item.usItemClass == IC_GUN &&
+				Weapon[o.usItem].ubCalibre == Magazine[highlighted_item.ubClassIndex].ubCalibre)
 		{
 			return true;
 		}
 	}
-	else if (highlighted_item->getItemClass() == IC_GUN)
+	else if (highlighted_item.usItemClass == IC_GUN)
 	{
-		if (o_item->getItemClass() == IC_AMMO &&
-				GCM->getWeapon(highlighted_o.usItem)->matches(o_item->asAmmo()->calibre))
+		if (o_item.usItemClass == IC_AMMO &&
+				Weapon[highlighted_o.usItem].ubCalibre == Magazine[o_item.ubClassIndex].ubCalibre)
 		{
 			return true;
 		}
 	}
 
 	// Is one an attachment for the other?
-	if (o_item->getFlags() & ITEM_ATTACHMENT)
+	if (o_item.fFlags & ITEM_ATTACHMENT)
 	{
 		if (ValidAttachment(o.usItem, highlighted_o.usItem)) return true;
 	}
@@ -4299,11 +4297,11 @@ static void EnableDisableEvaluateAndTransactionButtons(void)
 			if (o->uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_VALUE)
 			{
 				//if the item isnt money ( which is always evaluated )
-				if (GCM->getItem(o->sItemIndex)->getItemClass() != IC_MONEY)
+				if (Item[o->sItemIndex].usItemClass != IC_MONEY)
 				{
 					fItemEvaluated = TRUE;
 				}
-				else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS && GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+				else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS && Item[o->sItemIndex].usItemClass == IC_MONEY)
 				{
 					//else if it is not a repair dealer, and the item is money
 					fItemEvaluated = TRUE;
@@ -4427,7 +4425,7 @@ static BOOLEAN IsMoneyTheOnlyItemInThePlayersOfferArea(void)
 		//if there is an item here
 		if (o->fActive)
 		{
-			if (GCM->getItem(o->sItemIndex)->getItemClass() != IC_MONEY) return FALSE;
+			if (Item[o->sItemIndex].usItemClass != IC_MONEY) return FALSE;
 			fFoundMoney = TRUE;
 		}
 	}
@@ -4467,7 +4465,7 @@ static UINT32 CalculateHowMuchMoneyIsInPlayersOfferArea()
 	{
 		INVENTORY_IN_SLOT const& o = *i;
 		if (!o.fActive)                                 continue;
-		if (GCM->getItem(o.sItemIndex)->getItemClass() != IC_MONEY) continue;
+		if (Item[o.sItemIndex].usItemClass != IC_MONEY) continue;
 		total += o.ItemObject.uiMoneyAmount;
 	}
 	return total;
@@ -4595,7 +4593,7 @@ static void EvaluateItemAddedToPlayersOfferArea(INT8 bSlotID, BOOLEAN fFirstOne)
 	Assert(o->fActive);
 
 	//if money is the item being evaluated, leave
-	if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY) return;
+	if (Item[o->sItemIndex].usItemClass == IC_MONEY) return;
 
 	// if already evaluated, don't do it again
 	if (o->uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED) return;
@@ -4663,7 +4661,7 @@ static void EvaluateItemAddedToPlayersOfferArea(INT8 bSlotID, BOOLEAN fFirstOne)
 					ubNumberOfItemsAddedToRepairDuringThisEvaluation++;
 
 					// check if the item is really badly damaged
-					if (GCM->getItem(a->sItemIndex)->getItemClass() != IC_AMMO &&
+					if (Item[a->sItemIndex].usItemClass != IC_AMMO &&
 							a->ItemObject.bStatus[0] < REALLY_BADLY_DAMAGED_THRESHOLD)
 					{
 						uiEvalResult = EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
@@ -4700,7 +4698,7 @@ static void EvaluateItemAddedToPlayersOfferArea(INT8 bSlotID, BOOLEAN fFirstOne)
 		if( ArmsDealerInfo[ gbSelectedArmsDealerID ].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS )
 		{
 			// only otherwise repairable items count as actual rejections
-			if (GCM->getItem(o->sItemIndex)->getFlags() & ITEM_REPAIRABLE)
+			if (Item[o->sItemIndex].fFlags & ITEM_REPAIRABLE)
 			{
 				uiEvalResult = EVAL_RESULT_DONT_HANDLE;
 			}
@@ -4867,7 +4865,7 @@ static BOOLEAN WillShopKeeperRejectObjectsFromPlayer(INT8 bDealerId, INT8 bSlotI
 	BOOLEAN fRejected = TRUE;
 
 	const INVENTORY_IN_SLOT* const o = &PlayersOfferArea[bSlotId];
-	if (GCM->getItem(o->sItemIndex)->getItemClass() == IC_MONEY)
+	if (Item[o->sItemIndex].usItemClass == IC_MONEY)
 	{
 		fRejected = FALSE;
 	}
@@ -5295,7 +5293,7 @@ static void SplitComplexObjectIntoSubObjects(OBJECTTYPE* pComplexObject)
 		*pNextObj = *pComplexObject;
 
 		// strip off any loaded ammo/payload
-		if ( GCM->getItem(pComplexObject->usItem)->getItemClass() == IC_GUN )
+		if ( Item [ pComplexObject->usItem ].usItemClass == IC_GUN )
 		{
 			// Exception: don't do this with rocket launchers, their "shots left" are fake and this screws 'em up!
 			if ( pComplexObject->usItem != ROCKET_LAUNCHER )
@@ -5320,7 +5318,7 @@ static void SplitComplexObjectIntoSubObjects(OBJECTTYPE* pComplexObject)
 			if ( pComplexObject->usAttachItem[ ubCnt ] != NONE )
 			{
 				// If the attachment is detachable
-				if (! (GCM->getItem(pComplexObject->usAttachItem[ ubCnt ])->getFlags() & ITEM_INSEPARABLE ) )
+				if (! (Item[ pComplexObject->usAttachItem[ ubCnt ] ].fFlags & ITEM_INSEPARABLE ) )
 				{
 					pNextObj->usAttachItem[ ubCnt ] = NONE;
 					pNextObj->bAttachStatus[ ubCnt ] = 0;
@@ -5334,13 +5332,13 @@ static void SplitComplexObjectIntoSubObjects(OBJECTTYPE* pComplexObject)
 
 
 		// if it's a gun
-		if ( GCM->getItem(pComplexObject->usItem)->getItemClass() == IC_GUN )
+		if ( Item [ pComplexObject->usItem ].usItemClass == IC_GUN )
 		{
 			// and it has ammo/payload
 			if ( pComplexObject->usGunAmmoItem != NONE )
 			{
 				// if it's bullets
-				if ( GCM->getItem(pComplexObject->usGunAmmoItem)->getItemClass() == IC_AMMO )
+				if ( Item[ pComplexObject->usGunAmmoItem ].usItemClass == IC_AMMO )
 				{
 					// and there are some left
 					if ( pComplexObject->ubGunShotsLeft > 0 )
@@ -5378,7 +5376,7 @@ static void SplitComplexObjectIntoSubObjects(OBJECTTYPE* pComplexObject)
 			if ( pComplexObject->usAttachItem[ ubCnt ] != NONE )
 			{
 				// If the attachment is detachable
-				if (! (GCM->getItem(pComplexObject->usAttachItem[ ubCnt ])->getFlags() & ITEM_INSEPARABLE ) )
+				if (! (Item[ pComplexObject->usAttachItem[ ubCnt ] ].fFlags & ITEM_INSEPARABLE ) )
 				{
 					CreateItem( pComplexObject->usAttachItem[ ubCnt ], pComplexObject->bAttachStatus[ ubCnt ], pNextObj );
 
@@ -5391,7 +5389,7 @@ static void SplitComplexObjectIntoSubObjects(OBJECTTYPE* pComplexObject)
 	else	// stacked
 	{
 		// these can't be guns, can't have any attachments, can't be imprinted, etc.
-		Assert ( GCM->getItem(pComplexObject->usItem)->getItemClass() != IC_GUN );
+		Assert ( Item [ pComplexObject->usItem ].usItemClass != IC_GUN );
 
 		for( ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++ )
 		{
@@ -5640,7 +5638,7 @@ static BOOLEAN SKITryToAddInvToMercsInventory(INVENTORY_IN_SLOT* pInv, SOLDIERTY
 
 
 	//if the item is money
-	if( GCM->getItem(pInv->sItemIndex)->getItemClass() == IC_MONEY )
+	if( Item[ pInv->sItemIndex ].usItemClass == IC_MONEY )
 	{
 		// search through the merc's inventory for a pocket of money which isn't full already
 		bMoneyInvPos = GetInvSlotOfUnfullMoneyInMercInventory( pSoldier );
@@ -6185,7 +6183,7 @@ static UINT32 EvaluateInvSlot(INVENTORY_IN_SLOT* pInvSlot)
 	if ( uiBuyingPrice > 0 )
 	{
 		// check if the item is really badly damaged
-		if( GCM->getItem(pInvSlot->sItemIndex)->getItemClass() != IC_AMMO )
+		if( Item[ pInvSlot->sItemIndex ].usItemClass != IC_AMMO )
 		{
 			if( pInvSlot->ItemObject.bStatus[ 0 ] < REALLY_BADLY_DAMAGED_THRESHOLD )
 			{

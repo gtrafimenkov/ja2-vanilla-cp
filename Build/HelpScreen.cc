@@ -1,36 +1,41 @@
-#include "Build/Directories.h"
-#include "Build/GameSettings.h"
-#include "Build/HelpScreen.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Local.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Init.h"
-#include "Build/Strategic/Map_Screen_Interface_Bottom.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "Build/Utils/Text_Input.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/HelpScreenText.h"
-#include "sgp/Button_System.h"
-#include "sgp/Cursor_Control.h"
-#include "sgp/English.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "sgp/Line.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Directories.h"
+#include "Encrypted_File.h"
+#include "Font.h"
+#include "HImage.h"
+#include "Interface.h"
+#include "Local.h"
+#include "Map_Screen_Interface_Bottom.h"
+#include "SysUtil.h"
+#include "VObject.h"
+#include "Cursors.h"
+#include "Font_Control.h"
+#include "Cursor_Control.h"
+#include "Render_Dirty.h"
+#include "Text.h"
+#include "WordWrap.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "HelpScreen.h"
+#include "HelpScreenText.h"
+#include "Line.h"
+#include "Game_Clock.h"
+#include "GameSettings.h"
+#include "Laptop.h"
+#include "English.h"
+#include "Text_Input.h"
+#include "RenderWorld.h"
+#include "Game_Init.h"
+#include "Overhead.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "MapScreen.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "VSurface.h"
+#include "UILayout.h"
+
+#ifdef JA2BETAVERSION
+#	include "Debug.h"
+#endif
+
 
 extern void PrintDate( void );
 extern void PrintNumberOnTeam( void );
@@ -1223,7 +1228,7 @@ static void ChangeToHelpScreenSubPage(INT8 bNewPage)
 
 static void GetHelpScreenText(const UINT32 uiRecordToGet, wchar_t* const pText)
 {
-	GCM->loadEncryptedString(BINARYDATADIR "/help.edt", pText, HELPSCREEN_RECORD_SIZE * uiRecordToGet, HELPSCREEN_RECORD_SIZE);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/help.edt", pText, HELPSCREEN_RECORD_SIZE * uiRecordToGet, HELPSCREEN_RECORD_SIZE);
 }
 
 

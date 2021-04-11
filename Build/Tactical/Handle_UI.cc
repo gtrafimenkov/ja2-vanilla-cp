@@ -1,82 +1,79 @@
-#include <memory>
+#include "FileMan.h"
+#include "Font_Control.h"
+#include "Handle_Doors.h"
+#include "Items.h"
+#include "Local.h"
+#include "Merc_Hiring.h"
+#include "Real_Time_Input.h"
+#include "Soldier_Find.h"
+#include "Debug.h"
+#include "JAScreens.h"
+#include "PathAI.h"
+#include "Soldier_Control.h"
+#include "Animation_Control.h"
+#include "Animation_Data.h"
+#include "TileDef.h"
+#include "Timer_Control.h"
+#include "MouseSystem.h"
+#include "Cursors.h"
+#include "Handle_UI.h"
+#include "Isometric_Utils.h"
+#include "Input.h"
+#include "Overhead.h"
+#include "Sys_Globals.h"
+#include "Interface.h"
+#include "Cursor_Control.h"
+#include "Points.h"
+#include "Interactive_Tiles.h"
+#include "OppList.h"
+#include "WorldMan.h"
+#include "Weapons.h"
+#include "RenderWorld.h"
+#include "Structure.h"
+#include "Handle_Items.h"
+#include "UI_Cursors.h"
+#include "Message.h"
+#include "Render_Fun.h"
+#include "Interface_Items.h"
+#include "StrategicMap.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Create.h"
+#include "Soldier_Add.h"
+#include "Interface_Dialogue.h"
+#include "Soldier_Macros.h"
+#include "Soldier_Functions.h"
+#include "Assignments.h"
+#include "Squads.h"
+#include "Strategic_Pathing.h"
+#include "Strategic_Movement.h"
+#include "Strategic.h"
+#include "Exit_Grids.h"
+#include "Structure_Wrap.h"
+#include "Random.h"
+#include "English.h"
+#include "Vehicles.h"
+#include "MessageBoxScreen.h"
+#include "Text.h"
+#include "Dialogue_Control.h"
+#include "Line.h"
+#include "Render_Dirty.h"
+#include "GameSettings.h"
+#include "LOS.h"
+#include "Campaign_Types.h"
+#include "Queen_Command.h"
+#include "Options_Screen.h"
+#include "SaveLoadGame.h"
+#include "Spread_Burst.h"
+#include "AI.h"
+#include "Game_Clock.h"
+#include "Civ_Quotes.h"
+#include "QArray.h"
+#include "Environment.h"
+#include "Map_Information.h"
+#include "Video.h"
+#include "Screens.h"
+#include "UILayout.h"
 
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/Local.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/Options_Screen.h"
-#include "Build/SaveLoadGame.h"
-#include "Build/Screens.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Strategic/Strategic_Pathing.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Sys_Globals.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Civ_Quotes.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Handle_Doors.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/QArray.h"
-#include "Build/Tactical/Real_Time_Input.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Spread_Burst.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/UI_Cursors.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Cursor_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/English.h"
-#include "sgp/FileMan.h"
-#include "sgp/Input.h"
-#include "sgp/Line.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Random.h"
-#include "sgp/Video.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/Soldier.h"
 
 #define MAX_ON_DUTY_SOLDIERS 6
 
@@ -1010,7 +1007,7 @@ ScreenID UIHandleEndTurn(UI_EVENT* pUIEvent)
 	}
 	else
 	{
-		if( GCM->doesGameResExists( "../AutoSave.pls" ) && CanGameBeSaved() )
+		if( FileExists( "../AutoSave.pls" ) && CanGameBeSaved() )
 		{
 			//Save the game
 			guiPreviousOptionScreen = guiCurrentScreen;
@@ -1398,8 +1395,6 @@ static ScreenID UIHandleAOnTerrain(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return GAME_SCREEN;
 
-  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
-
 	// ATE: Add stuff here to display a system message if we are targeting smeothing and
 	//  are out of range.
 	// Are we using a gun?
@@ -1439,7 +1434,7 @@ static ScreenID UIHandleAOnTerrain(UI_EVENT* pUIEvent)
 	// If we are in realtime, and in a stationary animation, follow!
 	if (gTacticalStatus.uiFlags & REALTIME || !(gTacticalStatus.uiFlags & INCOMBAT))
 	{
-		if (gAnimControl[sel->usAnimState].uiFlags & ANIM_STATIONARY && !selSoldier->hasPendingAction())
+		if (gAnimControl[sel->usAnimState].uiFlags & ANIM_STATIONARY && sel->ubPendingAction == NO_PENDING_ACTION)
 		{
 			// Check if we have a shot waiting!
 			if (gUITargetShotWaiting) guiPendingOverrideEvent = CA_MERC_SHOOT;
@@ -1556,8 +1551,6 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel != NULL)
 	{
-    std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
-
 		fAllMove = gfUIAllMoveOn;
 		gfUIAllMoveOn = FALSE;
 
@@ -1575,8 +1568,11 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 			// TODO: Only our squad!
 			FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 			{
+<<<<<<< HEAD
         std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 				if (OkControllableMerc(pSoldier) && pSoldier->bAssignment == CurrentSquad() && !pSoldier->fMercAsleep)
 				{
 	        // If we can't be controlled, returninvalid...
@@ -1603,7 +1599,9 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 						pSoldier->usUIMovementMode =  GetMoveStateBasedOnStance( pSoldier, gAnimControl[ pSoldier->usAnimState ].ubEndHeight );
 					}
 
-          soldier->removePendingAction();
+					// Remove any previous actions
+					pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
+
 
 					//if ( !( gTacticalStatus.uiFlags & INCOMBAT ) && ( gAnimControl[ pSoldier->usAnimState ].uiFlags & ANIM_MOVING ) )
 					//{
@@ -1692,7 +1690,8 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 			{
 				sel->bReverse = gUIUseReverse;
 
-        selSoldier->removePendingAction();
+				// Remove any previous actions
+				sel->ubPendingAction = NO_PENDING_ACTION;
 
 				EVENT_InternalGetNewSoldierPath(sel, sDestGridNo, sel->usUIMovementMode, TRUE, sel->fNoAPToFinishMove);
 
@@ -2036,7 +2035,7 @@ static void UIHandleMercAttack(SOLDIERTYPE* pSoldier, SOLDIERTYPE* pTargetSoldie
   // get cursor
 	ItemCursor const ubItemCursor = GetActionModeCursor(pSoldier);
 
-	if ( !(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && GCM->getItem(pSoldier->inv[ HANDPOS ].usItem)->isWeapon() )
+	if ( !(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && Item[ pSoldier->inv[ HANDPOS ].usItem ].usItemClass & IC_WEAPON )
 	{
 		if ( NPCFirstDraw( pSoldier, pTargetSoldier ) )
 		{
@@ -2194,7 +2193,7 @@ static ScreenID UIHandleCAMercShoot(UI_EVENT* pUIEvent)
 	{
 		// If this is one of our own guys.....pop up requiester...
 		if ((tgt->bTeam == OUR_TEAM || tgt->bTeam == MILITIA_TEAM)    &&
-				GCM->getItem(sel->inv[HANDPOS].usItem)->getItemClass() != IC_MEDKIT      &&
+				Item[sel->inv[HANDPOS].usItem].usItemClass != IC_MEDKIT      &&
 				sel->inv[HANDPOS].usItem                   != GAS_CAN        &&
 				gTacticalStatus.ubLastRequesterTargetID    != tgt->ubProfile &&
 				tgt != sel)
@@ -3372,7 +3371,7 @@ bool UIMouseOnValidAttackLocation(SOLDIERTYPE* const s)
 	if (map_pos == NOWHERE) return false;
 
 	OBJECTTYPE const& o           = s->inv[HANDPOS];
-	const ItemModel * item = GCM->getItem(o.usItem);
+	INVTYPE    const& item        = Item[o.usItem];
 	ItemCursor const  item_cursor = GetActionModeCursor(s);
 
 	if (item_cursor == INVALIDCURS) return false;
@@ -3401,7 +3400,7 @@ bool UIMouseOnValidAttackLocation(SOLDIERTYPE* const s)
 		if (!NewOKDestination(s, map_pos, TRUE, s->bLevel)) return false;
 	}
 
-	if (tgt == s && item->getItemClass() != IC_MEDKIT) return false;
+	if (tgt == s && item.usItemClass != IC_MEDKIT) return false;
 
 	if (HasObjectImprint(o) && s->ubProfile != o.ubImprintID)
 	{ // Access denied
@@ -3410,9 +3409,9 @@ bool UIMouseOnValidAttackLocation(SOLDIERTYPE* const s)
 		return false;
 	}
 
-	if (item->getItemClass() == IC_PUNCH) return tgt;
+	if (item.usItemClass == IC_PUNCH) return tgt;
 
-	if (item->getItemClass() == IC_MEDKIT)
+	if (item.usItemClass == IC_MEDKIT)
 	{ // If a guy's here, check if he needs medical help!
 		if (!tgt) return false;
 
@@ -4107,7 +4106,10 @@ static BOOLEAN HandleMultiSelectionMove(INT16 sDestGridNo)
 
 	FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 	{
+<<<<<<< HEAD
     std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 		if (pSoldier->bInSector)
 		{
 			if ( pSoldier->uiStatusFlags & SOLDIER_MULTI_SELECTED )
@@ -4135,7 +4137,9 @@ static BOOLEAN HandleMultiSelectionMove(INT16 sDestGridNo)
 					pSoldier->bReverse = FALSE;
 				}
 
-        soldier->removePendingAction();
+				// Remove any previous actions
+				pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
+
 
 				if ( EVENT_InternalGetNewSoldierPath( pSoldier, sDestGridNo, pSoldier->usUIMovementMode , TRUE, pSoldier->fNoAPToFinishMove ) )
 				{
@@ -4293,8 +4297,6 @@ static ScreenID UIHandleJumpOver(UI_EVENT* pUIEvent)
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return GAME_SCREEN;
 
-  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
-
 	const GridNo usMapPos = GetMouseMapPos();
 	if (usMapPos == NOWHERE) return GAME_SCREEN;
 
@@ -4304,7 +4306,7 @@ static ScreenID UIHandleJumpOver(UI_EVENT* pUIEvent)
 
 	// OK, Start jumping!
 	// Remove any previous actions
-  selSoldier->removePendingAction();
+	sel->ubPendingAction = NO_PENDING_ACTION;
 
 	// Get direction to goto....
 	const INT8 bDirection = GetDirectionFromGridNo(usMapPos, sel);
@@ -4491,8 +4493,6 @@ BOOLEAN HandleTalkInit(  )
 	SOLDIERTYPE* const sel = GetSelectedMan();
 	if (sel == NULL) return FALSE;
 
-  std::shared_ptr<Soldier> selSoldier(new Soldier(sel));
-
 	const GridNo usMapPos = GetMouseMapPos();
 	if (usMapPos == NOWHERE) return FALSE;
 
@@ -4648,8 +4648,9 @@ BOOLEAN HandleTalkInit(  )
 					}
 
 					// Now walkup to talk....
-          selSoldier->setPendingAction(MERC_TALK);
+					sel->ubPendingAction          = MERC_TALK;
 					sel->uiPendingActionData1     = pTSoldier->ubID;
+					sel->ubPendingActionAnimCount = 0;
 
 					// WALK UP TO DEST FIRST
 					EVENT_InternalGetNewSoldierPath(sel, sGoodGridNo, sel->usUIMovementMode, TRUE, sel->fNoAPToFinishMove);

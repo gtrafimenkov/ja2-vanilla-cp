@@ -3,17 +3,16 @@
 #include "sgp/Font.h"
 #include "Build/Laptop/Laptop.h"
 #include "AIMArchives.h"
-#include "Build/Laptop/AIM.h"
-#include "sgp/VObject.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/VSurface.h"
-#include "sgp/Video.h"
-#include "Build/Utils/Font_Control.h"
+#include "AIM.h"
+#include "VObject.h"
+#include "WordWrap.h"
+#include "Encrypted_File.h"
+#include "Text.h"
+#include "Button_System.h"
+#include "VSurface.h"
+#include "Video.h"
+#include "Font_Control.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define AIM_ALUMNI_NAME_FILE BINARYDATADIR "/alumname.edt"
 #define AIM_ALUMNI_FILE      BINARYDATADIR "/alumni.edt"
@@ -247,7 +246,7 @@ void RenderAimArchives()
 
 		// Display the merc's name
 		wchar_t sText[AIM_ALUMNI_NAME_SIZE];
-		GCM->loadEncryptedString(AIM_ALUMNI_NAME_FILE, sText, AIM_ALUMNI_NAME_SIZE * face_idx, AIM_ALUMNI_NAME_SIZE);
+		LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sText, AIM_ALUMNI_NAME_SIZE * face_idx, AIM_ALUMNI_NAME_SIZE);
 		DrawTextToScreen(sText, x + AIM_ALUMNI_NAME_OFFSET_X, y + AIM_ALUMNI_NAME_OFFSET_Y, AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT, AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
 	}
 
@@ -328,7 +327,7 @@ static void DisplayAlumniOldMercPopUp(void)
 	//Load the description
 	wchar_t	sDesc[AIM_ALUMNI_DECRIPTION_SIZE];
 	uiStartLoc = AIM_ALUMNI_FILE_RECORD_SIZE * gubDrawOldMerc + AIM_ALUMNI_FULL_NAME_SIZE;
-	GCM->loadEncryptedString(AIM_ALUMNI_FILE, sDesc, uiStartLoc, AIM_ALUMNI_DECRIPTION_SIZE);
+	LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, sDesc, uiStartLoc, AIM_ALUMNI_DECRIPTION_SIZE);
 
 	usStringPixLength = StringPixLength( sDesc, AIM_ALUMNI_POPUP_FONT);
 	ubNumDescLines = (UINT8) (usStringPixLength / AIM_POPUP_TEXT_WIDTH);
@@ -363,7 +362,7 @@ static void DisplayAlumniOldMercPopUp(void)
 	//Load and display the name
 	wchar_t	sName[AIM_ALUMNI_FULL_NAME_SIZE];
 	uiStartLoc = AIM_ALUMNI_FILE_RECORD_SIZE * gubDrawOldMerc;
-	GCM->loadEncryptedString(AIM_ALUMNI_FILE, sName, uiStartLoc, AIM_ALUMNI_FULL_NAME_SIZE);
+	LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, sName, uiStartLoc, AIM_ALUMNI_FULL_NAME_SIZE);
 
 	DrawTextToScreen(sName, AIM_ALUMNI_POPUP_NAME_X, AIM_ALUMNI_POPUP_NAME_Y, 0, AIM_ALUMNI_POPUP_NAME_FONT, AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 

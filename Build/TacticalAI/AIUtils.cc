@@ -1,27 +1,24 @@
-#include "Build/TacticalAI/AI.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/TacticalAI/AIInternals.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/TileEngine/Buildings.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/Tactical/Soldier_Create.h"
+#include "AI.h"
+#include "Animation_Control.h"
+#include "Isometric_Utils.h"
+#include "Weapons.h"
+#include "OppList.h"
+#include "Points.h"
+#include "PathAI.h"
+#include "WorldMan.h"
+#include "AIInternals.h"
+#include "Items.h"
+#include "LOS.h"
+#include "Assignments.h"
+#include "Soldier_Functions.h"
+#include "Buildings.h"
+#include "Soldier_Macros.h"
+#include "Render_Fun.h"
+#include "StrategicMap.h"
+#include "Environment.h"
+#include "Lighting.h"
+#include "Soldier_Create.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 //
 // CJC's DG->JA2 conversion notes
@@ -66,7 +63,7 @@ UINT16 MovementMode[LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] =
 	{RUNNING,	 RUNNING,  RUNNING},	// AI_ACTION_MOVE_TO_CLIMB
 };
 
-INT8 OKToAttack(const SOLDIERTYPE * pSoldier, int target)
+INT8 OKToAttack(SOLDIERTYPE * pSoldier, int target)
 {
 	// can't shoot yourself
 	if (target == pSoldier->sGridNo)
@@ -83,7 +80,7 @@ INT8 OKToAttack(const SOLDIERTYPE * pSoldier, int target)
 
 	// JUST PUT THIS IN ON JULY 13 TO TRY AND FIX OUT-OF-AMMO SITUATIONS
 
-	if ( GCM->getItem(pSoldier->inv[HANDPOS].usItem)->getItemClass() == IC_GUN)
+	if ( Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_GUN)
 	{
 		if ( pSoldier->inv[HANDPOS].usItem == TANK_CANNON )
 		{
@@ -98,7 +95,7 @@ INT8 OKToAttack(const SOLDIERTYPE * pSoldier, int target)
 			return(NOSHOOT_NOAMMO);
 		}
 	}
-	else if (GCM->getItem(pSoldier->inv[HANDPOS].usItem)->getItemClass() == IC_LAUNCHER)
+	else if (Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_LAUNCHER)
 	{
 		if ( FindLaunchable( pSoldier, pSoldier->inv[HANDPOS].usItem ) == NO_SLOT )
 		{
@@ -1930,10 +1927,10 @@ INT32 CalcManThreatValue( SOLDIERTYPE *pEnemy, INT16 sMyGrid, UINT8 ubReduceForC
 			// ADD 1/5 of man's marksmanship skill (0-20)
 			iThreatValue += (pEnemy->bMarksmanship / 5);
 
-			if ( GCM->getItem(pEnemy->inv[HANDPOS].usItem)->isWeapon() )
+			if ( Item[ pEnemy->inv[HANDPOS].usItem ].usItemClass & IC_WEAPON )
 			{
 				// ADD the deadliness of the item(weapon) he's holding (0-50)
-				iThreatValue += GCM->getWeapon(pEnemy->inv[HANDPOS].usItem)->ubDeadliness;
+				iThreatValue += Weapon[pEnemy->inv[HANDPOS].usItem].ubDeadliness;
 			}
 		}
 
@@ -2093,7 +2090,7 @@ bool FindBetterSpotForItem(SOLDIERTYPE& s, INT8 const slot)
 	if (item == NOTHING) return true; // That's just fine
 
 	INT8 new_slot;
-	if (GCM->getItem(item)->getPerPocket() != 0)
+	if (Item[item].ubPerPocket != 0)
 	{ // Try a small pocket first
 		new_slot = FindEmptySlotWithin(&s, SMALLPOCK1POS, SMALLPOCK8POS);
 		if (new_slot == NO_SLOT) goto try_big_pocket;
@@ -2131,7 +2128,7 @@ UINT8 GetTraversalQuoteActionID( INT8 bDirection )
 	}
 }
 
-UINT8 SoldierDifficultyLevel( const SOLDIERTYPE * pSoldier )
+UINT8 SoldierDifficultyLevel( SOLDIERTYPE * pSoldier )
 {
 	INT8 bDifficultyBase;
 	INT8 bDifficulty;
@@ -2241,7 +2238,7 @@ BOOLEAN ValidCreatureTurn( SOLDIERTYPE * pCreature, INT8 bNewDirection )
 	return( TRUE );
 }
 
-INT32 RangeChangeDesire( const SOLDIERTYPE * pSoldier )
+INT32 RangeChangeDesire( SOLDIERTYPE * pSoldier )
 {
 	INT32 iRangeFactorMultiplier;
 

@@ -1,28 +1,27 @@
 #include <stdexcept>
 
-#include "Build/Editor/EditorMercs.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Enemy_Soldier_Save.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LoadSaveSoldierCreate.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Init_List.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Enemy_Soldier_Save.h"
+#include "LoadSaveSoldierCreate.h"
+#include "StrategicMap.h"
+#include "Overhead.h"
+#include "Soldier_Add.h"
+#include "Soldier_Create.h"
+#include "Soldier_Init_List.h"
+#include "Debug.h"
+#include "Random.h"
+#include "Items.h"
+#include "Map_Information.h"
+#include "Soldier_Profile.h"
+#include "EditorMercs.h"
+#include "Animation_Data.h"
+#include "Tactical_Save.h"
+#include "Campaign_Types.h"
+#include "Game_Clock.h"
+#include "Queen_Command.h"
+#include "Scheduling.h"
+#include "MemMan.h"
+#include "FileMan.h"
+
 
 BOOLEAN gfRestoringEnemySoldiersFromTempFile = FALSE;
 BOOLEAN gfRestoringCiviliansFromTempFile = FALSE;
@@ -52,7 +51,7 @@ void LoadEnemySoldiersFromTempFile()
 	// STEP ONE: Set up the temp file to read from.
 	char map_name[128];
 	GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, map_name, x, y, z);
-	AutoSGPFile f(GCM->openGameResForReading(map_name));
+	AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
 	/* STEP TWO: Determine whether or not we should use this data.  Because it
 	 * is the demo, it is automatically used. */
@@ -305,7 +304,7 @@ void NewWayOfLoadingEnemySoldiersFromTempFile()
 	// STEP ONE:  Set up the temp file to read from.
 	char map_name[128];
 	GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, map_name, x, y, z);
-	AutoSGPFile f(GCM->openGameResForReading(map_name));
+	AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
 	/* STEP TWO:  Determine whether or not we should use this data.  Because it
 	 * is the demo, it is automatically used. */
@@ -474,7 +473,7 @@ void NewWayOfLoadingCiviliansFromTempFile()
 	// STEP ONE: Set up the temp file to read from.
 	char map_name[128];
 	GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, map_name, x, y, z);
-	AutoSGPFile f(GCM->openGameResForReading(map_name));
+	AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
 	/* STEP TWO:  Determine whether or not we should use this data.  Because it
 	 * is the demo, it is automatically used. */
@@ -810,7 +809,7 @@ static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFi
 	// STEP ONE: Set up the temp file to read from.
 	char map_name[128];
 	GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, map_name, x, y, z);
-	AutoSGPFile f(GCM->openGameResForReading(map_name));
+	AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
 	/* STEP TWO: Determine whether or not we should use this data.  Because it
 	 * is the demo, it is automatically used. */

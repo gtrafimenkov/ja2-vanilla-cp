@@ -1,16 +1,15 @@
 #include <cstdlib>
 #include <stdexcept>
 
-#include "sgp/Types.h"
-#include "sgp/FileMan.h"
-#include "sgp/LibraryDataBase.h"
-#include "sgp/MemMan.h"
-#include "sgp/Debug.h"
-#include "sgp/Logger.h"
-#include "sgp/StrUtils.h"
-
-#include "slog/slog.h"
-#define TAG "LibDB"
+#include "Directories.h"
+#include "Types.h"
+#include "FileMan.h"
+#include "LibraryDataBase.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "Logger.h"
+#include "Exceptions.h"
+#include "StrUtils.h"
 
 
 #define	FILENAME_SIZE 256
@@ -47,35 +46,69 @@ struct DIRENTRY
 	UINT16       usReserved2;
 };
 
-static BOOLEAN InitializeLibrary(const std::string &dataDir, const char* pLibraryName, LibraryHeaderStruct* pLibHeader);
 
-
-/** Initialize file database.
- * @return NULL when successful, otherwise the name of failed library. */
-const char* LibraryDB::InitializeFileDatabase(const std::string &dataDir, const std::vector<std::string> &libs)
+struct DatabaseManagerHeaderStruct
 {
-  for (int i = 0; i < libs.size(); i++)
-  {
-    LibraryHeaderStruct lib;
-    if (!InitializeLibrary(dataDir, libs[i].c_str(), &lib))
-    {
-      return libs[i].c_str();
-    }
-    m_libraries.push_back(lib);
-  }
-  return NULL;
+	LibraryHeaderStruct* pLibraries;
+	UINT16               usNumberOfLibraries;
+};
+
+
+static DatabaseManagerHeaderStruct gFileDataBase;
+
+
+static BOOLEAN InitializeLibrary(const char* pLibraryName, LibraryHeaderStruct* pLibHeader);
+
+
+static void ThrowExcOnLibLoadFailure(const char* pLibraryName)
+{
+  std::string message = FormattedString(
+    "Library '%s' is not found in folder '%s'.\n\nPlease make sure that '%s' contains files of the original game.  You can change this path by editing file '%s'.\n",
+    pLibraryName, FileMan::getDataDirPath().c_str(), FileMan::getGameResRootPath().c_str(), FileMan::getConfigPath().c_str());
+  FastDebugMsg(message.c_str());
+  throw LibraryFileNotFoundException(message);
+}
+
+void InitializeFileDatabase(const std::vector<std::string> &libraries)
+{
+	//if all the libraries exist, set them up
+  gFileDataBase.usNumberOfLibraries = libraries.size();
+
+	//allocate memory for the each of the library headers
+	if (libraries.size() > 0)
+	{
+		LibraryHeaderStruct* const libs = MALLOCNZ(LibraryHeaderStruct, libraries.size());
+		gFileDataBase.pLibraries = libs;
+
+		//Load up each library
+		for (int i = 0; i < libraries.size(); i++)
+		{
+			if (!InitializeLibrary(libraries[i].c_str(), &libs[i]))
+			{
+        ThrowExcOnLibLoadFailure(libraries[i].c_str());
+			}
+		}
+	}
 }
 
 
-static BOOLEAN CloseLibrary(LibraryHeaderStruct *lib);
+static BOOLEAN CloseLibrary(INT16 sLibraryID);
 
 
-void LibraryDB::ShutDownFileDatabase()
+void ShutDownFileDatabase()
 {
-  for(int i = 0; i < m_libraries.size(); i++)
-  {
-		CloseLibrary(&m_libraries[i]);
-  }
+	UINT16 sLoop1;
+
+	// Free up the memory used for each library
+	for(sLoop1=0; sLoop1 < gFileDataBase.usNumberOfLibraries; sLoop1++)
+		CloseLibrary( sLoop1 );
+
+	//Free up the memory used for all the library headers
+	if( gFileDataBase.pLibraries )
+	{
+		MemFree( gFileDataBase.pLibraries );
+		gFileDataBase.pLibraries = NULL;
+	}
 }
 
 
@@ -97,10 +130,10 @@ static char* Slashify(const char* s)
 }
 
 
-static BOOLEAN InitializeLibrary(const std::string &dataDir, const char* const lib_name, LibraryHeaderStruct* const lib)
+static BOOLEAN InitializeLibrary(const char* const lib_name, LibraryHeaderStruct* const lib)
 try
 {
-  FILE* hFile = FileMan::openForReadingCaseInsensitive(dataDir, lib_name);
+  FILE* hFile = FileMan::openForReadingInDataDir(lib_name);
   if (hFile == NULL)
   {
       fprintf(stderr, "ERROR: Failed to open library \"%s\"\n", lib_name);
@@ -114,6 +147,9 @@ try
 	const UINT32 count_entries = LibFileHeader.iEntries;
 
 	FileHeaderStruct* fhs = MALLOCN(FileHeaderStruct, count_entries);
+#ifdef JA2TESTVERSION
+	lib->uiTotalMemoryAllocatedForLibrary = sizeof(*fhs) * count_entries;
+#endif
 
 	/* place the file pointer at the begining of the file headers (they are at the
 	 * end of the file) */
@@ -130,17 +166,18 @@ try
 		// check to see if the file is not longer than it should be
 		if (strlen(DirEntry.sFileName) + 1 >= FILENAME_SIZE)
     {
-      SLOGW(TAG, "'%s' from the library '%s' has too long name", DirEntry.sFileName, lib->sLibraryPath.c_str());
+			FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, lib->sLibraryPath, strlen(DirEntry.sFileName) + 1, FILENAME_SIZE));
     }
 
 		FileHeaderStruct* const fh = &fhs[used_entries++];
 
 		fh->pFileName = Slashify(DirEntry.sFileName);
+#ifdef JA2TESTVERSION
+		lib->uiTotalMemoryAllocatedForLibrary += strlen(fh->pFileName) + 1;
+#endif
 
 		fh->uiFileOffset = DirEntry.uiOffset;
 		fh->uiFileLength = DirEntry.uiLength;
-
-    // SLOGD(TAG, "found in %s: %s", lib_name, fh->pFileName);
 	}
 
 	if (used_entries != count_entries)
@@ -153,8 +190,10 @@ try
 	lib->pFileHeader       = fhs;
 	lib->usNumberOfEntries = used_entries;
 
-	lib->sLibraryPath = LibFileHeader.sPathToLibrary;
-  FileMan::slashifyPath(lib->sLibraryPath);
+	lib->sLibraryPath = Slashify(LibFileHeader.sPathToLibrary);
+#ifdef JA2TESTVERSION
+	lib->uiTotalMemoryAllocatedForLibrary += strlen(lib->sLibraryPath) + 1;
+#endif
 
 	lib->hLibraryHandle = hFile;
 	lib->iNumFilesOpen  = 0;
@@ -184,49 +223,45 @@ BOOLEAN LoadDataFromLibrary(LibraryFile* const f, void* const pData, const UINT3
 }
 
 
-static const FileHeaderStruct* GetFileHeaderFromLibrary(const LibraryHeaderStruct* lib, const std::string &filename);
+static const FileHeaderStruct* GetFileHeaderFromLibrary(const LibraryHeaderStruct* lib, const char* filename);
+static LibraryHeaderStruct*    GetLibraryFromFileName(char const* filename);
 
 
-/** Check if file exists in the library.
- * Name of the file should use / (not \\). */
-bool LibraryDB::CheckIfFileExistInLibrary(const std::string &filename)
+bool CheckIfFileExistInLibrary(char const* const filename)
 {
 	LibraryHeaderStruct const* const lib = GetLibraryFromFileName(filename);
 	return lib && GetFileHeaderFromLibrary(lib, filename);
 }
 
 
-static BOOLEAN IsLibraryOpened(const LibraryHeaderStruct *lib);
+static BOOLEAN IsLibraryOpened(INT16 sLibraryID);
 
 
-/* Find library which can contain the given file.
- * File name should use / (not \\). */
-LibraryHeaderStruct* LibraryDB::GetLibraryFromFileName(const std::string &filename)
+/* Find out if the file CAN be in a library.  It determines if the library that
+ * the file MAY be in is open.  E.g. file is  Laptop/Test.sti, if the Laptop/
+ * library is open, it returns true */
+static LibraryHeaderStruct* GetLibraryFromFileName(char const* const filename)
 {
-  bool hasDirectoryInPath = filename.find('/') != std::string::npos;
-
 	// Loop through all the libraries to check which library the file is in
 	LibraryHeaderStruct* best_match = 0;
+	for (INT16 i = 0; i != gFileDataBase.usNumberOfLibraries; ++i)
+	{
+		if (!IsLibraryOpened(i)) continue;
 
-  for(int i = 0; i < m_libraries.size(); i++)
-  {
-		LibraryHeaderStruct* lib = &m_libraries[i];
-
-		if (!IsLibraryOpened(lib)) continue;
-
-		const char * lib_path = lib->sLibraryPath.c_str();
+		LibraryHeaderStruct* const lib      = &gFileDataBase.pLibraries[i];
+		char const*          const lib_path = lib->sLibraryPath;
 		if (lib_path[0] == '\0')
 		{ // The library is for the default path
-			if(hasDirectoryInPath) continue;
+			if (strchr(filename, '/')) continue;
 			// There is no directory in the file name
 			return lib;
 		}
 		else
 		{ // Compare the library name to the file name that is passed in
 			size_t const lib_path_len = strlen(lib_path);
-			if (strncasecmp(lib_path, filename.c_str(), lib_path_len) != 0) continue;
+			if (strncasecmp(lib_path, filename, lib_path_len) != 0) continue;
 			// The directory paths are the same to the length of the lib's path
-			if (best_match && strlen(best_match->sLibraryPath.c_str()) >= lib_path_len) continue;
+			if (best_match && strlen(best_match->sLibraryPath) >= lib_path_len) continue;
 			// We've never matched or this match's path is longer than the previous match (meaning it's more exact)
 			best_match = lib;
 		}
@@ -244,36 +279,35 @@ static const char* g_current_lib_path;
 /* Performsperforms a binary search of the library.  It adds the libraries path
  * to the file in the library and then string compared that to the name that we
  * are searching for. */
-static const FileHeaderStruct* GetFileHeaderFromLibrary(const LibraryHeaderStruct* const lib, const std::string &filename)
+static const FileHeaderStruct* GetFileHeaderFromLibrary(const LibraryHeaderStruct* const lib, const char* const filename)
 {
-	g_current_lib_path = lib->sLibraryPath.c_str();
-	return (const FileHeaderStruct*)bsearch(filename.c_str(), lib->pFileHeader, lib->usNumberOfEntries, sizeof(*lib->pFileHeader), CompareFileNames);
+	g_current_lib_path = lib->sLibraryPath;
+	return (const FileHeaderStruct*)bsearch(filename, lib->pFileHeader, lib->usNumberOfEntries, sizeof(*lib->pFileHeader), CompareFileNames);
 }
 
 
 static int CompareFileNames(const void* key, const void* member)
 {
+	const char*             const sSearchKey     = (const char*)key;
 	const FileHeaderStruct* const TempFileHeader = (const FileHeaderStruct*)member;
-
-  // XXX: need to optimize this
-  // XXX: the whole thing requires refactoring
 	char sFileNameWithPath[FILENAME_SIZE];
+
 	sprintf(sFileNameWithPath, "%s%s", g_current_lib_path, TempFileHeader->pFileName);
 
-	return strcasecmp((const char*)key, sFileNameWithPath);
+	return strcasecmp(sSearchKey, sFileNameWithPath);
 }
 
 
-/** Find file in the library.
- * Name of the file should use / not \\. */
-BOOLEAN LibraryDB::FindFileInTheLibrarry(const std::string &filename, LibraryFile* f)
+/* This function will see if a file is in a library.  If it is, the file will be
+ * opened and a file handle will be created for it. */
+BOOLEAN OpenFileFromLibrary(const char* const pName, LibraryFile* const f)
 {
 	//Check if the file can be contained from an open library ( the path to the file a library path )
-	LibraryHeaderStruct* const lib = GetLibraryFromFileName(filename);
+	LibraryHeaderStruct* const lib = GetLibraryFromFileName(pName);
 	if (!lib) return FALSE;
 
 	//if the file is in a library, get the file
-	const FileHeaderStruct* const pFileHeader = GetFileHeaderFromLibrary(lib, filename);
+	const FileHeaderStruct* const pFileHeader = GetFileHeaderFromLibrary(lib, pName);
 	if (pFileHeader == NULL) return FALSE;
 
 	//increment the number of open files
@@ -306,18 +340,24 @@ BOOLEAN LibraryFileSeek(LibraryFile* const f, INT32 distance, const FileSeekMode
 }
 
 
-static BOOLEAN CloseLibrary(LibraryHeaderStruct *lib)
+static BOOLEAN CloseLibrary(INT16 sLibraryID)
 {
 	UINT32	uiLoop1;
 
 	//if the library isnt loaded, dont close it
-	if( !IsLibraryOpened(lib) )
+	if( !IsLibraryOpened( sLibraryID ) )
 		return( FALSE );
+	LibraryHeaderStruct* const lib = &gFileDataBase.pLibraries[sLibraryID];
+
+#ifdef JA2TESTVERSION
+	FastDebugMsg(String("ShutDownFileDatabase( ): %d bytes of ram used for the Library #%3d, path '%s',  in the File Database System\n", lib->uiTotalMemoryAllocatedForLibrary, sLibraryID, lib->sLibraryPath));
+	lib->uiTotalMemoryAllocatedForLibrary = 0;
+#endif
 
 	//if there are any open files, loop through the library and close down whatever file is still open
 	if (lib->iNumFilesOpen)
 	{
-		FastDebugMsg(String("CloseLibrary():  ERROR:  %s library still has %d open files.", lib->sLibraryPath.c_str(), lib->iNumFilesOpen));
+		FastDebugMsg(String("CloseLibrary():  ERROR:  %s library still has %d open files.", lib->sLibraryPath, lib->iNumFilesOpen));
 	}
 
 	//Free up the memory used for each file name
@@ -334,6 +374,13 @@ static BOOLEAN CloseLibrary(LibraryHeaderStruct *lib)
 		lib->pFileHeader = NULL;
 	}
 
+	//Free up the memory used for the library name
+	if (lib->sLibraryPath)
+	{
+		MemFree(lib->sLibraryPath);
+		lib->sLibraryPath = NULL;
+	}
+
 	fclose(lib->hLibraryHandle);
 	lib->hLibraryHandle = NULL;
 
@@ -341,9 +388,11 @@ static BOOLEAN CloseLibrary(LibraryHeaderStruct *lib)
 }
 
 
-static BOOLEAN IsLibraryOpened(const LibraryHeaderStruct *lib)
+static BOOLEAN IsLibraryOpened(INT16 const sLibraryID)
 {
-	return lib->hLibraryHandle != NULL;
+	return
+		sLibraryID < gFileDataBase.usNumberOfLibraries &&
+		gFileDataBase.pLibraries[sLibraryID].hLibraryHandle != NULL;
 }
 
 

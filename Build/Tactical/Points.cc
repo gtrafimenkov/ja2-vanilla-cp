@@ -1,38 +1,31 @@
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Drugs_And_Alcohol.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/RT_Time_Defines.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Debug.h"
-#include "sgp/WCheck.h"
-#include "slog/slog.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/WeaponModels.h"
-
-#define TAG "Points"
+#include "Handle_Items.h"
+#include "Soldier_Find.h"
+#include "TileDef.h"
+#include "WorldDef.h"
+#include "Points.h"
+#include "Overhead.h"
+#include "Font_Control.h"
+#include "Interface.h"
+#include "Isometric_Utils.h"
+#include "PathAI.h"
+#include "Message.h"
+#include "Animation_Control.h"
+#include "Weapons.h"
+#include "Structure_Wrap.h"
+#include "Dialogue_Control.h"
+#include "Items.h"
+#include "RT_Time_Defines.h"
+#include "AI.h"
+#include "Handle_UI.h"
+#include "Text.h"
+#include "SkillCheck.h"
+#include "WCheck.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Macros.h"
+#include "Drugs_And_Alcohol.h"
+#include "WorldMan.h"
+#include "Interface_Items.h"
+#include "Debug.h"
 
 
 INT16 TerrainActionPoints(const SOLDIERTYPE* const pSoldier, const INT16 sGridno, const INT8 bDir, const INT8 bLevel)
@@ -815,7 +808,7 @@ UINT8 CalcTotalAPsToAttack(SOLDIERTYPE* const s, INT16 const grid_no, UINT8 cons
 {
 	UINT16            ap_cost = 0;
 	OBJECTTYPE const& in_hand = s->inv[HANDPOS];
-	switch (GCM->getItem(in_hand.usItem)->getItemClass())
+	switch (Item[in_hand.usItem].usItemClass)
 	{
 		case IC_GUN:
 		case IC_LAUNCHER:
@@ -917,7 +910,7 @@ UINT8 MinAPsToAttack(SOLDIERTYPE* const s, GridNo const grid_no, UINT8 const add
 		if (attach_slot != NO_SLOT) item = UNDER_GLAUNCHER;
 	}
 
-	switch (GCM->getItem(item)->getItemClass())
+	switch (Item[item].usItemClass)
 	{
 		case IC_BLADE:
 		case IC_GUN:
@@ -934,7 +927,7 @@ UINT8 MinAPsToAttack(SOLDIERTYPE* const s, GridNo const grid_no, UINT8 const add
 
 static INT8 CalcAimSkill(SOLDIERTYPE const& s, UINT16 const weapon)
 {
-	switch (GCM->getItem(weapon)->getItemClass())
+	switch (Item[weapon].usItemClass)
 	{
 		case IC_GUN:
 		case IC_LAUNCHER:
@@ -961,7 +954,7 @@ UINT8 BaseAPsToShootOrStab(INT8 const bAPs, INT8 const bAimSkill, OBJECTTYPE con
 	// Shots per turn rating is for max. aimSkill(100), drops down to 1/2 at = 0
 	// DIVIDE BY 4 AT THE END HERE BECAUSE THE SHOTS PER TURN IS NOW QUADRUPLED!
 	// NB need to define shots per turn for ALL Weapons then.
-	sBottom = ( ( 50 + (bAimSkill / 2) ) * GCM->getWeapon(o.usItem )->ubShotsPer4Turns ) / 4;
+	sBottom = ( ( 50 + (bAimSkill / 2) ) * Weapon[o.usItem ].ubShotsPer4Turns ) / 4;
 
 	INT8 const bAttachPos = FindAttachment(&o, SPRING_AND_BOLT_UPGRADE);
 	if ( bAttachPos != -1 )
@@ -1000,7 +993,7 @@ void GetAPChargeForShootOrStabWRTGunRaises(SOLDIERTYPE const* const s, GridNo gr
 
 	// Do we need to ready weapon?
 	*charge_raise =
-		GCM->getItem(s->inv[HANDPOS].usItem)->getItemClass() != IC_THROWING_KNIFE &&
+		Item[s->inv[HANDPOS].usItem].usItemClass != IC_THROWING_KNIFE &&
 		!(gAnimControl[s->usAnimState].uiFlags & (ANIM_FIREREADY | ANIM_FIRE));
 }
 
@@ -1018,7 +1011,7 @@ UINT8 MinAPsToShootOrStab(SOLDIERTYPE& s, GridNo gridno, bool const add_turning_
 
 	UINT8	ap_cost = AP_MIN_AIM_ATTACK;
 
-	if (GCM->getItem(item)->getItemClass() == IC_THROWING_KNIFE ||
+	if (Item[item].usItemClass == IC_THROWING_KNIFE ||
 			item                   == ROCKET_LAUNCHER)
 	{ // Do we need to stand up?
 		ap_cost += GetAPsToChangeStance(&s, ANIM_STAND);
@@ -1038,7 +1031,7 @@ UINT8 MinAPsToShootOrStab(SOLDIERTYPE& s, GridNo gridno, bool const add_turning_
 
 	if (adding_turning_cost)
 	{
-		if (GCM->getItem(item)->getItemClass() == IC_THROWING_KNIFE)
+		if (Item[item].usItemClass == IC_THROWING_KNIFE)
 		{
 			ap_cost += AP_LOOK_STANDING;
 		}
@@ -1253,13 +1246,13 @@ BOOLEAN EnoughAmmo(SOLDIERTYPE* const s, BOOLEAN const fDisplay, INT8 const inv_
 	// hack... they turn empty afterwards anyways
 	if (item_idx == ROCKET_LAUNCHER) return TRUE;
 
-	const ItemModel * item = GCM->getItem(item_idx);
-	if (item->getItemClass() == IC_LAUNCHER || item_idx == TANK_CANNON)
+	INVTYPE const& item = Item[item_idx];
+	if (item.usItemClass == IC_LAUNCHER || item_idx == TANK_CANNON)
 	{
 		if (FindAttachmentByClass(&o, IC_GRENADE) != ITEM_NOT_FOUND) return TRUE;
 		if (FindAttachmentByClass(&o, IC_BOMB)    != ITEM_NOT_FOUND) return TRUE;
 	}
-	else if (item->getItemClass() == IC_GUN)
+	else if (item.usItemClass == IC_GUN)
 	{
 		if (o.ubGunShotsLeft != 0) return TRUE;
 	}
@@ -1290,7 +1283,7 @@ void DeductAmmo( SOLDIERTYPE *pSoldier, INT8 bInvPos )
 		if ( pObj->usItem == TANK_CANNON )
 		{
 		}
-		else if ( GCM->getItem(pObj->usItem)->getItemClass() == IC_GUN && pObj->usItem != TANK_CANNON )
+		else if ( Item[ pObj->usItem ].usItemClass == IC_GUN && pObj->usItem != TANK_CANNON )
 		{
 			if ( pSoldier->usAttackingWeapon == pObj->usItem)
 			{
@@ -1305,7 +1298,7 @@ void DeductAmmo( SOLDIERTYPE *pSoldier, INT8 bInvPos )
 				// firing an attachment?
 			}
 		}
-		else if ( GCM->getItem(pObj->usItem)->getItemClass() == IC_LAUNCHER || pObj->usItem == TANK_CANNON )
+		else if ( Item[ pObj->usItem ].usItemClass == IC_LAUNCHER || pObj->usItem == TANK_CANNON )
 		{
 			INT8 bAttachPos;
 
@@ -1354,12 +1347,12 @@ UINT16 GetAPsToGiveItem(SOLDIERTYPE* const s, UINT16 const usMapPos)
 
 INT8 GetAPsToReloadGunWithAmmo( OBJECTTYPE * pGun, OBJECTTYPE * pAmmo )
 {
-	if (GCM->getItem(pGun->usItem)->getItemClass() == IC_LAUNCHER)
+	if (Item[ pGun->usItem ].usItemClass == IC_LAUNCHER)
 	{
 		// always standard AP cost
 		return( AP_RELOAD_GUN );
 	}
-	if ( GCM->getWeapon(pGun->usItem)->isSameMagCapacity(GCM->getItem(pAmmo->usItem)->asAmmo()))
+	if ( Weapon[pGun->usItem].ubMagSize == Magazine[Item[pAmmo->usItem].ubClassIndex].ubMagSize )
 	{
 		// normal situation
 		return( AP_RELOAD_GUN );
@@ -1381,7 +1374,7 @@ INT8 GetAPsToAutoReload( SOLDIERTYPE * pSoldier )
 	CHECKF( pSoldier );
 	pObj = &(pSoldier->inv[HANDPOS]);
 
-	if (GCM->getItem(pObj->usItem)->getItemClass() == IC_GUN || GCM->getItem(pObj->usItem)->getItemClass() == IC_LAUNCHER)
+	if (Item[pObj->usItem].usItemClass == IC_GUN || Item[pObj->usItem].usItemClass == IC_LAUNCHER)
 	{
 		bSlot = FindAmmoToReload( pSoldier, HANDPOS, NO_SLOT );
 		if (bSlot != NO_SLOT)
@@ -1596,9 +1589,9 @@ INT16 GetAPsToReadyWeapon(const SOLDIERTYPE* const pSoldier, const UINT16 usAnim
 	else
 	{
 		// CHECK FOR RIFLE
-		if ( GCM->getItem(usItem)->getItemClass() == IC_GUN )
+		if ( Item[ usItem ].usItemClass == IC_GUN )
 		{
-			return( GCM->getWeapon( usItem )->ubReadyTime );
+			return( Weapon[ usItem ].ubReadyTime );
 		}
 	}
 
@@ -1670,12 +1663,11 @@ INT16 MinAPsToThrow(SOLDIERTYPE const& s, GridNo gridno, bool const add_turning_
 
 	// Make sure the guy's actually got a throwable item in his hand
 	UINT16 const in_hand = s.inv[HANDPOS].usItem;
-  const ItemModel *item = GCM->getItem(in_hand);
-  // Gennady: This is a very strange piece of code.
-  //          Be very careful with it.
-	if (!item->getItemClass() & IC_GRENADE)
+	if (!Item[in_hand].usItemClass & IC_GRENADE)
 	{
-    SLOGI(TAG, "MinAPsToThrow - Called when in-hand item is %s", item->getInternalName().c_str());
+#ifdef JA2TESTVERSION
+		ScreenMsg(MSG_FONT_YELLOW, MSG_DEBUG, L"MinAPsToThrow - Called when in-hand item is %s", in_hand);
+#endif
 		return 0;
 	}
 

@@ -1,37 +1,34 @@
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/AIInternals.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Items.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Utils/Message.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/Tactical/Boxing.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Tactical/Soldier_Ani.h"
-#include "Build/Tactical/Rotting_Corpses.h"
+#include "AI.h"
+#include "AIInternals.h"
+#include "Animation_Control.h"
+#include "Font_Control.h"
+#include "Isometric_Utils.h"
+#include "Points.h"
+#include "Overhead.h"
+#include "OppList.h"
+#include "Items.h"
+#include "Structure.h"
+#include "Timer_Control.h"
+#include "Weapons.h"
+#include "NPC.h"
+#include "Soldier_Functions.h"
+#include "WorldMan.h"
+#include "Scheduling.h"
+#include "Message.h"
+#include "Structure_Wrap.h"
+#include "Keys.h"
+#include "PathAI.h"
+#include "Render_Fun.h"
+#include "Boxing.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Macros.h"
+#include "LOS.h"
+#include "StrategicMap.h"
+#include "Quests.h"
+#include "Map_Screen_Interface_Map.h"
+#include "Soldier_Ani.h"
+#include "Rotting_Corpses.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 extern BOOLEAN gfUseAlternateQueenPosition;
 
@@ -2970,7 +2967,7 @@ bCanAttack = FALSE;
 		 }
 
 		 // now it better be a gun, or the guy can't shoot (but has other attack(s))
-		 if (GCM->getItem(pSoldier->inv[HANDPOS].usItem)->getItemClass() == IC_GUN && pSoldier->inv[HANDPOS].bGunStatus >= USABLE)
+		 if (Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_GUN && pSoldier->inv[HANDPOS].bGunStatus >= USABLE)
 		 {
 			 // get the minimum cost to attack the same target with this gun
 			 ubMinAPCost = MinAPsToAttack(pSoldier,pSoldier->sLastTarget,DONTADDTURNCOST);
@@ -3096,7 +3093,7 @@ bCanAttack = FALSE;
 		 if (pSoldier->bActionPoints >= ubMinAPCost)
 			{
 				// NB throwing knife in hand now
-	 		 if ( GCM->getItem(pSoldier->inv[HANDPOS].usItem)->isThrowingKnife() )
+	 		 if ( Item[ pSoldier->inv[HANDPOS].usItem ].usItemClass & IC_THROWING_KNIFE )
 			 {
 				 // throwing knife code works like shooting
 
@@ -3157,7 +3154,7 @@ bCanAttack = FALSE;
 	 if (BestStab.ubPossible && ((BestStab.iAttackValue > BestAttack.iAttackValue) || (ubBestAttackAction == AI_ACTION_NONE)))
 	 {
 		BestAttack.iAttackValue = BestStab.iAttackValue;
-		if ( GCM->getItem(pSoldier->inv[BestStab.bWeaponIn].usItem)->isThrowingKnife() )
+		if ( Item[ pSoldier->inv[BestStab.bWeaponIn].usItem ].usItemClass & IC_THROWING_KNIFE )
 		{
 			ubBestAttackAction = AI_ACTION_THROW_KNIFE;
 		}
@@ -3227,7 +3224,7 @@ bCanAttack = FALSE;
  }
 
  // NB a desire of 4 or more is only achievable by brave/aggressive guys with high morale
- if ( pSoldier->bActionPoints == pSoldier->bInitialActionPoints && ubBestAttackAction == AI_ACTION_FIRE_GUN && (pSoldier->bShock == 0) && (pSoldier->bLife >= pSoldier->bLifeMax / 2) && BestAttack.ubChanceToReallyHit < 30 && ( PythSpacesAway( pSoldier->sGridNo, BestAttack.sTarget ) > GCM->getWeapon( pSoldier->inv[ BestAttack.bWeaponIn].usItem)->usRange / CELL_X_SIZE ) && RangeChangeDesire( pSoldier ) >= 4 )
+ if ( pSoldier->bActionPoints == pSoldier->bInitialActionPoints && ubBestAttackAction == AI_ACTION_FIRE_GUN && (pSoldier->bShock == 0) && (pSoldier->bLife >= pSoldier->bLifeMax / 2) && BestAttack.ubChanceToReallyHit < 30 && ( PythSpacesAway( pSoldier->sGridNo, BestAttack.sTarget ) > Weapon[ pSoldier->inv[ BestAttack.bWeaponIn ].usItem ].usRange / CELL_X_SIZE ) && RangeChangeDesire( pSoldier ) >= 4 )
  {
 	 // okay, really got to wonder about this... could taking cover be an option?
 	 if (ubCanMove && pSoldier->bOrders != STATIONARY && !gfHiddenInterrupt &&

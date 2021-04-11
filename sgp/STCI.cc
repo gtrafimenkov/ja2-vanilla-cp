@@ -8,8 +8,6 @@
 #include "sgp/Debug.h"
 #include "STCI.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 static SGPImage* STCILoadIndexed(UINT16 contents, HWFILE, STCIHeader const*);
 static SGPImage* STCILoadRGB(    UINT16 contents, HWFILE, STCIHeader const*);
@@ -17,7 +15,7 @@ static SGPImage* STCILoadRGB(    UINT16 contents, HWFILE, STCIHeader const*);
 
 SGPImage* LoadSTCIFileToImage(char const* const filename, UINT16 const fContents)
 {
-	AutoSGPFile f(GCM->openGameResForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
 	STCIHeader header;
 	FileRead(f, &header, sizeof(header));

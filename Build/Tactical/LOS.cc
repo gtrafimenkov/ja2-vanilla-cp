@@ -1,42 +1,38 @@
 #include <math.h>
+#include "Font_Control.h"
+#include "Handle_Items.h"
+#include "Structure.h"
+#include "TileDef.h"
+#include "Timer_Control.h"
+#include "WCheck.h"
+#include "Isometric_Utils.h"
+#include "Debug.h"
+#include "LOS.h"
+#include "Animation_Control.h"
+#include "Random.h"
+#include "Soldier_Control.h"
+#include "Overhead.h"
+#include "Weapons.h"
+#include "OppList.h"
+#include "Bullets.h"
+#include "Items.h"
+#include "Soldier_Profile.h"
+#include "WorldMan.h"
+#include "Rotting_Corpses.h"
+#include "Keys.h"
+#include "Message.h"
+#include "Structure_Wrap.h"
+#include "Campaign.h"
+#include "Environment.h"
+#include "PathAI.h"
+#include "Soldier_Macros.h"
+#include "StrategicMap.h"
+#include "Quests.h"
+#include "Interface.h"
+#include "Points.h"
+#include "Smell.h"
+#include "Text.h"
 
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Bullets.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/Random.h"
-#include "sgp/WCheck.h"
-#include "src/CalibreModel.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 #define		STEPS_FOR_BULLET_MOVE_TRAILS					10
 #define		STEPS_FOR_BULLET_MOVE_SMALL_TRAILS		5
@@ -1662,7 +1658,7 @@ INT32 SoldierTo3DLocationLineOfSightTest(const SOLDIERTYPE* pStartSoldier, INT16
 	return LineOfSightTest(pStartSoldier->sGridNo, dStartZPos, sGridNo, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
 }
 
-INT32 SoldierToBodyPartLineOfSightTest( const SOLDIERTYPE * pStartSoldier, INT16 sGridNo, INT8 bLevel, UINT8 ubAimLocation, UINT8 ubTileSightLimit, INT8 bAware )
+INT32 SoldierToBodyPartLineOfSightTest( SOLDIERTYPE * pStartSoldier, INT16 sGridNo, INT8 bLevel, UINT8 ubAimLocation, UINT8 ubTileSightLimit, INT8 bAware )
 {
 	FLOAT			dStartZPos, dEndZPos;
 	BOOLEAN		fOk;
@@ -3212,13 +3208,13 @@ static INT8 FireBullet(BULLET* pBullet, BOOLEAN fFake)
 		  gMercProfiles[ pFirer->ubProfile ].usShotsFired++;
 		}
 
-		if ( GCM->getItem(pFirer->usAttackingWeapon)->getItemClass() == IC_THROWING_KNIFE )
+		if ( Item[ pFirer->usAttackingWeapon ].usItemClass == IC_THROWING_KNIFE )
 		{
 			pBullet->usClockTicksPerUpdate = 30;
 		}
 		else
 		{
-			pBullet->usClockTicksPerUpdate = GCM->getWeapon( pFirer->usAttackingWeapon )->ubBulletSpeed / 10;
+			pBullet->usClockTicksPerUpdate = Weapon[ pFirer->usAttackingWeapon ].ubBulletSpeed / 10;
 		}
 
 		HandleBulletSpecialFlags(pBullet);
@@ -3285,11 +3281,11 @@ INT8 FireBulletGivenTarget(SOLDIERTYPE* const pFirer, const FLOAT dEndX, const F
 	ubShots = 1;
 
 	// Check if we have spit as a weapon!
-	if ( GCM->getWeapon( usHandItem )->calibre->monsterWeapon )
+	if ( Weapon[ usHandItem ].ubCalibre == AMMOMONST )
 	{
 		usBulletFlags |= BULLET_FLAG_CREATURE_SPIT;
 	}
-	else if ( GCM->getItem(usHandItem)->getItemClass() == IC_THROWING_KNIFE )
+	else if ( Item[ usHandItem ].usItemClass == IC_THROWING_KNIFE )
 	{
 		usBulletFlags |= BULLET_FLAG_KNIFE;
 	}
@@ -3311,7 +3307,7 @@ INT8 FireBulletGivenTarget(SOLDIERTYPE* const pFirer, const FLOAT dEndX, const F
 		ubSpreadIndex = 2;
 	}
 
-	ubImpact = GCM->getWeapon( usHandItem )->ubImpact;
+	ubImpact = Weapon[ usHandItem ].ubImpact;
 //	if (!fFake)
 	{
 		if (fBuckshot)
@@ -3472,8 +3468,8 @@ static INT8 ChanceToGetThrough(SOLDIERTYPE* const pFirer, const GridNo end_pos, 
 {
 	UINT16  weapon = pFirer->usAttackingWeapon;
 	BOOLEAN buck_shot;
-	if (GCM->getItem(weapon)->getItemClass() == IC_GUN ||
-			GCM->getItem(weapon)->getItemClass() == IC_THROWING_KNIFE)
+	if (Item[weapon].usItemClass == IC_GUN ||
+			Item[weapon].usItemClass == IC_THROWING_KNIFE)
 	{
 		// if shotgun, shotgun would have to be in main hand
 		buck_shot =

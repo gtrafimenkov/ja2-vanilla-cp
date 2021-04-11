@@ -1,12 +1,10 @@
-#include "Build/Directories.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Text_Utils.h"
-#include "sgp/FileMan.h"
-#include "Build/GameSettings.h"
+#include "Directories.h"
+#include "Text.h"
+#include "Text_Utils.h"
+#include "FileMan.h"
+#include "GameSettings.h"
+#include "Encrypted_File.h"
 
-#include "Build/GameRes.h"
-#include "ContentManager.h"
-#include "GameInstance.h"
 
 #define ITEMSTRINGFILENAME BINARYDATADIR "/itemdesc.edt"
 
@@ -14,18 +12,18 @@
 void LoadItemInfo(UINT16 const ubIndex, wchar_t Info[])
 {
 	UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex;
-	GCM->loadEncryptedString(ITEMSTRINGFILENAME, Info, Seek + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_INFO);
+	LoadEncryptedDataFromFile(ITEMSTRINGFILENAME, Info, Seek + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_INFO);
 }
 
 
 static void LoadAllItemNames(void)
 {
-	AutoSGPFile File(GCM->openGameResForReading(ITEMSTRINGFILENAME));
+	AutoSGPFile File(FileMan::openForReadingSmart(ITEMSTRINGFILENAME, true));
 	for (UINT32 i = 0; i < MAXITEMS; i++)
 	{
 		UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * i;
-		GCM->loadEncryptedString(File, ShortItemNames[i], Seek, SIZE_SHORT_ITEM_NAME);
-		GCM->loadEncryptedString(File, ItemNames[i], Seek + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_NAME);
+		LoadEncryptedData(File, ShortItemNames[i], Seek,                        SIZE_SHORT_ITEM_NAME);
+		LoadEncryptedData(File, ItemNames[i],      Seek + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_NAME);
 	}
 }
 

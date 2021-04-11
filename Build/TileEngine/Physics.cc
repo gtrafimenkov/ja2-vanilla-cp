@@ -5,43 +5,40 @@
 #include "Build/Utils/Font_Control.h"
 #include "Build/Tactical/Handle_Items.h"
 #include "LoadSaveRealObject.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDat.h"
-#include "sgp/WCheck.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/Utils/Debug_Control.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/Utils/Message.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Random.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TileEngine/Environment.h"
-#include "sgp/SoundMan.h"
-#include "sgp/MemMan.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/SkillCheck.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Physics.h"
+#include "Structure.h"
+#include "TileDat.h"
+#include "WCheck.h"
+#include "Timer_Control.h"
+#include "Isometric_Utils.h"
+#include "LOS.h"
+#include "WorldMan.h"
+#include "Event_Pump.h"
+#include "Sound_Control.h"
+#include "Soldier_Control.h"
+#include "Interface.h"
+#include "Interface_Items.h"
+#include "Explosion_Control.h"
+#include "Debug_Control.h"
+#include "Tile_Animation.h"
+#include "Message.h"
+#include "Weapons.h"
+#include "Structure_Wrap.h"
+#include "Overhead.h"
+#include "Animation_Control.h"
+#include "Text.h"
+#include "Random.h"
+#include "LightEffects.h"
+#include "OppList.h"
+#include "World_Items.h"
+#include "Environment.h"
+#include "SoundMan.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "FileMan.h"
+#include "Items.h"
+#include "Campaign.h"
+#include "SkillCheck.h"
 
 
 #define NO_TEST_OBJECT												0
@@ -137,7 +134,7 @@ REAL_OBJECT* CreatePhysicalObject(OBJECTTYPE const* const pGameObj, real const d
 
 	o->Obj = *pGameObj;
 
-	FLOAT mass = CALCULATE_OBJECT_MASS(GCM->getItem(pGameObj->usItem)->getWeight());
+	FLOAT mass = CALCULATE_OBJECT_MASS(Item[pGameObj->usItem].ubWeight);
 	if (mass == 0) mass = 10;
 
 	// OK, mass determines the smoothness of the physics integration
@@ -382,7 +379,7 @@ static BOOLEAN PhysicsUpdateLife(REAL_OBJECT* pObject, real DeltaTime)
 			else
 			{
 				// If we are in water, and we are a sinkable item...
-				if ( !pObject->fInWater || !( GCM->getItem(pObject->Obj.usItem)->getFlags() & ITEM_SINKS ) )
+				if ( !pObject->fInWater || !( Item[ pObject->Obj.usItem ].fFlags & ITEM_SINKS ) )
 				{
 					if ( pObject->fDropItem )
 					{
@@ -406,7 +403,7 @@ static BOOLEAN PhysicsUpdateLife(REAL_OBJECT* pObject, real DeltaTime)
 			{
 				MakeNoise(pObject->owner, pObject->sGridNo, 0, 9 + PreRandom(9), NOISE_ROCK_IMPACT);
 			}
-			else if ( GCM->getItem(pObject->Obj.usItem)->isGrenade() )
+			else if ( Item[ pObject->Obj.usItem ].usItemClass & IC_GRENADE )
 			{
 				MakeNoise(pObject->owner, pObject->sGridNo, 0, 9 + PreRandom(9), NOISE_GRENADE_IMPACT);
 			}
@@ -1141,7 +1138,7 @@ static BOOLEAN PhysicsMoveObject(REAL_OBJECT* pObject)
 				  }
 
 				  // Now get graphic index
-				  INT16 const sTileIndex = GetTileGraphicForItem(GCM->getItem(pObject->Obj.usItem));
+				  INT16 const sTileIndex = GetTileGraphicForItem(Item[pObject->Obj.usItem]);
 				  //sTileIndex = BULLETTILE1;
 
 				  // Set new gridno, add
@@ -2136,7 +2133,7 @@ static void HandleArmedObjectImpact(REAL_OBJECT* pObject)
   // ATE: Make sure number of objects is 1...
   pObj->ubNumberOfObjects = 1;
 
-	if ( GCM->getItem(pObj->usItem)->isGrenade()  )
+	if ( Item[ pObj->usItem ].usItemClass & IC_GRENADE  )
 	{
 		fCheckForDuds = TRUE;
 	}
@@ -2146,7 +2143,7 @@ static void HandleArmedObjectImpact(REAL_OBJECT* pObject)
 		fCheckForDuds = TRUE;
 	}
 
-	if ( GCM->getItem(pObj->usItem)->isThrown()  )
+	if ( Item[ pObj->usItem ].usItemClass & IC_THROWN  )
 	{
 		AddItemToPool( pObject->sGridNo, pObj, INVISIBLE, bLevel, usFlags, 0 );
 	}
@@ -2212,7 +2209,7 @@ static void HandleArmedObjectImpact(REAL_OBJECT* pObject)
 			// Add a light effect...
 			NewLightEffect( pObject->sGridNo, LIGHT_FLARE_MARK_1 );
 		}
-		else if ( GCM->getItem(pObject->Obj.usItem)->isGrenade()  )
+		else if ( Item[ pObject->Obj.usItem ].usItemClass & IC_GRENADE  )
 		{
 /* ARM: Removed.  Rewards even missed throws, and pulling a pin doesn't really teach anything about explosives
 			if (pObject->owner->bTeam == OUR_TEAM && gTacticalStatus.uiFlags & INCOMBAT)

@@ -1,19 +1,18 @@
-#include "Build/Directories.h"
-#include "sgp/Font.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Laptop/IMP_Text_System.h"
-#include "Build/Laptop/CharProfile.h"
-#include "Build/Laptop/Laptop.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Text.h"
+#include "WordWrap.h"
+#include "Render_Dirty.h"
+#include "Encrypted_File.h"
+#include "IMP_Text_System.h"
+#include "CharProfile.h"
+#include "Laptop.h"
 #include "IMP_Personality_Quiz.h"
 #include "IMP_Personality_Finish.h"
 #include "IMP_Attribute_Selection.h"
 #include "IMP_MainPage.h"
 #include "Build/Utils/Font_Control.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define IMP_SEEK_AMOUNT (5 * 80)
 
@@ -44,7 +43,7 @@ static void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLengt
 	}
 
 	wchar_t sString[IMP_SEEK_AMOUNT];
-	GCM->loadEncryptedString(BINARYDATADIR "/imptext.edt", sString, sIMPTextRecordNumber * IMP_SEEK_AMOUNT, IMP_SEEK_AMOUNT);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/imptext.edt", sString, sIMPTextRecordNumber * IMP_SEEK_AMOUNT, IMP_SEEK_AMOUNT);
 	DisplayWrappedString(sStartX, sStartY, sLineLength, 2, font, ubColor, sString, FONT_BLACK, uiFlags);
 
 	// reset shadow

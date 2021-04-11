@@ -1,74 +1,74 @@
-#include "Build/Directories.h"
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/History.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Local.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Auto_Resolve.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/Map_Screen_Helicopter.h"
-#include "Build/Strategic/Map_Screen_Interface_Border.h"
-#include "Build/Strategic/Map_Screen_Interface_Bottom.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Strategic/Map_Screen_Interface_TownMine_Info.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Merc_Contract.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Strategic_Event_Handler.h"
-#include "Build/Strategic/Strategic_Merc_Handler.h"
-#include "Build/Strategic/Strategic_Movement_Costs.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Strategic/Strategic_Pathing.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Town_Militia.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Item_Types.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile_Type.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/PopUpBox.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/Debug.h"
-#include "sgp/Font.h"
-#include "sgp/Line.h"
-#include "sgp/Random.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+
+#include "Assignments.h"
+#include "Auto_Resolve.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Local.h"
+#include "Map_Screen_Interface_Bottom.h"
+#include "Map_Screen_Interface_TownMine_Info.h"
+#include "MessageBoxScreen.h"
+#include "PreBattle_Interface.h"
+#include "Soldier_Control.h"
+#include "Item_Types.h"
+#include "Items.h"
+#include "Overhead.h"
+#include "Game_Clock.h"
+#include "Message.h"
+#include "Font_Control.h"
+#include "Map_Screen_Interface.h"
+#include "Soldier_Profile_Type.h"
+#include "Soldier_Profile.h"
+#include "Campaign.h"
+#include "Queen_Command.h"
+#include "StrategicMap.h"
+#include "Strategic_Movement_Costs.h"
+#include "Text.h"
+#include "Dialogue_Control.h"
+#include "NPC.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Animation_Control.h"
+#include "MapScreen.h"
+#include "Squads.h"
+#include "Map_Screen_Helicopter.h"
+#include "PopUpBox.h"
+#include "VObject.h"
+#include "Vehicles.h"
+#include "Strategic_Merc_Handler.h"
+#include "Merc_Contract.h"
+#include "Map_Screen_Interface_Map.h"
+#include "Strategic_Movement.h"
+#include "Laptop.h"
+#include "Finances.h"
+#include "LaptopSave.h"
+#include "RenderWorld.h"
+#include "Interface.h"
+#include "Soldier_Find.h"
+#include "AI.h"
+#include "Random.h"
+#include "Line.h"
+#include "Soldier_Add.h"
+#include "GameSettings.h"
+#include "Isometric_Utils.h"
+#include "Soldier_Macros.h"
+#include "Explosion_Control.h"
+#include "SkillCheck.h"
+#include "Quests.h"
+#include "Town_Militia.h"
+#include "Map_Screen_Interface_Border.h"
+#include "Strategic_Pathing.h"
+#include "Game_Event_Hook.h"
+#include "Strategic_Event_Handler.h"
+#include "Map_Information.h"
+#include "Strategic_Status.h"
+#include "History.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "Interface_Dialogue.h"
+#include "JAScreens.h"
+#include "Debug.h"
+#include "Button_System.h"
+#include "ScreenIDs.h"
+#include "VSurface.h"
+#include "UILayout.h"
 
 
 // various reason an assignment can be aborted before completion
@@ -438,7 +438,7 @@ static BOOLEAN DoesCharacterHaveAnyItemsToRepair(SOLDIERTYPE const* const pSoldi
 		for( ubObjectInPocketCounter = 0; ubObjectInPocketCounter < ubItemsInPocket; ubObjectInPocketCounter++ )
 		{
 			// jammed gun?
-			if (GCM->getItem(i->usItem)->getItemClass() == IC_GUN && i->bGunAmmoStatus < 0)
+			if (Item[i->usItem].usItemClass == IC_GUN && i->bGunAmmoStatus < 0)
 			{
 				return( TRUE );
 			}
@@ -490,7 +490,7 @@ static BOOLEAN DoesCharacterHaveAnyItemsToRepair(SOLDIERTYPE const* const pSoldi
 				for (INT8 bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; ++bPocket)
 				{
 					// the object a weapon? and jammed?
-					if ( ( GCM->getItem(pOtherSoldier->inv[ bPocket ].usItem)->getItemClass() == IC_GUN ) && ( pOtherSoldier->inv[ bPocket ].bGunAmmoStatus < 0 ) )
+					if ( ( Item[ pOtherSoldier->inv[ bPocket ].usItem ].usItemClass == IC_GUN ) && ( pOtherSoldier->inv[ bPocket ].bGunAmmoStatus < 0 ) )
 					{
 						return( TRUE );
 					}
@@ -1709,7 +1709,7 @@ static void DoActualRepair(SOLDIERTYPE* pSoldier, UINT16 usItem, INT8* pbStatus,
 	UINT16	usDamagePts, usPtsFixed;
 
 	// get item's repair ease, for each + point is 10% easier, each - point is 10% harder to repair
-	sRepairCostAdj = 100 - ( 10 * GCM->getItem(usItem)->getRepairEase() );
+	sRepairCostAdj = 100 - ( 10 * Item[ usItem ].bRepairEase );
 
 	// make sure it ain't somehow gone too low!
 	if (sRepairCostAdj < 10)
@@ -1718,7 +1718,7 @@ static void DoActualRepair(SOLDIERTYPE* pSoldier, UINT16 usItem, INT8* pbStatus,
 	}
 
 	// repairs on electronic items take twice as long if the guy doesn't have the skill
-	if ( ( GCM->getItem(usItem)->getFlags() & ITEM_ELECTRONIC ) && ( !( HAS_SKILL_TRAIT( pSoldier, ELECTRONICS ) ) ) )
+	if ( ( Item[ usItem ].fFlags & ITEM_ELECTRONIC ) && ( !( HAS_SKILL_TRAIT( pSoldier, ELECTRONICS ) ) ) )
 	{
 		sRepairCostAdj *= 2;
 	}
@@ -1950,7 +1950,7 @@ static void HandleRepairBySoldier(SOLDIERTYPE& s)
 // can item be repaired?
 static bool IsItemRepairable(UINT16 const item_id, INT8 const status)
 {
-	return status < 100 && GCM->getItem(item_id)->getFlags() & ITEM_REPAIRABLE;
+	return status < 100 && Item[item_id].fFlags & ITEM_REPAIRABLE;
 }
 
 
@@ -7315,7 +7315,7 @@ static BOOLEAN UnjamGunsOnSoldier(SOLDIERTYPE* pOwnerSoldier, SOLDIERTYPE* pRepa
 	for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++)
 	{
 		// the object a weapon? and jammed?
-		if ( ( GCM->getItem(pOwnerSoldier->inv[ bPocket ].usItem)->getItemClass() == IC_GUN ) && ( pOwnerSoldier->inv[ bPocket ].bGunAmmoStatus < 0 ) )
+		if ( ( Item[ pOwnerSoldier->inv[ bPocket ].usItem ].usItemClass == IC_GUN ) && ( pOwnerSoldier->inv[ bPocket ].bGunAmmoStatus < 0 ) )
 		{
 			if ( *pubRepairPtsLeft >= REPAIR_COST_PER_JAM )
 			{

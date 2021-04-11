@@ -341,6 +341,91 @@ void BeginLoadScreen( )
 
 static void EndLoadScreen(void)
 {
+<<<<<<< HEAD
+=======
+#ifdef JA2TESTVERSION
+	//Report the time it took to load the map.  This is temporary until we are satisfied with the time
+	//it takes to load the map.
+	wchar_t str[60];
+	FILE *fp;
+	UINT32 uiSeconds;
+	UINT32 uiHundreths;
+	UINT32 uiUnaccounted;
+	UINT32 uiPercentage;
+	uiEnterSectorEndTime = GetJA2Clock();
+	uiSeconds = (uiEnterSectorEndTime - uiEnterSectorStartTime) / 1000;
+	uiHundreths = ((uiEnterSectorEndTime - uiEnterSectorStartTime) / 10) % 100;
+	if( !gbWorldSectorZ )
+	{
+		swprintf(str, lengthof(str), L"%c%d ENTER SECTOR TIME:  %d.%02d seconds.",
+							'A' + gWorldSectorY - 1, gWorldSectorX, uiSeconds, uiHundreths );
+	}
+	else
+	{
+		swprintf(str, lengthof(str), L"%c%d_b%d ENTER SECTOR TIME:  %d.%02d seconds.",
+							'A' + gWorldSectorY - 1, gWorldSectorX, gbWorldSectorZ, uiSeconds, uiHundreths );
+	}
+	ScreenMsg( FONT_YELLOW, MSG_TESTVERSION, str );
+	if( fStartNewFile )
+	{ //start new file
+		fp = fopen( "TimeResults.txt", "w" );
+		ScreenMsg(FONT_YELLOW, MSG_TESTVERSION, L"See JA2/%s/TimeResults.txt for more detailed timings.", FileMan::getDataDirPath());
+		fStartNewFile = FALSE;
+	}
+	else
+	{ //append to end of file
+		fp = fopen( "TimeResults.txt", "a" );
+
+		if ( fp )
+		{
+			fprintf( fp, "\n\n--------------------------------------------------------------------\n\n" );
+		}
+	}
+	if( fp )
+	{
+		//Record all of the timings.
+		fprintf( fp, "%ls\n", str );
+		fprintf( fp, "EnterSector() supersets LoadWorld().  This includes other external sections.\n");
+		//FileRead()
+		fprintf( fp, "\n\nVARIOUS FUNCTION TIMINGS (exclusive of actual function timings in second heading)\n" );
+		uiSeconds = uiTotalFileReadTime / 1000;
+		uiHundreths = (uiTotalFileReadTime / 10) % 100;
+		fprintf( fp, "FileRead:  %d.%02d (called %d times)\n", uiSeconds, uiHundreths, uiTotalFileReadCalls );
+
+		fprintf(fp, "\n\nSECTIONS OF LOADWORLD (all parts should add up to 100%%)\n");
+		//TrashWorld()
+		uiSeconds = uiTrashWorldTime / 1000;
+		uiHundreths = (uiTrashWorldTime / 10) % 100;
+		fprintf( fp, "TrashWorld: %d.%02d\n", uiSeconds, uiHundreths );
+		//LoadMapTilesets()
+		uiSeconds = uiLoadMapTilesetTime / 1000;
+		uiHundreths = (uiLoadMapTilesetTime / 10) % 100;
+		fprintf( fp, "LoadMapTileset: %d.%02d\n", uiSeconds, uiHundreths );
+		//LoadMapLights()
+		uiSeconds = uiLoadMapLightsTime / 1000;
+		uiHundreths = (uiLoadMapLightsTime / 10) % 100;
+		fprintf( fp, "LoadMapLights: %d.%02d\n", uiSeconds, uiHundreths );
+		uiSeconds = uiBuildShadeTableTime / 1000;
+		uiHundreths = (uiBuildShadeTableTime / 10) % 100;
+		fprintf( fp, "  1)  BuildShadeTables: %d.%02d\n", uiSeconds, uiHundreths );
+
+		uiPercentage = uiNumImagesReloaded * 100 / NUMBEROFTILETYPES;
+		fprintf( fp, "  2)  %d%% of the tileset images were actually reloaded.\n", uiPercentage );
+
+		//Unaccounted
+		uiUnaccounted = uiLoadWorldTime - uiTrashWorldTime - uiLoadMapTilesetTime - uiLoadMapLightsTime;
+		uiSeconds = uiUnaccounted / 1000;
+		uiHundreths = (uiUnaccounted / 10) % 100;
+		fprintf( fp, "Unaccounted: %d.%02d\n", uiSeconds, uiHundreths );
+		//LoadWorld()
+		uiSeconds = uiLoadWorldTime / 1000;
+		uiHundreths = (uiLoadWorldTime / 10) % 100;
+		fprintf( fp, "\nTotal: %d.%02d\n", uiSeconds, uiHundreths );
+
+		fclose( fp );
+	}
+#endif
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 }
 
 

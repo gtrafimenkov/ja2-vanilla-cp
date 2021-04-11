@@ -11,7 +11,6 @@ UTF8String::UTF8String(const char *utf8Encoded)
   if(utf8::is_valid(value.begin(), value.end()))
   {
     m_encoded = value;
-    rebuildBufferWCHAR();
   }
   else
   {
@@ -26,7 +25,6 @@ UTF8String::UTF8String(const uint8_t *utf8Encoded)
   if(utf8::is_valid(value.begin(), value.end()))
   {
     m_encoded = value;
-    rebuildBufferWCHAR();
   }
   else
   {
@@ -92,7 +90,9 @@ std::vector<uint32_t> UTF8String::getUTF32() const
 
 #ifdef WCHAR_SUPPORT
 
-void UTF8String::rebuildBufferWCHAR()
+/** Get wchar_t string.
+ * @return Reference to the internal array of wchar_t characters.  The array includes trailing zero. */
+const std::vector<wchar_t>& UTF8String::getWCHAR()
 {
   m_wcharBuffer.clear();
 #if _WIN32
@@ -101,12 +101,6 @@ void UTF8String::rebuildBufferWCHAR()
   utf8::utf8to32(m_encoded.begin(), m_encoded.end(), back_inserter(m_wcharBuffer));
 #endif
   m_wcharBuffer.push_back(0);
-}
-
-/** Get wchar_t string.
- * @return Reference to the internal array of wchar_t characters.  The array includes trailing zero. */
-const std::vector<wchar_t>& UTF8String::getWCHAR() const
-{
   return m_wcharBuffer;
 }
 
@@ -136,7 +130,6 @@ void UTF8String::append(const uint16_t *utf16Encoded)
   try
   {
     utf8::utf16to8(utf16Encoded, zeroSearch, back_inserter(m_encoded));
-    rebuildBufferWCHAR();
   }
   catch(utf8::invalid_utf16 &x)
   {
@@ -152,7 +145,6 @@ void UTF8String::append(const uint32_t *utf32Encoded)
   try
   {
     utf8::utf32to8(utf32Encoded, zeroSearch, back_inserter(m_encoded));
-    rebuildBufferWCHAR();
   }
   catch(utf8::invalid_code_point &x)
   {

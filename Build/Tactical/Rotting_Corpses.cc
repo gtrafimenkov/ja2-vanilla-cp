@@ -1,50 +1,46 @@
-#include "Build/Directories.h"
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/QArray.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/Tile_Cache.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Utils/Utilities.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/VObject.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/policy/GamePolicy.h"
+#include "Directories.h"
+#include "Font_Control.h"
+#include "Lighting.h"
+#include "Overhead.h"
+#include "Soldier_Find.h"
+#include "TileDef.h"
+#include "VObject.h"
+#include "Debug.h"
+#include "Soldier_Control.h"
+#include "Weapons.h"
+#include "Handle_Items.h"
+#include "WorldDef.h"
+#include "Rotting_Corpses.h"
+#include "Tile_Cache.h"
+#include "Isometric_Utils.h"
+#include "Animation_Control.h"
+#include "Utilities.h"
+#include "Game_Clock.h"
+#include "Soldier_Create.h"
+#include "RenderWorld.h"
+#include "Soldier_Add.h"
+#include "StrategicMap.h"
+#include "LOS.h"
+#include "Structure.h"
+#include "Message.h"
+#include "Sound_Control.h"
+#include "PathAI.h"
+#include "Random.h"
+#include "Dialogue_Control.h"
+#include "Items.h"
+#include "Smell.h"
+#include "World_Items.h"
+#include "Explosion_Control.h"
+#include "GameSettings.h"
+#include "Interface_Items.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Macros.h"
+#include "Keys.h"
+#include "Render_Fun.h"
+#include "Strategic.h"
+#include "QArray.h"
+#include "Interface.h"
+#include "MemMan.h"
 
 
 #define CORPSE_WARNING_MAX 5
@@ -510,12 +506,13 @@ try
 
 	// Get root filename... this removes path and extension
 	// Used to find struct data for this corpse...
-  std::string zFilename(FileMan::getFileNameWithoutExt(AniParams.zCachedFile));
+	char zFilename[150];
+	GetRootName(zFilename, lengthof(zFilename), AniParams.zCachedFile);
 
 	// Add structure data.....
 	CheckForAndAddTileCacheStructInfo(n, c->def.sGridNo, ani->sCachedTileID, GetCorpseStructIndex(pCorpseDef, TRUE));
 
-	const STRUCTURE_FILE_REF* const pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename.c_str());
+	const STRUCTURE_FILE_REF* const pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 	if (pStructureFileRef != NULL)
 	{
 		const UINT16                  usStructIndex   = GetCorpseStructIndex(pCorpseDef, TRUE);
@@ -721,16 +718,13 @@ BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE& s)
 		  if ( pObj->usItem != NOTHING )
 		  {
 			  // Check if it's supposed to be dropped
-			  if (!(pObj->fFlags & OBJECT_UNDROPPABLE)
-            || (s.bTeam == OUR_TEAM)
-            || GCM->getGamePolicy()->f_drop_everything)
+			  if (!(pObj->fFlags & OBJECT_UNDROPPABLE) || s.bTeam == OUR_TEAM)
 			  {
 				  // and make sure that it really is a droppable item type
-				  if ( !(GCM->getItem(pObj->usItem)->getFlags() & ITEM_DEFAULT_UNDROPPABLE) )
+				  if ( !(Item[ pObj->usItem ].fFlags & ITEM_DEFAULT_UNDROPPABLE) )
 				  {
 					  ReduceAmmoDroppedByNonPlayerSoldiers(s, *pObj);
-            Visibility vis = GCM->getGamePolicy()->f_all_dropped_visible ? VISIBLE : bVisible;
-					  AddItemToPool(s.sGridNo, pObj, vis, s.bLevel, usItemFlags, -1);
+					  AddItemToPool(s.sGridNo, pObj, bVisible, s.bLevel, usItemFlags, -1);
 				  }
 			  }
 		  }
@@ -1054,10 +1048,11 @@ INT16 FindNearestAvailableGridNoForCorpse( ROTTING_CORPSE_DEFINITION *pDef, INT8
 	cnt3 = 0;
 
 	// Get root filename... this removes path and extension
-	// Used to find struct data for this corpse...
-  std::string zFilename(FileMan::getFileNameWithoutExt(zCorpseFilenames[pDef->ubType]));
+	// USed to find struct data fo rthis corpse...
+	char zFilename[150];
+	GetRootName(zFilename, lengthof(zFilename), zCorpseFilenames[pDef->ubType]);
 
-	pStructureFileRef = GetCachedTileStructureRefFromFilename( zFilename.c_str() );
+	pStructureFileRef = GetCachedTileStructureRefFromFilename( zFilename );
 
 	sSweetGridNo = pDef->sGridNo;
 
@@ -1296,7 +1291,7 @@ void GetBloodFromCorpse( SOLDIERTYPE *pSoldier )
 void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE const& s, OBJECTTYPE& o)
 {
 	if (s.bTeam == OUR_TEAM) return;
-	if (GCM->getItem(o.usItem)->getItemClass() != IC_AMMO) return;
+	if (Item[o.usItem].usItemClass != IC_AMMO) return;
 
 	/* Don't drop all the clips, just a random # of them between 1 and how
 	 * many there are */

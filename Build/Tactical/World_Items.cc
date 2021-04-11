@@ -1,31 +1,32 @@
 #include <stdexcept>
 
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Sys_Globals.h"
-#include "Build/Tactical/Action_Items.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Utils/Font_Control.h"
-#include "sgp/FileMan.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/WeaponModels.h"
+#include "Items.h"
+#include "Handle_Items.h"
+#include "Overhead.h"
+#include "Structure.h"
+#include "Weapons.h"
+#include "Points.h"
+#include "TileDef.h"
+#include "WorldDef.h"
+#include "Font_Control.h"
+#include "Render_Dirty.h"
+#include "World_Items.h"
+#include "Isometric_Utils.h"
+#include "Sys_Globals.h"
+#include "StrategicMap.h"
+#include "Campaign_Types.h"
+#include "Random.h"
+#include "Action_Items.h"
+#include "GameSettings.h"
+#include "Quests.h"
+#include "Soldier_Profile.h"
+#include "MemMan.h"
+#include "FileMan.h"
+
+#ifdef JA2BETAVERSION
+#	include "Message.h"
+#endif
+
 
 //Global dynamic array of all of the items in a loaded map.
 WORLDITEM *		gWorldItems = NULL;
@@ -301,34 +302,36 @@ void LoadWorldItemsFromMap(HWFILE const f)
 			if (!gGameOptions.fGunNut)
 			{
 				// do replacements?
-				const ItemModel * item = GCM->getItem(o.usItem);
-        const WeaponModel *weapon = item->asWeapon();
-        const MagazineModel *mag = item->asAmmo();
-				if (weapon && weapon->isInBigGunList())
+				INVTYPE const& item = Item[o.usItem];
+				if (item.usItemClass == IC_GUN)
 				{
-          const WeaponModel *replacement = GCM->getWeaponByName(item->asWeapon()->getStandardReplacement());
-
+					UINT16 const replacement = StandardGunListReplacement(o.usItem);
+					if (replacement != NOTHING)
+					{
 						// everything else can be the same? no.
 						INT8 const ammo     = o.ubGunShotsLeft;
-						INT8       new_ammo = replacement->ubMagSize * ammo / weapon->ubMagSize;
+						INT8       new_ammo = Weapon[replacement].ubMagSize * ammo / Weapon[o.usItem].ubMagSize;
 						if (new_ammo == 0 && ammo > 0) new_ammo = 1;
-						o.usItem         = replacement->getItemIndex();
+						o.usItem         = replacement;
 						o.ubGunShotsLeft = new_ammo;
+					}
 				}
-				else if (mag && mag->isInBigGunList())
+				else if (item.usItemClass == IC_AMMO)
 				{
-          const MagazineModel *replacement = GCM->getMagazineByName(mag->getStandardReplacement());
-
+					UINT16 const replacement = StandardGunListAmmoReplacement(o.usItem);
+					if (replacement != NOTHING)
+					{
 						// Go through status values and scale up/down
-						UINT8 const mag_size     = mag->capacity;
-						UINT8 const new_mag_size = replacement->capacity;
+						UINT8 const mag_size     = Magazine[item.ubClassIndex].ubMagSize;
+						UINT8 const new_mag_size = Magazine[Item[replacement].ubClassIndex].ubMagSize;
 						for (UINT8 i = 0; i != o.ubNumberOfObjects; ++i)
 						{
 							o.bStatus[i] = o.bStatus[i] * new_mag_size / mag_size;
 						}
 
 						// then replace item #
-						o.usItem = replacement->getItemIndex();
+						o.usItem = replacement;
+					}
 				}
 			}
 		}

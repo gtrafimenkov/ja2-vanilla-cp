@@ -10,18 +10,12 @@
 #include "Build/TileEngine/WorldDat.h"
 #include "sgp/Debug.h"
 #include "Smooth.h"
-#include "sgp/MouseSystem.h"
-#include "Build/Sys_Globals.h"
-#include "Build/TileEngine/TileDat.h"
-#include "sgp/FileMan.h"
-#include "sgp/MemMan.h"
-#include "Build/TileEngine/Tile_Cache.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-
-#include "slog/slog.h"
-#define TAG "Tiles"
+#include "MouseSystem.h"
+#include "Sys_Globals.h"
+#include "TileDat.h"
+#include "FileMan.h"
+#include "MemMan.h"
+#include "Tile_Cache.h"
 
 
 TILE_IMAGERY				*gTileSurfaceArray[ NUMBEROFTILETYPES ];
@@ -36,19 +30,20 @@ try
 
 	// Load structure data, if any.
 	// Start by hacking the image filename into that for the structure data
-  std::string cStructureFilename(FileMan::replaceExtension(cFilename, ".jsd"));
+	SGPFILENAME cStructureFilename;
+	ReplacePath(cStructureFilename, lengthof(cStructureFilename), 0, cFilename, "." STRUCTURE_FILE_EXTENSION);
 
 	AutoStructureFileRef pStructureFileRef;
-	if (GCM->doesGameResExists( cStructureFilename ))
+	if (FileExists( cStructureFilename ))
 	{
-    // SLOGD(TAG, "loading tile %s", cStructureFilename.c_str());
-
-		pStructureFileRef = LoadStructureFile( cStructureFilename.c_str() );
+		pStructureFileRef = LoadStructureFile( cStructureFilename );
 
 		if (hVObject->SubregionCount() != pStructureFileRef->usNumberOfStructures)
 		{
 			throw std::runtime_error("Structure file error");
 		}
+
+		DebugMsg( TOPIC_JA2, DBG_LEVEL_3, cStructureFilename );
 
 		AddZStripInfoToVObject(hVObject, pStructureFileRef, FALSE, 0);
 	}
@@ -124,10 +119,11 @@ void SetRaisedObjectFlag(char const* const filename, TILE_IMAGERY* const t)
 	if (DEBRISWOOD != t->fType && t->fType != DEBRISWEEDS && t->fType != DEBRIS2MISC && t->fType != ANOTHERDEBRIS) return;
 
 	// Loop through array of RAISED objecttype imagery and set global value
-  std::string rootfile(FileMan::getFileNameWithoutExt(filename));
+	char rootfile[128];
+	GetRootName(rootfile, lengthof(rootfile), filename);
 	for (char const (*i)[9] = RaisedObjectFiles; i != endof(RaisedObjectFiles); ++i)
 	{
-		if (strcasecmp(*i, rootfile.c_str()) != 0) continue;
+		if (strcasecmp(*i, rootfile) != 0) continue;
 		t->bRaisedObjectType = TRUE;
 		return;
 	}

@@ -3,17 +3,16 @@
 #include "sgp/Font.h"
 #include "Build/Laptop/Laptop.h"
 #include "AIMHistory.h"
-#include "Build/Laptop/AIM.h"
-#include "sgp/VObject.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
+#include "AIM.h"
+#include "VObject.h"
+#include "WordWrap.h"
+#include "Encrypted_File.h"
+#include "Text.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Font_Control.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 // Defines
 
@@ -139,7 +138,7 @@ void ExitAimHistory()
 
 static void LoadAIMHistoryText(wchar_t buf[], UINT32 entry)
 {
-	GCM->loadEncryptedString(AIMHISTORYFILE, buf, AIM_HISTORY_LINE_SIZE * entry, AIM_HISTORY_LINE_SIZE);
+	LoadEncryptedDataFromFile(AIMHISTORYFILE, buf, AIM_HISTORY_LINE_SIZE * entry, AIM_HISTORY_LINE_SIZE);
 }
 
 

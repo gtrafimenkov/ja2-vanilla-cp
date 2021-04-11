@@ -1,37 +1,33 @@
-#include "Build/Directories.h"
-#include "Build/Laptop/CharProfile.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/History.h"
-#include "Build/Laptop/IMP_Compile_Character.h"
-#include "Build/Laptop/IMP_Confirm.h"
-#include "Build/Laptop/IMP_Portraits.h"
-#include "Build/Laptop/IMP_Text_System.h"
-#include "Build/Laptop/IMPVideoObjects.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Tactical/LoadSaveMercProfile.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Profile_Type.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/Random.h"
-#include "slog/slog.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/policy/GamePolicy.h"
-#include "src/policy/IMPPolicy.h"
+#include "Campaign_Types.h"
+#include "CharProfile.h"
+#include "Directories.h"
+#include "Font.h"
+#include "IMPVideoObjects.h"
+#include "LoadSaveMercProfile.h"
+#include "Merc_Hiring.h"
+#include "Text.h"
+#include "Render_Dirty.h"
+#include "Cursors.h"
+#include "Laptop.h"
+#include "IMP_Compile_Character.h"
+#include "IMP_Text_System.h"
+#include "IMP_Confirm.h"
+#include "Finances.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Profile_Type.h"
+#include "Soldier_Control.h"
+#include "IMP_Portraits.h"
+#include "Overhead.h"
+#include "History.h"
+#include "Game_Clock.h"
+#include "Game_Event_Hook.h"
+#include "LaptopSave.h"
+#include "Strategic.h"
+#include "Random.h"
+#include "Button_System.h"
+#include "Font_Control.h"
+#include "FileMan.h"
+
 
 #define IMP_MERC_FILE "imp.dat"
 
@@ -276,29 +272,32 @@ static void GiveItemsToPC(UINT8 ubProfileId)
 
 	MERCPROFILESTRUCT& p = GetProfile(ubProfileId);
 
-  for(const ItemModel *item: GCM->getIMPPolicy()->getInventory())
-  {
-		MakeProfileInvItemAnySlot(p, item->getItemIndex(), 100, 1);
-  }
+	// STANDARD EQUIPMENT
 
+
+
+	// kevlar vest, leggings, & helmet
+	MakeProfileInvItemThisSlot(p, VESTPOS, FLAK_JACKET, 100, 1);
 	if ( PreRandom( 100 ) < (UINT32) p.bWisdom )
 	{
 		MakeProfileInvItemThisSlot(p, HELMETPOS, STEEL_HELMET, 100, 1);
 	}
 
+	// canteen
+	MakeProfileInvItemThisSlot(p, SMALLPOCK4POS, CANTEEN, 100, 1);
+
+
 	if (p.bMarksmanship >= 80)
 	{
-    for(const ItemModel *item: GCM->getIMPPolicy()->getGoodShooterItems())
-    {
-      MakeProfileInvItemAnySlot(p, item->getItemIndex(), 100, 1);
-    }
+		// good shooters get a better & matching ammo
+		MakeProfileInvItemThisSlot(p, HANDPOS, MP5K, 100, 1);
+		MakeProfileInvItemThisSlot(p, SMALLPOCK1POS, CLIP9_30, 100, 2);
 	}
 	else
 	{
-    for(const ItemModel *item: GCM->getIMPPolicy()->getNormalShooterItems())
-    {
-      MakeProfileInvItemAnySlot(p, item->getItemIndex(), 100, 1);
-    }
+		// Automatic pistol, with matching ammo
+		MakeProfileInvItemThisSlot(p, HANDPOS, BERETTA_93R, 100, 1);
+		MakeProfileInvItemThisSlot(p, SMALLPOCK1POS, CLIP9_15, 100, 3);
 	}
 
 
@@ -404,7 +403,7 @@ static INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const& p, UINT16 const u
 
 
 	// if it fits into a small pocket
-	if (GCM->getItem(usItem)->getPerPocket() != 0)
+	if (Item[usItem].ubPerPocket != 0)
 	{
 		// check small pockets first
 		for (uiPos = SMALLPOCK1POS; uiPos <= SMALLPOCK8POS; uiPos++)
@@ -447,8 +446,7 @@ static void LoadInCurrentImpCharacter(void)
 	INT32 iProfileId = 0;
 
   MERCPROFILESTRUCT p;
-  AutoSGPFile hFile(GCM->openGameResForReading(IMP_MERC_FILE));
-  ExtractImpProfileFromFile(hFile, &iProfileId, &iPortraitNumber, p);
+  ExtractImpProfileFromFile(IMP_MERC_FILE, &iProfileId, &iPortraitNumber, p);
   gMercProfiles[iProfileId] = p;
 
 	if( LaptopSaveInfo.iCurrentBalance < COST_OF_PROFILE )

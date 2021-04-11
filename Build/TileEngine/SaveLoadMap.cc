@@ -1,27 +1,25 @@
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "sgp/Buffer.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/MemMan.h"
-#include "sgp/Types.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Buffer.h"
+#include "Font_Control.h"
+#include "Handle_Items.h"
+#include "Structure.h"
+#include "TileDef.h"
+#include "Types.h"
+#include "SaveLoadMap.h"
+#include "Overhead.h"
+#include "FileMan.h"
+#include "Tactical_Save.h"
+#include "Debug.h"
+#include "WorldMan.h"
+#include "StrategicMap.h"
+#include "Campaign_Types.h"
+#include "Render_Fun.h"
+#include "FOV.h"
+#include "WorldDef.h"
+#include "Exit_Grids.h"
+#include "Message.h"
+#include "GameSettings.h"
+#include "Smell.h"
+#include "MemMan.h"
 
 
 #define			NUM_REVEALED_BYTES			3200
@@ -68,12 +66,12 @@ void LoadAllMapChangesFromMapTempFileAndApplyThem()
 	GetMapTempFileName( SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
 
 	//If the file doesnt exists, its no problem.
-	if (!GCM->doesGameResExists(zMapName)) return;
+	if (!FileExists(zMapName)) return;
 
 	UINT32                  uiNumberOfElements;
 	SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
 	{
-		AutoSGPFile hFile(GCM->openGameResForReading(zMapName));
+		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
 		//Get the size of the file
 		uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
@@ -430,10 +428,10 @@ void LoadRevealedStatusArrayFromRevealedTempFile()
 	GetMapTempFileName( SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
 
 	//If the file doesnt exists, its no problem.
-	if (!GCM->doesGameResExists(zMapName)) return;
+	if (!FileExists(zMapName)) return;
 
 	{
-		AutoSGPFile hFile(GCM->openGameResForReading(zMapName));
+		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
 		Assert( gpRevealedMap == NULL );
 		gpRevealedMap = MALLOCNZ(UINT8, NUM_REVEALED_BYTES);
@@ -617,7 +615,7 @@ try
 	UINT32                  uiNumberOfElements;
 	SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
 	{
-		AutoSGPFile hFile(GCM->openGameResForReading(zMapName));
+		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
 		//Get the number of elements in the file
 		uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
@@ -748,13 +746,13 @@ void ChangeStatusOfOpenableStructInUnloadedSector(UINT16 const usSectorX, UINT16
 	GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, map_name, usSectorX, usSectorY, bSectorZ);
 
 	// If the file doesn't exists, it's no problem.
-	if (!GCM->doesGameResExists(map_name)) return;
+	if (!FileExists(map_name)) return;
 
 	UINT32                  uiNumberOfElements;
 	SGP::Buffer<MODIFY_MAP> mm;
 	{
 		// Read the map temp file into a buffer
-		AutoSGPFile src(GCM->openGameResForReading(map_name));
+		AutoSGPFile src(FileMan::openForReadingSmart(map_name, true));
 
 		uiNumberOfElements = FileGetSize(src) / sizeof(MODIFY_MAP);
 

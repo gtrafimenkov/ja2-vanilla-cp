@@ -6,8 +6,6 @@
 #include "sgp/MemMan.h"
 #include "sgp/FileMan.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 struct PcxHeader
 {
@@ -35,7 +33,7 @@ static void BlitPcxToBuffer(UINT8 const* src, UINT8* dst, UINT16 w, UINT16 h);
 
 SGPImage* LoadPCXFileToImage(char const* const filename, UINT16 const contents)
 {
-	AutoSGPFile f(GCM->openGameResForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
 	PcxHeader header;
 	FileRead(f, &header, sizeof(header));

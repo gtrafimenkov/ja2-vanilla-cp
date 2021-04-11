@@ -7,23 +7,20 @@
 #include "Build/TileEngine/WorldDef.h"
 #include "sgp/Debug.h"
 #include "Smooth.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/Tile_Cache.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/Bullets.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "sgp/MemMan.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "WorldMan.h"
+#include "RenderWorld.h"
+#include "Overhead.h"
+#include "AI.h"
+#include "Isometric_Utils.h"
+#include "Tile_Animation.h"
+#include "Tile_Cache.h"
+#include "Explosion_Control.h"
+#include "Weapons.h"
+#include "Keys.h"
+#include "Bullets.h"
+#include "Rotting_Corpses.h"
+#include "SmokeEffects.h"
+#include "MemMan.h"
 
 
 static ANITILE* pAniTileHead = NULL;
@@ -318,7 +315,7 @@ void UpdateAniTiles( )
                 Assert(pNode->uiFlags & ANITILE_EXPLOSION);
                 const EXPLOSIONTYPE* const e    = pNode->v.explosion;
 								const UINT16               item = e->usItem;
-                const UINT8 ubExpType = Explosive[GCM->getItem(item)->getClassIndex()].ubType;
+                const UINT8 ubExpType = Explosive[Item[item].ubClassIndex].ubType;
 
                 if ( ubExpType == EXPLOSV_TEARGAS || ubExpType == EXPLOSV_MUSTGAS ||
                      ubExpType == EXPLOSV_SMOKE )
@@ -329,7 +326,7 @@ void UpdateAniTiles( )
                 }
                 else
                 {
-									SpreadEffect(pNode->sGridNo, Explosive[GCM->getItem(item)->getClassIndex()].ubRadius, item, e->owner, FALSE, e->bLevel, NULL);
+									SpreadEffect(pNode->sGridNo, Explosive[Item[item].ubClassIndex].ubRadius, item, e->owner, FALSE, e->bLevel, NULL);
                 }
 								// Forfait any other animations this frame....
 								return;

@@ -1,73 +1,69 @@
-#include <memory>
 
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Tactical/Animation_Cache.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Boxing.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Drugs_And_Alcohol.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Merc_Entering.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/QArray.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Ani.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/TileEngine/Pits.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Debug.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/Shading.h"
-#include "sgp/SoundMan.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/Soldier.h"
-#include "src/WeaponModels.h"
+#include "Font_Control.h"
+#include "Handle_Items.h"
+#include "MapScreen.h"
+#include "Merc_Hiring.h"
+#include "Overhead.h"
+#include "Soldier_Find.h"
+#include "Debug.h"
+#include "MemMan.h"
+#include "Overhead_Types.h"
+#include "Soldier_Control.h"
+#include "Animation_Cache.h"
+#include "Animation_Data.h"
+#include "Animation_Control.h"
+#include "Structure.h"
+#include "TileDef.h"
+#include "Weapons.h"
+#include "Soldier_Ani.h"
+#include "Random.h"
+#include "Sound_Control.h"
+#include "Isometric_Utils.h"
+#include "Handle_UI.h"
+#include "Event_Pump.h"
+#include "OppList.h"
+#include "Lighting.h"
+#include "AI.h"
+#include "RenderWorld.h"
+#include "Interactive_Tiles.h"
+#include "Points.h"
+#include "Message.h"
+#include "World_Items.h"
+#include "Physics.h"
+#include "Soldier_Create.h"
+#include "Dialogue_Control.h"
+#include "Rotting_Corpses.h"
+#include "Merc_Entering.h"
+#include "Soldier_Add.h"
+#include "Soldier_Profile.h"
+#include "Soldier_Functions.h"
+#include "Interface.h"
+#include "QArray.h"
+#include "Soldier_Macros.h"
+#include "Strategic_Town_Loyalty.h"
+#include "WorldMan.h"
+#include "Structure_Wrap.h"
+#include "PathAI.h"
+#include "Pits.h"
+#include "Text.h"
+#include "NPC.h"
+#include "Meanwhile.h"
+#include "Explosion_Control.h"
+#include "FOV.h"
+#include "Campaign.h"
+#include "LOS.h"
+#include "GameSettings.h"
+#include "Boxing.h"
+#include "Drugs_And_Alcohol.h"
+#include "Smell.h"
+#include "Strategic_Status.h"
+#include "Interface_Dialogue.h"
+#include "SoundMan.h"
+#include "JAScreens.h"
+#include "ScreenIDs.h"
+#include "Items.h"
+#include "Shading.h"
+
 
 #define		NO_JUMP											0
 #define		MAX_ANIFRAMES_PER_FLASH			2
@@ -113,8 +109,11 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 	BOOLEAN				bWeaponJammed;
   UINT16        usUIMovementMode;
 
+<<<<<<< HEAD
   std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
   do
   {
 		// Get new frame code
@@ -639,7 +638,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 					// FIRST CHECK IF WE'VE REACHED MAX FOR GUN
 					fStop = FALSE;
 
-					if ( pSoldier->bDoBurst > GCM->getWeapon( pSoldier->usAttackingWeapon )->ubShotsPerBurst )
+					if ( pSoldier->bDoBurst > Weapon[ pSoldier->usAttackingWeapon ].ubShotsPerBurst )
 					{
 						fStop = TRUE;
 					}
@@ -1361,9 +1360,9 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 					if ( pSoldier->inv[ HANDPOS ].usItem != NOTHING )
 					{
 						// CHECK IF GUN
-						if ( GCM->getItem(pSoldier->inv[ HANDPOS ].usItem)->getItemClass() == IC_GUN )
+						if ( Item[ pSoldier->inv[ HANDPOS ].usItem ].usItemClass == IC_GUN )
 						{
-							if ( GCM->getWeapon( pSoldier->inv[ HANDPOS].usItem)->ubWeaponClass != HANDGUNCLASS )
+							if ( Weapon[ pSoldier->inv[ HANDPOS ].usItem ].ubWeaponClass != HANDGUNCLASS )
 							{
 								// RAISE
 								ChangeSoldierState( pSoldier, RAISE_RIFLE, 0 , FALSE );
@@ -1403,9 +1402,9 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 
 								if ( usItem != NOTHING )
 								{
-									if ( GCM->getItem(usItem)->getItemClass() == IC_GUN )
+									if ( Item[ usItem ].usItemClass == IC_GUN )
 									{
-										if ( (GCM->getItem(usItem)->isTwoHanded()) )
+										if ( (Item[ usItem ].fFlags & ITEM_TWO_HANDED) )
 										{
 											// Set to rifle
 											ubRandomHandIndex = RANDOM_ANIM_RIFLEINHAND;
@@ -1554,7 +1553,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 						// DROP ITEM
 						HandleSoldierPickupItem( pSoldier, pSoldier->uiPendingActionData1, (INT16)(pSoldier->uiPendingActionData4 ), pSoldier->bPendingActionData3 );
 						// EVENT HAS BEEN HANDLED
-						soldier->removePendingAction();
+						pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 					//}
 					//else
@@ -1572,7 +1571,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 						SoldierHandleInteractiveObject(*pSoldier);
 
 						// EVENT HAS BEEN HANDLED
-						soldier->removePendingAction();
+						pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 					//}
 					//else
@@ -1586,7 +1585,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 						if (pSoldier->bAction == AI_ACTION_UNLOCK_DOOR || (pSoldier->bAction == AI_ACTION_LOCK_DOOR && !(pSoldier->fAIFlags & AI_LOCK_DOOR_INCLUDES_CLOSE) ) )
 						{
 							// EVENT HAS BEEN HANDLED
-							soldier->removePendingAction();
+							pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 							// do nothing here
 						}
@@ -1612,7 +1611,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
               }
 
 							// EVENT HAS BEEN HANDLED
-							soldier->removePendingAction();
+							pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 						}
 
@@ -1984,7 +1983,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 
 						if ( usItem != NOTHING )
 						{
-							SoundID const usSoundID = GCM->getWeapon(usItem)->sLocknLoadSound;
+							SoundID const usSoundID = Weapon[usItem].sLocknLoadSound;
 							if (usSoundID != NO_SOUND)
 							{
 								PlayLocationJA2Sample(pSoldier->sGridNo, usSoundID, HIGHVOLUME, 1);
@@ -1995,7 +1994,7 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 
 				case 709:
 					// Knife throw sound...
-					PlayLocationJA2Sample(pSoldier->sGridNo, GCM->getWeapon(THROWING_KNIFE)->sound, HIGHVOLUME, 1);
+					PlayLocationJA2Sample(pSoldier->sGridNo, Weapon[THROWING_KNIFE].sSound, HIGHVOLUME, 1);
 					break;
 
 				case 710:
@@ -2546,10 +2545,10 @@ static BOOLEAN ShouldMercSayHappyWithGunQuote(SOLDIERTYPE* pSoldier)
 		}
 
     // is it a gun?
-    if ( GCM->getItem(pSoldier->usAttackingWeapon)->isGun())
+    if ( Item[ pSoldier->usAttackingWeapon ].usItemClass & IC_GUN )
     {
   		// Is our weapon powerfull enough?
-		  if ( GCM->getWeapon( pSoldier->usAttackingWeapon )->ubDeadliness > MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE )
+		  if ( Weapon[ pSoldier->usAttackingWeapon ].ubDeadliness > MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE )
 		  {
 			  // 20 % chance?
 			  if ( Random( 100 ) < 20 )
@@ -3227,7 +3226,7 @@ static BOOLEAN CheckForImproperFireGunEnd(SOLDIERTYPE* pSoldier)
 	if ( pSoldier->inv[ HANDPOS ].bGunAmmoStatus < 0 || pSoldier->inv[ HANDPOS ].ubGunShotsLeft == 0 )
 	{
 		// If we have 2 pistols, donot go back!
-		if ( GCM->getItem(pSoldier->inv[ SECONDHANDPOS ].usItem)->getItemClass() != IC_GUN )
+		if ( Item[ pSoldier->inv[ SECONDHANDPOS ].usItem ].usItemClass != IC_GUN )
 		{
 			// OK, put gun down....
 			InternalSoldierReadyWeapon( pSoldier, pSoldier->bDirection, TRUE );

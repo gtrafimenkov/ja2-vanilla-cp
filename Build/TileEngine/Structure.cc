@@ -32,8 +32,6 @@
 #include "Build/TileEngine/Tile_Animation.h"
 #include "Build/GameState.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #ifdef COUNT_PATHS
 	extern UINT32 guiSuccessfulPathChecks;
@@ -234,7 +232,7 @@ void FreeStructureFile(STRUCTURE_FILE_REF* const sfr)
 // Loads a structure file's data as a honking chunk o' memory
 static void LoadStructureData(char const* const filename, STRUCTURE_FILE_REF* const sfr, UINT32* const structure_data_size)
 {
-	AutoSGPFile f(GCM->openGameResForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
 	BYTE data[16];
 	FileRead(f, data, sizeof(data));

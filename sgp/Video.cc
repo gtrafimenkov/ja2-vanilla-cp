@@ -30,9 +30,6 @@
 #include "src/ContentManager.h"
 #include "src/GameInstance.h"
 
-#include "slog/slog.h"
-
-#define TAG "Video"
 
 #define BUFFER_READY      0x00
 #define BUFFER_DIRTY      0x02
@@ -526,7 +523,7 @@ static void WriteTGAHeader(FILE* const f)
 /* Create a file for a screenshot, which is guaranteed not to exist yet. */
 static FILE* CreateScreenshotFile(void)
 {
-	const std::string exec_dir = GCM->getScreenshotFolder();
+  const char* const exec_dir = FileMan::getConfigFolderPath().c_str();
 	do
 	{
 		char filename[2048];
@@ -818,7 +815,7 @@ static void RefreshMovieCache(void)
 
 	PauseTime(TRUE);
 
-	const std::string exec_dir = GCM->getVideoCaptureFolder();
+	const char* ExecDir = FileMan::getConfigFolderPath().c_str();
 
 	for (INT32 cnt = 0; cnt < giNumFrames; cnt++)
 	{

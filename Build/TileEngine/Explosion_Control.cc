@@ -2,65 +2,62 @@
 #include "Build/Utils/Font_Control.h"
 #include "sgp/LoadSaveData.h"
 #include "LoadSaveExplosionType.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Debug.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/TileDat.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "Build/Tactical/Handle_Doors.h"
-#include "Build/Utils/Message.h"
-#include "sgp/Random.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/TileEngine/Pits.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Action_Items.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/Tactical/Soldier_Tile.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/GameSettings.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/End_Game.h"
-#include "Build/TileEngine/WorldDat.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Map_Information.h"
-#include "sgp/MemMan.h"
-#include "sgp/FileMan.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Soldier_Macros.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Overhead.h"
+#include "Structure.h"
+#include "Timer_Control.h"
+#include "Debug.h"
+#include "Soldier_Control.h"
+#include "Handle_Items.h"
+#include "WorldDef.h"
+#include "WorldMan.h"
+#include "Rotting_Corpses.h"
+#include "Isometric_Utils.h"
+#include "Animation_Control.h"
+#include "Game_Clock.h"
+#include "Soldier_Create.h"
+#include "RenderWorld.h"
+#include "Soldier_Add.h"
+#include "Explosion_Control.h"
+#include "Tile_Animation.h"
+#include "Sound_Control.h"
+#include "Weapons.h"
+#include "World_Items.h"
+#include "Structure_Wrap.h"
+#include "TileDef.h"
+#include "TileDat.h"
+#include "Interactive_Tiles.h"
+#include "SaveLoadMap.h"
+#include "Handle_Doors.h"
+#include "Message.h"
+#include "Random.h"
+#include "SmokeEffects.h"
+#include "Handle_UI.h"
+#include "PathAI.h"
+#include "Pits.h"
+#include "Campaign_Types.h"
+#include "StrategicMap.h"
+#include "Action_Items.h"
+#include "Soldier_Profile.h"
+#include "Quests.h"
+#include "Interface_Dialogue.h"
+#include "LightEffects.h"
+#include "AI.h"
+#include "Soldier_Tile.h"
+#include "Lighting.h"
+#include "Render_Fun.h"
+#include "OppList.h"
+#include "Smell.h"
+#include "GameSettings.h"
+#include "Interface.h"
+#include "End_Game.h"
+#include "WorldDat.h"
+#include "Keys.h"
+#include "FOV.h"
+#include "Map_Information.h"
+#include "MemMan.h"
+#include "FileMan.h"
+#include "Items.h"
+#include "Soldier_Macros.h"
 
 
 extern INT8	 gbSAMGraphicList[ NUMBER_OF_SAMS ];
@@ -123,7 +120,7 @@ static void GenerateExplosionFromExplosionPointer(EXPLOSIONTYPE* pExplosion);
 void InternalIgniteExplosion(SOLDIERTYPE* const owner, const INT16 sX, const INT16 sY, const INT16 sZ, const INT16 sGridNo, const UINT16 usItem, const BOOLEAN fLocate, const INT8 bLevel)
 {
 	// Double check that we are using an explosive!
-	if ( !( GCM->getItem(usItem)->isExplosive() ) )
+	if ( !( Item[ usItem ].usItemClass & IC_EXPLOSV ) )
 	{
 		return;
 	}
@@ -146,7 +143,7 @@ void InternalIgniteExplosion(SOLDIERTYPE* const owner, const INT16 sX, const INT
 	if (e == NULL) return;
 
 	e->owner         = owner;
-	e->ubTypeID      = Explosive[GCM->getItem(usItem)->getClassIndex()].ubAnimationID;
+	e->ubTypeID      = Explosive[Item[usItem].ubClassIndex].ubAnimationID;
 	e->usItem        = usItem;
 	e->sX            = sX;
 	e->sY            = sY;
@@ -1014,7 +1011,7 @@ static BOOLEAN ExpAffect(const INT16 sBombGridNo, const INT16 sGridNo, const UIN
 
 	// OK, here we:
 	// Get explosive data from table
-	EXPLOSIVETYPE const* const pExplosive = &Explosive[GCM->getItem(usItem)->getClassIndex()];
+	EXPLOSIVETYPE const* const pExplosive = &Explosive[Item[usItem].ubClassIndex];
 
 	uiRoll = PreRandom( 100 );
 
@@ -1061,7 +1058,7 @@ static BOOLEAN ExpAffect(const INT16 sBombGridNo, const INT16 sGridNo, const UIN
 		// damage structures
 		if ( uiDist <= __max( 1, (UINT32) (pExplosive->ubDamage / 30) ) )
 		{
-			if ( GCM->getItem(usItem)->isGrenade() )
+			if ( Item[ usItem ].usItemClass & IC_GRENADE )
 			{
 				sStructDmgAmt = sWoundAmt / 3;
 			}
@@ -1739,7 +1736,7 @@ void SpreadEffect(const INT16 sGridNo, const UINT8 ubRadius, const UINT16 usItem
 
 	if ( fSubsequent != BLOOD_SPREAD_EFFECT )
 	{
-		MakeNoise(NULL, sGridNo, bLevel, Explosive[GCM->getItem(usItem)->getClassIndex()].ubVolume, NOISE_EXPLOSION);
+		MakeNoise(NULL, sGridNo, bLevel, Explosive[Item[usItem].ubClassIndex].ubVolume, NOISE_EXPLOSION);
 	}
 }
 
@@ -2495,7 +2492,7 @@ BOOLEAN SetOffBombsInGridNo(SOLDIERTYPE* const s, const INT16 sGridNo, const BOO
 						uiTimeStamp += BOMB_QUEUE_DELAY;
 					}
 
-					if (o.usBombItem != NOTHING && GCM->getItem(o.usBombItem)->isExplosive())
+					if (o.usBombItem != NOTHING && Item[o.usBombItem].usItemClass & IC_EXPLOSV)
 					{
 						fFoundMine = TRUE;
 					}

@@ -17,8 +17,7 @@ TEST(LoadSaveMercProfileTest, vanillaProfile)
   MERCPROFILESTRUCT p;
   INT32 profileId;
   INT32 portraitNumber;
-  AutoSGPFile f(OpenTestResourceForReading("_unittests/saves/vanilla-russian/IMP.dat"));
-  ExtractImpProfileFromFile(f, &profileId, &portraitNumber, p);
+  ExtractImpProfileFromFile("_unittests/saves/vanilla-russian/IMP.dat", &profileId, &portraitNumber, p);
   EXPECT_EQ(profileId, PLAYER_GENERATED_CHARACTER_ID);
   EXPECT_EQ(portraitNumber, 0);
   EXPECT_STREQ(p.zName,         L"Foo Bar .....................");
@@ -169,8 +168,7 @@ TEST(LoadSaveMercProfileTest, stracLinuxProfile)
   MERCPROFILESTRUCT p;
   INT32 profileId;
   INT32 portraitNumber;
-  AutoSGPFile f(OpenTestResourceForReading("_unittests/saves/strac-macos/imp.dat"));
-  ExtractImpProfileFromFile(f, &profileId, &portraitNumber, p);
+  ExtractImpProfileFromFile("_unittests/saves/strac-macos/imp.dat", &profileId, &portraitNumber, p);
   EXPECT_EQ(profileId, PLAYER_GENERATED_CHARACTER_ID);
   EXPECT_EQ(portraitNumber, 0);
   EXPECT_STREQ(p.zName,         L"Vasya Вася Курочкин Kurochki");

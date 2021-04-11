@@ -5,33 +5,32 @@
 #include "Build/MercPortrait.h"
 #include "Build/Tactical/Merc_Hiring.h"
 #include "Mercs_Files.h"
-#include "Build/Laptop/Mercs.h"
-#include "Build/MessageBoxScreen.h"
-#include "sgp/VObject.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Laptop/AIMMembers.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Overhead.h"
-#include "sgp/Font.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Utils/Text.h"
+#include "Mercs.h"
+#include "MessageBoxScreen.h"
+#include "VObject.h"
+#include "WordWrap.h"
+#include "Cursors.h"
+#include "Soldier_Profile.h"
+#include "Encrypted_File.h"
+#include "AIMMembers.h"
+#include "Game_Clock.h"
+#include "Soldier_Add.h"
+#include "Overhead.h"
+#include "Font.h"
+#include "LaptopSave.h"
+#include "Text.h"
 #include "Speck_Quotes.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Assignments.h"
-#include "sgp/Input.h"
-#include "sgp/English.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Cheats.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "Quests.h"
+#include "Assignments.h"
+#include "Input.h"
+#include "English.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "ScreenIDs.h"
+#include "Cheats.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define		MERCBIOFILE												BINARYDATADIR "/mercbios.edt"
 
@@ -351,7 +350,7 @@ static void LoadAndDisplayMercBio(UINT8 ubMercID)
 		//load and display the merc bio
 		wchar_t	sText[MERC_BIO_INFO_TEXT_SIZE];
 		uiStartLoc = MERC_BIO_SIZE * ubMercID;
-		GCM->loadEncryptedString(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_INFO_TEXT_SIZE);
+		LoadEncryptedDataFromFile(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_INFO_TEXT_SIZE);
 		DisplayWrappedString(MERC_BIO_TEXT_X, MERC_BIO_TEXT_Y, MERC_BIO_WIDTH, 2, MERC_BIO_FONT, MERC_BIO_COLOR, sText, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 	}
 
@@ -359,7 +358,7 @@ static void LoadAndDisplayMercBio(UINT8 ubMercID)
 		//load and display the merc's additioanl info (if any)
 		wchar_t	sText[MERC_BIO_ADD_INFO_TEXT_SIZE];
 		uiStartLoc += MERC_BIO_INFO_TEXT_SIZE;
-		GCM->loadEncryptedString(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
+		LoadEncryptedDataFromFile(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
 		if( sText[0] != 0 )
 		{
 			DrawTextToScreen(MercInfo[MERC_FILES_ADDITIONAL_INFO], MERC_ADD_BIO_TITLE_X, MERC_ADD_BIO_TITLE_Y, 0, MERC_TITLE_FONT, MERC_TITLE_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);

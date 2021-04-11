@@ -1,74 +1,76 @@
 #include <stdexcept>
 
-#include "Build/Directories.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/MercPortrait.h"
-#include "Build/MessageBoxScreen.h"
-#include "sgp/Timer.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Types.h"
-#include "Build/Strategic/Auto_Resolve.h"
-#include "Build/Local.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Utils/Music_Control.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Player_Command.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Button_System.h"
-#include "Build/GameLoop.h"
-#include "Build/Strategic/MapScreen.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "sgp/Video.h"
-#include "sgp/Input.h"
-#include "Build/GameScreen.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "sgp/VObject_Blitters.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Random.h"
-#include "sgp/Line.h"
-#include "sgp/English.h"
-#include "Build/Strategic/Strategic_Pathing.h"
-#include "Build/Strategic/Strategic_Merc_Handler.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Utils/Message.h"
-#include "Build/Strategic/Town_Militia.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Strategic/Creature_Spreading.h"
-#include "Build/Strategic/Strategic_AI.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/RT_Time_Defines.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Tactical/Inventory_Choosing.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Tactical/Map_Information.h"
-#include "sgp/MemMan.h"
-#include "sgp/Debug.h"
-#include "src/WeaponModels.h"
+#include "Directories.h"
+#include "Font.h"
+#include "HImage.h"
+#include "Isometric_Utils.h"
+#include "MercPortrait.h"
+#include "MessageBoxScreen.h"
+#include "Timer.h"
+#include "Timer_Control.h"
+#include "Types.h"
+#include "Auto_Resolve.h"
+#include "Local.h"
+#include "Strategic_Movement.h"
+#include "Queen_Command.h"
+#include "Music_Control.h"
+#include "PreBattle_Interface.h"
+#include "Player_Command.h"
+#include "MouseSystem.h"
+#include "Button_System.h"
+#include "GameLoop.h"
+#include "MapScreen.h"
+#include "VObject.h"
+#include "VSurface.h"
+#include "Video.h"
+#include "Input.h"
+#include "GameScreen.h"
+#include "Render_Dirty.h"
+#include "VObject_Blitters.h"
+#include "SysUtil.h"
+#include "Font_Control.h"
+#include "Soldier_Create.h"
+#include "Overhead.h"
+#include "Items.h"
+#include "Weapons.h"
+#include "Sound_Control.h"
+#include "Game_Clock.h"
+#include "Soldier_Profile.h"
+#include "Campaign.h"
+#include "Tactical_Save.h"
+#include "Strategic_Status.h"
+#include "Text.h"
+#include "WordWrap.h"
+#include "Random.h"
+#include "Line.h"
+#include "English.h"
+#include "Strategic_Pathing.h"
+#include "Strategic_Merc_Handler.h"
+#include "Strategic.h"
+#include "Message.h"
+#include "Town_Militia.h"
+#include "Animation_Data.h"
+#include "Creature_Spreading.h"
+#include "Strategic_AI.h"
+#include "SkillCheck.h"
+#include "RT_Time_Defines.h"
+#include "Morale.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Soldier_Macros.h"
+#include "StrategicMap.h"
+#include "Quests.h"
+#include "Meanwhile.h"
+#include "Inventory_Choosing.h"
+#include "Game_Event_Hook.h"
+#include "Map_Information.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "UILayout.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#ifdef JA2BETAVERSION
+#	include "Cheats.h"
+#endif
+
 
 //#define INVULNERABILITY
 
@@ -289,14 +291,6 @@ static void PlayAutoResolveSample(SoundID const usNum, UINT32 const ubVolume, UI
 	if( gpAR->fSound )
 	{
 		PlayJA2Sample(usNum, ubVolume, ubLoops, uiPan);
-	}
-}
-
-static void PlayAutoResolveSample(const std::string &sample, UINT32 const ubVolume, UINT32 const ubLoops, UINT32 const uiPan)
-{
-	if( gpAR->fSound )
-	{
-		PlayJA2Sample(sample.c_str(), ubVolume, ubLoops, uiPan);
 	}
 }
 
@@ -3024,25 +3018,25 @@ static BOOLEAN FireAShot(SOLDIERCELL* pAttacker)
 	{
 		pItem = &pSoldier->inv[ i ];
 
-		if( GCM->getItem(pItem->usItem)->getItemClass() == IC_GUN )
+		if( Item[ pItem->usItem ].usItemClass == IC_GUN )
 		{
 			pAttacker->bWeaponSlot = (INT8)i;
 			if( gpAR->fUnlimitedAmmo )
 			{
-				PlayAutoResolveSample(GCM->getWeapon(pItem->usItem)->sound, 50, 1, MIDDLEPAN);
+				PlayAutoResolveSample(Weapon[pItem->usItem].sSound, 50, 1, MIDDLEPAN);
 				return TRUE;
 			}
 			if( !pItem->ubGunShotsLeft )
 			{
 				AutoReload( pSoldier );
-				if (pItem->ubGunShotsLeft && GCM->getWeapon(pItem->usItem)->sLocknLoadSound != NO_SOUND)
+				if (pItem->ubGunShotsLeft && Weapon[pItem->usItem].sLocknLoadSound != NO_SOUND)
 				{
-					PlayAutoResolveSample(GCM->getWeapon(pItem->usItem)->sLocknLoadSound, 50, 1, MIDDLEPAN);
+					PlayAutoResolveSample(Weapon[pItem->usItem].sLocknLoadSound, 50, 1, MIDDLEPAN);
 				}
 			}
 			if( pItem->ubGunShotsLeft )
 			{
-				PlayAutoResolveSample(GCM->getWeapon(pItem->usItem)->sound, 50, 1, MIDDLEPAN);
+				PlayAutoResolveSample(Weapon[pItem->usItem].sSound, 50, 1, MIDDLEPAN);
 				if( pAttacker->uiFlags & CELL_MERC )
 				{
 					gMercProfiles[ pAttacker->pSoldier->ubProfile ].usShotsFired++;
@@ -3071,7 +3065,7 @@ static BOOLEAN TargetHasLoadedGun(SOLDIERTYPE* pSoldier)
 {
 	CFOR_EACH_SOLDIER_INV_SLOT(pItem, *pSoldier)
 	{
-		if( GCM->getItem(pItem->usItem)->getItemClass() == IC_GUN )
+		if( Item[ pItem->usItem ].usItemClass == IC_GUN )
 		{
 			if( gpAR->fUnlimitedAmmo )
 			{
@@ -3190,7 +3184,7 @@ static void AttackTarget(SOLDIERCELL* pAttacker, SOLDIERCELL* pTarget)
 	//Attacker hits
 	if( !fMelee )
 	{
-		ubImpact = GCM->getWeapon(pAttacker->pSoldier->inv[pAttacker->bWeaponSlot].usItem)->ubImpact;
+		ubImpact = Weapon[ pAttacker->pSoldier->inv[ pAttacker->bWeaponSlot ].usItem ].ubImpact;
 		iRandom = PreRandom( 100 );
 		if( iRandom < 15 )
 			ubLocation = AIM_SHOT_HEAD;
@@ -3228,7 +3222,7 @@ static void AttackTarget(SOLDIERCELL* pAttacker, SOLDIERCELL* pTarget)
 		if( pAttacker->bWeaponSlot != -1 )
 		{
 			pItem = &pAttacker->pSoldier->inv[ pAttacker->bWeaponSlot ];
-			if( GCM->getItem(pItem->usItem)->isWeapon() )
+			if( Item[ pItem->usItem ].usItemClass & IC_WEAPON )
 				pAttacker->pSoldier->usAttackingWeapon = pAttacker->pSoldier->inv[ pAttacker->bWeaponSlot ].usItem;
 		}
 

@@ -28,19 +28,17 @@
 #include "Build/TileEngine/WorldDef.h"
 #include "Build/TileEngine/WorldDat.h"
 #include "EditorDefines.h"
-#include "Build/Editor/EditScreen.h"
-#include "sgp/English.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Debug.h"
-#include "sgp/MemMan.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "sgp/Video.h"
-#include "Build/GameRes.h"
-#include "Build/GameState.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "EditScreen.h"
+#include "English.h"
+#include "World_Items.h"
+#include "Text.h"
+#include "Debug.h"
+#include "MemMan.h"
+#include "Soldier_Create.h"
+#include "Video.h"
+#include "UILayout.h"
+#include "GameRes.h"
+#include "GameState.h"
 
 #define DEVINFO_DIR "../DevInfo"
 
@@ -1976,7 +1974,9 @@ static void SummarySaveMapCallback(GUI_BUTTON* btn, INT32 reason)
 		{
 			if( gubOverrideStatus == READONLY )
 			{
-				FileClearAttributes(GCM->getMapPath(gszDisplayName));
+				char filename[40];
+				sprintf(filename, MAPSDIR "/%ls", gszDisplayName);
+				FileClearAttributes( filename );
 			}
 			if(	ExternalSaveMap( gszDisplayName ) )
 			{
@@ -2005,31 +2005,24 @@ static void SummaryOverrideCallback(GUI_BUTTON* btn, INT32 reason)
 
 static void CalculateOverrideStatus(void)
 {
-  std::string filename;
+	char szFilename[40];
 	gfOverrideDirty = FALSE;
 	gfOverride = FALSE;
 	if( gfTempFile )
 	{
-    // if empty, use "test.dat"
-    if(gszTempFilename && wcscmp(gszTempFilename, L""))
-    {
-      filename = GCM->getMapPath(gszTempFilename);
-    }
-    else
-    {
-      filename = GCM->getMapPath("test.dat");
-    }
-
-    filename = FileMan::replaceExtension(filename, ".dat");
+		sprintf(szFilename, MAPSDIR "/%ls", gszTempFilename);
+		if( strlen( szFilename ) == 5 )
+			strcat( szFilename, "test.dat" );
+		char* ptr = strstr( szFilename, "." );
+		if( !ptr )
+			strcat( szFilename, ".dat" );
+		else
+			strcpy(ptr, ".dat");
 	}
 	else
-  {
-    filename = GCM->getMapPath(gszFilename);
-  }
-
-	swprintf(gszDisplayName, lengthof(gszDisplayName), L"%hs", FileMan::getFileName(filename).c_str());
-
-	const UINT32 attr = FileGetAttributes(filename.c_str());
+		sprintf(szFilename, MAPSDIR "/%ls", gszFilename);
+	swprintf(gszDisplayName, lengthof(gszDisplayName), L"%hs", szFilename + 5);
+	const UINT32 attr = FileGetAttributes(szFilename);
 	if (attr != FILE_ATTR_ERROR)
 	{
 		if( gfWorldLoaded )
@@ -2060,15 +2053,15 @@ static BOOLEAN LoadSummary(const INT32 x, const INT32 y, const UINT8 level, cons
 	FLOAT dMajorMapVersion;
 	{
 		char filename[40];
-		sprintf(filename, "%c%d%s.dat", 'A' + y, x + 1, suffix);
-
+		sprintf(filename, MAPSDIR "/%c%d%s.dat", 'A' + y, x + 1, suffix);
 		AutoSGPFile f_map;
 		try
 		{
-			f_map = GCM->openMapForReading(filename);
+			f_map = FileMan::openForReadingSmart(filename, true);
 		}
 		catch (...)
 		{
+			FileDelete(filename);
 			return FALSE;
 		}
 
@@ -2522,7 +2515,9 @@ static void SetupItemDetailsMode(BOOLEAN fAllowRecursion)
 		gpCurrentSectorSummary = gpSectorSummary[ gsSelSectorX - 1 ][ gsSelSectorY - 1 ][ giCurrLevel ];
 	}
 	//Open the original map for the sector
-	AutoSGPFile hfile(GCM->openMapForReading(gszFilename));
+	char szFilename[40];
+	sprintf(szFilename, MAPSDIR "/%ls", gszFilename);
+	AutoSGPFile hfile(FileMan::openForReadingSmart(szFilename, true));
 	//Now fileseek directly to the file position where the number of world items are stored
 	FileSeek(hfile, gpCurrentSectorSummary->uiNumItemsPosition, FILE_SEEK_FROM_START);
 	//Now load the number of world items from the map.

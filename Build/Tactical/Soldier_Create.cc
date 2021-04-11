@@ -1,50 +1,9 @@
 #include <math.h>
-
-#include "Build/Editor/EditorMercs.h"
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Auto_Resolve.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Strategic/Strategic_Mines.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Sys_Globals.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Faces.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Inventory_Choosing.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Init_List.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Debug.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/SoundMan.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "JAScreens.h"
+#include "SoundMan.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "ScreenIDs.h"
 
 
 // THESE 3 DIFFICULTY FACTORS MUST ALWAYS ADD UP TO 100% EXACTLY!!!
@@ -298,7 +257,7 @@ try
 		for (INT32 i = BIGPOCK1POS; i <= BIGPOCK4POS; ++i)
 		{
 			OBJECTTYPE& o = s->inv[i];
-			if (!(GCM->getItem(o.usItem)->isFace())) continue;
+			if (!(Item[o.usItem].usItemClass & IC_FACE)) continue;
 
 			if (!second_face_item)
 			{ /* Don't check for compatibility, automatically assume there are no head
@@ -1931,7 +1890,7 @@ void QuickCreateProfileMerc( INT8 bTeam, UINT8 ubProfileID )
 
 static BOOLEAN TryToAttach(SOLDIERTYPE* const s, OBJECTTYPE* const o)
 {
-	if (!(GCM->getItem(o->usItem)->getFlags() & ITEM_ATTACHMENT)) return FALSE;
+	if (!(Item[o->usItem].fFlags & ITEM_ATTACHMENT)) return FALSE;
 
 	// try to find the appropriate item to attach to!
 	for (UINT32 i = 0; i < NUM_INV_SLOTS; ++i)
@@ -1959,7 +1918,7 @@ static void CopyProfileItems(SOLDIERTYPE& s, SOLDIERCREATE_STRUCT const& c)
 			if (item != NOTHING)
 			{
 				UINT8 const count = p.bInvNumber[i];
-				if (GCM->getItem(item)->getItemClass() == IC_KEY)
+				if (Item[item].usItemClass == IC_KEY)
 				{
 					/* Since keys depend on 2 values, they pretty much have to be
 					 * hardcoded.  if a case isn't handled here it's better to not give

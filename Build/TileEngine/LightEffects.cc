@@ -1,23 +1,21 @@
 #include "LoadSaveLightEffect.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "sgp/Random.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "sgp/FileMan.h"
-#include "Build/SaveLoadGame.h"
+#include "Soldier_Control.h"
+#include "Weapons.h"
+#include "Handle_Items.h"
+#include "WorldDef.h"
+#include "Tile_Animation.h"
+#include "LightEffects.h"
+#include "Isometric_Utils.h"
+#include "Explosion_Control.h"
+#include "Random.h"
+#include "Lighting.h"
+#include "Game_Clock.h"
+#include "OppList.h"
+#include "Tactical_Save.h"
+#include "Campaign_Types.h"
+#include "FileMan.h"
+#include "SaveLoadGame.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define		NUM_LIGHT_EFFECT_SLOTS					25
 
@@ -240,7 +238,7 @@ void LoadLightEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 
 
 	GetMapTempFileName( SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ );
 
-	AutoSGPFile hFile(GCM->openGameResForReading(zMapName));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
 	//Clear out the old list
 	ResetLightEffects();

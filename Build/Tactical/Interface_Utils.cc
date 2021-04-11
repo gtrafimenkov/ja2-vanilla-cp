@@ -1,24 +1,23 @@
-#include "Build/Directories.h"
-#include "Build/JAScreens.h"
-#include "Build/Local.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Tactical/Faces.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "sgp/HImage.h"
-#include "sgp/Line.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
+#include "Directories.h"
+#include "Local.h"
+#include "HImage.h"
+#include "VObject.h"
+#include "Interface_Utils.h"
+#include "Render_Dirty.h"
+#include "Interface_Control.h"
+#include "SysUtil.h"
+#include "Faces.h"
+#include "Weapons.h"
+#include "Overhead.h"
+#include "Soldier_Macros.h"
+#include "Line.h"
+#include "Vehicles.h"
+#include "JAScreens.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "ScreenIDs.h"
+#include "UILayout.h"
+
 
 #define			LIFE_BAR_SHADOW							FROMRGB( 108, 12, 12 )
 #define			LIFE_BAR										FROMRGB( 200, 0, 0 )
@@ -205,17 +204,17 @@ void DrawItemUIBarEx(OBJECTTYPE const& o, const UINT8 ubStatus, const INT16 x, c
 {
 	INT16 value;
 	// Adjust for ammo, other things
-	const ItemModel * item = GCM->getItem(o.usItem);
+	INVTYPE const& item = Item[o.usItem];
 	if (ubStatus >= DRAW_ITEM_STATUS_ATTACHMENT1)
 	{
 		value = o.bAttachStatus[ubStatus - DRAW_ITEM_STATUS_ATTACHMENT1];
 	}
-	else if (item->isAmmo())
+	else if (item.usItemClass & IC_AMMO)
 	{
-		value = 100 * o.ubShotsLeft[ubStatus] / item->asAmmo()->capacity;
+		value = 100 * o.ubShotsLeft[ubStatus] / Magazine[item.ubClassIndex].ubMagSize;
 		if (value > 100) value = 100;
 	}
-	else if (item->isKey())
+	else if (item.usItemClass & IC_KEY)
 	{
 		value = 100;
 	}

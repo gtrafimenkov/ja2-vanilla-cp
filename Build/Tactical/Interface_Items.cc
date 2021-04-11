@@ -1,85 +1,78 @@
-#include <memory>
+#include "Directories.h"
+#include "FileMan.h"
+#include "Font.h"
+#include "Handle_Items.h"
+#include "Isometric_Utils.h"
+#include "LoadSaveData.h"
+#include "LoadSaveObjectType.h"
+#include "Local.h"
+#include "HImage.h"
+#include "Map_Screen_Interface_Bottom.h"
+#include "Text_Utils.h"
+#include "TileDef.h"
+#include "Timer_Control.h"
+#include "VObject.h"
+#include "SysUtil.h"
+#include "Overhead.h"
+#include "MouseSystem.h"
+#include "Button_System.h"
+#include "Interface.h"
+#include "VSurface.h"
+#include "Input.h"
+#include "Handle_UI.h"
+#include "RenderWorld.h"
+#include "Cursors.h"
+#include "Radar_Screen.h"
+#include "Font_Control.h"
+#include "Render_Dirty.h"
+#include "Interface_Panels.h"
+#include "Animation_Control.h"
+#include "Soldier_Control.h"
+#include "PathAI.h"
+#include "Weapons.h"
+#include "Faces.h"
+#include "MapScreen.h"
+#include "Message.h"
+#include "Text.h"
+#include "Cursor_Control.h"
+#include "Interface_Cursors.h"
+#include "Interface_Utils.h"
+#include "Interface_Items.h"
+#include "WordWrap.h"
+#include "Interface_Control.h"
+#include "VObject_Blitters.h"
+#include "World_Items.h"
+#include "Points.h"
+#include "Physics.h"
+#include "Finances.h"
+#include "UI_Cursors.h"
+#include "ShopKeeper_Interface.h"
+#include "Dialogue_Control.h"
+#include "English.h"
+#include "Keys.h"
+#include "StrategicMap.h"
+#include "Arms_Dealer_Init.h"
+#include "Soldier_Macros.h"
+#include "Game_Clock.h"
+#include "Squads.h"
+#include "LaptopSave.h"
+#include "MessageBoxScreen.h"
+#include "GameSettings.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "Quests.h"
+#include "Map_Screen_Interface.h"
+#include "Campaign_Types.h"
+#include "OppList.h"
+#include "LOS.h"
+#include "Map_Screen_Interface_Map.h"
+#include "JAScreens.h"
+#include "ScreenIDs.h"
+#include "Video.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "Items.h"
+#include "UILayout.h"
 
-#include "Build/Directories.h"
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Local.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Map_Screen_Interface_Bottom.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Faces.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface_Cursors.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/LoadSaveObjectType.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/ShopKeeper_Interface.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/UI_Cursors.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/TileEngine/Radar_Screen.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text_Utils.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Button_System.h"
-#include "sgp/Cursor_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/English.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "sgp/Input.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/MemMan.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Video.h"
-#include "sgp/VObject_Blitters.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/CalibreModel.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/policy/GamePolicy.h"
-#include "src/Soldier.h"
-#include "src/WeaponModels.h"
 
 #define		ITEMDESC_FONT							BLOCKFONT2
 #define		ITEMDESC_FONTSHADOW2			32
@@ -143,7 +136,7 @@ static const SGPBox g_map_itemdesc_item_status_box = { 18,  54,   2, 42 };
 #define		DOTDOTDOT L"..."
 #define		COMMA_AND_SPACE L", "
 
-#define		ITEM_PROS_AND_CONS( usItem ) ( ( GCM->getItem(usItem)->isGun()) )
+#define		ITEM_PROS_AND_CONS( usItem ) ( ( Item[ usItem ].usItemClass & IC_GUN) )
 
 #define		ITEMDESC_AMMO_TEXT_X	3
 #define		ITEMDESC_AMMO_TEXT_Y	2
@@ -468,13 +461,13 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 
 	zItemPros[0] = 0;
 
-	ubWeight = GCM->getItem(usItem)->getWeight();
-	if (GCM->getItem(usItem)->getItemClass() == IC_GUN)
+	ubWeight = Item[ usItem ].ubWeight;
+	if (Item[ usItem ].usItemClass == IC_GUN)
 	{
-		ubWeight += GCM->getItem(o.usGunAmmoItem)->getWeight();
+		ubWeight += Item[o.usGunAmmoItem].ubWeight;
 	}
 
-	if (GCM->getItem(usItem)->getWeight() <= EXCEPTIONAL_WEIGHT)
+	if (Item[usItem].ubWeight <= EXCEPTIONAL_WEIGHT)
 	{
 		zTemp = g_langRes->Message[STR_LIGHT];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -483,7 +476,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getItem(usItem)->getPerPocket() >= 1) // fits in a small pocket
+	if (Item[usItem].ubPerPocket >= 1) // fits in a small pocket
 	{
 		zTemp = g_langRes->Message[STR_SMALL];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -501,7 +494,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubImpact >= EXCEPTIONAL_DAMAGE)
+	if (Weapon[usItem].ubImpact >= EXCEPTIONAL_DAMAGE)
 	{
 		zTemp = g_langRes->Message[STR_HIGH_DAMAGE];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -519,7 +512,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || usItem == G11)
+	if (Weapon[usItem].ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || usItem == G11)
 	{
 		zTemp = g_langRes->Message[STR_FAST_BURST];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -528,7 +521,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubMagSize > EXCEPTIONAL_MAGAZINE)
+	if (Weapon[usItem].ubMagSize > EXCEPTIONAL_MAGAZINE)
 	{
 		zTemp = g_langRes->Message[STR_LARGE_AMMO_CAPACITY];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -537,7 +530,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if ( GCM->getItem(usItem)->getReliability() >= EXCEPTIONAL_RELIABILITY )
+	if ( Item[usItem].bReliability >= EXCEPTIONAL_RELIABILITY )
 	{
 		zTemp = g_langRes->Message[STR_RELIABLE];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -546,7 +539,7 @@ static void GenerateProsString(wchar_t* const zItemPros, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if ( GCM->getItem(usItem)->getRepairEase() >= EXCEPTIONAL_REPAIR_EASE )
+	if ( Item[usItem].bRepairEase >= EXCEPTIONAL_REPAIR_EASE )
 	{
 		zTemp = g_langRes->Message[STR_EASY_TO_REPAIR];
 		if ( ! AttemptToAddSubstring( zItemPros, zTemp, &uiStringLength, uiPixLimit ) )
@@ -576,10 +569,10 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 	zItemCons[0] = 0;
 
 	// calculate the weight of the item plus ammunition but not including any attachments
-	ubWeight = GCM->getItem(usItem)->getWeight();
-	if (GCM->getItem(usItem)->getItemClass() == IC_GUN)
+	ubWeight = Item[ usItem ].ubWeight;
+	if (Item[ usItem ].usItemClass == IC_GUN)
 	{
-		ubWeight += GCM->getItem(o.usGunAmmoItem)->getWeight();
+		ubWeight += Item[o.usGunAmmoItem].ubWeight;
 	}
 
 	if (ubWeight >= BAD_WEIGHT)
@@ -600,7 +593,7 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubImpact <= BAD_DAMAGE)
+	if (Weapon[usItem].ubImpact <= BAD_DAMAGE)
 	{
 		zTemp = g_langRes->Message[STR_LOW_DAMAGE];
 		if ( ! AttemptToAddSubstring( zItemCons, zTemp, &uiStringLength, uiPixLimit ) )
@@ -618,7 +611,7 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubShotsPerBurst == 0)
+	if (Weapon[usItem].ubShotsPerBurst == 0)
 	{
 		zTemp = g_langRes->Message[STR_NO_BURST];
 		if ( ! AttemptToAddSubstring( zItemCons, zTemp, &uiStringLength, uiPixLimit ) )
@@ -627,7 +620,7 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if (GCM->getWeapon(usItem)->ubMagSize < BAD_MAGAZINE)
+	if (Weapon[usItem].ubMagSize < BAD_MAGAZINE)
 	{
 		zTemp = g_langRes->Message[STR_SMALL_AMMO_CAPACITY];
 		if ( ! AttemptToAddSubstring( zItemCons, zTemp, &uiStringLength, uiPixLimit ) )
@@ -636,7 +629,7 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if ( GCM->getItem(usItem)->getReliability() <= BAD_RELIABILITY )
+	if ( Item[usItem].bReliability <= BAD_RELIABILITY )
 	{
 		zTemp = g_langRes->Message[STR_UNRELIABLE];
 		if ( ! AttemptToAddSubstring( zItemCons, zTemp, &uiStringLength, uiPixLimit ) )
@@ -645,7 +638,7 @@ static void GenerateConsString(wchar_t* const zItemCons, OBJECTTYPE const& o, UI
 		}
 	}
 
-	if ( GCM->getItem(usItem)->getRepairEase() <= BAD_REPAIR_EASE )
+	if ( Item[usItem].bRepairEase <= BAD_REPAIR_EASE )
 	{
 		zTemp = g_langRes->Message[STR_HARD_TO_REPAIR];
 		if ( ! AttemptToAddSubstring( zItemCons, zTemp, &uiStringLength, uiPixLimit ) )
@@ -810,7 +803,7 @@ static void INVRenderINVPanelItem(SOLDIERTYPE const& s, INT16 const pocket, Dirt
 
 		/* If it's the second hand and this hand cannot contain anything, remove the
 		 * second hand position graphic */
-		if (pocket == SECONDHANDPOS && GCM->getItem(s.inv[HANDPOS].usItem)->isTwoHanded())
+		if (pocket == SECONDHANDPOS && Item[s.inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED)
 		{
 			if (in_map)
 			{
@@ -900,23 +893,31 @@ void HandleRenderInvSlots(SOLDIERTYPE const& s, DirtyLevel const dirty_level)
 }
 
 
-static bool CompatibleAmmoForGun(const OBJECTTYPE* pTryObject, const OBJECTTYPE* pTestObject)
+static BOOLEAN CompatibleAmmoForGun(const OBJECTTYPE* pTryObject, const OBJECTTYPE* pTestObject)
 {
-	if ( ( GCM->getItem(pTryObject->usItem)->isAmmo() ) )
+	if ( ( Item[ pTryObject->usItem ].usItemClass & IC_AMMO ) )
 	{
-    return GCM->getWeapon( pTestObject->usItem )->matches(GCM->getItem(pTryObject->usItem)->asAmmo()->calibre);
+		// CHECK
+		if (Weapon[ pTestObject->usItem ].ubCalibre == Magazine[Item[pTryObject->usItem].ubClassIndex].ubCalibre )
+		{
+			return( TRUE );
+		}
 	}
-	return false;
+	return( FALSE );
 }
 
 
-static bool CompatibleGunForAmmo(const OBJECTTYPE* pTryObject, const OBJECTTYPE* pTestObject)
+static BOOLEAN CompatibleGunForAmmo(const OBJECTTYPE* pTryObject, const OBJECTTYPE* pTestObject)
 {
-	if ( ( GCM->getItem(pTryObject->usItem)->isGun()) )
+	if ( ( Item[ pTryObject->usItem ].usItemClass & IC_GUN ) )
 	{
-    return GCM->getWeapon( pTryObject->usItem )->matches(GCM->getItem(pTestObject->usItem)->asAmmo()->calibre);
+		// CHECK
+		if (Weapon[ pTryObject->usItem ].ubCalibre == Magazine[Item[pTestObject->usItem].ubClassIndex].ubCalibre )
+		{
+			return( TRUE );
+		}
 	}
-	return false;
+	return( FALSE );
 }
 
 
@@ -948,7 +949,7 @@ static BOOLEAN CompatibleItemForApplyingOnMerc(const OBJECTTYPE* const test)
 
 static BOOLEAN SoldierContainsAnyCompatibleStuff(const SOLDIERTYPE* const s, const OBJECTTYPE* const test)
 {
-	const UINT16 item_class = GCM->getItem(test->usItem)->getItemClass();
+	const UINT16 item_class = Item[test->usItem].usItemClass;
 	if (item_class & IC_GUN)
 	{
 		CFOR_EACH_SOLDIER_INV_SLOT(i, *s)
@@ -1062,14 +1063,14 @@ BOOLEAN HandleCompatibleAmmoUIForMapScreen(const SOLDIERTYPE* pSoldier, INT32 bI
 		return( fFound );
 	}
 
-	if ((!(GCM->getItem(pTestObject->usItem)->getFlags() & ITEM_HIDDEN_ADDON)))
+	if ( (! Item[ pTestObject->usItem ].fFlags & ITEM_HIDDEN_ADDON) )
 	{
 		// First test attachments, which almost any type of item can have....
 		for ( cnt = 0; cnt < NUM_INV_SLOTS; cnt++ )
 		{
 			OBJECTTYPE const& o = pSoldier->inv[cnt];
 
-			if (GCM->getItem(o.usItem)->getFlags() & ITEM_HIDDEN_ADDON)
+			if (Item[o.usItem].fFlags & ITEM_HIDDEN_ADDON)
 			{
 				// don't consider for UI purposes
 				continue;
@@ -1095,7 +1096,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapScreen(const SOLDIERTYPE* pSoldier, INT32 bI
 	}
 
 
-	if ( ( GCM->getItem(pTestObject->usItem)->isGun()) )
+	if ( ( Item [ pTestObject->usItem ].usItemClass & IC_GUN ) )
 	{
 		for ( cnt = 0; cnt < NUM_INV_SLOTS; cnt++ )
 		{
@@ -1112,7 +1113,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapScreen(const SOLDIERTYPE* pSoldier, INT32 bI
 			}
 		}
 	}
-	else if( ( GCM->getItem(pTestObject->usItem)->isAmmo() ) )
+	else if( ( Item [ pTestObject->usItem ].usItemClass & IC_AMMO ) )
 	{
 		for ( cnt = 0; cnt < NUM_INV_SLOTS; cnt++ )
 		{
@@ -1164,7 +1165,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapInventory( SOLDIERTYPE *pSoldier, INT32 bInv
 	{
 		pObject = &( pInventoryPoolList[ iStartSlotNumber + cnt ].o );
 
-		if ( GCM->getItem(pObject->usItem)->getFlags() & ITEM_HIDDEN_ADDON )
+		if ( Item[ pObject->usItem ].fFlags & ITEM_HIDDEN_ADDON )
 		{
 			// don't consider for UI purposes
 			continue;
@@ -1187,7 +1188,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapInventory( SOLDIERTYPE *pSoldier, INT32 bInv
 	}
 
 
-	if( ( GCM->getItem(pTestObject->usItem)->isGun()) )
+	if( ( Item [ pTestObject->usItem ].usItemClass & IC_GUN ) )
 	{
 		for ( cnt = 0; cnt < MAP_INVENTORY_POOL_SLOT_COUNT; cnt++ )
 		{
@@ -1206,7 +1207,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapInventory( SOLDIERTYPE *pSoldier, INT32 bInv
 			}
 		}
 	}
-	else if( ( GCM->getItem(pTestObject->usItem)->isAmmo() ) )
+	else if( ( Item [ pTestObject->usItem ].usItemClass & IC_AMMO ) )
 	{
 		for ( cnt = 0; cnt < MAP_INVENTORY_POOL_SLOT_COUNT; cnt++ )
 		{
@@ -1289,7 +1290,7 @@ BOOLEAN InternalHandleCompatibleAmmoUI(const SOLDIERTYPE* pSoldier, const OBJECT
 	{
 		OBJECTTYPE const& o = pSoldier->inv[cnt];
 
-		if (GCM->getItem(o.usItem)->getFlags() & ITEM_HIDDEN_ADDON)
+		if (Item[o.usItem].fFlags & ITEM_HIDDEN_ADDON)
 		{
 			// don't consider for UI purposes
 			continue;
@@ -1317,7 +1318,7 @@ BOOLEAN InternalHandleCompatibleAmmoUI(const SOLDIERTYPE* pSoldier, const OBJECT
 
 	//if ( !fFoundAttachment )
 	//{
-		if( ( GCM->getItem(pTestObject->usItem)->isGun()) )
+		if( ( Item [ pTestObject->usItem ].usItemClass & IC_GUN ) )
 		{
 			for ( cnt = 0; cnt < NUM_INV_SLOTS; cnt++ )
 			{
@@ -1335,7 +1336,7 @@ BOOLEAN InternalHandleCompatibleAmmoUI(const SOLDIERTYPE* pSoldier, const OBJECT
 			}
 		}
 
-		else if( ( GCM->getItem(pTestObject->usItem)->isAmmo() ) )
+		else if( ( Item [ pTestObject->usItem ].usItemClass & IC_AMMO ) )
 		{
 			for ( cnt = 0; cnt < NUM_INV_SLOTS; cnt++ )
 			{
@@ -1554,23 +1555,20 @@ void INVRenderItem(SGPVSurface* const buffer, SOLDIERTYPE const* const s, OBJECT
 	if (o.usItem    == NOTHING)     return;
 	if (dirty_level == DIRTYLEVEL0) return;
 
-	const ItemModel * item =
-		ubStatusIndex < RENDER_ITEM_ATTACHMENT1 ? GCM->getItem(o.usItem) :
-		GCM->getItem(o.usAttachItem[ubStatusIndex - RENDER_ITEM_ATTACHMENT1]);
+	INVTYPE const& item =
+		ubStatusIndex < RENDER_ITEM_ATTACHMENT1 ? Item[o.usItem] :
+		Item[o.usAttachItem[ubStatusIndex - RENDER_ITEM_ATTACHMENT1]];
 
 	if (dirty_level == DIRTYLEVEL2)
 	{
 		// Center the object in the slot
 		SGPVObject  const& item_vo = GetInterfaceGraphicForItem(item);
-		UINT8       const  gfx_idx = item->getGraphicNum();
+		UINT8       const  gfx_idx = item.ubGraphicNum;
 		ETRLEObject const& e       = item_vo.SubregionProperties(gfx_idx);
 		INT16       const  cx      = sX + (sWidth  - e.usWidth)  / 2 - e.sOffsetX;
 		INT16       const  cy      = sY + (sHeight - e.usHeight) / 2 - e.sOffsetY;
 
-    if(GCM->getGamePolicy()->f_draw_item_shadow)
-    {
-      BltVideoObjectOutlineShadow(buffer, &item_vo, gfx_idx, cx - 2, cy + 2);
-    }
+		BltVideoObjectOutlineShadow(buffer, &item_vo, gfx_idx, cx - 2, cy + 2);
 		BltVideoObjectOutline(      buffer, &item_vo, gfx_idx, cx,     cy, outline_colour);
 
 		if (buffer == FRAME_BUFFER)
@@ -1588,7 +1586,7 @@ void INVRenderItem(SGPVSurface* const buffer, SOLDIERTYPE const* const s, OBJECT
 		SetFont(ITEM_FONT);
 		SetFontBackground(FONT_MCOLOR_BLACK);
 
-		if (item->getItemClass() == IC_GUN && o.usItem != ROCKET_LAUNCHER)
+		if (item.usItemClass == IC_GUN && o.usItem != ROCKET_LAUNCHER)
 		{
 			// Display free rounds remianing
 			UINT8 colour;
@@ -1663,7 +1661,7 @@ void INVRenderItem(SGPVSurface* const buffer, SOLDIERTYPE const* const s, OBJECT
 			GPrintInvalidate(sNewX, sNewY, attach_marker);
 		}
 
-		if (s && &o == &s->inv[HANDPOS] && GCM->getItem(o.usItem)->getItemClass() == IC_GUN && s->bWeaponMode != WM_NORMAL)
+		if (s && &o == &s->inv[HANDPOS] && Item[o.usItem].usItemClass == IC_GUN && s->bWeaponMode != WM_NORMAL)
 		{
 			SetFontForeground(FONT_DKRED);
 
@@ -1801,10 +1799,10 @@ void InternalInitItemDescriptionBox(OBJECTTYPE* const o, const INT16 sX, const I
 		MSYS_DefineRegion(&gInvDesc, gsInvDescX, gsInvDescY, gsInvDescX + ITEMDESC_WIDTH, gsInvDescY + ITEMDESC_HEIGHT, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
 	}
 
-	if (GCM->getItem(o->usItem)->isGun()&& o->usItem != ROCKET_LAUNCHER)
+	if (Item[o->usItem].usItemClass & IC_GUN && o->usItem != ROCKET_LAUNCHER)
 	{
 		wchar_t	pStr[10];
-		swprintf(pStr, lengthof(pStr), L"%d/%d", o->ubGunShotsLeft, GCM->getWeapon(o->usItem)->ubMagSize);
+		swprintf(pStr, lengthof(pStr), L"%d/%d", o->ubGunShotsLeft, Weapon[o->usItem].ubMagSize);
 
 		INT32 img;
 		switch (o->ubGunAmmoType)
@@ -1955,7 +1953,7 @@ void InternalInitItemDescriptionBox(OBJECTTYPE* const o, const INT16 sX, const I
 	if (gpItemPointer != NULL && !gfItemDescHelpTextOffset && !CheckFact(FACT_ATTACHED_ITEM_BEFORE, 0))
 	{
 		const wchar_t* text;
-		if (!(GCM->getItem(o->usItem)->getFlags() & ITEM_HIDDEN_ADDON) && (
+		if (!(Item[o->usItem].fFlags & ITEM_HIDDEN_ADDON) && (
 					ValidAttachment(gpItemPointer->usItem, o->usItem) ||
 					ValidLaunchable(gpItemPointer->usItem, o->usItem) ||
 					ValidMerge(     gpItemPointer->usItem, o->usItem)
@@ -1979,7 +1977,7 @@ void InternalInitItemDescriptionBox(OBJECTTYPE* const o, const INT16 sX, const I
 
 static void ReloadItemDesc(void)
 {
-	guiItemGraphic = LoadTileGraphicForItem(GCM->getItem(gpItemDescObject->usItem));
+	guiItemGraphic = LoadTileGraphicForItem(Item[gpItemDescObject->usItem]);
 
 	//
 	// Load name, desc
@@ -2118,7 +2116,7 @@ static void ItemDescAttachmentsCallback(MOUSE_REGION* pRegion, INT32 iReason)
 			// nb pointer could be NULL because of inventory manipulation in mapscreen from sector inv
 			if ( !gpItemPointerSoldier || EnoughPoints( gpItemPointerSoldier, AP_RELOAD_GUN, 0, TRUE ) )
 			{
-				if ( (GCM->getItem(gpItemPointer->usItem)->getFlags() & ITEM_INSEPARABLE) && ValidAttachment( gpItemPointer->usItem, gpItemDescObject->usItem ) )
+				if ( (Item[ gpItemPointer->usItem ].fFlags & ITEM_INSEPARABLE) && ValidAttachment( gpItemPointer->usItem, gpItemDescObject->usItem ) )
 				{
 					DoScreenIndependantMessageBox(g_langRes->Message[STR_PERMANENT_ATTACHMENT], MSG_BOX_FLAG_YESNO, PermanantAttachmentMessageBoxCallBack);
 					return;
@@ -2247,10 +2245,7 @@ void RenderItemDescriptionBox(void)
 		SGPBox      const& xy = in_map ? g_desc_item_box_map: g_desc_item_box;
 		INT32       const  x  = dx + xy.x + (xy.w - e.usWidth)  / 2 - e.sOffsetX;
 		INT32       const  y  = dy + xy.y + (xy.h - e.usHeight) / 2 - e.sOffsetY;
-    if(GCM->getGamePolicy()->f_draw_item_shadow)
-    {
-      BltVideoObjectOutlineShadow(guiSAVEBUFFER, guiItemGraphic, 0, x - 2, y + 2);
-    }
+		BltVideoObjectOutlineShadow(guiSAVEBUFFER, guiItemGraphic, 0, x - 2, y + 2);
 		BltVideoObject(             guiSAVEBUFFER, guiItemGraphic, 0, x,     y);
 	}
 
@@ -2265,7 +2260,7 @@ void RenderItemDescriptionBox(void)
 	bool hatch_out_attachments = gfItemDescObjectIsAttachment; // if examining attachment, always hatch out attachment slots
 	if (OBJECTTYPE const* const ptr_obj = gpItemPointer)
 	{
-		if (GCM->getItem(ptr_obj->usItem)->getFlags() & ITEM_HIDDEN_ADDON ||
+		if (Item[ptr_obj->usItem].fFlags & ITEM_HIDDEN_ADDON ||
 				(
 					!ValidItemAttachment(&obj, ptr_obj->usItem, FALSE) &&
 					!ValidMerge(ptr_obj->usItem, obj.usItem)           &&
@@ -2306,9 +2301,9 @@ void RenderItemDescriptionBox(void)
 		}
 	}
 
-	const ItemModel * item = GCM->getItem(obj.usItem);
+	INVTYPE const& item = Item[obj.usItem];
 
-	if (item->isGun())
+	if (item.usItemClass & IC_GUN)
 	{
 		// display bullets for ROF
 		{
@@ -2317,12 +2312,12 @@ void RenderItemDescriptionBox(void)
 			BltVideoObject(guiSAVEBUFFER, guiBullet, 0, x, y);
 		}
 
-		const WeaponModel * w = GCM->getWeapon(obj.usItem);
-		if (w->ubShotsPerBurst > 0)
+		WEAPONTYPE const& w = Weapon[obj.usItem];
+		if (w.ubShotsPerBurst > 0)
 		{
 			INT32       x = in_map ? MAP_BULLET_BURST_X : BULLET_BURST_X;
 			INT32 const y = in_map ? MAP_BULLET_BURST_Y : BULLET_BURST_Y;
-			for (INT32 i = w->ubShotsPerBurst; i != 0; --i)
+			for (INT32 i = w.ubShotsPerBurst; i != 0; --i)
 			{
 				BltVideoObject(guiSAVEBUFFER, guiBullet, 0, x, y);
 				x += BULLET_WIDTH + 1;
@@ -2354,13 +2349,13 @@ void RenderItemDescriptionBox(void)
 	if (ITEM_PROS_AND_CONS(obj.usItem))
 	{
 		{
-			const WeaponModel * w = GCM->getWeapon(obj.usItem);
+			WEAPONTYPE const& w = Weapon[obj.usItem];
 			size_t            n = 0;
-			if (w->calibre->index != NOAMMO)
+			if (w.ubCalibre != NOAMMO)
 			{
-				n += swprintf(pStr, lengthof(pStr), L"%ls ", w->calibre->getName());
+				n += swprintf(pStr, lengthof(pStr), L"%ls ", AmmoCaliber[w.ubCalibre]);
 			}
-			n += swprintf(pStr + n, lengthof(pStr) - n, L"%ls", WeaponType[w->ubWeaponType]);
+			n += swprintf(pStr + n, lengthof(pStr) - n, L"%ls", WeaponType[w.ubWeaponType]);
 			if (wchar_t const* const imprint = GetObjectImprint(obj))
 			{ // Add name noting imprint
 				n += swprintf(pStr + n, lengthof(pStr) - n, L" (%ls)", imprint);
@@ -2406,7 +2401,7 @@ void RenderItemDescriptionBox(void)
 	SetFontShadow(DEFAULT_SHADOW);
 
 	// Render, stat  name
-	if (item->isWeapon())
+	if (item.usItemClass & IC_WEAPON)
 	{
 		SetFontForeground(6);
 
@@ -2414,23 +2409,23 @@ void RenderItemDescriptionBox(void)
 
 		//LABELS
 		mprintf(dx + ids[0].sX, dy + ids[0].sY, gWeaponStatsDesc[0], GetWeightUnitString()); // mass
-		if (item->getItemClass() & (IC_GUN | IC_LAUNCHER))
+		if (item.usItemClass & (IC_GUN | IC_LAUNCHER))
 		{
 			MPrint(dx + ids[2].sX, dy + ids[2].sY, gWeaponStatsDesc[3]); // range
 		}
-		if (!(item->isLauncher()) && obj.usItem != ROCKET_LAUNCHER)
+		if (!(item.usItemClass & IC_LAUNCHER) && obj.usItem != ROCKET_LAUNCHER)
 		{
 			MPrint(dx + ids[3].sX, dy + ids[3].sY, gWeaponStatsDesc[4]); // damage
 		}
 		MPrint(dx + ids[4].sX, dy + ids[4].sY, gWeaponStatsDesc[5]); // APs
-		if (item->isGun())
+		if (item.usItemClass & IC_GUN)
 		{
 			MPrint(dx + ids[6].sX, dy + ids[6].sY, gWeaponStatsDesc[6]); // = (sic)
 		}
 		MPrint(dx + ids[1].sX, dy + ids[1].sY, gWeaponStatsDesc[1]); // status
 
-    const WeaponModel * w = GCM->getWeapon(obj.usItem);
-    if (w->ubShotsPerBurst > 0)
+		WEAPONTYPE const& w = Weapon[obj.usItem];
+		if (w.ubShotsPerBurst > 0)
 		{
 			MPrint(dx + ids[7].sX, dy + ids[7].sY, gWeaponStatsDesc[6]); // = (sic)
 		}
@@ -2447,7 +2442,7 @@ void RenderItemDescriptionBox(void)
 		FindFontRightCoordinates(dx + ids[0].sX + ids[0].sValDx, dy + ids[0].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 		MPrint(usX, usY, pStr);
 
-		if (item->getItemClass() & (IC_GUN | IC_LAUNCHER))
+		if (item.usItemClass & (IC_GUN | IC_LAUNCHER))
 		{ // Range
 			UINT16 const range = GunRange(obj);
 			HighlightIf(range >= EXCEPTIONAL_RANGE);
@@ -2456,10 +2451,10 @@ void RenderItemDescriptionBox(void)
 			MPrint(usX, usY, pStr);
 		}
 
-		if (!(item->isLauncher()) && obj.usItem != ROCKET_LAUNCHER)
+		if (!(item.usItemClass & IC_LAUNCHER) && obj.usItem != ROCKET_LAUNCHER)
 		{ // Damage
-			HighlightIf(w->ubImpact >= EXCEPTIONAL_DAMAGE);
-			swprintf(pStr, lengthof(pStr), L"%2d", w->ubImpact);
+			HighlightIf(w.ubImpact >= EXCEPTIONAL_DAMAGE);
+			swprintf(pStr, lengthof(pStr), L"%2d", w.ubImpact);
 			FindFontRightCoordinates(dx + ids[3].sX + ids[3].sValDx, dy + ids[3].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 			MPrint(usX, usY, pStr);
 		}
@@ -2472,9 +2467,9 @@ void RenderItemDescriptionBox(void)
 		FindFontRightCoordinates(dx + ids[4].sX + ids[4].sValDx, dy + ids[4].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 		MPrint(usX, usY, pStr);
 
-		if (w->ubShotsPerBurst > 0)
+		if (w.ubShotsPerBurst > 0)
 		{
-			HighlightIf(w->ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || obj.usItem == G11);
+			HighlightIf(w.ubShotsPerBurst >= EXCEPTIONAL_BURST_SIZE || obj.usItem == G11);
 			swprintf(pStr, lengthof(pStr), L"%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, obj));
 			FindFontRightCoordinates(dx + ids[5].sX + ids[5].sValDx, dy + ids[5].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 			MPrint(usX, usY, pStr);
@@ -2550,7 +2545,7 @@ void RenderItemDescriptionBox(void)
 			MPrint(usX, usY, pStr);
 		}
 	}
-	else if (item->getItemClass() == IC_MONEY)
+	else if (item.usItemClass == IC_MONEY)
 	{
 		SetFontForeground(FONT_FCOLOR_WHITE);
 		SPrintMoney(pStr, obj.uiMoneyAmount);
@@ -2566,7 +2561,7 @@ void RenderItemDescriptionBox(void)
 		INV_DESC_STATS const* const ids = in_map ? gMapWeaponStats : gWeaponStats;
 
 		/* amount for ammunition, status otherwise */
-		wchar_t const* const label = GCM->getItem(gpItemDescObject->usItem)->isAmmo() ? gWeaponStatsDesc[2] : gWeaponStatsDesc[1];
+		wchar_t const* const label = Item[gpItemDescObject->usItem].usItemClass & IC_AMMO ? gWeaponStatsDesc[2] : gWeaponStatsDesc[1];
 		MPrint(dx + ids[1].sX, dy + ids[1].sY, label);
 
 		//Weight
@@ -2575,9 +2570,9 @@ void RenderItemDescriptionBox(void)
 		// Values
 		SetFontForeground(5);
 
-		if (item->isAmmo())
+		if (item.usItemClass & IC_AMMO)
 		{ // Ammo - print amount
-			swprintf(pStr, lengthof(pStr), L"%d/%d", obj.ubShotsLeft[0], item->asAmmo()->capacity);
+			swprintf(pStr, lengthof(pStr), L"%d/%d", obj.ubShotsLeft[0], Magazine[item.ubClassIndex].ubMagSize);
 			FindFontRightCoordinates(dx + ids[1].sX + ids[1].sValDx, dy + ids[1].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 			MPrint(usX, usY, pStr);
 		}
@@ -2593,7 +2588,7 @@ void RenderItemDescriptionBox(void)
 		FindFontRightCoordinates(dx + ids[0].sX + ids[0].sValDx, dy + ids[0].sY, ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2, &usX, &usY);
 		MPrint(usX, usY, pStr);
 
-		if (InKeyRingPopup() || item->isKey())
+		if (InKeyRingPopup() || item.usItemClass & IC_KEY)
 		{
 			SetFontForeground(6);
 
@@ -2747,7 +2742,7 @@ void DeleteItemDescriptionBox( )
 		MSYS_RemoveRegion( &gProsAndConsRegions[1] );
 	}
 
-	if(( ( GCM->getItem(gpItemDescObject->usItem)->isGun()) && gpItemDescObject->usItem != ROCKET_LAUNCHER ) )
+	if(( ( Item[ gpItemDescObject->usItem ].usItemClass & IC_GUN ) && gpItemDescObject->usItem != ROCKET_LAUNCHER ) )
 	{
 		// Remove button
 		UnloadButtonImage( giItemDescAmmoButtonImages );
@@ -3223,7 +3218,7 @@ void DrawItemTileCursor( )
 		//gViewportRegion.ChangeCursor(VIDEO_NO_CURSOR);
 
 		// Get tile graphic fro item
-		UINT16 const usIndex = GetTileGraphicForItem(GCM->getItem(gpItemPointer->usItem));
+		UINT16 const usIndex = GetTileGraphicForItem(Item[gpItemPointer->usItem]);
 
 		// ONly load if different....
 		if ( usIndex != gusItemPointer || uiOldCursorId != uiCursorId )
@@ -3245,7 +3240,7 @@ static bool IsValidAmmoToReloadRobot(SOLDIERTYPE const& s, OBJECTTYPE const& amm
 	OBJECTTYPE const& weapon = s.inv[HANDPOS];
 	if (!CompatibleAmmoForGun(&ammo, &weapon))
 	{
-		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ROBOT_NEEDS_GIVEN_CALIBER_STR], GCM->getWeapon(weapon.usItem)->calibre->getName());
+		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ROBOT_NEEDS_GIVEN_CALIBER_STR], AmmoCaliber[Weapon[weapon.usItem].ubCalibre]);
 		return false;
 	}
 	return true;
@@ -3404,9 +3399,8 @@ BOOLEAN HandleItemPointerClick( UINT16 usMapPos )
 							// CHECK IF WE ARE AT THIS GRIDNO NOW
 							if ( gpItemPointerSoldier->sGridNo != sActionGridNo )
 							{
-                std::unique_ptr<Soldier> soldier(new Soldier(gpItemPointerSoldier));
-
-                soldier->setPendingAction(MERC_RELOADROBOT);
+								// SEND PENDING ACTION
+								gpItemPointerSoldier->ubPendingAction = MERC_RELOADROBOT;
 
 								// WALK UP TO DEST FIRST
 								EVENT_InternalGetNewSoldierPath( gpItemPointerSoldier, sActionGridNo, gpItemPointerSoldier->usUIMovementMode, FALSE, FALSE );
@@ -4093,10 +4087,10 @@ void DeleteKeyRingPopup(void)
 }
 
 
-SGPVObject const& GetInterfaceGraphicForItem(const ItemModel *item)
+SGPVObject const& GetInterfaceGraphicForItem(INVTYPE const& item)
 {
 	// CHECK SUBCLASS
-	switch (item->getGraphicType())
+	switch (item.ubGraphicType)
 	{
 		case 0:  return *guiGUNSM;
 		case 1:  return *guiP1ITEMS;
@@ -4106,24 +4100,24 @@ SGPVObject const& GetInterfaceGraphicForItem(const ItemModel *item)
 }
 
 
-UINT16 GetTileGraphicForItem(const ItemModel * item)
+UINT16 GetTileGraphicForItem(INVTYPE const& item)
 {
 	UINT32 Type;
-	switch (item->getGraphicType())
+	switch (item.ubGraphicType)
 	{
 		case 0:  Type = GUNS;    break;
 		case 1:  Type = P1ITEMS; break;
 		case 2:  Type = P2ITEMS; break;
 		default: Type = P3ITEMS; break;
 	}
-	return GetTileIndexFromTypeSubIndex(Type, item->getGraphicNum() + 1);
+	return GetTileIndexFromTypeSubIndex(Type, item.ubGraphicNum + 1);
 }
 
 
-SGPVObject* LoadTileGraphicForItem(const ItemModel * item)
+SGPVObject* LoadTileGraphicForItem(const INVTYPE& item)
 {
 	const char* Prefix;
-	switch (item->getGraphicType())
+	switch (item.ubGraphicType)
 	{
 		case 0:  Prefix = "gun";    break;
 		case 1:  Prefix = "p1item"; break;
@@ -4133,7 +4127,7 @@ SGPVObject* LoadTileGraphicForItem(const ItemModel * item)
 
 	//Load item
 	SGPFILENAME ImageFile;
-	sprintf(ImageFile, BIGITEMSDIR "/%s%02d.sti", Prefix, item->getGraphicNum());
+	sprintf(ImageFile, BIGITEMSDIR "/%s%02d.sti", Prefix, item.ubGraphicNum);
 	return AddVideoObjectFromFile(ImageFile);
 }
 
@@ -4627,7 +4621,7 @@ static void SetupPickupPage(INT8 bPage)
 
 	    // Adjust for ammo, other thingys..
 			wchar_t pStr[200];
-	    if (GCM->getItem(o.usItem)->isAmmo() || GCM->getItem(o.usItem)->isKey())
+	    if (Item[o.usItem].usItemClass & IC_AMMO || Item[o.usItem].usItemClass & IC_KEY)
 	    {
         swprintf( pStr, lengthof(pStr), L"" );
 	    }
@@ -4736,7 +4730,7 @@ void RenderItemPickupMenu()
 
 			// Get item to render
 			OBJECTTYPE const& o    = GetWorldItem(world_item).o;
-			const ItemModel * item = GCM->getItem(o.usItem);
+			INVTYPE    const& item = Item[o.usItem];
 
 			UINT16              const usItemTileIndex = GetTileGraphicForItem(item);
 			TILE_ELEMENT const* const te              = &gTileDatabase[usItemTileIndex];
@@ -4783,7 +4777,7 @@ void RenderItemPickupMenu()
 			}
 
 			// Render name
-			if (item->getItemClass() == IC_MONEY)
+			if (item.usItemClass == IC_MONEY)
 			{
 				wchar_t pStr2[20];
 				SPrintMoney(pStr2, o.uiMoneyAmount);
@@ -5197,7 +5191,7 @@ void GetHelpTextForItem(wchar_t* const dst, size_t const length, OBJECTTYPE cons
 	{
 		SPrintMoney(dst, obj.uiMoneyAmount);
 	}
-	else if (GCM->getItem(usItem)->getItemClass() == IC_MONEY)
+	else if (Item[usItem].usItemClass == IC_MONEY)
 	{ // alternate money like silver or gold
 		wchar_t pStr2[20];
 		SPrintMoney(pStr2, obj.uiMoneyAmount);
@@ -5210,12 +5204,12 @@ void GetHelpTextForItem(wchar_t* const dst, size_t const length, OBJECTTYPE cons
 	else
 	{
 		size_t n = swprintf(dst, length, L"%ls", ItemNames[usItem]);
-		if (!gGameOptions.fGunNut && GCM->getItem(usItem)->getItemClass() == IC_GUN)
+		if (!gGameOptions.fGunNut && Item[usItem].usItemClass == IC_GUN)
 		{
-			const CalibreModel * calibre = GCM->getWeapon(usItem)->calibre;
-			if (calibre->showInHelpText)
+			AmmoKind const calibre = Weapon[usItem].ubCalibre;
+			if (calibre != NOAMMO && calibre != AMMOROCKET)
 			{
-				n += swprintf(dst + n, length - n, L" (%ls)", calibre->getName());
+				n += swprintf(dst + n, length - n, L" (%ls)", AmmoCaliber[calibre]);
 			}
 		}
 
@@ -5341,9 +5335,9 @@ void UpdateItemHatches(void)
 
 void SetMouseCursorFromItem(UINT16 const item_idx)
 {
-	const ItemModel * item = GCM->getItem(item_idx);
+	INVTYPE    const& item = Item[item_idx];
 	SGPVObject const& vo   = GetInterfaceGraphicForItem(item);
-	SetExternMouseCursor(vo, item->getGraphicNum());
+	SetExternMouseCursor(vo, item.ubGraphicNum);
 	SetCurrentCursorFromDatabase(EXTERN_CURSOR);
 }
 

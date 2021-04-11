@@ -1,33 +1,30 @@
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/UI_Cursors.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Utils/Cursors.h"
-#include "sgp/Cursor_Control.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Utils/Text.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/Tactical/PathAI.h"
-#include "sgp/Debug.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Handle_Items.h"
+#include "Items.h"
+#include "Soldier_Find.h"
+#include "Structure.h"
+#include "TileDef.h"
+#include "Timer_Control.h"
+#include "Weapons.h"
+#include "Soldier_Control.h"
+#include "Overhead.h"
+#include "Handle_UI.h"
+#include "Animation_Control.h"
+#include "Points.h"
+#include "Sound_Control.h"
+#include "Isometric_Utils.h"
+#include "Animation_Data.h"
+#include "UI_Cursors.h"
+#include "LOS.h"
+#include "Interface.h"
+#include "Cursors.h"
+#include "Cursor_Control.h"
+#include "Structure_Wrap.h"
+#include "Physics.h"
+#include "Soldier_Macros.h"
+#include "Text.h"
+#include "Interactive_Tiles.h"
+#include "PathAI.h"
+#include "Debug.h"
 
 
 // FUNCTIONS FOR ITEM CURSOR HANDLING
@@ -105,7 +102,7 @@ UICursorID GetProperItemCursor(SOLDIERTYPE* const s, GridNo const map_pos, BOOLE
 	if (gTacticalStatus.ubAttackBusyCount == 0)
 	{
 		UINT16 const in_hand = s->inv[HANDPOS].usItem;
-		if (GCM->getItem(in_hand)->isWeapon()) s->usAttackingWeapon = in_hand;
+		if (Item[in_hand].usItemClass & IC_WEAPON) s->usAttackingWeapon = in_hand;
 	}
 
 	UICursorID               cursor      = NO_UICURSOR;
@@ -165,7 +162,7 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE*, BOOLEAN fDisplay, BOOLEAN 
 
 static UICursorID HandleActivatedTargetCursor(SOLDIERTYPE* const s, GridNo const map_pos, BOOLEAN const recalc)
 {
-	bool const is_throwing_knife = GCM->getItem(s->inv[HANDPOS].usItem)->getItemClass() == IC_THROWING_KNIFE;
+	bool const is_throwing_knife = Item[s->inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE;
 	if (is_throwing_knife)
 	{
 		// If we are in realtime, follow!
@@ -375,7 +372,7 @@ static UICursorID HandleActivatedTargetCursor(SOLDIERTYPE* const s, GridNo const
 
 static UICursorID HandleNonActivatedTargetCursor(SOLDIERTYPE* const s, GridNo const map_pos, BOOLEAN const show_APs, BOOLEAN const fRecalc, MouseMoveState const uiCursorFlags)
 {
-	bool const is_throwing_knife = GCM->getItem(s->inv[HANDPOS].usItem)->getItemClass() == IC_THROWING_KNIFE;
+	bool const is_throwing_knife = Item[s->inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE;
 	if (!is_throwing_knife)
 	{
 		if (gTacticalStatus.uiFlags & REALTIME || !(gTacticalStatus.uiFlags & INCOMBAT))
@@ -563,7 +560,7 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE* const s, BOOLEAN const disp
 		{
 			case AIM_SHOT_HEAD:
 				hit_location = // If we have a knife in hand, change string
-					GCM->getItem(s->inv[HANDPOS].usItem)->getItemClass() == IC_BLADE ?
+					Item[s->inv[HANDPOS].usItem].usItemClass == IC_BLADE ?
 					TacticalStr[NECK_HIT_LOCATION_STR] :
 					TacticalStr[HEAD_HIT_LOCATION_STR];
 				break;
@@ -815,7 +812,7 @@ static UICursorID HandleNonActivatedTossCursor(SOLDIERTYPE* const s, GridNo cons
 	    {
 		    UINT16 const attach_item = o.usAttachItem[i];
 		    if (attach_item == NOTHING)                        continue;
-				if (!(GCM->getItem(attach_item)->isExplosive())) continue;
+				if (!(Item[attach_item].usItemClass & IC_EXPLOSV)) continue;
 				CreateItem(attach_item, o.bAttachStatus[i], &TempObject);
 				break;
 	    }
@@ -1240,7 +1237,7 @@ ItemCursor GetActionModeCursor(SOLDIERTYPE const* const pSoldier)
 	usInHand = pSoldier->inv[HANDPOS].usItem;
 
 	// Start off with what is in our hand
-	ItemCursor ubCursor = GCM->getItem(usInHand)->getCursor();
+	ItemCursor ubCursor = Item[ usInHand ].ubCursor;
 
 	// OK, check if what is in our hands has a detonator attachment...
 	// Detonators can only be on invalidcurs things...
@@ -1285,7 +1282,7 @@ void HandleUICursorRTFeedback( SOLDIERTYPE *pSoldier )
 			}
 			else
 			{
-				if ( GCM->getItem(pSoldier->inv[ HANDPOS ].usItem)->getItemClass() == IC_THROWING_KNIFE )
+				if ( Item[ pSoldier->inv[ HANDPOS ].usItem ].usItemClass == IC_THROWING_KNIFE )
 				{
 					BeginDisplayTimedCursor( RED_THROW_UICURSOR, 500 );
 				}

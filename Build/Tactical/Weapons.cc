@@ -1,52 +1,48 @@
-#include "Build/Directories.h"
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Auto_Resolve.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Bullets.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/SoundMan.h"
-#include "src/CalibreModel.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
+#include "Directories.h"
+#include "Font_Control.h"
+#include "Handle_Items.h"
+#include "Overhead_Types.h"
+#include "Soldier_Control.h"
+#include "Overhead.h"
+#include "Event_Pump.h"
+#include "Structure.h"
+#include "TileDef.h"
+#include "Timer_Control.h"
+#include "Weapons.h"
+#include "Animation_Control.h"
+#include "Handle_UI.h"
+#include "Isometric_Utils.h"
+#include "WorldMan.h"
+#include "Points.h"
+#include "AI.h"
+#include "LOS.h"
+#include "RenderWorld.h"
+#include "OppList.h"
+#include "Interface.h"
+#include "Message.h"
+#include "Campaign.h"
+#include "Items.h"
+#include "Text.h"
+#include "Soldier_Profile.h"
+#include "Tile_Animation.h"
+#include "Dialogue_Control.h"
+#include "SkillCheck.h"
+#include "Explosion_Control.h"
+#include "Quests.h"
+#include "Physics.h"
+#include "Random.h"
+#include "Vehicles.h"
+#include "Bullets.h"
+#include "Morale.h"
+#include "Meanwhile.h"
+#include "GameSettings.h"
+#include "SaveLoadMap.h"
+#include "Soldier_Macros.h"
+#include "SmokeEffects.h"
+#include "Auto_Resolve.h"
+#include "SoundMan.h"
+#include "MemMan.h"
+#include "Debug.h"
 
 
 #define MINCHANCETOHIT          1
@@ -64,6 +60,8 @@
 #define SNIPERSCOPE_AIM_BONUS   20
 // bonus to hit with working laser scope
 #define LASERSCOPE_BONUS				20
+
+#define NO_WEAPON_SOUND        NO_SOUND
 
 #define HEAD_DAMAGE_ADJUSTMENT( x ) ((x * 3) / 2)
 #define LEGS_DAMAGE_ADJUSTMENT( x ) (x / 2)
@@ -84,6 +82,173 @@ BOOLEAN gfReportHitChances = FALSE;
 //GLOBALS
 
 // TODO: Move strings to extern file
+
+
+#define      NOWEAPON(range)                                                                                    { NOGUNCLASS,   NOT_GUN,      NOAMMO,    0,                0,        0,          0,      0,      0,     0, range,    0,   0,  0,  0, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND } // XXX it is magazine size, not range
+#define        PISTOL(ammo, update, impact, rt, rof,                       deadl, clip, range, av, hv, sd)      { HANDGUNCLASS, GUN_PISTOL,   ammo,      rt,             rof,        0,          0, update, impact, deadl, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, S_RELOAD_PISTOL, S_LNL_PISTOL }
+#define      M_PISTOL(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, bsd) { HANDGUNCLASS, GUN_M_PISTOL, ammo,      rt,             rof, burstrof, burstpenal, update, impact, deadl, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL }
+#define           SMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, bsd) { SMGCLASS,     GUN_SMG,      ammo,      rt,             rof, burstrof, burstpenal, update, impact, deadl, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SMG, S_LNL_SMG }
+#define      SN_RIFLE(ammo, update, impact, rt, rof,                       deadl, clip, range, av, hv, sd)      { RIFLECLASS,   GUN_SN_RIFLE, ammo,      rt,             rof,        0,          0, update, impact, deadl, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE }
+#define         RIFLE(ammo, update, impact, rt, rof,                       deadl, clip, range, av, hv, sd)      { RIFLECLASS,   GUN_RIFLE,    ammo,      rt,             rof,        0,          0, update, impact, deadl, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE }
+#define       ASRIFLE(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, bsd) { RIFLECLASS,   GUN_AS_RIFLE, ammo,      rt,             rof, burstrof, burstpenal, update, impact, deadl, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE }
+#define       SHOTGUN(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, bsd) { SHOTGUNCLASS, GUN_SHOTGUN,  ammo,      rt,             rof, burstrof, burstpenal, update, impact, deadl, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SHOTGUN, S_LNL_SHOTGUN }
+#define           LMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, bsd) { MGCLASS,      GUN_LMG,      ammo,      rt,             rof, burstrof, burstpenal, update, impact, deadl, clip, range, 200, av, hv, sd, bsd, S_RELOAD_LMG, S_LNL_LMG }
+#define         BLADE(              impact,     rof,                       deadl,       range, av,     sd)      { KNIFECLASS,   NOT_GUN,      NOAMMO,    AP_READY_KNIFE, rof,        0,          0,      0, impact, deadl,    0, range, 200, av,  0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define THROWINGBLADE(              impact,     rof,                       deadl,       range, av,     sd)      { KNIFECLASS,   NOT_GUN,      NOAMMO,    AP_READY_KNIFE, rof,        0,          0,      0, impact, deadl,    0, range, 200, av,  0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define   PUNCHWEAPON(              impact,     rof,                       deadl,              av,     sd)      { KNIFECLASS,   NOT_GUN,      NOAMMO,    0,              rof,        0,          0,      0, impact, deadl,    0,    10, 200, av,  0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define      LAUNCHER(      update,         rt, rof,                       deadl,       range, av, hv, sd)      { RIFLECLASS,   NOT_GUN,      NOAMMO,    rt,             rof,        0,          0, update,      1, deadl,    0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define           LAW(      update,         rt, rof,                       deadl,       range, av, hv, sd)      { RIFLECLASS,   NOT_GUN,      NOAMMO,    rt,             rof,        0,          0, update,     80, deadl,    1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define        CANNON(      update,         rt, rof,                       deadl,       range, av, hv, sd)      { RIFLECLASS,   NOT_GUN,      NOAMMO,    rt,             rof,        0,          0, update,     80, deadl,    1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+#define     MONSTSPIT(              impact,     rof,                       deadl, clip, range, av, hv, sd)      { MONSTERCLASS, NOT_GUN,      AMMOMONST, AP_READY_KNIFE, rof,        0,          0,    250, impact, deadl, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+
+// ranges are in world units, calculated by:
+// 100 + real-range-in-metres/10
+// then I scaled them down... I forget how much by!
+
+// JA2 GOLD: reduced pistol ready time to 0, tweaked sniper rifle values and G11 range
+WEAPONTYPE const Weapon[] =
+{
+  /* Nothing           */      NOWEAPON(10), // must have min range of 10
+
+  /* Description                        Ammo        Bullet speed   Burst rate of fire   Attack volume                    Burst sound
+   *                                    |           |   Impact     |      Deadlineass   |   Impact volume                |
+   *                                    |           |   |   Ready time    |    Clip size|   |   Sound                    |
+   *                                    |           |   |   |  Rate of fire    |   Range|   |   |                        |
+   *                                    |           |   |   |  |   |  Burst penalty|    |   |   |                        |
+   *                                    |           |   |   |  |   |  |   |    |   |    |   |   |                        | */
+  /* Glock 17          */        PISTOL(AMMO9,      24, 21, 0, 14,          8, 15, 120, 60,  5, S_GLOCK17                            ), // wt 6  // Austria
+  /* Glock 18          */      M_PISTOL(AMMO9,      24, 21, 0, 14, 5, 15,   9, 15, 120, 60,  5, S_GLOCK18,               S_BURSTTYPE1), // wt 6  // Austria
+  /* Beretta 92F       */        PISTOL(AMMO9,      23, 22, 0, 16,          9, 15, 120, 60,  5, S_BERETTA92                          ), // wt 11 // Italy
+  /* Beretta 93R       */      M_PISTOL(AMMO9,      23, 22, 0, 13, 5, 15,   9, 15, 120, 60,  5, S_BERETTA93,             S_BURSTTYPE1), // wt 11 // Italy
+  /* .38 S&W Special   */        PISTOL(AMMO38,     23, 22, 0, 11,          6,  6, 130, 63,  5, S_SWSPECIAL                          ), // wt 11 // Britain
+  /* .357 Barracuda    */        PISTOL(AMMO357,    23, 24, 0, 11,          7,  6, 135, 66,  6, S_BARRACUDA                          ), // wt 10 // Belgium
+  /* .357 DesertEagle  */        PISTOL(AMMO357,    24, 24, 0, 11,          7,  9, 135, 66,  6, S_DESERTEAGLE                        ), // wt 17 // US
+  /* .45 M1911         */        PISTOL(AMMO45,     24, 23, 0, 13,          9,  7, 125, 69,  6, S_M1911                              ), // wt 12 // US
+
+  /* H&K MP5K          */           SMG(AMMO9,      23, 23, 1, 15, 5,  8,  17, 30, 200, 75,  7, S_MP5K,                  S_BURSTTYPE1), // wt 21 // Germany; ROF 900 ?
+  /* .45 MAC-10        */           SMG(AMMO45,     23, 27, 2, 13, 5,  8,  20, 30, 200, 75,  7, S_MAC10,                 S_BURSTTYPE1), // wt 28 // US; ROF 1090
+  /* Thompson M1A1     */           SMG(AMMO45,     23, 24, 2, 10, 4,  8,  14, 30, 200, 75,  7, S_THOMPSON,              S_BURSTTYPE1), // wt 48 // US; ROF 700
+  /* Colt Commando     */           SMG(AMMO556,    20, 29, 2, 15, 4,  8,  23, 30, 200, 75,  7, S_COMMANDO,              S_BURSTTYPE1), // wt 26 // US; ROF
+  /* H&K MP53          */           SMG(AMMO556,    22, 25, 2, 12, 3,  8,  15, 30, 200, 75,  7, S_MP53,                  S_BURSTTYPE1), // wt 31 // Germany // eff range assumed; ROF 700 ?
+  /* AKSU-74           */           SMG(AMMO545,    21, 26, 2, 17, 4,  8,  21, 30, 200, 75,  7, S_AKSU74,                S_BURSTTYPE1), // wt 39 // USSR; ROF 800
+  /* 5.7mm FN P90      */           SMG(AMMO57,     21, 30, 2, 15, 5,  8,  42, 50, 225, 75,  7, S_P90,                   S_BURSTTYPE1), // wt 28 // Belgium; ROF 800-1000
+  /* Type-85           */           SMG(AMMO762W,   23, 23, 1, 10, 4, 11,  12, 30, 200, 75,  7, S_TYPE85,                S_BURSTTYPE1), // wt 19 // China; ROF 780
+
+  /* SKS               */         RIFLE(AMMO762W,   22, 31, 2, 13,         24, 10, 300, 80,  8, S_SKS                                ), // wt 39 // USSR
+  /* Dragunov          */      SN_RIFLE(AMMO762W,   21, 36, 5, 11,         32, 10, 750, 80,  8, S_DRAGUNOV                           ), // wt 43 // USSR
+  /* M24               */      SN_RIFLE(AMMO762N,   21, 36, 5,  8,         32,  5, 800, 80,  8, S_M24                                ), // wt 66 // US
+
+  /* Steyr AUG         */       ASRIFLE(AMMO556,    20, 30, 2, 13, 3,  8,  38, 30, 500, 77,  8, S_AUG,                   S_BURSTTYPE1), // wt 36 // Austria; ROF 650
+  /* H&K G41           */       ASRIFLE(AMMO556,    20, 29, 2, 13, 4,  8,  27, 30, 300, 77,  8, S_G41,                   S_BURSTTYPE1), // wt 41 // Germany; ROF 850
+  /* Ruger Mini-14     */         RIFLE(AMMO556,    20, 30, 2, 13,         20, 30, 250, 77,  8, S_RUGERMINI                          ), // wt 29 // US; ROF 750
+  /* C-7               */       ASRIFLE(AMMO556,    20, 30, 2, 15, 5,  8,  41, 30, 400, 77,  8, S_C7,                    S_BURSTTYPE1), // wt 36 // Canada; ROF 600-940
+  /* FA-MAS            */       ASRIFLE(AMMO556,    20, 30, 2, 17, 5,  8,  32, 30, 250, 77,  8, S_FAMAS,                 S_BURSTTYPE1), // wt 36 // France; ROF 900-1000
+  /* AK-74             */       ASRIFLE(AMMO545,    20, 28, 2, 17, 3,  8,  30, 30, 350, 77,  8, S_AK74,                  S_BURSTTYPE1), // wt 36 // USSR; ROF 650
+  /* AKM               */       ASRIFLE(AMMO762W,   22, 29, 2, 17, 3, 11,  25, 30, 250, 77,  8, S_AKM,                   S_BURSTTYPE1), // wt 43 // USSR; ROF 600
+  /* M-14              */       ASRIFLE(AMMO762N,   20, 33, 2, 13, 4, 11,  33, 20, 330, 80,  8, S_M14,                   S_BURSTTYPE1), // wt 29 // US; ROF 750
+  /* FN-FAL            */       ASRIFLE(AMMO762N,   20, 32, 2, 17, 3, 11,  41, 20, 425, 80,  8, S_FNFAL,                 S_BURSTTYPE1), // wt 43 // Belgium; ROF
+  /* H&K G3A3          */       ASRIFLE(AMMO762N,   21, 31, 2, 13, 3, 11,  26, 20, 300, 80,  8, S_G3A3,                  S_BURSTTYPE1), // wt 44 // Germany; ROF 500-600
+  /* H&K G11           */       ASRIFLE(AMMO47,     20, 27, 2, 13, 3,  0,  40, 50, 300, 80,  8, S_G11,                   S_BURSTTYPE1), // wt 38 // Germany; ROF 600
+
+  /* Remington M870    */       SHOTGUN(AMMO12G,    24, 32, 2,  7, 0,  0,  14,  7, 135, 80,  8, S_M870,                  S_BURSTTYPE1), // wt 36 // US; damage for solid slug
+  /* SPAS-15           */       SHOTGUN(AMMO12G,    24, 32, 2, 10, 0,  0,  18,  7, 135, 80,  8, S_SPAS,                  S_BURSTTYPE1), // wt 38 // Italy; semi-auto; damage for solid slug
+  /* CAWS              */       SHOTGUN(AMMOCAWS,   24, 40, 2, 10, 3, 11,  44, 10, 135, 80,  8, S_CAWS,                  S_BURSTTYPE1), // wt 41 // US; fires 8 flechettes at once in very close fixed pattern
+
+  /* FN Minimi         */           LMG(AMMO556,    20, 28, 3, 13, 6,  5,  48, 30, 500, 82,  8, S_FNMINI,                S_BURSTTYPE1), // wt 68 // Belgium; ROF 750-1000
+  /* RPK-74            */           LMG(AMMO545,    21, 30, 2, 13, 5,  5,  49, 30, 500, 82,  8, S_RPK74,                 S_BURSTTYPE1), // wt 48 // USSR; ROF 800?
+  /* H&K 21E           */           LMG(AMMO762N,   21, 32, 3, 13, 5,  7,  52, 20, 500, 82,  8, S_21E,                   S_BURSTTYPE1), // wt 93 // Germany; ROF 800
+
+	// NB blade distances will be = strength + dexterity /2
+
+  /* Combat knife      */         BLADE(                18,    12,          5,      40,  2,     NO_WEAPON_SOUND                      ),
+  /* Throwing knife    */ THROWINGBLADE(                15,    12,          4,     150,  2,     S_THROWKNIFE                         ),
+  /* rock              */      NOWEAPON(0),
+  /* grenade launcher  */      LAUNCHER(            30,     3,  5,         80,     500, 20, 10, S_GLAUNCHER                          ),
+  /* mortar            */      LAUNCHER(            30,     0,  5,        100,     550, 20, 10, S_MORTAR_SHOT                        ),
+  /* another rock      */      NOWEAPON(0),
+  /* young male claws  */         BLADE(                14,    10,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* young fem claws   */         BLADE(                18,    10,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* old male claws    */         BLADE(                20,    10,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* old fem claws     */         BLADE(                24,    10,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* queen's tentacles */         BLADE(                20,    10,          1,      70,  2,     NO_WEAPON_SOUND                      ),
+  /* queen's spit      */     MONSTSPIT(                20,    10,          1, 50, 300, 10,  5, ACR_SPIT                             ),
+  /* brass knuckles    */   PUNCHWEAPON(                12,    15,          1,           0,     NO_WEAPON_SOUND                      ),
+  /* underslung GL     */      LAUNCHER(            30,     3,  7,         80,     450, 20, 10, S_UNDER_GLAUNCHER                    ),
+  /* rocket launcher   */           LAW(            30,     0,  5,         80,     500, 80, 10, S_ROCKET_LAUNCHER                    ),
+  /* bloodcat claws    */         BLADE(                12,    14,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* bloodcat bite     */         BLADE(                24,    10,          1,      10,  2,     NO_WEAPON_SOUND                      ),
+  /* machete           */         BLADE(                24,     9,          6,      40,  2,     NO_WEAPON_SOUND                      ),
+  /* rocket rifle      */         RIFLE(AMMOROCKET, 20, 38, 2, 10,         62,  5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER              ),
+  /* automag III       */        PISTOL(AMMO762N,   24, 29, 1,  9,         13,  5, 220, 72,  6, S_AUTOMAG                            ),
+  /* infant spit       */     MONSTSPIT(                12,    13,          1,  5, 200, 10,  5, ACR_SPIT                             ),
+  /* young male spit   */     MONSTSPIT(                16,    10,          1, 10, 200, 10,  5, ACR_SPIT                             ),
+  /* old male spit     */     MONSTSPIT(                20,    10,          1, 20, 200, 10,  5, ACR_SPIT                             ),
+  /* tank cannon       */        CANNON(            30,     0,  8,         80,     800, 90, 10, S_TANK_CANNON                        ),
+  /* dart gun          */        PISTOL(AMMODART,   25,  2, 1, 13,         10,  1, 200,  0,  0, NO_WEAPON_SOUND                      ),
+  /* Bloody Thrw knife */ THROWINGBLADE(                15,    12,          3,     150,  2,     S_THROWKNIFE                         ),
+
+  /* Flamethrower      */       SHOTGUN(AMMOFLAME,  24, 60, 2, 10, 0,  0,  53,  5, 130, 40,  8, S_CAWS,                  S_BURSTTYPE1),
+  /* crowbar           */   PUNCHWEAPON(                25,    10,          4,           0,     NO_WEAPON_SOUND                      ),
+  /* auto rocket rifle */       ASRIFLE(AMMOROCKET, 20, 38, 2, 12, 5, 10,  97,  5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER, S_BURSTTYPE1),
+
+  /* unused            */      NOWEAPON(0),
+  /* unused            */      NOWEAPON(0),
+  /* unused            */      NOWEAPON(0),
+  /* unused            */      NOWEAPON(0),
+};
+
+
+
+MAGTYPE const Magazine[] =
+{
+	// calibre,			 mag size,			ammo type
+	{ AMMO9,						15,					AMMO_REGULAR },
+	{ AMMO9,						30,					AMMO_REGULAR },
+	{ AMMO9,						15,					AMMO_AP },
+	{ AMMO9,						30,					AMMO_AP },
+	{ AMMO9,						15,					AMMO_HP },
+	{ AMMO9,						30,					AMMO_HP },
+	{ AMMO38,						 6,					AMMO_REGULAR },
+	{ AMMO38,						 6,					AMMO_AP },
+	{ AMMO38,						 6,					AMMO_HP },
+	{ AMMO45,						 7,					AMMO_REGULAR },
+	{ AMMO45,						30,					AMMO_REGULAR },
+	{ AMMO45,						 7,					AMMO_AP },
+	{ AMMO45,						30,					AMMO_AP },
+	{ AMMO45,						 7,					AMMO_HP },
+	{ AMMO45,						30,					AMMO_HP },
+	{ AMMO357,					 6,					AMMO_REGULAR },
+	{ AMMO357,					 9,					AMMO_REGULAR },
+	{ AMMO357,					 6,					AMMO_AP },
+	{ AMMO357,					 9,					AMMO_AP },
+	{ AMMO357,					 6,					AMMO_HP },
+	{ AMMO357,					 9,					AMMO_HP },
+	{ AMMO545,					30,					AMMO_AP },
+	{ AMMO545,					30,					AMMO_HP },
+	{ AMMO556,					30,					AMMO_AP },
+	{ AMMO556,					30,					AMMO_HP },
+	{ AMMO762W,					10,					AMMO_AP },
+	{ AMMO762W,					30,					AMMO_AP },
+	{ AMMO762W,					10,					AMMO_HP },
+	{ AMMO762W,					30,					AMMO_HP },
+	{ AMMO762N,					 5,					AMMO_AP },
+	{ AMMO762N,					20,					AMMO_AP },
+	{ AMMO762N,					 5,					AMMO_HP },
+	{ AMMO762N,					20,					AMMO_HP },
+	{ AMMO47,						50,					AMMO_SUPER_AP },
+	{ AMMO57,						50,					AMMO_AP },
+	{ AMMO57,						50,					AMMO_HP },
+	{ AMMO12G,					7,					AMMO_BUCKSHOT },
+	{ AMMO12G,					7,					AMMO_REGULAR },
+	{ AMMOCAWS,					10,					AMMO_BUCKSHOT },
+	{ AMMOCAWS,					10,					AMMO_SUPER_AP },
+	{ AMMOROCKET,				5,					AMMO_SUPER_AP },
+	{ AMMOROCKET,				5,					AMMO_HE },
+	{ AMMOROCKET,				5,					AMMO_HEAT },
+	{ AMMODART,					1,					AMMO_SLEEP_DART },
+	{ AMMOFLAME,				5,					AMMO_BUCKSHOT },
+	{ NOAMMO,						0,					0 }
+};
 
 ARMOURTYPE const Armour[] =
 {
@@ -170,6 +335,28 @@ EXPLOSIVETYPE const Explosive[] =
 };
 
 
+static const char* const gzBurstSndStrings[] =
+{
+	"",													// NOAMMO
+	"",													// 38
+	"9mm burst ",								// 9mm
+	"45 caliber burst ",				// 45
+	"",													// 357
+	"",						              // 12G
+	"shotgun burst ",						// CAWS
+	"5,45 burst ",							// 5.45
+	"5,56 burst ",							// 5.56
+	"7,62 nato burst ",					// 7,62 N
+	"7,62 wp burst ",						// 7,62 W
+	"4,7 caliber burst ",				// 4.7
+	"5,7 burst ",								// 5,7
+	"",													// Monster
+	"rl automatic ",            // Rocket
+	"",													// Dart
+	"",													// Flame (unused)
+};
+
+
 // the amount of momentum reduction for the head, torso, and legs
 // used to determine whether the bullet will go through someone
 static const UINT8 BodyImpactReduction[4] = { 0, 15, 30, 23 };
@@ -178,10 +365,10 @@ static const UINT8 BodyImpactReduction[4] = { 0, 15, 30, 23 };
 UINT16 GunRange(OBJECTTYPE const& o)
 {
 	// return a minimal value of 1 tile
-	if (!(GCM->getItem(o.usItem)->isWeapon())) return CELL_X_SIZE;
+	if (!(Item[o.usItem].usItemClass & IC_WEAPON)) return CELL_X_SIZE;
 
 	INT8   const attach_pos = FindAttachment(&o, GUN_BARREL_EXTENDER);
-	UINT16       range      = GCM->getWeapon(o.usItem)->usRange;
+	UINT16       range      = Weapon[o.usItem].usRange;
 	if (attach_pos != ITEM_NOT_FOUND)
 	{
 		range += GUN_BARREL_RANGE_BONUS * WEAPON_STATUS_MOD(o.bAttachStatus[attach_pos]) / 100;
@@ -194,14 +381,14 @@ INT8 EffectiveArmour(OBJECTTYPE const* const o)
 {
 	if (!o) return 0;
 
-	const ItemModel * item = GCM->getItem(o->usItem);
-	if (item->getItemClass() != IC_ARMOUR) return 0;
+	INVTYPE const& item = Item[o->usItem];
+	if (item.usItemClass != IC_ARMOUR) return 0;
 
-	INT32       armour_val = Armour[item->getClassIndex()].ubProtection * o->bStatus[0] / 100;
+	INT32       armour_val = Armour[item.ubClassIndex].ubProtection * o->bStatus[0] / 100;
 	INT8  const plate_pos  = FindAttachment(o, CERAMIC_PLATES);
 	if (plate_pos != ITEM_NOT_FOUND)
 	{
-		armour_val += Armour[GCM->getItem(CERAMIC_PLATES)->getClassIndex()].ubProtection * o->bAttachStatus[plate_pos] / 100;
+		armour_val += Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection * o->bAttachStatus[plate_pos] / 100;
 	}
 	return armour_val;
 }
@@ -215,7 +402,7 @@ INT8 ArmourPercent(const SOLDIERTYPE* pSoldier)
 	{
 		iVest = EffectiveArmour( &(pSoldier->inv[VESTPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iVest = 65 * iVest / ( Armour[ GCM->getItem(SPECTRA_VEST_18)->getClassIndex() ].ubProtection + Armour[ GCM->getItem(CERAMIC_PLATES)->getClassIndex() ].ubProtection );
+		iVest = 65 * iVest / ( Armour[ Item[ SPECTRA_VEST_18 ].ubClassIndex ].ubProtection + Armour[ Item[ CERAMIC_PLATES ].ubClassIndex ].ubProtection );
 	}
 	else
 	{
@@ -226,7 +413,7 @@ INT8 ArmourPercent(const SOLDIERTYPE* pSoldier)
 	{
 		iHelmet = EffectiveArmour( &(pSoldier->inv[HELMETPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iHelmet = 15 * iHelmet / Armour[ GCM->getItem(SPECTRA_HELMET_18)->getClassIndex() ].ubProtection;
+		iHelmet = 15 * iHelmet / Armour[ Item[ SPECTRA_HELMET_18 ].ubClassIndex ].ubProtection;
 	}
 	else
 	{
@@ -237,7 +424,7 @@ INT8 ArmourPercent(const SOLDIERTYPE* pSoldier)
 	{
 		iLeg = EffectiveArmour( &(pSoldier->inv[LEGPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iLeg = 25 * iLeg / Armour[ GCM->getItem(SPECTRA_LEGGINGS_18)->getClassIndex() ].ubProtection;
+		iLeg = 25 * iLeg / Armour[ Item[ SPECTRA_LEGGINGS_18 ].ubClassIndex ].ubProtection;
 	}
 	else
 	{
@@ -252,11 +439,11 @@ static INT8 ExplosiveEffectiveArmour(OBJECTTYPE* pObj)
 	INT32		iValue;
 	INT8		bPlate;
 
-	if (pObj == NULL || GCM->getItem(pObj->usItem)->getItemClass() != IC_ARMOUR)
+	if (pObj == NULL || Item[pObj->usItem].usItemClass != IC_ARMOUR)
 	{
 		return( 0 );
 	}
-	iValue = Armour[ GCM->getItem(pObj->usItem)->getClassIndex() ].ubProtection;
+	iValue = Armour[ Item[pObj->usItem].ubClassIndex ].ubProtection;
 	iValue = iValue * pObj->bStatus[0] / 100;
 	if ( pObj->usItem == FLAK_JACKET || pObj->usItem == FLAK_JACKET_18 || pObj->usItem == FLAK_JACKET_Y )
 	{
@@ -269,7 +456,7 @@ static INT8 ExplosiveEffectiveArmour(OBJECTTYPE* pObj)
 	{
 		INT32 iValue2;
 
-		iValue2 = Armour[ GCM->getItem(CERAMIC_PLATES)->getClassIndex() ].ubProtection;
+		iValue2 = Armour[ Item[ CERAMIC_PLATES ].ubClassIndex ].ubProtection;
 		iValue2 = iValue2 * pObj->bAttachStatus[ bPlate ] / 100;
 
 		iValue += iValue2;
@@ -286,7 +473,7 @@ INT8 ArmourVersusExplosivesPercent( SOLDIERTYPE * pSoldier )
 	{
 		iVest = ExplosiveEffectiveArmour( &(pSoldier->inv[VESTPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iVest = __min( 65, 65 * iVest / ( Armour[ GCM->getItem(SPECTRA_VEST_18)->getClassIndex() ].ubProtection + Armour[ GCM->getItem(CERAMIC_PLATES)->getClassIndex() ].ubProtection) );
+		iVest = __min( 65, 65 * iVest / ( Armour[ Item[ SPECTRA_VEST_18 ].ubClassIndex ].ubProtection + Armour[ Item[ CERAMIC_PLATES ].ubClassIndex ].ubProtection) );
 	}
 	else
 	{
@@ -297,7 +484,7 @@ INT8 ArmourVersusExplosivesPercent( SOLDIERTYPE * pSoldier )
 	{
 		iHelmet = ExplosiveEffectiveArmour( &(pSoldier->inv[HELMETPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iHelmet = __min( 15, 15 * iHelmet / Armour[ GCM->getItem(SPECTRA_HELMET_18)->getClassIndex() ].ubProtection );
+		iHelmet = __min( 15, 15 * iHelmet / Armour[ Item[ SPECTRA_HELMET_18 ].ubClassIndex ].ubProtection );
 	}
 	else
 	{
@@ -308,7 +495,7 @@ INT8 ArmourVersusExplosivesPercent( SOLDIERTYPE * pSoldier )
 	{
 		iLeg = ExplosiveEffectiveArmour( &(pSoldier->inv[LEGPOS]) );
 		// convert to % of best; ignoring bug-treated stuff
-		iLeg = __min( 25, 25 * iLeg / Armour[ GCM->getItem(SPECTRA_LEGGINGS_18)->getClassIndex() ].ubProtection );
+		iLeg = __min( 25, 25 * iLeg / Armour[ Item[ SPECTRA_LEGGINGS_18 ].ubClassIndex ].ubProtection );
 	}
 	else
 	{
@@ -351,7 +538,7 @@ BOOLEAN CheckForGunJam( SOLDIERTYPE * pSoldier )
   // should jams apply to enemies?
 	if (pSoldier->uiStatusFlags & SOLDIER_PC)
 	{
-		if ( GCM->getItem(pSoldier->usAttackingWeapon)->getItemClass() == IC_GUN && !EXPLOSIVE_GUN( pSoldier->usAttackingWeapon ) )
+		if ( Item[pSoldier->usAttackingWeapon].usItemClass == IC_GUN && !EXPLOSIVE_GUN( pSoldier->usAttackingWeapon ) )
 		{
 			pObj = &(pSoldier->inv[pSoldier->ubAttackingHand]);
   			if (pObj->bGunAmmoStatus > 0)
@@ -362,11 +549,11 @@ BOOLEAN CheckForGunJam( SOLDIERTYPE * pSoldier )
 				// CJC: removed reliability from formula...
 
 				// jams can happen to unreliable guns "earlier" than normal or reliable ones.
-				//iChance = iChance - GCM->getItem(pObj->usItem)->getReliability() * 2;
+				//iChance = iChance - Item[pObj->usItem].bReliability * 2;
 
 				// decrease the chance of a jam by 20% per point of reliability;
 				// increased by 20% per negative point...
-				//iChance = iChance * (10 - GCM->getItem(pObj->usItem)->getReliability() * 2) / 10;
+				//iChance = iChance * (10 - Item[pObj->usItem].bReliability * 2) / 10;
 
 				if (pSoldier->bDoBurst > 1)
 				{
@@ -399,7 +586,7 @@ BOOLEAN CheckForGunJam( SOLDIERTYPE * pSoldier )
 			else if (pObj->bGunAmmoStatus < 0)
 			{
 				// try to unjam gun
-				iResult = SkillCheck( pSoldier, UNJAM_GUN_CHECK, (INT8) (GCM->getItem(pObj->usItem)->getReliability() * 4) );
+				iResult = SkillCheck( pSoldier, UNJAM_GUN_CHECK, (INT8) (Item[pObj->usItem].bReliability * 4) );
 				if (iResult > 0)
 				{
 					// yay! unjammed the gun
@@ -481,7 +668,7 @@ BOOLEAN FireWeapon( SOLDIERTYPE *pSoldier , INT16 sTargetGridNo )
 	// SET ATTACKER TO NOBODY, WILL GET SET EVENTUALLY
 	pSoldier->opponent = NULL;
 
-	switch( GCM->getItem(pSoldier->usAttackingWeapon)->getItemClass() )
+	switch( Item[ pSoldier->usAttackingWeapon ].usItemClass )
 	{
 		case IC_THROWING_KNIFE:
 		case IC_GUN:
@@ -687,7 +874,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 		// ONly deduct points once
 		if ( pSoldier->bDoBurst == 1 )
 		{
-			if ( GCM->getWeapon( usItemNum )->hasBurstSound() )
+			if ( Weapon[ usItemNum ].sBurstSound != NO_WEAPON_SOUND )
 			{
 				// IF we are silenced?
 				if( FindAttachment( &( pSoldier->inv[ pSoldier->ubAttackingHand ] ), SILENCER ) != NO_SLOT )
@@ -701,9 +888,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 				else
 				{
 					// Pick sound file baed on how many bullets we are going to fire...
-					sprintf( zBurstString, SOUNDSDIR "/weapons/%s%d.wav",
-                   GCM->getWeapon(usItemNum)->calibre->burstSoundString.c_str(),
-                   pSoldier->bBulletsLeft );
+					sprintf( zBurstString, SOUNDSDIR "/weapons/%s%d.wav", gzBurstSndStrings[ Weapon[ usItemNum ].ubCalibre ], pSoldier->bBulletsLeft );
 
 					// Try playing sound...
 					pSoldier->iBurstSoundID = PlayLocationJA2SampleFromFile(pSoldier->sGridNo, zBurstString, HIGHVOLUME, 1);
@@ -712,7 +897,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 				if ( pSoldier->iBurstSoundID == NO_SAMPLE )
 				{
 					// If failed, play normal default....
-					pSoldier->iBurstSoundID = PlayLocationJA2Sample(pSoldier->sGridNo, GCM->getWeapon(usItemNum)->burstSound, HIGHVOLUME, 1);
+					pSoldier->iBurstSoundID = PlayLocationJA2Sample(pSoldier->sGridNo, Weapon[usItemNum].sBurstSound, HIGHVOLUME, 1);
 				}
 			}
 
@@ -738,24 +923,33 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 
 		//PLAY SOUND
 		// ( For throwing knife.. it's earlier in the animation
-		if ( GCM->getWeapon( usItemNum )->hasSound() && GCM->getItem(usItemNum)->getItemClass() != IC_THROWING_KNIFE )
+		if ( Weapon[ usItemNum ].sSound != NO_WEAPON_SOUND && Item[ usItemNum ].usItemClass != IC_THROWING_KNIFE )
 		{
 			// Switch on silencer...
 			if( FindAttachment( &( pSoldier->inv[ pSoldier->ubAttackingHand ] ), SILENCER ) != NO_SLOT )
 			{
-				SoundID uiSound = (SoundID) GCM->getWeapon( usItemNum )->calibre->silencerSound;
+				SoundID uiSound;
+				if ( Weapon[ usItemNum ].ubCalibre == AMMO9 || Weapon[ usItemNum ].ubCalibre == AMMO38 || Weapon[ usItemNum ].ubCalibre == AMMO57 )
+				{
+					uiSound = S_SILENCER_1;
+				}
+				else
+				{
+					uiSound = S_SILENCER_2;
+				}
+
 				PlayLocationJA2Sample(pSoldier->sGridNo, uiSound, HIGHVOLUME, 1);
 			}
 			else
 			{
-				PlayLocationJA2Sample(pSoldier->sGridNo, GCM->getWeapon(usItemNum)->sound, HIGHVOLUME, 1);
+				PlayLocationJA2Sample(pSoldier->sGridNo, Weapon[usItemNum].sSound, HIGHVOLUME, 1);
 			}
 		}
 	}
 
 
 	// CALC CHANCE TO HIT
-	if ( GCM->getItem(usItemNum)->getItemClass() == IC_THROWING_KNIFE )
+	if ( Item[ usItemNum ].usItemClass == IC_THROWING_KNIFE )
 	{
 	  uiHitChance = CalcThrownChanceToHit( pSoldier, sTargetGridNo, pSoldier->bAimTime, pSoldier->bAimShotLocation );
 	}
@@ -780,7 +974,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 	GetTargetWorldPositions( pSoldier, sTargetGridNo, &dTargetX, &dTargetY, &dTargetZ );
 
 	// Some things we don't do for knives...
-	if ( GCM->getItem(usItemNum)->getItemClass() != IC_THROWING_KNIFE )
+	if ( Item[ usItemNum ].usItemClass != IC_THROWING_KNIFE )
 	{
 		// Deduct AMMO!
 		DeductAmmo( pSoldier, pSoldier->ubAttackingHand );
@@ -912,9 +1106,9 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 
 	FireBulletGivenTarget( pSoldier, dTargetX, dTargetY, dTargetZ, pSoldier->usAttackingWeapon, (UINT16) (uiHitChance - uiDiceRoll), fBuckshot, FALSE );
 
-	ubVolume = GCM->getWeapon( pSoldier->usAttackingWeapon )->ubAttackVolume;
+	ubVolume = Weapon[ pSoldier->usAttackingWeapon ].ubAttackVolume;
 
-	if ( GCM->getItem(usItemNum)->getItemClass() == IC_THROWING_KNIFE )
+	if ( Item[ usItemNum ].usItemClass == IC_THROWING_KNIFE )
 	{
 		// Here, remove the knife...	or (for now) rocket launcher
 		RemoveObjs( &(pSoldier->inv[ HANDPOS ] ), 1 );
@@ -963,7 +1157,7 @@ static BOOLEAN UseGun(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 	}
 
 	// CJC: since jamming is no longer affected by reliability, increase chance of status going down for really unreliabile guns
-	uiDepreciateTest = BASIC_DEPRECIATE_CHANCE + 3 * GCM->getItem(usItemNum)->getReliability();
+	uiDepreciateTest = BASIC_DEPRECIATE_CHANCE + 3 * Item[ usItemNum ].bReliability;
 
 	if ( !PreRandom( uiDepreciateTest ) && ( pSoldier->inv[ pSoldier->ubAttackingHand ].bStatus[0] > 1) )
 	{
@@ -1430,7 +1624,7 @@ static BOOLEAN UseLauncher(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
 	{
 		if (pObj->usAttachItem[ bAttachPos ] != NOTHING)
 		{
-			if ( GCM->getItem(pObj->usAttachItem[ bAttachPos ])->isExplosive() )
+			if ( Item[ pObj->usAttachItem[ bAttachPos ] ].usItemClass & IC_EXPLOSV )
 			{
 				break;
 			}
@@ -1474,16 +1668,16 @@ static BOOLEAN UseLauncher(SOLDIERTYPE* pSoldier, INT16 sTargetGridNo)
   }
 
 
-	if ( GCM->getWeapon( usItemNum )->hasSound()  )
+	if ( Weapon[ usItemNum ].sSound != NO_WEAPON_SOUND  )
 	{
-		PlayLocationJA2Sample(pSoldier->sGridNo, GCM->getWeapon(usItemNum)->sound, HIGHVOLUME, 1);
+		PlayLocationJA2Sample(pSoldier->sGridNo, Weapon[usItemNum].sSound, HIGHVOLUME, 1);
 	}
 
 	uiHitChance = CalcThrownChanceToHit( pSoldier, sTargetGridNo, pSoldier->bAimTime, AIM_SHOT_TORSO );
 
 	uiDiceRoll = PreRandom( 100 );
 
-	if ( GCM->getItem(usItemNum)->getItemClass() == IC_LAUNCHER )
+	if ( Item[ usItemNum ].usItemClass == IC_LAUNCHER )
 	{
 		// Preserve gridno!
 		//pSoldier->sLastTarget = sTargetGridNo;
@@ -1585,7 +1779,7 @@ static BOOLEAN DoSpecialEffectAmmoMiss(SOLDIERTYPE* const attacker, const INT16 
 
 void WeaponHit(SOLDIERTYPE* const pTargetSoldier, const UINT16 usWeaponIndex, const INT16 sDamage, const INT16 sBreathLoss, const UINT16 usDirection, const INT16 sXPos, const INT16 sYPos, const INT16 sZPos, const INT16 sRange, SOLDIERTYPE* const attacker, const UINT8 ubSpecial, const UINT8 ubHitLocation)
 {
-	MakeNoise(attacker, pTargetSoldier->sGridNo, pTargetSoldier->bLevel, GCM->getWeapon(usWeaponIndex)->ubHitVolume, NOISE_BULLET_IMPACT);
+	MakeNoise(attacker, pTargetSoldier->sGridNo, pTargetSoldier->bLevel, Weapon[usWeaponIndex].ubHitVolume, NOISE_BULLET_IMPACT);
 
 	if ( EXPLOSIVE_GUN( usWeaponIndex ) )
 	{
@@ -1641,7 +1835,7 @@ void StructureHit(BULLET* const pBullet, const INT16 sXPos, const INT16 sYPos, c
 	if ( !fHitSameStructureAsBefore )
 	{
 		const INT8 level = (sZPos > WALL_HEIGHT ? 1 : 0);
-		MakeNoise(attacker, sGridNo, level, GCM->getWeapon(usWeaponIndex)->ubHitVolume, NOISE_BULLET_IMPACT);
+		MakeNoise(attacker, sGridNo, level, Weapon[usWeaponIndex].ubHitVolume, NOISE_BULLET_IMPACT);
 	}
 
 	if (fStopped)
@@ -1682,7 +1876,7 @@ void StructureHit(BULLET* const pBullet, const INT16 sXPos, const INT16 sYPos, c
 		DamageStructure(pStructure, iImpact, STRUCTURE_DAMAGE_GUNFIRE, sGridNo, sXPos, sYPos, attacker);
 	}
 
-	switch(  GCM->getWeapon( usWeaponIndex )->ubWeaponClass )
+	switch(  Weapon[ usWeaponIndex ].ubWeaponClass )
 	{
 		case HANDGUNCLASS:
 		case RIFLECLASS:
@@ -1714,7 +1908,7 @@ void StructureHit(BULLET* const pBullet, const INT16 sXPos, const INT16 sYPos, c
 		case KNIFECLASS:
 
 			// When it hits the ground, leave on map...
-			if ( GCM->getItem(usWeaponIndex)->getItemClass() == IC_THROWING_KNIFE )
+			if ( Item[ usWeaponIndex ].usItemClass == IC_THROWING_KNIFE )
 			{
 				OBJECTTYPE		Object;
 
@@ -1744,7 +1938,7 @@ void StructureHit(BULLET* const pBullet, const INT16 sXPos, const INT16 sYPos, c
 	if ( fDoMissForGun )
 	{
 		// OK, are we a shotgun, if so , make sounds lower...
-		if ( GCM->getWeapon( usWeaponIndex )->ubWeaponClass == SHOTGUNCLASS )
+		if ( Weapon[ usWeaponIndex ].ubWeaponClass == SHOTGUNCLASS )
 		{
 			uiMissVolume = LOWVOLUME;
 		}
@@ -1977,12 +2171,12 @@ BOOLEAN InRange(const SOLDIERTYPE* pSoldier, INT16 sGridNo)
 
 	 usInHand = pSoldier->inv[HANDPOS].usItem;
 
-	 if ( GCM->getItem(usInHand)->getItemClass() == IC_GUN || GCM->getItem(usInHand)->getItemClass() == IC_THROWING_KNIFE  )
+	 if ( Item[ usInHand ].usItemClass == IC_GUN || Item[ usInHand ].usItemClass == IC_THROWING_KNIFE  )
 	 {
 		 // Determine range
 		 sRange = (INT16)GetRangeInCellCoordsFromGridNoDiff( pSoldier->sGridNo, sGridNo );
 
-		 if ( GCM->getItem(usInHand)->getItemClass() == IC_THROWING_KNIFE )
+		 if ( Item[ usInHand ].usItemClass == IC_THROWING_KNIFE )
 		 {
 			 // NB CalcMaxTossRange returns range in tiles, not in world units
 		 	 if ( sRange <= CalcMaxTossRange( pSoldier, THROWING_KNIFE, TRUE ) * CELL_X_SIZE )
@@ -2040,7 +2234,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
 
 		if ( AM_A_ROBOT( pSoldier ) )
 		{
-			const SOLDIERTYPE * pSoldier2;
+			SOLDIERTYPE * pSoldier2;
 
 			pSoldier2 = GetRobotController( pSoldier );
 			if ( pSoldier2 )
@@ -2104,10 +2298,10 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
 		}
 	}
 
-	if ( !(GCM->getItem(usInHand)->isTwoHanded()) )
+	if ( !(Item[ usInHand ].fFlags & ITEM_TWO_HANDED) )
 	{
 		// SMGs are treated as pistols for these purpose except there is a -5 penalty;
-		if (GCM->getWeapon(usInHand)->ubWeaponClass == SMGCLASS)
+		if (Weapon[usInHand].ubWeaponClass == SMGCLASS)
 		{
 			iChance -= AIM_PENALTY_SMG; // TODO0007
 		}
@@ -2139,7 +2333,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
 	// If in burst mode, deduct points for change to hit for each shot after the first
 	if ( pSoldier->bDoBurst )
 	{
-		iPenalty = GCM->getWeapon(usInHand)->ubBurstPenalty * (pSoldier->bDoBurst - 1);
+		iPenalty = Weapon[usInHand].ubBurstPenalty * (pSoldier->bDoBurst - 1);
 
 		// halve the penalty for people with the autofire trait
 		UINT AutoWeaponsSkill = NUM_SKILL_TRAITS(pSoldier, AUTO_WEAPS);
@@ -2217,7 +2411,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
 	if (pSoldier->bShock)
 		iChance -= (pSoldier->bShock * AIM_PENALTY_PER_SHOCK);
 
-	if ( GCM->getItem(usInHand)->getItemClass() == IC_GUN )
+	if ( Item[ usInHand ].usItemClass == IC_GUN )
 	{
 		bAttachPos = FindAttachment( pInHand, GUN_BARREL_EXTENDER );
 		if ( bAttachPos != ITEM_NOT_FOUND )
@@ -2729,7 +2923,7 @@ INT32 TotalArmourProtection(SOLDIERTYPE& pTarget, const UINT8 ubHitLocation, con
 				if (bPlatePos != -1)
 				{
 					// bullet got through jacket; apply ceramic plate armour
-					iTotalProtection += ArmourProtection( pTarget, GCM->getItem(pArmour->usAttachItem[bPlatePos])->getClassIndex(), &(pArmour->bAttachStatus[bPlatePos]), iImpact, ubAmmoType );
+					iTotalProtection += ArmourProtection( pTarget, Item[pArmour->usAttachItem[bPlatePos]].ubClassIndex, &(pArmour->bAttachStatus[bPlatePos]), iImpact, ubAmmoType );
 					if ( pArmour->bAttachStatus[bPlatePos] < USABLE )
 					{
 						// destroy plates!
@@ -2748,7 +2942,7 @@ INT32 TotalArmourProtection(SOLDIERTYPE& pTarget, const UINT8 ubHitLocation, con
 			// if the plate didn't stop the bullet...
 			if ( iImpact > iTotalProtection )
 			{
-				iTotalProtection += ArmourProtection( pTarget, GCM->getItem(pArmour->usItem)->getClassIndex(), &(pArmour->bStatus[0]), iImpact, ubAmmoType );
+				iTotalProtection += ArmourProtection( pTarget, Item[pArmour->usItem].ubClassIndex, &(pArmour->bStatus[0]), iImpact, ubAmmoType );
 				if ( pArmour->bStatus[ 0 ] < USABLE )
 				{
 					DeleteObj( pArmour );
@@ -2770,7 +2964,7 @@ INT32 BulletImpact( SOLDIERTYPE *pFirer, SOLDIERTYPE * pTarget, UINT8 ubHitLocat
 	// in MoveBullet.
 
 	// Set a few things up:
-	if ( GCM->getItem(pFirer->usAttackingWeapon)->getItemClass() == IC_THROWING_KNIFE )
+	if ( Item[ pFirer->usAttackingWeapon ].usItemClass == IC_THROWING_KNIFE )
 	{
 		ubAmmoType = AMMO_KNIFE;
 	}
@@ -3138,7 +3332,7 @@ INT32 HTHImpact(const SOLDIERTYPE* const att, const SOLDIERTYPE* const tgt, cons
 	if (fBladeAttack)
 	{
 		impact += strength / 20; // 0 to 5 for strength, adjusted by damage taken
-		impact += GCM->getWeapon(weapon)->ubImpact;
+		impact += Weapon[weapon].ubImpact;
 
 		if (AM_A_ROBOT(tgt)) impact /= 4;
 	}
@@ -3149,7 +3343,7 @@ INT32 HTHImpact(const SOLDIERTYPE* const att, const SOLDIERTYPE* const tgt, cons
 		// NB martial artists don't get a bonus for using brass knuckles!
 		if (weapon && !HAS_SKILL_TRAIT(att, MARTIALARTS))
 		{
-			impact += GCM->getWeapon(weapon)->ubImpact;
+			impact += Weapon[weapon].ubImpact;
 			if (AM_A_ROBOT(tgt)) impact /= 2;
 		}
 		else
@@ -3188,7 +3382,7 @@ void ShotMiss(const BULLET* const b)
 	// AGILITY GAIN: Opponent "dodged" a bullet shot at him (it missed)
 	if (opponent != NULL) AgilityForEnemyMissingPlayer(pAttacker, opponent, 5);
 
-	switch (GCM->getWeapon(pAttacker->usAttackingWeapon)->ubWeaponClass)
+	switch (Weapon[pAttacker->usAttackingWeapon].ubWeaponClass)
 	{
 		case HANDGUNCLASS:
 		case RIFLECLASS:
@@ -3244,7 +3438,7 @@ static UINT32 CalcChanceHTH(SOLDIERTYPE* pAttacker, SOLDIERTYPE* pDefender, UINT
 	if (ubMode == HTH_MODE_STAB)
 	{
 		// safety check
-		if (GCM->getWeapon(usInHand)->ubWeaponClass != KNIFECLASS)
+		if (Weapon[usInHand].ubWeaponClass != KNIFECLASS)
 		 {
 			#ifdef BETAVERSION
 			NumMessage("CalcChanceToStab: ERROR - Attacker isn't holding a knife, usInHand = ",usInHand);
@@ -3254,7 +3448,7 @@ static UINT32 CalcChanceHTH(SOLDIERTYPE* pAttacker, SOLDIERTYPE* pDefender, UINT
 	}
 	else
 	{
-		if ( GCM->getItem(usInHand)->getItemClass() != IC_PUNCH )
+		if ( Item[ usInHand ].usItemClass != IC_PUNCH )
 		{
 			return(0);
 		}
@@ -3437,7 +3631,7 @@ static UINT32 CalcChanceHTH(SOLDIERTYPE* pAttacker, SOLDIERTYPE* pDefender, UINT
 	{
 		if (ubMode == HTH_MODE_STAB)
 		{
-			if (GCM->getItem(pDefender->inv[HANDPOS].usItem)->getItemClass() == IC_BLADE)
+			if (Item[pDefender->inv[HANDPOS].usItem].usItemClass == IC_BLADE)
 			{
 				// good with knives, got one, so we're good at parrying
 				iDefRating += gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pDefender, KNIFING);
@@ -3454,7 +3648,7 @@ static UINT32 CalcChanceHTH(SOLDIERTYPE* pAttacker, SOLDIERTYPE* pDefender, UINT
 		}
 		else
 		{	// punch/hand-to-hand/martial arts attack/steal
-			if (GCM->getItem(pDefender->inv[HANDPOS].usItem)->getItemClass() == IC_BLADE && ubMode != HTH_MODE_STEAL)
+			if (Item[pDefender->inv[HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL)
 			{
 				// with our knife, we get some bonus at defending from HTH attacks
 				iDefRating += gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pDefender, KNIFING) / 2;
@@ -3537,7 +3731,7 @@ void ReloadWeapon(SOLDIERTYPE* const s, UINT8 const inv_pos)
 	OBJECTTYPE& o = s->inv[inv_pos];
 	if (o.usItem == NOTHING) return;
 
-	o.ubGunShotsLeft = GCM->getWeapon(o.usItem)->ubMagSize;
+	o.ubGunShotsLeft = Weapon[o.usItem].ubMagSize;
 	DirtyMercPanelInterface(s, DIRTYLEVEL1);
 }
 
@@ -3546,8 +3740,8 @@ bool IsGunBurstCapable(SOLDIERTYPE const* const s, UINT8 const inv_pos)
 {
 	UINT16 const item = s->inv[inv_pos].usItem;
 	return
-		GCM->getItem(item)->isWeapon() &&
-		GCM->getWeapon(item)->ubShotsPerBurst > 0;
+		Item[item].usItemClass & IC_WEAPON &&
+		Weapon[item].ubShotsPerBurst > 0;
 }
 
 
@@ -3559,7 +3753,7 @@ INT32 CalcMaxTossRange(const SOLDIERTYPE* pSoldier, UINT16 usItem, BOOLEAN fArme
 	if ( EXPLOSIVE_GUN( usItem ) )
 	{
 		// oops! return value in weapons table
-		return( GCM->getWeapon( usItem )->usRange / CELL_X_SIZE );
+		return( Weapon[ usItem ].usRange / CELL_X_SIZE );
 	}
 
 	// if item's fired mechanically
@@ -3571,28 +3765,28 @@ INT32 CalcMaxTossRange(const SOLDIERTYPE* pSoldier, UINT16 usItem, BOOLEAN fArme
 		usItem = usSubItem;
 	}
 
-	if ( GCM->getItem(usItem)->getItemClass() == IC_LAUNCHER && fArmed )
+	if ( Item[ usItem ].usItemClass == IC_LAUNCHER && fArmed )
 	{
 		// this function returns range in tiles so, stupidly, we have to divide by 10 here
-		iRange = GCM->getWeapon(usItem)->usRange / CELL_X_SIZE;
+		iRange = Weapon[usItem].usRange / CELL_X_SIZE;
 	}
 	else
 	{
-		if ( GCM->getItem(usItem)->getFlags() & ITEM_UNAERODYNAMIC )
+		if ( Item[ usItem ].fFlags & ITEM_UNAERODYNAMIC )
 		{
 			iRange = 1;
 		}
-		else if ( GCM->getItem(usItem)->getItemClass() == IC_GRENADE )
+		else if ( Item[ usItem ].usItemClass == IC_GRENADE )
 		{
 			// start with the range based on the soldier's strength and the item's weight
 			INT32 iThrowingStrength = ( EffectiveStrength( pSoldier ) * 2 + 100 ) / 3;
-			iRange = 2 + ( iThrowingStrength / __min( ( 3 + (GCM->getItem(usItem)->getWeight()) / 3 ), 4 ) );
+			iRange = 2 + ( iThrowingStrength / __min( ( 3 + (Item[usItem].ubWeight) / 3 ), 4 ) );
 		}
 		else
 		{	// not as aerodynamic!
 
 			// start with the range based on the soldier's strength and the item's weight
-			iRange = 2 + ( ( EffectiveStrength( pSoldier ) / ( 5 + GCM->getItem(usItem)->getWeight()) ) );
+			iRange = 2 + ( ( EffectiveStrength( pSoldier ) / ( 5 + Item[usItem].ubWeight) ) );
 		}
 
 		// adjust for thrower's remaining breath (lose up to 1/2 of range)
@@ -3637,7 +3831,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
 	#endif
 */
 
-	if ( GCM->getItem(usHandItem)->getItemClass() != IC_LAUNCHER && pSoldier->bWeaponMode != WM_ATTACHED )
+	if ( Item[ usHandItem ].usItemClass != IC_LAUNCHER && pSoldier->bWeaponMode != WM_ATTACHED )
 	{
 		// PHYSICALLY THROWN arced projectile (ie. grenade)
 		// for lack of anything better, base throwing accuracy on dex & marskmanship
@@ -3741,7 +3935,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
 			 (3 * pSoldier->bLifeMax);
 
 		// for mechanically-fired projectiles, reduce penalty in half
-		if ( GCM->getItem(usHandItem)->getItemClass() == IC_LAUNCHER )
+		if ( Item[ usHandItem ].usItemClass == IC_LAUNCHER )
 		{
 			bPenalty /= 2;
 		}
@@ -3757,7 +3951,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
 		bPenalty = (iChance * (100 - pSoldier->bBreath)) / 200;
 
 		// for mechanically-fired projectiles, reduce penalty in half
-		if ( GCM->getItem(usHandItem)->getItemClass() == IC_LAUNCHER )
+		if ( Item[ usHandItem ].usItemClass == IC_LAUNCHER )
 			bPenalty /= 2;
 
 		// reduce breath penalty due to merc's dexterity (he can compensate!)
@@ -3765,7 +3959,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
 	}
 
 	// if iChance exists, but it's a mechanical item being used
-	if ((iChance > 0) && (GCM->getItem(usHandItem)->getItemClass() == IC_LAUNCHER ))
+	if ((iChance > 0) && (Item[ usHandItem ].usItemClass == IC_LAUNCHER ))
 		// reduce iChance to hit DIRECTLY by the item's working condition
 		iChance = (iChance * WEAPON_STATUS_MOD(pSoldier->inv[HANDPOS].bStatus[0])) / 100;
 
@@ -3853,7 +4047,7 @@ void DishoutQueenSwipeDamage( SOLDIERTYPE *pQueenSoldier )
 		if (pSoldier->bLife >= OKLIFE && pSoldier->sGridNo != NOWHERE && pSoldier->bInSector)
 		{
 			// Get Pyth spaces away....
-			if ( GetRangeInCellCoordsFromGridNoDiff( pQueenSoldier->sGridNo, pSoldier->sGridNo ) <= GCM->getWeapon( CREATURE_QUEEN_TENTACLES)->usRange )
+			if ( GetRangeInCellCoordsFromGridNoDiff( pQueenSoldier->sGridNo, pSoldier->sGridNo ) <= Weapon[ CREATURE_QUEEN_TENTACLES].usRange )
 			{
 				// get direction
 				bDir = (INT8)GetDirectionFromGridNo( pSoldier->sGridNo, pQueenSoldier );
@@ -3903,12 +4097,12 @@ static BOOLEAN WillExplosiveWeaponFail(const SOLDIERTYPE* pSoldier, const OBJECT
 }
 
 
-// #ifdef WITH_UNITTESTS
-// #include "gtest/gtest.h"
+#ifdef WITH_UNITTESTS
+#include "gtest/gtest.h"
 
-// TEST(Weapons, asserts)
-// {
-//   EXPECT_EQ(lengthof(OLD_Weapon), MAX_WEAPONS);
-// }
+TEST(Weapons, asserts)
+{
+  EXPECT_EQ(lengthof(Weapon), MAX_WEAPONS);
+}
 
-// #endif
+#endif

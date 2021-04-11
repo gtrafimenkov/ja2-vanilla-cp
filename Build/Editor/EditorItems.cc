@@ -32,11 +32,6 @@
 #include "Build/Tactical/Items.h"
 #include "sgp/MemMan.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/WeaponModels.h"
-
 
 #define NUMBER_TRIGGERS			27
 #define PRESSURE_ACTION_ID	(NUMBER_TRIGGERS - 1)
@@ -125,14 +120,14 @@ void EntryInitEditorItemsInfo()
 		eInfo.sNumTriggers = NUMBER_TRIGGERS;
 		for( i=0; i < MAXITEMS; i++ )
 		{
-			const ItemModel* item = GCM->getItem(i);
-			if( GCM->getItem(i)->getFlags() & ITEM_NOT_EDITOR )
+			const INVTYPE* const item = &Item[i];
+			if( Item[i].fFlags & ITEM_NOT_EDITOR )
 				continue;
 			if( i == SWITCH || i == ACTION_ITEM )
 			{
 
 			}
-			else switch( item->getItemClass() )
+			else switch( item->usItemClass )
 			{
 				case IC_GUN:
 				case IC_BLADE:
@@ -179,11 +174,11 @@ void EntryInitEditorItemsInfo()
 }
 
 
-static void DrawItemCentered(const ItemModel * item, SGPVSurface* const vs, INT32 x, INT32 const y, INT16 const outline)
+static void DrawItemCentered(INVTYPE const& item, SGPVSurface* const vs, INT32 x, INT32 const y, INT16 const outline)
 {
 	// Calculate the center position of the graphic in a 60 pixel wide area.
 	SGPVObject  const& vo  = GetInterfaceGraphicForItem(item);
-	UINT        const  gfx = item->getGraphicNum();
+	UINT        const  gfx = item.ubGraphicNum;
 	ETRLEObject const& e   = vo.SubregionProperties(gfx);
 	x += (60 - e.usWidth) / 2 - e.sOffsetX;
 	BltVideoObjectOutline(vs, &vo, gfx, x, y, outline);
@@ -319,7 +314,7 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 			swprintf(pStr, lengthof(pStr), L"%hs", LockTable[i].ubEditorName);
 			DisplayWrappedString(x, y + 25, 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, CENTER_JUSTIFIED | MARK_DIRTY);
 
-			DrawItemCentered(GCM->getItem(item_id), eInfo.uiBuffer, x, y + 2, SGP_TRANSPARENT);
+			DrawItemCentered(Item[item_id], eInfo.uiBuffer, x, y + 2, SGP_TRANSPARENT);
 
 			//cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
 			if( y == 0 )
@@ -339,8 +334,8 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 		fTypeMatch = FALSE;
 		while( usCounter<MAXITEMS && !fTypeMatch )
 		{
-			const ItemModel * item = GCM->getItem(usCounter);
-			if( GCM->getItem(usCounter)->getFlags() & ITEM_NOT_EDITOR )
+			const INVTYPE* item = &Item[usCounter];
+			if( Item[usCounter].fFlags & ITEM_NOT_EDITOR )
 			{
 				usCounter++;
 				continue;
@@ -352,9 +347,9 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 				else
 					usCounter = ACTION_ITEM;
 				fTypeMatch = TRUE;
-				item = GCM->getItem(usCounter);
+				item = &Item[usCounter];
 			}
-			else switch( item->getItemClass() )
+			else switch( item->usItemClass )
 			{
 				case IC_GUN:
 				case IC_BLADE:
@@ -447,7 +442,7 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 				}
 				DisplayWrappedString(x, y + 25, 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, CENTER_JUSTIFIED | MARK_DIRTY);
 
-				DrawItemCentered(item, eInfo.uiBuffer, x, y + 2, SGP_TRANSPARENT);
+				DrawItemCentered(*item, eInfo.uiBuffer, x, y + 2, SGP_TRANSPARENT);
 
 				//cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
 				if( y == 0 )
@@ -493,7 +488,7 @@ static void drawItemWithOutline(INT16 min_idx, INT16 end_idx, INT16 scroll_idx, 
   {
     INT16   const  x    = (itemIndex / 2 - scroll_idx) * 60 + 110;
     INT16   const  y    = 360 + (itemIndex % 2) * 40;
-    const ItemModel *item = GCM->getItem(eInfo.pusItemIndex[itemIndex]);
+    INVTYPE const& item = Item[eInfo.pusItemIndex[itemIndex]];
     DrawItemCentered(item, FRAME_BUFFER, x, y + 2, outline);
   }
 }
@@ -780,19 +775,19 @@ void AddSelectedItemToWorld(INT16 sGridNo)
 	wi.ubNonExistChance = (tempObject.usItem == OWNERSHIP ? 0 : 100 - giDefaultExistChance);
 
 	OBJECTTYPE&          obj  = wi.o;
-	const ItemModel * item = GCM->getItem(obj.usItem);
-	if (item->isAmmo())
+	INVTYPE const* const item = &Item[obj.usItem];
+	if (item->usItemClass == IC_AMMO)
 	{
-		UINT8 const mag_size = item->asAmmo()->capacity;
+		UINT8 const mag_size = Magazine[item->ubClassIndex].ubMagSize;
 		obj.ubShotsLeft[0] = Random(2) ? mag_size : Random(mag_size);
 	}
 	else
 	{
 		obj.bStatus[0] = 70 + Random(26);
 	}
-	if (item->isGun())
+	if (item->usItemClass & IC_GUN)
 	{
-		obj.ubGunShotsLeft = obj.usItem == ROCKET_LAUNCHER ? 1 : Random(GCM->getWeapon(obj.usItem)->ubMagSize);
+		obj.ubGunShotsLeft = obj.usItem == ROCKET_LAUNCHER ? 1 : Random(Weapon[obj.usItem].ubMagSize);
 	}
 
 	for (ITEM_POOL* ip = GetItemPool(sGridNo, 0); Assert(ip), ip; ip = ip->pNext)
@@ -1044,7 +1039,7 @@ static void FindNextItemOfSelectedType(void)
 			SelectNextPressureAction();
 		}
 	}
-	else if( GCM->getItem( usItem )->isKey() )
+	else if( Item[ usItem ].usItemClass == IC_KEY )
 	{
 		SelectNextKeyOfType( (UINT8)eInfo.sSelItemIndex );
 	}
@@ -1137,7 +1132,7 @@ static void SelectNextKeyOfType(UINT8 ubKeyID)
 				{
 					WORLDITEM&  wi = GetWorldItem(gpItemPool->iItemIndex);
 					OBJECTTYPE& o  = wi.o;
-					if (GCM->getItem(o.usItem)->isKey() && o.ubKeyID == ubKeyID)
+					if (Item[o.usItem].usItemClass == IC_KEY && o.ubKeyID == ubKeyID)
 					{
 						SpecifyItemToEdit(&o, wi.sGridNo);
 						CenterScreenAtMapIndex( gsItemGridNo );
@@ -1157,7 +1152,7 @@ static void SelectNextKeyOfType(UINT8 ubKeyID)
 			{
 				WORLDITEM&  wi = GetWorldItem(gpItemPool->iItemIndex);
 				OBJECTTYPE& o  = wi.o;
-				if (GCM->getItem(o.usItem)->isKey() && o.ubKeyID == ubKeyID)
+				if (Item[o.usItem].usItemClass == IC_KEY && o.ubKeyID == ubKeyID)
 				{
 					SpecifyItemToEdit(&o, wi.sGridNo);
 					CenterScreenAtMapIndex( gsItemGridNo );
@@ -1176,7 +1171,7 @@ static void SelectNextKeyOfType(UINT8 ubKeyID)
 		{
 			WORLDITEM&  wi = GetWorldItem(gpItemPool->iItemIndex);
 			OBJECTTYPE& o  = wi.o;
-			if (GCM->getItem(o.usItem)->isKey() && o.ubKeyID == ubKeyID)
+			if (Item[o.usItem].usItemClass == IC_KEY && o.ubKeyID == ubKeyID)
 			{
 				SpecifyItemToEdit(&o, wi.sGridNo);
 				CenterScreenAtMapIndex( gsItemGridNo );
@@ -1439,7 +1434,7 @@ static UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID)
 		while( pItemPool )
 		{
 			OBJECTTYPE const& o = GetWorldItem(pItemPool->iItemIndex).o;
-			if (GCM->getItem(o.usItem)->isKey() && o.ubKeyID == ubKeyID)
+			if (Item[o.usItem].usItemClass == IC_KEY && o.ubKeyID == ubKeyID)
 			{
 				num++;
 			}

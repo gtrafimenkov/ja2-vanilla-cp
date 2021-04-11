@@ -46,7 +46,10 @@
 #include "src/ContentManager.h"
 #include "src/GameInstance.h"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 //#ifdef JA2BETAVERSION
 
@@ -2460,7 +2463,7 @@ static void AddItemToGridNo(INT32 iGridNo)
 	gsQdsEnteringGridNo = (INT16)iGridNo;
 
 
-	if( GCM->getItem(gItemListBox.sCurSelectedItem)->getItemClass() == IC_KEY )
+	if( Item[ gItemListBox.sCurSelectedItem ].usItemClass == IC_KEY )
 	{
 		gfAddKeyNextPass = TRUE;
 //		swprintf( zTemp, L"Please enter the Key ID" );

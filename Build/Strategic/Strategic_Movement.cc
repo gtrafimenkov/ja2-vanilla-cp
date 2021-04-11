@@ -594,7 +594,7 @@ class CharacterDialogueEventBeginPrebattleInterface : public CharacterDialogueEv
 			if (!MayExecute()) return true;
 
 			SOLDIERTYPE const& s = soldier_;
-			ExecuteCharacterDialogue(s.ubProfile, QUOTE_ENEMY_PRESENCE, s.face, DIALOGUE_TACTICAL_UI, TRUE, false);
+			ExecuteCharacterDialogue(s.ubProfile, QUOTE_ENEMY_PRESENCE, s.face, DIALOGUE_TACTICAL_UI, TRUE);
 
 			// Setup face with data!
 			FACETYPE& f = *gpCurrentTalkingFace;

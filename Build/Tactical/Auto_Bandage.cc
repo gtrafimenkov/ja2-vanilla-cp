@@ -1,42 +1,41 @@
-#include <memory>
+#include "Directories.h"
+#include "Font.h"
+#include "Font_Control.h"
+#include "HImage.h"
+#include "Local.h"
+#include "Medical.h"
+#include "MercPortrait.h"
+#include "Overhead.h"
+#include "MessageBoxScreen.h"
+#include "ScreenIDs.h"
+#include "Handle_UI.h"
+#include "Message.h"
+#include "Game_Clock.h"
+#include "Items.h"
+#include "Tactical_Placement_GUI.h"
+#include "Text.h"
+#include "Interface.h"
+#include "Auto_Bandage.h"
+#include "RenderWorld.h"
+#include "Strategic_Turns.h"
+#include "Event_Pump.h"
+#include "Dialogue_Control.h"
+#include "AI.h"
+#include "Interface_Control.h"
+#include "StrategicMap.h"
+#include "Animation_Control.h"
+#include "Map_Screen_Interface.h"
+#include "Soldier_Profile.h"
+#include "Assignments.h"
+#include "Cursors.h"
+#include "English.h"
+#include "VObject.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "Button_System.h"
+#include "UILayout.h"
 
-#include "Build/Directories.h"
-#include "Build/Local.h"
-#include "Build/MercPortrait.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Strategic/Strategic_Turns.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Auto_Bandage.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/Medical.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Tactical_Placement_GUI.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/English.h"
-#include "sgp/Font.h"
-#include "sgp/HImage.h"
-#include "sgp/MemMan.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/Soldier.h"
 
 // max number of merc faces per row in autobandage box
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
@@ -156,12 +155,11 @@ void HandleAutoBandagePending( )
 		// Do any guys have pending actions...?
 		FOR_EACH_IN_TEAM(s, OUR_TEAM)
 		{
-      std::unique_ptr<const Soldier> soldier(new Soldier(s));
 			if (s->sSectorX == gWorldSectorX &&
 					s->sSectorY == gWorldSectorY &&
 					s->bSectorZ == gbWorldSectorZ &&
 					!s->fBetweenSectors &&
-          soldier->hasPendingAction())
+					s->ubPendingAction != NO_PENDING_ACTION)
 			{
 				return;
 			}

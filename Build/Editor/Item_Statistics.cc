@@ -23,9 +23,6 @@
 #include "PopupMenu.h"
 #include "Build/TileEngine/Pits.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 GUIButtonRef giBothCheckboxButton;
 GUIButtonRef giRealisticCheckboxButton;
@@ -353,7 +350,7 @@ void SpecifyItemToEdit( OBJECTTYPE *pItem, INT32 iMapIndex )
 
 	SetupGameTypeFlags();
 
-	if( GCM->getItem(gpItem->usItem)->getItemClass() == IC_MONEY )
+	if( Item[ gpItem->usItem ].usItemClass == IC_MONEY )
 	{
 		gbEditingMode = EDITING_MONEY;
 		SetupMoneyGUI();
@@ -376,7 +373,7 @@ void SpecifyItemToEdit( OBJECTTYPE *pItem, INT32 iMapIndex )
 		SetupOwnershipGUI();
 		HideEditorButton( ITEMSTATS_HIDDEN_BTN );
 	}
-	else switch( GCM->getItem(gpItem->usItem)->getItemClass() )
+	else switch( Item[ gpItem->usItem ].usItemClass )
 	{
 		case IC_GUN:
 			gbEditingMode = EDITING_GUNS;
@@ -685,9 +682,9 @@ static void ExtractAndUpdateGunGUI(void)
 	//Update the ammo
 	i = GetNumericStrictValueFromField( 2 );
 	if( i == -1 )
-		i = Random( 1 + GCM->getWeapon( gpItem->usItem )->ubMagSize );
+		i = Random( 1 + Weapon[ gpItem->usItem ].ubMagSize );
 	else
-		i = MIN( i, GCM->getWeapon( gpItem->usItem )->ubMagSize );
+		i = MIN( i, Weapon[ gpItem->usItem ].ubMagSize );
 	gpItem->ubGunShotsLeft = (UINT8)i;
 	SetInputFieldStringWithNumericStrictValue( 2, i );
 	//Update the trap level
@@ -732,9 +729,9 @@ static void ExtractAndUpdateAmmoGUI(void)
 	//Update the number of clips
 	i = GetNumericStrictValueFromField( 1 );
 	if( i == -1 )
-		i = 1 + Random( GCM->getItem(gpItem->usItem )->getPerPocket() );
+		i = 1 + Random( Item[ gpItem->usItem ].ubPerPocket );
 	else
-		i = MAX( 1, MIN( i, GCM->getItem(gpItem->usItem )->getPerPocket() ) );
+		i = MAX( 1, MIN( i, Item[ gpItem->usItem ].ubPerPocket ) );
 	gpItem->ubNumberOfObjects = (UINT8)i;
 	SetInputFieldStringWithNumericStrictValue( 1, i );
 	CreateItems( gpItem->usItem, 100, gpItem->ubNumberOfObjects, gpItem );
@@ -885,7 +882,7 @@ static void SetupExplosivesGUI(void)
 	AddTextInputField( 485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT );
 	swprintf(str, lengthof(str), L"%d", gpItem->ubNumberOfObjects);
 	AddTextInputField( 485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT );
-	if( GCM->getItem(gpItem->usItem )->getPerPocket() == 1 )
+	if( Item[ gpItem->usItem ].ubPerPocket == 1 )
 	{
 		DisableTextField( 2 );
 	}
@@ -919,13 +916,13 @@ static void ExtractAndUpdateExplosivesGUI(void)
 	gpItem->bStatus[0] = (INT8)i;
 	SetInputFieldStringWithNumericStrictValue( 1, i );
 	//Update the quantity
-	if( GCM->getItem(gpItem->usItem )->getPerPocket() > 1 )
+	if( Item[ gpItem->usItem ].ubPerPocket > 1 )
 	{
 		i = GetNumericStrictValueFromField( 2 );
 		if( i == -1 )
-			i = 1 + Random( GCM->getItem(gpItem->usItem )->getPerPocket() );
+			i = 1 + Random( Item[ gpItem->usItem ].ubPerPocket );
 		else
-			i = MAX( 1, MIN( i, GCM->getItem(gpItem->usItem )->getPerPocket() ) );
+			i = MAX( 1, MIN( i, Item[ gpItem->usItem ].ubPerPocket ) );
 		gpItem->ubNumberOfObjects = (UINT8)i;
 		SetInputFieldStringWithNumericStrictValue( 2, i );
 		CreateItems( gpItem->usItem, gpItem->bStatus[0], gpItem->ubNumberOfObjects, gpItem );

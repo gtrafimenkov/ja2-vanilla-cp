@@ -1,27 +1,24 @@
 #include "Build/Strategic/Assignments.h"
 #include "Hourly_Update.h"
-#include "Build/Strategic/Map_Screen_Helicopter.h"
-#include "Build/Strategic/Merc_Contract.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/Strategic_Merc_Handler.h"
-#include "Build/Strategic/Strategic_Mines.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Boxing.h"
-#include "Build/JAScreens.h"
-#include "Build/Tactical/Items.h"
-#include "sgp/Random.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/History.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/ScreenIDs.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Map_Screen_Helicopter.h"
+#include "Merc_Contract.h"
+#include "Soldier_Profile.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Strategic_Merc_Handler.h"
+#include "Strategic_Mines.h"
+#include "Campaign.h"
+#include "Morale.h"
+#include "Quests.h"
+#include "Game_Clock.h"
+#include "Overhead.h"
+#include "Boxing.h"
+#include "JAScreens.h"
+#include "Items.h"
+#include "Random.h"
+#include "Finances.h"
+#include "History.h"
+#include "Dialogue_Control.h"
+#include "ScreenIDs.h"
 
 
 void HandleMinuteUpdate()
@@ -214,7 +211,7 @@ static void HourlyLarryUpdate(void)
 
 		// check to see if we're in a bar sector, if we are, we have access to alcohol
 		// which may be better than anything we've got...
-		if ( usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= GCM->getItem(ALCOHOL)->getPrice() )
+		if ( usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= Item[ ALCOHOL ].usPrice )
 		{
 			if ( pSoldier->bSectorZ == 0 &&
 						( ( pSoldier->sSectorX == 13 && pSoldier->sSectorY == MAP_ROW_D) ||
@@ -242,7 +239,7 @@ static void HourlyLarryUpdate(void)
 					if ( fBar )
 					{
 						// take $ from player's account
-						usCashAmount = GCM->getItem(ALCOHOL)->getPrice();
+						usCashAmount = Item[ ALCOHOL ].usPrice;
 						AddTransactionToPlayersBook ( TRANSFER_FUNDS_TO_MERC, pSoldier->ubProfile, GetWorldTotalMin() , -( usCashAmount ) );
 						// give Larry some booze and set slot etc values appropriately
 						bBoozeSlot = FindEmptySlotWithin( pSoldier, HANDPOS, SMALLPOCK8POS );
@@ -273,7 +270,7 @@ static void HourlyLarryUpdate(void)
 				if ( fBar )
 				{
 					// take $ from player's account
-					usCashAmount = GCM->getItem(ALCOHOL)->getPrice();
+					usCashAmount = Item[ ALCOHOL ].usPrice;
 					AddTransactionToPlayersBook ( TRANSFER_FUNDS_TO_MERC, pSoldier->ubProfile, GetWorldTotalMin() , -( usCashAmount ) );
 					// give Larry some booze and set slot etc values appropriately
 					bBoozeSlot = FindEmptySlotWithin( pSoldier, HANDPOS, SMALLPOCK8POS );

@@ -1,16 +1,15 @@
 #include <locale.h>
 #include <stdexcept>
 
-#include "Build/Directories.h"
-#include "Build/GameRes.h"
-#include "Build/GameState.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
-#include "Build/Utils/Text.h"
-#include "sgp/EncodingCorrectors.h"
-#include "sgp/FileMan.h"
-#include "sgp/Logger.h"
-#include "sgp/StrUtils.h"
-#include "sgp/TranslationTable.h"
+#include "Directories.h"
+#include "LibraryDataBase.h"
+#include "Logger.h"
+#include "Multi_Language_Graphic_Utils.h"
+#include "Text.h"
+#include "TranslationTable.h"
+#include "GameState.h"
+#include "EncodingCorrectors.h"
+#include "StrUtils.h"
 
 
 extern LanguageRes g_LanguageResDutch;
@@ -133,8 +132,8 @@ FLOAT getMajorMapVersion()
   return (s_gameVersion == GV_RUSSIAN) ? 6.00 : 5.00;
 }
 
-/** Get list of resource libraries. */
-std::vector<std::string> GetResourceLibraries(const std::string &dataDir)
+
+void InitGameResources(void)
 {
   std::vector<std::string> libraries = FindFilesInDir(dataDir, ".slf", true, true);
 
@@ -143,7 +142,27 @@ std::vector<std::string> GetResourceLibraries(const std::string &dataDir)
   //   LOG_WARNING("%s\n", libraries[i].c_str());
   // }
 
+<<<<<<< HEAD
   return libraries;
+=======
+  switch(s_gameVersion)
+  {
+  case GV_DUTCH:        libraries.push_back("dutch.slf");       break;
+  case GV_GERMAN:       libraries.push_back("german.slf");      break;
+  case GV_ITALIAN:      libraries.push_back("italian.slf");     break;
+  case GV_POLISH:       libraries.push_back("polish.slf");      break;
+  case GV_RUSSIAN:      libraries.push_back("russian.slf");     break;
+      default:
+          break;
+  }
+
+  if(GameState::getInstance()->isEditorMode())
+  {
+    libraries.push_back("editor.slf");
+  }
+
+  InitializeFileDatabase(libraries);
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 }
 
 
@@ -401,21 +420,4 @@ char const* GetMLGFilename(MultiLanguageGraphic const id)
   }
 
   throw std::runtime_error(FormattedString("Multilanguage resource %d is not found", id));
-}
-
-STRING_ENC_TYPE getStringEncType()
-{
-  if(isRussianVersion() || isRussianGoldVersion())
-  {
-    return SE_RUSSIAN;
-  }
-  else if(isPolishVersion())
-  {
-    return SE_POLISH;
-  }
-  else if(isEnglishVersion())
-  {
-    return SE_ENGLISH;
-  }
-  return SE_NORMAL;
 }

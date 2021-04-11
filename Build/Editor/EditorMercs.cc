@@ -57,9 +57,6 @@
 #include "sgp/Debug.h"
 #include "Build/Utils/Message.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-
 
 //--------------------------------------------------
 //	NON_CIV_GROUP,
@@ -2099,7 +2096,7 @@ static void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate)
 		//Create the item, and set up the slot.
 		fUnDroppable = gpSelected->pDetailedPlacement->Inv[ gbMercSlotTypes[ gbCurrSelect ] ].fFlags & OBJECT_UNDROPPABLE ? TRUE : FALSE;
 
-		if ( GCM->getItem(gusMercsNewItemIndex)->getItemClass() == IC_KEY )
+		if ( Item[ gusMercsNewItemIndex ].usItemClass == IC_KEY )
 		{
 			CreateKeyObject( &gpSelected->pDetailedPlacement->Inv[ gbMercSlotTypes[ gbCurrSelect ] ], 1, (UINT8) eInfo.sSelItemIndex );
 		}
@@ -2113,7 +2110,7 @@ static void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate)
 		}
 
 		//randomize the status on non-ammo items.
-		if( !(GCM->getItem(gpSelected->pDetailedPlacement->Inv[ gbMercSlotTypes[ gbCurrSelect ] ].usItem)->isAmmo()) )
+		if( !(Item[ gpSelected->pDetailedPlacement->Inv[ gbMercSlotTypes[ gbCurrSelect ] ].usItem ].usItemClass & IC_AMMO) )
 			gpSelected->pDetailedPlacement->Inv[ gbMercSlotTypes[ gbCurrSelect ] ].bStatus[0] = (INT8)(80 + Random( 21 ));
 
 		if( gusMercsNewItemIndex )
@@ -2164,12 +2161,12 @@ static void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate)
 		return;
 
 	//now draw the fullsize item into the temp buffer
-	const ItemModel * item = GCM->getItem(gusMercsNewItemIndex);
+	INVTYPE    const& item = Item[gusMercsNewItemIndex];
 	SGPVObject const& vo   = GetInterfaceGraphicForItem(item);
-	BltVideoObjectOutline(uiSrcID, &vo, item->getGraphicNum(), 0, 0, SGP_TRANSPARENT);
+	BltVideoObjectOutline(uiSrcID, &vo, item.ubGraphicNum, 0, 0, SGP_TRANSPARENT);
 
 	//crop the source image
-	ETRLEObject const& pObject    = vo.SubregionProperties(item->getGraphicNum());
+	ETRLEObject const& pObject    = vo.SubregionProperties(item.ubGraphicNum);
 	INT32       const  iSrcWidth  = pObject.usWidth;
 	INT32       const  iSrcHeight = pObject.usHeight;
 	SGPBox      const  src_rect   =

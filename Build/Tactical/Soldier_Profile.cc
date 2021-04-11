@@ -1,54 +1,42 @@
 #include "math.h"
-
-#include "Build/Directories.h"
-#include "Build/GameRes.h"
-#include "Build/GameSettings.h"
-#include "Build/Laptop/AIM.h"
-#include "Build/Laptop/History.h"
-#include "Build/Laptop/Personnel.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LoadSaveMercProfile.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Ani.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "content/ContentMercs.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Random.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
+#include "WorldDef.h"
+#include "Soldier_Control.h"
+#include "Animation_Data.h"
+#include "Render_Fun.h"
+#include "Render_Dirty.h"
+#include "MouseSystem.h"
+#include "Interface.h"
+#include "SysUtil.h"
+#include "FileMan.h"
+#include "Points.h"
+#include "Random.h"
+#include "AI.h"
+#include "Soldier_Ani.h"
+#include "Overhead.h"
+#include "Soldier_Profile.h"
+#include "Game_Clock.h"
+#include "Assignments.h"
+#include "Dialogue_Control.h"
+#include "Soldier_Create.h"
+#include "Soldier_Add.h"
+#include "OppList.h"
+#include "Weapons.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Squads.h"
+#include "Tactical_Save.h"
+#include "Quests.h"
+#include "AIM.h"
+#include "Interface_Dialogue.h"
+#include "GameSettings.h"
+#include "Interface_Utils.h"
+#include "StrategicMap.h"
+#include "Game_Event_Hook.h"
+#include "Map_Information.h"
+#include "History.h"
+#include "Personnel.h"
+#include "Environment.h"
+#include "Items.h"
+#include "GameRes.h"
 
 extern BOOLEAN gfProfileDataLoaded;
 
@@ -124,14 +112,14 @@ static void StartSomeMercsOnAssignment(void);
 
 void LoadMercProfiles()
 {
-	{ AutoSGPFile f(GCM->openGameResForReading(BINARYDATADIR "/prof.dat"));
+	{ AutoSGPFile f(FileMan::openForReadingSmart(BINARYDATADIR "/prof.dat", true));
     LoadRawMercProfiles(f, NUM_PROFILES, gMercProfiles, getDataFilesEncodingCorrector());
 		for (UINT32 i = 0; i != NUM_PROFILES; ++i)
 		{
 			MERCPROFILESTRUCT& p = gMercProfiles[i];
 
 			// If the dialogue exists for the merc, allow the merc to be hired
-			p.bMercStatus = Content::canMercBeHired(GCM, i) ? 0 : MERC_HAS_NO_TEXT_FILE;
+			p.bMercStatus = FileExists(GetDialogueDataFilename(i, 0, FALSE)) ? 0 : MERC_HAS_NO_TEXT_FILE;
 
 			p.sMedicalDepositAmount = p.bMedicalDeposit ? CalcMedicalDeposit(p) : 0;
 
@@ -144,20 +132,20 @@ void LoadMercProfiles()
 				// CJC: replace guns in profile if they aren't available
 				FOR_EACH(UINT16, k, p.inv)
 				{
-          const ItemModel *item = GCM->getItem(*k);
-					if (!item->isGun() || !item->isInBigGunList()) continue;
+					UINT16 const item = *k;
+					if (!(Item[item].usItemClass & IC_GUN) || !ExtendedGunListGun(item)) continue;
 
-          const WeaponModel *oldWeapon = item->asWeapon();
-          const WeaponModel *newWeapon = GCM->getWeaponByName(oldWeapon->getStandardReplacement());
+					UINT16 const new_gun = StandardGunListReplacement(item);
+					if (new_gun == NOTHING) continue;
 
-					*k = newWeapon->getItemIndex();
+					*k = new_gun;
 
 					// Search through inventory and replace ammo accordingly
 					FOR_EACH(UINT16, l, p.inv)
 					{
 						UINT16 const ammo = *l;
-						if (!(GCM->getItem(ammo)->isAmmo())) continue;
-						UINT16 const new_ammo = FindReplacementMagazineIfNecessary(oldWeapon, ammo, newWeapon);
+						if (!(Item[ammo].usItemClass & IC_AMMO)) continue;
+						UINT16 const new_ammo = FindReplacementMagazineIfNecessary(item, ammo, new_gun);
 						if (new_ammo == NOTHING) continue;
 						// Found a new magazine, replace
 						*l = new_ammo;
@@ -174,12 +162,12 @@ void LoadMercProfiles()
 			{
 				UINT16 const item_id = *k;
 				if (item_id == NOTHING) continue;
-				const ItemModel * item = GCM->getItem(item_id);
+				INVTYPE const& item = Item[item_id];
 
-				if (item->isGun())    p.bMainGunAttractiveness = GCM->getWeapon(item_id)->ubDeadliness;
-				if (item->isArmour()) p.bArmourAttractiveness  = Armour[item->getClassIndex()].ubProtection;
+				if (item.usItemClass & IC_GUN)    p.bMainGunAttractiveness = Weapon[item_id].ubDeadliness;
+				if (item.usItemClass & IC_ARMOUR) p.bArmourAttractiveness  = Armour[item.ubClassIndex].ubProtection;
 
-				p.usOptionalGearCost += item->getPrice();
+				p.usOptionalGearCost += item.usPrice;
 			}
 
 			// These variables to get loaded in
@@ -690,7 +678,7 @@ BOOLEAN RecruitRPC( UINT8 ubCharNum )
 		bSlot = FindObjClass( pNewSoldier, IC_WEAPON );
 		if ( bSlot != NO_SLOT )
 		{
-			if ( GCM->getItem(pNewSoldier->inv[ bSlot ].usItem)->isTwoHanded() )
+			if ( Item[ pNewSoldier->inv[ bSlot ].usItem ].fFlags & ITEM_TWO_HANDED )
 			{
 				if ( bSlot != SECONDHANDPOS && pNewSoldier->inv[ SECONDHANDPOS ].usItem != NOTHING )
 				{

@@ -1,21 +1,16 @@
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Auto_Resolve.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Inventory_Choosing.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Weapons.h"
-#include "sgp/Debug.h"
-#include "sgp/Random.h"
-#include "src/AmmoTypeModel.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/policy/GamePolicy.h"
-#include "src/WeaponModels.h"
+#include "Inventory_Choosing.h"
+#include "Animation_Data.h"
+#include "Items.h"
+#include "Random.h"
+#include "Weapons.h"
+#include "Strategic_Status.h"
+#include "Campaign.h"
+#include "GameSettings.h"
+#include "StrategicMap.h"
+#include "Auto_Resolve.h"
+#include "Map_Screen_Interface_Map.h"
+#include "Debug.h"
+
 
 #define ENEMYAMMODROPRATE       50      // % of time enemies drop ammunition
 #define ENEMYGRENADEDROPRATE    25      // % of time enemies drop grenades
@@ -32,12 +27,77 @@
 UINT32 guiMortarsRolledByTeam = 0;
 
 
+struct ARMY_GUN_CHOICE_TYPE
+{
+	UINT8 ubChoices;  // how many valid choices there are in this category
+	INT8  bItemNo[5]; // room for up to 5 choices of gun in each category
+};
+
+
+static const ARMY_GUN_CHOICE_TYPE gRegularArmyGunChoices[ARMY_GUN_LEVELS] =
+{
+  { /* 0 - lo pistols     */ 2, { SW38,         DESERTEAGLE, -1, -1, -1 } },
+  { /* 1 - hi pistols     */ 2, { GLOCK_17,     BERETTA_93R, -1, -1, -1 } },
+  { /* 2 - lo SMG/shotgun */ 2, { M870,         MP5K,        -1, -1, -1 } },
+  { /* 3 - lo rifles      */ 1, { MINI14,       -1,          -1, -1, -1 } },
+  { /* 4 - hi SMGs        */ 2, { MAC10,        COMMANDO,    -1, -1, -1 } },
+  { /* 5 - med rifles     */ 1, { G41,          -1,          -1, -1, -1 } },
+  { /* 6 - sniper rifles  */ 1, { M24,          -1,          -1, -1, -1 } },
+  { /* 7 - hi rifles      */ 2, { M14,          C7,          -1, -1, -1 } },
+  { /* 8 - best rifle     */ 1, { FNFAL,        -1,          -1, -1, -1 } },
+  { /* 9 - machine guns   */ 1, { MINIMI,       -1,          -1, -1, -1 } },
+  { /* 10- rocket rifle   */ 2, { ROCKET_RIFLE, MINIMI,      -1, -1, -1 } }
+};
+
+static const ARMY_GUN_CHOICE_TYPE gExtendedArmyGunChoices[ARMY_GUN_LEVELS] =
+{
+  { /* 0 - lo pistols    */ 5, { SW38,         BARRACUDA,    DESERTEAGLE, GLOCK_17, M1911  } },
+  { /* 1 - hi pist/shtgn */ 4, { GLOCK_18,     BERETTA_93R,  BERETTA_92F, M870,     -1     } },
+  { /* 2 - lo SMGs/shtgn */ 5, { TYPE85,       THOMPSON,     MP53,        MP5K,     SPAS15 } },
+  { /* 3 - lo rifles     */ 2, { MINI14,       SKS,          -1,          -1,       -1     } },
+  { /* 4 - hi SMGs       */ 3, { MAC10,        AKSU74,       COMMANDO,    -1,       -1     } },
+  { /* 5 - med rifles    */ 4, { AKM,          G3A3,         G41,         AK74,     -1     } },
+  { /* 6 - sniper rifles */ 2, { DRAGUNOV,     M24,          -1,          -1,       -1     } },
+  { /* 7 - hi rifles     */ 4, { FAMAS,        M14,          AUG,         C7,       -1     } },
+  { /* 8 - best rifle    */ 1, { FNFAL,        -1,           -1,          -1,       -1     } },
+  { /* 9 - machine guns  */ 3, { MINIMI,       RPK74,        HK21E,       -1,       -1     } },
+  { /* 10- rocket rifle  */ 4, { ROCKET_RIFLE, ROCKET_RIFLE, RPK74,       HK21E,    -1     } }
+};
+
+
 static void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon);
 
 
 void InitArmyGunTypes(void)
 {
+	UINT32 uiGunLevel;
+	UINT32 uiChoice;
+	INT8 bItemNo;
 	UINT8 ubWeapon;
+
+
+	// depending on selection of the gun nut option
+	const ARMY_GUN_CHOICE_TYPE* pGunChoiceTable;
+	if (gGameOptions.fGunNut)
+	{
+		// use table of extended gun choices
+		pGunChoiceTable = gExtendedArmyGunChoices;
+	}
+	else
+	{
+		// use table of regular gun choices
+		pGunChoiceTable = gRegularArmyGunChoices;
+	}
+
+	// for each gun category
+	for (uiGunLevel = 0; uiGunLevel <	ARMY_GUN_LEVELS; uiGunLevel++)
+	{
+		// choose one the of the possible gun choices to be used by the army for this game & store it
+		uiChoice = Random(pGunChoiceTable[ uiGunLevel ].ubChoices);
+		bItemNo = pGunChoiceTable[ uiGunLevel ].bItemNo[ uiChoice ];
+		AssertMsg(bItemNo != -1, "Invalid army gun choice in table");
+		gStrategicStatus.ubStandardArmyGunIndex[uiGunLevel] = (UINT8) bItemNo;
+	}
 
 	// set all flags that track whether this weapon type has been dropped before to FALSE
 	for (ubWeapon = 0; ubWeapon < MAX_WEAPONS; ubWeapon++)
@@ -52,15 +112,14 @@ void InitArmyGunTypes(void)
 
 static INT8 GetWeaponClass(UINT16 usGun)
 {
-  const std::vector<std::vector<const WeaponModel*> > & gunChoice = GCM->getExtendedGunChoice();
 	UINT32		uiGunLevel, uiLoop;
 
 	// always use the extended list since it contains all guns...
-	for (uiGunLevel = 0; uiGunLevel <	gunChoice.size(); uiGunLevel++)
+	for (uiGunLevel = 0; uiGunLevel <	ARMY_GUN_LEVELS; uiGunLevel++)
 	{
-		for ( uiLoop = 0; uiLoop < gunChoice[uiGunLevel].size(); uiLoop++ )
+		for ( uiLoop = 0; uiLoop < gExtendedArmyGunChoices[ uiGunLevel ].ubChoices; uiLoop++ )
 		{
-			if ( gunChoice[uiGunLevel][uiLoop]->getItemIndex() == usGun )
+			if ( gExtendedArmyGunChoices[ uiGunLevel ].bItemNo[ uiLoop ] == usGun )
 			{
 				return( (INT8) uiGunLevel );
 			}
@@ -82,14 +141,12 @@ static void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon)
 	bGunClass = GetWeaponClass( usWeapon );
 
 	// if the gun belongs to a gun class (mortars, GLs, LAWs, etc. do not and are handled independently)
-  const std::vector<std::vector<const WeaponModel*> > & gunChoice = GCM->getExtendedGunChoice();
-
 	if ( bGunClass != -1 )
 	{
 		// then mark EVERY gun in that class as dropped
-		for ( uiLoop = 0; uiLoop < gunChoice[bGunClass].size(); uiLoop++ )
+		for ( uiLoop = 0; uiLoop < gExtendedArmyGunChoices[ bGunClass ].ubChoices; uiLoop++ )
 		{
-			gStrategicStatus.fWeaponDroppedAlready[gunChoice[bGunClass][uiLoop]->getItemIndex()] = TRUE;
+			gStrategicStatus.fWeaponDroppedAlready[ gExtendedArmyGunChoices[ bGunClass ].bItemNo[ uiLoop ] ] = TRUE;
 		}
 	}
 }
@@ -414,7 +471,7 @@ void GenerateRandomEquipment( SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass, INT8
 			pItem = &pp->Inv[ i ];
 			if( !pItem )
 				continue;
-			switch( GCM->getItem(pItem->usItem)->getItemClass() )
+			switch( Item[ pItem->usItem ].usItemClass )
 			{
 				case IC_GUN:
 					if ( pItem->usItem != ROCKET_LAUNCHER )
@@ -514,7 +571,7 @@ static void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bW
 		//will choose ammunition that works with the gun.
 		for( i = 0; i < NUM_INV_SLOTS; i++ )
 		{
-			if( GCM->getItem(pp->Inv[ i ].usItem)->getItemClass() == IC_GUN )
+			if( Item[ pp->Inv[ i ].usItem ].usItemClass == IC_GUN )
 			{
 				usGunIndex = pp->Inv[ i ].usItem;
 				ubChanceStandardAmmo = 100 - (bWeaponClass * -9);		// weapon class is negative!
@@ -557,7 +614,7 @@ static void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bW
 
 		// check default ammo first...
 		usAmmoIndex = DefaultMagazine( usGunIndex );
-		switch( GCM->getItem(usAmmoIndex)->asAmmo()->ammoType->index )
+		switch( Magazine[ Item[ usAmmoIndex ].ubClassIndex ].ubAmmoType )
 		{
 			case AMMO_AP:
 			case AMMO_SUPER_AP:
@@ -579,8 +636,8 @@ static void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bW
 		{ //Count the number of valid attachments.
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
-				if( pItem->getItemClass() == IC_MISC && pItem->getCoolness() == bAttachClass && ValidAttachment( i, usGunIndex ) )
+				const INVTYPE* const pItem = &Item[i];
+				if( pItem->usItemClass == IC_MISC && pItem->ubCoolness == bAttachClass && ValidAttachment( i, usGunIndex ) )
 					usNumMatches++;
 			}
 			if( !usNumMatches )
@@ -593,8 +650,8 @@ static void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bW
 			usRandom = (UINT16)Random( usNumMatches );
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
-				if( pItem->getItemClass() == IC_MISC && pItem->getCoolness() == bAttachClass && ValidAttachment( i, usGunIndex ) )
+				const INVTYPE* const pItem = &Item[i];
+				if( pItem->usItemClass == IC_MISC && pItem->ubCoolness == bAttachClass && ValidAttachment( i, usGunIndex ) )
 				{
 					if( usRandom )
 						usRandom--;
@@ -635,8 +692,6 @@ static void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bW
 		}
 		// don't allow it to be lower than marksmanship, we don't want it to affect their chances of hitting
 		bStatus = (INT8)MAX( pp->bMarksmanship, bStatus );
-
-    bStatus = (INT8)MAX( bStatus, GCM->getGamePolicy()->enemy_weapon_minimal_status);
 
 		CreateItem( usGunIndex, bStatus, &(pp->Inv[ HANDPOS ]) );
 		pp->Inv[ HANDPOS ].fFlags |= OBJECT_UNDROPPABLE;
@@ -922,11 +977,11 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 			//don't find one, we keep lowering the class until we do.
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
+				const INVTYPE* const pItem = &Item[i];
 				// NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bHelmetClass )
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bHelmetClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_HELMET )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_HELMET )
 						usNumMatches++;
 				}
 			}
@@ -938,10 +993,10 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 			usRandom = (UINT16)Random( usNumMatches );
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bHelmetClass )
+				const INVTYPE* const pItem = &Item[i];
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bHelmetClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_HELMET )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_HELMET )
 					{
 						if( usRandom )
 							usRandom--;
@@ -972,11 +1027,11 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 				if ( ( i == TSHIRT ) || ( i == LEATHER_JACKET ) || ( i == TSHIRT_DEIDRANNA ) )
 					continue;
 
-				const ItemModel * pItem = GCM->getItem(i);
+				const INVTYPE* const pItem = &Item[i];
 				// NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bVestClass )
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bVestClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_VEST )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_VEST )
 						usNumMatches++;
 				}
 			}
@@ -992,10 +1047,10 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 				if ( ( i == TSHIRT ) || ( i == LEATHER_JACKET ) || ( i == TSHIRT_DEIDRANNA ) )
 					continue;
 
-				const ItemModel * pItem = GCM->getItem(i);
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bVestClass )
+				const INVTYPE* const pItem = &Item[i];
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bVestClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_VEST )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_VEST )
 					{
 						if( usRandom )
 							usRandom--;
@@ -1009,7 +1064,7 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 								if ( ( i == KEVLAR_VEST ) || ( i == SPECTRA_VEST ) )
 								{
 									// roll to see if he gets a CERAMIC PLATES, too.  Higher chance the higher his entitled vest class is
-									if (( INT8 ) Random( 100 ) < ( 15 * ( bOrigVestClass - pItem->getCoolness() ) ) )
+									if (( INT8 ) Random( 100 ) < ( 15 * ( bOrigVestClass - pItem->ubCoolness ) ) )
 									{
 										CreateItem( CERAMIC_PLATES, (INT8)(70+Random(31)), &Object );
 										Object.fFlags |= OBJECT_UNDROPPABLE;
@@ -1033,11 +1088,11 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 			//don't find one, we keep lowering the class until we do.
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
+				const INVTYPE* const pItem = &Item[i];
 				// NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bLeggingsClass )
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bLeggingsClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_LEGGINGS )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_LEGGINGS )
 						usNumMatches++;
 				}
 			}
@@ -1049,10 +1104,10 @@ static void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bH
 			usRandom = (UINT16)Random( usNumMatches );
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
-				if( pItem->getItemClass() == IC_ARMOUR && pItem->getCoolness() == bLeggingsClass )
+				const INVTYPE* const pItem = &Item[i];
+				if( pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bLeggingsClass )
 				{
-					if( Armour[ pItem->getClassIndex() ].ubArmourClass == ARMOURCLASS_LEGGINGS )
+					if( Armour[ pItem->ubClassIndex ].ubArmourClass == ARMOURCLASS_LEGGINGS )
 					{
 						if( usRandom )
 							usRandom--;
@@ -1087,8 +1142,8 @@ static void ChooseSpecialWeaponsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp,
 		//don't find one, we keep lowering the class until we do.
 		for( i = 0; i < MAXITEMS; i++ )
 		{
-			const ItemModel * pItem = GCM->getItem(i);
-			if( ( pItem->getItemClass() == IC_BLADE || pItem->getItemClass() == IC_THROWING_KNIFE ) && pItem->getCoolness() == bKnifeClass )
+			const INVTYPE* const pItem = &Item[i];
+			if( ( pItem->usItemClass == IC_BLADE || pItem->usItemClass == IC_THROWING_KNIFE ) && pItem->ubCoolness == bKnifeClass )
 			{
 				usNumMatches++;
 			}
@@ -1101,8 +1156,8 @@ static void ChooseSpecialWeaponsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp,
 		usRandom = (UINT16)Random( usNumMatches );
 		for( i = 0; i < MAXITEMS; i++ )
 		{
-			const ItemModel * pItem = GCM->getItem(i);
-			if( ( pItem->getItemClass() == IC_BLADE || pItem->getItemClass() == IC_THROWING_KNIFE ) && pItem->getCoolness() == bKnifeClass )
+			const INVTYPE* const pItem = &Item[i];
+			if( ( pItem->usItemClass == IC_BLADE || pItem->usItemClass == IC_THROWING_KNIFE ) && pItem->ubCoolness == bKnifeClass )
 			{
 				if( usRandom )
 					usRandom--;
@@ -1166,7 +1221,7 @@ static void ChooseFaceGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp)
 	//If any are found, then don't assign any
 	for( i = BIGPOCK1POS; i < BIGPOCK4POS; i++ )
 	{
-		if( GCM->getItem(pp->Inv[ i ].usItem)->getItemClass() == IC_FACE )
+		if( Item[ pp->Inv[ i ].usItem ].usItemClass == IC_FACE )
 		{
 			return;
 		}
@@ -1253,9 +1308,9 @@ static void ChooseKitsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bKit
 		// count how many non-medical KITS are eligible ( of sufficient or lower coolness)
 		for( i = 0; i < MAXITEMS; i++ )
 		{
-			const ItemModel * pItem = GCM->getItem(i);
+			const INVTYPE* const pItem = &Item[i];
 			// skip toolkits
-			if( ( pItem->getItemClass() == IC_KIT ) && ( pItem->getCoolness() > 0 ) && pItem->getCoolness() <= bKitClass && ( i != TOOLKIT ) )
+			if( ( pItem->usItemClass == IC_KIT ) && ( pItem->ubCoolness > 0 ) && pItem->ubCoolness <= bKitClass && ( i != TOOLKIT ) )
 			{
 				usNumMatches++;
 			}
@@ -1267,9 +1322,9 @@ static void ChooseKitsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bKit
 			usRandom = (UINT16)Random( usNumMatches );
 			for( i = 0; i < MAXITEMS; i++ )
 			{
-				const ItemModel * pItem = GCM->getItem(i);
+				const INVTYPE* const pItem = &Item[i];
 				// skip toolkits
-				if( ( pItem->getItemClass() == IC_KIT ) && ( pItem->getCoolness() > 0 ) && pItem->getCoolness() <= bKitClass && ( i != TOOLKIT ) )
+				if( ( pItem->usItemClass == IC_KIT ) && ( pItem->ubCoolness > 0 ) && pItem->ubCoolness <= bKitClass && ( i != TOOLKIT ) )
 				{
 					if( usRandom )
 						usRandom--;
@@ -1318,9 +1373,9 @@ static void ChooseMiscGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 
 	UINT16 usNumMatches = 0;
 	for (const INT32* i = iMiscItemsList; *i != NOTHING; ++i)
 	{
-		const ItemModel * pItem = GCM->getItem(*i);
-		if (pItem->getCoolness() >  0          &&
-				pItem->getCoolness() <= bMiscClass &&
+		const INVTYPE* const pItem = &Item[*i];
+		if (pItem->ubCoolness >  0          &&
+				pItem->ubCoolness <= bMiscClass &&
 				(*i != REGEN_BOOSTER || gGameOptions.fSciFi)) // exclude REGEN_BOOSTERs unless Sci-Fi flag is on
 		{
 			++usNumMatches;
@@ -1333,9 +1388,9 @@ static void ChooseMiscGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 
 	UINT16 usRandom = Random(usNumMatches);
 	for (const INT32* i = iMiscItemsList; *i != NOTHING; ++i)
 	{
-		const ItemModel * pItem = GCM->getItem(*i);
-		if (pItem->getCoolness() >  0          &&
-				pItem->getCoolness() <= bMiscClass &&
+		const INVTYPE* const pItem = &Item[*i];
+		if (pItem->ubCoolness >  0          &&
+				pItem->ubCoolness <= bMiscClass &&
 				(*i != REGEN_BOOSTER || gGameOptions.fSciFi)) // exclude REGEN_BOOSTERs unless Sci-Fi flag is on
 		{
 			if (usRandom)
@@ -1365,8 +1420,8 @@ static void ChooseBombsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bBo
 	// count how many are eligible
 	for( i = 0; i < MAXITEMS; i++ )
 	{
-		const ItemModel * pItem = GCM->getItem(i);
-		if( ( pItem->getItemClass() == IC_BOMB ) && ( pItem->getCoolness() > 0 ) && ( pItem->getCoolness() <= bBombClass ) )
+		const INVTYPE* const pItem = &Item[i];
+		if( ( pItem->usItemClass == IC_BOMB ) && ( pItem->ubCoolness > 0 ) && ( pItem->ubCoolness <= bBombClass ) )
 		{
 			usNumMatches++;
 		}
@@ -1379,8 +1434,8 @@ static void ChooseBombsForSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, INT8 bBo
 		usRandom = (UINT16)Random( usNumMatches );
 		for( i = 0; i < MAXITEMS; i++ )
 		{
-			const ItemModel * pItem = GCM->getItem(i);
-			if( ( pItem->getItemClass() == IC_BOMB ) && ( pItem->getCoolness() > 0 ) && ( pItem->getCoolness() <= bBombClass ) )
+			const INVTYPE* const pItem = &Item[i];
+			if( ( pItem->usItemClass == IC_BOMB ) && ( pItem->ubCoolness > 0 ) && ( pItem->ubCoolness <= bBombClass ) )
 			{
 				if( usRandom )
 					usRandom--;
@@ -1414,7 +1469,7 @@ static void ChooseLocationSpecificGearForSoldierCreateStruct(SOLDIERCREATE_STRUC
 static BOOLEAN PlaceObjectInSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, OBJECTTYPE* pObject)
 {
 	INT8 i;
-	if( !GCM->getItem(pObject->usItem )->getPerPocket() )
+	if( !Item[ pObject->usItem ].ubPerPocket )
 	{ //ubPerPocket == 0 will only fit in large pockets.
 		pObject->ubNumberOfObjects = 1;
 		for( i = BIGPOCK1POS; i <= BIGPOCK4POS; i++ )
@@ -1429,7 +1484,7 @@ static BOOLEAN PlaceObjectInSoldierCreateStruct(SOLDIERCREATE_STRUCT* pp, OBJECT
 	}
 	else
 	{
-		pObject->ubNumberOfObjects = (UINT8)MIN( GCM->getItem(pObject->usItem )->getPerPocket(), pObject->ubNumberOfObjects );
+		pObject->ubNumberOfObjects = (UINT8)MIN( Item[ pObject->usItem ].ubPerPocket, pObject->ubNumberOfObjects );
 		//try to get it into a small pocket first
 		for( i = SMALLPOCK1POS; i <= SMALLPOCK8POS; i++ )
 		{
@@ -1464,7 +1519,7 @@ static void MakeOneItemOfClassDroppable(SOLDIERCREATE_STRUCT* const sc, UINT32 c
 	for (INT32 i = 0; i != NUM_INV_SLOTS; ++i)
 	{
 		OBJECTTYPE const& o = sc->Inv[i];
-		if (!(GCM->getItem(o.usItem)->getItemClass() & item_class)) continue;
+		if (!(Item[o.usItem].usItemClass & item_class)) continue;
 		if (o.fFlags & OBJECT_NO_OVERWRITE)             break;
 		++n_matches;
 	}
@@ -1473,7 +1528,7 @@ static void MakeOneItemOfClassDroppable(SOLDIERCREATE_STRUCT* const sc, UINT32 c
 	for (INT32 i = 0; i != NUM_INV_SLOTS; ++i)
 	{
 		OBJECTTYPE& o = sc->Inv[i];
-		if (!(GCM->getItem(o.usItem)->getItemClass() & item_class)) continue;
+		if (!(Item[o.usItem].usItemClass & item_class)) continue;
 		if (o.fFlags & OBJECT_NO_OVERWRITE)             break;
 		if (Random(n_matches--) != 0)                   continue;
 		o.fFlags &= ~OBJECT_UNDROPPABLE;
@@ -1635,7 +1690,7 @@ static void RandomlyChooseWhichItemsAreDroppable(SOLDIERCREATE_STRUCT* pp, INT8 
 		// now drops ALL ammo found, not just the first slot
 		for( i = 0; i < NUM_INV_SLOTS; i++ )
 		{
-			uiItemClass = GCM->getItem(pp->Inv[ i ].usItem)->getItemClass();
+			uiItemClass = Item[ pp->Inv[ i ].usItem ].usItemClass;
 			if( uiItemClass == IC_AMMO )
 			{
 				if( pp->Inv[ i ].fFlags & OBJECT_NO_OVERWRITE )
@@ -1656,7 +1711,7 @@ static void RandomlyChooseWhichItemsAreDroppable(SOLDIERCREATE_STRUCT* pp, INT8 
 		for( i = 0; i < NUM_INV_SLOTS; i++ )
 		{
 			// drops FIRST knife found
-			uiItemClass = GCM->getItem(pp->Inv[ i ].usItem)->getItemClass();
+			uiItemClass = Item[ pp->Inv[ i ].usItem ].usItemClass;
 			if( uiItemClass == IC_BLADE || uiItemClass == IC_THROWING_KNIFE )
 			{
 				if( pp->Inv[ i ].fFlags & OBJECT_NO_OVERWRITE )
@@ -1785,14 +1840,12 @@ void ReplaceExtendedGuns( SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass )
 	for ( uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++ )
 	{
 		usItem = pp->Inv[ uiLoop ].usItem;
-    const ItemModel *item = GCM->getItem(usItem);
-    const WeaponModel *weapon = item->asWeapon();
 
-		if (weapon && weapon->isInBigGunList())
+		if ( ( Item[ usItem ].usItemClass & IC_GUN ) && ExtendedGunListGun( usItem ) )
 		{
 			if ( bSoldierClass == SOLDIER_CLASS_NONE )
 			{
-				usNewGun = GCM->getWeaponByName(weapon->getStandardReplacement())->getItemIndex();
+				usNewGun = StandardGunListReplacement( usItem );
 			}
 			else
 			{
@@ -1829,9 +1882,9 @@ void ReplaceExtendedGuns( SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass )
 				for ( uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++ )
 				{
 					usAmmo = pp->Inv[ uiLoop2 ].usItem;
-					if ( (GCM->getItem(usAmmo)->isAmmo()) )
+					if ( (Item[ usAmmo ].usItemClass & IC_AMMO) )
 					{
-						usNewAmmo = FindReplacementMagazineIfNecessary(item->asWeapon(), usAmmo, GCM->getWeapon(usNewGun) );
+						usNewAmmo = FindReplacementMagazineIfNecessary( usItem, usAmmo, usNewGun );
 						if (usNewAmmo != NOTHING )
 						{
 							// found a new magazine, replace...
@@ -1850,20 +1903,27 @@ static UINT16 SelectStandardArmyGun(UINT8 uiGunLevel)
 	UINT32 uiChoice;
 	UINT16 usGunIndex;
 
-  const std::vector<std::vector<const WeaponModel*> > * gunChoice = NULL;
+	// pick the standard army gun for this weapon class from table
+//	usGunIndex = gStrategicStatus.ubStandardArmyGunIndex[uiGunLevel];
 
+	// decided to randomize it afterall instead of repeating the same weapon over and over
+
+	// depending on selection of the gun nut option
+	const ARMY_GUN_CHOICE_TYPE* pGunChoiceTable;
 	if (gGameOptions.fGunNut)
 	{
-    gunChoice = &GCM->getExtendedGunChoice();
+		// use table of extended gun choices
+		pGunChoiceTable = gExtendedArmyGunChoices;
 	}
 	else
 	{
-    gunChoice = &GCM->getNormalGunChoice();
+		// use table of regular gun choices
+		pGunChoiceTable = gRegularArmyGunChoices;
 	}
 
 	// choose one the of the possible gun choices
-	uiChoice = Random(gunChoice->at(uiGunLevel).size());
-	usGunIndex = (gunChoice->at(uiGunLevel)[uiChoice])->getItemIndex();
+	uiChoice = Random(pGunChoiceTable[ uiGunLevel ].ubChoices);
+	usGunIndex = pGunChoiceTable[ uiGunLevel ].bItemNo[ uiChoice ];
 
 	Assert(usGunIndex);
 

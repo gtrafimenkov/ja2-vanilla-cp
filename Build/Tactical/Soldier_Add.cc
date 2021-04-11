@@ -1,27 +1,25 @@
-#include <memory>
+#include "Soldier_Control.h"
+#include "Overhead.h"
+#include "Overhead_Types.h"
+#include "Isometric_Utils.h"
+#include "Interface_Panels.h"
+#include "Soldier_Macros.h"
+#include "StrategicMap.h"
+#include "Strategic.h"
+#include "Animation_Control.h"
+#include "Soldier_Create.h"
+#include "Soldier_Init_List.h"
+#include "Soldier_Add.h"
+#include "Map_Information.h"
+#include "FOV.h"
+#include "PathAI.h"
+#include "Random.h"
+#include "Render_Fun.h"
+#include "Meanwhile.h"
+#include "Exit_Grids.h"
+#include "Debug.h"
+#include "Structure.h"
 
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Init_List.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/Structure.h"
-#include "sgp/Debug.h"
-#include "sgp/Random.h"
-#include "src/Soldier.h"
 
 // SO, STEPS IN CREATING A MERC!
 
@@ -1128,15 +1126,16 @@ static void AddSoldierToSectorGridNo(SOLDIERTYPE* const s, INT16 const sGridNo, 
 {
 	// Add merc to gridno
 
-  std::shared_ptr<Soldier> soldier(new Soldier(s));
-
 	// Set reserved location!
 	s->sReservedMovementGridNo = NOWHERE;
 
 	// Save OLD insertion code.. as this can change...
 	UINT8 const insertion_code = s->ubStrategicInsertionCode;
 
-  soldier->removePendingAnimation();
+	// Remove any pending animations
+	s->usPendingAnimation = NO_PENDING_ANIMATION;
+	s->ubPendingDirection = NO_PENDING_DIRECTION;
+	s->ubPendingAction		= NO_PENDING_ACTION;
 
 	//If we are not loading a saved game
 	SetSoldierPosFlags set_pos_flags = SSP_NONE;

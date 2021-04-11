@@ -39,21 +39,20 @@
 #include "Build/Utils/Message.h"
 #include "Build/TileEngine/Pits.h"
 #include "Item_Statistics.h"
-#include "Build/Strategic/Scheduling.h"
-#include "sgp/Debug.h"
-#include "Build/JAScreens.h"
-#include "sgp/MemMan.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "sgp/Video.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/GameState.h"
-#include "Build/GameRes.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Scheduling.h"
+#include "Debug.h"
+#include "JAScreens.h"
+#include "MemMan.h"
+#include "MessageBoxScreen.h"
+#include "Timer_Control.h"
+#include "VObject.h"
+#include "VSurface.h"
+#include "Video.h"
+#include "WorldDef.h"
+#include "UILayout.h"
+#include "GameState.h"
+#include "GameRes.h"
+#include <boost/foreach.hpp>
 
 static BOOLEAN gfErrorCatch            = FALSE;
 static wchar_t gzErrorCatchString[256] = L"";
@@ -101,7 +100,7 @@ static BOOLEAN fEnteringLoadSaveScreen = TRUE;
 
 static MOUSE_REGION BlanketRegion;
 
-static std::string gMapFileForRemoval;
+static char gszCurrFilename[80];
 
 enum{
 	IOSTATUS_NONE,
@@ -143,7 +142,7 @@ static void LoadSaveScreenEntry(void)
 	iTopFileShown = iTotalFiles = 0;
 	try
 	{
-    std::vector<std::string> files = GCM->getAllMaps();
+    std::vector<std::string> files = FindFilesInDir(FileMan::getMapsDirPath(), ".dat", true, true, true);
     for (const auto & file: files)
     {
 			FileList = AddToFDlgList(FileList, file.c_str());
@@ -198,7 +197,7 @@ static ScreenID ProcessLoadSaveScreenMessageBoxResult(void)
 			}
 			if( curr )
 			{
-				FileDelete(gMapFileForRemoval);
+				FileDelete( gszCurrFilename );
 
 				//File is deleted so redo the text fields so they show the
 				//next file in the list.
@@ -350,8 +349,8 @@ ScreenID LoadSaveScreenHandle(void)
 
 		case DIALOG_DELETE:
 		{
-      gMapFileForRemoval = GCM->getMapPath(gzFilename);
-			const UINT32 attr = FileGetAttributes(gMapFileForRemoval.c_str());
+			sprintf(gszCurrFilename, MAPSDIR "/%ls", gzFilename);
+			const UINT32 attr = FileGetAttributes(gszCurrFilename);
 			if (attr != FILE_ATTR_ERROR)
 			{
 				wchar_t str[40];
@@ -368,7 +367,6 @@ ScreenID LoadSaveScreenHandle(void)
 		}
 
 		case DIALOG_SAVE:
-    {
 			if( !ExtractFilenameFromFields() )
 			{
 				CreateMessageBox( L" Illegal filename.  Try another filename? " );
@@ -376,12 +374,12 @@ ScreenID LoadSaveScreenHandle(void)
 				iFDlgState = DIALOG_NONE;
 				return LOADSAVE_SCREEN;
 			}
-      std::string filename(GCM->getMapPath(gzFilename));
-			if ( GCM->doesGameResExists(filename.c_str()) )
+			sprintf(gszCurrFilename, MAPSDIR "/%ls", gzFilename);
+			if ( FileExists( gszCurrFilename ) )
 			{
 				gfFileExists = TRUE;
 				gfReadOnly = FALSE;
-				const UINT32 attr = FileGetAttributes(filename.c_str());
+				const UINT32 attr = FileGetAttributes(gszCurrFilename);
 				if (attr != FILE_ATTR_ERROR && attr & FILE_ATTR_READONLY)
 				{
 					gfReadOnly = TRUE;
@@ -395,7 +393,6 @@ ScreenID LoadSaveScreenHandle(void)
 			RemoveFileDialog();
 			gbCurrentFileIOStatus = INITIATE_MAP_SAVE;
 			return LOADSAVE_SCREEN ;
-    }
 		case DIALOG_LOAD:
 			if( !ExtractFilenameFromFields() )
 			{

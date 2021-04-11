@@ -2,57 +2,55 @@
 #include "Build/Directories.h"
 #include "Build/Utils/Font_Control.h"
 #include "LoadSaveRottingCorpse.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Tactical/Soldier_Init_List.h"
-#include "sgp/Types.h"
-#include "sgp/MemMan.h"
-#include "Build/Utils/Message.h"
-#include "Build/Tactical/Item_Types.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "Build/SaveLoadGame.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Map_Information.h"
-//#include "Build/Tactical/PathAI.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "sgp/Debug.h"
-#include "sgp/Random.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Utils/Animated_ProgressBar.h"
-#include "Build/Utils/Text.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Tactical/Enemy_Soldier_Save.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/GameVersion.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "sgp/SGP.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/ScreenIDs.h"
-#include "sgp/FileMan.h"
+#include "MapScreen.h"
+#include "Soldier_Init_List.h"
+#include "Types.h"
+#include "MemMan.h"
+#include "Message.h"
+#include "Item_Types.h"
+#include "Items.h"
+#include "Handle_Items.h"
+#include "StrategicMap.h"
+#include "Tactical_Save.h"
+#include "Campaign_Types.h"
+#include "SaveLoadGame.h"
+#include "WorldDef.h"
+#include "Rotting_Corpses.h"
+#include "Overhead.h"
+#include "Keys.h"
+#include "Soldier_Create.h"
+#include "Soldier_Profile.h"
+#include "Isometric_Utils.h"
+#include "Soldier_Add.h"
+#include "NPC.h"
+#include "AI.h"
+#include "Game_Clock.h"
+#include "Animation_Control.h"
+#include "Map_Information.h"
+//#include "PathAI.h"
+#include "SaveLoadMap.h"
+#include "Debug.h"
+#include "Random.h"
+#include "Quests.h"
+#include "Animated_ProgressBar.h"
+#include "Text.h"
+#include "Meanwhile.h"
+#include "Enemy_Soldier_Save.h"
+#include "SmokeEffects.h"
+#include "LightEffects.h"
+#include "PathAI.h"
+#include "GameVersion.h"
+#include "Strategic.h"
+#include "Map_Screen_Interface_Map.h"
+#include "Strategic_Status.h"
+#include "Soldier_Macros.h"
+#include "SGP.h"
+#include "MessageBoxScreen.h"
+#include "Queen_Command.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "ScreenIDs.h"
+#include "FileMan.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 static BOOLEAN gfWasInMeanwhile = FALSE;
 
@@ -236,9 +234,9 @@ void LoadWorldItemsFromTempItemFile(INT16 const x, INT16 const y, INT8 const z, 
 	UINT32                 l_item_count;
 	SGP::Buffer<WORLDITEM> l_items;
 	// If the file doesn't exists, it's no problem
-	if (GCM->doesGameResExists(filename))
+	if (FileExists(filename))
 	{
-		AutoSGPFile f(GCM->openGameResForReading(filename));
+		AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
 		FileRead(f, &l_item_count, sizeof(l_item_count));
 		if (l_item_count != 0)
@@ -693,9 +691,9 @@ static void LoadRottingCorpsesFromTempCorpseFile(INT16 const x, INT16 const y, I
 	GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, map_name, x, y, z);
 
 	// If the file doesn't exist, it's no problem.
-	if (!GCM->doesGameResExists(map_name)) return;
+	if (!FileExists(map_name)) return;
 
-	AutoSGPFile f(GCM->openGameResForReading(map_name));
+	AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
 	// Load the number of Rotting corpses
 	UINT32 n_corpses;

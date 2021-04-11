@@ -1,22 +1,21 @@
 #include <stdexcept>
 
-#include "Build/Directories.h"
-#include "Build/Sys_Globals.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Utils/Debug_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/HImage.h"
-#include "sgp/MemMan.h"
-#include "sgp/VObject.h"
-#include "sgp/WCheck.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Directories.h"
+#include "HImage.h"
+#include "Overhead.h"
+#include "Structure.h"
+#include "VObject.h"
+#include "WCheck.h"
+#include "Debug.h"
+#include "Animation_Data.h"
+#include "Animation_Control.h"
+#include "Soldier_Control.h"
+#include "Sys_Globals.h"
+#include "Debug_Control.h"
+#include "WorldDef.h"
+#include "FileMan.h"
+#include "MemMan.h"
+
 
 #define EMPTY_SLOT		-1
 #define TO_INIT				0
@@ -548,7 +547,7 @@ void InitAnimationSystem()
 		{
 			const char* Filename = gAnimStructureDatabase[cnt1][cnt2].Filename;
 
-			if (GCM->doesGameResExists(Filename))
+			if (FileExists(Filename))
 			{
 				STRUCTURE_FILE_REF* pStructureFileRef = LoadStructureFile(Filename);
 				gAnimStructureDatabase[ cnt1 ][ cnt2 ].pStructureFileRef = pStructureFileRef;
@@ -761,7 +760,7 @@ void ClearAnimationSurfacesUsageHistory( UINT16 usSoldierID )
 static void LoadAnimationProfiles(void)
 try
 {
-	AutoSGPFile f(GCM->openGameResForReading(ANIMPROFILEFILENAME));
+	AutoSGPFile f(FileMan::openForReadingSmart(ANIMPROFILEFILENAME, true));
 
 	FileRead(f, &gubNumAnimProfiles, sizeof(gubNumAnimProfiles));
 

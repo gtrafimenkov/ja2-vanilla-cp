@@ -1,18 +1,15 @@
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "sgp/Types.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/AIInternals.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "sgp/Debug.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Animation_Control.h"
+#include "Animation_Data.h"
+#include "Isometric_Utils.h"
+#include "Types.h"
+#include "Soldier_Control.h"
+#include "AI.h"
+#include "AIInternals.h"
+#include "OppList.h"
+#include "Items.h"
+#include "Rotting_Corpses.h"
+#include "Soldier_Add.h"
+#include "Debug.h"
 
 
 #define CAN_CALL( s ) (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER && s->ubBodyType != INFANT_MONSTER)
@@ -1096,7 +1093,7 @@ static INT8 CreatureDecideActionBlack(SOLDIERTYPE* pSoldier)
 
 	if (bWeaponIn != NO_SLOT)
 	{
-		if (GCM->getItem(pSoldier->inv[bWeaponIn].usItem)->getItemClass() == IC_GUN && pSoldier->inv[bWeaponIn].bGunStatus >= USABLE)
+		if (Item[pSoldier->inv[bWeaponIn].usItem].usItemClass == IC_GUN && pSoldier->inv[bWeaponIn].bGunStatus >= USABLE)
 		{
 			if (pSoldier->inv[bWeaponIn].ubGunShotsLeft > 0)
 			{

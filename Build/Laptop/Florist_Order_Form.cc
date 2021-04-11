@@ -8,22 +8,21 @@
 #include "Build/Utils/WordWrap.h"
 #include "Build/Utils/Cursors.h"
 #include "Florist_Gallery.h"
+#include "Encrypted_File.h"
 #include "Florist_Cards.h"
-#include "Build/Utils/Text_Input.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "sgp/English.h"
-#include "Build/Utils/Text.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "sgp/Random.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Strategic/Meanwhile.h"
+#include "Text_Input.h"
+#include "Finances.h"
+#include "Game_Clock.h"
+#include "English.h"
+#include "Text.h"
+#include "LaptopSave.h"
+#include "Random.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Font_Control.h"
+#include "Meanwhile.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define		FLOWER_ORDEER_TINY_FONT					FONT10ARIAL
 #define		FLOWER_ORDEER_SMALL_FONT				FONT12ARIAL
@@ -425,7 +424,7 @@ void RenderFloristOrderForm()
 	usPosX = StringPixLength( sOrderFormText[FLORIST_ORDER_NAME_BOUQUET], FLOWER_ORDEER_SMALL_FONT) + 5 + FLOWER_ORDER_FLOWER_NAME_X;
 	uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower;
 	wchar_t sTemp[FLOR_GALLERY_TEXT_TITLE_SIZE];
-	GCM->loadEncryptedString(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
+	LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
 	DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 
 
@@ -666,7 +665,7 @@ static void DisplayFlowerDynamicItems(void)
 	//price
 	usPosX = StringPixLength( sOrderFormText[FLORIST_ORDER_PRICE], FLOWER_ORDEER_SMALL_FONT) + 5 + FLOWER_ORDER_BOUQUET_NAME_X;
 	uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower + FLOR_GALLERY_TEXT_TITLE_SIZE;
-	GCM->loadEncryptedString(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
+	LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
 	swscanf( sTemp, L"%hu", &usPrice);
 
 	//if its the next day delivery
@@ -944,7 +943,7 @@ static void InitFlowerOrderTextInputBoxes(void)
 
 		wchar_t	sTemp[FLOR_CARD_TEXT_TITLE_SIZE];
 		const UINT32 uiStartLoc = FLOR_CARD_TEXT_TITLE_SIZE * gbCurrentlySelectedCard;
-		GCM->loadEncryptedString( FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
+		LoadEncryptedDataFromFile( FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
 		wchar_t	sText[FLOR_CARD_TEXT_TITLE_SIZE];
 		CleanOutControlCodesFromString(sTemp, sText);
 

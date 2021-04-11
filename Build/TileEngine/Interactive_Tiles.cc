@@ -1,43 +1,41 @@
-#include <memory>
+#include "Animation_Data.h"
+#include "Cursors.h"
+#include "Font_Control.h"
+#include "HImage.h"
+#include "Isometric_Utils.h"
+#include "TileDef.h"
+#include "VObject.h"
+#include "SysUtil.h"
+#include "RenderWorld.h"
+#include "Interface.h"
+#include "Sound_Control.h"
+#include "WorldDef.h"
+#include "Interactive_Tiles.h"
+#include "WorldMan.h"
+#include "Structure.h"
+#include "Animation_Control.h"
+#include "Points.h"
+#include "Overhead.h"
+#include "Structure_Wrap.h"
+#include "Tile_Animation.h"
+#include "Tile_Cache.h"
+#include "Handle_Doors.h"
+#include "StrategicMap.h"
+#include "Quests.h"
+#include "Dialogue_Control.h"
+#include "Random.h"
+#include "English.h"
+#include "Handle_Items.h"
+#include "Message.h"
+#include "Handle_UI.h"
+#include "NPC.h"
+#include "Explosion_Control.h"
+#include "Text.h"
+#include "GameSettings.h"
+#include "Environment.h"
+#include "Debug.h"
+#include "UILayout.h"
 
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "sgp/HImage.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/TileDef.h"
-#include "sgp/VObject.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/Tile_Cache.h"
-#include "Build/Tactical/Handle_Doors.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "sgp/Random.h"
-#include "sgp/English.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Utils/Message.h"
-#include "Build/Tactical/Handle_UI.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/Utils/Text.h"
-#include "Build/GameSettings.h"
-#include "Build/TileEngine/Environment.h"
-#include "sgp/Debug.h"
-
-#include "src/Soldier.h"
 
 #define MAX_INTTILE_STACK 10
 
@@ -85,13 +83,17 @@ void StartInteractiveObject(GridNo const gridno, STRUCTURE const& structure, SOL
 	if (s.usAnimState == BEGIN_OPENSTRUCT)          return;
 	if (s.usAnimState == BEGIN_OPENSTRUCT_CROUCHED) return;
 
+<<<<<<< HEAD
   std::shared_ptr<Soldier> soldier(new Soldier(&s));
 
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 	// Add soldier event for opening door/struct
-  soldier->setPendingAction(structure.fFlags & STRUCTURE_ANYDOOR ? MERC_OPENDOOR : MERC_OPENSTRUCT);
+	s.ubPendingAction          = structure.fFlags & STRUCTURE_ANYDOOR ? MERC_OPENDOOR : MERC_OPENSTRUCT;
 	s.uiPendingActionData1     = structure.usStructureID;
 	s.sPendingActionData2      = gridno;
 	s.bPendingActionData3      = direction;
+	s.ubPendingActionAnimCount = 0;
 }
 
 

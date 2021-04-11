@@ -1,28 +1,26 @@
-#include "Build/GameSettings.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/DisplayCover.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/TileDat.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Debug.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
+#include "DisplayCover.h"
+#include "Font_Control.h"
+#include "Isometric_Utils.h"
+#include "Overhead.h"
+#include "Message.h"
+#include "Soldier_Find.h"
+#include "TileDat.h"
+#include "GameSettings.h"
+#include "RenderWorld.h"
+#include "Interface.h"
+#include "Debug.h"
+#include "PathAI.h"
+#include "WorldMan.h"
+#include "OppList.h"
+#include "LOS.h"
+#include "Weapons.h"
+#include "Game_Clock.h"
+#include "Animation_Control.h"
+#include "Text.h"
+#include "StrategicMap.h"
+#include "Render_Fun.h"
+#include "Items.h"
+
 
 #define		DC_MAX_COVER_RANGE						31
 
@@ -302,7 +300,7 @@ static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const* const p
 		}
 
 		INT32  const iGetThrough       = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, NULL);
-		UINT16 const usMaxRange        = WeaponInHand(pOpponent) ? GunRange(pOpponent->inv[HANDPOS]) : GCM->getWeapon(GLOCK_18)->usRange;
+		UINT16 const usMaxRange        = WeaponInHand(pOpponent) ? GunRange(pOpponent->inv[HANDPOS]) : Weapon[GLOCK_18].usRange;
 		INT32  const iBulletGetThrough = __min(__max((INT32)(((usMaxRange - usRange) / (FLOAT)usMaxRange + .3) * 100), 0), 100);
 		if (iBulletGetThrough > 5 && iGetThrough > 0)
 		{
@@ -407,7 +405,7 @@ void DisplayRangeToTarget(SOLDIERTYPE const* const s, INT16 const sTargetGridNo)
 	if (WeaponInHand(s))
 	{
 		//display a string with the weapons range, then range to target
-		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], GCM->getWeapon(s->inv[HANDPOS].usItem)->usRange / 10, usRange);
+		ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[s->inv[HANDPOS].usItem].usRange / 10, usRange);
 	}
 	else
 	{
@@ -418,7 +416,7 @@ void DisplayRangeToTarget(SOLDIERTYPE const* const s, INT16 const sTargetGridNo)
 	//if the target is out of the mercs gun range or knife
 	if (!InRange(s, sTargetGridNo))
 	{
-		UINT16 const item_class = GCM->getItem(s->inv[HANDPOS].usItem)->getItemClass();
+		UINT16 const item_class = Item[s->inv[HANDPOS].usItem].usItemClass;
 		if (item_class == IC_GUN ||
 				item_class == IC_THROWING_KNIFE)
 		{

@@ -29,23 +29,21 @@
 #include "sgp/Debug.h"
 #include "sgp/WCheck.h"
 #include "Edit_Sys.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "sgp/Line.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/TileEngine/Radar_Screen.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Sys_Globals.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "sgp/FileMan.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/Tactical/PathAI.h"
-#include "sgp/MemMan.h"
+#include "Isometric_Utils.h"
+#include "Line.h"
+#include "Animation_Data.h"
+#include "Radar_Screen.h"
+#include "Render_Dirty.h"
+#include "Sys_Globals.h"
+#include "TileDef.h"
+#include "Lighting.h"
+#include "Structure_Wrap.h"
+#include "Rotting_Corpses.h"
+#include "FileMan.h"
+#include "Environment.h"
+#include "PathAI.h"
+#include "MemMan.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define MAX_LIGHT_TEMPLATES 32 // maximum number of light types
 
@@ -2081,7 +2079,7 @@ void LightSave(LightTemplate const* const t, char const* const pFilename)
  * the file wasn't loaded. */
 static LightTemplate* LightLoad(const char* pFilename)
 {
-	AutoSGPFile hFile(GCM->openGameResForReading(pFilename));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(pFilename, true));
 
 	UINT16 n_lights;
 	FileRead(hFile, &n_lights, sizeof(n_lights));

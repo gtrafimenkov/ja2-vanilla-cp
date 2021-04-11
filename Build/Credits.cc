@@ -1,26 +1,27 @@
-#include "Build/Credits.h"
-#include "Build/Directories.h"
-#include "Build/Local.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Utils/WordWrap.h"
-#include "sgp/Debug.h"
-#include "sgp/English.h"
-#include "sgp/Font.h"
-#include "sgp/Input.h"
-#include "sgp/MemMan.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Random.h"
-#include "sgp/Types.h"
-#include "sgp/Video.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Credits.h"
+#include "Cursors.h"
+#include "Debug.h"
+#include "Directories.h"
+#include "Encrypted_File.h"
+#include "English.h"
+#include "Font.h"
+#include "Font_Control.h"
+#include "Input.h"
+#include "Local.h"
+#include "MemMan.h"
+#include "MouseSystem.h"
+#include "Random.h"
+#include "Render_Dirty.h"
+#include "SysUtil.h"
+#include "Text.h"
+#include "Timer_Control.h"
+#include "Types.h"
+#include "VObject.h"
+#include "VSurface.h"
+#include "Video.h"
+#include "WordWrap.h"
+#include "UILayout.h"
+
 
 struct CRDT_NODE
 {
@@ -438,7 +439,7 @@ static BOOLEAN GetNextCreditFromTextFile(void)
 	const UINT32 pos = CREDITS_LINESIZE * guiCurrentCreditRecord++;
 	try
 	{
-		GCM->loadEncryptedString(CRDT_NAME_OF_CREDIT_FILE, text, pos, CREDITS_LINESIZE);
+		LoadEncryptedDataFromFile(CRDT_NAME_OF_CREDIT_FILE, text, pos, CREDITS_LINESIZE);
 	}
 	catch (...) // XXX fishy, should check file size beforehand
 	{

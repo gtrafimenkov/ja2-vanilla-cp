@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "sgp/SGPFile.h"
-#include "sgp/Types.h"
+#include "AutoObj.h"
+#include "Types.h"
 
 #ifdef _WIN32
 #	define WIN32_LEAN_AND_MEAN
@@ -14,24 +14,45 @@
 #	include <glob.h>
 #endif
 
+
+enum FileSeekMode
+{
+	FILE_SEEK_FROM_START,
+	FILE_SEEK_FROM_END,
+	FILE_SEEK_FROM_CURRENT
+};
+
+struct SGP_FILETIME
+{
+	UINT32 Lo;
+	UINT32 Hi;
+};
+
+
+void InitializeFileManager(void);
+
+/* Checks if a file exists. */
+bool FileExists(char const* filename);
+
 /* Delete the file at path. Returns true iff deleting the file succeeded or
  * the file did not exist in the first place. */
 void FileDelete(char const* path);
-void FileDelete(const std::string &path);
 
-void FileRead( SGPFile*, void*       pDest, size_t uiBytesToRead);
-void FileWrite(SGPFile*, void const* pDest, size_t uiBytesToWrite);
+void   FileClose(HWFILE);
 
-template<typename T, typename U> static inline void FileWriteArray(SGPFile* const f, T const& n, U const* const data)
+void FileRead( HWFILE, void*       pDest, size_t uiBytesToRead);
+void FileWrite(HWFILE, void const* pDest, size_t uiBytesToWrite);
+
+template<typename T, typename U> static inline void FileWriteArray(HWFILE const f, T const& n, U const* const data)
 {
 	FileWrite(f, &n, sizeof(n));
 	if (n != 0) FileWrite(f, data, sizeof(*data) * n);
 }
 
-void  FileSeek(SGPFile*, INT32 distance, FileSeekMode);
-INT32 FileGetPos(const SGPFile*);
+void  FileSeek(HWFILE, INT32 distance, FileSeekMode);
+INT32 FileGetPos(HWFILE);
 
-UINT32 FileGetSize(const SGPFile*);
+UINT32 FileGetSize(HWFILE);
 
 /* Removes ALL FILES in the specified directory, but leaves the directory alone.
  * Does not affect any subdirectories! */
@@ -48,10 +69,8 @@ ENUM_BITSET(FileAttributes)
 
 FileAttributes FileGetAttributes(const char* filename);
 BOOLEAN        FileClearAttributes(const char* filename);
-BOOLEAN FileClearAttributes(const std::string &filename);
 
-
-BOOLEAN GetFileManFileTime(const SGPFile* hFile, SGP_FILETIME* pCreationTime, SGP_FILETIME* pLastAccessedTime, SGP_FILETIME* pLastWriteTime);
+BOOLEAN GetFileManFileTime(HWFILE hFile, SGP_FILETIME* pCreationTime, SGP_FILETIME* pLastAccessedTime, SGP_FILETIME* pLastWriteTime);
 
 /* returns
  * - -1 if the First file time is less than second file time. (first file is older)
@@ -62,10 +81,12 @@ INT32 CompareSGPFileTimes(const SGP_FILETIME* const pFirstFileTime, const SGP_FI
 /* Pass in the Fileman file handle of an OPEN file and it will return..
  * - if its a Real File, the return will be the handle of the REAL file
  * - if its a LIBRARY file, the return will be the handle of the LIBRARY */
-FILE* GetRealFileHandleFromFileManFileHandle(const SGPFile* hFile);
+FILE* GetRealFileHandleFromFileManFileHandle(HWFILE hFile);
 
 //Gets the amount of free space on the hard drive that the main executeablt is runnning from
 UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(void);
+
+typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
 
 /***
  * New file manager.
@@ -75,39 +96,53 @@ class FileMan
 {
 public:
 
-  /** Find config folder and switch into it. */
-  static std::string findConfigFolderAndSwitchIntoIt();
-
   /** Open file for writing.
    * If file is missing it will be created.
    * If file exists, it's content will be removed. */
-  static SGPFile* openForWriting(const char *filename, bool truncate=true);
+  static HWFILE openForWriting(const char *filename);
 
   /** Open file for appending data.
    * If file doesn't exist, it will be created. */
-  static SGPFile* openForAppend(const char *filename);
+  static HWFILE openForAppend(const char *filename);
 
   /** Open file for reading and writing.
    * If file doesn't exist, it will be created. */
-  static SGPFile* openForReadWrite(const char *filename);
+  static HWFILE openForReadWrite(const char *filename);
 
-  /** Open file for reading. */
-  static SGPFile* openForReading(const char *filename);
+  /* ------------------------------------------------------------
+   * File operations with game resources.
+   * Game resources is what located in 'Data' directory and below.
+   * ------------------------------------------------------------ */
 
-  /** Open file for reading. */
-  static SGPFile* openForReading(const std::string &filename);
+  /** Get path to the configuration folder. */
+  static const std::string& getConfigFolderPath();
 
-  /** Read the whole file as text. */
-  static std::string fileReadText(SGPFile*);
+  /** Get path to the configuration file. */
+  static const std::string& getConfigPath();
 
-#if CASE_SENSITIVE_FS
-  /** Find an object (file or subdirectory) in the given directory in case-independent manner.
-   * @return true when found, return the found name using foundName. */
-  static bool findObjectCaseInsensitive(const char *directory, const char *name, bool lookForFiles, bool lookForSubdirs, std::string &foundName);
-#endif
+  /** Get path to the root folder of game resources. */
+  static const std::string& getGameResRootPath();
+
+  /** Get path to the 'Data' directory of the game. */
+  static const std::string& getDataDirPath();
+
+  /** Get path to the 'Data/Tilecache' directory of the game. */
+  static const std::string& getTilecacheDirPath();
+
+  /** Get path to the 'Data/Maps' directory of the game. */
+  static const std::string& getMapsDirPath();
 
   /** Open file in the 'Data' directory in case-insensitive manner. */
-  static FILE* openForReadingCaseInsensitive(const std::string &folderPath, const char *filename);
+  static FILE* openForReadingInDataDir(const char *filename);
+
+  /** Open file for reading only.
+   * When using the smart lookup:
+   *  - first try to open file normally.
+   *    It will work if the path is absolute and the file is found or path is relative to the current directory
+   *    and file is present;
+   *  - if file is not found, try to find the file relatively to 'Data' directory;
+   *  - if file is not found, try to find the file in libraries located in 'Data' directory; */
+  static HWFILE openForReadingSmart(const char* filename, bool useSmartLookup);
 
   /* ------------------------------------------------------------
    * Other operations
@@ -126,35 +161,6 @@ public:
 
   /** Join two path components. */
   static std::string joinPaths(const std::string &first, const std::string &second);
-
-  /** Replace extension of a file. */
-  static std::string replaceExtension(const std::string &path, const char *newExtensionWithDot);
-
-  /** Get parent path (e.g. directory path from the full path). */
-  static std::string getParentPath(const std::string &path, bool absolute);
-
-  /** Get filename from the path. */
-  static std::string getFileName(const std::string &path);
-
-  /** Get filename from the path without extension. */
-  static std::string getFileNameWithoutExt(const char *path);
-  static std::string getFileNameWithoutExt(const std::string &path);
-
-  static int openFileForReading(const char *filename, int mode);
-
-  /** Open file in the given folder in case-insensitive manner.
-   * @return file descriptor or -1 if file is not found. */
-  static int openFileCaseInsensitive(const std::string &folderPath, const char *filename, int mode);
-
-  /** Convert file descriptor to HWFile.
-   * Raise runtime_error if not possible. */
-  static SGPFile* getSGPFileFromFD(int fd, const char *filename, const char *fmode);
-
-  /** Replace all \ with / */
-  static void slashifyPath(std::string &path);
-
-  /** Check file existance. */
-  static bool checkFileExistance(const char *folder, const char *fileName);
 
 private:
   /** Private constructor to avoid instantiation. */
@@ -183,8 +189,5 @@ FindFilesInDir(const std::string &dirPath,
  * @return List of paths (dir + filename). */
 std::vector<std::string>
 FindAllFilesInDir(const std::string &dirPath, bool sortResults = false);
-
-/** Get file open modes from reading. */
-const char* GetFileOpenModeForReading(int *posixMode);
 
 #endif

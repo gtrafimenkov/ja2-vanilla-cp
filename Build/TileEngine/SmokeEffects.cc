@@ -2,29 +2,27 @@
 
 #include "Build/Directories.h"
 #include "LoadSaveSmokeEffect.h"
-#include "Build/Tactical/Overhead.h"
-#include "sgp/Debug.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "sgp/Random.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Strategic/Campaign_Types.h"
-#include "sgp/FileMan.h"
-#include "Build/SaveLoadGame.h"
+#include "Overhead.h"
+#include "Debug.h"
+#include "Soldier_Control.h"
+#include "TileDef.h"
+#include "Weapons.h"
+#include "Handle_Items.h"
+#include "WorldDef.h"
+#include "WorldMan.h"
+#include "Tile_Animation.h"
+#include "SmokeEffects.h"
+#include "Isometric_Utils.h"
+#include "RenderWorld.h"
+#include "Explosion_Control.h"
+#include "Random.h"
+#include "Game_Clock.h"
+#include "OppList.h"
+#include "Tactical_Save.h"
+#include "Campaign_Types.h"
+#include "FileMan.h"
+#include "SaveLoadGame.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define		NUM_SMOKE_EFFECT_SLOTS					25
 
@@ -179,7 +177,7 @@ void NewSmokeEffect(const INT16 sGridNo, const UINT16 usItem, const INT8 bLevel,
     case LARGE_CREATURE_GAS:
 			bSmokeEffectType	=	CREATURE_SMOKE_EFFECT;
 			ubDuration				= 3;
-			ubStartRadius			= Explosive[ GCM->getItem(LARGE_CREATURE_GAS)->getClassIndex() ].ubRadius;
+			ubStartRadius			= Explosive[ Item[ LARGE_CREATURE_GAS ].ubClassIndex ].ubRadius;
 			break;
 
     case VERY_SMALL_CREATURE_GAS:
@@ -404,7 +402,7 @@ void DecaySmokeEffects( UINT32 uiTime )
 						// cloud expands by 1 every turn outdoors, and every other turn indoors
 
 						// ATE: If radius is < maximun, increase radius, otherwise keep at max
-						if ( pSmoke->ubRadius < Explosive[ GCM->getItem(pSmoke->usItem)->getClassIndex() ].ubRadius )
+						if ( pSmoke->ubRadius < Explosive[ Item[ pSmoke->usItem ].ubClassIndex ].ubRadius )
 						{
 							pSmoke->ubRadius++;
 						}
@@ -527,7 +525,7 @@ void LoadSmokeEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 
 
 	GetMapTempFileName( SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ );
 
-	AutoSGPFile hFile(GCM->openGameResForReading(zMapName));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
 	//Clear out the old list
 	ResetSmokeEffects();

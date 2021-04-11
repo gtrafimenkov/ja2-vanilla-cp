@@ -90,7 +90,6 @@
 #include "GameRes.h"
 #include "GameState.h"
 
-#include "Soldier.h"
 
 #ifdef JA2TESTVERSION
 #	include "Ambient_Control.h"
@@ -2685,7 +2684,6 @@ static void CreatePlayerControlledMonster(void)
 
 static bool CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE& s, BOOLEAN const fMovementMode)
 {
-  std::shared_ptr<Soldier> soldier(new Soldier(&s));
 	SOLDIERTYPE const* const tgt = gUIFullTarget;
 	if (!tgt)                          return false;
 	if (!OK_ENTERABLE_VEHICLE(tgt))    return false;
@@ -2708,8 +2706,10 @@ static bool CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE& s, BOOLE
 	// Check if we are at this gridno now
 	if (s.sGridNo != action_pos)
 	{
-    soldier->setPendingAction(MERC_ENTER_VEHICLE);
+		// Send pending action
+		s.ubPendingAction          = MERC_ENTER_VEHICLE;
 		s.sPendingActionData2      = tgt->sGridNo;
+		s.ubPendingActionAnimCount = 0;
 		// Walk up to dest first
 		EVENT_InternalGetNewSoldierPath(&s, action_pos, s.usUIMovementMode, 3, s.fNoAPToFinishMove);
 		SetUIBusy(&s);

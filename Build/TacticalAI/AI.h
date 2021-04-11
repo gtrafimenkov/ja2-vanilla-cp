@@ -207,7 +207,7 @@ INT16 RoamingRange(SOLDIERTYPE *pSoldier, INT16 *pFromGridno);
 
 void SetNewSituation( SOLDIERTYPE * pSoldier );
 
-UINT8 SoldierDifficultyLevel( const SOLDIERTYPE * pSoldier );
+UINT8 SoldierDifficultyLevel( SOLDIERTYPE * pSoldier );
 void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier);
 void StartNPCAI(SOLDIERTYPE&);
 void TempHurt(SOLDIERTYPE *pVictim, SOLDIERTYPE *pAttacker);

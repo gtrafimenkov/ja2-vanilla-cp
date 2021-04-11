@@ -1,15 +1,11 @@
-#include "Build/Tactical/Gap.h"
-#include "Build/Utils/Sound_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/MemMan.h"
-#include "sgp/SoundMan.h"
-#include "slog/slog.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Debug.h"
+#include "FileMan.h"
+#include "Gap.h"
+#include "LoadSaveData.h"
+#include "MemMan.h"
+#include "SoundMan.h"
+#include "Sound_Control.h"
 
-#define TAG "GAP"
 
 static void AudioGapListInit(const char* zSoundFile, AudioGapList* pGapList)
 {
@@ -21,11 +17,12 @@ static void AudioGapListInit(const char* zSoundFile, AudioGapList* pGapList)
 	//DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("File is %s", szSoundEffects[uiSampleNum]));
 
 	// strip .wav and change to .gap
-  std::string sFileName(FileMan::replaceExtension(std::string(zSoundFile), ".gap"));
+	char sFileName[256];
+	ReplacePath(sFileName, lengthof(sFileName), 0, zSoundFile, ".gap");
 
 	try
 	{
-		AutoSGPFile f(GCM->openGameResForReading(sFileName));
+		AutoSGPFile f(FileMan::openForReadingSmart(sFileName, true));
 
 		// gap file exists
 		// now read in the AUDIO_GAPs
@@ -57,7 +54,7 @@ static void AudioGapListInit(const char* zSoundFile, AudioGapList* pGapList)
 				DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap Start %d and Ends %d", start, end));
 			}
 
-      SLOGD(TAG, "gap list started from file %s", sFileName.c_str());
+			DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap List Started From File %s", sFileName));
 
 			MemFree(data);
 			return;

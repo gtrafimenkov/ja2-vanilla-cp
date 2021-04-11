@@ -5,41 +5,38 @@
 #include "Build/Laptop/History.h"
 #include "Build/Strategic/Game_Clock.h"
 #include "Insurance_Contract.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Strategic/Merc_Contract.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "sgp/Random.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Laptop/Mercs.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Laptop/Personnel.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Strategic/Strategic.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Laptop/AIM.h"
-#include "Build/Laptop/EMail.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/ScreenIDs.h"
-#include "Build/JAScreens.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Strategic/Quests.h"
+#include "Soldier_Profile.h"
+#include "Game_Event_Hook.h"
+#include "Assignments.h"
+#include "Overhead.h"
+#include "Merc_Contract.h"
+#include "Merc_Hiring.h"
+#include "Dialogue_Control.h"
+#include "Random.h"
+#include "Morale.h"
+#include "Mercs.h"
+#include "MapScreen.h"
+#include "Weapons.h"
+#include "Personnel.h"
+#include "Strategic_Movement.h"
+#include "LaptopSave.h"
+#include "Message.h"
+#include "Text.h"
+#include "Interface.h"
+#include "Strategic.h"
+#include "StrategicMap.h"
+#include "Strategic_Status.h"
+#include "AIM.h"
+#include "EMail.h"
+#include "Map_Screen_Interface.h"
+#include "Campaign.h"
+#include "Soldier_Add.h"
+#include "ScreenIDs.h"
+#include "JAScreens.h"
+#include "Soldier_Macros.h"
+#include "Finances.h"
+#include "Quests.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/WeaponModels.h"
 
 #define		NUM_DAYS_TILL_UNPAID_RPC_QUITS				3
 
@@ -439,20 +436,20 @@ BOOLEAN SoldierHasWorseEquipmentThanUsedTo( SOLDIERTYPE *pSoldier )
 		if ( usItem != NOTHING )
 		{
 			// Check if it's a gun
-			if ( GCM->getItem(usItem)->isGun())
+			if ( Item[ usItem ].usItemClass & IC_GUN )
 			{
-				if ( GCM->getWeapon( usItem )->ubDeadliness > bBestGun )
+				if ( Weapon[ usItem ].ubDeadliness > bBestGun )
 				{
-					bBestGun = GCM->getWeapon( usItem )->ubDeadliness;
+					bBestGun = Weapon[ usItem ].ubDeadliness;
 				}
 			}
 
 			// If it's armour
-			if ( GCM->getItem(usItem)->isArmour() )
+			if ( Item[ usItem ].usItemClass & IC_ARMOUR )
 			{
-				if ( Armour[ GCM->getItem(usItem)->getClassIndex() ].ubProtection > bBestArmour )
+				if ( Armour[ Item[ usItem ].ubClassIndex ].ubProtection > bBestArmour )
 				{
-					bBestArmour = Armour[ GCM->getItem(usItem)->getClassIndex() ].ubProtection;
+					bBestArmour = Armour[ Item[ usItem ].ubClassIndex ].ubProtection;
 				}
 			}
 		}

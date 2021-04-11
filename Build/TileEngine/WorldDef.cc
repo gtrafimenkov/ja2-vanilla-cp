@@ -47,20 +47,17 @@
 #include "Build/Tactical/Structure_Wrap.h"
 #include "Build/Strategic/Scheduling.h"
 #include "EditorMapInfo.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/TileEngine/Buildings.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/TileEngine/Overhead_Map.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "sgp/MemMan.h"
-#include "Build/JAScreens.h"
-#include "Build/GameState.h"
-#include "Build/GameRes.h"
-
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Game_Clock.h"
+#include "Buildings.h"
+#include "StrategicMap.h"
+#include "Overhead_Map.h"
+#include "Meanwhile.h"
+#include "SmokeEffects.h"
+#include "LightEffects.h"
+#include "MemMan.h"
+#include "JAScreens.h"
+#include "GameState.h"
+#include "GameRes.h"
 
 #define  SET_MOVEMENTCOST( a, b, c, d )				( ( gubWorldMovementCosts[ a ][ b ][ c ] < d ) ? ( gubWorldMovementCosts[ a ][ b ][ c ] = d ) : 0 );
 #define  FORCE_SET_MOVEMENTCOST( a, b, c, d )	( gubWorldMovementCosts[ a ][ b ][ c ] = d )
@@ -225,8 +222,9 @@ try
 		}
 
 		// Adjust for tileset position
-		std::string adjusted_filename(GCM->getTilesetResourceName(tileset_to_add, filename));
-		AddTileSurface(adjusted_filename.c_str(), i, tileset_to_add);
+		char adjusted_filename[128];
+		sprintf(adjusted_filename, TILESETSDIR "/%d/%s", tileset_to_add, filename);
+		AddTileSurface(adjusted_filename, i, tileset_to_add);
 	}
 }
 catch (...)
@@ -1333,7 +1331,7 @@ BOOLEAN SaveWorld(char const* const filename)
 try
 {
   // Let's save map into Data/maps
-  std::string path = GCM->getNewMapFolder();
+  std::string path = FileMan::joinPaths(FileMan::getDataDirPath(), MAPSDIR);
   FileMan::createDir(path.c_str());
   path = FileMan::joinPaths(path.c_str(), (const char*)filename);
 	AutoSGPFile f(FileMan::openForWriting(path.c_str()));
@@ -1695,13 +1693,17 @@ try
 		ubLevel     >= 4 ? "_a" : ""
 	);
 
+	char szDirFilename[50];
+	sprintf(szDirFilename, MAPSDIR "/%s", filename);
+
 	if (gfMajorUpdate)
 	{
 		LoadWorld(filename);
+		FileClearAttributes(szDirFilename);
 		SaveWorld(filename);
 	}
 
-	AutoSGPFile f(GCM->openMapForReading(filename));
+	AutoSGPFile f(FileMan::openForReadingSmart(szDirFilename, true));
 
 	wchar_t str[40];
 	swprintf(str, lengthof(str), L"Analyzing map %hs", filename);
@@ -2028,7 +2030,9 @@ try
 	gfBasement = FALSE;
 	gfCaves    = FALSE;
 
-	AutoSGPFile f(GCM->openMapForReading(filename));
+	char full_filename[50];
+	sprintf(full_filename, MAPSDIR "/%s", filename);
+	AutoSGPFile f(FileMan::openForReadingSmart(full_filename, true));
 
 	SetRelativeStartAndEndPercentage(0, 0, 1, L"Trashing world...");
 	TrashWorld();
@@ -2889,6 +2893,7 @@ static bool IsHiddenTileMarkerThere(GridNo const gridno)
 
 void ReloadTileset(TileSetID const ubID)
 {
+	CHAR8	aFilename[ 255 ];
 	TileSetID const iCurrTilesetID = giCurrentTilesetID;
 
 	// Set gloabal
@@ -2905,7 +2910,9 @@ void ReloadTileset(TileSetID const ubID)
 	LoadWorld( TEMP_FILE_FOR_TILESET_CHANGE );
 
 	// Delete file
-	FileDelete(GCM->getMapPath(TEMP_FILE_FOR_TILESET_CHANGE).c_str());
+	sprintf(aFilename, MAPSDIR "/%s", TEMP_FILE_FOR_TILESET_CHANGE);
+
+	FileDelete( aFilename );
 }
 
 

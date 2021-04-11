@@ -2,18 +2,17 @@
 #include "Build/Laptop/Laptop.h"
 #include "Florist.h"
 #include "Florist_Cards.h"
-#include "sgp/VObject.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/Utils/Cursors.h"
+#include "VObject.h"
+#include "WordWrap.h"
+#include "Cursors.h"
+#include "Encrypted_File.h"
 #include "Florist_Gallery.h"
-#include "Build/Utils/Text.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
+#include "Text.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "Font_Control.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define		FLORIST_CARDS_SENTENCE_FONT			FONT12ARIAL
 #define		FLORIST_CARDS_SENTENCE_COLOR		FONT_MCOLOR_WHITE
@@ -139,7 +138,7 @@ void RenderFloristCards()
 			//Get and display the card saying
 			wchar_t sTemp[FLOR_CARD_TEXT_TITLE_SIZE];
 			uiStartLoc = FLOR_CARD_TEXT_TITLE_SIZE * ubCount;
-			GCM->loadEncryptedString(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
+			LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
 
 //			DisplayWrappedString(usPosX + 7, usPosY + 15, FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR, sTemp, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
 				usHeightOffset = IanWrappedStringHeight(FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, sTemp);

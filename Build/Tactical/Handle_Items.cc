@@ -1,75 +1,72 @@
-#include <memory>
+#include "Font.h"
+#include "Items.h"
+#include "Action_Items.h"
+#include "Handle_Items.h"
+#include "Local.h"
+#include "MapScreen.h"
+#include "Overhead.h"
+#include "Soldier_Find.h"
+#include "Structure.h"
+#include "VObject.h"
+#include "Weapons.h"
+#include "Points.h"
+#include "TileDef.h"
+#include "WorldDef.h"
+#include "WorldMan.h"
+#include "Interface.h"
+#include "RenderWorld.h"
+#include "Animation_Control.h"
+#include "Font_Control.h"
+#include "Render_Dirty.h"
+#include "World_Items.h"
+#include "Text.h"
+#include "Timer_Control.h"
+#include "Interface_Items.h"
+#include "Soldier_Profile.h"
+#include "Interface_Dialogue.h"
+#include "Quests.h"
+#include "Message.h"
+#include "Isometric_Utils.h"
+#include "LOS.h"
+#include "Dialogue_Control.h"
+#include "AI.h"
+#include "Soldier_Macros.h"
+#include "Interface_Panels.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Soldier_Functions.h"
+#include "Map_Screen_Helicopter.h"
+#include "PathAI.h"
+#include "FOV.h"
+#include "MessageBoxScreen.h"
+#include "Explosion_Control.h"
+#include "SkillCheck.h"
+#include "Campaign.h"
+#include "Random.h"
+#include "Structure_Wrap.h"
+#include "Interactive_Tiles.h"
+#include "SaveLoadMap.h"
+#include "ShopKeeper_Interface.h"
+#include "Arms_Dealer_Init.h"
+#include "Soldier_Add.h"
+#include "Sound_Control.h"
+#include "Squads.h"
+#include "Rotting_Corpses.h"
+#include "Soldier_Ani.h"
+#include "OppList.h"
+#include "QArray.h"
+#include "Render_Fun.h"
+#include "Environment.h"
+#include "Map_Information.h"
+#include "GameSettings.h"
+#include "StrategicMap.h"
+#include "End_Game.h"
+#include "Map_Screen_Interface_Map_Inventory.h"
+#include "ScreenIDs.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "Debug.h"
+#include "UILayout.h"
 
-#include "Build/GameSettings.h"
-#include "Build/Local.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Map_Screen_Helicopter.h"
-#include "Build/Strategic/Map_Screen_Interface_Map_Inventory.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Action_Items.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/End_Game.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/QArray.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/ShopKeeper_Interface.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Add.h"
-#include "Build/Tactical/Soldier_Ani.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/Font.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/VObject.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/Soldier.h"
 
 #define					NUM_ITEMS_LISTED			8
 #define					NUM_ITEM_FLASH_SLOTS	50
@@ -188,9 +185,8 @@ static void StartBombMessageBox(SOLDIERTYPE* pSoldier, INT16 sGridNo);
 
 ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLevel, const UINT16 usHandItem, const BOOLEAN fFromUI)
 {
-  std::shared_ptr<Soldier> soldier(new Soldier(s));
-
-  soldier->removePendingAction();
+	// Remove any previous actions
+	s->ubPendingAction = NO_PENDING_ACTION;
 
 	// here is where we would set a different value if the weapon mode is on
 	// "attached weapon"
@@ -224,14 +220,14 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	if (s->bLife < OKLIFE)          return ITEM_HANDLE_UNCONSCIOUS;
 	if (!HandItemWorks(s, HANDPOS)) return ITEM_HANDLE_BROKEN;
 
-	const ItemModel * item = GCM->getItem(usHandItem);
+	const INVTYPE* const item = &Item[usHandItem];
 
 	if (fFromUI                                      &&
 			s->bTeam == OUR_TEAM                      &&
 			tgt                                          &&
 			(tgt->bTeam == OUR_TEAM || tgt->bNeutral) &&
 			tgt->ubBodyType != CROW                      &&
-			item->getItemClass() != IC_MEDKIT               &&
+			item->usItemClass != IC_MEDKIT               &&
 			s->ubProfile != NO_PROFILE)
 	{
 		// nice mercs won't shoot other nice guys or neutral civilians
@@ -270,7 +266,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	// Check HAND ITEM
-	if (item->getItemClass() == IC_GUN || item->getItemClass() == IC_THROWING_KNIFE)
+	if (item->usItemClass == IC_GUN || item->usItemClass == IC_THROWING_KNIFE)
 	{
 		// WEAPONS
 		if (usHandItem == ROCKET_RIFLE || usHandItem == AUTO_ROCKET_RIFLE)
@@ -319,7 +315,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		}
 
 		// IF we are not a throwing knife, check for ammo, reloading...
-		if (item->getItemClass() != IC_THROWING_KNIFE)
+		if (item->usItemClass != IC_THROWING_KNIFE)
 		{
 			// CHECK FOR AMMO!
 			if (!EnoughAmmo(s, fFromUI, HANDPOS))
@@ -401,7 +397,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 			s->bTargetLevel = gsInterfaceLevel;
 		}
 
-		if (item->getItemClass() != IC_THROWING_KNIFE)
+		if (item->usItemClass != IC_THROWING_KNIFE)
 		{
 			// If doing spread, set down the first gridno.....
 			if (!s->fDoSpread || s->sSpreadLocations[0] == 0)
@@ -442,7 +438,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	//TRY PUNCHING
-	if (item->getItemClass() == IC_PUNCH)
+	if (item->usItemClass == IC_PUNCH)
 	{
 		INT16 sGotLocation = NOWHERE;
 		UINT8 ubDirection;
@@ -490,9 +486,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sGotLocation && fGotAdjacent)
 		{
-			soldier->setPendingAction(MERC_PUNCH);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_PUNCH;
 			s->sPendingActionData2      = sAdjustedGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sGotLocation, s->usUIMovementMode, FALSE, TRUE);
@@ -509,7 +507,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	//USING THE MEDKIT
-	if (item->getItemClass() == IC_MEDKIT)
+	if (item->usItemClass == IC_MEDKIT)
 	{
 		// ATE: AI CANNOT GO THROUGH HERE!
 		const INT16 usMapPos = (gTacticalStatus.fAutoBandageMode ? usGridNo : GetMouseMapPos());
@@ -538,11 +536,13 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_GIVEAID);
+			// SEND PENDING ACTION
+			s->ubPendingAction = MERC_GIVEAID;
 			if      (fHadToUseCursorPos) s->sPendingActionData2 = usMapPos;
 			else if (tgt != NULL)        s->sPendingActionData2 = tgt->sGridNo;
 			else                         s->sPendingActionData2 = usGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -572,9 +572,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_CUTFFENCE);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_CUTFFENCE;
 			s->sPendingActionData2      = sAdjustedGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -620,9 +622,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_REPAIR);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_REPAIR;
 			s->sPendingActionData2      = fVehicle ? sVehicleGridNo : sAdjustedGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -666,10 +670,12 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_FUEL_VEHICLE);
+			// SEND PENDING ACTION
+			s->ubPendingAction      = MERC_FUEL_VEHICLE;
 			s->sPendingActionData2  = sAdjustedGridNo;
 			s->sPendingActionData2  = sVehicleGridNo;
 			s->bPendingActionData3  = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -699,9 +705,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_TAKEBLOOD);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_TAKEBLOOD;
 			s->sPendingActionData2      = sAdjustedGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -737,9 +745,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_ATTACH_CAN);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_ATTACH_CAN;
 			s->sPendingActionData2      = usGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -755,7 +765,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	// Check for remote detonator cursor....
-	if (item->getCursor() == REMOTECURS)
+	if (item->ubCursor == REMOTECURS)
 	{
 		const INT16 sAPCost = AP_USE_REMOTE;
 		if (!EnoughPoints(s, sAPCost, 0, fFromUI)) return ITEM_HANDLE_NOAPS;
@@ -778,10 +788,10 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 
 	BOOLEAN fDropBomb = FALSE;
 	// Check for mine.. anything without a detonator.....
-	if (item->getCursor() == BOMBCURS) fDropBomb = TRUE;
+	if (item->ubCursor == BOMBCURS) fDropBomb = TRUE;
 
 	// Check for a bomb like a mine, that uses a pressure detonator
-	if (item->getCursor() == INVALIDCURS &&
+	if (item->ubCursor == INVALIDCURS &&
 			IsDetonatorAttached(&s->inv[s->ubAttackingHand]))
 	{
 		fDropBomb = TRUE;
@@ -794,7 +804,9 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 
 		if (s->sGridNo != usGridNo)
 		{
-			soldier->setPendingAction(MERC_DROPBOMB);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_DROPBOMB;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, usGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -810,7 +822,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	//USING THE BLADE
-	if (item->getItemClass() == IC_BLADE)
+	if (item->usItemClass == IC_BLADE)
 	{
 		UINT8 ubDirection;
 		INT16 sAdjustedGridNo;
@@ -839,9 +851,11 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		// CHECK IF WE ARE AT THIS GRIDNO NOW
 		if (s->sGridNo != sActionGridNo)
 		{
-			soldier->setPendingAction(MERC_KNIFEATTACK);
+			// SEND PENDING ACTION
+			s->ubPendingAction          = MERC_KNIFEATTACK;
 			s->sPendingActionData2      = sAdjustedGridNo;
 			s->bPendingActionData3      = ubDirection;
+			s->ubPendingActionAnimCount = 0;
 
 			// WALK UP TO DEST FIRST
 			EVENT_InternalGetNewSoldierPath(s, sActionGridNo, s->usUIMovementMode, FALSE, TRUE);
@@ -864,7 +878,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		return ITEM_HANDLE_OK;
 	}
 
-	if (item->getItemClass() == IC_TENTACLES)
+	if (item->usItemClass == IC_TENTACLES)
 	{
 		gTacticalStatus.ubAttackBusyCount++;
 		DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting swipe attack, incrementing a.b.c in HandleItems to %d", gTacticalStatus.ubAttackBusyCount));
@@ -876,7 +890,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	// THIS IS IF WE WERE FROM THE UI
-	if (item->getItemClass() == IC_GRENADE || item->getItemClass() == IC_LAUNCHER || item->getItemClass() == IC_THROWN)
+	if (item->usItemClass == IC_GRENADE || item->usItemClass == IC_LAUNCHER || item->usItemClass == IC_THROWN)
 	{
 		// Get gridno - either soldier's position or the gridno
 		const INT16 sTargetGridNo = (tgt != NULL ? tgt->sGridNo : usGridNo);
@@ -920,7 +934,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 		s->bTargetLevel      = bLevel;
 
 		// Look at the cursor, if toss cursor...
-		if (item->getCursor() == TOSSCURS)
+		if (item->ubCursor == TOSSCURS)
 		{
 			s->sTargetGridNo = sTargetGridNo;
 			s->target        = WhoIsThere2(sTargetGridNo, s->bTargetLevel);
@@ -943,7 +957,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE* const s, INT16 usGridNo, const INT8 bLe
 	}
 
 	// CHECK FOR BOMB....
-	if (item->getCursor() == INVALIDCURS)
+	if (item->ubCursor == INVALIDCURS)
 	{
 		// Found detonator...
 		OBJECTTYPE& obj = s->inv[usHandItem];
@@ -1084,15 +1098,15 @@ void SoldierGiveItem( SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, OBJECT
 	INT16 sActionGridNo, sAdjustedGridNo;
 	UINT8	ubDirection;
 
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-
-  soldier->removePendingAction();
+	 // Remove any previous actions
+	 pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 	 // See if we can get there to stab
 	 sActionGridNo =  FindAdjacentGridEx( pSoldier, pTargetSoldier->sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE );
 	 if ( sActionGridNo != -1 )
 	 {
-     soldier->setPendingAction(MERC_GIVEITEM);
+			// SEND PENDING ACTION
+			pSoldier->ubPendingAction = MERC_GIVEITEM;
 
 			pSoldier->bPendingActionData5 = bInvPos;
 			// Copy temp object
@@ -1103,6 +1117,7 @@ void SoldierGiveItem( SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, OBJECT
 			pSoldier->sPendingActionData2  = pTargetSoldier->sGridNo;
 			pSoldier->bPendingActionData3  = ubDirection;
 			pSoldier->uiPendingActionData4 = pTargetSoldier->ubID;
+			pSoldier->ubPendingActionAnimCount = 0;
 
 			// Set soldier as engaged!
 			pSoldier->uiStatusFlags |= SOLDIER_ENGAGEDINACTION;
@@ -1137,17 +1152,23 @@ void SoldierDropItem(SOLDIERTYPE* const pSoldier, OBJECTTYPE* const pObj)
 void SoldierPickupItem( SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel )
 {
 	INT16							sActionGridNo;
+<<<<<<< HEAD
   std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
+=======
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
-  soldier->removePendingAction();
+	// Remove any previous actions
+	pSoldier->ubPendingAction		 = NO_PENDING_ACTION;
 
 	sActionGridNo = AdjustGridNoForItemPlacement( pSoldier, sGridNo );
 
-  soldier->setPendingAction(MERC_PICKUPITEM);
+	// SET PENDING ACTIONS!
+	pSoldier->ubPendingAction = MERC_PICKUPITEM;
 	pSoldier->uiPendingActionData1 = iItemIndex;
 	pSoldier->sPendingActionData2  = sActionGridNo;
 	pSoldier->uiPendingActionData4 = sGridNo;
 	pSoldier->bPendingActionData3  = bZLevel;
+	pSoldier->ubPendingActionAnimCount = 0;
 
 	// Deduct points!
 	//sAPCost = GetAPsToPickupItem( pSoldier, sGridNo );
@@ -1400,7 +1421,7 @@ void HandleSoldierPickupItem(SOLDIERTYPE* const s, INT32 const item_idx, INT16 c
 }
 
 
-static LEVELNODE* AddItemGraphicToWorld(const ItemModel *item, INT16 const sGridNo, UINT8 const ubLevel)
+static LEVELNODE* AddItemGraphicToWorld(INVTYPE const& item, INT16 const sGridNo, UINT8 const ubLevel)
 {
 	LEVELNODE		*pNode;
 
@@ -1482,7 +1503,7 @@ INT32 InternalAddItemToPool(INT16* const psGridNo, OBJECTTYPE* const pObject, Vi
 		case DEEP_WATER:
 		case LOW_WATER:
 		case MED_WATER:
-			if (GCM->getItem(pObject->usItem)->getFlags() & ITEM_SINKS) return -1;
+			if (Item[pObject->usItem].fFlags & ITEM_SINKS) return -1;
 			break;
 	}
 
@@ -1621,7 +1642,7 @@ INT32 InternalAddItemToPool(INT16* const psGridNo, OBJECTTYPE* const pObject, Vi
 
 	ITEM_POOL* item_pool = GetItemPool(sNewGridNo, ubLevel);
 
-	LEVELNODE* const pNode = AddItemGraphicToWorld(GCM->getItem(pObject->usItem), sNewGridNo, ubLevel);
+	LEVELNODE* const pNode = AddItemGraphicToWorld(Item[pObject->usItem], sNewGridNo, ubLevel);
 	new_item->pLevelNode = pNode;
 
 	if (item_pool != NULL)
@@ -2638,7 +2659,7 @@ static BOOLEAN HandItemWorks(SOLDIERTYPE* pSoldier, INT8 bSlot)
 	// if the item can be damaged, than we must check that it's in good enough
 	// shape to be usable, and doesn't break during use.
 	// Exception: land mines.  You can bury them broken, they just won't blow!
-	if ( (GCM->getItem(pObj->usItem)->getFlags() & ITEM_DAMAGEABLE) && (pObj->usItem != MINE) && (GCM->getItem(pObj->usItem)->getItemClass() != IC_MEDKIT) && pObj->usItem != GAS_CAN )
+	if ( (Item[ pObj->usItem ].fFlags & ITEM_DAMAGEABLE) && (pObj->usItem != MINE) && (Item[ pObj->usItem ].usItemClass != IC_MEDKIT) && pObj->usItem != GAS_CAN )
 	{
 		// if it's still usable, check whether it breaks
 		if ( pObj->bStatus[0] >= USABLE)
@@ -2670,10 +2691,10 @@ static BOOLEAN HandItemWorks(SOLDIERTYPE* pSoldier, INT8 bSlot)
 		}
 	}
 
-	if ( fItemWorks && bSlot == HANDPOS && GCM->getItem(pObj->usItem)->getItemClass() == IC_GUN )
+	if ( fItemWorks && bSlot == HANDPOS && Item[ pObj->usItem ].usItemClass == IC_GUN )
 	{
 		// are we using two guns at once?
-		if ( GCM->getItem(pSoldier->inv[SECONDHANDPOS].usItem)->getItemClass() == IC_GUN &&
+		if ( Item[ pSoldier->inv[SECONDHANDPOS].usItem ].usItemClass == IC_GUN &&
 			pSoldier->inv[SECONDHANDPOS].bGunStatus >= USABLE &&
 			pSoldier->inv[SECONDHANDPOS].ubGunShotsLeft > 0)
 		{

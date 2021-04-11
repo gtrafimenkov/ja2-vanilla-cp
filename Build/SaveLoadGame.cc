@@ -1,116 +1,117 @@
 #include <stdexcept>
 
-#include "Build/Cheats.h"
-#include "Build/Directories.h"
-#include "Build/GameLoop.h"
-#include "Build/GameRes.h"
-#include "Build/GameSettings.h"
-#include "Build/GameVersion.h"
-#include "Build/HelpScreen.h"
-#include "Build/JAScreens.h"
-#include "Build/Laptop/BobbyR.h"
-#include "Build/Laptop/BobbyRMailOrder.h"
-#include "Build/Laptop/Files.h"
-#include "Build/Laptop/Finances.h"
-#include "Build/Laptop/History.h"
-#include "Build/Laptop/IMP_Confirm.h"
-#include "Build/Laptop/IMP_Portraits.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Laptop/Mercs.h"
-#include "Build/Loading_Screen.h"
-#include "Build/LoadSaveEMail.h"
-#include "Build/LoadSaveTacticalStatusType.h"
-#include "Build/Local.h"
-#include "Build/Options_Screen.h"
-#include "Build/SaveLoadGame.h"
-#include "Build/SaveLoadScreen.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Creature_Spreading.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Events.h"
-#include "Build/Strategic/Map_Screen_Helicopter.h"
-#include "Build/Strategic/Map_Screen_Interface_Border.h"
-#include "Build/Strategic/Map_Screen_Interface_Bottom.h"
-#include "Build/Strategic/Map_Screen_Interface_Map.h"
-#include "Build/Strategic/Map_Screen_Interface.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/Merc_Contract.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Scheduling.h"
-#include "Build/Strategic/Strategic_AI.h"
-#include "Build/Strategic/Strategic_Event_Handler.h"
-#include "Build/Strategic/Strategic_Mines.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Strategic/Strategic_Pathing.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Tactical/Air_Raid.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/Boxing.h"
-#include "Build/Tactical/Bullets.h"
-#include "Build/Tactical/Civ_Quotes.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Enemy_Soldier_Save.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/LoadSaveMercProfile.h"
-#include "Build/Tactical/LoadSaveSoldierType.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Merc_Hiring.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Tactical_Save.h"
-#include "Build/Tactical/TeamTurns.h"
-#include "Build/Tactical/Vehicles.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/LightEffects.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/Physics.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/SmokeEffects.h"
-#include "Build/TileEngine/Tactical_Placement_GUI.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Utils/Animated_ProgressBar.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/MercTextBox.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Music_Control.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Buffer.h"
-#include "sgp/Debug.h"
-#include "sgp/FileMan.h"
-#include "sgp/Font.h"
-#include "sgp/LoadSaveData.h"
-#include "sgp/MemMan.h"
-#include "sgp/Random.h"
-#include "sgp/Types.h"
-#include "sgp/UTF8String.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Buffer.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Font_Control.h"
+#include "GameLoop.h"
+#include "LoadSaveData.h"
+#include "LoadSaveEMail.h"
+#include "LoadSaveMercProfile.h"
+#include "LoadSaveSoldierType.h"
+#include "LoadSaveTacticalStatusType.h"
+#include "Local.h"
+#include "MapScreen.h"
+#include "Timer_Control.h"
+#include "Types.h"
+#include "Soldier_Profile.h"
+#include "FileMan.h"
+#include "Debug.h"
+#include "Overhead.h"
+#include "Keys.h"
+#include "Finances.h"
+#include "History.h"
+#include "Files.h"
+#include "Laptop.h"
+#include "StrategicMap.h"
+#include "Game_Events.h"
+#include "Game_Clock.h"
+#include "Soldier_Create.h"
+#include "WorldDef.h"
+#include "LaptopSave.h"
+#include "Queen_Command.h"
+#include "SaveLoadGame.h"
+#include "Tactical_Save.h"
+#include "Squads.h"
+#include "Environment.h"
+#include "Lighting.h"
+#include "Strategic_Movement.h"
+#include "Quests.h"
+#include "OppList.h"
+#include "Message.h"
+#include "NPC.h"
+#include "Merc_Hiring.h"
+#include "SaveLoadScreen.h"
+#include "GameVersion.h"
+#include "GameSettings.h"
+#include "Music_Control.h"
+#include "Options_Screen.h"
+#include "AI.h"
+#include "RenderWorld.h"
+#include "SmokeEffects.h"
+#include "Random.h"
+#include "Map_Screen_Interface.h"
+#include "Map_Screen_Interface_Border.h"
+#include "Map_Screen_Interface_Bottom.h"
+#include "Interface.h"
+#include "Map_Screen_Helicopter.h"
+#include "Arms_Dealer_Init.h"
+#include "Tactical_Placement_GUI.h"
+#include "Strategic_Mines.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Vehicles.h"
+#include "Merc_Contract.h"
+#include "Bullets.h"
+#include "Air_Raid.h"
+#include "Physics.h"
+#include "Strategic_Pathing.h"
+#include "TeamTurns.h"
+#include "Explosion_Control.h"
+#include "Creature_Spreading.h"
+#include "Strategic_Status.h"
+#include "PreBattle_Interface.h"
+#include "Boxing.h"
+#include "Strategic_AI.h"
+#include "Map_Screen_Interface_Map.h"
+#include "Meanwhile.h"
+#include "Dialogue_Control.h"
+#include "Text.h"
+#include "LightEffects.h"
+#include "HelpScreen.h"
+#include "Animated_ProgressBar.h"
+#include "MercTextBox.h"
+#include "Map_Information.h"
+#include "Interface_Items.h"
+#include "Civ_Quotes.h"
+#include "Scheduling.h"
+#include "Animation_Data.h"
+#include "Cheats.h"
+#include "Render_Dirty.h"
+#include "Strategic_Event_Handler.h"
+#include "Interface_Panels.h"
+#include "Interface_Dialogue.h"
+#include "Assignments.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "JAScreens.h"
+#include "BobbyR.h"
+#include "IMP_Portraits.h"
+#include "Loading_Screen.h"
+#include "Interface_Utils.h"
+#include "IMP_Confirm.h"
+#include "Enemy_Soldier_Save.h"
+#include "BobbyRMailOrder.h"
+#include "Mercs.h"
+#include "UILayout.h"
+#include "UTF8String.h"
+#include "GameRes.h"
 
 static const char g_quicksave_name[] = "QuickSave";
 static const char g_savegame_name[]  = "SaveGame";
 static const char g_savegame_ext[]   = "sav";
+static const char g_savegame_dir[]   = "../SavedGames";
+
 
 extern		INT32					giSortStateForMapScreenList;
 extern		INT16					sDeadMercs[ NUMBER_OF_SQUADS ][ NUMBER_OF_SOLDIERS_PER_SQUAD ];
@@ -253,7 +254,7 @@ BOOLEAN SaveGame(UINT8 const ubSaveGameID, wchar_t const* GameDesc)
 			wcslcpy(desc, GameDesc, lengthof(desc));
 		}
 
-		FileMan::createDir(GCM->getSavedGamesFolder().c_str());
+		FileMan::createDir(g_savegame_dir);
 
 		// Create the save game file
 		char savegame_name[512];
@@ -668,7 +669,7 @@ void LoadSavedGame(UINT8 const save_slot_id)
 
 	char zSaveGameName[512];
 	CreateSavedGameFileNameFromNumber(save_slot_id, zSaveGameName);
-	AutoSGPFile f(GCM->openUserPrivateFileForReading(std::string(zSaveGameName)));
+	AutoSGPFile f(FileMan::openForReadingSmart(zSaveGameName, false));
 	LoadGameFilePosition(save_slot_id, f, "Just Opened File");
 
 	SAVED_GAME_HEADER SaveGameHeader;
@@ -1398,6 +1399,15 @@ static void LoadSoldierStructure(HWFILE const f, UINT32 savegame_version, bool s
 
 static void SaveFileToSavedGame(SGPFile* fileToSave, HWFILE const hFile)
 {
+<<<<<<< HEAD
+=======
+	AutoSGPFile hSrcFile(FileMan::openForReadingSmart(pSrcFileName, true));
+
+#ifdef JA2BETAVERSION
+	guiNumberOfMapTempFiles++;		//Increment counter:  To determine where the temp files are crashing
+#endif
+
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 	//Get the file size of the source data file
 	UINT32 uiFileSize = FileGetSize( fileToSave );
 
@@ -1605,7 +1615,7 @@ static void LoadWatchedLocsFromSavedGame(HWFILE const hFile)
 
 void CreateSavedGameFileNameFromNumber(const UINT8 ubSaveGameID, char* const pzNewFileName)
 {
-  std::string dir = GCM->getSavedGamesFolder();
+	char const* const dir = g_savegame_dir;
 	char const* const ext = g_savegame_ext;
 
 	switch (ubSaveGameID)
@@ -1613,23 +1623,34 @@ void CreateSavedGameFileNameFromNumber(const UINT8 ubSaveGameID, char* const pzN
 		case 0: // we are creating the QuickSave file
 		{
 			char const* const quick = g_quicksave_name;
+<<<<<<< HEAD
+=======
+#ifdef JA2BETAVERSION
+			if (gfUseConsecutiveQuickSaveSlots &&
+					guiCurrentQuickSaveNumber != 0)
 			{
-				sprintf(pzNewFileName, "%s/%s.%s", dir.c_str(), quick, ext);
+				sprintf(pzNewFileName, "%s/%s%02d.%s", dir, quick, guiCurrentQuickSaveNumber, ext);
+			}
+			else
+#endif
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
+			{
+				sprintf(pzNewFileName, "%s/%s.%s", dir, quick, ext);
 			}
 			break;
 		}
 
 		case SAVE__END_TURN_NUM:
-			sprintf(pzNewFileName, "%s/Auto%02d.%s", dir.c_str(), guiLastSaveGameNum, ext);
+			sprintf(pzNewFileName, "%s/Auto%02d.%s", dir, guiLastSaveGameNum, ext);
 			guiLastSaveGameNum = (guiLastSaveGameNum + 1) % 2;
 			break;
 
 		case SAVE__ERROR_NUM:
-			sprintf(pzNewFileName, "%s/error.%s", dir.c_str(), ext);
+			sprintf(pzNewFileName, "%s/error.%s", dir, ext);
 			break;
 
 		default:
-			sprintf(pzNewFileName, "%s/%s%02d.%s", dir.c_str(), g_savegame_name, ubSaveGameID, ext);
+			sprintf(pzNewFileName, "%s/%s%02d.%s", dir, g_savegame_name, ubSaveGameID, ext);
 			break;
 	}
 }
@@ -1691,6 +1712,64 @@ void LoadMercPath(HWFILE const hFile, PathSt** const head)
 }
 
 
+<<<<<<< HEAD
+=======
+#ifdef JA2BETAVERSION
+static void InitSaveGameFilePosition(UINT8 const slot)
+{
+	CHAR8		zFileName[128];
+	sprintf(zFileName, "%s/SaveGameFilePos%2d.txt", g_savegame_dir, slot);
+	FileDelete( zFileName );
+}
+
+
+static void SaveGameFilePosition(UINT8 const slot, const HWFILE save, const char* const pMsg)
+{
+	CHAR8		zTempString[512];
+	UINT32	uiStrLen=0;
+	CHAR8		zFileName[128];
+
+	sprintf(zFileName, "%s/SaveGameFilePos%2d.txt", g_savegame_dir, slot);
+
+	// create the save game file
+	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
+
+	const INT32 pos = FileGetPos(save);
+	sprintf(zTempString, "%8d     %s\n", pos, pMsg);
+	uiStrLen = strlen( zTempString );
+	FileWrite(hFile, zTempString, uiStrLen);
+}
+
+
+static void InitLoadGameFilePosition(UINT8 const slot)
+{
+	CHAR8		zFileName[128];
+	sprintf(zFileName, "%s/LoadGameFilePos%2d.txt", g_savegame_dir, slot);
+	FileDelete( zFileName );
+}
+
+
+static void LoadGameFilePosition(UINT8 const slot, const HWFILE load, const char* const pMsg)
+{
+	CHAR8		zTempString[512];
+	UINT32	uiStrLen=0;
+
+	CHAR8		zFileName[128];
+	sprintf(zFileName, "%s/LoadGameFilePos%2d.txt", g_savegame_dir, slot);
+
+	// create the save game file
+	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
+
+	const INT32 pos = FileGetPos(load);
+	sprintf(zTempString, "%8d     %s\n", pos, pMsg);
+	uiStrLen = strlen( zTempString );
+
+	FileWrite(hFile, zTempString, uiStrLen);
+}
+#endif
+
+
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 static BYTE* InjectMeanwhileDefinition(BYTE* const data, MEANWHILE_DEFINITION const& m)
 {
 	BYTE* d = data;
@@ -2068,6 +2147,63 @@ BOOLEAN DoesUserHaveEnoughHardDriveSpace()
 	return( TRUE );
 }
 
+<<<<<<< HEAD
+=======
+#ifdef JA2BETAVERSION
+
+static void InitShutDownMapTempFileTest(BOOLEAN fInit, const char* pNameOfFile, UINT8 ubSaveGameID)
+{
+	CHAR8		zFileName[128];
+	CHAR8		zTempString[512];
+	UINT32	uiStrLen;
+
+	//strcpy( gzNameOfMapTempFile, pNameOfFile);
+	sprintf( gzNameOfMapTempFile, "%s%d", pNameOfFile, ubSaveGameID );
+
+	sprintf(zFileName, "%s/%s.txt", g_savegame_dir, gzNameOfMapTempFile);
+
+	if( fInit )
+	{
+		guiNumberOfMapTempFiles = 0;		//Test:  To determine where the temp files are crashing
+		guiSizeOfTempFiles = 0;
+
+		FileDelete(zFileName);
+	}
+	else
+	{
+		// create the save game file
+		AutoSGPFile hFile(FileMan::openForAppend(zFileName));
+
+		sprintf( zTempString, "Number Of Files: %6d.  Size of all files: %6d.\n", guiNumberOfMapTempFiles, guiSizeOfTempFiles );
+		uiStrLen = strlen( zTempString );
+		FileWrite(hFile, zTempString, uiStrLen);
+	}
+}
+
+
+static void WriteTempFileNameToFile(const char* pFileName, UINT32 uiSizeOfFile, HWFILE hSaveFile)
+{
+	CHAR8		zTempString[512];
+	UINT32	uiStrLen=0;
+
+	CHAR8		zFileName[128];
+
+	guiSizeOfTempFiles += uiSizeOfFile;
+
+	sprintf(zFileName, "%s/%s.txt", g_savegame_dir, gzNameOfMapTempFile);
+
+	// create the save game file
+	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
+
+	sprintf( zTempString, "%8d   %6d   %s\n", FileGetPos( hSaveFile ), uiSizeOfFile, pFileName );
+	uiStrLen = strlen( zTempString );
+
+	FileWrite(hFile, zTempString, uiStrLen);
+}
+
+#endif
+
+>>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 void GetBestPossibleSectorXYZValues(INT16* const psSectorX, INT16* const psSectorY, INT8* const pbSectorZ)
 {
@@ -2334,20 +2470,20 @@ INT8 GetNumberForAutoSave( BOOLEAN fLatestAutoSave )
 
 	//The name of the file
 	char zFileName1[256];
-	sprintf(zFileName1, "%s/Auto%02d.%s", GCM->getSavedGamesFolder().c_str(), 0, g_savegame_ext);
+	sprintf(zFileName1, "%s/Auto%02d.%s", g_savegame_dir, 0, g_savegame_ext);
 	char zFileName2[256];
-	sprintf(zFileName2, "%s/Auto%02d.%s", GCM->getSavedGamesFolder().c_str(), 1, g_savegame_ext);
+	sprintf(zFileName2, "%s/Auto%02d.%s", g_savegame_dir, 1, g_savegame_ext);
 
-	if( GCM->doesGameResExists( zFileName1 ) )
+	if( FileExists( zFileName1 ) )
 	{
-		AutoSGPFile hFile(GCM->openUserPrivateFileForReading(std::string(zFileName1)));
+		AutoSGPFile hFile(FileMan::openForReadingSmart(zFileName1, false));
 		GetFileManFileTime( hFile, &CreationTime1, &LastAccessedTime1, &LastWriteTime1 );
 		fFile1Exist = TRUE;
 	}
 
-	if( GCM->doesGameResExists( zFileName2 ) )
+	if( FileExists( zFileName2 ) )
 	{
-		AutoSGPFile hFile(GCM->openUserPrivateFileForReading(std::string(zFileName2)));
+		AutoSGPFile hFile(FileMan::openForReadingSmart(zFileName2, false));
 		GetFileManFileTime( hFile, &CreationTime2, &LastAccessedTime2, &LastWriteTime2 );
 		fFile2Exist = TRUE;
 	}

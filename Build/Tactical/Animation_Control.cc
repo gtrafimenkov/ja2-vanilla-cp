@@ -1,19 +1,18 @@
-#include "Build/Directories.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Debug_Control.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "sgp/FileMan.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
+#include "Directories.h"
+#include "Font_Control.h"
+#include "Soldier_Control.h"
+#include "Animation_Control.h"
+#include "Animation_Data.h"
+#include "FileMan.h"
+#include "Weapons.h"
+#include "Message.h"
+#include "Structure.h"
+#include "WorldDef.h"
+#include "WorldMan.h"
+#include "Rotting_Corpses.h"
+#include "Points.h"
+#include "Debug_Control.h"
+
 
 // Defines for Anim inst reading, taken from orig Jagged
 #define	ANIMFILENAME					BINARYDATADIR "/ja2bin.dat"
@@ -2412,7 +2411,7 @@ void	InitAnimationSurfacesPerBodytype( )
 
 void LoadAnimationStateInstructions()
 {
-	AutoSGPFile hFile(GCM->openGameResForReading(ANIMFILENAME));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(ANIMFILENAME, true));
 	FileRead(hFile, gusAnimInst, sizeof(gusAnimInst));
 }
 
@@ -2710,9 +2709,9 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE* pSoldier, UINT16 usAn
 		// Default it to the 1 ( ie: no rifle )
 		if ( usItem != NOTHING )
 		{
-			if ( ( GCM->getItem(usItem)->getItemClass() == IC_GUN || GCM->getItem(usItem)->getItemClass() == IC_LAUNCHER ) && usItem != ROCKET_LAUNCHER )
+			if ( ( Item[ usItem ].usItemClass == IC_GUN || Item[ usItem ].usItemClass == IC_LAUNCHER ) && usItem != ROCKET_LAUNCHER )
 			{
-				if ( (GCM->getItem(usItem)->isTwoHanded()) )
+				if ( (Item[ usItem ].fFlags & ITEM_TWO_HANDED) )
 				{
 					ubWaterHandIndex = 0;
 				}
@@ -2733,7 +2732,7 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE* pSoldier, UINT16 usAn
 		// ADJUST BASED ON ITEM IN HAND....
 		usItem = pSoldier->inv[ HANDPOS ].usItem;
 
-		if ( (!(GCM->getItem(usItem)->getItemClass() == IC_GUN ) && !(GCM->getItem(usItem)->getItemClass() == IC_LAUNCHER )) || usItem == ROCKET_LAUNCHER )
+		if ( (!(Item[ usItem ].usItemClass == IC_GUN ) && !(Item[ usItem ].usItemClass == IC_LAUNCHER )) || usItem == ROCKET_LAUNCHER )
 		{
 			if ( usAnimState == STANDING )
 			{
@@ -2754,9 +2753,9 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE* pSoldier, UINT16 usAn
 		else
 		{
 			// CHECK FOR HANDGUN
-			if ( ( GCM->getItem(usItem)->getItemClass() == IC_GUN || GCM->getItem(usItem)->getItemClass() == IC_LAUNCHER ) && usItem != ROCKET_LAUNCHER )
+			if ( ( Item[ usItem ].usItemClass == IC_GUN || Item[ usItem ].usItemClass == IC_LAUNCHER ) && usItem != ROCKET_LAUNCHER )
 			{
-				if ( !(GCM->getItem(usItem)->isTwoHanded()) )
+				if ( !(Item[ usItem ].fFlags & ITEM_TWO_HANDED) )
 				{
 					usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier->ubBodyType][usAnimState];
 					if ( usAltAnimSurface != INVALID_ANIMATION )
@@ -2769,7 +2768,7 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE* pSoldier, UINT16 usAn
 					if ( gDoubleHandledSub.usAnimState == usAnimState )
 					{
 						// Do we carry two pistols...
-						if ( GCM->getItem(pSoldier->inv[ SECONDHANDPOS ].usItem)->getItemClass() == IC_GUN )
+						if ( Item[ pSoldier->inv[ SECONDHANDPOS ].usItem ].usItemClass == IC_GUN )
 						{
 							usAnimSurface = gDoubleHandledSub.usAnimationSurfaces[ pSoldier->ubBodyType ];
 							fAdjustedForItem	= TRUE;

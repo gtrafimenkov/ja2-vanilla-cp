@@ -1,31 +1,31 @@
-#include "Build/Directories.h"
-#include "sgp/Font.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/EMail.h"
-#include "Build/Local.h"
-#include "sgp/VObject.h"
-#include "sgp/Debug.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Laptop/IMP_Compile_Character.h"
-#include "Build/Laptop/IMP_Portraits.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/Laptop/AIMMembers.h"
-#include "sgp/Random.h"
-#include "Build/Utils/Text.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Laptop/Finances.h"
-#include "sgp/Button_System.h"
-#include "sgp/Video.h"
-#include "sgp/VSurface.h"
-#include "sgp/MemMan.h"
-#include "Build/Utils/Font_Control.h"
+#include "Directories.h"
+#include "Font.h"
+#include "Laptop.h"
+#include "EMail.h"
+#include "Local.h"
+#include "VObject.h"
+#include "Debug.h"
+#include "WordWrap.h"
+#include "Render_Dirty.h"
+#include "Encrypted_File.h"
+#include "Cursors.h"
+#include "Soldier_Profile.h"
+#include "IMP_Compile_Character.h"
+#include "IMP_Portraits.h"
+#include "Game_Clock.h"
+#include "Environment.h"
+#include "AIMMembers.h"
+#include "Random.h"
+#include "Text.h"
+#include "LaptopSave.h"
+#include "Finances.h"
+#include "Button_System.h"
+#include "Video.h"
+#include "VSurface.h"
+#include "MemMan.h"
+#include "Font_Control.h"
+#include "UILayout.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
 
 #define MAX_MESSAGES_PAGE 18 // max number of messages per page
 
@@ -509,7 +509,7 @@ void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender,
 
 static void LoadEMailText(wchar_t buf[], UINT32 entry)
 {
-	GCM->loadEncryptedString(BINARYDATADIR "/email.edt", buf, MAIL_STRING_SIZE * entry, MAIL_STRING_SIZE);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/email.edt", buf, MAIL_STRING_SIZE * entry, MAIL_STRING_SIZE);
 }
 
 
@@ -1868,7 +1868,7 @@ ENUM_BITSET(PhysicalBits)
 
 static void LoadIMPResultText(wchar_t* Text, UINT32 Offset)
 {
-	GCM->loadEncryptedString(BINARYDATADIR "/impass.edt", Text, MAIL_STRING_SIZE * Offset, MAIL_STRING_SIZE);
+	LoadEncryptedDataFromFile(BINARYDATADIR "/impass.edt", Text, MAIL_STRING_SIZE * Offset, MAIL_STRING_SIZE);
 }
 
 

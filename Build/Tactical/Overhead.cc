@@ -1,106 +1,101 @@
-#include <memory>
-
-#include "Build/Editor/EditorMercs.h"
-#include "Build/GameSettings.h"
-#include "Build/JAScreens.h"
-#include "Build/Laptop/History.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Strategic/Game_Clock.h"
-#include "Build/Strategic/Game_Event_Hook.h"
-#include "Build/Strategic/Game_Init.h"
-#include "Build/Strategic/Map_Screen_Helicopter.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Strategic/Meanwhile.h"
-#include "Build/Strategic/Player_Command.h"
-#include "Build/Strategic/PreBattle_Interface.h"
-#include "Build/Strategic/Queen_Command.h"
-#include "Build/Strategic/Quests.h"
-#include "Build/Strategic/Strategic_AI.h"
-#include "Build/Strategic/Strategic_Merc_Handler.h"
-#include "Build/Strategic/Strategic_Mines.h"
-#include "Build/Strategic/Strategic_Status.h"
-#include "Build/Strategic/Strategic_Town_Loyalty.h"
-#include "Build/Strategic/Strategic_Turns.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Strategic/Town_Militia.h"
-#include "Build/Tactical/Air_Raid.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Arms_Dealer_Init.h"
-#include "Build/Tactical/Auto_Bandage.h"
-#include "Build/Tactical/Boxing.h"
-#include "Build/Tactical/Campaign.h"
-#include "Build/Tactical/Civ_Quotes.h"
-#include "Build/Tactical/Dialogue_Control.h"
-#include "Build/Tactical/Drugs_And_Alcohol.h"
-#include "Build/Tactical/End_Game.h"
-#include "Build/Tactical/Faces.h"
-#include "Build/Tactical/FOV.h"
-#include "Build/Tactical/Handle_Doors.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Interface_Control.h"
-#include "Build/Tactical/Interface_Cursors.h"
-#include "Build/Tactical/Interface_Dialogue.h"
-#include "Build/Tactical/Interface_Items.h"
-#include "Build/Tactical/Interface_Panels.h"
-#include "Build/Tactical/Interface_Utils.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/Tactical/Items.h"
-#include "Build/Tactical/Keys.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/Tactical/Morale.h"
-#include "Build/Tactical/OppList.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/PathAI.h"
-#include "Build/Tactical/Points.h"
-#include "Build/Tactical/Rotting_Corpses.h"
-#include "Build/Tactical/SkillCheck.h"
-#include "Build/Tactical/Soldier_Ani.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Find.h"
-#include "Build/Tactical/Soldier_Functions.h"
-#include "Build/Tactical/Soldier_Macros.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Soldier_Tile.h"
-#include "Build/Tactical/Spread_Burst.h"
-#include "Build/Tactical/Squads.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TacticalAI/AI.h"
-#include "Build/TacticalAI/NPC.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Interactive_Tiles.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/Render_Fun.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/SysUtil.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Music_Control.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Timer_Control.h"
-#include "sgp/Debug.h"
-#include "sgp/MouseSystem.h"
-#include "sgp/Random.h"
-#include "sgp/VObject.h"
-#include "sgp/WCheck.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/Soldier.h"
+#include "Handle_Doors.h"
+#include "Handle_Items.h"
+#include "MapScreen.h"
+#include "Soldier_Find.h"
+#include "Spread_Burst.h"
+#include "TileDef.h"
+#include "VObject.h"
+#include "WCheck.h"
+#include "Debug.h"
+#include "WorldDef.h"
+#include "WorldMan.h"
+#include "RenderWorld.h"
+#include "Assignments.h"
+#include "Soldier_Control.h"
+#include "Animation_Control.h"
+#include "Animation_Data.h"
+#include "Isometric_Utils.h"
+#include "Event_Pump.h"
+#include "Timer_Control.h"
+#include "Render_Fun.h"
+#include "Render_Dirty.h"
+#include "MouseSystem.h"
+#include "Interface.h"
+#include "SysUtil.h"
+#include "Points.h"
+#include "Random.h"
+#include "AI.h"
+#include "Interactive_Tiles.h"
+#include "Soldier_Ani.h"
+#include "Overhead.h"
+#include "OppList.h"
+#include "Sound_Control.h"
+#include "Font_Control.h"
+#include "Lighting.h"
+#include "PathAI.h"
+#include "ScreenIDs.h"
+#include "Interface_Cursors.h"
+#include "Weapons.h"
+#include "Rotting_Corpses.h"
+#include "Structure.h"
+#include "Interface_Panels.h"
+#include "Message.h"
+#include "Items.h"
+#include "Soldier_Profile.h"
+#include "FOV.h"
+#include "Soldier_Macros.h"
+#include "EditorMercs.h"
+#include "Soldier_Tile.h"
+#include "Structure_Wrap.h"
+#include "Tile_Animation.h"
+#include "Strategic_Merc_Handler.h"
+#include "Strategic_Turns.h"
+#include "Squads.h"
+#include "Morale.h"
+#include "Campaign.h"
+#include "Music_Control.h"
+#include "Faces.h"
+#include "Dialogue_Control.h"
+#include "Queen_Command.h"
+#include "Quests.h"
+#include "NPC.h"
+#include "StrategicMap.h"
+#include "Soldier_Functions.h"
+#include "Auto_Bandage.h"
+#include "Game_Event_Hook.h"
+#include "Explosion_Control.h"
+#include "SkillCheck.h"
+#include "World_Items.h"
+#include "Smell.h"
+#include "Player_Command.h"
+#include "GameSettings.h"
+#include "MessageBoxScreen.h"
+#include "Game_Clock.h"
+#include "Strategic_Town_Loyalty.h"
+#include "Strategic_Mines.h"
+#include "Interface_Items.h"
+#include "Text.h"
+#include "Keys.h"
+#include "Boxing.h"
+#include "Town_Militia.h"
+#include "Meanwhile.h"
+#include "Map_Screen_Helicopter.h"
+#include "Interface_Control.h"
+#include "Exit_Grids.h"
+#include "Game_Init.h"
+#include "JAScreens.h"
+#include "Arms_Dealer_Init.h"
+#include "Interface_Utils.h"
+#include "Air_Raid.h"
+#include "Civ_Quotes.h"
+#include "Drugs_And_Alcohol.h"
+#include "History.h"
+#include "LOS.h"
+#include "Interface_Dialogue.h"
+#include "Strategic_AI.h"
+#include "End_Game.h"
+#include "Strategic_Status.h"
+#include "PreBattle_Interface.h"
 
 #define RT_DELAY_BETWEEN_AI_HANDLING 50
 #define RT_AI_TIMESLICE 10
@@ -594,7 +589,6 @@ void ExecuteOverhead(void)
 		for (UINT32 cnt = 0; cnt < guiNumMercSlots; ++cnt)
 		{
 			SOLDIERTYPE* pSoldier = MercSlots[cnt];
-      std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 
 			// Syncronize for upcoming soldier counters
 			SYNCTIMECOUNTER();
@@ -779,19 +773,9 @@ void ExecuteOverhead(void)
 							HandleNextTileWaiting(pSoldier);
 						}
 
-            // Handle situation when Darrent goes through the ring to give money.
-            // He jumps out of the ring right beside the player.
-            // Sutiation when he walks to the player is handled the usual way.
-            if((pSoldier->ubProfile == DARREN)
-               && (pSoldier->sFinalDestination == pSoldier->sGridNo)
-               && (pSoldier->usAnimState == STANDING)
-               && (pSoldier->ubPendingAction == MERC_GIVEITEM))
-            {
-              soldier->handlePendingAction(gTacticalStatus.uiFlags & INCOMBAT);
-            }
 						// Update world data with new position, etc
 						// Determine gameworld cells corrds of guy
-						else if (gAnimControl[pSoldier->usAnimState].uiFlags & (ANIM_MOVING | ANIM_SPECIALMOVE) && !(pSoldier->uiStatusFlags & SOLDIER_PAUSEANIMOVE))
+						if (gAnimControl[pSoldier->usAnimState].uiFlags & (ANIM_MOVING | ANIM_SPECIALMOVE) && !(pSoldier->uiStatusFlags & SOLDIER_PAUSEANIMOVE))
 						{
 							fKeepMoving = TRUE;
 
@@ -896,7 +880,7 @@ void ExecuteOverhead(void)
 											}
 										}
 									}
-									else if (soldier->hasPendingAction())
+									else if (pSoldier->ubPendingAction != NO_PENDING_ACTION)
 									{
 										DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("We are inside the IF PENDING Animation with soldier #%d", pSoldier->ubID));
 
@@ -926,10 +910,114 @@ void ExecuteOverhead(void)
 											}
 										}
 
-                    if(soldier->handlePendingAction(gTacticalStatus.uiFlags & INCOMBAT))
-                    {
-                      continue;
-                    }
+										if (pSoldier->ubPendingAction == MERC_PICKUPITEM)
+										{
+											const INT16 sGridNo = pSoldier->sPendingActionData2;
+											if (sGridNo == pSoldier->sGridNo)
+											{
+												// OK, now, if in realtime
+												if (!(gTacticalStatus.uiFlags & INCOMBAT))
+												{
+													// If the two gridnos are not the same, check to see if we can
+													// now go into it
+													if (sGridNo != (INT16)pSoldier->uiPendingActionData4)
+													{
+														if (NewOKDestination(pSoldier, (INT16)pSoldier->uiPendingActionData4, TRUE, pSoldier->bLevel))
+														{
+															// GOTO NEW TILE!
+															SoldierPickupItem(pSoldier, pSoldier->uiPendingActionData1, (INT16)pSoldier->uiPendingActionData4, pSoldier->bPendingActionData3);
+															continue;
+														}
+													}
+												}
+
+												PickPickupAnimation(pSoldier, pSoldier->uiPendingActionData1, (INT16)pSoldier->uiPendingActionData4, pSoldier->bPendingActionData3);
+											}
+											else
+											{
+												SoldierGotoStationaryStance(pSoldier);
+											}
+										}
+										else if (pSoldier->ubPendingAction == MERC_PUNCH)
+										{
+											// for the benefit of the AI
+											pSoldier->bAction = AI_ACTION_KNIFE_STAB;
+
+											EVENT_SoldierBeginPunchAttack(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_TALK)
+										{
+											PlayerSoldierStartTalking(pSoldier, (UINT8)pSoldier->uiPendingActionData1, TRUE);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_DROPBOMB)
+										{
+											EVENT_SoldierBeginDropBomb(pSoldier);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_STEAL)
+										{
+											//pSoldier->bDesiredDirection = pSoldier->bPendingActionData3;
+											EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier->bPendingActionData3);
+
+											EVENT_InitNewSoldierAnim(pSoldier, STEAL_ITEM, 0, FALSE);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_KNIFEATTACK)
+										{
+											// for the benefit of the AI
+											pSoldier->bAction = AI_ACTION_KNIFE_STAB;
+
+											EVENT_SoldierBeginBladeAttack(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_GIVEAID)
+										{
+											EVENT_SoldierBeginFirstAid(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_REPAIR)
+										{
+											EVENT_SoldierBeginRepair(*pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_FUEL_VEHICLE)
+										{
+											EVENT_SoldierBeginRefuel(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_RELOADROBOT)
+										{
+											EVENT_SoldierBeginReloadRobot(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3, (INT8)pSoldier->uiPendingActionData1);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_TAKEBLOOD)
+										{
+											EVENT_SoldierBeginTakeBlood( pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3 );
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_ATTACH_CAN)
+										{
+											EVENT_SoldierBeginAttachCan(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_ENTER_VEHICLE)
+										{
+											EVENT_SoldierEnterVehicle(*pSoldier, pSoldier->sPendingActionData2);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+											continue;
+										}
+										else if (pSoldier->ubPendingAction == MERC_CUTFFENCE)
+										{
+											EVENT_SoldierBeginCutFence(pSoldier, pSoldier->sPendingActionData2, pSoldier->bPendingActionData3);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
+										else if (pSoldier->ubPendingAction == MERC_GIVEITEM)
+										{
+											EVENT_SoldierBeginGiveItem(pSoldier);
+											pSoldier->ubPendingAction = NO_PENDING_ACTION;
+										}
 
 										if (fNoAPsForPendingAction)
 										{
@@ -1212,10 +1300,10 @@ void ExecuteOverhead(void)
 
 static void HaltGuyFromNewGridNoBecauseOfNoAPs(SOLDIERTYPE& s)
 {
-  std::shared_ptr<Soldier> soldier(new Soldier(&s));
-
 	HaltMoveForSoldierOutOfPoints(s);
-  soldier->removePendingAnimation();
+	s.usPendingAnimation = NO_PENDING_ANIMATION;
+	s.ubPendingDirection = NO_PENDING_DIRECTION;
+	s.ubPendingAction    = NO_PENDING_ACTION;
 
 	UnMarkMovementReserved(s);
 
@@ -1528,14 +1616,14 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving, BOOLEA
 						if (!(pSoldier->fHitByGasFlags & HIT_BY_TEARGAS) && bPosOfMask == NO_SLOT)
 						{
 							// check for gas mask
-							pExplosive = &Explosive[GCM->getItem(TEARGAS_GRENADE)->getClassIndex()];
+							pExplosive = &Explosive[Item[TEARGAS_GRENADE].ubClassIndex];
 						}
 					}
 					if (gpWorldLevelData[pSoldier->sGridNo].ubExtFlags[pSoldier->bLevel] & MAPELEMENT_EXT_MUSTARDGAS)
 					{
 						if (!(pSoldier->fHitByGasFlags & HIT_BY_MUSTARDGAS) && bPosOfMask == NO_SLOT)
 						{
-							pExplosive = &Explosive[GCM->getItem(MUSTARD_GRENADE)->getClassIndex()];
+							pExplosive = &Explosive[Item[MUSTARD_GRENADE].ubClassIndex];
 						}
 					}
 				}
@@ -1543,7 +1631,7 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving, BOOLEA
 				{
 					if (!(pSoldier->fHitByGasFlags & HIT_BY_CREATUREGAS)) // gas mask doesn't help vs creaturegas
 					{
-						pExplosive = &Explosive[GCM->getItem(SMALL_CREATURE_GAS)->getClassIndex()];
+						pExplosive = &Explosive[Item[SMALL_CREATURE_GAS].ubClassIndex];
 					}
 				}
 				if (pExplosive)
@@ -1791,8 +1879,6 @@ static void HandleJohnArrival(SOLDIERTYPE* pSoldier)
 
 static BOOLEAN HandleAtNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving)
 {
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-
 	// ATE; Handle bad guys, as they fade, to cancel it if
 	// too long...
 	// ONLY if fading IN!
@@ -1911,7 +1997,7 @@ static BOOLEAN HandleAtNewGridNo(SOLDIERTYPE* pSoldier, BOOLEAN* pfKeepMoving)
 		// ATE: Cancel only if our final destination
 		if (pSoldier->sGridNo == pSoldier->sFinalDestination)
 		{
-			soldier->removePendingAction();
+			pSoldier->ubPendingAction = NO_PENDING_ACTION;
 		}
 
 		// this flag is set only to halt the currently moving guy; reset it now
@@ -4044,7 +4130,6 @@ void ExitCombatMode( )
 
 	FOR_EACH_SOLDIER(pSoldier)
 	{
-    std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
 		if ( pSoldier->bInSector )
 		{
 			// Reset some flags
@@ -4054,7 +4139,10 @@ void ExitCombatMode( )
 				SoldierGotoStationaryStance( pSoldier );
 			}
 
-      soldier->removePendingAnimation();
+			//Cancel pending events
+			pSoldier->usPendingAnimation = NO_PENDING_ANIMATION;
+			pSoldier->ubPendingDirection = NO_PENDING_DIRECTION;
+			pSoldier->ubPendingAction    = NO_PENDING_ACTION;
 
 			// Reset moved flag
 			pSoldier->bMoved = FALSE;
@@ -5351,7 +5439,7 @@ BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE* const pSoldier, SOLDIERTYPE* 
 		if ( ( pSoldier->usAttackingWeapon != NOTHING && pSoldier->usAttackingWeapon != BRASS_KNUCKLES ) || !( pSoldier->uiStatusFlags & SOLDIER_BOXER ) )
 		{
 			// someone's cheating!
-			if ( (GCM->getItem(pSoldier->usAttackingWeapon)->getItemClass() == IC_BLADE || GCM->getItem(pSoldier->usAttackingWeapon)->getItemClass() == IC_PUNCH) && (pTarget->uiStatusFlags & SOLDIER_BOXER) )
+			if ( (Item[ pSoldier->usAttackingWeapon ].usItemClass == IC_BLADE || Item[ pSoldier->usAttackingWeapon ].usItemClass == IC_PUNCH) && (pTarget->uiStatusFlags & SOLDIER_BOXER) )
 			{
 				// knife or brass knuckles disqualify the player!
 				BoxingPlayerDisqualified( pSoldier, BAD_ATTACK );
@@ -5455,7 +5543,7 @@ BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE* const pSoldier, SOLDIERTYPE* 
 				// ATE: Depending on personality, fire back.....
 
 				// Do we have a gun in a\hand?
-				if ( GCM->getItem(pTarget->inv[ HANDPOS ].usItem)->getItemClass() == IC_GUN )
+				if ( Item[ pTarget->inv[ HANDPOS ].usItem ].usItemClass == IC_GUN )
 				{
 					// Toggle burst capable...
 					if ( !pTarget->bDoBurst )
@@ -5509,7 +5597,7 @@ static SOLDIERTYPE* InternalReduceAttackBusyCount(SOLDIERTYPE* const pSoldier, c
 
 	if (fCalledByAttacker)
 	{
-		if (pSoldier && GCM->getItem(pSoldier->inv[HANDPOS].usItem)->isGun())
+		if (pSoldier && Item[pSoldier->inv[HANDPOS].usItem].usItemClass & IC_GUN)
 		{
 			if (pSoldier->bBulletsLeft > 0)
 			{
@@ -6168,7 +6256,7 @@ void MakeCharacterDialogueEventSignalItemLocatorStart(SOLDIERTYPE& s, GridNo con
 				SlideToLocation(location_);
 
 				SOLDIERTYPE& s = soldier_;
-				ExecuteCharacterDialogue(s.ubProfile, QUOTE_SPOTTED_SOMETHING_ONE + Random(2), s.face, DIALOGUE_TACTICAL_UI, TRUE, false);
+				ExecuteCharacterDialogue(s.ubProfile, QUOTE_SPOTTED_SOMETHING_ONE + Random(2), s.face, DIALOGUE_TACTICAL_UI, TRUE);
 
 				return false;
 			}
