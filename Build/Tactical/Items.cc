@@ -2914,7 +2914,6 @@ UINT16 DefaultMagazine(UINT16 const gun)
   for(const MagazineModel* mag: magazines)
   {
 		if (mag->calibre->index == NOAMMO)      break;
-    if (mag->dontUseAsDefaultMagazine) continue;
 		if (mag->calibre->index != w->calibre->index) continue;
 		if (mag->capacity != w->ubMagSize) continue;
 		return mag->getItemIndex();

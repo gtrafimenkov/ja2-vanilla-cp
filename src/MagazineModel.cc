@@ -8,12 +8,9 @@ MagazineModel::MagazineModel(uint16_t itemIndex_,
                              const char* internalName_,
                              const CalibreModel *calibre_,
                              uint16_t capacity_,
-                             const AmmoTypeModel *ammoType_,
-                             bool dontUseAsDefaultMagazine_
-  )
+                             const AmmoTypeModel *ammoType_)
   :ItemModel(itemIndex_, internalName_, IC_AMMO, 0, INVALIDCURS),
-   calibre(calibre_), capacity(capacity_), ammoType(ammoType_),
-   dontUseAsDefaultMagazine(dontUseAsDefaultMagazine_)
+     calibre(calibre_), capacity(capacity_), ammoType(ammoType_)
 {
 }
 
@@ -42,11 +39,6 @@ void MagazineModel::serializeTo(JsonObject &obj) const
   }
 
   serializeFlags(obj);
-
-  if(dontUseAsDefaultMagazine)
-  {
-    obj.AddMember("dontUseAsDefaultMagazine", dontUseAsDefaultMagazine);
-  }
 }
 
 MagazineModel* MagazineModel::deserialize(
@@ -59,9 +51,7 @@ MagazineModel* MagazineModel::deserialize(
   const CalibreModel *calibre   = getCalibre(obj.GetString("calibre"), calibreMap);
   uint16_t capacity             = obj.GetInt("capacity");
   const AmmoTypeModel *ammoType = getAmmoType(obj.GetString("ammoType"), ammoTypeMap);
-  bool dontUseAsDefaultMagazine = obj.getOptionalBool("dontUseAsDefaultMagazine");
-  MagazineModel *mag = new MagazineModel(itemIndex, internalName, calibre, capacity, ammoType,
-                                         dontUseAsDefaultMagazine);
+  MagazineModel *mag = new MagazineModel(itemIndex, internalName, calibre, capacity, ammoType);
 
   mag->fFlags = mag->deserializeFlags(obj);
 
