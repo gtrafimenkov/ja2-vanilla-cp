@@ -7,34 +7,6 @@ You cannot at the moment:
 Settings in game.json
 =====================
 
-  map_hotkey_ctrl_i
-
-        Enables Ctrl-i hotkey, which opens and closes sector inventory screen.
-
-		Vanilla setting: FALSE
-  ----------------------------------------
-
-  tactical_hotkey_j
-
-        Enables 'j' hotkey for climbing up/down.
-
-		Vanilla setting: FALSE
-  ----------------------------------------
-
-  tactical_hotkey_shift_n
-
-        Enables 'Shift-n' hotkey which switches the current squad's head gear to the night mode.
-
-		Vanilla setting: FALSE
-  ----------------------------------------
-
-  tactical_hotkey_ctrl_n
-
-        Enables 'Ctrl-n' hotkey which switches the current squad's head gear to the day mode.
-
-		Vanilla setting: FALSE
-  ----------------------------------------
-
   ms_per_game_cycle
 
         Number of milliseconds for one game cycle.
@@ -43,33 +15,18 @@ Settings in game.json
 
         Decreasing this value will increase speed of the game (enemy movement, bullets speed, etc).
 
-		Stracciatella standard value: 25
-  ----------------------------------------
+  map_hotkey_ctrl_i
 
-  starting_cash_easy / starting_cash_medium / starting_cash_hard
+        Enables Ctrl-i hotkey, which opens and closes sector inventory screen.
 
-        Amount of money the player starts the game with on each difficulty.
+  tactical_hotkey_j
 
-		Vanilla values: 45000/35000/30000 (easy/medium/hard).
-  ----------------------------------------
+        Enables 'j' hotkey for climbing up/down.
 
-  drop_everything
+  tactical_hotkey_shift_n
 
-        Decides, if enemies drop all of their equipment when they die.
+        Enables 'Shift-n' hotkey which switches the current squad's head gear to the night mode.
 
-		Vanilla setting: FALSE
-  ----------------------------------------
+  tactical_hotkey_ctrl_n
 
-  all_drops_visible
-
-		Decides, if dropped items, regardless of where and by whom they were dropped, are always visible to the player.
-
-		Vanilla setting: FALSE
-  ----------------------------------------
-
-  enemy_weapon_minimal_status
-
-		The minimal status in % for each gun in the hand of enemy soldiers. Note that this value has no influence on enemy behaviour (CtH, jams).
-
-		Vanilla value: 0
-  ----------------------------------------
+        Enables 'Ctrl-n' hotkey which switches the current squad's head gear to the day mode.
