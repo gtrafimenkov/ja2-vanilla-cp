@@ -146,6 +146,11 @@ static void LoadEncryptedData(STRING_ENC_TYPE encType, SGPFile* const File, wcha
 }
 
 DefaultContentManager::DefaultContentManager(GameVersion gameVersion,
+<<<<<<< HEAD
+=======
+                                             const std::string &configFolder,
+                                             const std::string &configPath,
+>>>>>>> parent of 53ef0650b... add basic unit test for weapons
                                              const std::string &gameResRootPath,
                                              const std::string &externalizedDataPath
   )
@@ -183,23 +188,16 @@ DefaultContentManager::DefaultContentManager(GameVersion gameVersion,
   }
 #endif
 
+  std::vector<std::string> libraries = GetResourceLibraries(m_dataDir);
+
+  // XXX
+  if(GameState::getInstance()->isEditorMode())
+  {
+    libraries.push_back("editor.slf");
+  }
+
   m_libraryDB = new LibraryDB();
 
-  m_bobbyRayNewInventory = NULL;
-  m_bobbyRayUsedInventory = NULL;
-  m_impPolicy = NULL;
-  m_gamePolicy = NULL;
-}
-
-/** Get list of game resources. */
-std::vector<std::string> DefaultContentManager::getListOfGameResources() const
-{
-  std::vector<std::string> libraries = GetResourceLibraries(m_dataDir);
-  return libraries;
-}
-
-void DefaultContentManager::initGameResouces(const std::vector<std::string> &libraries)
-{
   const char *failedLib = m_libraryDB->InitializeFileDatabase(m_dataDir, libraries);
   if(failedLib)
   {

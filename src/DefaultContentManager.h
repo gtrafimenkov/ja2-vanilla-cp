@@ -21,16 +21,15 @@ class DefaultContentManager : public ContentManager, public IGameDataLoader
 public:
 
   DefaultContentManager(GameVersion gameVersion,
+<<<<<<< HEAD
+=======
+                        const std::string &configFolder,
+                        const std::string &configPath,
+>>>>>>> parent of 53ef0650b... add basic unit test for weapons
                         const std::string &gameResRootPath,
                         const std::string &externalizedDataPath);
 
   virtual ~DefaultContentManager();
-
-  /** Get list of game resources. */
-  virtual std::vector<std::string> getListOfGameResources() const;
-
-  /** Initialize game resources. */
-  virtual void initGameResouces(const std::vector<std::string> &libraries);
 
   /** Load the game data. */
   bool loadGameData();

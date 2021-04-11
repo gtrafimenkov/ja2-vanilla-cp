@@ -365,8 +365,9 @@ try
     std::string modName = params.modName;
     std::string modResFolder = FileMan::joinPaths(FileMan::joinPaths(FileMan::joinPaths(extraDataDir, "mods"), modName), "data");
     cm = new ModPackContentManager(version,
-                                   modName, modResFolder,
-                                   params.gameDirPath, externalizedDataPath);
+                                   modName, modResFolder, configFolderPath,
+                                   configPath, gameResRootPath,
+                                   externalizedDataPath);
     LOG_INFO("------------------------------------------------------------------------------\n");
     LOG_INFO("Root game resources directory: '%s'\n", params.gameDirPath.c_str());
     LOG_INFO("Extra data directory:          '%s'\n", extraDataDir.c_str());
@@ -381,7 +382,9 @@ try
   else
 #endif
   {
-    cm = new DefaultContentManager(version, params.gameDirPath, externalizedDataPath);
+    cm = new DefaultContentManager(version,
+                                   configFolderPath, configPath,
+                                   gameResRootPath, externalizedDataPath);
     LOG_INFO("------------------------------------------------------------------------------\n");
     LOG_INFO("Root game resources directory: '%s'\n", params.gameDirPath.c_str());
     LOG_INFO("Extra data directory:          '%s'\n", extraDataDir.c_str());
@@ -390,9 +393,6 @@ try
     LOG_INFO("Saved games directory:         '%s'\n", cm->getSavedGamesFolder().c_str());
     LOG_INFO("------------------------------------------------------------------------------\n");
   }
-
-  std::vector<std::string> libraries = cm->getListOfGameResources();
-  cm->initGameResouces(libraries);
 
   if(!cm->loadGameData())
   {
