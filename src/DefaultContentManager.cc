@@ -233,6 +233,7 @@ DefaultContentManager::~DefaultContentManager()
     delete calibre;
   }
   m_calibres.clear();
+  m_calibreMap.clear();
 
   for(const AmmoTypeModel* ammoType: m_ammoTypes)
   {
@@ -578,11 +579,7 @@ const std::vector<const MagazineModel*>& DefaultContentManager::getMagazines() c
 
 const CalibreModel* DefaultContentManager::getCalibre(uint8_t index)
 {
-  const CalibreModel* cm = m_calibres[index];
-  if(!cm) {
-    throw std::runtime_error(FormattedString("calibre '%d' is not found", index));
-  }
-  return cm;
+  return m_calibres[index];
 }
 
 const UTF8String* DefaultContentManager::getCalibreName(uint8_t index) const
@@ -618,7 +615,7 @@ bool DefaultContentManager::loadWeapons()
       for (rapidjson::SizeType i = 0; i < a.Size(); i++)
       {
         JsonObjectReader obj(a[i]);
-        WeaponModel *w = WeaponModel::deserialize(obj);
+        WeaponModel *w = WeaponModel::deserialize(obj, m_calibreMap);
         SLOGD(TAG, "Loaded weapon %d %s", w->getItemIndex(), w->getInternalName().c_str());
 
         if((w->getItemIndex() < 0) || (w->getItemIndex() > MAX_WEAPONS))
@@ -654,7 +651,7 @@ bool DefaultContentManager::loadMagazines()
       for (rapidjson::SizeType i = 0; i < a.Size(); i++)
       {
         JsonObjectReader obj(a[i]);
-        MagazineModel *mag = MagazineModel::deserialize(obj, m_ammoTypeMap);
+        MagazineModel *mag = MagazineModel::deserialize(obj, m_calibreMap, m_ammoTypeMap);
         SLOGD(TAG, "Loaded magazine %d %s", mag->getItemIndex(), mag->getInternalName().c_str());
 
         if((mag->getItemIndex() < FIRST_AMMO) || (mag->getItemIndex() > LAST_AMMO))
@@ -692,7 +689,7 @@ bool DefaultContentManager::loadCalibres()
       {
         JsonObjectReader obj(a[i]);
         CalibreModel *calibre = CalibreModel::deserialize(obj);
-        SLOGD(TAG, "Loaded calibre %d", calibre->index);
+        SLOGD(TAG, "Loaded calibre %d %s", calibre->index, calibre->internalName.c_str());
 
         if(m_calibres.size() <= calibre->index)
         {
@@ -702,6 +699,11 @@ bool DefaultContentManager::loadCalibres()
         m_calibres[calibre->index] = calibre;
       }
     }
+  }
+
+  BOOST_FOREACH(const CalibreModel* calibre, m_calibres)
+  {
+    m_calibreMap.insert(std::make_pair(std::string(calibre->internalName), calibre));
   }
 
   return true;

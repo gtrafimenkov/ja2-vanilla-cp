@@ -4,7 +4,6 @@
 
 #include <map>
 #include <string>
-#include <vector>
 
 // XXX
 #include "Build/Tactical/Weapons.h"
@@ -31,7 +30,8 @@ struct WeaponModel : ItemModel
 
   virtual void serializeTo(JsonObject &obj) const;
 
-  static WeaponModel* deserialize(JsonObjectReader &obj);
+  static WeaponModel* deserialize(JsonObjectReader &obj,
+                                  const std::map<std::string, const CalibreModel*> &calibreMap);
 
   virtual const WeaponModel* asWeapon() const   { return this; }
 

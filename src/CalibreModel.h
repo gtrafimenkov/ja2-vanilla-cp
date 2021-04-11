@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <stdint.h>
 #include <string>
-#include <vector>
 
 #include "sgp/StrUtils.h"
 
@@ -16,6 +15,7 @@ class JsonObjectReader;
 struct CalibreModel
 {
   CalibreModel(uint16_t index,
+               const char* internalName,
                const char* burstSoundString,
                bool showInHelpText,
                bool monsterWeapon,
@@ -30,8 +30,12 @@ struct CalibreModel
   static const CalibreModel* getNoCalibreObject();
 
   uint16_t index;
+  std::string internalName;
   std::string burstSoundString;
   bool showInHelpText;
   bool monsterWeapon;
   int silencerSound;
 };
+
+const CalibreModel* getCalibre(const char *calibreName,
+                               const std::map<std::string, const CalibreModel*> &calibreMap);

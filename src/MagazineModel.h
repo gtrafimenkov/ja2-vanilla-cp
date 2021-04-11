@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <vector>
 #include <stdint.h>
 #include <string>
 
@@ -27,6 +26,7 @@ struct MagazineModel : ItemModel
   virtual void serializeTo(JsonObject &obj) const;
 
   static MagazineModel* deserialize(JsonObjectReader &obj,
+                                    const std::map<std::string, const CalibreModel*> &calibreMap,
                                     const std::map<std::string, const AmmoTypeModel*> &ammoTypeMap);
 
 

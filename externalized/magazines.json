@@ -2,7 +2,7 @@
     {
         "itemIndex": 71,
         "internalName": "CLIP9_15",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 15,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -17,7 +17,7 @@
     {
         "itemIndex": 72,
         "internalName": "CLIP9_30",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 30,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -32,7 +32,7 @@
     {
         "itemIndex": 73,
         "internalName": "CLIP9_15_AP",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 15,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -47,7 +47,7 @@
     {
         "itemIndex": 74,
         "internalName": "CLIP9_30_AP",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 30,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -62,7 +62,7 @@
     {
         "itemIndex": 75,
         "internalName": "CLIP9_15_HP",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 15,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -77,7 +77,7 @@
     {
         "itemIndex": 76,
         "internalName": "CLIP9_30_HP",
-        "calibreId": 2,
+        "calibre": "AMMO9",
         "capacity": 30,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -92,7 +92,7 @@
     {
         "itemIndex": 77,
         "internalName": "CLIP38_6",
-        "calibreId": 1,
+        "calibre": "AMMO38",
         "capacity": 6,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -107,7 +107,7 @@
     {
         "itemIndex": 78,
         "internalName": "CLIP38_6_AP",
-        "calibreId": 1,
+        "calibre": "AMMO38",
         "capacity": 6,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -122,7 +122,7 @@
     {
         "itemIndex": 79,
         "internalName": "CLIP38_6_HP",
-        "calibreId": 1,
+        "calibre": "AMMO38",
         "capacity": 6,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -137,7 +137,7 @@
     {
         "itemIndex": 80,
         "internalName": "CLIP45_7",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 7,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -152,7 +152,7 @@
     {
         "itemIndex": 81,
         "internalName": "CLIP45_30",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 30,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -167,7 +167,7 @@
     {
         "itemIndex": 82,
         "internalName": "CLIP45_7_AP",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 7,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -182,7 +182,7 @@
     {
         "itemIndex": 83,
         "internalName": "CLIP45_30_AP",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 30,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -197,7 +197,7 @@
     {
         "itemIndex": 84,
         "internalName": "CLIP45_7_HP",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 7,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -212,7 +212,7 @@
     {
         "itemIndex": 85,
         "internalName": "CLIP45_30_HP",
-        "calibreId": 3,
+        "calibre": "AMMO45",
         "capacity": 30,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -227,7 +227,7 @@
     {
         "itemIndex": 86,
         "internalName": "CLIP357_6",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 6,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -242,7 +242,7 @@
     {
         "itemIndex": 87,
         "internalName": "CLIP357_9",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 9,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 1,
@@ -257,7 +257,7 @@
     {
         "itemIndex": 88,
         "internalName": "CLIP357_6_AP",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 6,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -272,7 +272,7 @@
     {
         "itemIndex": 89,
         "internalName": "CLIP357_9_AP",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 9,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -287,7 +287,7 @@
     {
         "itemIndex": 90,
         "internalName": "CLIP357_6_HP",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 6,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -302,7 +302,7 @@
     {
         "itemIndex": 91,
         "internalName": "CLIP357_9_HP",
-        "calibreId": 4,
+        "calibre": "AMMO357",
         "capacity": 9,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -317,7 +317,7 @@
     {
         "itemIndex": 92,
         "internalName": "CLIP545_30_AP",
-        "calibreId": 7,
+        "calibre": "AMMO545",
         "capacity": 30,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -334,7 +334,7 @@
     {
         "itemIndex": 93,
         "internalName": "CLIP545_30_HP",
-        "calibreId": 7,
+        "calibre": "AMMO545",
         "capacity": 30,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -351,7 +351,7 @@
     {
         "itemIndex": 94,
         "internalName": "CLIP556_30_AP",
-        "calibreId": 8,
+        "calibre": "AMMO556",
         "capacity": 30,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -366,7 +366,7 @@
     {
         "itemIndex": 95,
         "internalName": "CLIP556_30_HP",
-        "calibreId": 8,
+        "calibre": "AMMO556",
         "capacity": 30,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -381,7 +381,7 @@
     {
         "itemIndex": 96,
         "internalName": "CLIP762W_10_AP",
-        "calibreId": 10,
+        "calibre": "AMMO762W",
         "capacity": 10,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -398,7 +398,7 @@
     {
         "itemIndex": 97,
         "internalName": "CLIP762W_30_AP",
-        "calibreId": 10,
+        "calibre": "AMMO762W",
         "capacity": 30,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -415,7 +415,7 @@
     {
         "itemIndex": 98,
         "internalName": "CLIP762W_10_HP",
-        "calibreId": 10,
+        "calibre": "AMMO762W",
         "capacity": 10,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -432,7 +432,7 @@
     {
         "itemIndex": 99,
         "internalName": "CLIP762W_30_HP",
-        "calibreId": 10,
+        "calibre": "AMMO762W",
         "capacity": 30,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -449,7 +449,7 @@
     {
         "itemIndex": 100,
         "internalName": "CLIP762N_5_AP",
-        "calibreId": 9,
+        "calibre": "AMMO762N",
         "capacity": 5,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -464,7 +464,7 @@
     {
         "itemIndex": 101,
         "internalName": "CLIP762N_20_AP",
-        "calibreId": 9,
+        "calibre": "AMMO762N",
         "capacity": 20,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -479,7 +479,7 @@
     {
         "itemIndex": 102,
         "internalName": "CLIP762N_5_HP",
-        "calibreId": 9,
+        "calibre": "AMMO762N",
         "capacity": 5,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -494,7 +494,7 @@
     {
         "itemIndex": 103,
         "internalName": "CLIP762N_20_HP",
-        "calibreId": 9,
+        "calibre": "AMMO762N",
         "capacity": 20,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -509,7 +509,7 @@
     {
         "itemIndex": 104,
         "internalName": "CLIP47_50_SAP",
-        "calibreId": 11,
+        "calibre": "AMMO47",
         "capacity": 50,
         "ammoType": "AMMO_SUPER_AP",
         "ubGraphicType": 1,
@@ -524,7 +524,7 @@
     {
         "itemIndex": 105,
         "internalName": "CLIP57_50_AP",
-        "calibreId": 12,
+        "calibre": "AMMO57",
         "capacity": 50,
         "ammoType": "AMMO_AP",
         "ubGraphicType": 1,
@@ -539,7 +539,7 @@
     {
         "itemIndex": 106,
         "internalName": "CLIP57_50_HP",
-        "calibreId": 12,
+        "calibre": "AMMO57",
         "capacity": 50,
         "ammoType": "AMMO_HP",
         "ubGraphicType": 1,
@@ -554,7 +554,7 @@
     {
         "itemIndex": 107,
         "internalName": "CLIP12G_7",
-        "calibreId": 5,
+        "calibre": "AMMO12G",
         "capacity": 7,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 2,
@@ -570,7 +570,7 @@
     {
         "itemIndex": 108,
         "internalName": "CLIP12G_7_BUCKSHOT",
-        "calibreId": 5,
+        "calibre": "AMMO12G",
         "capacity": 7,
         "ammoType": "AMMO_BUCKSHOT",
         "ubGraphicType": 2,
@@ -585,7 +585,7 @@
     {
         "itemIndex": 109,
         "internalName": "CLIPCAWS_10_SAP",
-        "calibreId": 6,
+        "calibre": "AMMOCAWS",
         "capacity": 10,
         "ammoType": "AMMO_SUPER_AP",
         "ubGraphicType": 1,
@@ -601,7 +601,7 @@
     {
         "itemIndex": 110,
         "internalName": "CLIPCAWS_10_FLECH",
-        "calibreId": 6,
+        "calibre": "AMMOCAWS",
         "capacity": 10,
         "ammoType": "AMMO_BUCKSHOT",
         "ubGraphicType": 1,
@@ -616,7 +616,7 @@
     {
         "itemIndex": 111,
         "internalName": "CLIPROCKET_AP",
-        "calibreId": 14,
+        "calibre": "AMMOROCKET",
         "capacity": 5,
         "ammoType": "AMMO_SUPER_AP",
         "ubGraphicType": 1,
@@ -631,7 +631,7 @@
     {
         "itemIndex": 112,
         "internalName": "CLIPROCKET_HE",
-        "calibreId": 14,
+        "calibre": "AMMOROCKET",
         "capacity": 5,
         "ammoType": "AMMO_HE",
         "ubGraphicType": 1,
@@ -646,7 +646,7 @@
     {
         "itemIndex": 113,
         "internalName": "CLIPROCKET_HEAT",
-        "calibreId": 14,
+        "calibre": "AMMOROCKET",
         "capacity": 5,
         "ammoType": "AMMO_HEAT",
         "ubGraphicType": 1,
@@ -661,7 +661,7 @@
     {
         "itemIndex": 114,
         "internalName": "CLIPDART_SLEEP",
-        "calibreId": 15,
+        "calibre": "AMMODART",
         "capacity": 1,
         "ammoType": "AMMO_SLEEP_DART",
         "ubGraphicType": 1,
@@ -676,7 +676,7 @@
     {
         "itemIndex": 115,
         "internalName": "CLIPFLAME",
-        "calibreId": 16,
+        "calibre": "AMMOFLAME",
         "capacity": 5,
         "ammoType": "AMMO_BUCKSHOT",
         "ubGraphicType": 0,
@@ -692,7 +692,7 @@
     {
         "itemIndex": 116,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -705,7 +705,7 @@
     {
         "itemIndex": 117,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -718,7 +718,7 @@
     {
         "itemIndex": 118,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -731,7 +731,7 @@
     {
         "itemIndex": 119,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -744,7 +744,7 @@
     {
         "itemIndex": 120,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -757,7 +757,7 @@
     {
         "itemIndex": 121,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -770,7 +770,7 @@
     {
         "itemIndex": 122,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -783,7 +783,7 @@
     {
         "itemIndex": 123,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -796,7 +796,7 @@
     {
         "itemIndex": 124,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -809,7 +809,7 @@
     {
         "itemIndex": 125,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -822,7 +822,7 @@
     {
         "itemIndex": 126,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -835,7 +835,7 @@
     {
         "itemIndex": 127,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -848,7 +848,7 @@
     {
         "itemIndex": 128,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -861,7 +861,7 @@
     {
         "itemIndex": 129,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,
@@ -874,7 +874,7 @@
     {
         "itemIndex": 130,
         "internalName": "CLIP_NOTHING",
-        "calibreId": 0,
+        "calibre": "NOAMMO",
         "capacity": 0,
         "ammoType": "AMMO_REGULAR",
         "ubGraphicType": 0,

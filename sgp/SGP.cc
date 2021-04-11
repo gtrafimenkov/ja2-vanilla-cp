@@ -391,8 +391,6 @@ try
     LOG_INFO("------------------------------------------------------------------------------\n");
   }
 
-  GCM = cm;
-
   std::vector<std::string> libraries = cm->getListOfGameResources();
   cm->initGameResouces(libraries);
 
@@ -402,6 +400,9 @@ try
   }
   else
   {
+
+    GCM = cm;
+
     FastDebugMsg("Initializing Video Manager");
     InitializeVideoManager();
 
