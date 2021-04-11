@@ -5,23 +5,10 @@
 #include <string>
 #include <vector>
 
-enum UIMode
-{
-  UI_Tactical,
-  UI_Map
-};
-
-enum HotkeyModifier
-{
-  HKMOD_None,
-  HKMOD_CTRL
-};
-
 class GamePolicy
 {
 public:
-  /** Check if a hotkey is enabled. */
-  virtual bool isHotkeyEnabled(UIMode mode, HotkeyModifier modifier, uint32_t key) const = 0;
+  bool tactical_hotkey_j;
 
   bool f_draw_item_shadow;              /**< Draw shadows from the inventory items. */
 
