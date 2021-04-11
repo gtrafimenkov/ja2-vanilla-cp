@@ -22,11 +22,3 @@ Settings in game.json
   tactical_hotkey_j
 
         Enables 'j' hotkey for climbing up/down.
-
-  tactical_hotkey_shift_n
-
-        Enables 'Shift-n' hotkey which switches the current squad's head gear to the night mode.
-
-  tactical_hotkey_ctrl_n
-
-        Enables 'Ctrl-n' hotkey which switches the current squad's head gear to the day mode.

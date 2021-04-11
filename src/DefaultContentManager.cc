@@ -250,9 +250,8 @@ DefaultContentManager::~DefaultContentManager()
   delete m_impPolicy;
   delete m_gamePolicy;
 
-  for(const UTF8String *str: m_newStrings)                    { delete str; }
-  for(const UTF8String *str: m_calibreNames)                  { delete str; }
-  for(const UTF8String *str: m_calibreNamesBobbyRay)          { delete str; }
+  BOOST_FOREACH(const UTF8String *str, m_calibreNames)                  { delete str; }
+  BOOST_FOREACH(const UTF8String *str, m_calibreNamesBobbyRay)          { delete str; }
 }
 
 const DealerInventory* DefaultContentManager::getBobbyRayNewInventory() const
@@ -856,8 +855,6 @@ bool DefaultContentManager::loadGameData()
   loadStringRes("strings/ammo-calibre", m_calibreNames);
   loadStringRes("strings/ammo-calibre-bobbyray", m_calibreNamesBobbyRay);
 
-  loadStringRes("strings/new-strings", m_newStrings);
-
   return result;
 }
 
@@ -938,17 +935,4 @@ const IMPPolicy* DefaultContentManager::getIMPPolicy() const
 const GamePolicy* DefaultContentManager::getGamePolicy() const
 {
   return m_gamePolicy;
-}
-
-const UTF8String* DefaultContentManager::getNewString(int stringId) const
-{
-  if(stringId >= m_newStrings.size())
-  {
-    SLOGE(TAG, "new string %d is not found", stringId);
-    throw std::runtime_error(FormattedString("new string %d is not found", stringId));
-  }
-  else
-  {
-    return m_newStrings[stringId];
-  }
 }

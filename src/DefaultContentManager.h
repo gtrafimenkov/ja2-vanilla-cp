@@ -135,8 +135,6 @@ public:
   virtual const GamePolicy* getGamePolicy() const;
   virtual const IMPPolicy* getIMPPolicy() const;
 
-  virtual const UTF8String* getNewString(int stringId) const;
-
 protected:
   std::string m_dataDir;
   std::string m_tileDir;
@@ -144,8 +142,6 @@ protected:
   std::string m_externalizedDataPath;
 
   const GameVersion m_gameVersion;
-
-  std::vector<const UTF8String*> m_newStrings;
 
   std::vector<const ItemModel*> m_items;
   std::vector<const MagazineModel*> m_magazines;

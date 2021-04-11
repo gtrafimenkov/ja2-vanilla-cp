@@ -14,8 +14,7 @@ enum UIMode
 enum HotkeyModifier
 {
   HKMOD_None,
-  HKMOD_CTRL,
-  HKMOD_SHIFT
+  HKMOD_CTRL
 };
 
 class GamePolicy
