@@ -60,7 +60,8 @@
 #define		TEXT_DELAY_MODIFIER			60
 
 
-typedef std::queue<DialogueEvent*>DialogueQueue;
+typedef SGP::Queue<DialogueEvent*> DialogueQueue;
+
 
 BOOLEAN fExternFacesLoaded = FALSE;
 
@@ -102,7 +103,8 @@ static UINT16 const gusStopTimeQuoteList[] =
 
 
 // QUEUE UP DIALOG!
-static DialogueQueue ghDialogueQ;
+#define		INITIAL_Q_SIZE				10
+static DialogueQueue* ghDialogueQ;
 FACETYPE	*gpCurrentTalkingFace	= NULL;
 static ProfileID       gubCurrentTalkingID = NO_PROFILE;
 static DialogueHandler gbUIHandlerID;
@@ -156,12 +158,18 @@ BOOLEAN DialogueActive( )
 
 void InitalizeDialogueControl()
 {
+	ghDialogueQ         = new DialogueQueue(INITIAL_Q_SIZE);
 	giNPCReferenceCount = 0;
 }
 
 void ShutdownDialogueControl()
 {
-	EmptyDialogueQueue();
+	if (ghDialogueQ != NULL)
+	{
+		delete ghDialogueQ;
+		ghDialogueQ = NULL;
+		gfWaitingForTriggerTimer = FALSE;
+	}
 
 	// shutdown external static NPC faces
 	ShutdownStaticExternalNPCFaces();
@@ -199,8 +207,12 @@ void ShutdownStaticExternalNPCFaces()
 
 void EmptyDialogueQueue()
 {
-	while(!ghDialogueQ.empty())
-		ghDialogueQ.pop();
+	// If we have anything left in the queue, remove!
+	if (ghDialogueQ != NULL)
+	{
+		delete ghDialogueQ;
+		ghDialogueQ = new DialogueQueue(INITIAL_Q_SIZE);
+	}
 
 	gfWaitingForTriggerTimer = FALSE;
 }
@@ -208,7 +220,7 @@ void EmptyDialogueQueue()
 
 BOOLEAN DialogueQueueIsEmpty( )
 {
-	return ghDialogueQ.empty();
+	return ghDialogueQ && ghDialogueQ->IsEmpty();
 }
 
 
@@ -255,7 +267,7 @@ void HandleDialogue()
 	// we don't want to just delay action of some events, we want to pause the whole queue, regardless of the event
 	if (gfDialogueQueuePaused) return;
 
-	bool const empty = ghDialogueQ.empty();
+	bool const empty = ghDialogueQ->IsEmpty();
 
 	if (empty && gpCurrentTalkingFace == NULL)
 	{
@@ -441,13 +453,16 @@ void HandleDialogue()
 	}
 
 	// If here, pick current one from queue and play
-	DialogueEvent*const d = ghDialogueQ.front();
+	DialogueEvent* const d = ghDialogueQ->Remove();
 
 	// If we are in auto bandage, ignore any quotes!
-	if (gTacticalStatus.fAutoBandageMode || !d->Execute())
+	if (!gTacticalStatus.fAutoBandageMode && d->Execute())
+	{
+		ghDialogueQ->Add(d);
+	}
+	else
 	{
 		delete d;
-		ghDialogueQ.pop();
 	}
 }
 
@@ -456,7 +471,7 @@ void DialogueEvent::Add(DialogueEvent* const d)
 {
 	try
 	{
-		ghDialogueQ.push(d);
+		ghDialogueQ->Add(d);
 	}
 	catch (...)
 	{
