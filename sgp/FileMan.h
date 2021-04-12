@@ -29,7 +29,7 @@ struct SGP_FILETIME
 };
 
 
-void InitializeFileManager(void);
+void InitializeFileManager(const char *exeFolder);
 
 /* Checks if a file exists. */
 bool FileExists(char const* filename);
@@ -117,14 +117,7 @@ public:
    * Game resources is what located in 'Data' directory and below.
    * ------------------------------------------------------------ */
 
-  /** Get path to the configuration folder. */
-  static const std::string& getConfigFolderPath();
-
-  /** Get path to the configuration file. */
-  static const std::string& getConfigPath();
-
-  /** Get path to the root folder of game resources. */
-  static const std::string& getGameResRootPath();
+  static const std::string& getExeFolderPath();
 
   /** Get path to the 'Data' directory of the game. */
   static const std::string& getDataDirPath();

@@ -1,18 +1,20 @@
+#include <algorithm>
+#include <string>
+#include <iostream>
+#include <filesystem>
 #include <stdexcept>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
 #include "Directories.h"
 #include "sgp/FileMan.h"
 #include "sgp/LibraryDataBase.h"
 #include "sgp/MemMan.h"
 #include "sgp/PODObj.h"
 #include "sgp/Logger.h"
-#include "MicroIni/MicroIni.hpp"
-
-#include "boost/filesystem.hpp"
 
 #if _WIN32
 #include <shlobj.h>
@@ -21,10 +23,6 @@
 #endif
 
 #include "sgp/PlatformIO.h"
-
-#if MACOS_USE_RESOURCES_FROM_BUNDLE && defined __APPLE__  && defined __MACH__
-#include <CoreFoundation/CFBundle.h>
-#endif
 
 #if CASE_SENSITIVE_FS
 #include <dirent.h>
@@ -65,7 +63,7 @@ static std::string s_tileDir;
 static std::string s_mapsDir;
 
 
-static void findDataDirs();
+static void findDataDirs(const char *exeFolder);
 static void SetFileManCurrentDirectory(char const* const pcDirectory);
 
 /** Convert file descriptor to HWFile.
@@ -84,100 +82,17 @@ static bool findObjectCaseInsensitive(const char *directory, const char *name, b
  * @return file mode for fopen call and posix mode using parameter 'posixMode' */
 static const char* GetFileOpenModes(FileOpenFlags flags, int *posixMode);
 
-static std::string s_configFolderPath;
-static std::string s_configPath;
-static std::string s_gameResRootPath;
+static std::string s_exeFolderPath;
 
-static void WriteDefaultConfigFile(const char* ConfigFile)
+void InitializeFileManager(const char *exeFolder)
 {
-	FILE* const IniFile = fopen(ConfigFile, "a");
-	if (IniFile != NULL)
-	{
-		fprintf(IniFile, "#Tells ja2-stracciatella where the binary datafiles are located\n");
-#ifdef _WIN32
-    fprintf(IniFile, "data_dir = C:\\Program Files\\Jagged Alliance 2");
-#else
-    fprintf(IniFile, "data_dir = /some/place/where/the/data/is");
-#endif
-		fclose(IniFile);
-		fprintf(stderr, "Please edit \"%s\" to point to the binary data.\n", ConfigFile);
-	}
-}
-
-
-#if MACOS_USE_RESOURCES_FROM_BUNDLE && defined __APPLE__  && defined __MACH__
-
-void SetBinDataDirFromBundle(void)
-{
-	CFBundleRef const app_bundle = CFBundleGetMainBundle();
-	if (app_bundle == NULL)
-	{
-		fputs("WARNING: Failed to get main bundle.\n", stderr);
-		return;
-	}
-
-	CFURLRef const app_url = CFBundleCopyBundleURL(app_bundle);
-	if (app_url == NULL)
-	{
-		fputs("WARNING: Failed to get URL of bundle.\n", stderr);
-		return;
-	}
-
-#define RESOURCE_PATH "/Contents/Resources/ja2"
-	char app_path[PATH_MAX + lengthof(RESOURCE_PATH)];
-	if (!CFURLGetFileSystemRepresentation(app_url, TRUE, (UInt8*)app_path, PATH_MAX))
-	{
-		fputs("WARNING: Failed to get application path.\n", stderr);
-		return;
-	}
-
-	strcat(app_path, RESOURCE_PATH);
-	ConfigSetValue(BinDataDir, app_path);
-#undef RESOURCE_PATH
-}
-
-#endif
-
-
-void InitializeFileManager(void)
-{
-#ifdef _WIN32
-	char home[MAX_PATH];
-	if (FAILED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, home)))
-	{
-		throw std::runtime_error("Unable to locate home directory\n");
-	}
-#else
-	const char* home = getenv("HOME");
-	if (home == NULL)
-	{
-		const struct passwd* const passwd = getpwuid(getuid());
-		if (passwd == NULL || passwd->pw_dir == NULL)
-		{
-			throw std::runtime_error("Unable to locate home directory");
-		}
-
-		home = passwd->pw_dir;
-	}
-#endif
-
-#ifdef _WIN32
-  s_configFolderPath = FileMan::joinPaths(home, "JA2");
-#else
-  s_configFolderPath = FileMan::joinPaths(home, ".ja2");
-#endif
-
-	if (mkdir(s_configFolderPath.c_str(), 0700) != 0 && errno != EEXIST)
-	{
-    LOG_ERROR("Unable to create directory '%s'\n", s_configFolderPath.c_str());
-		throw std::runtime_error("Unable to local directory");
-	}
+  s_exeFolderPath = std::filesystem::canonical(exeFolder).string();
 
   // Create another directory and set is as the current directory for the process
   // Temporary files will be created in this directory.
   // ----------------------------------------------------------------------------
 
-  std::string tmpPath = FileMan::joinPaths(s_configFolderPath, LOCAL_CURRENT_DIR);
+  std::string tmpPath = FileMan::joinPaths(s_exeFolderPath, LOCAL_CURRENT_DIR);
 	if (mkdir(tmpPath.c_str(), 0700) != 0 && errno != EEXIST)
 	{
     LOG_ERROR("Unable to create tmp directory '%s'\n", tmpPath.c_str());
@@ -191,25 +106,8 @@ void InitializeFileManager(void)
   // Get directory with JA2 resources
   // --------------------------------------------
 
-// #if MACOS_USE_RESOURCES_FROM_BUNDLE && defined __APPLE__  && defined __MACH__
-// 	SetBinDataDirFromBundle();
-// #endif
+  findDataDirs(s_exeFolderPath.c_str());
 
-  s_configPath = FileMan::joinPaths(s_configFolderPath, "ja2.ini");
-  MicroIni::File configFile;
-  if(!configFile.load(s_configPath) || !configFile[""].has("data_dir"))
-  {
-    LOG_WARNING("WARNING: Could not open configuration file (\"%s\").\n", s_configPath.c_str());
-    WriteDefaultConfigFile(s_configPath.c_str());
-    configFile.load(s_configPath);
-  }
-
-  s_gameResRootPath = configFile[""]["data_dir"];
-
-  findDataDirs();
-
-  LOG_INFO("Configuration file:            '%s'\n", s_configPath.c_str());
-  LOG_INFO("Root game resources directory: '%s'\n", s_gameResRootPath.c_str());
   LOG_INFO("Data directory:                '%s'\n", s_dataDir.c_str());
   LOG_INFO("Tilecache directory:           '%s'\n", s_tileDir.c_str());
   LOG_INFO("------------------------------------------------------------------------------\n");
@@ -502,17 +400,9 @@ void EraseDirectory(char const* const dirPath)
 }
 
 
-/** Get path to the configuration folder. */
-const std::string& FileMan::getConfigFolderPath()
+const std::string& FileMan::getExeFolderPath()
 {
-	return s_configFolderPath;
-}
-
-
-/** Get path to the configuration file. */
-const std::string& FileMan::getConfigPath()
-{
-  return s_configPath;
+	return s_exeFolderPath;
 }
 
 FileAttributes FileGetAttributes(const char* const filename)
@@ -646,11 +536,6 @@ static UINT32 GetFreeSpaceOnHardDrive(const char* const pzDriveLetter)
 }
 
 
-const std::string& FileMan::getGameResRootPath(void)
-{
-  return s_gameResRootPath;
-}
-
 /** Join two path components. */
 std::string FileMan::joinPaths(const std::string &first, const char *second)
 {
@@ -747,9 +632,9 @@ static bool findObjectCaseInsensitive(const char *directory, const char *name, b
  * On case-sensitive filesystems that might be tricky: if such directories
  * exist we should use them.  If doesn't exist, then use lowercased names.
  */
-static void findDataDirs()
+static void findDataDirs(const char *exeFolder)
 {
-    s_dataDir = FileMan::joinPaths(s_gameResRootPath, BASEDATADIR);
+    s_dataDir = FileMan::joinPaths(exeFolder, BASEDATADIR);
     s_tileDir = FileMan::joinPaths(s_dataDir, TILECACHEDIR);
     s_mapsDir = FileMan::joinPaths(s_dataDir, MAPSDIR);
 
@@ -758,9 +643,9 @@ static void findDataDirs()
     // need to find precise names of the directories
 
     std::string name;
-    if(findObjectCaseInsensitive(s_gameResRootPath.c_str(), BASEDATADIR, false, true, name))
+    if(findObjectCaseInsensitive(exeFolder, BASEDATADIR, false, true, name))
     {
-      s_dataDir = FileMan::joinPaths(s_gameResRootPath, name);
+      s_dataDir = FileMan::joinPaths(exeFolder, name);
     }
 
     if(findObjectCaseInsensitive(s_dataDir.c_str(), TILECACHEDIR, false, true, name))
@@ -903,13 +788,12 @@ FindFilesInDir(const std::string &dirPath,
   }
 
   std::vector<std::string> paths;
-  boost::filesystem::path path(dirPath);
-  boost::filesystem::directory_iterator end;
-  for(boost::filesystem::directory_iterator it(path); it != end; it++)
+  for (const auto & entry : std::filesystem::directory_iterator(dirPath))
   {
-    if(boost::filesystem::is_regular_file(it->status()))
+    if(std::filesystem::is_regular_file(entry))
     {
-      std::string file_ext = it->path().extension().string();
+      auto p = entry.path();
+      std::string file_ext = p.extension().string();
       if(caseIncensitive)
       {
         std::transform(file_ext.begin(), file_ext.end(), file_ext.begin(), ::tolower);
@@ -918,11 +802,11 @@ FindFilesInDir(const std::string &dirPath,
       {
         if(returnOnlyNames)
         {
-          paths.push_back(it->path().filename().string());
+          paths.push_back(p.filename().string());
         }
         else
         {
-          paths.push_back(it->path().string());
+          paths.push_back(p.string());
         }
       }
     }
@@ -941,13 +825,9 @@ std::vector<std::string>
 FindAllFilesInDir(const std::string &dirPath, bool sortResults)
 {
   std::vector<std::string> paths;
-  boost::filesystem::path path(dirPath);
-  boost::filesystem::directory_iterator end;
-  for(boost::filesystem::directory_iterator it(path); it != end; it++)
-  {
-    if(boost::filesystem::is_regular_file(it->status()))
-    {
-      paths.push_back(it->path().string());
+  for (const auto & entry : std::filesystem::directory_iterator(dirPath)) {
+    if(std::filesystem::is_regular_file(entry)) {
+      paths.push_back(entry.path().string());
     }
   }
   if(sortResults)
@@ -960,11 +840,6 @@ FindAllFilesInDir(const std::string &dirPath, bool sortResults)
 /** Get parent path (e.g. directory path from the full path). */
 std::string FileMan::getParentPath(const std::string &_path, bool absolute)
 {
-  boost::filesystem::path path(_path);
-  boost::filesystem::path parent = path.parent_path();
-  if(absolute)
-  {
-    parent = boost::filesystem::absolute(parent);
-  }
-  return parent.string();
+  std::filesystem::path p(_path);
+  return p.parent_path().string();
 }

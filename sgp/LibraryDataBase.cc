@@ -63,8 +63,8 @@ static BOOLEAN InitializeLibrary(const char* pLibraryName, LibraryHeaderStruct* 
 static void ThrowExcOnLibLoadFailure(const char* pLibraryName)
 {
   std::string message = FormattedString(
-    "Library '%s' is not found in folder '%s'.\n\nPlease make sure that '%s' contains files of the original game.  You can change this path by editing file '%s'.\n",
-    pLibraryName, FileMan::getDataDirPath().c_str(), FileMan::getGameResRootPath().c_str(), FileMan::getConfigPath().c_str());
+    "Library '%s' is not found in folder '%s'.",
+    pLibraryName, FileMan::getDataDirPath().c_str());
   FastDebugMsg(message.c_str());
   throw LibraryFileNotFoundException(message);
 }

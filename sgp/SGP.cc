@@ -206,7 +206,7 @@ try
 #endif
 
 	InitializeMemoryManager();
-	InitializeFileManager();
+	InitializeFileManager(exeFolder.c_str());
   InitializeVideoManager();
   InitializeVideoObjectManager();
   InitializeVideoSurfaceManager();

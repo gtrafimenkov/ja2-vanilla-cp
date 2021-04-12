@@ -519,7 +519,7 @@ static void WriteTGAHeader(FILE* const f)
 /* Create a file for a screenshot, which is guaranteed not to exist yet. */
 static FILE* CreateScreenshotFile(void)
 {
-  const char* const exec_dir = FileMan::getConfigFolderPath().c_str();
+  const char* const exec_dir = FileMan::getExeFolderPath().c_str();
 	do
 	{
 		char filename[2048];
@@ -811,7 +811,7 @@ static void RefreshMovieCache(void)
 
 	PauseTime(TRUE);
 
-	const char* ExecDir = FileMan::getConfigFolderPath().c_str();
+	const char* ExecDir = FileMan::getExeFolderPath().c_str();
 
 	for (INT32 cnt = 0; cnt < giNumFrames; cnt++)
 	{
