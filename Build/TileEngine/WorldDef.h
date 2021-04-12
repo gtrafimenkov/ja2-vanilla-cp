@@ -1,8 +1,8 @@
 #ifndef __WORLDDEF_H
 #define __WORLDDEF_H
 
-#include "Build/JA2Types.h"
-#include "World_Tileset_Enums.h"
+#include "JA2Types.h"
+#include "TileEngine/World_Tileset_Enums.h"
 
 
 #define WORLD_TILE_X		40

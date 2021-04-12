@@ -1,7 +1,7 @@
 #ifndef _OPTIONS_SCREEN__H_
 #define _OPTIONS_SCREEN__H_
 
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 #include "sgp/Types.h"
 
 

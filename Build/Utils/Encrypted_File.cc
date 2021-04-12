@@ -1,7 +1,7 @@
-#include "Encrypted_File.h"
-#include "FileMan.h"
+#include "Utils/Encrypted_File.h"
+#include "sgp/FileMan.h"
 #include "GameRes.h"
-#include "MemMan.h"
+#include "sgp/MemMan.h"
 
 void LoadEncryptedData(HWFILE const File, wchar_t* DestString, UINT32 const seek_chars, UINT32 const read_chars)
 {

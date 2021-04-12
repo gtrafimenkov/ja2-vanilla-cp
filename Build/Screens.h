@@ -1,7 +1,7 @@
 #ifndef __SCREEN_MANAGER
 #define __SCREEN_MANAGER
 
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 #include "sgp/Types.h"
 
 

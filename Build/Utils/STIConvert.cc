@@ -1,9 +1,9 @@
 #include "sgp/Buffer.h"
 #include "sgp/Debug.h"
 #include "sgp/Types.h"
-#include "ImgFmt.h"
+#include "sgp/ImgFmt.h"
 #include "sgp/HImage.h"
-#include "STIConvert.h"
+#include "Utils/STIConvert.h"
 #include "sgp/WCheck.h"
 #include "sgp/MemMan.h"
 

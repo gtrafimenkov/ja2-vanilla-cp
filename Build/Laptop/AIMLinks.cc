@@ -1,15 +1,15 @@
-#include "Build/Utils/Cursors.h"
-#include "Build/Laptop/Laptop.h"
-#include "AIMLinks.h"
-#include "Build/Laptop/AIM.h"
+#include "Utils/Cursors.h"
+#include "Laptop/Laptop.h"
+#include "Laptop/AIMLinks.h"
+#include "Laptop/AIM.h"
 #include "sgp/VObject.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/Utils/Text.h"
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
+#include "Utils/WordWrap.h"
+#include "Utils/Text.h"
+#include "Utils/Multi_Language_Graphic_Utils.h"
 #include "sgp/Button_System.h"
 #include "sgp/Video.h"
 #include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 
 
 #define		AIM_LINK_TITLE_FONT						FONT14ARIAL

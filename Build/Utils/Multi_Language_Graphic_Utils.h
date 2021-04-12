@@ -1,1 +1,1 @@
-#include "Build/GameRes.h"
+#include "GameRes.h"

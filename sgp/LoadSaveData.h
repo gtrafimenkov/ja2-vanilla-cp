@@ -5,7 +5,7 @@
 
 #include "sgp/Types.h"
 #include "sgp/UTF8String.h"
-#include "IEncodingCorrector.h"
+#include "sgp/IEncodingCorrector.h"
 
 #define EXTR_STR(S, D, Size)  memcpy((D), (S), Size); (S) += (Size);
 #define EXTR_BOOLA(S, D, Size) memcpy((D), (S), Size); (S) += (Size);

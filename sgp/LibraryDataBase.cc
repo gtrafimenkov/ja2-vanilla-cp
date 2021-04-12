@@ -2,14 +2,14 @@
 #include <stdexcept>
 
 #include "Directories.h"
-#include "Types.h"
-#include "FileMan.h"
-#include "LibraryDataBase.h"
-#include "MemMan.h"
-#include "Debug.h"
-#include "Logger.h"
-#include "Exceptions.h"
-#include "StrUtils.h"
+#include "sgp/Types.h"
+#include "sgp/FileMan.h"
+#include "sgp/LibraryDataBase.h"
+#include "sgp/MemMan.h"
+#include "sgp/Debug.h"
+#include "sgp/Logger.h"
+#include "sgp/Exceptions.h"
+#include "sgp/StrUtils.h"
 
 
 #define	FILENAME_SIZE 256

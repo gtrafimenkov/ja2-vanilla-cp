@@ -1,6 +1,6 @@
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
-#include "LoadSaveStrategicMapElement.h"
+#include "Strategic/LoadSaveStrategicMapElement.h"
 #include "sgp/LoadSaveData.h"
 
 

@@ -1,7 +1,7 @@
 #ifndef __POINTS_H_
 #define __POINTS_H_
 
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Item_Types.h"
 
 
 #define AP_MINIMUM              10      // no merc can have less for his turn

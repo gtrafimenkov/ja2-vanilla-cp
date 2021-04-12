@@ -1,13 +1,13 @@
-#include "Build/Directories.h"
+#include "Directories.h"
 #include "sgp/Font.h"
 #include "sgp/HImage.h"
 #include "sgp/VObject.h"
 #include "sgp/VSurface.h"
 #include "sgp/WCheck.h"
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 #include "sgp/MemMan.h"
-#include "Build/GameRes.h"
-#include "Build/GameState.h"
+#include "GameRes.h"
+#include "GameState.h"
 
 
 Font gp10PointArial;

@@ -1,8 +1,8 @@
 #include <math.h>
 #include "JAScreens.h"
-#include "SoundMan.h"
-#include "MemMan.h"
-#include "Debug.h"
+#include "sgp/SoundMan.h"
+#include "sgp/MemMan.h"
+#include "sgp/Debug.h"
 #include "ScreenIDs.h"
 
 

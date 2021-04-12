@@ -1,9 +1,9 @@
 #ifndef __QUESTS_H
 #define __QUESTS_H
 
-#include "Build/Strategic/Campaign_Types.h"
-#include "Facts.h"
-#include "Build/Strategic/StrategicMap.h"
+#include "Strategic/Campaign_Types.h"
+#include "Strategic/Facts.h"
+#include "Strategic/StrategicMap.h"
 
 
 //  Quest.ubStatus values

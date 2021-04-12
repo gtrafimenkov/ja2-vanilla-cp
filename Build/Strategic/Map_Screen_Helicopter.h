@@ -1,12 +1,12 @@
 #ifndef __MAP_SCREEN_HELICOPTER_H
 #define __MAP_SCREEN_HELICOPTER_H
 
-#include "Build/Strategic/Assignments.h"
+#include "Strategic/Assignments.h"
 #include "sgp/Debug.h"
-#include "Build/JA2Types.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Strategic/Strategic_Movement.h"
-#include "Build/Tactical/Vehicles.h"
+#include "JA2Types.h"
+#include "Tactical/Soldier_Control.h"
+#include "Strategic/Strategic_Movement.h"
+#include "Tactical/Vehicles.h"
 
 
 // costs of flying through sectors

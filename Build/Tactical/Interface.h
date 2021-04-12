@@ -1,7 +1,7 @@
 #ifndef _INTERFACE_H
 #define _INTERFACE_H
 
-#include "Build/Tactical/Handle_UI.h"
+#include "Tactical/Handle_UI.h"
 #include "sgp/MouseSystem.h"
 
 

@@ -5,16 +5,16 @@
 #include <stdexcept>
 
 #include "sgp/Debug.h"
-#include "Build/Fade_Screen.h"
+#include "Fade_Screen.h"
 #include "sgp/FileMan.h"
 #include "sgp/HImage.h"
 #include "sgp/Input.h"
-#include "Build/Local.h"
+#include "Local.h"
 #include "sgp/MemMan.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/Render_Dirty.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/Render_Dirty.h"
 #include "sgp/Timer.h"
-#include "Build/Utils/Timer_Control.h"
+#include "Utils/Timer_Control.h"
 #include "sgp/Types.h"
 #include "sgp/VObject_Blitters.h"
 #include "sgp/VSurface.h"
@@ -23,8 +23,8 @@
 #include <fcntl.h>
 #include <stdarg.h>
 
-#include "PlatformIO.h"
-#include "PlatformSDL.h"
+#include "sgp/PlatformIO.h"
+#include "sgp/PlatformSDL.h"
 #include "sgp/Font.h"
 
 #include "src/ContentManager.h"

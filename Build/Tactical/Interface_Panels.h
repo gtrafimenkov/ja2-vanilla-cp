@@ -2,8 +2,8 @@
 #define __INTERFACE_PANELS
 
 #include "sgp/Button_System.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/JA2Types.h"
+#include "Tactical/Interface.h"
+#include "JA2Types.h"
 #include "sgp/MouseSystem.h"
 
 

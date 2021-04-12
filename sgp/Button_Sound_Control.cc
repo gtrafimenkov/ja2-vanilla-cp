@@ -1,7 +1,7 @@
-#include "Build/Directories.h"
-#include "Build/JAScreens.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Utils/Sound_Control.h"
+#include "Directories.h"
+#include "JAScreens.h"
+#include "ScreenIDs.h"
+#include "Utils/Sound_Control.h"
 #include "sgp/Button_Sound_Control.h"
 #include "sgp/Types.h"
 

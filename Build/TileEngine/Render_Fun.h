@@ -1,7 +1,7 @@
 #ifndef __RENDER_FUN_H
 #define __RENDER_FUN_H
 
-#include "Build/TileEngine/WorldDef.h"
+#include "TileEngine/WorldDef.h"
 
 #define		NO_ROOM			0
 #define   MAX_ROOMS		250

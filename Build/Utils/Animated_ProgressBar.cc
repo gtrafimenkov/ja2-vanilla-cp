@@ -1,17 +1,17 @@
 #include "sgp/Font.h"
 #include "sgp/HImage.h"
 #include "sgp/Types.h"
-#include "Build/Utils/Animated_ProgressBar.h"
+#include "Utils/Animated_ProgressBar.h"
 #include "sgp/MemMan.h"
 #include "sgp/Debug.h"
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 #include "sgp/VObject.h"
 #include "sgp/VSurface.h"
 #include "sgp/Video.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Music_Control.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/TileEngine/SysUtil.h"
+#include "TileEngine/Render_Dirty.h"
+#include "Utils/Music_Control.h"
+#include "Utils/Timer_Control.h"
+#include "TileEngine/SysUtil.h"
 
 
 #define MAX_PROGRESSBARS 4

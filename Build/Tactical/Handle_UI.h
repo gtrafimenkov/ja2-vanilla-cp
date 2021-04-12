@@ -2,11 +2,11 @@
 #define _HANDLE_UI_
 
 #include "sgp/Input.h"
-#include "Build/Tactical/Interface_Cursors.h"
-#include "Build/JA2Types.h"
+#include "Tactical/Interface_Cursors.h"
+#include "JA2Types.h"
 #include "sgp/MouseSystem.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Tactical/Soldier_Find.h"
+#include "ScreenIDs.h"
+#include "Tactical/Soldier_Find.h"
 
 
 #define		UIEVENT_SINGLEEVENT					0x00000002

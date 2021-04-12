@@ -1,7 +1,7 @@
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"
-#include "LoadSaveLightEffect.h"
+#include "TileEngine/LoadSaveLightEffect.h"
 
 
 void ExtractLightEffectFromFile(HWFILE const file, LIGHTEFFECT* const l)

@@ -2,7 +2,7 @@
 #define __ANIMATION_CONTROL_H
 
 // Header file for merc animation control
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 #define MAX_ANIMATIONS 320

@@ -1,8 +1,8 @@
 #ifndef __AI_H
 #define __AI_H
 
-#include "Build/JA2Types.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "JA2Types.h"
+#include "TileEngine/WorldDef.h"
 
 
 #define TESTAICONTROL

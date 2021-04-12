@@ -3,7 +3,7 @@
 /* Game resources */
 
 #include "sgp/Types.h"
-#include "IEncodingCorrector.h"
+#include "sgp/IEncodingCorrector.h"
 
 /** List of supported game versions (localizations). */
 enum GameVersion {

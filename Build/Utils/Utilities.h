@@ -1,7 +1,7 @@
 #ifndef _UTILITIES_H_
 #define _UTILITIES_H_
 
-#include "Build/Tactical/Overhead_Types.h"
+#include "Tactical/Overhead_Types.h"
 
 
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry* pal, const char* col_file);

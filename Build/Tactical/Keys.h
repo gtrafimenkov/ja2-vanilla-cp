@@ -1,8 +1,8 @@
 #ifndef		_KEYS_H_
 #define		_KEYS_H_
 
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Handle_Items.h"
+#include "Tactical/Item_Types.h"
 #include "sgp/Types.h"
 
 

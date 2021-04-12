@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "sgp/Debug.h"
 #include "sgp/HImage.h"
-#include "Build/Local.h"
+#include "Local.h"
 #include "sgp/MemMan.h"
 #include "sgp/Shading.h"
 #include "sgp/VObject.h"

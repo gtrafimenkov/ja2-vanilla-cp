@@ -1,10 +1,10 @@
-#include "Debug.h"
-#include "FileMan.h"
-#include "Gap.h"
-#include "LoadSaveData.h"
-#include "MemMan.h"
-#include "SoundMan.h"
-#include "Sound_Control.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "Tactical/Gap.h"
+#include "sgp/LoadSaveData.h"
+#include "sgp/MemMan.h"
+#include "sgp/SoundMan.h"
+#include "Utils/Sound_Control.h"
 
 
 static void AudioGapListInit(const char* zSoundFile, AudioGapList* pGapList)

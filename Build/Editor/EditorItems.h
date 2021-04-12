@@ -1,7 +1,7 @@
 #ifndef __EDITORITEMS_H
 #define __EDITORITEMS_H
 
-#include "EditorDefines.h"
+#include "Editor/EditorDefines.h"
 
 
 struct EditorItemsInfo

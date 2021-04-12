@@ -1,6 +1,6 @@
-#include "Build/Directories.h"
-#include "Build/MercPortrait.h"
-#include "Build/Tactical/Soldier_Profile_Type.h"
+#include "Directories.h"
+#include "MercPortrait.h"
+#include "Tactical/Soldier_Profile_Type.h"
 #include "sgp/VObject.h"
 
 

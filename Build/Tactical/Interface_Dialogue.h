@@ -3,7 +3,7 @@
 
 #include "sgp/Button_System.h"
 #include "sgp/MouseSystem.h"
-#include "Build/TacticalAI/NPC.h"
+#include "TacticalAI/NPC.h"
 
 
 extern UINT8 gubSrcSoldierProfile;

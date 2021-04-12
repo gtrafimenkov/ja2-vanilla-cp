@@ -1,9 +1,9 @@
 #ifndef __WEAPONS_H
 #define __WEAPONS_H
 
-#include "Build/Tactical/Item_Types.h"
-#include "Build/JA2Types.h"
-#include "Build/Utils/Sound_Control.h"
+#include "Tactical/Item_Types.h"
+#include "JA2Types.h"
+#include "Utils/Sound_Control.h"
 
 
 #define MAXCHANCETOHIT 99

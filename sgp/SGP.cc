@@ -3,30 +3,30 @@
 
 #include "slog/slog.h"
 
-#include "Button_System.h"
-#include "Debug.h"
-#include "FileMan.h"
-#include "Font.h"
+#include "sgp/Button_System.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/Font.h"
 #include "GameLoop.h"
 #include "Init.h" // XXX should not be used in SGP
-#include "Input.h"
+#include "sgp/Input.h"
 #include "Intro.h"
 #include "JA2_Splash.h"
-#include "MemMan.h"
-#include "Random.h"
-#include "SGP.h"
+#include "sgp/MemMan.h"
+#include "sgp/Random.h"
+#include "sgp/SGP.h"
 #include "SaveLoadGame.h" // XXX should not be used in SGP
-#include "SoundMan.h"
-#include "VObject.h"
-#include "Video.h"
-#include "VSurface.h"
+#include "sgp/SoundMan.h"
+#include "sgp/VObject.h"
+#include "sgp/Video.h"
+#include "sgp/VSurface.h"
 #include <SDL.h>
 #include "UILayout.h"
 #include "GameRes.h"
-#include "Logger.h"
+#include "sgp/Logger.h"
 #include "GameState.h"
-#include "Exceptions.h"
-#include "Timer.h"
+#include "sgp/Exceptions.h"
+#include "sgp/Timer.h"
 
 #ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
@@ -39,7 +39,7 @@
 #	include "Local.h"
 #endif
 
-#include "Build/Utils/Multi_Language_Graphic_Utils.h"
+#include "Utils/Multi_Language_Graphic_Utils.h"
 
 
 extern BOOLEAN gfPauseDueToPlayerGamePause;
@@ -54,7 +54,7 @@ extern BOOLEAN gfPauseDueToPlayerGamePause;
 // #include "src/JsonObject.h"
 // #include "src/MagazineModel.h"
 // #include "src/WeaponModels.h"
-// #include "Build/Tactical/Weapons.h"
+// #include "Tactical/Weapons.h"
 // #include "rapidjson/document.h"
 // #include "rapidjson/filestream.h"
 // #include "rapidjson/prettywriter.h"

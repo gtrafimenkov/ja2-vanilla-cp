@@ -2,7 +2,7 @@
 #define SOUND_CONTROL_H
 
 #include "JA2Types.h"
-#include "Random.h"
+#include "sgp/Random.h"
 
 
 #define FARLEFT         0

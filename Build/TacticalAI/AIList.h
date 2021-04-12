@@ -1,7 +1,7 @@
 #ifndef AILIST_H
 #define AILIST_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 SOLDIERTYPE* RemoveFirstAIListEntry();

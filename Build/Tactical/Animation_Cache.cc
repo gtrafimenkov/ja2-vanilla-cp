@@ -1,8 +1,8 @@
-#include "Build/Tactical/Animation_Cache.h"
-#include "Build/Tactical/Animation_Control.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Utils/Debug_Control.h"
+#include "Tactical/Animation_Cache.h"
+#include "Tactical/Animation_Control.h"
+#include "Tactical/Animation_Data.h"
+#include "Tactical/Overhead.h"
+#include "Utils/Debug_Control.h"
 #include "sgp/MemMan.h"
 #include "sgp/Types.h"
 

@@ -1,8 +1,8 @@
 #ifndef __HANDLE_ITEMS_H
 #define __HANDLE_ITEMS_H
 
-#include "Build/JA2Types.h"
-#include "Build/Tactical/World_Items.h"
+#include "JA2Types.h"
+#include "Tactical/World_Items.h"
 
 
 enum ItemHandleResult

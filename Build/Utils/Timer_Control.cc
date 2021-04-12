@@ -2,12 +2,12 @@
 #include <stdexcept>
 
 #include "sgp/Debug.h"
-#include "Build/Strategic/MapScreen.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Handle_Items.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "Strategic/MapScreen.h"
+#include "Tactical/Soldier_Control.h"
+#include "Utils/Timer_Control.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/Handle_Items.h"
+#include "TileEngine/WorldDef.h"
 
 
 INT32	giClockTimer = -1;

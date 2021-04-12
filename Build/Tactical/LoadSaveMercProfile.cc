@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include "Build/Tactical/LoadSaveMercProfile.h"
-#include "Build/Tactical/Tactical_Save.h"
+#include "Tactical/LoadSaveMercProfile.h"
+#include "Tactical/Tactical_Save.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"

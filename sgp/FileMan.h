@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "AutoObj.h"
-#include "Types.h"
+#include "sgp/AutoObj.h"
+#include "sgp/Types.h"
 
 #ifdef _WIN32
 #	define WIN32_LEAN_AND_MEAN

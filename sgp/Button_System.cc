@@ -1,7 +1,7 @@
 // Rewritten mostly by Kris Morness
 #include  <stdexcept>
 
-#include "Build/Utils/WordWrap.h"
+#include "Utils/WordWrap.h"
 #include "sgp/Button_Sound_Control.h"
 #include "sgp/Button_System.h"
 #include "sgp/Debug.h"
@@ -16,7 +16,7 @@
 #include "sgp/WCheck.h"
 
 #ifdef _JA2_RENDER_DIRTY
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 #endif
 
 

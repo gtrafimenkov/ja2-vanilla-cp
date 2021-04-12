@@ -1,7 +1,7 @@
 #ifndef _OPPLIST_H
 #define _OPPLIST_H
 
-#include "Build/Tactical/Overhead_Types.h"
+#include "Tactical/Overhead_Types.h"
 
 
 /* For RadioSightings() parameter about */

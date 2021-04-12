@@ -1,14 +1,14 @@
-#include "Build/Laptop/CharProfile.h"
-#include "Build/Directories.h"
+#include "Laptop/CharProfile.h"
+#include "Directories.h"
 #include "sgp/Font.h"
-#include "IMP_Personality_Entrance.h"
-#include "Build/Laptop/IMPVideoObjects.h"
-#include "Build/Utils/Text.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/Utils/Cursors.h"
-#include "Build/Laptop/Laptop.h"
+#include "Laptop/IMP_Personality_Entrance.h"
+#include "Laptop/IMPVideoObjects.h"
+#include "Utils/Text.h"
+#include "TileEngine/Render_Dirty.h"
+#include "Utils/Cursors.h"
+#include "Laptop/Laptop.h"
 #include "sgp/Button_System.h"
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 
 
 // IMP personality entrance buttons

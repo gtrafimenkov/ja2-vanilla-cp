@@ -1,7 +1,7 @@
 #ifndef _MAP_SCREEN_INTERFACE_MAP_H
 #define _MAP_SCREEN_INTERFACE_MAP_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 // functions

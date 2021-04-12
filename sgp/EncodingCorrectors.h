@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IEncodingCorrector.h"
+#include "sgp/IEncodingCorrector.h"
 
 /** Russian encoding corrector. */
 class RussianEncodingCorrector : public IEncodingCorrector

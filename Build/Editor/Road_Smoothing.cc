@@ -1,10 +1,10 @@
-#include "Build/TileEngine/TileDef.h"
+#include "TileEngine/TileDef.h"
 #include "sgp/Types.h"
-#include "Build/Editor/Road_Smoothing.h"
-#include "Build/TileEngine/TileDat.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Editor_Undo.h"
+#include "Editor/Road_Smoothing.h"
+#include "TileEngine/TileDat.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Editor/Editor_Undo.h"
 
 
 struct MACROSTRUCT

@@ -1,7 +1,7 @@
 #ifndef __SOLDER_PROFILE_TYPE_H
 #define __SOLDER_PROFILE_TYPE_H
 
-#include "Build/Tactical/Overhead_Types.h"
+#include "Tactical/Overhead_Types.h"
 #include "sgp/Types.h"
 
 

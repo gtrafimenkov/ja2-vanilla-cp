@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "Types.h"
-#include "FileMan.h"
+#include "sgp/Types.h"
+#include "sgp/FileMan.h"
 
 
 #define	REAL_FILE_LIBRARY_ID					1022

@@ -5,7 +5,7 @@
 #include "sgp/English.h"
 #include "sgp/Timer.h"
 #include "sgp/Video.h"
-#include "Build/Local.h"
+#include "Local.h"
 
 
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling

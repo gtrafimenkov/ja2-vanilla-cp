@@ -1,7 +1,7 @@
 #ifndef __PERSONNEL_H
 #define __PERSONNEL_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 void GameInitPersonnel(void);

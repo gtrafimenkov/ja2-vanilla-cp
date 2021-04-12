@@ -1,7 +1,7 @@
 #ifndef LOADSAVEOBJECTTYPE_H
 #define LOADSAVEOBJECTTYPE_H
 
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Item_Types.h"
 
 
 const BYTE* ExtractObject(const BYTE* Src, OBJECTTYPE* o);

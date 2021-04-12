@@ -1,4 +1,4 @@
-#include "Build/GameVersion.h"
+#include "GameVersion.h"
 
 #ifndef GAME_VERSION
   #define GAME_VERSION "XXXXX"

@@ -1,15 +1,15 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Build/Directories.h"
+#include "Directories.h"
 #include "sgp/HImage.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/Tactical/Animation_Cache.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Utils/Debug_Control.h"
-#include "Tile_Surface.h"
-#include "Build/TileEngine/Tile_Cache.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/TileDef.h"
+#include "Tactical/Animation_Cache.h"
+#include "Tactical/Animation_Data.h"
+#include "Utils/Debug_Control.h"
+#include "TileEngine/Tile_Surface.h"
+#include "TileEngine/Tile_Cache.h"
 #include "sgp/FileMan.h"
 #include "sgp/MemMan.h"
 

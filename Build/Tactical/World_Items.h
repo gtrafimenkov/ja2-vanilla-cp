@@ -2,7 +2,7 @@
 #define __WORLD_ITEMS
 
 #include "sgp/Debug.h"
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Item_Types.h"
 
 
 #define	WORLD_ITEM_DONTRENDER												0x0001

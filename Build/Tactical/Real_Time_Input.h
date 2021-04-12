@@ -1,7 +1,7 @@
 #ifndef REAL_TIME_INPUT_H
 #define REAL_TIME_INPUT_H
 
-#include "Build/Tactical/Handle_UI.h"
+#include "Tactical/Handle_UI.h"
 #include "sgp/Types.h"
 
 extern BOOLEAN gfBeginBurstSpreadTracking;

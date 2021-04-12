@@ -1,12 +1,12 @@
-#include "Ambient_Types.h"
+#include "TileEngine/Ambient_Types.h"
 #include "Directories.h"
-#include "FileMan.h"
-#include "Environment.h"
-#include "Sound_Control.h"
-#include "Game_Events.h"
-#include "Ambient_Control.h"
-#include "SoundMan.h"
-#include "Debug.h"
+#include "sgp/FileMan.h"
+#include "TileEngine/Environment.h"
+#include "Utils/Sound_Control.h"
+#include "Strategic/Game_Events.h"
+#include "TileEngine/Ambient_Control.h"
+#include "sgp/SoundMan.h"
+#include "sgp/Debug.h"
 
 
 AMBIENTDATA_STRUCT		gAmbData[ MAX_AMBIENT_SOUNDS ];

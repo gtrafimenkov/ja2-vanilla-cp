@@ -1,15 +1,15 @@
 #include <stdexcept>
 
 #include "sgp/HImage.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/TileDef.h"
 #include "sgp/VObject.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "TileEngine/WorldDef.h"
 #include "sgp/Debug.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Edit_Sys.h"
-#include "Build/Tactical/PathAI.h"
-#include "Tile_Surface.h"
+#include "TileEngine/WorldMan.h"
+#include "Editor/Edit_Sys.h"
+#include "Tactical/PathAI.h"
+#include "TileEngine/Tile_Surface.h"
 #include "sgp/MemMan.h"
 
 

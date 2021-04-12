@@ -1,7 +1,7 @@
 #ifndef MAINMENUSCREEN_H
 #define MAINMENUSCREEN_H
 
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 
 
 void InitMainMenu(void);

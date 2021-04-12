@@ -2,8 +2,8 @@
 #if !defined(_MSC_VER)
   #include <strings.h>
 #endif
-#include "Smack_Stub.h"
-#include "Build/Utils/Sound_Control.h"
+#include "sgp/Smack_Stub.h"
+#include "Utils/Sound_Control.h"
 #include "sgp/SoundMan.h"
 #include "sgp/FileMan.h"
 

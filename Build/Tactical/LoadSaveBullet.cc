@@ -1,5 +1,5 @@
-#include "Build/Tactical/Overhead.h"
-#include "LoadSaveBullet.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/LoadSaveBullet.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"

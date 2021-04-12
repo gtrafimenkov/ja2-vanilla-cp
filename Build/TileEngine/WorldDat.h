@@ -2,8 +2,8 @@
 #define WORLD_DAT_H
 
 #include "sgp/Types.h"
-#include "Build/TileEngine/TileDat.h"
-#include "World_Tileset_Enums.h"
+#include "TileEngine/TileDat.h"
+#include "TileEngine/World_Tileset_Enums.h"
 
 typedef void (*TILESET_CALLBACK)( void );
 

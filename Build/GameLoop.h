@@ -1,8 +1,8 @@
 #ifndef GAMELOOP_H
 #define GAMELOOP_H
 
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
+#include "MessageBoxScreen.h"
+#include "ScreenIDs.h"
 #include "sgp/Types.h"
 
 

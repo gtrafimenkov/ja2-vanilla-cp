@@ -1,11 +1,11 @@
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Smooth.h"
-#include "Build/Editor/EditScreen.h"
-#include "Build/Tactical/Structure_Wrap.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Editor_Undo.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Editor/Smooth.h"
+#include "Editor/EditScreen.h"
+#include "Tactical/Structure_Wrap.h"
+#include "TileEngine/Exit_Grids.h"
+#include "Editor/Editor_Undo.h"
 
 
 INT16 gbSmoothStruct[] =

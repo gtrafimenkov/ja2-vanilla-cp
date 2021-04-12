@@ -1,7 +1,7 @@
 #ifndef __AIMMEMBERS_H_
 #define __AIMMEMBERS_H_
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 void EnterAIMMembers(void);
 void ExitAIMMembers(void);

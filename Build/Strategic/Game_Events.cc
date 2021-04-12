@@ -1,12 +1,12 @@
 #include "sgp/Debug.h"
 #include "sgp/LoadSaveData.h"
 #include "sgp/Types.h"
-#include "Build/Strategic/Game_Events.h"
-#include "Build/Strategic/Game_Clock.h"
+#include "Strategic/Game_Events.h"
+#include "Strategic/Game_Clock.h"
 #include "sgp/MemMan.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/Message.h"
-#include "Build/Utils/Text.h"
+#include "Utils/Font_Control.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
 #include "sgp/FileMan.h"
 
 

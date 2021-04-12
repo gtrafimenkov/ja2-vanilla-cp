@@ -13,7 +13,7 @@
 #ifndef _MOUSE_SYSTEM_H_
 #define _MOUSE_SYSTEM_H_
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 #include "sgp/Types.h"
 
 

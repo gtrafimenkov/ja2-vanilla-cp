@@ -1,20 +1,20 @@
 #include <stdexcept>
 
 #include "Directories.h"
-#include "HImage.h"
-#include "Overhead.h"
-#include "Structure.h"
-#include "VObject.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "Animation_Data.h"
-#include "Animation_Control.h"
-#include "Soldier_Control.h"
+#include "sgp/HImage.h"
+#include "Tactical/Overhead.h"
+#include "TileEngine/Structure.h"
+#include "sgp/VObject.h"
+#include "sgp/WCheck.h"
+#include "sgp/Debug.h"
+#include "Tactical/Animation_Data.h"
+#include "Tactical/Animation_Control.h"
+#include "Tactical/Soldier_Control.h"
 #include "Sys_Globals.h"
-#include "Debug_Control.h"
-#include "WorldDef.h"
-#include "FileMan.h"
-#include "MemMan.h"
+#include "Utils/Debug_Control.h"
+#include "TileEngine/WorldDef.h"
+#include "sgp/FileMan.h"
+#include "sgp/MemMan.h"
 
 
 #define EMPTY_SLOT		-1

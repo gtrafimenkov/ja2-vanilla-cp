@@ -1,7 +1,7 @@
 #ifndef LOADSAVEUNDERGROUNDSECTORINFO_H
 #define LOADSAVEUNDERGROUNDSECTORINFO_H
 
-#include "Build/Strategic/Campaign_Types.h"
+#include "Strategic/Campaign_Types.h"
 
 
 void ExtractUndergroundSectorInfoFromFile(HWFILE, UNDERGROUND_SECTORINFO*);

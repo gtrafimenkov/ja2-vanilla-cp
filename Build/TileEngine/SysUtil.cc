@@ -1,5 +1,5 @@
-#include "Build/Local.h"
-#include "Build/TileEngine/SysUtil.h"
+#include "Local.h"
+#include "TileEngine/SysUtil.h"
 #include "sgp/VSurface.h"
 
 

@@ -1,8 +1,8 @@
 #ifndef __SUMMARY_INFO_H
 #define __SUMMARY_INFO_H
 
-#include "Build/Tactical/Map_Information.h"
-#include "Build/TileEngine/Exit_Grids.h"
+#include "Tactical/Map_Information.h"
+#include "TileEngine/Exit_Grids.h"
 #include "sgp/Types.h"
 
 #define GLOBAL_SUMMARY_VERSION		14

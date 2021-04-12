@@ -1,7 +1,7 @@
 #include "sgp/Container.h"
 #include "sgp/WCheck.h"
-#include "Build/Utils/Event_Manager.h"
-#include "Build/Utils/Timer_Control.h"
+#include "Utils/Event_Manager.h"
+#include "Utils/Timer_Control.h"
 #include "sgp/MemMan.h"
 
 

@@ -1,9 +1,9 @@
-#include "Build/Directories.h"
-#include "Build/TileEngine/WorldDat.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/Sys_Globals.h"
-#include "Tile_Surface.h"
+#include "Directories.h"
+#include "TileEngine/WorldDat.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/TileDef.h"
+#include "Sys_Globals.h"
+#include "TileEngine/Tile_Surface.h"
 #include "sgp/FileMan.h"
 
 

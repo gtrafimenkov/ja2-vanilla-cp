@@ -1,9 +1,9 @@
 #ifndef ITEMS_H
 #define ITEMS_H
 
-#include "Item_Types.h"
+#include "Tactical/Item_Types.h"
 #include "JA2Types.h"
-#include "Weapons.h"
+#include "Tactical/Weapons.h"
 
 
 void DamageObj(OBJECTTYPE* pObj, INT8 bAmount);

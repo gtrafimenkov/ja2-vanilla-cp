@@ -1,8 +1,8 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "Facts.h"
-#include "Build/JA2Types.h"
+#include "Strategic/Facts.h"
+#include "JA2Types.h"
 
 
 #define	NPC_TALK_RADIUS						4

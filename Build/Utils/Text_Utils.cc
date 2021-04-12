@@ -1,9 +1,9 @@
 #include "Directories.h"
-#include "Text.h"
-#include "Text_Utils.h"
-#include "FileMan.h"
+#include "Utils/Text.h"
+#include "Utils/Text_Utils.h"
+#include "sgp/FileMan.h"
 #include "GameSettings.h"
-#include "Encrypted_File.h"
+#include "Utils/Encrypted_File.h"
 
 
 #define ITEMSTRINGFILENAME BINARYDATADIR "/itemdesc.edt"

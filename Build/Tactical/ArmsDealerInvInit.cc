@@ -1,17 +1,17 @@
 #include <stdexcept>
 
-#include "Types.h"
-#include "ArmsDealerInvInit.h"
-#include "Item_Types.h"
-#include "Arms_Dealer_Init.h"
-#include "Debug.h"
-#include "Weapons.h"
-#include "Campaign.h"
-#include "BobbyR.h"
-#include "LaptopSave.h"
-#include "ShopKeeper_Interface.h"
-#include "Random.h"
-#include "Items.h"
+#include "sgp/Types.h"
+#include "Tactical/ArmsDealerInvInit.h"
+#include "Tactical/Item_Types.h"
+#include "Tactical/Arms_Dealer_Init.h"
+#include "sgp/Debug.h"
+#include "Tactical/Weapons.h"
+#include "Tactical/Campaign.h"
+#include "Laptop/BobbyR.h"
+#include "Laptop/LaptopSave.h"
+#include "Tactical/ShopKeeper_Interface.h"
+#include "sgp/Random.h"
+#include "Tactical/Items.h"
 
 
 struct ITEM_SORT_ENTRY

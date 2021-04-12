@@ -7,14 +7,14 @@
 //
 //------------------------------------------------------------------------------
 
-#include "Build/Utils/Cinematics.h"
+#include "Utils/Cinematics.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
-#include "Build/Intro.h"
-#include "Build/Local.h"
+#include "Intro.h"
+#include "Local.h"
 //#include "Smack.h" // XXX
 
-#include "Smack_Stub.h" // XXX
+#include "sgp/Smack_Stub.h" // XXX
 #include "sgp/SoundMan.h"
 #include "sgp/Types.h"
 #include "sgp/VSurface.h"

@@ -1,6 +1,6 @@
-#include "Debug.h"
-#include "LoadSaveObjectType.h"
-#include "LoadSaveData.h"
+#include "sgp/Debug.h"
+#include "Tactical/LoadSaveObjectType.h"
+#include "sgp/LoadSaveData.h"
 
 
 const BYTE* ExtractObject(const BYTE* const data, OBJECTTYPE* const o)

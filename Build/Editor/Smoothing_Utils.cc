@@ -1,14 +1,14 @@
-#include "NewSmooth.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"	//for LEVELNODE def
-#include "Build/TileEngine/WorldMan.h" //for RemoveXXXX()
-#include "Build/TileEngine/Isometric_Utils.h" //for GridNoOnVisibleWorldTile()
-#include "SmartMethod.h"
-#include "Smoothing_Utils.h"
-#include "Editor_Undo.h"
-#include "EditorDefines.h"
-#include "Edit_Sys.h"
-#include "Build/TileEngine/Environment.h"
+#include "Editor/NewSmooth.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"	//for LEVELNODE def
+#include "TileEngine/WorldMan.h" //for RemoveXXXX()
+#include "TileEngine/Isometric_Utils.h" //for GridNoOnVisibleWorldTile()
+#include "Editor/SmartMethod.h"
+#include "Editor/Smoothing_Utils.h"
+#include "Editor/Editor_Undo.h"
+#include "Editor/EditorDefines.h"
+#include "Editor/Edit_Sys.h"
+#include "TileEngine/Environment.h"
 
 
 //This method isn't foolproof, but because erasing large areas of buildings could result in

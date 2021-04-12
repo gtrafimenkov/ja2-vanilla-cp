@@ -1,14 +1,14 @@
-#include "Build/Directories.h"
+#include "Directories.h"
 #include "sgp/Types.h"
-#include "Build/Utils/Music_Control.h"
+#include "Utils/Music_Control.h"
 #include "sgp/Random.h"
-#include "Build/GameScreen.h"
-#include "Build/JAScreens.h"
-#include "Build/Strategic/Creature_Spreading.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Strategic/StrategicMap.h"
+#include "GameScreen.h"
+#include "JAScreens.h"
+#include "Strategic/Creature_Spreading.h"
+#include "Utils/Timer_Control.h"
+#include "Strategic/StrategicMap.h"
 #include "sgp/Debug.h"
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 
 static UINT32  uiMusicHandle   = NO_SAMPLE;
 static UINT32  uiMusicVolume   = 50;

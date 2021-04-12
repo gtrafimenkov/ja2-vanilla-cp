@@ -1,7 +1,7 @@
 #ifndef __SOLDIER_FIND_H
 #define __SOLDIER_FIND_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 #define			FIND_SOLDIER_GRIDNO			0x000000004

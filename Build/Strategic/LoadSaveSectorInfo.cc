@@ -1,6 +1,6 @@
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
-#include "LoadSaveSectorInfo.h"
+#include "Strategic/LoadSaveSectorInfo.h"
 #include "sgp/LoadSaveData.h"
 
 

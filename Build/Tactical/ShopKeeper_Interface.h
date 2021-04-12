@@ -1,11 +1,11 @@
 #ifndef _SHOPKEEPER_INTERFACE__H_
 #define _SHOPKEEPER_INTERFACE__H_
 
-#include "Arms_Dealer.h"
-#include "Build/Tactical/Item_Types.h"
-#include "Build/JA2Types.h"
-#include "Build/MessageBoxScreen.h"
-#include "Build/ScreenIDs.h"
+#include "Tactical/Arms_Dealer.h"
+#include "Tactical/Item_Types.h"
+#include "JA2Types.h"
+#include "MessageBoxScreen.h"
+#include "ScreenIDs.h"
 
 
 //Enums used for when the user clicks on an item and the item goes to..

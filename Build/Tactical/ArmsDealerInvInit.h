@@ -1,7 +1,7 @@
 #ifndef _ARMS_DEALER_INV_INIT__H_
 #define	_ARMS_DEALER_INV_INIT__H_
 
-#include "Arms_Dealer.h"
+#include "Tactical/Arms_Dealer.h"
 
 
 #define		LAST_DEALER_ITEM					-1

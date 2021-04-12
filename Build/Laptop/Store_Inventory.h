@@ -1,7 +1,7 @@
 #ifndef __STORE_INVENTORY_H_
 #define __STORE_INVENTORY_H_
 
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Item_Types.h"
 
 
 struct STORE_INVENTORY

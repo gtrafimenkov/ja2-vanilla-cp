@@ -3,34 +3,34 @@
 #include "sgp/Buffer.h"
 #include "sgp/HImage.h"
 #include "sgp/LoadSaveData.h"
-#include "Build/Tactical/Soldier_Control.h"
+#include "Tactical/Soldier_Control.h"
 #include "sgp/Types.h"
 #include "sgp/VObject.h"
 #include "sgp/WCheck.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/MemMan.h"
-#include "Build/TileEngine/Structure.h"
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/WorldMan.h"
-#include "Build/Tactical/Interface.h"
-#include "Build/TileEngine/Isometric_Utils.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Tactical/Interface.h"
+#include "TileEngine/Isometric_Utils.h"
 #include "sgp/Font.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Tactical/LOS.h"
-#include "Build/TileEngine/Smell.h"
-#include "Build/TileEngine/SaveLoadMap.h"
-#include "Build/Strategic/StrategicMap.h"
-#include "Build/Sys_Globals.h"	//for access to gfEditMode flag
+#include "Utils/Font_Control.h"
+#include "Tactical/LOS.h"
+#include "TileEngine/Smell.h"
+#include "TileEngine/SaveLoadMap.h"
+#include "Strategic/StrategicMap.h"
+#include "Sys_Globals.h"	//for access to gfEditMode flag
 //Kris:
-#include "Editor_Undo.h" //for access to AddToUndoList( iMapIndex )
+#include "Editor/Editor_Undo.h" //for access to AddToUndoList( iMapIndex )
 
-#include "Build/TileEngine/Explosion_Control.h"
-#include "Build/TileEngine/Buildings.h"
+#include "TileEngine/Explosion_Control.h"
+#include "TileEngine/Buildings.h"
 #include "sgp/Random.h"
-#include "Build/TileEngine/Tile_Animation.h"
-#include "Build/GameState.h"
+#include "TileEngine/Tile_Animation.h"
+#include "GameState.h"
 
 
 #ifdef COUNT_PATHS

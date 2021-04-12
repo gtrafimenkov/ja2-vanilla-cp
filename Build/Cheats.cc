@@ -1,5 +1,5 @@
-#include "Build/Cheats.h"
-#include "Build/GameRes.h"
+#include "Cheats.h"
+#include "GameRes.h"
 
 UINT8			gubCheatLevel;
 

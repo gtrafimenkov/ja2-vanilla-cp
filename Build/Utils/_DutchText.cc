@@ -1,4 +1,4 @@
-﻿#include "Build/Utils/Text.h"
+﻿#include "Utils/Text.h"
 
 #ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"

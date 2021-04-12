@@ -1,7 +1,7 @@
 #ifndef LOADSAVEEXPLOSIONTYPE_H
 #define LOADSAVEEXPLOSIONTYPE_H
 
-#include "Build/TileEngine/Explosion_Control.h"
+#include "TileEngine/Explosion_Control.h"
 
 
 void ExtractExplosionTypeFromFile(HWFILE, EXPLOSIONTYPE*);

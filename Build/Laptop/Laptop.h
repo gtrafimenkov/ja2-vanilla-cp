@@ -1,9 +1,9 @@
 #ifndef LAPTOP_H
 #define LAPTOP_H
 
-#include "Build/MessageBoxScreen.h"
+#include "MessageBoxScreen.h"
 #include "sgp/MouseSystem.h"
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 #include "sgp/Types.h"
 
 

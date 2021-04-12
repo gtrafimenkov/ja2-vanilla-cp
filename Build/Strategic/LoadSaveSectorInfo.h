@@ -1,7 +1,7 @@
 #ifndef LOADSAVESECTORINFO_H
 #define LOADSAVESECTORINFO_H
 
-#include "Build/Strategic/Campaign_Types.h"
+#include "Strategic/Campaign_Types.h"
 
 
 void ExtractSectorInfoFromFile(HWFILE, SECTORINFO&);

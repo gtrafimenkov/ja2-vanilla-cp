@@ -1,7 +1,7 @@
 #ifndef __JASCREENS_H_
 #define __JASCREENS_H_
 
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 #include "sgp/Types.h"
 
 

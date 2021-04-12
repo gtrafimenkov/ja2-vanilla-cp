@@ -9,7 +9,7 @@
 #ifndef _PATHAI_H
 #define _PATHAI_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 void InitPathAI(void);

@@ -3,10 +3,10 @@
 #include "sgp/Buffer.h"
 #include "sgp/MemMan.h"
 #include "sgp/FileMan.h"
-#include "ImgFmt.h"
+#include "sgp/ImgFmt.h"
 #include "sgp/HImage.h"
 #include "sgp/Debug.h"
-#include "STCI.h"
+#include "sgp/STCI.h"
 
 
 static SGPImage* STCILoadIndexed(UINT16 contents, HWFILE, STCIHeader const*);

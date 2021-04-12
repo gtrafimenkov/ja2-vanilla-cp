@@ -2,7 +2,7 @@
 
 #include "sgp/Buffer.h"
 #include "sgp/HImage.h"
-#include "PCX.h"
+#include "sgp/PCX.h"
 #include "sgp/MemMan.h"
 #include "sgp/FileMan.h"
 

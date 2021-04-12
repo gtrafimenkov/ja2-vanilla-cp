@@ -1,7 +1,7 @@
 #ifndef _SPREAD_BURST_H
 #define _SPREAD_BURST_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 void ResetBurstLocations(void);

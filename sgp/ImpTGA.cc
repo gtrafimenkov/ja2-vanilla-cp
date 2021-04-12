@@ -5,7 +5,7 @@
 #include "sgp/LoadSaveData.h"
 #include "sgp/Types.h"
 #include "sgp/FileMan.h"
-#include "ImpTGA.h"
+#include "sgp/ImpTGA.h"
 #include "sgp/MemMan.h"
 #include "sgp/Debug.h"
 

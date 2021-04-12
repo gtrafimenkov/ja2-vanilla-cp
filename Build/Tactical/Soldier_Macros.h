@@ -2,10 +2,10 @@
 #define SOLDIER_MACROS_H
 
 // MACROS FOR EASIER SOLDIER CONTROL
-#include "Build/Tactical/TeamTurns.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Strategic/Assignments.h"
-#include "Build/Tactical/Animation_Data.h"
+#include "Tactical/TeamTurns.h"
+#include "Tactical/Soldier_Profile.h"
+#include "Strategic/Assignments.h"
+#include "Tactical/Animation_Data.h"
 
 static inline bool RPC_RECRUITED(SOLDIERTYPE const* const s)
 {

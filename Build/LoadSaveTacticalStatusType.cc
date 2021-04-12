@@ -1,7 +1,7 @@
 #include <vector>
 
-#include "Build/LoadSaveTacticalStatusType.h"
-#include "Build/Tactical/Overhead.h"
+#include "LoadSaveTacticalStatusType.h"
+#include "Tactical/Overhead.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"

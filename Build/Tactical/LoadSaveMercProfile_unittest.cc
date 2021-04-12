@@ -4,10 +4,10 @@
 
 #include "sgp/EncodingCorrectors.h"
 #include "sgp/FileMan.h"
-#include "Build/Laptop/IMP_Compile_Character.h"
-#include "Build/Tactical/LoadSaveMercProfile.h"
-#include "Build/Tactical/Soldier_Profile.h"
-#include "Build/Tactical/Soldier_Profile_Type.h"
+#include "Laptop/IMP_Compile_Character.h"
+#include "Tactical/LoadSaveMercProfile.h"
+#include "Tactical/Soldier_Profile.h"
+#include "Tactical/Soldier_Profile_Type.h"
 
 #include "src/TestUtils.h"
 

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "SGPStrings.h"
+#include "sgp/SGPStrings.h"
 
 TEST(SGPStringsTest, ReplacePath)
 {

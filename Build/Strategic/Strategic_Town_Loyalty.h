@@ -1,7 +1,7 @@
 #ifndef __STRATEGIC_TOWN_LOYALTY_H
 #define __STRATEGIC_TOWN_LOYALTY_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 // gain pts per real loyalty pt

@@ -1,8 +1,8 @@
 #include <stdarg.h>
 #include "sgp/Types.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Sys_Globals.h"
-#include "Build/GameLoop.h"
+#include "ScreenIDs.h"
+#include "Sys_Globals.h"
+#include "GameLoop.h"
 
 
 char g_filename[200];

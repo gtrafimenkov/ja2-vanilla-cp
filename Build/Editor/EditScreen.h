@@ -1,9 +1,9 @@
 #ifndef EDITSCREEN_H
 #define EDITSCREEN_H
 
-#include "EditorDefines.h"
-#include "Build/JA2Types.h"
-#include "Build/ScreenIDs.h"
+#include "Editor/EditorDefines.h"
+#include "JA2Types.h"
+#include "ScreenIDs.h"
 
 
 #define EDITOR_LIGHT_MAX		(SHADE_MIN + SHADE_MAX)

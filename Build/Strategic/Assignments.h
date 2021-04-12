@@ -3,8 +3,8 @@
 
 // header for assignment manipulation/updating for characters
 
-#include "Build/JA2Types.h"
-#include "Build/Strategic/Strategic_Movement.h"
+#include "JA2Types.h"
+#include "Strategic/Strategic_Movement.h"
 
 
 // this distinguishes whether we're only looking for patients healable THIS HOUR (those that have been on their assignment

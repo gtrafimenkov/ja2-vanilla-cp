@@ -1,9 +1,9 @@
 #include <stdexcept>
 
 #include "sgp/Font.h"
-#include "Build/Local.h"
-#include "Build/Utils/PopUpBox.h"
-#include "Build/TileEngine/SysUtil.h"
+#include "Local.h"
+#include "Utils/PopUpBox.h"
+#include "TileEngine/SysUtil.h"
 #include "sgp/Debug.h"
 #include "sgp/VObject.h"
 #include "sgp/Video.h"

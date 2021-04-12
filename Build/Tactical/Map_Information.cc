@@ -1,17 +1,17 @@
-#include "Build/Editor/EditorMercs.h"
-#include "Build/Editor/Road_Smoothing.h"
-#include "Build/Tactical/Animation_Data.h"
-#include "Build/Tactical/Map_Information.h"
-#include "Build/Tactical/Soldier_Init_List.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/World_Items.h"
-#include "Build/TileEngine/Environment.h"
-#include "Build/TileEngine/Exit_Grids.h"
-#include "Build/TileEngine/Isometric_Utils.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/RenderWorld.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/Utils/Animated_ProgressBar.h"
+#include "Editor/EditorMercs.h"
+#include "Editor/Road_Smoothing.h"
+#include "Tactical/Animation_Data.h"
+#include "Tactical/Map_Information.h"
+#include "Tactical/Soldier_Init_List.h"
+#include "Tactical/Weapons.h"
+#include "Tactical/World_Items.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/Exit_Grids.h"
+#include "TileEngine/Isometric_Utils.h"
+#include "TileEngine/Lighting.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/WorldDef.h"
+#include "Utils/Animated_ProgressBar.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/Random.h"
@@ -552,7 +552,7 @@ void ValidateAndUpdateMapVersionIfNecessary()
 	AutoCalculateItemNoOverwriteStatus() ;
 }
 
-#include "Build/Editor/Summary_Info.h"
+#include "Editor/Summary_Info.h"
 //This function is used to avoid conflicts between minor version updates and sector summary info.
 //By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 //and really prevent major map updates.

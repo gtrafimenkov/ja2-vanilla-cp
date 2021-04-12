@@ -2,10 +2,10 @@
 #define STRUCTURE_H
 
 #include "sgp/AutoObj.h"
-#include "Build/JA2Types.h"
-#include "Structure_Internals.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Utils/Sound_Control.h"
+#include "JA2Types.h"
+#include "TileEngine/Structure_Internals.h"
+#include "Tactical/Overhead_Types.h"
+#include "Utils/Sound_Control.h"
 
 #define NOTHING_BLOCKING							0
 #define BLOCKING_REDUCE_RANGE					1

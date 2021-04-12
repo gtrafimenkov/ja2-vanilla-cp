@@ -1,5 +1,5 @@
 #include <math.h>
-#include "Phys_Math.h"
+#include "TileEngine/Phys_Math.h"
 
 
 vector_3 VAdd( vector_3 *a, vector_3 *b )

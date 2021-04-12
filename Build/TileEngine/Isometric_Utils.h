@@ -1,8 +1,8 @@
 #ifndef __ISOMETRIC_UTILSH
 #define __ISOMETRIC_UTILSH
 
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "Tactical/Overhead_Types.h"
+#include "TileEngine/WorldDef.h"
 
 
 #define MAXCOL					WORLD_COLS

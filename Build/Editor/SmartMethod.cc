@@ -1,9 +1,9 @@
-#include "Build/TileEngine/TileDef.h"
-#include "Build/TileEngine/WorldDef.h"	//LEVELNODE def
-#include "Build/TileEngine/WorldMan.h"	//ReplaceStructIndex
-#include "SmartMethod.h"
-#include "Smoothing_Utils.h"
-#include "Editor_Undo.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"	//LEVELNODE def
+#include "TileEngine/WorldMan.h"	//ReplaceStructIndex
+#include "Editor/SmartMethod.h"
+#include "Editor/Smoothing_Utils.h"
+#include "Editor/Editor_Undo.h"
 
 
 UINT8 gubDoorUIValue = 0;

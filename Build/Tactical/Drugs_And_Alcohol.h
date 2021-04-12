@@ -17,7 +17,7 @@
 #define REGEN_POINTS_PER_BOOSTER					4
 #define LIFE_GAIN_PER_REGEN_POINT					10
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 #include "sgp/Types.h"
 
 BOOLEAN ApplyDrugs( SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject );

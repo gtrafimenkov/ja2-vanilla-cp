@@ -1,11 +1,11 @@
 #include "sgp/Debug.h"
-#include "Build/TileEngine/Environment.h"
+#include "TileEngine/Environment.h"
 #include "sgp/FileMan.h"
-#include "Build/JAScreens.h"
+#include "JAScreens.h"
 #include "sgp/LoadSaveData.h"
-#include "LoadSaveLightSprite.h"
-#include "Build/ScreenIDs.h"
-#include "Build/Sys_Globals.h"
+#include "TileEngine/LoadSaveLightSprite.h"
+#include "ScreenIDs.h"
+#include "Sys_Globals.h"
 #include "sgp/MemMan.h"
 
 void ExtractLightSprite(HWFILE const f, UINT32 const light_time)

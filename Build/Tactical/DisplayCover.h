@@ -1,7 +1,7 @@
 #ifndef _DISPLAY_COVER__H_
 #define _DISPLAY_COVER__H_
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 void DisplayCoverOfSelectedGridNo(void);

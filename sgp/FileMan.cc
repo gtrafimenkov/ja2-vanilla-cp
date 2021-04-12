@@ -5,11 +5,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "Directories.h"
-#include "FileMan.h"
-#include "LibraryDataBase.h"
-#include "MemMan.h"
-#include "PODObj.h"
-#include "Logger.h"
+#include "sgp/FileMan.h"
+#include "sgp/LibraryDataBase.h"
+#include "sgp/MemMan.h"
+#include "sgp/PODObj.h"
+#include "sgp/Logger.h"
 #include "MicroIni/MicroIni.hpp"
 
 #include "boost/filesystem.hpp"
@@ -20,7 +20,7 @@
 #include <pwd.h>
 #endif
 
-#include "PlatformIO.h"
+#include "sgp/PlatformIO.h"
 
 #if MACOS_USE_RESOURCES_FROM_BUNDLE && defined __APPLE__  && defined __MACH__
 #include <CoreFoundation/CFBundle.h>

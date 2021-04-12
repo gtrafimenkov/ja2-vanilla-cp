@@ -2,9 +2,9 @@
 #define __EDITORDEFINES_H
 
 #include "sgp/Button_System.h"
-#include "Build/Local.h"
+#include "Local.h"
 #include "sgp/Types.h"
-#include "Button_Defines.h"
+#include "Editor/Button_Defines.h"
 
 enum ToolbarMode
 {

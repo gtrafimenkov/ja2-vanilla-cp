@@ -1,7 +1,7 @@
 #ifndef __AMBIENT_CONTROL
 #define __AMBIENT_CONTROL
 
-#include "Build/TileEngine/Ambient_Types.h"
+#include "TileEngine/Ambient_Types.h"
 
 void HandleNewSectorAmbience( UINT8 ubAmbientID );
 UINT32 SetupNewAmbientSound( UINT32 uiAmbientID );

@@ -2,7 +2,7 @@
 #define __INVENTORY_CHOOSING_H
 
 #include "sgp/Types.h"
-#include "Build/Tactical/Soldier_Create.h"
+#include "Tactical/Soldier_Create.h"
 
 #define MORTAR_GRENADE_CLASS	100
 

@@ -2,8 +2,8 @@
 #define __SOLDER_PROFILE_H
 
 #include "sgp/Debug.h"
-#include "Build/JA2Types.h"
-#include "Build/Tactical/Soldier_Profile_Type.h"
+#include "JA2Types.h"
+#include "Tactical/Soldier_Profile_Type.h"
 
 
 extern INT8 gbSkillTraitBonus[NUM_SKILLTRAITS];

@@ -1,9 +1,9 @@
 #ifndef _TILE_ANIMATION_H
 #define _TILE_ANIMATION_H
 
-#include "Build/JA2Types.h"
-#include "Build/Utils/Sound_Control.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "JA2Types.h"
+#include "Utils/Sound_Control.h"
+#include "TileEngine/WorldDef.h"
 
 
 enum AnimationFlags

@@ -1,6 +1,6 @@
 #include <stdarg.h>
 #include "sgp/HImage.h"
-#include "Build/Local.h"
+#include "Local.h"
 #include "sgp/Types.h"
 #include "sgp/MemMan.h"
 #include "sgp/Font.h"
@@ -9,7 +9,7 @@
 #include "sgp/VSurface.h"
 #include "sgp/VObject.h"
 #include "sgp/VObject_Blitters.h"
-#include "Build/GameRes.h"
+#include "GameRes.h"
 
 
 typedef UINT8 GlyphIdx;

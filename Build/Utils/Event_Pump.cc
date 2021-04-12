@@ -1,12 +1,12 @@
 #include <stdexcept>
 
-#include "Build/Utils/Event_Manager.h"
-#include "Build/Utils/Timer_Control.h"
-#include "Build/Utils/Event_Pump.h"
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Weapons.h"
-#include "Build/Tactical/OppList.h"
+#include "Utils/Event_Manager.h"
+#include "Utils/Timer_Control.h"
+#include "Utils/Event_Pump.h"
+#include "Tactical/Soldier_Control.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/Weapons.h"
+#include "Tactical/OppList.h"
 #include "sgp/Debug.h"
 
 

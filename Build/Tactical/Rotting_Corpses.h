@@ -2,8 +2,8 @@
 #define _ROTTING_CORPSES_H
 
 #include "sgp/Debug.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/TileEngine/Tile_Animation.h"
+#include "Tactical/Overhead_Types.h"
+#include "TileEngine/Tile_Animation.h"
 
 
 #define	NUM_CORPSE_SHADES		17

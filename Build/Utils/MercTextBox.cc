@@ -1,16 +1,16 @@
 #include <stdexcept>
 
-#include "Build/Directories.h"
+#include "Directories.h"
 #include "sgp/Font.h"
 #include "sgp/HImage.h"
-#include "Build/Local.h"
-#include "Build/Utils/MercTextBox.h"
+#include "Local.h"
+#include "Utils/MercTextBox.h"
 #include "sgp/PODObj.h"
 #include "sgp/VObject.h"
 #include "sgp/VSurface.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/Utils/WordWrap.h"
-#include "Build/TileEngine/Render_Dirty.h"
+#include "Utils/Font_Control.h"
+#include "Utils/WordWrap.h"
+#include "TileEngine/Render_Dirty.h"
 #include "sgp/Video.h"
 #include "sgp/MemMan.h"
 

@@ -2,7 +2,7 @@
 #define __PREBATTLE_INTERFACE_H
 
 #include "sgp/Types.h"
-#include "Build/Strategic/Strategic_Movement.h"
+#include "Strategic/Strategic_Movement.h"
 
 void InitPreBattleInterface(GROUP* battle_group, bool persistent_pbi);
 void KillPreBattleInterface(void);

@@ -1,8 +1,8 @@
 #ifndef __OVERHEADMAP_H
 #define __OVERHEADMAP_H
 
-#include "Build/JA2Types.h"
-#include "World_Tileset_Enums.h"
+#include "JA2Types.h"
+#include "TileEngine/World_Tileset_Enums.h"
 
 
 void InitNewOverheadDB(TileSetID);

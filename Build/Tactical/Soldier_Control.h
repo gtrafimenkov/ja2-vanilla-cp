@@ -6,10 +6,10 @@
 //Please don't change this value from 10.  It will invalidate all of the maps and soldiers.
 #define MAXPATROLGRIDS  10  // *** THIS IS A DUPLICATION - MUST BE MOVED !
 
-#include "Build/Tactical/Animation_Cache.h"
-#include "Build/JA2Types.h"
-#include "Build/Tactical/Overhead_Types.h"
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Animation_Cache.h"
+#include "JA2Types.h"
+#include "Tactical/Overhead_Types.h"
+#include "Tactical/Item_Types.h"
 
 
 // ANDREW: these are defines for OKDestanation usage - please move to approprite file

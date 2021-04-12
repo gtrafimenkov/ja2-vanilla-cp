@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "Build/SaveLoadGame.h"
+#include "SaveLoadGame.h"
 #include "sgp/FileMan.h"
 #include "src/TestUtils.h"
 

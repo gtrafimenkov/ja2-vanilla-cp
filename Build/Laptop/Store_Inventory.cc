@@ -1,10 +1,10 @@
 #include "sgp/Types.h"
-#include "Build/Laptop/Store_Inventory.h"
+#include "Laptop/Store_Inventory.h"
 #include "sgp/Random.h"
 #include "sgp/Debug.h"
-#include "Build/Laptop/LaptopSave.h"
-#include "Build/Tactical/ShopKeeper_Interface.h"
-#include "Build/Tactical/ArmsDealerInvInit.h"
+#include "Laptop/LaptopSave.h"
+#include "Tactical/ShopKeeper_Interface.h"
+#include "Tactical/ArmsDealerInvInit.h"
 
 
 UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS] =

@@ -1,8 +1,8 @@
 #ifndef _GAMESCREEN_H
 #define _GAMESCREEN_H
 
-#include "Build/JA2Types.h"
-#include "Build/ScreenIDs.h"
+#include "JA2Types.h"
+#include "ScreenIDs.h"
 
 
 #define		ARE_IN_FADE_IN( )		( gfFadeIn || gfFadeInitialized )

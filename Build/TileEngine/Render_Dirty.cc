@@ -1,12 +1,12 @@
 #include <stdexcept>
 
 #include "sgp/Font.h"
-#include "Build/Local.h"
-#include "Build/TileEngine/WorldDef.h"
-#include "Build/TileEngine/RenderWorld.h"
+#include "Local.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/RenderWorld.h"
 #include "sgp/VSurface.h"
-#include "Build/TileEngine/Render_Dirty.h"
-#include "Build/TileEngine/SysUtil.h"
+#include "TileEngine/Render_Dirty.h"
+#include "TileEngine/SysUtil.h"
 #include "sgp/Video.h"
 #include "sgp/VObject_Blitters.h"
 #include <stdarg.h>

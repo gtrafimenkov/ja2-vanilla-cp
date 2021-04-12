@@ -2,9 +2,9 @@
 #define __INTERFACE_ITEMS_H
 
 #include "sgp/Button_System.h"
-#include "Build/Tactical/Interface.h"
+#include "Tactical/Interface.h"
 #include "sgp/MouseSystem.h"
-#include "Build/Tactical/Soldier_Control.h"
+#include "Tactical/Soldier_Control.h"
 
 
 // DEFINES FOR ITEM SLOT SIZES IN PIXELS

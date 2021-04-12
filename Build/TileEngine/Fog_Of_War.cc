@@ -1,8 +1,8 @@
 #include "sgp/Types.h"
-#include "Build/TileEngine/Fog_Of_War.h"
-#include "Simple_Render_Utils.h"
-#include "Build/TileEngine/Lighting.h"
-#include "Build/TileEngine/WorldDef.h"
+#include "TileEngine/Fog_Of_War.h"
+#include "TileEngine/Simple_Render_Utils.h"
+#include "TileEngine/Lighting.h"
+#include "TileEngine/WorldDef.h"
 
 
 //When line of sight reaches a gridno, and there is a light there, it turns it on.

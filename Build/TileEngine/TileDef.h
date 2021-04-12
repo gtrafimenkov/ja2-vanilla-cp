@@ -1,8 +1,8 @@
 #ifndef __TILEDEF_H
 #define __TILEDEF_H
 
-#include "Build/JA2Types.h"
-#include "Build/TileEngine/TileDat.h"
+#include "JA2Types.h"
+#include "TileEngine/TileDat.h"
 
 
 // CATEGORY TYPES

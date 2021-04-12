@@ -1,9 +1,9 @@
 #include <stdexcept>
 
-#include "Build/Tactical/LoadSaveObjectType.h"
-#include "Build/Tactical/LoadSaveSoldierType.h"
-#include "Build/Tactical/Overhead.h"
-#include "Build/Tactical/Tactical_Save.h"
+#include "Tactical/LoadSaveObjectType.h"
+#include "Tactical/LoadSaveSoldierType.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/Tactical_Save.h"
 #include "sgp/Debug.h"
 #include "sgp/LoadSaveData.h"
 

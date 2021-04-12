@@ -1,5 +1,5 @@
-#include "Build/Tactical/LoadSaveBasicSoldierCreateStruct.h"
-#include "Build/Tactical/Soldier_Create.h"
+#include "Tactical/LoadSaveBasicSoldierCreateStruct.h"
+#include "Tactical/Soldier_Create.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"

@@ -1,9 +1,9 @@
 #ifndef __BOBBYR_H
 #define __BOBBYR_H
 
-#include "Build/Tactical/Item_Types.h"
-#include "Build/Laptop/Laptop.h"
-#include "Build/Laptop/Store_Inventory.h"
+#include "Tactical/Item_Types.h"
+#include "Laptop/Laptop.h"
+#include "Laptop/Store_Inventory.h"
 
 
 void EnterBobbyR(void);

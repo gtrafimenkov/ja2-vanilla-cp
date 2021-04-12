@@ -1,7 +1,7 @@
 #ifndef LOADSAVEREALOBJECT_H
 #define LOADSAVEREALOBJECT_H
 
-#include "Build/TileEngine/Physics.h"
+#include "TileEngine/Physics.h"
 
 
 void ExtractRealObjectFromFile(HWFILE, REAL_OBJECT*);

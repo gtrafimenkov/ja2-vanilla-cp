@@ -1,7 +1,7 @@
 #ifndef __TEXT_H
 #define __TEXT_H
 
-#include "Build/Tactical/Item_Types.h"
+#include "Tactical/Item_Types.h"
 #include "sgp/Types.h"
 
 extern wchar_t ShortItemNames[MAXITEMS][80];

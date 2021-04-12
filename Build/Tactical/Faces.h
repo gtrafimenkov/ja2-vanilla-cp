@@ -1,7 +1,7 @@
 #ifndef __TALKING_H_
 #define __TALKING_H_
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 #define   NO_EXPRESSION			0

@@ -26,12 +26,12 @@
 #include "sgp/Cursor_Control.h"
 #include "sgp/Button_System.h"
 #include "sgp/Timer.h"
-#include "Build/Utils/Font_Control.h"
-#include "Build/JAScreens.h"
-#include "Build/Local.h"
-#include "Build/TileEngine/Render_Dirty.h"
+#include "Utils/Font_Control.h"
+#include "JAScreens.h"
+#include "Local.h"
+#include "TileEngine/Render_Dirty.h"
 #include "sgp/VSurface.h"
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 
 
 //Kris:	Nov 31, 1999 -- Added support for double clicking

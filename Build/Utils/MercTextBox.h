@@ -2,7 +2,7 @@
 #define MERCTEXTBOX_H
 
 #include "sgp/AutoObj.h"
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 enum MercPopupBoxFlags

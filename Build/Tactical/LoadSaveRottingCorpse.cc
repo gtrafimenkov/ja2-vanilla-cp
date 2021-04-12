@@ -1,4 +1,4 @@
-#include "LoadSaveRottingCorpse.h"
+#include "Tactical/LoadSaveRottingCorpse.h"
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
 #include "sgp/LoadSaveData.h"

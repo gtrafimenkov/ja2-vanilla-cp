@@ -1,8 +1,8 @@
 #ifndef _SAVE_LOAD_GAME_H_
 #define _SAVE_LOAD_GAME_H_
 
-#include "Build/GameSettings.h"
-#include "Build/ScreenIDs.h"
+#include "GameSettings.h"
+#include "ScreenIDs.h"
 
 
 #define		BYTESINMEGABYTE						1048576 //1024*1024

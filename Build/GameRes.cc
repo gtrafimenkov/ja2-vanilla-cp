@@ -2,14 +2,14 @@
 #include <stdexcept>
 
 #include "Directories.h"
-#include "LibraryDataBase.h"
-#include "Logger.h"
-#include "Multi_Language_Graphic_Utils.h"
-#include "Text.h"
-#include "TranslationTable.h"
+#include "sgp/LibraryDataBase.h"
+#include "sgp/Logger.h"
+#include "Utils/Multi_Language_Graphic_Utils.h"
+#include "Utils/Text.h"
+#include "sgp/TranslationTable.h"
 #include "GameState.h"
-#include "EncodingCorrectors.h"
-#include "StrUtils.h"
+#include "sgp/EncodingCorrectors.h"
+#include "sgp/StrUtils.h"
 
 
 extern LanguageRes g_LanguageResDutch;

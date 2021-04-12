@@ -1,8 +1,8 @@
 #include "sgp/Debug.h"
 #include "sgp/FileMan.h"
-#include "LoadSaveExplosionType.h"
+#include "TileEngine/LoadSaveExplosionType.h"
 #include "sgp/LoadSaveData.h"
-#include "Build/Tactical/Overhead.h"
+#include "Tactical/Overhead.h"
 
 
 void ExtractExplosionTypeFromFile(HWFILE const file, EXPLOSIONTYPE* const e)

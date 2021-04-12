@@ -1,7 +1,7 @@
 #ifndef _INTRO__C_
 #define _INTRO__C_
 
-#include "Build/ScreenIDs.h"
+#include "ScreenIDs.h"
 
 
 ScreenID IntroScreenHandle(void);

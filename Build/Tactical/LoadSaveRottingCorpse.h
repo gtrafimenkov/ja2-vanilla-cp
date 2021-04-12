@@ -1,7 +1,7 @@
 #ifndef LOADSAVEROTTINGCORPSE_H
 #define LOADSAVEROTTINGCORPSE_H
 
-#include "Build/Tactical/Rotting_Corpses.h"
+#include "Tactical/Rotting_Corpses.h"
 
 
 void ExtractRottingCorpseFromFile(HWFILE, ROTTING_CORPSE_DEFINITION*);

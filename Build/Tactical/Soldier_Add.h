@@ -1,7 +1,7 @@
 #ifndef _SOLDIER_ADD_H
 #define _SOLDIER_ADD_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 
 // Finds a gridno given a sweet spot

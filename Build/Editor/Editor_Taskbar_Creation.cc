@@ -1,19 +1,19 @@
 //sgp
 #include "sgp/Button_System.h"
-#include "Build/Directories.h"
+#include "Directories.h"
 #include "sgp/Font.h"
-#include "Build/Utils/Font_Control.h"
+#include "Utils/Font_Control.h"
 //editor
-#include "EditorDefines.h"
-#include "Editor_Callback_Prototypes.h"
-#include "Editor_Taskbar_Creation.h"
-#include "Editor_Taskbar_Utils.h"
-#include "Build/Editor/EditorMercs.h"
-#include "EditorMapInfo.h"
+#include "Editor/EditorDefines.h"
+#include "Editor/Editor_Callback_Prototypes.h"
+#include "Editor/Editor_Taskbar_Creation.h"
+#include "Editor/Editor_Taskbar_Utils.h"
+#include "Editor/EditorMercs.h"
+#include "Editor/EditorMapInfo.h"
 //tactical
-#include "Build/Tactical/Soldier_Control.h"
-#include "Build/Tactical/Soldier_Create.h"
-#include "Build/Tactical/Overhead_Types.h"
+#include "Tactical/Soldier_Control.h"
+#include "Tactical/Soldier_Create.h"
+#include "Tactical/Overhead_Types.h"
 
 
 static void InitEditorItemStatsButtons(void)

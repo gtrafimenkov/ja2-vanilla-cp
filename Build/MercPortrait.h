@@ -1,7 +1,7 @@
 #ifndef MERCPORTRAIT_H
 #define MERCPORTRAIT_H
 
-#include "Build/JA2Types.h"
+#include "JA2Types.h"
 
 SGPVObject* Load33Portrait(MERCPROFILESTRUCT const&);
 SGPVObject* Load65Portrait(MERCPROFILESTRUCT const&);
