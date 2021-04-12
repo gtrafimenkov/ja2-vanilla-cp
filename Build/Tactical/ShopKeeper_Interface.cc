@@ -59,12 +59,6 @@
 #include "sgp/VObject_Blitters.h"
 #include "sgp/VObject.h"
 #include "sgp/VSurface.h"
-#include "src/CalibreModel.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/MagazineModel.h"
-#include "src/policy/GamePolicy.h"
-#include "src/WeaponModels.h"
 
 
 #define		SKI_BUTTON_FONT										MILITARYFONT1//FONT14ARIAL

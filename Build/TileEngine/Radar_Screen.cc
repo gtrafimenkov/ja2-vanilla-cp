@@ -31,7 +31,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/Button_System.h"
 #include "ScreenIDs.h"
-#include "UILayout.h"
 
 
 extern INT32 iCurrentMapSectorZ;

@@ -72,7 +72,6 @@
 #include "Tactical/Map_Information.h"
 #include "sgp/Video.h"
 #include "Screens.h"
-#include "UILayout.h"
 
 
 #define MAX_ON_DUTY_SOLDIERS 6
@@ -1568,11 +1567,6 @@ static ScreenID UIHandleCMoveMerc(UI_EVENT* pUIEvent)
 			// TODO: Only our squad!
 			FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 			{
-<<<<<<< HEAD
-        std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 				if (OkControllableMerc(pSoldier) && pSoldier->bAssignment == CurrentSquad() && !pSoldier->fMercAsleep)
 				{
 	        // If we can't be controlled, returninvalid...
@@ -4106,10 +4100,6 @@ static BOOLEAN HandleMultiSelectionMove(INT16 sDestGridNo)
 
 	FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM)
 	{
-<<<<<<< HEAD
-    std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 		if (pSoldier->bInSector)
 		{
 			if ( pSoldier->uiStatusFlags & SOLDIER_MULTI_SELECTED )

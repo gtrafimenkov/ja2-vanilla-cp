@@ -71,7 +71,6 @@
 #include "sgp/MemMan.h"
 #include "sgp/Debug.h"
 #include "Tactical/Items.h"
-#include "UILayout.h"
 
 
 #define		ITEMDESC_FONT							BLOCKFONT2

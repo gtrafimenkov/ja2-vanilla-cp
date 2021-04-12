@@ -1,13 +1,9 @@
 
-# By default build the project with unit tests.
-# If you want to build without them, use make WITH_UNITTESTS=0
-WITH_UNITTESTS ?= 1
-
 WITH_DEBUGINFO ?= 1
 
 WITH_LPTHREAD ?= 1
 
-BINARY    ?= ja2-ve
+BINARY    ?= ja2-vanilla-cp
 
 VERSION := 1.0.xx
 GAME_VERSION := $(VERSION)
@@ -74,20 +70,12 @@ ifdef WITH_DEBUGINFO
 CFLAGS += -g
 endif
 
+CFLAGS += -I .
 CFLAGS += -I Build
-CFLAGS += -I Build/Tactical
-CFLAGS += -I Build/Strategic
-CFLAGS += -I Build/Editor
-CFLAGS += -I Build/Res
-CFLAGS += -I Build/Laptop
-CFLAGS += -I Build/Utils
-CFLAGS += -I Build/TileEngine
-CFLAGS += -I Build/TacticalAI
-CFLAGS += -I sgp
-CFLAGS += -I _build/lib-MicroIni/include
 CFLAGS += -I _build/lib-boost
-CFLAGS += -I _build/lib-utf8cpp/source
 CFLAGS += -I _build/lib-slog
+CFLAGS += -I _build/lib-smacker/libsmacker
+CFLAGS += -I _build/lib-utf8cpp/source
 
 #CFLAGS += -Wall
 #CFLAGS += -W
@@ -463,11 +451,6 @@ SRCS += sgp/VObject_Blitters.cc
 SRCS += sgp/VSurface.cc
 SRCS += sgp/Video.cc
 
-SRCS += _build/lib-MicroIni/src/MicroIni/File.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Line.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Section.cpp
-SRCS += _build/lib-MicroIni/src/MicroIni/Value.cpp
-
 SRCS += _build/lib-boost/libs/system/src/error_code.cpp
 SRCS += _build/lib-boost/libs/filesystem/src/codecvt_error_category.cpp
 SRCS += _build/lib-boost/libs/filesystem/src/operations.cpp
@@ -494,28 +477,6 @@ LNGS += Build/Utils/_PolishText.cc
 LNGS += Build/Utils/_RussianText.cc
 
 SRCS += $(LNGS)
-
-ifeq "$(WITH_UNITTESTS)" "1"
-CFLAGS += -D WITH_UNITTESTS
-CFLAGS += -I _build/lib-gtest/include
-CFLAGS += -I _build/lib-gtest
-SRCS += _build/lib-gtest/src/gtest.cc
-SRCS += _build/lib-gtest/src/gtest-death-test.cc
-SRCS += _build/lib-gtest/src/gtest-filepath.cc
-SRCS += _build/lib-gtest/src/gtest-port.cc
-SRCS += _build/lib-gtest/src/gtest-printers.cc
-SRCS += _build/lib-gtest/src/gtest-test-part.cc
-SRCS += _build/lib-gtest/src/gtest-typed-test.cc
-SRCS += Build/SaveLoadGame_unittest.cc
-SRCS += Build/Tactical/LoadSaveMercProfile_unittest.cc
-SRCS += Build/VanillaDataStructures_unittest.cc
-SRCS += sgp/FileMan_unittest.cc
-SRCS += sgp/LoadSaveData_unittest.cc
-SRCS += sgp/SGPStrings_unittest.cc
-SRCS += sgp/UTF8String_unittest.cc
-SRCS += sgp/wchar_unittest.cc
-SRCS += src/JsonUtility_unittests.cc
-endif
 
 OBJS = $(filter %.o, $(SRCS:.c=.o) $(SRCS:.cc=.o) $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)

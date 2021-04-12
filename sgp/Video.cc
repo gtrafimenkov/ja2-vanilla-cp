@@ -27,10 +27,6 @@
 #include "sgp/PlatformSDL.h"
 #include "sgp/Font.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-
-
 #define BUFFER_READY      0x00
 #define BUFFER_DIRTY      0x02
 
@@ -127,7 +123,7 @@ static void GetRGBDistribution();
 
 void InitializeVideoManager(void)
 {
-	SLOGD(TAG, "Initializing the video manager");
+	// SLOGD(TAG, "Initializing the video manager");
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 #ifdef TARGET_PLATFORM_WINDOWS
 #else
@@ -164,7 +160,7 @@ void InitializeVideoManager(void)
   );
 
   if (ScreenBuffer == NULL) {
-    SLOGE(TAG, "SDL_CreateRGBSurface for ScreenBuffer failed: %s\n", SDL_GetError());
+    // SLOGE(TAG, "SDL_CreateRGBSurface for ScreenBuffer failed: %s\n", SDL_GetError());
   }
 
   ScreenTexture = SDL_CreateTexture(GameRenderer,
@@ -173,7 +169,7 @@ void InitializeVideoManager(void)
                                     SCREEN_WIDTH, SCREEN_HEIGHT);
 
   if (ScreenTexture == NULL) {
-    SLOGE(TAG, "SDL_CreateTexture for ScreenTexture failed: %s\n", SDL_GetError());
+    // SLOGE(TAG, "SDL_CreateTexture for ScreenTexture failed: %s\n", SDL_GetError());
   }
 
 	FrameBuffer = SDL_CreateRGBSurface(
@@ -183,7 +179,7 @@ void InitializeVideoManager(void)
 
 	if (FrameBuffer == NULL)
 	{
-		SLOGE(TAG, "SDL_CreateRGBSurface for FrameBuffer failed: %s\n", SDL_GetError());
+		// SLOGE(TAG, "SDL_CreateRGBSurface for FrameBuffer failed: %s\n", SDL_GetError());
 	}
 
 	MouseCursor = SDL_CreateRGBSurface(
@@ -194,7 +190,7 @@ void InitializeVideoManager(void)
 
 	if (MouseCursor == NULL)
 	{
-		SLOGE(TAG, "SDL_CreateRGBSurface for MouseCursor failed: %s\n", SDL_GetError());
+		// SLOGE(TAG, "SDL_CreateRGBSurface for MouseCursor failed: %s\n", SDL_GetError());
   }
 
 	SDL_ShowCursor(SDL_DISABLE);
@@ -527,7 +523,7 @@ static FILE* CreateScreenshotFile(void)
 	do
 	{
 		char filename[2048];
-		sprintf(filename, "%s/SCREEN%03d.TGA", exec_dir.c_str(), guiPrintFrameBufferIndex++);
+		sprintf(filename, "%s/SCREEN%03d.TGA", exec_dir, guiPrintFrameBufferIndex++);
 #ifndef _WIN32
 #	define O_BINARY 0
 #endif
@@ -820,7 +816,7 @@ static void RefreshMovieCache(void)
 	for (INT32 cnt = 0; cnt < giNumFrames; cnt++)
 	{
 		CHAR8 cFilename[2048];
-		sprintf(cFilename, "%s/JA%5.5d.TGA", exec_dir.c_str(), uiPicNum++);
+		sprintf(cFilename, "%s/JA%5.5d.TGA", ExecDir, uiPicNum++);
 
 		FILE* disk = fopen(cFilename, "wb");
 		if (disk == NULL) return;

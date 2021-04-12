@@ -7,7 +7,7 @@
 #include "TileEngine/Ambient_Control.h"
 #include "sgp/SoundMan.h"
 #include "sgp/Debug.h"
-
+#include "sgp/StrUtils.h"
 
 AMBIENTDATA_STRUCT		gAmbData[ MAX_AMBIENT_SOUNDS ];
 INT16									gsNumAmbData = 0;
@@ -17,7 +17,7 @@ try
 {
 	std::string zFilename = FormattedString(AMBIENTDIR "/%d.bad", ubAmbientID);
 
-	AutoSGPFile hFile(FileMan::openForReadingSmart(zFilename, true));
+	AutoSGPFile hFile(FileMan::openForReadingSmart(zFilename.c_str(), true));
 
 	// READ #
 	FileRead(hFile, &gsNumAmbData, sizeof(INT16));

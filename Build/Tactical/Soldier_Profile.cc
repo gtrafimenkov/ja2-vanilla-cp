@@ -37,6 +37,12 @@
 #include "TileEngine/Environment.h"
 #include "Tactical/Items.h"
 #include "GameRes.h"
+#include "Strategic/MapScreen.h"
+#include "Directories.h"
+#include "Tactical/LoadSaveMercProfile.h"
+#include "Tactical/Interface_Panels.h"
+#include "Tactical/Interface_Control.h"
+#include "Tactical/Merc_Hiring.h"
 
 extern BOOLEAN gfProfileDataLoaded;
 

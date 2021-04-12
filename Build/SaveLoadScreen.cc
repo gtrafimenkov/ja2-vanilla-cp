@@ -42,7 +42,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/FileMan.h"
 #include "Strategic/Campaign_Init.h"
-#include "UILayout.h"
 
 #if defined JA2BETAVERSION
 #include "Tactical/Soldier_Init_List.h"

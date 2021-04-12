@@ -103,7 +103,6 @@
 #include "Tactical/Enemy_Soldier_Save.h"
 #include "Laptop/BobbyRMailOrder.h"
 #include "Laptop/Mercs.h"
-#include "UILayout.h"
 #include "sgp/UTF8String.h"
 #include "GameRes.h"
 
@@ -136,8 +135,8 @@ ScreenID guiScreenToGotoAfterLoadingSavedGame = ERROR_SCREEN; // XXX TODO001A wa
 
 extern		UINT32		guiCurrentUniqueSoldierId;
 
-static void SaveTempFileToSavedGame(const char* fileName, HWFILE const hFile);
-static void LoadTempFileFromSavedGame(const char* tempFileName, HWFILE const hFile);
+// static void SaveTempFileToSavedGame(const char* fileName, HWFILE const hFile);
+// static void LoadTempFileFromSavedGame(const char* tempFileName, HWFILE const hFile);
 
 static BYTE const* ExtractGameOptions(BYTE const* const data, GAME_OPTIONS& g)
 {
@@ -350,7 +349,7 @@ BOOLEAN SaveGame(UINT8 const ubSaveGameID, wchar_t const* GameDesc)
 		SaveSoldierStructure(f);
 		SaveGameFilePosition(ubSaveGameID, f, "Soldier Structure");
 
-		SaveTempFileToSavedGame(NEWTMP_FINANCES_DATA_FILE, f);
+		SaveFilesToSavedGame(FINANCES_DATA_FILE, f);
 		SaveGameFilePosition(ubSaveGameID, f, "Finances Data File");
 
 		SaveFilesToSavedGame(HISTORY_DATA_FILE, f);
@@ -772,7 +771,7 @@ void LoadSavedGame(UINT8 const save_slot_id)
 	LoadGameFilePosition(save_slot_id, f, "Soldier Structure");
 
 	BAR(1, L"Finances Data File...");
-	LoadTempFileFromSavedGame(NEWTMP_FINANCES_DATA_FILE, f);
+	LoadFilesFromSavedGame(FINANCES_DATA_FILE, f);
 	LoadGameFilePosition(save_slot_id, f, "Finances Data File");
 
 	BAR(1, L"History File...");
@@ -1397,19 +1396,38 @@ static void LoadSoldierStructure(HWFILE const f, UINT32 savegame_version, bool s
 }
 
 
-static void SaveFileToSavedGame(SGPFile* fileToSave, HWFILE const hFile)
+// static void SaveFileToSavedGame(SGPFile* fileToSave, HWFILE const hFile)
+// {
+// 	AutoSGPFile hSrcFile(FileMan::openForReadingSmart(pSrcFileName, true));
+
+// 	//Get the file size of the source data file
+// 	UINT32 uiFileSize = FileGetSize( fileToSave );
+
+// 	// Write the the size of the file to the saved game file
+// 	FileWrite(hFile, &uiFileSize, sizeof(UINT32));
+
+// 	if (uiFileSize == 0) return;
+
+// 	// Read the saource file into the buffer
+// 	SGP::Buffer<UINT8> pData(uiFileSize);
+// 	FileRead(fileToSave, pData, uiFileSize);
+
+// 	// Write the buffer to the saved game file
+// 	FileWrite(hFile, pData, uiFileSize);
+// }
+
+// static void SaveTempFileToSavedGame(const char* fileName, HWFILE const hFile)
+// {
+// 	AutoSGPFile fileToSave(GCM->openTempFileForReading(fileName));
+//   SaveFileToSavedGame(fileToSave, hFile);
+// }
+
+void SaveFilesToSavedGame(char const* const pSrcFileName, HWFILE const hFile)
 {
-<<<<<<< HEAD
-=======
 	AutoSGPFile hSrcFile(FileMan::openForReadingSmart(pSrcFileName, true));
 
-#ifdef JA2BETAVERSION
-	guiNumberOfMapTempFiles++;		//Increment counter:  To determine where the temp files are crashing
-#endif
-
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 	//Get the file size of the source data file
-	UINT32 uiFileSize = FileGetSize( fileToSave );
+	UINT32 uiFileSize = FileGetSize( hSrcFile );
 
 	// Write the the size of the file to the saved game file
 	FileWrite(hFile, &uiFileSize, sizeof(UINT32));
@@ -1418,24 +1436,11 @@ static void SaveFileToSavedGame(SGPFile* fileToSave, HWFILE const hFile)
 
 	// Read the saource file into the buffer
 	SGP::Buffer<UINT8> pData(uiFileSize);
-	FileRead(fileToSave, pData, uiFileSize);
+	FileRead(hSrcFile, pData, uiFileSize);
 
 	// Write the buffer to the saved game file
 	FileWrite(hFile, pData, uiFileSize);
 }
-
-static void SaveTempFileToSavedGame(const char* fileName, HWFILE const hFile)
-{
-	AutoSGPFile fileToSave(GCM->openTempFileForReading(fileName));
-  SaveFileToSavedGame(fileToSave, hFile);
-}
-
-void SaveFilesToSavedGame(char const* const pSrcFileName, HWFILE const hFile)
-{
-	AutoSGPFile hSrcFile(GCM->openGameResForReading(pSrcFileName));
-  SaveFileToSavedGame(hSrcFile, hFile);
-}
-
 
 static void LoadFileFromSavedGame(SGPFile* fileToWrite, HWFILE const hFile)
 {
@@ -1453,11 +1458,11 @@ static void LoadFileFromSavedGame(SGPFile* fileToWrite, HWFILE const hFile)
 	FileWrite(fileToWrite, pData, uiFileSize);
 }
 
-void LoadTempFileFromSavedGame(const char* tempFileName, HWFILE const hFile)
-{
-	AutoSGPFile fileToWrite(GCM->openTempFileForWriting(tempFileName, true));
-  LoadFileFromSavedGame(fileToWrite, hFile);
-}
+// void LoadTempFileFromSavedGame(const char* tempFileName, HWFILE const hFile)
+// {
+// 	AutoSGPFile fileToWrite(GCM->openTempFileForWriting(tempFileName, true));
+//   LoadFileFromSavedGame(fileToWrite, hFile);
+// }
 
 void LoadFilesFromSavedGame(char const* const pSrcFileName, HWFILE const hFile)
 {
@@ -1623,20 +1628,7 @@ void CreateSavedGameFileNameFromNumber(const UINT8 ubSaveGameID, char* const pzN
 		case 0: // we are creating the QuickSave file
 		{
 			char const* const quick = g_quicksave_name;
-<<<<<<< HEAD
-=======
-#ifdef JA2BETAVERSION
-			if (gfUseConsecutiveQuickSaveSlots &&
-					guiCurrentQuickSaveNumber != 0)
-			{
-				sprintf(pzNewFileName, "%s/%s%02d.%s", dir, quick, guiCurrentQuickSaveNumber, ext);
-			}
-			else
-#endif
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
-			{
-				sprintf(pzNewFileName, "%s/%s.%s", dir, quick, ext);
-			}
+			sprintf(pzNewFileName, "%s/%s.%s", dir, quick, ext);
 			break;
 		}
 
@@ -1712,64 +1704,6 @@ void LoadMercPath(HWFILE const hFile, PathSt** const head)
 }
 
 
-<<<<<<< HEAD
-=======
-#ifdef JA2BETAVERSION
-static void InitSaveGameFilePosition(UINT8 const slot)
-{
-	CHAR8		zFileName[128];
-	sprintf(zFileName, "%s/SaveGameFilePos%2d.txt", g_savegame_dir, slot);
-	FileDelete( zFileName );
-}
-
-
-static void SaveGameFilePosition(UINT8 const slot, const HWFILE save, const char* const pMsg)
-{
-	CHAR8		zTempString[512];
-	UINT32	uiStrLen=0;
-	CHAR8		zFileName[128];
-
-	sprintf(zFileName, "%s/SaveGameFilePos%2d.txt", g_savegame_dir, slot);
-
-	// create the save game file
-	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
-
-	const INT32 pos = FileGetPos(save);
-	sprintf(zTempString, "%8d     %s\n", pos, pMsg);
-	uiStrLen = strlen( zTempString );
-	FileWrite(hFile, zTempString, uiStrLen);
-}
-
-
-static void InitLoadGameFilePosition(UINT8 const slot)
-{
-	CHAR8		zFileName[128];
-	sprintf(zFileName, "%s/LoadGameFilePos%2d.txt", g_savegame_dir, slot);
-	FileDelete( zFileName );
-}
-
-
-static void LoadGameFilePosition(UINT8 const slot, const HWFILE load, const char* const pMsg)
-{
-	CHAR8		zTempString[512];
-	UINT32	uiStrLen=0;
-
-	CHAR8		zFileName[128];
-	sprintf(zFileName, "%s/LoadGameFilePos%2d.txt", g_savegame_dir, slot);
-
-	// create the save game file
-	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
-
-	const INT32 pos = FileGetPos(load);
-	sprintf(zTempString, "%8d     %s\n", pos, pMsg);
-	uiStrLen = strlen( zTempString );
-
-	FileWrite(hFile, zTempString, uiStrLen);
-}
-#endif
-
-
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 static BYTE* InjectMeanwhileDefinition(BYTE* const data, MEANWHILE_DEFINITION const& m)
 {
 	BYTE* d = data;
@@ -2147,63 +2081,6 @@ BOOLEAN DoesUserHaveEnoughHardDriveSpace()
 	return( TRUE );
 }
 
-<<<<<<< HEAD
-=======
-#ifdef JA2BETAVERSION
-
-static void InitShutDownMapTempFileTest(BOOLEAN fInit, const char* pNameOfFile, UINT8 ubSaveGameID)
-{
-	CHAR8		zFileName[128];
-	CHAR8		zTempString[512];
-	UINT32	uiStrLen;
-
-	//strcpy( gzNameOfMapTempFile, pNameOfFile);
-	sprintf( gzNameOfMapTempFile, "%s%d", pNameOfFile, ubSaveGameID );
-
-	sprintf(zFileName, "%s/%s.txt", g_savegame_dir, gzNameOfMapTempFile);
-
-	if( fInit )
-	{
-		guiNumberOfMapTempFiles = 0;		//Test:  To determine where the temp files are crashing
-		guiSizeOfTempFiles = 0;
-
-		FileDelete(zFileName);
-	}
-	else
-	{
-		// create the save game file
-		AutoSGPFile hFile(FileMan::openForAppend(zFileName));
-
-		sprintf( zTempString, "Number Of Files: %6d.  Size of all files: %6d.\n", guiNumberOfMapTempFiles, guiSizeOfTempFiles );
-		uiStrLen = strlen( zTempString );
-		FileWrite(hFile, zTempString, uiStrLen);
-	}
-}
-
-
-static void WriteTempFileNameToFile(const char* pFileName, UINT32 uiSizeOfFile, HWFILE hSaveFile)
-{
-	CHAR8		zTempString[512];
-	UINT32	uiStrLen=0;
-
-	CHAR8		zFileName[128];
-
-	guiSizeOfTempFiles += uiSizeOfFile;
-
-	sprintf(zFileName, "%s/%s.txt", g_savegame_dir, gzNameOfMapTempFile);
-
-	// create the save game file
-	AutoSGPFile hFile(FileMan::openForAppend(zFileName));
-
-	sprintf( zTempString, "%8d   %6d   %s\n", FileGetPos( hSaveFile ), uiSizeOfFile, pFileName );
-	uiStrLen = strlen( zTempString );
-
-	FileWrite(hFile, zTempString, uiStrLen);
-}
-
-#endif
-
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 void GetBestPossibleSectorXYZValues(INT16* const psSectorX, INT16* const psSectorY, INT8* const pbSectorZ)
 {

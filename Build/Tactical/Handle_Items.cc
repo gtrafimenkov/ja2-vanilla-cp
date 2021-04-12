@@ -65,7 +65,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/MemMan.h"
 #include "sgp/Debug.h"
-#include "UILayout.h"
 
 
 #define					NUM_ITEMS_LISTED			8
@@ -1152,10 +1151,6 @@ void SoldierDropItem(SOLDIERTYPE* const pSoldier, OBJECTTYPE* const pObj)
 void SoldierPickupItem( SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel )
 {
 	INT16							sActionGridNo;
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 	// Remove any previous actions
 	pSoldier->ubPendingAction		 = NO_PENDING_ACTION;

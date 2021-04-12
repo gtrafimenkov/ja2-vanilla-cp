@@ -6,6 +6,13 @@
 * Derek Beland, May 28, 1997
 *********************************************************************************/
 
+#include "sgp/Buffer.h"
+#include "sgp/Debug.h"
+#include "sgp/FileMan.h"
+#include "sgp/Random.h"
+#include "sgp/SoundMan.h"
+#include "sgp/Timer.h"
+#include <SDL.h>
 #include <assert.h>
 
 

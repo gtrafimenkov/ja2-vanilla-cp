@@ -4,7 +4,7 @@
   #define GAME_VERSION "XXXXX"
 #endif
 
-#define FULL_VERSION "Vanilla Experience " GAME_VERSION
+#define FULL_VERSION "Vanilla CP " GAME_VERSION
 
 //
 //	Keeps track of the game version

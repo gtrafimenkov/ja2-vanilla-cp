@@ -43,13 +43,6 @@
 #include "sgp/SGP.h"
 #include "Tactical/Items.h"
 
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 //#ifdef JA2BETAVERSION
 

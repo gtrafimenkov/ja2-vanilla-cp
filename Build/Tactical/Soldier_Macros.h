@@ -6,6 +6,7 @@
 #include "Tactical/Soldier_Profile.h"
 #include "Strategic/Assignments.h"
 #include "Tactical/Animation_Data.h"
+#include "Tactical/Soldier_Control.h"
 
 static inline bool RPC_RECRUITED(SOLDIERTYPE const* const s)
 {

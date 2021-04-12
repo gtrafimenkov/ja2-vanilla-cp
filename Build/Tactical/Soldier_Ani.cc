@@ -109,11 +109,6 @@ BOOLEAN AdjustToNextAnimationFrame( SOLDIERTYPE *pSoldier )
 	BOOLEAN				bWeaponJammed;
   UINT16        usUIMovementMode;
 
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
   do
   {
 		// Get new frame code

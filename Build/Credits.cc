@@ -20,7 +20,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/Video.h"
 #include "Utils/WordWrap.h"
-#include "UILayout.h"
 
 
 struct CRDT_NODE

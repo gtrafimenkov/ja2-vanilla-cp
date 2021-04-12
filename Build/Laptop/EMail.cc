@@ -24,7 +24,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/MemMan.h"
 #include "Utils/Font_Control.h"
-#include "UILayout.h"
 
 
 #define MAX_MESSAGES_PAGE 18 // max number of messages per page

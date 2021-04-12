@@ -1,10 +1,7 @@
-﻿// -*-coding: utf-8-with-signature-unix;-*-
-
-#include "gtest/gtest.h"
+﻿#include "gtest/gtest.h"
 
 #include "sgp/LoadSaveData.h"
-
-#include "src/TestUtils.h"
+#include "sgp/FileMan.h"
 
 
 TEST(LoadSaveData, integers)
@@ -163,8 +160,8 @@ TEST(LoadSaveData, floatAndDoubleFormat)
   // as on Windows.  Otherwise, there will be problems with
   // loading saved games made on Windows.
 
-  std::string floatsPath = FileMan::joinPaths(GetExtraDataDir(), "_unittests/datatypes/floats.bin");
-  std::string doublesPath = FileMan::joinPaths(GetExtraDataDir(), "_unittests/datatypes/doubles.bin");
+  std::string floatsPath = "_unittests/datatypes/floats.bin";
+  std::string doublesPath = "_unittests/datatypes/doubles.bin";
 
   // // Test data were previously written with the following code.
   // {

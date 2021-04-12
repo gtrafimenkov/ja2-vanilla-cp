@@ -30,7 +30,6 @@
 #include "sgp/MemMan.h"
 #include "sgp/Button_System.h"
 #include "Utils/Font_Control.h"
-#include "UILayout.h"
 #include "GameState.h"
 
 #ifdef JA2BETAVERSION

@@ -49,10 +49,8 @@
 #include "sgp/VSurface.h"
 #include "sgp/Video.h"
 #include "TileEngine/WorldDef.h"
-#include "UILayout.h"
 #include "GameState.h"
 #include "GameRes.h"
-#include <boost/foreach.hpp>
 
 static BOOLEAN gfErrorCatch            = FALSE;
 static wchar_t gzErrorCatchString[256] = L"";

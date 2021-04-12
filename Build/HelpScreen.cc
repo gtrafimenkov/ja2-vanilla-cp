@@ -30,7 +30,6 @@
 #include "Strategic/MapScreen.h"
 #include "Strategic/Map_Screen_Interface_Map_Inventory.h"
 #include "sgp/VSurface.h"
-#include "UILayout.h"
 
 #ifdef JA2BETAVERSION
 #	include "Debug.h"

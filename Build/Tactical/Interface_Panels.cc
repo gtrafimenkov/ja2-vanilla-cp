@@ -66,7 +66,6 @@
 #include "sgp/Debug.h"
 #include "JAScreens.h"
 #include "ScreenIDs.h"
-#include "UILayout.h"
 
 
 // DEFINES FOR VARIOUS PANELS

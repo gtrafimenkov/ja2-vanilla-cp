@@ -10,7 +10,6 @@
 #include "TileEngine/RenderWorld.h"
 #include "TileEngine/Render_Dirty.h"
 #include "sgp/VSurface.h"
-#include "UILayout.h"
 
 
 #define		MAX_BURST_LOCATIONS		50

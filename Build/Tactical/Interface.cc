@@ -53,7 +53,6 @@
 #include "sgp/Video.h"
 #include "Tactical/Items.h"
 
-#include "UILayout.h"
 
 
 #define ARROWS_X_OFFSET			10

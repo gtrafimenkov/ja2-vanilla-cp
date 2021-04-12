@@ -91,7 +91,6 @@
 #include "sgp/Debug.h"
 #include "sgp/Button_System.h"
 #include "JAScreens.h"
-#include "UILayout.h"
 
 #ifdef JA2TESTVERSION
 #	include "Map_Information.h"

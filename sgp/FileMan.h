@@ -96,6 +96,9 @@ class FileMan
 {
 public:
 
+  /** Get parent path (e.g. directory path from the full path). */
+  static std::string getParentPath(const std::string &path, bool absolute);
+
   /** Open file for writing.
    * If file is missing it will be created.
    * If file exists, it's content will be removed. */

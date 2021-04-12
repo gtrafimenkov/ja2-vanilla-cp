@@ -34,7 +34,6 @@
 #include "GameSettings.h"
 #include "TileEngine/Environment.h"
 #include "sgp/Debug.h"
-#include "UILayout.h"
 
 
 #define MAX_INTTILE_STACK 10
@@ -83,11 +82,6 @@ void StartInteractiveObject(GridNo const gridno, STRUCTURE const& structure, SOL
 	if (s.usAnimState == BEGIN_OPENSTRUCT)          return;
 	if (s.usAnimState == BEGIN_OPENSTRUCT_CROUCHED) return;
 
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(&s));
-
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 	// Add soldier event for opening door/struct
 	s.ubPendingAction          = structure.fFlags & STRUCTURE_ANYDOOR ? MERC_OPENDOOR : MERC_OPENSTRUCT;
 	s.uiPendingActionData1     = structure.usStructureID;

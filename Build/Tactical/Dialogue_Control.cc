@@ -1,3 +1,5 @@
+#include <queue>
+
 #include "Directories.h"
 #include "sgp/Font.h"
 #include "Utils/Font_Control.h"
@@ -51,7 +53,6 @@
 #include "sgp/SoundMan.h"
 #include "sgp/Container.h"
 #include "GameRes.h"
-#include "UILayout.h"
 
 #define DIALOGUESIZE 240
 #define   QUOTE_MESSAGE_SIZE		520

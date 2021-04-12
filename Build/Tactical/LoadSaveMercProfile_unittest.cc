@@ -9,8 +9,6 @@
 #include "Tactical/Soldier_Profile.h"
 #include "Tactical/Soldier_Profile_Type.h"
 
-#include "src/TestUtils.h"
-
 
 TEST(LoadSaveMercProfileTest, vanillaProfile)
 {

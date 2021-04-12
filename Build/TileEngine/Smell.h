@@ -1,3 +1,6 @@
+#ifndef _TileEngine_Smell_h
+#define _TileEngine_Smell_h
+
 #include "JA2Types.h"
 
 
@@ -26,3 +29,5 @@ void DropBlood(SOLDIERTYPE const&, UINT8 strength);
 void UpdateBloodGraphics(GridNo, INT8 level);
 void RemoveBlood(GridNo, INT8 level);
 void InternalDropBlood(GridNo, INT8 level, BloodKind, UINT8 strength, INT8 visible);
+
+#endif

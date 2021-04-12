@@ -28,7 +28,6 @@
 #include "Strategic/Strategic_Mines.h"
 #include "sgp/Random.h"
 #include "sgp/FileMan.h"
-#include "UILayout.h"
 
 
 #define CIV_QUOTE_TEXT_SIZE 160

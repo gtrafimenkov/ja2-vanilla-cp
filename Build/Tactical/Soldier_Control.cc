@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <math.h>
 #include "Tactical/PathAI.h"
 #include "sgp/Random.h"
@@ -152,10 +153,6 @@
 #include "sgp/SoundMan.h"
 #include "sgp/VObject.h"
 #include "sgp/WCheck.h"
-#include "src/ContentManager.h"
-#include "src/GameInstance.h"
-#include "src/Soldier.h"
-#include "src/WeaponModels.h"
 
 #define		PALETTEFILENAME							BINARYDATADIR "/ja2pal.dat"
 
@@ -7338,11 +7335,6 @@ void GivingSoldierCancelServices( SOLDIERTYPE *pSoldier )
 
 void HaultSoldierFromSighting( SOLDIERTYPE *pSoldier, BOOLEAN fFromSightingEnemy )
 {
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 	// If we are a 'specialmove... ignore...
 	if ( ( gAnimControl[ pSoldier->usAnimState ].uiFlags & ANIM_SPECIALMOVE ) )
 	{
@@ -8469,10 +8461,6 @@ void EVENT_SoldierBeginReloadRobot( SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 
 static void ChangeToFlybackAnimation(SOLDIERTYPE* pSoldier, INT8 bDirection)
 {
 	UINT16 usNewGridNo;
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 	// Get dest gridno, convert to center coords
 	usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(OppositeDirection(bDirection)));
@@ -8498,10 +8486,6 @@ static void ChangeToFlybackAnimation(SOLDIERTYPE* pSoldier, INT8 bDirection)
 void ChangeToFallbackAnimation( SOLDIERTYPE *pSoldier, INT8 bDirection )
 {
 	UINT16 usNewGridNo;
-<<<<<<< HEAD
-  std::shared_ptr<Soldier> soldier(new Soldier(pSoldier));
-=======
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 
 	// Get dest gridno, convert to center coords
 	usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(OppositeDirection(bDirection)));

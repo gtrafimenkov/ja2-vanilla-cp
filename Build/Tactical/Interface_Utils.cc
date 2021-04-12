@@ -16,7 +16,6 @@
 #include "sgp/Video.h"
 #include "sgp/VSurface.h"
 #include "ScreenIDs.h"
-#include "UILayout.h"
 
 
 #define			LIFE_BAR_SHADOW							FROMRGB( 108, 12, 12 )

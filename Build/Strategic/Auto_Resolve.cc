@@ -65,7 +65,6 @@
 #include "Tactical/Map_Information.h"
 #include "sgp/MemMan.h"
 #include "sgp/Debug.h"
-#include "UILayout.h"
 
 #ifdef JA2BETAVERSION
 #	include "Cheats.h"

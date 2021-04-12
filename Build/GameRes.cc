@@ -135,16 +135,13 @@ FLOAT getMajorMapVersion()
 
 void InitGameResources(void)
 {
-  std::vector<std::string> libraries = FindFilesInDir(dataDir, ".slf", true, true);
+  std::vector<std::string> libraries = FindFilesInDir(FileMan::getDataDirPath(), ".slf", true, true);
 
   // for (int i = 0; i < libraries.size(); i++)
   // {
   //   LOG_WARNING("%s\n", libraries[i].c_str());
   // }
 
-<<<<<<< HEAD
-  return libraries;
-=======
   switch(s_gameVersion)
   {
   case GV_DUTCH:        libraries.push_back("dutch.slf");       break;
@@ -162,7 +159,6 @@ void InitGameResources(void)
   }
 
   InitializeFileDatabase(libraries);
->>>>>>> parent of 7c2097bd0... Merge remote-tracking branch 'bucket/experimental' into develop
 }
 
 

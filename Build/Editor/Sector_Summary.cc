@@ -36,7 +36,6 @@
 #include "sgp/MemMan.h"
 #include "Tactical/Soldier_Create.h"
 #include "sgp/Video.h"
-#include "UILayout.h"
 #include "GameRes.h"
 #include "GameState.h"
 

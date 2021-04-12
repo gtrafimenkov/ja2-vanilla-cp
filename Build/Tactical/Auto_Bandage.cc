@@ -34,7 +34,6 @@
 #include "sgp/VSurface.h"
 #include "sgp/MemMan.h"
 #include "sgp/Button_System.h"
-#include "UILayout.h"
 
 
 // max number of merc faces per row in autobandage box
