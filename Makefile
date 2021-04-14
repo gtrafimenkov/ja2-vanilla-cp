@@ -73,16 +73,18 @@ ifeq "$(TARGET_ARCH)" "linux-clang-x86"
 endif
 
 ifeq "$(TARGET_ARCH)" "win32"
-	AR             := i686-w64-mingw32-ar
-	CC             := i686-w64-mingw32-gcc
-	CXX            := i686-w64-mingw32-g++
-	LOCAL_SDL_LIB  := _build/lib-SDL2-mingw/i686-w64-mingw32
+	MINGW_ARCH     := i686-w64-mingw32
 endif
 
 ifeq "$(TARGET_ARCH)" "win64"
-	AR             := x86_64-w64-mingw32-ar
-	CC             := x86_64-w64-mingw32-gcc
-	CXX            := x86_64-w64-mingw32-g++
+	MINGW_ARCH     := x86_64-w64-mingw32
+endif
+
+ifdef MINGW_ARCH
+	AR             := $(MINGW_ARCH)-ar
+	CC             := $(MINGW_ARCH)-gcc
+	CXX            := $(MINGW_ARCH)-g++
+	LOCAL_SDL_LIB  := _build/SDL2-devel-2.0.14-mingw/SDL2-2.0.14/$(MINGW_ARCH)
 endif
 
 ifdef DEBUGBUILD
@@ -98,12 +100,12 @@ CFLAGS += -I _build/lib-gtest/include
 CFLAGS += -I _build/lib-gtest
 
 ifdef LOCAL_SDL_LIB
-	CFLAGS_SDL  := $(shell _build/lib-SDL2-mingw/i686-w64-mingw32/bin/sdl2-config --cflags | sed s@/usr/local/i686-w64-mingw32/@$(LOCAL_SDL_LIB)/@g)
-	# if you want to leave the console window (too see log), remove flag "-mwindows" from LDFLAGS_SDL
-	LDFLAGS_SDL := $(shell _build/lib-SDL2-mingw/i686-w64-mingw32/bin/sdl2-config --static-libs | sed s@/usr/local/i686-w64-mingw32/@$(LOCAL_SDL_LIB)/@g)
-	# completely static build, SDL2.dll will not be required
+	CFLAGS_SDL  := $(shell $(LOCAL_SDL_LIB)/bin/sdl2-config --cflags | sed s@/opt/local/$(MINGW_ARCH)/@$(LOCAL_SDL_LIB)/@g)
+	# if you want to leave the console window (too see the log), remove flag "-mwindows" from LDFLAGS_SDL
+	LDFLAGS_SDL := $(shell $(LOCAL_SDL_LIB)/bin/sdl2-config --static-libs | sed s@/opt/local/$(MINGW_ARCH)/@$(LOCAL_SDL_LIB)/@g)
+	# making completely static build, SDL2.dll will not be required
 	LDFLAGS     += -static
-	# SDL2.dll required, libstdc++6.dll is not
+	# if you want partially static build (SDL2.dll required, libstdc++6.dll is not)
 	# LDFLAGS     += -static-libstdc++
 	CFLAGS_SDL  += -DTARGET_PLATFORM_WINDOWS=1
 else
