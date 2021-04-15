@@ -1,7 +1,10 @@
 name: Build
 
 on:
-  - push
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 13 * * 4'
 
 jobs:
   build:
