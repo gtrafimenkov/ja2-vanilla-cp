@@ -1229,7 +1229,6 @@ void EndAirRaid( )
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(AirRaid, asserts)
@@ -1237,5 +1236,3 @@ TEST(AirRaid, asserts)
   EXPECT_EQ(sizeof(AIR_RAID_SAVE_STRUCT), 132);
   EXPECT_EQ(sizeof(AIR_RAID_DEFINITION), 24);
 }
-
-#endif

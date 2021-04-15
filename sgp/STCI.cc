@@ -166,7 +166,6 @@ static SGPImage* STCILoadIndexed(UINT16 const contents, HWFILE const f, STCIHead
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(STCI, asserts)
@@ -175,5 +174,3 @@ TEST(STCI, asserts)
   EXPECT_EQ(sizeof(STCISubImage), 16);
   EXPECT_EQ(sizeof(STCIPaletteElement), 3);
 }
-
-#endif

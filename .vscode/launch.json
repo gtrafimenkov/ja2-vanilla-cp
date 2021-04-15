@@ -8,10 +8,8 @@
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/ja2-ve",
-      "args": [
-        "--debug",
-      ],
+      "program": "${workspaceFolder}/ja2-vanilla-cp",
+      "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

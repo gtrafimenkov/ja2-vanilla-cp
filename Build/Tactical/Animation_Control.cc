@@ -2843,12 +2843,9 @@ UINT16 GetSoldierAnimationSurface(SOLDIERTYPE const* const pSoldier)
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(AnimationControl, asserts)
 {
   EXPECT_EQ(lengthof(gAnimControl), NUMANIMATIONSTATES);
 }
-
-#endif

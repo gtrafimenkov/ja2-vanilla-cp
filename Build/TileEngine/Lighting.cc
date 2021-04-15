@@ -2406,7 +2406,6 @@ const char* LightSpriteGetTypeName(const LIGHT_SPRITE* const l)
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -2414,5 +2413,3 @@ TEST(Lighting, asserts)
 {
   EXPECT_EQ(sizeof(LIGHT_NODE), 6);
 }
-
-#endif

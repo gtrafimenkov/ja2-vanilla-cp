@@ -1728,7 +1728,6 @@ void DeleteDialogueControlGraphics()
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -1736,5 +1735,3 @@ TEST(DialogueControl, asserts)
 {
   EXPECT_EQ(lengthof(g_external_face_profile_ids), NUMBER_OF_EXTERNAL_NPC_FACES);
 }
-
-#endif

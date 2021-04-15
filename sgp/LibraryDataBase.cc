@@ -479,7 +479,6 @@ static int CompareDirEntryFileNames(const void* key, const void* member)
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(LibraryDatabase, asserts)
@@ -487,5 +486,3 @@ TEST(LibraryDatabase, asserts)
   EXPECT_EQ(sizeof(LIBHEADER), 532);
   EXPECT_EQ(sizeof(DIRENTRY), 280);
 }
-
-#endif

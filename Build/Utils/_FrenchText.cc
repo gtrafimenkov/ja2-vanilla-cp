@@ -1,8 +1,6 @@
 ﻿#include "Utils/Text.h"
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
-#endif
 
 /*
 
@@ -3773,7 +3771,6 @@ LanguageRes g_LanguageResFrench = {
   g_eng_str_iron_man_mode_warning,
 };
 
-#ifdef WITH_UNITTESTS
 #define ARR_SIZE(x) (sizeof(x)/sizeof(x[0]))
 TEST(WideStringEncodingTest, FrenchTextFile)
 {
@@ -3789,4 +3786,3 @@ TEST(WideStringEncodingTest, FrenchTextFile)
   EXPECT_EQ(str[3], 0x0442);
   EXPECT_EQ(str[4], 0x00);
 }
-#endif

@@ -5642,7 +5642,6 @@ void SetRenderCenter(INT16 sNewX, INT16 sNewY)
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -5652,5 +5651,3 @@ TEST(RenderWorld, asserts)
   EXPECT_EQ(lengthof(RenderFXStartIndex), NUM_RENDER_FX_TYPES);
   EXPECT_EQ(lengthof(g_render_fx_layer_flags), NUM_RENDER_FX_TYPES);
 }
-
-#endif

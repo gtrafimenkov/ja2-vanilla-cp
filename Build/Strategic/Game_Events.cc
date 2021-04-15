@@ -474,13 +474,3 @@ void LoadStrategicEventsFromSavedGame(HWFILE const f)
 		anchor  = &sev->next;
 	}
 }
-
-
-#ifdef WITH_UNITTESTS
-#include "gtest/gtest.h"
-
-TEST(GameEvents, asserts)
-{
-}
-
-#endif

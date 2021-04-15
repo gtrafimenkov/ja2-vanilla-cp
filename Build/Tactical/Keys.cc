@@ -1325,7 +1325,6 @@ void DropKeysInKeyRing(SOLDIERTYPE& s, GridNo const gridno, INT8 const level, Vi
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(Keys, asserts)
@@ -1334,5 +1333,3 @@ TEST(Keys, asserts)
   EXPECT_EQ(sizeof(DOOR), 14);
   EXPECT_EQ(sizeof(DOOR_STATUS), 4);
 }
-
-#endif

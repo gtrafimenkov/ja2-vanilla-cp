@@ -196,7 +196,6 @@ bool SectorIsPassable(INT16 const sSector)
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(StrategicMovementCostsTest, asserts)
@@ -206,5 +205,3 @@ TEST(StrategicMovementCostsTest, asserts)
   EXPECT_EQ(lengthof(g_traverse_through), 16);
   EXPECT_EQ(lengthof(g_travel_rating), 16);
 }
-
-#endif

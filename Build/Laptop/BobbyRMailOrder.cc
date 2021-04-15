@@ -2105,12 +2105,9 @@ void NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(HWFILE const hFile)
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(BobbyRMailOrder, asserts)
 {
   EXPECT_EQ(sizeof(NewBobbyRayOrderStruct), 104);
 }
-
-#endif

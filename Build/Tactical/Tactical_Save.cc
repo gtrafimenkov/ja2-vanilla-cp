@@ -3482,12 +3482,9 @@ static UINT8 const* GetRotationArray()
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(TacticalSave, asserts)
 {
   EXPECT_EQ(lengthof(g_encryption_array), BASE_NUMBER_OF_ROTATION_ARRAYS * 12);
 }
-
-#endif

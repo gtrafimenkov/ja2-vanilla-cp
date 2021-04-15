@@ -474,7 +474,6 @@ void RefreshWorldItemsIntoItemPools(const WORLDITEM* const items, const INT32 it
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -482,5 +481,3 @@ TEST(WorldItems, asserts)
 {
   EXPECT_EQ(sizeof(WORLDITEM), 52);
 }
-
-#endif

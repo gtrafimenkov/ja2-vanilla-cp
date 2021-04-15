@@ -9017,7 +9017,7 @@ static void EnableDisableSoldierLightEffects(BOOLEAN const enable_lights)
 	{
 		if (!s->bInSector)     continue;
 		if (s->bLife < OKLIFE) continue;
-                // att: NO Soldier Lights if in a VEHICLE 
+                // att: NO Soldier Lights if in a VEHICLE
                 if (s->bAssignment == VEHICLE) continue;
 
 		if (enable_lights)
@@ -9046,7 +9046,6 @@ static void SetSoldierPersonalLightLevel(SOLDIERTYPE* const s)
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -9055,5 +9054,3 @@ TEST(SoldierControl, asserts)
   EXPECT_EQ(lengthof(gubMaxActionPoints), TOTALBODYTYPES);
   EXPECT_EQ(sizeof(KEY_ON_RING), 2);
 }
-
-#endif

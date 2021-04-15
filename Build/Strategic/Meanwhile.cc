@@ -864,12 +864,9 @@ void HandleFirstMeanWhileSetUpWithTrashWorld( void )
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(Meanwhile, asserts)
 {
   EXPECT_EQ(sizeof(MEANWHILE_DEFINITION), 8);
 }
-
-#endif

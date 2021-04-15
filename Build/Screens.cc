@@ -52,12 +52,9 @@ Screens const GameScreens[] =
 };
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(Screens, asserts)
 {
   EXPECT_EQ(lengthof(GameScreens), MAX_SCREENS);
 }
-
-#endif

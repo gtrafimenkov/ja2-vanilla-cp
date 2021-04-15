@@ -6269,7 +6269,6 @@ void MakeCharacterDialogueEventSignalItemLocatorStart(SOLDIERTYPE& s, GridNo con
 }
 
 
-#ifdef WITH_UNITTESTS
 #undef FAIL
 #include "gtest/gtest.h"
 
@@ -6277,5 +6276,3 @@ TEST(Overhead, asserts)
 {
   EXPECT_EQ(lengthof(g_default_team_info), MAXTEAMS);
 }
-
-#endif

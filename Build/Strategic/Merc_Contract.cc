@@ -1039,12 +1039,9 @@ static BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE* pSoldier)
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(MercContract, asserts)
 {
   EXPECT_EQ(sizeof(CONTRACT_NEWAL_LIST_NODE), 4);
 }
-
-#endif

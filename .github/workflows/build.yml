@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    # runs-on: ${{ matrix.os }}
+    # strategy:
+    #   matrix:
+    #     os:
+    #       - ubuntu-18.04
+    #       - ubuntu-20.04
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Print OS version
+      run: |
+        uname -a
+        cat /etc/os-release
+
+    - name: Install dependencies
+      run: make install-build-dependencies
+
+    - name: Build linux-gcc-amd64
+      run: make -j$(nproc) TARGET_ARCH=linux-gcc-amd64
+
+    - name: Build linux-gcc-x86
+      run: make -j$(nproc) TARGET_ARCH=linux-gcc-x86
+
+    - name: Build linux-clang-amd64
+      run: make -j$(nproc) TARGET_ARCH=linux-clang-amd64
+
+    - name: Build linux-clang-x86
+      run: make -j$(nproc) TARGET_ARCH=linux-clang-x86
+
+    - name: Build win32
+      run: make -j$(nproc) TARGET_ARCH=win32
+
+    - name: Build win64
+      run: make -j$(nproc) TARGET_ARCH=win64
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: binaries-from-${{ matrix.os }}
+        path: build/ja2-vanilla-cp-*
+        retention-days: 14

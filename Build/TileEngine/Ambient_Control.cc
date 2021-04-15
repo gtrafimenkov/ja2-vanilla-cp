@@ -77,12 +77,9 @@ UINT32 SetupNewAmbientSound( UINT32 uiAmbientID )
 }
 
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
 
 TEST(AmbientControl, asserts)
 {
   EXPECT_EQ(sizeof(AMBIENTDATA_STRUCT), 116);
 }
-
-#endif

@@ -27,9 +27,7 @@
 #include "sgp/Exceptions.h"
 #include "sgp/Timer.h"
 
-#ifdef WITH_UNITTESTS
 #include "gtest/gtest.h"
-#endif
 
 #if defined _WIN32
 #	define WIN32_LEAN_AND_MEAN
@@ -189,21 +187,13 @@ try
 
 	if (!params.success) return EXIT_FAILURE;
 
-#ifdef WITH_UNITTESTS
   if(params.doUnitTests)
   {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
   }
-#endif
 
 	SDL_Init(SDL_INIT_VIDEO);
-
-  // restore output to the console (on windows when built with MINGW)
-#ifdef __MINGW32__
-  freopen("CON", "w", stdout);
-  freopen("CON", "w", stderr);
-#endif
 
 	InitializeMemoryManager();
 	InitializeFileManager(exeFolder.c_str());
@@ -320,13 +310,11 @@ static CommandLineParams ParseParameters(int argc, char* const argv[])
         params.success = FALSE;
       }
     }
-#ifdef WITH_UNITTESTS
     else if (strcmp(argv[i], "--unittests") == 0)
     {
       params.doUnitTests = true;
       break;
     }
-#endif
 		else
 		{
 			if (strcmp(argv[i], "--help") != 0)
@@ -350,9 +338,6 @@ static CommandLineParams ParseParameters(int argc, char* const argv[])
 			"                RUSSIAN_GOLD is for Gold release\n"
 			"  --editor      Start the map editor (Editor.slf is required)\n"
 			"  --editorauto  Start the map editor and load sector A9 (Editor.slf is required)\n"
-#ifdef WITH_UNITTESTS
-      "  --unittests   Perform unit tests\n"
-#endif
 			"  --help        Display this information\n",
 			argv[0]
 		);
