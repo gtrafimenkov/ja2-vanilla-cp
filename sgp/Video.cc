@@ -123,12 +123,7 @@ static void GetRGBDistribution();
 
 void InitializeVideoManager(void)
 {
-	// SLOGD(TAG, "Initializing the video manager");
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-#ifdef TARGET_PLATFORM_WINDOWS
-#else
-	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-#endif
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 
 	g_window_flags |= SDL_WINDOW_RESIZABLE;
 
@@ -137,13 +132,8 @@ void InitializeVideoManager(void)
                               SDL_WINDOWPOS_UNDEFINED,
                               SCREEN_WIDTH, SCREEN_HEIGHT,
                               g_window_flags);
-#ifdef TARGET_PLATFORM_WINDOWS
-  // for unknown reason the game crashes on windows if SDL_RENDERER_SOFTWARE
-  // is not explicitly passed.
-  GameRenderer = SDL_CreateRenderer(g_game_window, -1, SDL_RENDERER_SOFTWARE);
-#else
+
   GameRenderer = SDL_CreateRenderer(g_game_window, -1, 0);
-#endif
 	SDL_RenderSetLogicalSize(GameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   ClippingRect.set(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);

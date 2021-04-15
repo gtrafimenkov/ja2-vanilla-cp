@@ -107,7 +107,6 @@ ifdef LOCAL_SDL_LIB
 	LDFLAGS     += -static
 	# if you want partially static build (SDL2.dll required, libstdc++6.dll is not)
 	# LDFLAGS     += -static-libstdc++
-	CFLAGS_SDL  += -DTARGET_PLATFORM_WINDOWS=1
 else
 	CFLAGS_SDL  := $(shell sdl2-config --cflags)
 	LDFLAGS_SDL := $(shell sdl2-config --libs)
