@@ -1595,7 +1595,7 @@ try
 		SaveSchedules(f);
 	}
 
-	strlcpy(g_filename, filename, lengthof(g_filename));
+	strncpy(g_filename, filename, lengthof(g_filename));
 	return TRUE;
 }
 catch (...) { return FALSE; }
@@ -2432,7 +2432,7 @@ try
 
   if(GameState::getInstance()->isEditorMode())
   {
-    strlcpy(g_filename, filename, lengthof(g_filename));
+    strncpy(g_filename, filename, lengthof(g_filename));
   }
 
   // ATE: Not while updating maps!

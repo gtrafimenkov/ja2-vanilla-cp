@@ -1283,7 +1283,7 @@ static void DisplayVideoConferencingDisplay(MERCPROFILESTRUCT const& p)
 	//Title & Name
 	if( gubVideoConferencingMode == AIM_VIDEO_INIT_MODE)
 	{
-		wcslcpy(sMercName, VideoConfercingText[AIM_MEMBER_CONNECTING], lengthof(sMercName));
+		wcsncpy(sMercName, VideoConfercingText[AIM_MEMBER_CONNECTING], lengthof(sMercName));
 		DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL, AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 	}
 	else
@@ -1422,7 +1422,7 @@ static void DisplayMercChargeAmount(void)
 	}
 	else
 	{
-		wcslcpy(wTemp, wDollarTemp, lengthof(wTemp));
+		wcsncpy(wTemp, wDollarTemp, lengthof(wTemp));
 	}
 	DrawTextToScreen(wTemp, AIM_CONTRACT_CHARGE_AMOUNNT_X + 1, AIM_CONTRACT_CHARGE_AMOUNNT_Y + 3, 0, AIM_M_VIDEO_CONTRACT_AMOUNT_FONT, AIM_M_VIDEO_CONTRACT_AMOUNT_COLOR, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 }

@@ -1715,7 +1715,7 @@ void SetUpFastHelpRegion(INT32 x, INT32 y, INT32 width, const wchar_t* text)
 	fhr->iX = x;
 	fhr->iY = y;
 	fhr->iW = width;
-	wcslcpy(fhr->FastHelpText, text, lengthof(fhr->FastHelpText));
+	wcsncpy(fhr->FastHelpText, text, lengthof(fhr->FastHelpText));
 	giSizeOfInterfaceFastHelpTextList = 1;
 }
 

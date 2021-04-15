@@ -552,7 +552,7 @@ static bool GetGameDescription()
 	INT8 const id = GetActiveFieldID();
 	if (id == 0 || id == -1) return false;
 
-	wcslcpy(gzGameDescTextField, GetStringFromField(id), lengthof(gzGameDescTextField));
+	wcsncpy(gzGameDescTextField, GetStringFromField(id), lengthof(gzGameDescTextField));
 	return true;
 }
 
@@ -873,11 +873,11 @@ static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx)
 			}
 			else if (header.uiDay * NUM_SEC_IN_DAY + header.ubHour * NUM_SEC_IN_HOUR + header.ubMin * NUM_SEC_IN_MIN <= STARTING_TIME)
 			{
-				wcslcpy(location, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION], lengthof(location));
+				wcsncpy(location, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION], lengthof(location));
 			}
 			else
 			{
-				wcslcpy(location, gzLateLocalizedString[STR_LATE_14], lengthof(location));
+				wcsncpy(location, gzLateLocalizedString[STR_LATE_14], lengthof(location));
 			}
 			ReduceStringLength(location, lengthof(location), SLG_SECTOR_WIDTH, font);
 			DrawTextToScreen(location, x + SLG_SECTOR_OFFSET_X, y, 0, font, foreground, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);

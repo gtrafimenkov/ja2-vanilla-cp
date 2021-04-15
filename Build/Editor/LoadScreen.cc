@@ -610,7 +610,7 @@ FDLG_LIST* AddToFDlgList(FDLG_LIST* const list, char const* const filename)
 		if (strcasecmp(i->filename, filename) > 0) break;
 	}
 	FDLG_LIST* const n = MALLOC(FDLG_LIST);
-	strlcpy(n->filename, filename, lengthof(n->filename));
+	strncpy(n->filename, filename, lengthof(n->filename));
 	n->pPrev = prev;
 	n->pNext = i;
 	if (i)    i->pPrev    = n;
@@ -1029,7 +1029,7 @@ static void FDlgDwnCallback(GUI_BUTTON* butn, INT32 reason)
 
 static BOOLEAN ExtractFilenameFromFields(void)
 {
-	wcslcpy(gzFilename, GetStringFromField(0), lengthof(gzFilename));
+	wcsncpy(gzFilename, GetStringFromField(0), lengthof(gzFilename));
 	return ValidFilename();
 }
 

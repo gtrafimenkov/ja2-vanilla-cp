@@ -664,7 +664,7 @@ static void RenderDoorLockInfo()
 		if (d.ubLockID != 255)
 			swprintf(str, lengthof(str), L"%hs", LockTable[d.ubLockID].ubEditorName);
 		else
-			wcslcpy(str, L"No Lock ID", lengthof(str));
+			wcsncpy(str, L"No Lock ID", lengthof(str));
 		DisplayWrappedString(x - 10, y - 40, 60, 2, FONT10ARIAL, FONT_LTKHAKI, str, FONT_BLACK, CENTER_JUSTIFIED | MARK_DIRTY);
 
 		wchar_t const* trap_type; // HACK000E

@@ -403,34 +403,34 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType)
 
 				if( eInfo.uiItemType != TBAR_MODE_ITEM_TRIGGERS )
 				{
-					wcslcpy(pStr, ItemNames[usCounter], lengthof(pStr));
+					wcsncpy(pStr, ItemNames[usCounter], lengthof(pStr));
 				}
 				else
 				{
 					if( i == PRESSURE_ACTION_ID )
 					{
-						wcslcpy(pStr, L"Pressure Action", lengthof(pStr));
+						wcsncpy(pStr, L"Pressure Action", lengthof(pStr));
 					}
 					else if( i < 2 )
 					{
 						if( usCounter == SWITCH )
-							wcslcpy(pStr, L"Panic Trigger1", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Trigger1", lengthof(pStr));
 						else
-							wcslcpy(pStr, L"Panic Action1", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Action1", lengthof(pStr));
 					}
 					else if( i < 4 )
 					{
 						if( usCounter == SWITCH )
-							wcslcpy(pStr, L"Panic Trigger2", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Trigger2", lengthof(pStr));
 						else
-							wcslcpy(pStr, L"Panic Action2", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Action2", lengthof(pStr));
 					}
 					else if( i < 6 )
 					{
 						if( usCounter == SWITCH )
-							wcslcpy(pStr, L"Panic Trigger3", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Trigger3", lengthof(pStr));
 						else
-							wcslcpy(pStr, L"Panic Action3", lengthof(pStr));
+							wcsncpy(pStr, L"Panic Action3", lengthof(pStr));
 					}
 					else
 					{

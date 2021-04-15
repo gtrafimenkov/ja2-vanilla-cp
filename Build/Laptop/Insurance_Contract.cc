@@ -490,7 +490,7 @@ try
 
 	//display the amount of time the merc has left on their Regular contract
 	if (is_dead)
-		wcslcpy(sText, pMessageStrings[MSG_LOWERCASE_NA], lengthof(sText));
+		wcsncpy(sText, pMessageStrings[MSG_LOWERCASE_NA], lengthof(sText));
 	else
 		swprintf( sText, lengthof(sText), L"%d", GetTimeRemainingOnSoldiersContract( pSoldier ) );
 
@@ -515,7 +515,7 @@ try
 
 	//if the soldier has insurance, disply the length of time the merc has left
 	if (is_dead)
-		wcslcpy(sText, pMessageStrings[MSG_LOWERCASE_NA], lengthof(sText));
+		wcsncpy(sText, pMessageStrings[MSG_LOWERCASE_NA], lengthof(sText));
 	else if( pSoldier->usLifeInsurance != 0 )
 		swprintf( sText, lengthof(sText), L"%d", GetTimeRemainingOnSoldiersInsuranceContract( pSoldier ) );
 
@@ -558,7 +558,7 @@ try
 
 	if (is_dead)
 	{
-		wcslcpy(sText, L"$0", lengthof(sText));
+		wcsncpy(sText, L"$0", lengthof(sText));
 	}
 	//display the amount owing
 	DrawTextToScreen(sText, dx + 32, dy + 179, 72, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);

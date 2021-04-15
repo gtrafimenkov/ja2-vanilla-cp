@@ -250,7 +250,7 @@ BOOLEAN SaveGame(UINT8 const ubSaveGameID, wchar_t const* GameDesc)
 		else
 		{
 			if (GameDesc[0] == L'\0') GameDesc = pMessageStrings[MSG_NODESC];
-			wcslcpy(desc, GameDesc, lengthof(desc));
+			wcsncpy(desc, GameDesc, lengthof(desc));
 		}
 
 		FileMan::createDir(g_savegame_dir);

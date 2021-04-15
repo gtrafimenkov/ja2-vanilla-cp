@@ -3236,13 +3236,13 @@ static void GetDebugLocationString(const UINT16 usProfileID, wchar_t* const pzTe
 	if (pSoldier != NULL && pSoldier->uiStatusFlags & SOLDIER_OFF_MAP)
 	{
 		//the soldier is on schedule
-		wcslcpy(pzText, L"On Schdl.", Length);
+		wcsncpy(pzText, L"On Schdl.", Length);
 	}
 
 	//if the soldier is dead
 	else if( gMercProfiles[ usProfileID ].bMercStatus == MERC_IS_DEAD )
 	{
-		wcslcpy(pzText, L"Dead", Length);
+		wcsncpy(pzText, L"Dead", Length);
 	}
 
 	//the soldier is in this sector

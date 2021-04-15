@@ -477,5 +477,5 @@ void ReduceStringLength(wchar_t* pString, size_t Length, UINT32 uiWidthToFitIn, 
 		RestWidth -= CharWidth;
 	}
 
-	wcslcpy(pString + i, Dots, Length - i);
+	wcsncpy(pString + i, Dots, Length - i);
 }

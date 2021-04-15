@@ -893,7 +893,7 @@ maybe_nightops:
 
 		default: goto no_name; // XXX fishy
 	}
-	wcslcpy(s.name, name, lengthof(s.name));
+	wcsncpy(s.name, name, lengthof(s.name));
 no_name:
 
 	GeneratePaletteForSoldier(&s, c.ubSoldierClass);

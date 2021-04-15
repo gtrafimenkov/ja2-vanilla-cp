@@ -4784,7 +4784,7 @@ void RenderItemPickupMenu()
 			}
 			else
 			{
-				wcslcpy(pStr, ShortItemNames[o.usItem], lengthof(pStr));
+				wcsncpy(pStr, ShortItemNames[o.usItem], lengthof(pStr));
 			}
 			INT16 sFontX;
 			INT16 sFontY;
@@ -5198,7 +5198,7 @@ void GetHelpTextForItem(wchar_t* const dst, size_t const length, OBJECTTYPE cons
 	}
 	else if (usItem == NOTHING)
 	{
-		wcslcpy(dst, L"", length);
+		wcsncpy(dst, L"", length);
 	}
 	else
 	{

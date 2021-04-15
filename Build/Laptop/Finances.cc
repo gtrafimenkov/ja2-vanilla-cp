@@ -828,7 +828,7 @@ static void ProcessTransactionString(wchar_t pString[], const size_t Length, con
 		case PAY_SPECK_FOR_MERC:
 		case PURCHASED_FLOWERS:
 		case TRANSACTION_FEE:
-			wcslcpy(pString, pTransactionText[code], Length);
+			wcsncpy(pString, pTransactionText[code], Length);
 			break;
 
 		case CANCELLED_INSURANCE:

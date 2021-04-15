@@ -655,7 +655,7 @@ static void DisplayCharName(SOLDIERTYPE const& s)
 	else
 	{
 		//nick name
-		wcslcpy(sString, s.name, lengthof(sString));
+		wcsncpy(sString, s.name, lengthof(sString));
 	}
 	FindFontCenterCoordinates(CHAR_NAME_LOC_X, 0, CHAR_NAME_LOC_WIDTH, 0, sString, CHAR_NAME_FONT, &sX, &sY);
 	MPrint(sX, CHAR_NAME_Y, sString);
@@ -721,7 +721,7 @@ static void DisplayCharStats(SOLDIERTYPE const& s)
 	}
 	else
 	{
-		wcslcpy(sString, pPOWStrings[1], lengthof(sString));
+		wcsncpy(sString, pPOWStrings[1], lengthof(sString));
 	}
 	mprintf(pers_stat_x, pers_stat_y[0], L"%ls:", str_stat_health);
 	FindFontRightCoordinates(pers_stat_x, 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
@@ -1151,7 +1151,7 @@ static void DisplayCharInventory(SOLDIERTYPE const& s)
 
 		SetFontDestBuffer(FRAME_BUFFER);
 
-		wcslcpy(sString, ItemNames[item_idx], lengthof(sString));
+		wcsncpy(sString, ItemNames[item_idx], lengthof(sString));
 		ReduceStringLength(sString, lengthof(sString), 171 - 75, FONT10ARIAL);
 		MPrint(PosX + 65, PosY + 3, sString);
 
@@ -1172,7 +1172,7 @@ static void DisplayCharInventory(SOLDIERTYPE const& s)
 
 		if (item.usItemClass & IC_GUN)
 		{
-			wcslcpy(sString, AmmoCaliber[Weapon[item.ubClassIndex].ubCalibre], lengthof(sString));
+			wcsncpy(sString, AmmoCaliber[Weapon[item.ubClassIndex].ubCalibre], lengthof(sString));
 			ReduceStringLength(sString, lengthof(sString), 171 - 75, FONT10ARIAL);
 			MPrint(PosX + 65, PosY + 15, sString);
 		}

@@ -1965,10 +1965,10 @@ void UpdateMercsInfo()
 						swprintf(str, lengthof(str), L"Click on the gridno where you wish to move after you %ls the door.", keyword);
 						break;
 					case SCHEDULE_INSTRUCTIONS_GRIDNO:
-						wcslcpy(str, L"Click on the gridno where you wish to move to.", lengthof(str));
+						wcsncpy(str, L"Click on the gridno where you wish to move to.", lengthof(str));
 						break;
 					case SCHEDULE_INSTRUCTIONS_SLEEP:
-						wcslcpy(str, L"Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.", lengthof(str));
+						wcsncpy(str, L"Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.", lengthof(str));
 					default:
 						return;
 				}

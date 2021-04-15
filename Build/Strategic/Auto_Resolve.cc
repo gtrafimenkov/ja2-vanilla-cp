@@ -1529,7 +1529,7 @@ static SOLDIERCELL* MakeEnemyTroops(SOLDIERCELL* cell, size_t n, AUTORESOLVE_STR
 		cell->usIndex        = s->ubBodyType == REGFEMALE ? ELITEF_FACE : face;
 		s->sSectorX          = ar->ubSectorX;
 		s->sSectorY          = ar->ubSectorY;
-		wcslcpy(s->name, name, lengthof(s->name));
+		wcsncpy(s->name, name, lengthof(s->name));
 	}
 	return cell;
 }
@@ -1545,7 +1545,7 @@ static SOLDIERCELL* MakeCreatures(SOLDIERCELL* cell, size_t n, AUTORESOLVE_STRUC
 		cell->usIndex        = face;
 		s->sSectorX          = ar->ubSectorX;
 		s->sSectorY          = ar->ubSectorY;
-		wcslcpy(s->name, gpStrategicString[STR_AR_CREATURE_NAME], lengthof(s->name));
+		wcsncpy(s->name, gpStrategicString[STR_AR_CREATURE_NAME], lengthof(s->name));
 	}
 	return cell;
 }
@@ -1657,7 +1657,7 @@ static void CreateAutoResolveInterface(void)
 		AssertMsg(s, "Failed to create militia soldier for autoresolve.");
 		s->sSectorX = ar->ubSectorX;
 		s->sSectorY = ar->ubSectorY;
-		wcslcpy(s->name, gpStrategicString[STR_AR_MILITIA_NAME], lengthof(s->name));
+		wcsncpy(s->name, gpStrategicString[STR_AR_MILITIA_NAME], lengthof(s->name));
 	}
 
 	if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE)

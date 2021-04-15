@@ -2346,7 +2346,7 @@ static void ExtractTempFilename(void)
 		gfOverrideDirty = TRUE;
 	}
 	if( !wcslen( str ) )
-		wcslcpy(gszDisplayName, L"test.dat", lengthof(gszDisplayName));
+		wcsncpy(gszDisplayName, L"test.dat", lengthof(gszDisplayName));
 }
 
 void ApologizeOverrideAndForceUpdateEverything()

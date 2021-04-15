@@ -266,7 +266,7 @@ void AddTextInputField(INT16 const sLeft, INT16 const sTop, INT16 const sWidth, 
 	{
 		n->ubStrLen = wcslen(szInitText);
 		Assert(n->ubStrLen <= ubMaxChars);
-		wcslcpy(n->szString, szInitText, ubMaxChars + 1);
+		wcsncpy(n->szString, szInitText, ubMaxChars + 1);
 	}
 	else
 	{
@@ -361,7 +361,7 @@ void SetInputFieldStringWith16BitString( UINT8 ubField, const wchar_t *szNewText
 	{
 		curr->ubStrLen = (UINT8)wcslen(szNewText);
 		Assert(curr->ubStrLen <= curr->ubMaxChars);
-		wcslcpy(curr->szString, szNewText, curr->ubMaxChars + 1);
+		wcsncpy(curr->szString, szNewText, curr->ubMaxChars + 1);
 	}
 	else if (!curr->fUserField)
 	{

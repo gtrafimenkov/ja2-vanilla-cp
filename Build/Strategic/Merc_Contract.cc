@@ -777,7 +777,7 @@ static void NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(SOLDIERTYPE& 
 		if (elsewhere == SECTOR(x, y) && z == 0) goto no_choice;
 
 		// Set strings for generic buttons
-		wcslcpy(gzUserDefinedButton1, town_sector, lengthof(gzUserDefinedButton1));
+		wcsncpy(gzUserDefinedButton1, town_sector, lengthof(gzUserDefinedButton1));
 		GetShortSectorString(SECTORX(elsewhere), SECTORY(elsewhere), gzUserDefinedButton2, lengthof(gzUserDefinedButton2));
 
 		wchar_t const* const town = g_towns_locative[GetTownIdForSector(elsewhere)];

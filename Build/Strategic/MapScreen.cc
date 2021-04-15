@@ -8018,11 +8018,11 @@ void GetMapscreenMercLocationString(SOLDIERTYPE const& s, wchar_t* const buf, si
 {
 	if (s.bAssignment == IN_TRANSIT)
 	{ // Show blank
-		wcslcpy(buf, L"--", n);
+		wcsncpy(buf, L"--", n);
 	}
 	else if (s.bAssignment == ASSIGNMENT_POW)
 	{ // POW - location unknown
-		wcslcpy(buf, pPOWStrings[1], n);
+		wcsncpy(buf, pPOWStrings[1], n);
 	}
 	else
 	{ // Put parentheses around it when he's between sectors
@@ -8078,7 +8078,7 @@ void GetMapscreenMercDepartureString(SOLDIERTYPE const& s, wchar_t* const buf, s
 	if ((s.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC && s.ubProfile != SLAY) ||
 			s.bLife == 0)
 	{
-		wcslcpy(buf, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION], n);
+		wcsncpy(buf, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION], n);
 		return;
 	}
 
