@@ -16,6 +16,8 @@ ifneq "$(shell uname)" "Linux"
   $(error This build script must run on Linux)
 endif
 
+BUILD_INFO     := $(shell git describe --long --tags --always || echo "unknown")
+
 # By default building binary for whatever system the build system is running
 TARGET_ARCH    ?=
 
@@ -90,6 +92,8 @@ endif
 ifdef DEBUGBUILD
 CFLAGS += -g
 endif
+
+CFLAGS += -DBUILD_INFO=\"$(BUILD_INFO)\"
 
 CFLAGS += -I .
 CFLAGS += -I Build

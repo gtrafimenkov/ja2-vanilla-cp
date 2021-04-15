@@ -1,16 +1,14 @@
 #include "GameVersion.h"
 
-#ifndef GAME_VERSION
-  #define GAME_VERSION "XXXXX"
-#endif
-
-#define FULL_VERSION "Vanilla CP " GAME_VERSION
-
 //
 //	Keeps track of the game version
 //
 
-const char g_version_label[] = FULL_VERSION;
+#ifndef BUILD_INFO
+#define BUILD_INFO "unknown"
+#endif
+
+const char g_version_label[] = "JA2 Vanilla CP (" BUILD_INFO ")";
 
 // This version is written into the save files.
 // It should remain the same otherwise there will be warning on
