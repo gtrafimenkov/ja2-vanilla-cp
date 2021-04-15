@@ -1,13 +1,15 @@
 #ifndef _STRATEGIC_MERC_HANDLER_H_
 #define _STRATEGIC_MERC_HANDLER_H_
 
+#include "JA2Types.h"
+#include "SGP/Types.h"
 
-void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE&);
+void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE &);
 void MercDailyUpdate(void);
-void MercsContractIsFinished(SOLDIERTYPE* s);
-void RPCWhineAboutNoPay(SOLDIERTYPE&);
-void MercComplainAboutEquipment( UINT8 ubProfileID );
-BOOLEAN SoldierHasWorseEquipmentThanUsedTo( SOLDIERTYPE *pSoldier );
-void UpdateBuddyAndHatedCounters( void );
+void MercsContractIsFinished(SOLDIERTYPE *s);
+void RPCWhineAboutNoPay(SOLDIERTYPE &);
+void MercComplainAboutEquipment(UINT8 ubProfileID);
+BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier);
+void UpdateBuddyAndHatedCounters(void);
 void HourlyCamouflageUpdate();
 #endif

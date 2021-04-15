@@ -4,4 +4,3 @@
 void CreateEditorTaskbarInternal(void);
 
 #endif
-

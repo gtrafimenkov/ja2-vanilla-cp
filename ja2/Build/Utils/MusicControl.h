@@ -4,42 +4,41 @@
 #include "SGP/SoundMan.h"
 
 enum MusicList {
-	MARIMBAD2_MUSIC,
-	MENUMIX_MUSIC,
-	NOTHING_A_MUSIC,
-	NOTHING_B_MUSIC,
-	NOTHING_C_MUSIC,
-	NOTHING_D_MUSIC,
-	TENSOR_A_MUSIC,
-	TENSOR_B_MUSIC,
-	TENSOR_C_MUSIC,
-	TRIUMPH_MUSIC,
-	DEATH_MUSIC,
-	BATTLE_A_MUSIC,
-	BATTLE_B_MUSIC, //same as tensor B
-	CREEPY_MUSIC,
-	CREATURE_BATTLE_MUSIC,
-	NUM_MUSIC
+  MARIMBAD2_MUSIC,
+  MENUMIX_MUSIC,
+  NOTHING_A_MUSIC,
+  NOTHING_B_MUSIC,
+  NOTHING_C_MUSIC,
+  NOTHING_D_MUSIC,
+  TENSOR_A_MUSIC,
+  TENSOR_B_MUSIC,
+  TENSOR_C_MUSIC,
+  TRIUMPH_MUSIC,
+  DEATH_MUSIC,
+  BATTLE_A_MUSIC,
+  BATTLE_B_MUSIC,  // same as tensor B
+  CREEPY_MUSIC,
+  CREATURE_BATTLE_MUSIC,
+  NUM_MUSIC
 };
 
-extern const char* const szMusicList[NUM_MUSIC];
+extern const char *const szMusicList[NUM_MUSIC];
 
 enum MusicMode {
 
-	MUSIC_NONE,
-	MUSIC_RESTORE,
-	MUSIC_MAIN_MENU,
-	MUSIC_TACTICAL_NOTHING,
-	MUSIC_TACTICAL_ENEMYPRESENT,
-	MUSIC_TACTICAL_BATTLE,
-	MUSIC_TACTICAL_VICTORY,
-	MUSIC_TACTICAL_DEATH,
-	MUSIC_LAPTOP,
+  MUSIC_NONE,
+  MUSIC_RESTORE,
+  MUSIC_MAIN_MENU,
+  MUSIC_TACTICAL_NOTHING,
+  MUSIC_TACTICAL_ENEMYPRESENT,
+  MUSIC_TACTICAL_BATTLE,
+  MUSIC_TACTICAL_VICTORY,
+  MUSIC_TACTICAL_DEATH,
+  MUSIC_LAPTOP,
 };
 
-extern UINT8		gubMusicMode;
-extern BOOLEAN	gfForceMusicToTense;
-
+extern UINT8 gubMusicMode;
+extern BOOLEAN gfForceMusicToTense;
 
 void SetMusicMode(UINT8 ubMusicMode);
 
@@ -53,6 +52,6 @@ UINT32 MusicGetVolume(void);
  * the main loop, or somewhere with a high frequency of calls. */
 void MusicPoll(void);
 
-void SetMusicFadeSpeed( INT8 bFadeSpeed );
+void SetMusicFadeSpeed(INT8 bFadeSpeed);
 
 #endif

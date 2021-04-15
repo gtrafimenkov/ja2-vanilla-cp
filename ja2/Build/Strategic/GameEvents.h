@@ -3,38 +3,35 @@
 
 #include "Strategic/GameEventHook.h"
 
+#define SEF_DELETION_PENDING 0x02
 
-#define SEF_DELETION_PENDING	0x02
-
-struct STRATEGICEVENT
-{
-	STRATEGICEVENT* next;
-	UINT32									uiTimeStamp;
-	UINT32									uiParam;
-	UINT32									uiTimeOffset;
-	UINT8										ubEventType;
-	UINT8										ubCallbackID;
-	UINT8										ubFlags;
+struct STRATEGICEVENT {
+  STRATEGICEVENT *next;
+  UINT32 uiTimeStamp;
+  UINT32 uiParam;
+  UINT32 uiTimeOffset;
+  UINT8 ubEventType;
+  UINT8 ubCallbackID;
+  UINT8 ubFlags;
 };
 
-
-enum StrategicEventFrequency
-{
-	ONETIME_EVENT,
-	RANGED_EVENT,
-	ENDRANGED_EVENT,
-	EVERYDAY_EVENT,
-	PERIODIC_EVENT,
-	QUEUED_EVENT
+enum StrategicEventFrequency {
+  ONETIME_EVENT,
+  RANGED_EVENT,
+  ENDRANGED_EVENT,
+  EVERYDAY_EVENT,
+  PERIODIC_EVENT,
+  QUEUED_EVENT
 };
 
-//part of the game.sav files (not map files)
+// part of the game.sav files (not map files)
 void SaveStrategicEventsToSavedGame(HWFILE);
 void LoadStrategicEventsFromSavedGame(HWFILE);
 
-STRATEGICEVENT* AddAdvancedStrategicEvent(StrategicEventFrequency, StrategicEventKind, UINT32 uiTimeStamp, UINT32 uiParam);
+STRATEGICEVENT *AddAdvancedStrategicEvent(StrategicEventFrequency, StrategicEventKind,
+                                          UINT32 uiTimeStamp, UINT32 uiParam);
 
-BOOLEAN ExecuteStrategicEvent( STRATEGICEVENT *pEvent );
+BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent);
 
 extern STRATEGICEVENT *gpEventList;
 

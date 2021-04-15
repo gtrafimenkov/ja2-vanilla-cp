@@ -14,36 +14,36 @@ extern BOOLEAN fShowMapInventoryPool;
 void LoadInventoryPoolGraphic(void);
 
 // remove inventory pool graphic
-void RemoveInventoryPoolGraphic( void );
+void RemoveInventoryPoolGraphic(void);
 
 // blit the inventory graphic
-void BlitInventoryPoolGraphic( void );
+void BlitInventoryPoolGraphic(void);
 
 // which buttons in map invneotyr panel?
-void HandleButtonStatesWhileMapInventoryActive( void );
+void HandleButtonStatesWhileMapInventoryActive(void);
 
 // handle creation and destruction of map inventory pool buttons
-void CreateDestroyMapInventoryPoolButtons( BOOLEAN fExitFromMapScreen );
+void CreateDestroyMapInventoryPoolButtons(BOOLEAN fExitFromMapScreen);
 
 // bail out of sector inventory mode if it is on
-void CancelSectorInventoryDisplayIfOn( BOOLEAN fExitFromMapScreen );
+void CancelSectorInventoryDisplayIfOn(BOOLEAN fExitFromMapScreen);
 
 // handle flash of inventory items
-void HandleFlashForHighLightedItem( void );
+void HandleFlashForHighLightedItem(void);
 
 // the list for the inventory
 extern WORLDITEM *pInventoryPoolList;
 
 // autoplace down object
-void AutoPlaceObjectInInventoryStash(OBJECTTYPE* pItemPtr);
+void AutoPlaceObjectInInventoryStash(OBJECTTYPE *pItemPtr);
 
 // the current inventory item
 extern INT32 iCurrentlyHighLightedItem;
 extern BOOLEAN fFlashHighLightInventoryItemOnradarMap;
 extern INT16 sObjectSourceGridNo;
 extern INT32 iCurrentInventoryPoolPage;
-extern BOOLEAN fMapInventoryItemCompatable[ ];
+extern BOOLEAN fMapInventoryItemCompatable[];
 
-BOOLEAN IsMapScreenWorldItemVisibleInMapInventory(const WORLDITEM*);
+BOOLEAN IsMapScreenWorldItemVisibleInMapInventory(const WORLDITEM *);
 
 #endif

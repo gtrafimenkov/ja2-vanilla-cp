@@ -3,8 +3,7 @@
 
 #include "Strategic/StrategicMap.h"
 
-
-void ExtractStrategicMapElementFromFile(HWFILE, StrategicMapElement&);
-void InjectStrategicMapElementIntoFile(HWFILE, StrategicMapElement const&);
+void ExtractStrategicMapElementFromFile(HWFILE, StrategicMapElement &);
+void InjectStrategicMapElementIntoFile(HWFILE, StrategicMapElement const &);
 
 #endif

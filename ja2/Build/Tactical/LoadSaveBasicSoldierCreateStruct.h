@@ -3,8 +3,7 @@
 
 #include "JA2Types.h"
 
-
-void ExtractBasicSoldierCreateStructFromFile(HWFILE, BASIC_SOLDIERCREATE_STRUCT&);
-void InjectBasicSoldierCreateStructIntoFile(HWFILE, BASIC_SOLDIERCREATE_STRUCT const&);
+void ExtractBasicSoldierCreateStructFromFile(HWFILE, BASIC_SOLDIERCREATE_STRUCT &);
+void InjectBasicSoldierCreateStructIntoFile(HWFILE, BASIC_SOLDIERCREATE_STRUCT const &);
 
 #endif

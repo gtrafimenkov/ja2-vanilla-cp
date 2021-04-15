@@ -3,8 +3,7 @@
 
 #include "Strategic/CampaignTypes.h"
 
-
-void ExtractUndergroundSectorInfoFromFile(HWFILE, UNDERGROUND_SECTORINFO*);
-void InjectUndergroundSectorInfoIntoFile(HWFILE, UNDERGROUND_SECTORINFO const*);
+void ExtractUndergroundSectorInfoFromFile(HWFILE, UNDERGROUND_SECTORINFO *);
+void InjectUndergroundSectorInfoIntoFile(HWFILE, UNDERGROUND_SECTORINFO const *);
 
 #endif

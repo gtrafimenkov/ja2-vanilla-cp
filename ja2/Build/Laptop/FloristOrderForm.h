@@ -6,7 +6,6 @@ void ExitFloristOrderForm(void);
 void HandleFloristOrderForm(void);
 void RenderFloristOrderForm(void);
 
-
 void InitFloristOrderForm(void);
 
 void InitFloristOrderFormVariables(void);

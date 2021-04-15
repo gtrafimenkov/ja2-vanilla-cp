@@ -1,391 +1,319 @@
+#include "Tactical/StructureWrap.h"
+
+#include "Strategic/StrategicMap.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/RottingCorpses.h"
 #include "TileEngine/ExplosionControl.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RenderWorld.h"
 #include "TileEngine/Structure.h"
 #include "TileEngine/TileDef.h"
 #include "TileEngine/WorldDef.h"
 #include "TileEngine/WorldMan.h"
-#include "Tactical/StructureWrap.h"
-#include "TileEngine/IsometricUtils.h"
-#include "Tactical/Overhead.h"
-#include "TileEngine/RenderWorld.h"
-#include "Strategic/StrategicMap.h"
-#include "Tactical/RottingCorpses.h"
 
+BOOLEAN IsFencePresentAtGridno(INT16 sGridNo) {
+  if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != NULL) {
+    return (TRUE);
+  }
 
-BOOLEAN	IsFencePresentAtGridno( INT16 sGridNo )
-{
-	if ( FindStructure( sGridNo, STRUCTURE_ANYFENCE ) != NULL )
-	{
-		return( TRUE );
-	}
-
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN	IsRoofPresentAtGridno( INT16 sGridNo )
-{
-	if ( FindStructure( sGridNo, STRUCTURE_ROOF ) != NULL )
-	{
-		return( TRUE );
-	}
+BOOLEAN IsRoofPresentAtGridno(INT16 sGridNo) {
+  if (FindStructure(sGridNo, STRUCTURE_ROOF) != NULL) {
+    return (TRUE);
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
+BOOLEAN IsJumpableFencePresentAtGridno(INT16 sGridNo) {
+  STRUCTURE *pStructure;
 
-BOOLEAN	IsJumpableFencePresentAtGridno( INT16 sGridNo )
-{
-	STRUCTURE * pStructure;
+  pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
 
-	pStructure = FindStructure( sGridNo, STRUCTURE_OBSTACLE );
+  if (pStructure) {
+    if (pStructure->fFlags & STRUCTURE_FENCE && !(pStructure->fFlags & STRUCTURE_SPECIAL)) {
+      return (TRUE);
+    }
+    if (pStructure->pDBStructureRef->pDBStructure->ubArmour == MATERIAL_SANDBAG &&
+        StructureHeight(pStructure) < 2) {
+      return (TRUE);
+    }
+  }
 
-	if ( pStructure )
-	{
-		if ( pStructure->fFlags & STRUCTURE_FENCE && !(pStructure->fFlags & STRUCTURE_SPECIAL) )
-		{
-			return( TRUE );
-		}
-		if ( pStructure->pDBStructureRef->pDBStructure->ubArmour == MATERIAL_SANDBAG && StructureHeight( pStructure ) < 2 )
-		{
-			return( TRUE );
-		}
-	}
-
-	return( FALSE );
+  return (FALSE);
 }
 
+BOOLEAN IsTreePresentAtGridno(INT16 sGridNo) {
+  if (FindStructure(sGridNo, STRUCTURE_TREE) != NULL) {
+    return (TRUE);
+  }
 
-BOOLEAN	IsTreePresentAtGridno( INT16 sGridNo )
-{
-	if ( FindStructure( sGridNo, STRUCTURE_TREE ) != NULL )
-	{
-		return( TRUE );
-	}
-
-	return( FALSE );
+  return (FALSE);
 }
 
+STRUCTURE *GetWallStructOfSameOrientationAtGridno(GridNo const grid_no, INT8 const orientation) {
+  FOR_EACH_STRUCTURE(pStructure, grid_no, STRUCTURE_WALLSTUFF) {
+    if (pStructure->ubWallOrientation != orientation) continue;
 
-STRUCTURE* GetWallStructOfSameOrientationAtGridno(GridNo const grid_no, INT8 const orientation)
-{
-	FOR_EACH_STRUCTURE(pStructure, grid_no, STRUCTURE_WALLSTUFF)
-	{
-		if (pStructure->ubWallOrientation != orientation) continue;
+    STRUCTURE *const base = FindBaseStructure(pStructure);
+    if (!base) continue;
 
-		STRUCTURE* const base = FindBaseStructure(pStructure);
-		if (!base) continue;
-
-		return base;
-	}
-	return 0;
+    return base;
+  }
+  return 0;
 }
 
+BOOLEAN IsDoorVisibleAtGridNo(INT16 sGridNo) {
+  STRUCTURE *pStructure;
+  INT16 sNewGridNo;
 
-BOOLEAN IsDoorVisibleAtGridNo( INT16 sGridNo )
-{
-	STRUCTURE * pStructure;
-	INT16				sNewGridNo;
+  pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
-	pStructure = FindStructure( sGridNo, STRUCTURE_ANYDOOR );
+  if (pStructure != NULL) {
+    // Check around based on orientation
+    switch (pStructure->ubWallOrientation) {
+      case INSIDE_TOP_LEFT:
+      case OUTSIDE_TOP_LEFT:
 
-	if ( pStructure != NULL )
-	{
-		// Check around based on orientation
-		switch( pStructure->ubWallOrientation )
-		{
-			case INSIDE_TOP_LEFT:
-			case OUTSIDE_TOP_LEFT:
+        // Here, check north direction
+        sNewGridNo = NewGridNo(sGridNo, DirectionInc(NORTH));
 
-				// Here, check north direction
-				sNewGridNo = NewGridNo( sGridNo, DirectionInc( NORTH ) );
+        if (IsRoofVisible2(sNewGridNo)) {
+          // OK, now check south, if true, she's not visible
+          sNewGridNo = NewGridNo(sGridNo, DirectionInc(SOUTH));
 
-				if ( IsRoofVisible2( sNewGridNo ) )
-				{
-					// OK, now check south, if true, she's not visible
-					sNewGridNo = NewGridNo( sGridNo, DirectionInc( SOUTH ) );
+          if (IsRoofVisible2(sNewGridNo)) {
+            return (FALSE);
+          }
+        }
+        break;
 
-					if ( IsRoofVisible2( sNewGridNo ) )
-					{
-						return( FALSE );
-					}
-				}
-				break;
+      case INSIDE_TOP_RIGHT:
+      case OUTSIDE_TOP_RIGHT:
 
-			case INSIDE_TOP_RIGHT:
-			case OUTSIDE_TOP_RIGHT:
+        // Here, check west direction
+        sNewGridNo = NewGridNo(sGridNo, DirectionInc(WEST));
 
-				// Here, check west direction
-				sNewGridNo = NewGridNo( sGridNo, DirectionInc( WEST ) );
+        if (IsRoofVisible2(sNewGridNo)) {
+          // OK, now check south, if true, she's not visible
+          sNewGridNo = NewGridNo(sGridNo, DirectionInc(EAST));
 
-				if ( IsRoofVisible2( sNewGridNo ) )
-				{
-					// OK, now check south, if true, she's not visible
-					sNewGridNo = NewGridNo( sGridNo, DirectionInc( EAST ) );
+          if (IsRoofVisible2(sNewGridNo)) {
+            return (FALSE);
+          }
+        }
+        break;
+    }
+  }
 
-					if ( IsRoofVisible2( sNewGridNo ) )
-					{
-						return( FALSE );
-					}
-				}
-				break;
-
-		}
-
-	}
-
-	// Return true here, even if she does not exist
-	return( TRUE );
+  // Return true here, even if she does not exist
+  return (TRUE);
 }
 
+BOOLEAN WallExistsOfTopLeftOrientation(INT16 sGridNo) {
+  // CJC: changing to search only for normal walls, July 16, 1998
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALL) {
+    // Check orientation
+    if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT ||
+        pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
+      return (TRUE);
+    }
+  }
 
-BOOLEAN	WallExistsOfTopLeftOrientation( INT16 sGridNo )
-{
-	// CJC: changing to search only for normal walls, July 16, 1998
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALL)
-	{
-		// Check orientation
-		if ( pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT )
-		{
-			return( TRUE );
-		}
-	}
-
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN	WallExistsOfTopRightOrientation( INT16 sGridNo )
-{
-	// CJC: changing to search only for normal walls, July 16, 1998
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALL)
-	{
-		// Check orientation
-		if ( pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT )
-		{
-			return( TRUE );
-		}
-	}
+BOOLEAN WallExistsOfTopRightOrientation(INT16 sGridNo) {
+  // CJC: changing to search only for normal walls, July 16, 1998
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALL) {
+    // Check orientation
+    if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT ||
+        pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+      return (TRUE);
+    }
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation( INT16 sGridNo )
-{
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALLSTUFF)
-	{
-		// skip it if it's an open door
-		if ( ! ( ( pStructure->fFlags & STRUCTURE_ANYDOOR ) && ( pStructure->fFlags & STRUCTURE_OPEN ) ) )
-		{
-			// Check orientation
-			if ( pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT )
-			{
-				return( TRUE );
-			}
-		}
-	}
+BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation(INT16 sGridNo) {
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALLSTUFF) {
+    // skip it if it's an open door
+    if (!((pStructure->fFlags & STRUCTURE_ANYDOOR) && (pStructure->fFlags & STRUCTURE_OPEN))) {
+      // Check orientation
+      if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT ||
+          pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
+        return (TRUE);
+      }
+    }
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation( INT16 sGridNo )
-{
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALLSTUFF)
-	{
-		// skip it if it's an open door
-		if ( ! ( ( pStructure->fFlags & STRUCTURE_ANYDOOR ) && ( pStructure->fFlags & STRUCTURE_OPEN ) ) )
-		{
-			// Check orientation
-			if ( pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT )
-			{
-				return( TRUE );
-			}
-		}
-	}
+BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation(INT16 sGridNo) {
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_WALLSTUFF) {
+    // skip it if it's an open door
+    if (!((pStructure->fFlags & STRUCTURE_ANYDOOR) && (pStructure->fFlags & STRUCTURE_OPEN))) {
+      // Check orientation
+      if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT ||
+          pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+        return (TRUE);
+      }
+    }
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists( INT16 sGridNo )
-{
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_ANYDOOR)
-	{
-		if (!(pStructure->fFlags & STRUCTURE_OPEN)) break;
-		// Check orientation
-		if ( pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT )
-		{
-			if ( (pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_RIGHT) )
-			{
-				return( TRUE );
-			}
-		}
-	}
+BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(INT16 sGridNo) {
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_ANYDOOR) {
+    if (!(pStructure->fFlags & STRUCTURE_OPEN)) break;
+    // Check orientation
+    if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT ||
+        pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+      if ((pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_RIGHT)) {
+        return (TRUE);
+      }
+    }
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
-BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists( INT16 sGridNo )
-{
-	FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_ANYDOOR)
-	{
-		if (!(pStructure->fFlags & STRUCTURE_OPEN)) break;
-		// Check orientation
-		if ( pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT )
-		{
-			if ( (pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_LEFT) )
-			{
-				return( TRUE );
-			}
-		}
-	}
+BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(INT16 sGridNo) {
+  FOR_EACH_STRUCTURE(pStructure, sGridNo, STRUCTURE_ANYDOOR) {
+    if (!(pStructure->fFlags & STRUCTURE_OPEN)) break;
+    // Check orientation
+    if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT ||
+        pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
+      if ((pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_LEFT)) {
+        return (TRUE);
+      }
+    }
+  }
 
-	return( FALSE );
+  return (FALSE);
 }
 
+static STRUCTURE *FindCuttableWireFenceAtGridNo(INT16 sGridNo) {
+  STRUCTURE *pStructure;
 
-static STRUCTURE* FindCuttableWireFenceAtGridNo(INT16 sGridNo)
-{
-	STRUCTURE * pStructure;
-
-	pStructure = FindStructure( sGridNo, STRUCTURE_WIREFENCE );
-	if (pStructure != NULL && pStructure->ubWallOrientation != NO_ORIENTATION && !(pStructure->fFlags & STRUCTURE_OPEN) )
-	{
-		return( pStructure );
-	}
-	return( NULL );
+  pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
+  if (pStructure != NULL && pStructure->ubWallOrientation != NO_ORIENTATION &&
+      !(pStructure->fFlags & STRUCTURE_OPEN)) {
+    return (pStructure);
+  }
+  return (NULL);
 }
 
-BOOLEAN CutWireFence( INT16 sGridNo )
-{
-	STRUCTURE * pStructure;
+BOOLEAN CutWireFence(INT16 sGridNo) {
+  STRUCTURE *pStructure;
 
-	pStructure = FindCuttableWireFenceAtGridNo( sGridNo );
-	if (pStructure)
-	{
-		pStructure = SwapStructureForPartnerAndStoreChangeInMap(pStructure);
-		if (pStructure)
-		{
-			RecompileLocalMovementCosts( sGridNo );
-			SetRenderFlags( RENDER_FLAG_FULL );
-			return( TRUE );
-		}
-	}
-	return( FALSE );
+  pStructure = FindCuttableWireFenceAtGridNo(sGridNo);
+  if (pStructure) {
+    pStructure = SwapStructureForPartnerAndStoreChangeInMap(pStructure);
+    if (pStructure) {
+      RecompileLocalMovementCosts(sGridNo);
+      SetRenderFlags(RENDER_FLAG_FULL);
+      return (TRUE);
+    }
+  }
+  return (FALSE);
 }
 
-BOOLEAN IsCuttableWireFenceAtGridNo( INT16 sGridNo )
-{
-	return( FindCuttableWireFenceAtGridNo( sGridNo ) != NULL );
+BOOLEAN IsCuttableWireFenceAtGridNo(INT16 sGridNo) {
+  return (FindCuttableWireFenceAtGridNo(sGridNo) != NULL);
 }
 
+BOOLEAN IsRepairableStructAtGridNo(const INT16 sGridNo, SOLDIERTYPE **const tgt) {
+  // OK, first look for a vehicle....
+  SOLDIERTYPE *const s = WhoIsThere2(sGridNo, 0);
+  if (tgt != NULL) *tgt = s;
 
-BOOLEAN IsRepairableStructAtGridNo(const INT16 sGridNo, SOLDIERTYPE** const tgt)
-{
-	// OK, first look for a vehicle....
-	SOLDIERTYPE* const s = WhoIsThere2(sGridNo, 0);
-	if (tgt != NULL) *tgt = s;
+  if (s != NULL && s->uiStatusFlags & SOLDIER_VEHICLE) return 2;
+  // Then for over a robot....
 
-	if (s != NULL && s->uiStatusFlags & SOLDIER_VEHICLE) return 2;
-	// Then for over a robot....
+  // then for SAM site....
+  if (DoesSAMExistHere(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, sGridNo)) {
+    return (3);
+  }
 
-	// then for SAM site....
-	if ( DoesSAMExistHere( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, sGridNo ) )
-	{
-		return( 3 );
-	}
-
-
-	return( FALSE );
+  return (FALSE);
 }
 
-
-SOLDIERTYPE* GetRefuelableStructAtGridNo(INT16 sGridNo)
-{
-	// OK, first look for a vehicle....
-	SOLDIERTYPE* const tgt = WhoIsThere2(sGridNo, 0);
-	return tgt != NULL && tgt->uiStatusFlags & SOLDIER_VEHICLE ? tgt : NULL;
+SOLDIERTYPE *GetRefuelableStructAtGridNo(INT16 sGridNo) {
+  // OK, first look for a vehicle....
+  SOLDIERTYPE *const tgt = WhoIsThere2(sGridNo, 0);
+  return tgt != NULL && tgt->uiStatusFlags & SOLDIER_VEHICLE ? tgt : NULL;
 }
 
+static BOOLEAN IsCutWireFenceAtGridNo(INT16 sGridNo) {
+  STRUCTURE *pStructure;
 
-static BOOLEAN IsCutWireFenceAtGridNo(INT16 sGridNo)
-{
-	STRUCTURE * pStructure;
-
-	pStructure = FindStructure( sGridNo, STRUCTURE_WIREFENCE );
-	if (pStructure != NULL && (pStructure->ubWallOrientation != NO_ORIENTATION) && (pStructure->fFlags & STRUCTURE_OPEN) )
-	{
-		return( TRUE );
-	}
-	return( FALSE );
+  pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
+  if (pStructure != NULL && (pStructure->ubWallOrientation != NO_ORIENTATION) &&
+      (pStructure->fFlags & STRUCTURE_OPEN)) {
+    return (TRUE);
+  }
+  return (FALSE);
 }
 
+INT16 FindDoorAtGridNoOrAdjacent(INT16 sGridNo) {
+  STRUCTURE *pStructure;
+  STRUCTURE *pBaseStructure;
+  INT16 sTestGridNo;
 
+  sTestGridNo = sGridNo;
+  pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
+  if (pStructure) {
+    pBaseStructure = FindBaseStructure(pStructure);
+    return (pBaseStructure->sGridNo);
+  }
 
-INT16 FindDoorAtGridNoOrAdjacent( INT16 sGridNo )
-{
-	STRUCTURE * pStructure;
-	STRUCTURE * pBaseStructure;
-	INT16				sTestGridNo;
+  sTestGridNo = sGridNo + DirectionInc(NORTH);
+  pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
+  if (pStructure) {
+    pBaseStructure = FindBaseStructure(pStructure);
+    return (pBaseStructure->sGridNo);
+  }
 
-	sTestGridNo = sGridNo;
-	pStructure = FindStructure( sTestGridNo, STRUCTURE_ANYDOOR );
-	if (pStructure)
-	{
-		pBaseStructure = FindBaseStructure( pStructure );
-		return( pBaseStructure->sGridNo );
-	}
+  sTestGridNo = sGridNo + DirectionInc(WEST);
+  pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
+  if (pStructure) {
+    pBaseStructure = FindBaseStructure(pStructure);
+    return (pBaseStructure->sGridNo);
+  }
 
-	sTestGridNo = sGridNo + DirectionInc( NORTH );
-	pStructure = FindStructure( sTestGridNo, STRUCTURE_ANYDOOR );
-	if (pStructure)
-	{
-		pBaseStructure = FindBaseStructure( pStructure );
-		return( pBaseStructure->sGridNo );
-	}
-
-	sTestGridNo = sGridNo + DirectionInc( WEST );
-	pStructure = FindStructure( sTestGridNo, STRUCTURE_ANYDOOR );
-	if (pStructure)
-	{
-		pBaseStructure = FindBaseStructure( pStructure );
-		return( pBaseStructure->sGridNo );
-	}
-
-	return( NOWHERE );
+  return (NOWHERE);
 }
 
-
-
-BOOLEAN IsCorpseAtGridNo( INT16 sGridNo, UINT8 ubLevel )
-{
-	if ( GetCorpseAtGridNo( sGridNo , ubLevel ) != NULL )
-	{
-		return( TRUE );
-	}
-	else
-	{
-		return( FALSE );
-	}
+BOOLEAN IsCorpseAtGridNo(INT16 sGridNo, UINT8 ubLevel) {
+  if (GetCorpseAtGridNo(sGridNo, ubLevel) != NULL) {
+    return (TRUE);
+  } else {
+    return (FALSE);
+  }
 }
 
+BOOLEAN SetOpenableStructureToClosed(INT16 sGridNo, UINT8 ubLevel) {
+  STRUCTURE *pStructure;
+  STRUCTURE *pNewStructure;
 
-BOOLEAN SetOpenableStructureToClosed( INT16 sGridNo, UINT8 ubLevel )
-{
-	STRUCTURE *		pStructure;
-	STRUCTURE *		pNewStructure;
+  pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
+  if (!pStructure) {
+    return (FALSE);
+  }
 
-	pStructure = FindStructure( sGridNo, STRUCTURE_OPENABLE );
-	if ( !pStructure )
-	{
-		return( FALSE );
-	}
-
-	if ( pStructure->fFlags & STRUCTURE_OPEN )
-	{
-		pNewStructure = SwapStructureForPartner(pStructure);
-		if ( pNewStructure != NULL)
-		{
-			RecompileLocalMovementCosts( sGridNo );
-			SetRenderFlags( RENDER_FLAG_FULL );
-		}
-	}
-	// else leave it as is!
-	return( TRUE );
+  if (pStructure->fFlags & STRUCTURE_OPEN) {
+    pNewStructure = SwapStructureForPartner(pStructure);
+    if (pNewStructure != NULL) {
+      RecompileLocalMovementCosts(sGridNo);
+      SetRenderFlags(RENDER_FLAG_FULL);
+    }
+  }
+  // else leave it as is!
+  return (TRUE);
 }

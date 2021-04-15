@@ -3,9 +3,8 @@
 
 #include "SGP/Types.h"
 
-
-extern SGPVSurface* guiSAVEBUFFER;
-extern SGPVSurface* guiEXTRABUFFER;
+extern SGPVSurface *guiSAVEBUFFER;
+extern SGPVSurface *guiEXTRABUFFER;
 
 void InitializeGameVideoObjects(void);
 

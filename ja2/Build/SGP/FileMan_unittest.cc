@@ -1,12 +1,10 @@
+#include "SGP/FileMan.h"
+
 #include <algorithm>
 
 #include "gtest/gtest.h"
 
-#include "SGP/FileMan.h"
-
-
-TEST(FileManTest, joinPaths)
-{
+TEST(FileManTest, joinPaths) {
   // std::string joinPaths(const char *first, const char *second);
   {
     std::string result;
@@ -32,21 +30,19 @@ TEST(FileManTest, joinPaths)
     // EXPECT_STREQ(result.c_str(), "foo" PATH_SEPARATOR_STR "bar");
 
     // // XXX FAILS
-    // result = FileMan::joinPaths("foo" PATH_SEPARATOR_STR, PATH_SEPARATOR_STR "bar");
-    // EXPECT_STREQ(result.c_str(), "foo" PATH_SEPARATOR_STR "bar");
+    // result = FileMan::joinPaths("foo" PATH_SEPARATOR_STR, PATH_SEPARATOR_STR
+    // "bar"); EXPECT_STREQ(result.c_str(), "foo" PATH_SEPARATOR_STR "bar");
 
     // ~~~ unix separators
     // ~~~ win separators
 
     // hmm... what do we really want from the library?
-    // should the library consider / to be the separator when it is compiled for windows?
+    // should the library consider / to be the separator when it is compiled for
+    // windows?
   }
-
 }
 
-
-TEST(FileManTest, FindFiles)
-{
+TEST(FileManTest, FindFiles) {
 #define PS PATH_SEPARATOR_STR
 
   // find one file with .txt estension
@@ -96,7 +92,6 @@ TEST(FileManTest, FindFiles)
 #undef PS
 }
 
-
 // TEST(FileManTest, RemoveAllFilesInDir)
 // {
 //   boost::filesystem::path tmpDir = boost::filesystem::temp_directory_path();
@@ -117,8 +112,8 @@ TEST(FileManTest, FindFiles)
 //   fileA.close();
 //   fileB.close();
 
-//   std::vector<std::string> results = FindAllFilesInDir(tmpDir.string(), true);
-//   ASSERT_EQ(results.size(), 2);
+//   std::vector<std::string> results = FindAllFilesInDir(tmpDir.string(),
+//   true); ASSERT_EQ(results.size(), 2);
 
 //   EraseDirectory(tmpDir.string().c_str());
 

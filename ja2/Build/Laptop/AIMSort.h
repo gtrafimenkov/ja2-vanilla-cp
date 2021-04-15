@@ -6,10 +6,8 @@
 extern uint8_t gubCurrentSortMode;
 extern uint8_t gubCurrentListMode;
 
-
-#define		AIM_ASCEND									6
-#define		AIM_DESCEND									7
-
+#define AIM_ASCEND 6
+#define AIM_DESCEND 7
 
 void GameInitAimSort(void);
 void EnterAimSort(void);

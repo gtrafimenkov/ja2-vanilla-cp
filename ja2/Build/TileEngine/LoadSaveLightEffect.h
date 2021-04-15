@@ -3,8 +3,7 @@
 
 #include "TileEngine/LightEffects.h"
 
-
-void ExtractLightEffectFromFile(HWFILE, LIGHTEFFECT* l);
-void InjectLightEffectIntoFile(HWFILE, LIGHTEFFECT const* l);
+void ExtractLightEffectFromFile(HWFILE, LIGHTEFFECT *l);
+void InjectLightEffectIntoFile(HWFILE, LIGHTEFFECT const *l);
 
 #endif

@@ -3,14 +3,11 @@
 
 #include "SGP/Types.h"
 
-
 #define MAXVOLUME 127
 
-
 // Sound error values (they're all the same)
-#define		NO_SAMPLE							0xffffffff
-#define		SOUND_ERROR						0xffffffff
-
+#define NO_SAMPLE 0xffffffff
+#define SOUND_ERROR 0xffffffff
 
 // Zeros out the structs for the system info, and initializes the cache.
 void InitializeSoundManager(void);
@@ -19,9 +16,8 @@ void InitializeSoundManager(void);
  * releases the sound hardware. */
 void ShutdownSoundManager(void);
 
-
-UINT32 SoundPlayFromBuffer(INT16* pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop, void (*end_callback)(void*), void* data);
-
+UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
+                           void (*end_callback)(void *), void *data);
 
 /* Starts a sample playing. If the sample is not loaded in the cache, it will
  * be found and loaded.
@@ -31,14 +27,16 @@ UINT32 SoundPlayFromBuffer(INT16* pbuffer, UINT32 size, UINT32 volume, UINT32 pa
  *          returned
  *
  * !!Note:  Can no longer play streamed files */
-UINT32 SoundPlay(const char* pFilename, UINT32 volume, UINT32 pan, UINT32 loop, void (*end_callback)(void*), void* data);
+UINT32 SoundPlay(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
+                 void (*end_callback)(void *), void *data);
 
 /* The sample will be played as a double-buffered sample.
  *
  * Returns: If the sound was started, it returns a sound ID unique to that
  *          instance of the sound If an error occured, SOUND_ERROR will be
  *          returned */
-UINT32 SoundPlayStreamedFile(const char* pFilename, UINT32 volume, UINT32 pan, UINT32 loop, void (*end_callback)(void*), void* data);
+UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
+                             void (*end_callback)(void *), void *data);
 
 /* Registers a sample to be played randomly within the specified parameters.
  *
@@ -48,7 +46,8 @@ UINT32 SoundPlayStreamedFile(const char* pFilename, UINT32 volume, UINT32 pan, U
  *
  * Returns: If successful, it returns the sample index it is loaded to, else
  *          SOUND_ERROR is returned. */
-UINT32 SoundPlayRandom(const char* pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min, UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances);
+UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
+                       UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances);
 
 /* Can be polled in tight loops where sound buffers might starve due to heavy
  * hardware use, etc. Streams DO NOT normally need to be serviced manually, but

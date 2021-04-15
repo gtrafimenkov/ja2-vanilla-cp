@@ -3,8 +3,7 @@
 
 #include "Tactical/Bullets.h"
 
-
-void ExtractBulletFromFile(HWFILE, BULLET*);
-void InjectBulletIntoFile(HWFILE, const BULLET*);
+void ExtractBulletFromFile(HWFILE, BULLET *);
+void InjectBulletIntoFile(HWFILE, const BULLET *);
 
 #endif

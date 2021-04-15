@@ -3,9 +3,8 @@
 
 #include "Tactical/OverheadTypes.h"
 
+BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pal, const char *col_file);
 
-BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry* pal, const char* col_file);
-
-void DisplayPaletteRep(const PaletteRepID aPalRep, UINT8 ubXPos, UINT8 ubYPos, SGPVSurface* dst);
+void DisplayPaletteRep(const PaletteRepID aPalRep, UINT8 ubXPos, UINT8 ubYPos, SGPVSurface *dst);
 
 #endif

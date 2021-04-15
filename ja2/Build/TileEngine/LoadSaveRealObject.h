@@ -3,8 +3,7 @@
 
 #include "TileEngine/Physics.h"
 
-
-void ExtractRealObjectFromFile(HWFILE, REAL_OBJECT*);
-void InjectRealObjectIntoFile(HWFILE, REAL_OBJECT const*);
+void ExtractRealObjectFromFile(HWFILE, REAL_OBJECT *);
+void InjectRealObjectIntoFile(HWFILE, REAL_OBJECT const *);
 
 #endif

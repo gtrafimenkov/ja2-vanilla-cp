@@ -3,9 +3,9 @@
 
 #include "JA2Types.h"
 
-SGPVObject* Load33Portrait(MERCPROFILESTRUCT const&);
-SGPVObject* Load65Portrait(MERCPROFILESTRUCT const&);
-SGPVObject* LoadBigPortrait(MERCPROFILESTRUCT const&);
-SGPVObject* LoadSmallPortrait(MERCPROFILESTRUCT const&);
+SGPVObject *Load33Portrait(MERCPROFILESTRUCT const &);
+SGPVObject *Load65Portrait(MERCPROFILESTRUCT const &);
+SGPVObject *LoadBigPortrait(MERCPROFILESTRUCT const &);
+SGPVObject *LoadSmallPortrait(MERCPROFILESTRUCT const &);
 
 #endif

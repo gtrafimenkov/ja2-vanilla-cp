@@ -3,7 +3,6 @@
 
 #include "JA2Types.h"
 
-
 void InitTacticalPlacementGUI();
 void TacticalPlacementHandle(void);
 
@@ -15,11 +14,11 @@ extern BOOLEAN gfEnterTacticalPlacementGUI;
 extern SOLDIERTYPE *gpTacticalPlacementSelectedSoldier;
 extern SOLDIERTYPE *gpTacticalPlacementHilightedSoldier;
 
-//Saved value.  Contains the last choice for future battles.
-extern UINT8	gubDefaultButton;
+// Saved value.  Contains the last choice for future battles.
+extern UINT8 gubDefaultButton;
 
 extern BOOLEAN gfTacticalPlacementGUIDirty;
 extern BOOLEAN gfValidLocationsChanged;
-extern SGPVObject* giMercPanelImage;
+extern SGPVObject *giMercPanelImage;
 
 #endif

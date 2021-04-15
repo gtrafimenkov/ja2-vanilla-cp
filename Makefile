@@ -173,3 +173,13 @@ install-build-dependencies-win:
 	sudo apt-get install -y \
 		gcc-mingw-w64 gcc-mingw-w64-i686 \
 		g++-mingw-w64 g++-mingw-w64-i686
+
+CLANG_FORMATTER ?= ~/bin/clang+llvm-11.1.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang-format
+
+format:
+	find ja2 \( -iname '*.c' -o -iname '*.cc' -o -iname '*.cpp' -o -iname '*.h' \) \
+		| xargs $(CLANG_FORMATTER) -i --style=file
+
+format-modified:
+	git status --porcelain | egrep -e '[.](c|cc|cpp|h)$$' | awk '{print $$2}' \
+		| xargs $(CLANG_FORMATTER) -i --style=file

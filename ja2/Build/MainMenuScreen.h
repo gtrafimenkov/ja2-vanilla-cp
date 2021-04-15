@@ -3,7 +3,6 @@
 
 #include "ScreenIDs.h"
 
-
 void InitMainMenu(void);
 void ClearMainMenu(void);
 

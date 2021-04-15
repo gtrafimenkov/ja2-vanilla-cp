@@ -1,776 +1,697 @@
+#include "TileEngine/SaveLoadMap.h"
+
+#include "GameSettings.h"
 #include "SGP/Buffer.h"
-#include "Utils/FontControl.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/MemMan.h"
+#include "SGP/Types.h"
+#include "Strategic/CampaignTypes.h"
+#include "Strategic/StrategicMap.h"
+#include "Tactical/FOV.h"
 #include "Tactical/HandleItems.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/TacticalSave.h"
+#include "TileEngine/ExitGrids.h"
+#include "TileEngine/RenderFun.h"
+#include "TileEngine/Smell.h"
 #include "TileEngine/Structure.h"
 #include "TileEngine/TileDef.h"
-#include "SGP/Types.h"
-#include "TileEngine/SaveLoadMap.h"
-#include "Tactical/Overhead.h"
-#include "SGP/FileMan.h"
-#include "Tactical/TacticalSave.h"
-#include "SGP/Debug.h"
-#include "TileEngine/WorldMan.h"
-#include "Strategic/StrategicMap.h"
-#include "Strategic/CampaignTypes.h"
-#include "TileEngine/RenderFun.h"
-#include "Tactical/FOV.h"
 #include "TileEngine/WorldDef.h"
-#include "TileEngine/ExitGrids.h"
+#include "TileEngine/WorldMan.h"
+#include "Utils/FontControl.h"
 #include "Utils/Message.h"
-#include "GameSettings.h"
-#include "TileEngine/Smell.h"
-#include "SGP/MemMan.h"
 
-
-#define			NUM_REVEALED_BYTES			3200
+#define NUM_REVEALED_BYTES 3200
 
 extern BOOLEAN gfLoadingExitGrids;
 
-
 bool ApplyMapChangesToMapTempFile::active_ = false;
-
 
 //  There are 3200 bytes, and each bit represents the revelaed status.
 //	3200 bytes * 8 bits = 25600 map elements
-UINT8				*gpRevealedMap;
+UINT8 *gpRevealedMap;
 
+static void SaveModifiedMapStructToMapTempFile(MODIFY_MAP const *const pMap, INT16 const sSectorX,
+                                               INT16 const sSectorY, INT8 const bSectorZ) {
+  CHAR8 zMapName[128];
 
-static void SaveModifiedMapStructToMapTempFile(MODIFY_MAP const* const pMap, INT16 const sSectorX, INT16 const sSectorY, INT8 const bSectorZ)
-{
-	CHAR8		zMapName[ 128 ];
+  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
 
-	GetMapTempFileName( SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ );
+  AutoSGPFile hFile(FileMan::openForAppend(zMapName));
+  FileWrite(hFile, pMap, sizeof(MODIFY_MAP));
 
-	AutoSGPFile hFile(FileMan::openForAppend(zMapName));
-	FileWrite(hFile, pMap, sizeof(MODIFY_MAP));
-
-	SetSectorFlag( sSectorX, sSectorY, bSectorZ, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS );
+  SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS);
 }
 
-
-static void AddBloodOrSmellFromMapTempFileToMap(MODIFY_MAP* pMap);
+static void AddBloodOrSmellFromMapTempFileToMap(MODIFY_MAP *pMap);
 static void AddObjectFromMapTempFileToMap(UINT32 uiMapIndex, UINT16 usIndex);
-static void DamageStructsFromMapTempFile(MODIFY_MAP* pMap);
+static void DamageStructsFromMapTempFile(MODIFY_MAP *pMap);
 static bool ModifyWindowStatus(GridNo);
 static void RemoveSavedStructFromMap(UINT32 uiMapIndex, UINT16 usIndex);
 static void SetOpenableStructStatusFromMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened);
 
+void LoadAllMapChangesFromMapTempFileAndApplyThem() {
+  CHAR8 zMapName[128];
+  UINT32 uiNumberOfElementsSavedBackToFile = 0;  // added becuase if no files get saved back to
+                                                 // disk, the flag needs to be erased
+  UINT32 cnt;
+  MODIFY_MAP *pMap;
 
-void LoadAllMapChangesFromMapTempFileAndApplyThem()
-{
-	CHAR8		zMapName[ 128 ];
-	UINT32	uiNumberOfElementsSavedBackToFile = 0;	// added becuase if no files get saved back to disk, the flag needs to be erased
-	UINT32	cnt;
-	MODIFY_MAP *pMap;
+  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY,
+                     gbWorldSectorZ);
 
-	GetMapTempFileName( SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+  // If the file doesnt exists, its no problem.
+  if (!FileExists(zMapName)) return;
 
-	//If the file doesnt exists, its no problem.
-	if (!FileExists(zMapName)) return;
+  UINT32 uiNumberOfElements;
+  SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
+  {
+    AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
-	UINT32                  uiNumberOfElements;
-	SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
-	{
-		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
+    // Get the size of the file
+    uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
 
-		//Get the size of the file
-		uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
+    // Read the map temp file into a buffer
+    pTempArrayOfMaps.Allocate(uiNumberOfElements);
+    FileRead(hFile, pTempArrayOfMaps, sizeof(*pTempArrayOfMaps) * uiNumberOfElements);
+  }
 
-		//Read the map temp file into a buffer
-		pTempArrayOfMaps.Allocate(uiNumberOfElements);
-		FileRead(hFile, pTempArrayOfMaps, sizeof(*pTempArrayOfMaps) * uiNumberOfElements);
-	}
+  // Delete the file
+  FileDelete(zMapName);
 
-	//Delete the file
-	FileDelete( zMapName );
+  for (cnt = 0; cnt < uiNumberOfElements; cnt++) {
+    pMap = &pTempArrayOfMaps[cnt];
 
-	for( cnt=0; cnt< uiNumberOfElements; cnt++ )
-	{
-		pMap = &pTempArrayOfMaps[ cnt ];
+    // Switch on the type that should either be added or removed from the map
+    switch (pMap->ubType) {
+      // If we are adding to the map
+      case SLM_LAND:
+        break;
+      case SLM_OBJECT: {
+        UINT16 usIndex = GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
+        AddObjectFromMapTempFileToMap(pMap->usGridNo, usIndex);
 
-		//Switch on the type that should either be added or removed from the map
-		switch( pMap->ubType )
-		{
-			//If we are adding to the map
-			case SLM_LAND:
-				break;
-			case SLM_OBJECT:
-			{
-				UINT16 usIndex = GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
-				AddObjectFromMapTempFileToMap( pMap->usGridNo, usIndex );
+        // Save this struct back to the temp file
+        SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
-				// Save this struct back to the temp file
-				SaveModifiedMapStructToMapTempFile( pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+        // Since the element is being saved back to the temp file, increment the #
+        uiNumberOfElementsSavedBackToFile++;
+        break;
+      }
 
-				//Since the element is being saved back to the temp file, increment the #
-				uiNumberOfElementsSavedBackToFile++;
-				break;
-			}
+      case SLM_STRUCT: {
+        UINT16 const usIndex =
+            GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
+        if (!IndexExistsInStructLayer(pMap->usGridNo, usIndex)) {
+          AddStructToTail(pMap->usGridNo, usIndex);
+        }
 
-			case SLM_STRUCT:
-			{
-				UINT16 const usIndex = GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
-				if (!IndexExistsInStructLayer(pMap->usGridNo, usIndex))
-				{
-					AddStructToTail(pMap->usGridNo, usIndex);
-				}
+        // Save this struct back to the temp file
+        SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
-				// Save this struct back to the temp file
-				SaveModifiedMapStructToMapTempFile( pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+        // Since the element is being saved back to the temp file, increment the #
+        uiNumberOfElementsSavedBackToFile++;
+        break;
+      }
 
-				//Since the element is being saved back to the temp file, increment the #
-				uiNumberOfElementsSavedBackToFile++;
-				break;
-			}
+      case SLM_SHADOW:
+        break;
+      case SLM_MERC:
+        break;
+      case SLM_ROOF:
+        break;
+      case SLM_ONROOF:
+        break;
+      case SLM_TOPMOST:
+        break;
 
-			case SLM_SHADOW:
-				break;
-			case SLM_MERC:
-				break;
-			case SLM_ROOF:
-				break;
-			case SLM_ONROOF:
-				break;
-			case SLM_TOPMOST:
-				break;
+      // Remove objects out of the world
+      case SLM_REMOVE_LAND:
+        break;
+      case SLM_REMOVE_OBJECT:
+        break;
+      case SLM_REMOVE_STRUCT:
 
+        // ATE: OK, dor doors, the usIndex can be varied, opened, closed, etc
+        // we MUSTR delete ANY door type on this gridno
+        // Since we can only have one door per gridno, we're safe to do so.....
+        if (pMap->usImageType >= FIRSTDOOR && pMap->usImageType <= FOURTHDOOR) {
+          // Remove ANY door...
+          RemoveAllStructsOfTypeRange(pMap->usGridNo, FIRSTDOOR, FOURTHDOOR);
+        } else {
+          UINT16 usIndex = GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
+          RemoveSavedStructFromMap(pMap->usGridNo, usIndex);
+        }
 
-			//Remove objects out of the world
-			case SLM_REMOVE_LAND:
-				break;
-			case SLM_REMOVE_OBJECT:
-				break;
-			case SLM_REMOVE_STRUCT:
+        // Save this struct back to the temp file
+        SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
-				// ATE: OK, dor doors, the usIndex can be varied, opened, closed, etc
-				// we MUSTR delete ANY door type on this gridno
-				// Since we can only have one door per gridno, we're safe to do so.....
-				if ( pMap->usImageType >= FIRSTDOOR && pMap->usImageType <= FOURTHDOOR )
-				{
-					// Remove ANY door...
-					RemoveAllStructsOfTypeRange( pMap->usGridNo, FIRSTDOOR, FOURTHDOOR );
-				}
-				else
-				{
-					UINT16 usIndex = GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex);
-					RemoveSavedStructFromMap( pMap->usGridNo, usIndex );
-				}
+        // Since the element is being saved back to the temp file, increment the #
+        uiNumberOfElementsSavedBackToFile++;
+        break;
+      case SLM_REMOVE_SHADOW:
+        break;
+      case SLM_REMOVE_MERC:
+        break;
+      case SLM_REMOVE_ROOF:
+        break;
+      case SLM_REMOVE_ONROOF:
+        break;
+      case SLM_REMOVE_TOPMOST:
+        break;
 
-				// Save this struct back to the temp file
-				SaveModifiedMapStructToMapTempFile( pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+      case SLM_BLOOD_SMELL:
+        AddBloodOrSmellFromMapTempFileToMap(pMap);
+        break;
 
-				//Since the element is being saved back to the temp file, increment the #
-				uiNumberOfElementsSavedBackToFile++;
-				break;
-			case SLM_REMOVE_SHADOW:
-				break;
-			case SLM_REMOVE_MERC:
-				break;
-			case SLM_REMOVE_ROOF:
-				break;
-			case SLM_REMOVE_ONROOF:
-				break;
-			case SLM_REMOVE_TOPMOST:
-				break;
+      case SLM_DAMAGED_STRUCT:
+        DamageStructsFromMapTempFile(pMap);
+        break;
 
+      case SLM_EXIT_GRIDS: {
+        EXITGRID ExitGrid;
+        gfLoadingExitGrids = TRUE;
+        ExitGrid.usGridNo = pMap->usSubImageIndex;
+        ExitGrid.ubGotoSectorX = (UINT8)pMap->usImageType;
+        ExitGrid.ubGotoSectorY = (UINT8)(pMap->usImageType >> 8);
+        ExitGrid.ubGotoSectorZ = pMap->ubExtra;
 
-			case SLM_BLOOD_SMELL:
-				AddBloodOrSmellFromMapTempFileToMap( pMap );
-				break;
+        AddExitGridToWorld(pMap->usGridNo, &ExitGrid);
+        gfLoadingExitGrids = FALSE;
 
-			case SLM_DAMAGED_STRUCT:
-				DamageStructsFromMapTempFile( pMap );
-				break;
+        // Save this struct back to the temp file
+        SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
-			case SLM_EXIT_GRIDS:
-				{
-					EXITGRID ExitGrid;
-					gfLoadingExitGrids = TRUE;
-					ExitGrid.usGridNo = pMap->usSubImageIndex;
-					ExitGrid.ubGotoSectorX = (UINT8) pMap->usImageType;
-					ExitGrid.ubGotoSectorY = (UINT8) ( pMap->usImageType >> 8 ) ;
-					ExitGrid.ubGotoSectorZ = pMap->ubExtra;
+        // Since the element is being saved back to the temp file, increment the #
+        uiNumberOfElementsSavedBackToFile++;
+      } break;
 
-					AddExitGridToWorld( pMap->usGridNo, &ExitGrid );
-					gfLoadingExitGrids = FALSE;
+      case SLM_OPENABLE_STRUCT:
+        SetOpenableStructStatusFromMapTempFile(pMap->usGridNo, (BOOLEAN)pMap->usImageType);
+        break;
 
-					// Save this struct back to the temp file
-					SaveModifiedMapStructToMapTempFile( pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+      case SLM_WINDOW_HIT:
+        if (ModifyWindowStatus(pMap->usGridNo)) {
+          // Save this struct back to the temp file
+          SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
-					//Since the element is being saved back to the temp file, increment the #
-					uiNumberOfElementsSavedBackToFile++;
-				}
-				break;
+          // Since the element is being saved back to the temp file, increment the
+          // #
+          uiNumberOfElementsSavedBackToFile++;
+        }
+        break;
 
-			case SLM_OPENABLE_STRUCT:
-				SetOpenableStructStatusFromMapTempFile( pMap->usGridNo, (BOOLEAN)pMap->usImageType );
-				break;
+      default:
+        AssertMsg(0,
+                  "ERROR!  Map Type not in switch when loading map changes "
+                  "from temp file");
+        break;
+    }
+  }
 
-			case SLM_WINDOW_HIT:
-				if ( ModifyWindowStatus( pMap->usGridNo ) )
-				{
-					// Save this struct back to the temp file
-					SaveModifiedMapStructToMapTempFile( pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
-
-					//Since the element is being saved back to the temp file, increment the #
-					uiNumberOfElementsSavedBackToFile++;
-				}
-				break;
-
-			default:
-				AssertMsg( 0, "ERROR!  Map Type not in switch when loading map changes from temp file");
-				break;
-		}
-
-	}
-
-	//if no elements are saved back to the file, remove the flag indicating that there is a temp file
-	if( uiNumberOfElementsSavedBackToFile == 0 )
-	{
-		ReSetSectorFlag( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS );
-	}
+  // if no elements are saved back to the file, remove the flag indicating that
+  // there is a temp file
+  if (uiNumberOfElementsSavedBackToFile == 0) {
+    ReSetSectorFlag(gWorldSectorX, gWorldSectorY, gbWorldSectorZ,
+                    SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS);
+  }
 }
 
+static void AddToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex, UINT8 const type) {
+  if (!ApplyMapChangesToMapTempFile::IsActive()) return;
+  if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
 
-static void AddToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex, UINT8 const type)
-{
-	if (!ApplyMapChangesToMapTempFile::IsActive())    return;
-	if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
+  UINT32 const uiType = GetTileType(usIndex);
+  UINT16 const usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
-	UINT32 const uiType     = GetTileType(usIndex);
-	UINT16 const usSubIndex = GetSubIndexFromTileIndex(usIndex);
-
-	MODIFY_MAP m;
-	memset(&m, 0, sizeof(m));
-	m.usGridNo        = uiMapIndex;
-	m.usImageType     = uiType;
-	m.usSubImageIndex = usSubIndex;
-	m.ubType          = type;
-	SaveModifiedMapStructToMapTempFile(&m, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  MODIFY_MAP m;
+  memset(&m, 0, sizeof(m));
+  m.usGridNo = uiMapIndex;
+  m.usImageType = uiType;
+  m.usSubImageIndex = usSubIndex;
+  m.ubType = type;
+  SaveModifiedMapStructToMapTempFile(&m, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
-
-void AddStructToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex)
-{
-	AddToMapTempFile(uiMapIndex, usIndex, SLM_STRUCT);
+void AddStructToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex) {
+  AddToMapTempFile(uiMapIndex, usIndex, SLM_STRUCT);
 }
 
-
-void AddObjectToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex)
-{
-	AddToMapTempFile(uiMapIndex, usIndex, SLM_OBJECT);
+void AddObjectToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex) {
+  AddToMapTempFile(uiMapIndex, usIndex, SLM_OBJECT);
 }
 
-
-static void AddObjectFromMapTempFileToMap(UINT32 uiMapIndex, UINT16 usIndex)
-{
-	AddObjectToHead( uiMapIndex, usIndex );
+static void AddObjectFromMapTempFileToMap(UINT32 uiMapIndex, UINT16 usIndex) {
+  AddObjectToHead(uiMapIndex, usIndex);
 }
 
-
-void AddRemoveObjectToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex)
-{
-	AddToMapTempFile(uiMapIndex, usIndex, SLM_REMOVE_OBJECT);
+void AddRemoveObjectToMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex) {
+  AddToMapTempFile(uiMapIndex, usIndex, SLM_REMOVE_OBJECT);
 }
 
-
-void RemoveStructFromMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex)
-{
-	AddToMapTempFile(uiMapIndex, usIndex, SLM_REMOVE_STRUCT);
+void RemoveStructFromMapTempFile(UINT32 const uiMapIndex, UINT16 const usIndex) {
+  AddToMapTempFile(uiMapIndex, usIndex, SLM_REMOVE_STRUCT);
 }
 
-
-static void RemoveSavedStructFromMap(UINT32 uiMapIndex, UINT16 usIndex)
-{
-	RemoveStruct( uiMapIndex, usIndex );
+static void RemoveSavedStructFromMap(UINT32 uiMapIndex, UINT16 usIndex) {
+  RemoveStruct(uiMapIndex, usIndex);
 }
-
 
 static void AddOpenableStructStatusToMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened);
 static void SetSectorsRevealedBit(UINT16 usMapIndex);
 
+void SaveBloodSmellAndRevealedStatesFromMapToTempFile() {
+  MODIFY_MAP Map;
+  UINT16 cnt;
+  STRUCTURE *pStructure;
 
-void SaveBloodSmellAndRevealedStatesFromMapToTempFile()
-{
-	MODIFY_MAP Map;
-	UINT16	cnt;
-	STRUCTURE * pStructure;
+  gpRevealedMap = MALLOCNZ(UINT8, NUM_REVEALED_BYTES);
 
-	gpRevealedMap = MALLOCNZ(UINT8, NUM_REVEALED_BYTES);
+  // Loop though all the map elements
+  for (cnt = 0; cnt < WORLD_MAX; cnt++) {
+    // if there is either blood or a smell on the tile, save it
+    if (gpWorldLevelData[cnt].ubBloodInfo || gpWorldLevelData[cnt].ubSmellInfo) {
+      memset(&Map, 0, sizeof(MODIFY_MAP));
 
-	//Loop though all the map elements
-	for ( cnt = 0; cnt < WORLD_MAX; cnt++ )
-	{
-		//if there is either blood or a smell on the tile, save it
-		if( gpWorldLevelData[cnt].ubBloodInfo || gpWorldLevelData[cnt].ubSmellInfo )
-		{
-			memset( &Map, 0, sizeof( MODIFY_MAP ) );
+      // Save the BloodInfo in the bottom byte and the smell info in the upper
+      // byte
+      Map.usGridNo = cnt;
+      //			Map.usIndex			=
+      // gpWorldLevelData[cnt].ubBloodInfo | ( gpWorldLevelData[cnt].ubSmellInfo
+      //<< 8 );
+      Map.usImageType = gpWorldLevelData[cnt].ubBloodInfo;
+      Map.usSubImageIndex = gpWorldLevelData[cnt].ubSmellInfo;
 
+      Map.ubType = SLM_BLOOD_SMELL;
 
-			// Save the BloodInfo in the bottom byte and the smell info in the upper byte
-			Map.usGridNo	= cnt;
-//			Map.usIndex			= gpWorldLevelData[cnt].ubBloodInfo | ( gpWorldLevelData[cnt].ubSmellInfo << 8 );
-			Map.usImageType = gpWorldLevelData[cnt].ubBloodInfo;
-			Map.usSubImageIndex = gpWorldLevelData[cnt].ubSmellInfo;
+      // Save the change to the map file
+      SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    }
 
+    // if the element has been revealed
+    if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_REVEALED) {
+      SetSectorsRevealedBit(cnt);
+    }
 
-			Map.ubType			= SLM_BLOOD_SMELL;
+    // if there is a structure that is damaged
+    if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_STRUCTURE_DAMAGED) {
+      // loop through all the structures and add all that are damaged
+      FOR_EACH_STRUCTURE(pCurrent, cnt, STRUCTURE_BASE_TILE) {
+        // if the structure has been damaged
+        if (pCurrent->ubHitPoints < pCurrent->pDBStructureRef->pDBStructure->ubHitPoints) {
+          UINT8 ubBitToSet = 0x80;
+          UINT8 ubLevel = 0;
 
-			//Save the change to the map file
-			SaveModifiedMapStructToMapTempFile( &Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
-		}
+          if (pCurrent->sCubeOffset != 0) ubLevel |= ubBitToSet;
 
+          memset(&Map, 0, sizeof(MODIFY_MAP));
 
-		//if the element has been revealed
-		if( gpWorldLevelData[cnt].uiFlags & MAPELEMENT_REVEALED )
-		{
-			SetSectorsRevealedBit( cnt );
-		}
+          // Save the Damaged value
+          Map.usGridNo = cnt;
+          //					Map.usIndex			=
+          // StructureFlagToType( pCurrent->fFlags ) | ( pCurrent->ubHitPoints << 8 );
+          Map.usImageType = StructureFlagToType(pCurrent->fFlags);
+          Map.usSubImageIndex = pCurrent->ubHitPoints;
 
-		//if there is a structure that is damaged
-		if( gpWorldLevelData[cnt].uiFlags & MAPELEMENT_STRUCTURE_DAMAGED )
-		{
-			//loop through all the structures and add all that are damaged
-			FOR_EACH_STRUCTURE(pCurrent, cnt, STRUCTURE_BASE_TILE)
-			{
-				//if the structure has been damaged
-				if( pCurrent->ubHitPoints < pCurrent->pDBStructureRef->pDBStructure->ubHitPoints )
-				{
-					UINT8	ubBitToSet = 0x80;
-					UINT8	ubLevel=0;
+          Map.ubType = SLM_DAMAGED_STRUCT;
+          Map.ubExtra = pCurrent->ubWallOrientation | ubLevel;
 
-					if( pCurrent->sCubeOffset != 0 )
-						ubLevel |= ubBitToSet;
+          // Save the change to the map file
+          SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+        }
+      }
+    }
 
-					memset( &Map, 0, sizeof( MODIFY_MAP ) );
+    pStructure = FindStructure(cnt, STRUCTURE_OPENABLE);
 
-					// Save the Damaged value
-					Map.usGridNo	= cnt;
-//					Map.usIndex			= StructureFlagToType( pCurrent->fFlags ) | ( pCurrent->ubHitPoints << 8 );
-					Map.usImageType = StructureFlagToType( pCurrent->fFlags );
-					Map.usSubImageIndex = pCurrent->ubHitPoints;
+    // if this structure
+    if (pStructure) {
+      // if the current structure has an openable structure in it, and it is NOT
+      // a door
+      if (!(pStructure->fFlags & STRUCTURE_ANYDOOR)) {
+        BOOLEAN fStatusOnTheMap;
 
+        fStatusOnTheMap = ((pStructure->fFlags & STRUCTURE_OPEN) != 0);
 
-					Map.ubType			= SLM_DAMAGED_STRUCT;
-					Map.ubExtra			= pCurrent->ubWallOrientation | ubLevel;
-
-					//Save the change to the map file
-					SaveModifiedMapStructToMapTempFile( &Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
-				}
-			}
-		}
-
-		pStructure = FindStructure( cnt, STRUCTURE_OPENABLE );
-
-		//if this structure
-		if( pStructure )
-		{
-			// if the current structure has an openable structure in it, and it is NOT a door
-			if( !( pStructure->fFlags & STRUCTURE_ANYDOOR ) )
-			{
-				BOOLEAN			fStatusOnTheMap;
-
-				fStatusOnTheMap = ( ( pStructure->fFlags & STRUCTURE_OPEN ) != 0 );
-
-				AddOpenableStructStatusToMapTempFile( cnt, fStatusOnTheMap );
-			}
-		}
-	}
+        AddOpenableStructStatusToMapTempFile(cnt, fStatusOnTheMap);
+      }
+    }
+  }
 }
 
+// The BloodInfo is saved in the bottom byte and the smell info in the upper
+// byte
+static void AddBloodOrSmellFromMapTempFileToMap(MODIFY_MAP *pMap) {
+  gpWorldLevelData[pMap->usGridNo].ubBloodInfo = (UINT8)pMap->usImageType;
 
-// The BloodInfo is saved in the bottom byte and the smell info in the upper byte
-static void AddBloodOrSmellFromMapTempFileToMap(MODIFY_MAP* pMap)
-{
-	gpWorldLevelData[ pMap->usGridNo ].ubBloodInfo = (UINT8)pMap->usImageType;
+  // if the blood and gore option IS set, add blood
+  if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+    // Update graphics for both levels...
+    gpWorldLevelData[pMap->usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+    UpdateBloodGraphics(pMap->usGridNo, 0);
+    gpWorldLevelData[pMap->usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+    UpdateBloodGraphics(pMap->usGridNo, 1);
+  }
 
-	//if the blood and gore option IS set, add blood
-	if( gGameSettings.fOptions[ TOPTION_BLOOD_N_GORE ] )
-	{
-		// Update graphics for both levels...
-		gpWorldLevelData[ pMap->usGridNo ].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
-		UpdateBloodGraphics( pMap->usGridNo, 0 );
-		gpWorldLevelData[ pMap->usGridNo ].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
-		UpdateBloodGraphics( pMap->usGridNo, 1 );
-	}
-
-	gpWorldLevelData[ pMap->usGridNo ].ubSmellInfo = (UINT8)pMap->usSubImageIndex;
+  gpWorldLevelData[pMap->usGridNo].ubSmellInfo = (UINT8)pMap->usSubImageIndex;
 }
 
+void SaveRevealedStatusArrayToRevealedTempFile(INT16 const sSectorX, INT16 const sSectorY,
+                                               INT8 const bSectorZ) {
+  CHAR8 zMapName[128];
 
-void SaveRevealedStatusArrayToRevealedTempFile(INT16 const sSectorX, INT16 const sSectorY, INT8 const bSectorZ)
-{
-	CHAR8		zMapName[ 128 ];
+  Assert(gpRevealedMap != NULL);
 
-	Assert( gpRevealedMap != NULL );
+  GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
 
-	GetMapTempFileName( SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ );
+  AutoSGPFile hFile(FileMan::openForWriting(zMapName));
 
-	AutoSGPFile hFile(FileMan::openForWriting(zMapName));
+  // Write the revealed array to the Revealed temp file
+  FileWrite(hFile, gpRevealedMap, NUM_REVEALED_BYTES);
 
-	//Write the revealed array to the Revealed temp file
-	FileWrite(hFile, gpRevealedMap, NUM_REVEALED_BYTES);
+  SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_REVEALED_STATUS_TEMP_FILE_EXISTS);
 
-	SetSectorFlag( sSectorX, sSectorY, bSectorZ, SF_REVEALED_STATUS_TEMP_FILE_EXISTS );
-
-	MemFree( gpRevealedMap );
-	gpRevealedMap = NULL;
+  MemFree(gpRevealedMap);
+  gpRevealedMap = NULL;
 }
-
 
 static void SetMapRevealedStatus(void);
 
+void LoadRevealedStatusArrayFromRevealedTempFile() {
+  CHAR8 zMapName[128];
 
-void LoadRevealedStatusArrayFromRevealedTempFile()
-{
-	CHAR8		zMapName[ 128 ];
+  GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY,
+                     gbWorldSectorZ);
 
-	GetMapTempFileName( SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+  // If the file doesnt exists, its no problem.
+  if (!FileExists(zMapName)) return;
 
-	//If the file doesnt exists, its no problem.
-	if (!FileExists(zMapName)) return;
+  {
+    AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
-	{
-		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
+    Assert(gpRevealedMap == NULL);
+    gpRevealedMap = MALLOCNZ(UINT8, NUM_REVEALED_BYTES);
 
-		Assert( gpRevealedMap == NULL );
-		gpRevealedMap = MALLOCNZ(UINT8, NUM_REVEALED_BYTES);
+    // Load the Reveal map array structure
+    FileRead(hFile, gpRevealedMap, NUM_REVEALED_BYTES);
+  }
 
-		// Load the Reveal map array structure
-		FileRead(hFile, gpRevealedMap, NUM_REVEALED_BYTES);
-	}
+  // Loop through and set the bits in the map that are revealed
+  SetMapRevealedStatus();
 
-	//Loop through and set the bits in the map that are revealed
-	SetMapRevealedStatus();
-
-	MemFree( gpRevealedMap );
-	gpRevealedMap = NULL;
+  MemFree(gpRevealedMap);
+  gpRevealedMap = NULL;
 }
 
+static void SetSectorsRevealedBit(UINT16 usMapIndex) {
+  UINT16 usByteNumber;
+  UINT8 ubBitNumber;
 
-static void SetSectorsRevealedBit(UINT16 usMapIndex)
-{
-	UINT16	usByteNumber;
-	UINT8		ubBitNumber;
+  usByteNumber = usMapIndex / 8;
+  ubBitNumber = usMapIndex % 8;
 
-	usByteNumber = usMapIndex / 8;
-	ubBitNumber  = usMapIndex % 8;
-
-	gpRevealedMap[ usByteNumber ] |= 1 << ubBitNumber;
+  gpRevealedMap[usByteNumber] |= 1 << ubBitNumber;
 }
 
+static void SetMapRevealedStatus(void) {
+  UINT16 usByteCnt;
+  UINT8 ubBitCnt;
+  UINT16 usMapIndex;
 
-static void SetMapRevealedStatus(void)
-{
-	UINT16	usByteCnt;
-	UINT8		ubBitCnt;
-	UINT16	usMapIndex;
+  AssertMsg(gpRevealedMap != NULL, "gpRevealedMap is NULL.  DF 1");
 
-	AssertMsg(gpRevealedMap != NULL, "gpRevealedMap is NULL.  DF 1");
+  ClearSlantRoofs();
 
-	ClearSlantRoofs( );
+  // Loop through all bytes in the array
+  for (usByteCnt = 0; usByteCnt < 3200; usByteCnt++) {
+    // loop through all the bits in the byte
+    for (ubBitCnt = 0; ubBitCnt < 8; ubBitCnt++) {
+      usMapIndex = (usByteCnt * 8) + ubBitCnt;
 
-	//Loop through all bytes in the array
-	for( usByteCnt=0; usByteCnt< 3200; usByteCnt++)
-	{
-		//loop through all the bits in the byte
-		for( ubBitCnt=0; ubBitCnt<8; ubBitCnt++)
-		{
-			usMapIndex = ( usByteCnt * 8 ) + ubBitCnt;
+      if (gpRevealedMap[usByteCnt] & (1 << ubBitCnt)) {
+        gpWorldLevelData[usMapIndex].uiFlags |= MAPELEMENT_REVEALED;
+        SetGridNoRevealedFlag(usMapIndex);
+      } else {
+        gpWorldLevelData[usMapIndex].uiFlags &= (~MAPELEMENT_REVEALED);
+      }
+    }
+  }
 
-			if( gpRevealedMap[ usByteCnt ] & ( 1 << ubBitCnt ) )
-			{
-				gpWorldLevelData[ usMapIndex ].uiFlags |= MAPELEMENT_REVEALED;
-				SetGridNoRevealedFlag( usMapIndex );
-			}
-			else
-			{
-				gpWorldLevelData[ usMapIndex ].uiFlags &= (~MAPELEMENT_REVEALED );
-			}
-		}
-	}
-
-	ExamineSlantRoofFOVSlots( );
-
+  ExamineSlantRoofFOVSlots();
 }
 
+static void DamageStructsFromMapTempFile(MODIFY_MAP *pMap) {
+  STRUCTURE *pCurrent = NULL;
+  INT8 bLevel;
+  UINT8 ubWallOrientation;
+  UINT8 ubBitToSet = 0x80;
+  UINT8 ubType = 0;
 
-static void DamageStructsFromMapTempFile(MODIFY_MAP* pMap)
-{
-	STRUCTURE *pCurrent=NULL;
-	INT8			bLevel;
-	UINT8			ubWallOrientation;
-	UINT8			ubBitToSet = 0x80;
-	UINT8			ubType=0;
+  // Find the base structure
+  pCurrent = FindStructure((INT16)pMap->usGridNo, STRUCTURE_BASE_TILE);
 
+  if (pCurrent == NULL) return;
 
-	//Find the base structure
-	pCurrent = FindStructure( (INT16)pMap->usGridNo, STRUCTURE_BASE_TILE );
+  bLevel = pMap->ubExtra & ubBitToSet;
+  ubWallOrientation = pMap->ubExtra & ~ubBitToSet;
+  ubType = (UINT8)pMap->usImageType;
 
-	if( pCurrent == NULL )
-		return;
+  // Check to see if the desired strucure node is in this tile
+  pCurrent = FindStructureBySavedInfo(pMap->usGridNo, ubType, ubWallOrientation, bLevel);
 
-	bLevel = pMap->ubExtra & ubBitToSet;
-	ubWallOrientation = pMap->ubExtra & ~ubBitToSet;
-	ubType = (UINT8) pMap->usImageType;
+  if (pCurrent != NULL) {
+    // Assign the hitpoints
+    pCurrent->ubHitPoints = (UINT8)(pMap->usSubImageIndex);
 
-
-	//Check to see if the desired strucure node is in this tile
-	pCurrent = FindStructureBySavedInfo( pMap->usGridNo, ubType, ubWallOrientation, bLevel );
-
-	if( pCurrent != NULL )
-	{
-		//Assign the hitpoints
-		pCurrent->ubHitPoints = (UINT8)( pMap->usSubImageIndex );
-
-		gpWorldLevelData[ pCurrent->sGridNo ].uiFlags |= MAPELEMENT_STRUCTURE_DAMAGED;
-	}
+    gpWorldLevelData[pCurrent->sGridNo].uiFlags |= MAPELEMENT_STRUCTURE_DAMAGED;
+  }
 }
 
+void AddStructToUnLoadedMapTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX,
+                                    INT16 sSectorY, UINT8 ubSectorZ) {
+  MODIFY_MAP Map;
 
-void AddStructToUnLoadedMapTempFile( UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ  )
-{
-	MODIFY_MAP Map;
+  if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
 
-	if( gTacticalStatus.uiFlags & LOADING_SAVED_GAME )
-		return;
+  const UINT32 uiType = GetTileType(usIndex);
+  const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
-	const UINT32 uiType     = GetTileType(usIndex);
-	const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
+  memset(&Map, 0, sizeof(MODIFY_MAP));
 
-	memset( &Map, 0, sizeof( MODIFY_MAP ) );
+  Map.usGridNo = (UINT16)uiMapIndex;
+  //	Map.usIndex		= usIndex;
+  Map.usImageType = (UINT16)uiType;
+  Map.usSubImageIndex = usSubIndex;
 
-	Map.usGridNo = (UINT16)uiMapIndex;
-//	Map.usIndex		= usIndex;
-	Map.usImageType = (UINT16)uiType;
-	Map.usSubImageIndex = usSubIndex;
+  Map.ubType = SLM_STRUCT;
 
-
-	Map.ubType		= SLM_STRUCT;
-
-	SaveModifiedMapStructToMapTempFile( &Map, sSectorX, sSectorY, ubSectorZ );
+  SaveModifiedMapStructToMapTempFile(&Map, sSectorX, sSectorY, ubSectorZ);
 }
 
+void RemoveStructFromUnLoadedMapTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX,
+                                         INT16 sSectorY, UINT8 ubSectorZ) {
+  MODIFY_MAP Map;
 
-void RemoveStructFromUnLoadedMapTempFile( UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ  )
-{
-	MODIFY_MAP Map;
+  if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
 
-	if( gTacticalStatus.uiFlags & LOADING_SAVED_GAME )
-		return;
+  const UINT32 uiType = GetTileType(usIndex);
+  const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
-	const UINT32 uiType     = GetTileType(usIndex);
-	const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
+  memset(&Map, 0, sizeof(MODIFY_MAP));
 
-	memset( &Map, 0, sizeof( MODIFY_MAP ) );
+  Map.usGridNo = (UINT16)uiMapIndex;
+  //	Map.usIndex			= usIndex;
+  Map.usImageType = (UINT16)uiType;
+  Map.usSubImageIndex = usSubIndex;
 
-	Map.usGridNo	= (UINT16)uiMapIndex;
-//	Map.usIndex			= usIndex;
-	Map.usImageType = (UINT16)uiType;
-	Map.usSubImageIndex = usSubIndex;
+  Map.ubType = SLM_REMOVE_STRUCT;
 
-	Map.ubType			= SLM_REMOVE_STRUCT;
-
-	SaveModifiedMapStructToMapTempFile( &Map, sSectorX, sSectorY, ubSectorZ );
+  SaveModifiedMapStructToMapTempFile(&Map, sSectorX, sSectorY, ubSectorZ);
 }
 
+void AddExitGridToMapTempFile(UINT16 usGridNo, EXITGRID *pExitGrid, INT16 sSectorX, INT16 sSectorY,
+                              UINT8 ubSectorZ) {
+  MODIFY_MAP Map;
 
-void AddExitGridToMapTempFile( UINT16 usGridNo, EXITGRID *pExitGrid, INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ )
-{
-	MODIFY_MAP Map;
+  if (!ApplyMapChangesToMapTempFile::IsActive()) {
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION,
+              L"Called AddExitGridToMapTempFile() without holding "
+              L"ApplyMapChangesToMapTempFile");
+    return;
+  }
 
-	if (!ApplyMapChangesToMapTempFile::IsActive())
-	{
-		ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Called AddExitGridToMapTempFile() without holding ApplyMapChangesToMapTempFile");
-		return;
-	}
+  if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) return;
 
-	if( gTacticalStatus.uiFlags & LOADING_SAVED_GAME )
-		return;
+  memset(&Map, 0, sizeof(MODIFY_MAP));
 
-	memset( &Map, 0, sizeof( MODIFY_MAP ) );
+  Map.usGridNo = usGridNo;
+  //	Map.usIndex		= pExitGrid->ubGotoSectorX;
 
-	Map.usGridNo = usGridNo;
-//	Map.usIndex		= pExitGrid->ubGotoSectorX;
+  Map.usImageType = pExitGrid->ubGotoSectorX | (pExitGrid->ubGotoSectorY << 8);
+  Map.usSubImageIndex = pExitGrid->usGridNo;
 
-	Map.usImageType = pExitGrid->ubGotoSectorX | ( pExitGrid->ubGotoSectorY << 8 );
-	Map.usSubImageIndex = pExitGrid->usGridNo;
+  Map.ubExtra = pExitGrid->ubGotoSectorZ;
+  Map.ubType = SLM_EXIT_GRIDS;
 
-	Map.ubExtra		= pExitGrid->ubGotoSectorZ;
-	Map.ubType		= SLM_EXIT_GRIDS;
-
-	SaveModifiedMapStructToMapTempFile( &Map, sSectorX, sSectorY, ubSectorZ );
+  SaveModifiedMapStructToMapTempFile(&Map, sSectorX, sSectorY, ubSectorZ);
 }
 
-BOOLEAN RemoveGraphicFromTempFile( UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ )
-try
-{
-	CHAR8		zMapName[ 128 ];
-	MODIFY_MAP *pMap;
-	BOOLEAN	fRetVal=FALSE;
-	UINT32	cnt;
+BOOLEAN RemoveGraphicFromTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX, INT16 sSectorY,
+                                  UINT8 ubSectorZ) try {
+  CHAR8 zMapName[128];
+  MODIFY_MAP *pMap;
+  BOOLEAN fRetVal = FALSE;
+  UINT32 cnt;
 
-	GetMapTempFileName( SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, ubSectorZ );
+  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY,
+                     ubSectorZ);
 
-	UINT32                  uiNumberOfElements;
-	SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
-	{
-		AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
+  UINT32 uiNumberOfElements;
+  SGP::Buffer<MODIFY_MAP> pTempArrayOfMaps;
+  {
+    AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
-		//Get the number of elements in the file
-		uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
+    // Get the number of elements in the file
+    uiNumberOfElements = FileGetSize(hFile) / sizeof(MODIFY_MAP);
 
-		//Read the map temp file into a buffer
-		pTempArrayOfMaps.Allocate(uiNumberOfElements);
-		FileRead(hFile, pTempArrayOfMaps, sizeof(*pTempArrayOfMaps) * uiNumberOfElements);
-	}
+    // Read the map temp file into a buffer
+    pTempArrayOfMaps.Allocate(uiNumberOfElements);
+    FileRead(hFile, pTempArrayOfMaps, sizeof(*pTempArrayOfMaps) * uiNumberOfElements);
+  }
 
-	//Delete the file
-	FileDelete( zMapName );
+  // Delete the file
+  FileDelete(zMapName);
 
-	//Get the image type and subindex
-	const UINT32 uiType     = GetTileType(usIndex);
-	const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
+  // Get the image type and subindex
+  const UINT32 uiType = GetTileType(usIndex);
+  const UINT16 usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
-	for( cnt=0; cnt< uiNumberOfElements; cnt++ )
-	{
-		pMap = &pTempArrayOfMaps[ cnt ];
+  for (cnt = 0; cnt < uiNumberOfElements; cnt++) {
+    pMap = &pTempArrayOfMaps[cnt];
 
-		//if this is the peice we are looking for
-		if( pMap->usGridNo == uiMapIndex && pMap->usImageType == uiType && pMap->usSubImageIndex == usSubIndex )
-		{
-			//Do nothin
-			fRetVal = TRUE;
-		}
-		else
-		{
-			//save the struct back to the temp file
-			SaveModifiedMapStructToMapTempFile( pMap, sSectorX, sSectorY, ubSectorZ );
-		}
-	}
+    // if this is the peice we are looking for
+    if (pMap->usGridNo == uiMapIndex && pMap->usImageType == uiType &&
+        pMap->usSubImageIndex == usSubIndex) {
+      // Do nothin
+      fRetVal = TRUE;
+    } else {
+      // save the struct back to the temp file
+      SaveModifiedMapStructToMapTempFile(pMap, sSectorX, sSectorY, ubSectorZ);
+    }
+  }
 
-	return( fRetVal );
-}
-catch (...) { return FALSE; }
-
-
-static void AddOpenableStructStatusToMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened)
-{
-	MODIFY_MAP Map;
-
-	memset( &Map, 0, sizeof( MODIFY_MAP ) );
-
-	Map.usGridNo = (UINT16)uiMapIndex;
-	Map.usImageType = fOpened;
-
-	Map.ubType = SLM_OPENABLE_STRUCT;
-
-	SaveModifiedMapStructToMapTempFile( &Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+  return (fRetVal);
+} catch (...) {
+  return FALSE;
 }
 
-void AddWindowHitToMapTempFile( UINT32 uiMapIndex )
-{
-	MODIFY_MAP Map;
+static void AddOpenableStructStatusToMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened) {
+  MODIFY_MAP Map;
 
-	memset( &Map, 0, sizeof( MODIFY_MAP ) );
+  memset(&Map, 0, sizeof(MODIFY_MAP));
 
-	Map.usGridNo = (UINT16)uiMapIndex;
-	Map.ubType = SLM_WINDOW_HIT;
+  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usImageType = fOpened;
 
-	SaveModifiedMapStructToMapTempFile( &Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ );
+  Map.ubType = SLM_OPENABLE_STRUCT;
+
+  SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
+void AddWindowHitToMapTempFile(UINT32 uiMapIndex) {
+  MODIFY_MAP Map;
 
-static bool ModifyWindowStatus(GridNo const grid_no)
-{
-	STRUCTURE* const s = FindStructure(grid_no, STRUCTURE_WALLNWINDOW);
-	if (!s) return false; // Forget it, window could be destroyed
-	SwapStructureForPartner(s);
-	return true;
+  memset(&Map, 0, sizeof(MODIFY_MAP));
+
+  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.ubType = SLM_WINDOW_HIT;
+
+  SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
+static bool ModifyWindowStatus(GridNo const grid_no) {
+  STRUCTURE *const s = FindStructure(grid_no, STRUCTURE_WALLNWINDOW);
+  if (!s) return false;  // Forget it, window could be destroyed
+  SwapStructureForPartner(s);
+  return true;
+}
 
-static void SetOpenableStructStatusFromMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened)
-{
-	STRUCTURE * pStructure;
-	STRUCTURE * pBase;
-	BOOLEAN			fStatusOnTheMap;
-  INT16     sBaseGridNo = (INT16)uiMapIndex;
+static void SetOpenableStructStatusFromMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened) {
+  STRUCTURE *pStructure;
+  STRUCTURE *pBase;
+  BOOLEAN fStatusOnTheMap;
+  INT16 sBaseGridNo = (INT16)uiMapIndex;
 
-	pStructure = FindStructure( (UINT16)uiMapIndex, STRUCTURE_OPENABLE );
+  pStructure = FindStructure((UINT16)uiMapIndex, STRUCTURE_OPENABLE);
 
-	if( pStructure == NULL )
-	{
-//		ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"SetOpenableStructStatusFromMapTempFile( %d, %d ) failed to find the openable struct.  DF 1.", uiMapIndex, fOpened );
-		return;
-	}
+  if (pStructure == NULL) {
+    //		ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION,
+    // L"SetOpenableStructStatusFromMapTempFile( %d, %d ) failed to find the
+    // openable struct.  DF 1.", uiMapIndex, fOpened );
+    return;
+  }
 
-	fStatusOnTheMap = ( ( pStructure->fFlags & STRUCTURE_OPEN ) != 0 );
+  fStatusOnTheMap = ((pStructure->fFlags & STRUCTURE_OPEN) != 0);
 
-	if( fStatusOnTheMap != fOpened )
-	{
-		// Adjust the item's gridno to the base of struct.....
-		pBase = FindBaseStructure( pStructure );
+  if (fStatusOnTheMap != fOpened) {
+    // Adjust the item's gridno to the base of struct.....
+    pBase = FindBaseStructure(pStructure);
 
-		// Get LEVELNODE for struct and remove!
-    if ( pBase )
-    {
-		  sBaseGridNo = pBase->sGridNo;
+    // Get LEVELNODE for struct and remove!
+    if (pBase) {
+      sBaseGridNo = pBase->sGridNo;
     }
 
-		if (!SwapStructureForPartner(pStructure))
-		{
-			//an error occured
-		}
+    if (!SwapStructureForPartner(pStructure)) {
+      // an error occured
+    }
 
-		// Adjust visiblity of any item pools here....
+    // Adjust visiblity of any item pools here....
     // ATE: Nasty bug here - use base gridno for structure for items!
     // since items always drop to base gridno in AddItemToPool
-		if (fOpened)
-		{
-			// We are open, make un-hidden if so....
-			SetItemsVisibilityOn(sBaseGridNo, 0, ANY_VISIBILITY_VALUE, FALSE);
-		}
-		else
-		{
-			// Make sure items are hidden...
-			SetItemsVisibilityHidden(sBaseGridNo, 0);
-		}
-	}
+    if (fOpened) {
+      // We are open, make un-hidden if so....
+      SetItemsVisibilityOn(sBaseGridNo, 0, ANY_VISIBILITY_VALUE, FALSE);
+    } else {
+      // Make sure items are hidden...
+      SetItemsVisibilityHidden(sBaseGridNo, 0);
+    }
+  }
 }
 
+void ChangeStatusOfOpenableStructInUnloadedSector(UINT16 const usSectorX, UINT16 const usSectorY,
+                                                  INT8 const bSectorZ, UINT16 const usGridNo,
+                                                  BOOLEAN const fChangeToOpen) {
+  char map_name[128];
+  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, map_name, usSectorX, usSectorY,
+                     bSectorZ);
 
-void ChangeStatusOfOpenableStructInUnloadedSector(UINT16 const usSectorX, UINT16 const usSectorY, INT8 const bSectorZ, UINT16 const usGridNo, BOOLEAN const fChangeToOpen)
-{
-	char map_name[128];
-	GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, map_name, usSectorX, usSectorY, bSectorZ);
+  // If the file doesn't exists, it's no problem.
+  if (!FileExists(map_name)) return;
 
-	// If the file doesn't exists, it's no problem.
-	if (!FileExists(map_name)) return;
+  UINT32 uiNumberOfElements;
+  SGP::Buffer<MODIFY_MAP> mm;
+  {
+    // Read the map temp file into a buffer
+    AutoSGPFile src(FileMan::openForReadingSmart(map_name, true));
 
-	UINT32                  uiNumberOfElements;
-	SGP::Buffer<MODIFY_MAP> mm;
-	{
-		// Read the map temp file into a buffer
-		AutoSGPFile src(FileMan::openForReadingSmart(map_name, true));
+    uiNumberOfElements = FileGetSize(src) / sizeof(MODIFY_MAP);
 
-		uiNumberOfElements = FileGetSize(src) / sizeof(MODIFY_MAP);
+    mm.Allocate(uiNumberOfElements);
+    FileRead(src, mm, sizeof(*mm) * uiNumberOfElements);
+  }
 
-		mm.Allocate(uiNumberOfElements);
-		FileRead(src, mm, sizeof(*mm) * uiNumberOfElements);
-	}
+  for (UINT32 i = 0; i < uiNumberOfElements; ++i) {
+    MODIFY_MAP *const m = &mm[i];
+    if (m->ubType != SLM_OPENABLE_STRUCT || m->usGridNo != usGridNo) continue;
+    // This element is of the same type and on the same gridno
 
-	for (UINT32 i = 0; i < uiNumberOfElements; ++i)
-	{
-		MODIFY_MAP* const m = &mm[i];
-		if (m->ubType != SLM_OPENABLE_STRUCT || m->usGridNo != usGridNo) continue;
-		// This element is of the same type and on the same gridno
+    // Change to the desired settings
+    m->usImageType = fChangeToOpen;
+    break;
+  }
 
-		// Change to the desired settings
-		m->usImageType = fChangeToOpen;
-		break;
-	}
-
-	AutoSGPFile dst(FileMan::openForWriting(map_name));
-	FileWrite(dst, mm, sizeof(*mm) * uiNumberOfElements);
+  AutoSGPFile dst(FileMan::openForWriting(map_name));
+  FileWrite(dst, mm, sizeof(*mm) * uiNumberOfElements);
 }

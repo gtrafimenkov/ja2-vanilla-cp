@@ -57,152 +57,145 @@ extern UINT8 AtHeight[PROFILE_Z_SIZE];
 // then the structure is the "base" of the object
 // and its hitpoint value is the one for the object
 //
-//															        vv    generic flags for all structures
-//															     vvv      type flags
+//															        vv
+// generic flags for all structures
+// vvv      type flags
 //
 
 // how to handle explodable structures
 
-enum StructureFlags
-{
-	// NOT used in DB structures
-	STRUCTURE_BASE_TILE     = 0x00000001,
-	STRUCTURE_OPEN          = 0x00000002,
-	STRUCTURE_OPENABLE      = 0x00000004,
+enum StructureFlags {
+  // NOT used in DB structures
+  STRUCTURE_BASE_TILE = 0x00000001,
+  STRUCTURE_OPEN = 0x00000002,
+  STRUCTURE_OPENABLE = 0x00000004,
 
-	STRUCTURE_MOBILE        = 0x00000010,
-	/* STRUCTURE_PASSABLE is set for each structure instance where the tile flag
-	 * TILE_PASSABLE is set */
-	STRUCTURE_PASSABLE      = 0x00000020,
-	STRUCTURE_EXPLOSIVE     = 0x00000040,
-	STRUCTURE_TRANSPARENT   = 0x00000080,
+  STRUCTURE_MOBILE = 0x00000010,
+  /* STRUCTURE_PASSABLE is set for each structure instance where the tile flag
+   * TILE_PASSABLE is set */
+  STRUCTURE_PASSABLE = 0x00000020,
+  STRUCTURE_EXPLOSIVE = 0x00000040,
+  STRUCTURE_TRANSPARENT = 0x00000080,
 
-	STRUCTURE_GENERIC       = 0x00000100,
-	STRUCTURE_TREE          = 0x00000200,
-	STRUCTURE_FENCE         = 0x00000400,
-	STRUCTURE_WIREFENCE     = 0x00000800,
+  STRUCTURE_GENERIC = 0x00000100,
+  STRUCTURE_TREE = 0x00000200,
+  STRUCTURE_FENCE = 0x00000400,
+  STRUCTURE_WIREFENCE = 0x00000800,
 
-	STRUCTURE_HASITEMONTOP  = 0x00001000, // ATE: struct has item on top of it
-	STRUCTURE_SPECIAL       = 0x00002000,
-	STRUCTURE_LIGHTSOURCE   = 0x00004000,
-	STRUCTURE_VEHICLE       = 0x00008000,
+  STRUCTURE_HASITEMONTOP = 0x00001000,  // ATE: struct has item on top of it
+  STRUCTURE_SPECIAL = 0x00002000,
+  STRUCTURE_LIGHTSOURCE = 0x00004000,
+  STRUCTURE_VEHICLE = 0x00008000,
 
-	STRUCTURE_WALL          = 0x00010000,
-	STRUCTURE_WALLNWINDOW   = 0x00020000,
-	STRUCTURE_SLIDINGDOOR   = 0x00040000,
-	STRUCTURE_DOOR          = 0x00080000,
+  STRUCTURE_WALL = 0x00010000,
+  STRUCTURE_WALLNWINDOW = 0x00020000,
+  STRUCTURE_SLIDINGDOOR = 0x00040000,
+  STRUCTURE_DOOR = 0x00080000,
 
-	/* a "multi" structure (as opposed to multitiled) is composed of multiple
-	 * graphics & structures */
-	STRUCTURE_MULTI         = 0x00100000,
-	STRUCTURE_CAVEWALL      = 0x00200000,
-	STRUCTURE_DDOOR_LEFT    = 0x00400000,
-	STRUCTURE_DDOOR_RIGHT   = 0x00800000,
+  /* a "multi" structure (as opposed to multitiled) is composed of multiple
+   * graphics & structures */
+  STRUCTURE_MULTI = 0x00100000,
+  STRUCTURE_CAVEWALL = 0x00200000,
+  STRUCTURE_DDOOR_LEFT = 0x00400000,
+  STRUCTURE_DDOOR_RIGHT = 0x00800000,
 
-	STRUCTURE_NORMAL_ROOF   = 0x01000000,
-	STRUCTURE_SLANTED_ROOF  = 0x02000000,
-	STRUCTURE_TALL_ROOF     = 0x04000000,
-	STRUCTURE_SWITCH        = 0x08000000,
+  STRUCTURE_NORMAL_ROOF = 0x01000000,
+  STRUCTURE_SLANTED_ROOF = 0x02000000,
+  STRUCTURE_TALL_ROOF = 0x04000000,
+  STRUCTURE_SWITCH = 0x08000000,
 
-	STRUCTURE_ON_LEFT_WALL  = 0x10000000,
-	STRUCTURE_ON_RIGHT_WALL = 0x20000000,
-	STRUCTURE_CORPSE        = 0x40000000,
-	STRUCTURE_PERSON        = 0x80000000,
+  STRUCTURE_ON_LEFT_WALL = 0x10000000,
+  STRUCTURE_ON_RIGHT_WALL = 0x20000000,
+  STRUCTURE_CORPSE = 0x40000000,
+  STRUCTURE_PERSON = 0x80000000,
 
-// Combination flags
-	STRUCTURE_ANYFENCE      = 0x00000C00,
-	STRUCTURE_ANYDOOR       = 0x00CC0000,
-	STRUCTURE_OBSTACLE      = 0x00008F00,
-	STRUCTURE_WALLSTUFF     = 0x00CF0000,
-	STRUCTURE_BLOCKSMOVES   = 0x00208F00,
-	STRUCTURE_TYPE_DEFINED  = 0x8FEF8F00,
-	STRUCTURE_ROOF          = 0x07000000
+  // Combination flags
+  STRUCTURE_ANYFENCE = 0x00000C00,
+  STRUCTURE_ANYDOOR = 0x00CC0000,
+  STRUCTURE_OBSTACLE = 0x00008F00,
+  STRUCTURE_WALLSTUFF = 0x00CF0000,
+  STRUCTURE_BLOCKSMOVES = 0x00208F00,
+  STRUCTURE_TYPE_DEFINED = 0x8FEF8F00,
+  STRUCTURE_ROOF = 0x07000000
 };
 ENUM_BITSET(StructureFlags)
 
-#define TILE_ON_ROOF						0x01
-#define TILE_PASSABLE						0x02
+#define TILE_ON_ROOF 0x01
+#define TILE_PASSABLE 0x02
 
-struct DB_STRUCTURE_TILE
-{
-	INT16			sPosRelToBase;  // "single-axis"
-	INT8			bXPosRelToBase;
-	INT8			bYPosRelToBase;
-	PROFILE		Shape;					// 25 bytes
-	UINT8			fFlags;
-	UINT8			ubVehicleHitLocation;
-	BYTE			bUnused[1]; // XXX HACK000B
-}; // 32 bytes
+struct DB_STRUCTURE_TILE {
+  INT16 sPosRelToBase;  // "single-axis"
+  INT8 bXPosRelToBase;
+  INT8 bYPosRelToBase;
+  PROFILE Shape;  // 25 bytes
+  UINT8 fFlags;
+  UINT8 ubVehicleHitLocation;
+  BYTE bUnused[1];  // XXX HACK000B
+};                  // 32 bytes
 
 #define BASE_TILE 0
 
 #define NO_PARTNER_STRUCTURE 0
 
-struct DB_STRUCTURE
-{
-	UINT8								ubArmour;
-	UINT8								ubHitPoints;
-	UINT8								ubDensity;
-	UINT8								ubNumberOfTiles;
-	UINT32							fFlags;
-	UINT16							usStructureNumber;
-	UINT8								ubWallOrientation;
-	INT8								bDestructionPartner; // >0 = debris number (bDP - 1), <0 = partner graphic
-	INT8								bPartnerDelta; // opened/closed version, etc... 0 for unused
-	INT8								bZTileOffsetX;
-	INT8								bZTileOffsetY;
-	BYTE								bUnused[1]; // XXX HACK000B
-}; // 16 bytes
+struct DB_STRUCTURE {
+  UINT8 ubArmour;
+  UINT8 ubHitPoints;
+  UINT8 ubDensity;
+  UINT8 ubNumberOfTiles;
+  UINT32 fFlags;
+  UINT16 usStructureNumber;
+  UINT8 ubWallOrientation;
+  INT8 bDestructionPartner;  // >0 = debris number (bDP - 1), <0 = partner graphic
+  INT8 bPartnerDelta;        // opened/closed version, etc... 0 for unused
+  INT8 bZTileOffsetX;
+  INT8 bZTileOffsetY;
+  BYTE bUnused[1];  // XXX HACK000B
+};                  // 16 bytes
 
-struct DB_STRUCTURE_REF
-{
-	DB_STRUCTURE * 												pDBStructure;
-	DB_STRUCTURE_TILE **									ppTile; // dynamic array
-}; // 8 bytes
+struct DB_STRUCTURE_REF {
+  DB_STRUCTURE *pDBStructure;
+  DB_STRUCTURE_TILE **ppTile;  // dynamic array
+};                             // 8 bytes
 
-struct STRUCTURE
-{
-	STRUCTURE*                    pPrev;
-	STRUCTURE*                    pNext;
-	INT16													sGridNo;
-	UINT16												usStructureID;
-	const DB_STRUCTURE_REF*       pDBStructureRef;
-	union
-	{
-		struct
-		{
-			UINT8											ubHitPoints;
-			UINT8											ubLockStrength;
-		};
-		struct
-		{
-			INT16											sBaseGridNo;
-		};
-	}; // 2 bytes
-	INT16													sCubeOffset;// height of bottom of object in profile "cubes"
-	UINT32												fFlags; // need to have something to indicate base tile/not
-	PROFILE *											pShape;
-	UINT8													ubWallOrientation;
-	UINT8													ubVehicleHitLocation;
-	UINT8													ubStructureHeight; // if 0, then unset; otherwise stores height of structure when last calculated
-	UINT8													ubUnused[1]; // XXX HACK000B
-}; // 32 bytes
+struct STRUCTURE {
+  STRUCTURE *pPrev;
+  STRUCTURE *pNext;
+  INT16 sGridNo;
+  UINT16 usStructureID;
+  const DB_STRUCTURE_REF *pDBStructureRef;
+  union {
+    struct {
+      UINT8 ubHitPoints;
+      UINT8 ubLockStrength;
+    };
+    struct {
+      INT16 sBaseGridNo;
+    };
+  };                  // 2 bytes
+  INT16 sCubeOffset;  // height of bottom of object in profile "cubes"
+  UINT32 fFlags;      // need to have something to indicate base tile/not
+  PROFILE *pShape;
+  UINT8 ubWallOrientation;
+  UINT8 ubVehicleHitLocation;
+  UINT8 ubStructureHeight;  // if 0, then unset; otherwise stores height of
+                            // structure when last calculated
+  UINT8 ubUnused[1];        // XXX HACK000B
+};                          // 32 bytes
 
-struct STRUCTURE_FILE_REF
-{
-	STRUCTURE_FILE_REF* pPrev;
-	STRUCTURE_FILE_REF* pNext;
-	AuxObjectData*      pAuxData;
-	RelTileLoc*         pTileLocData;
-	UINT8*              pubStructureData;
-	DB_STRUCTURE_REF*   pDBStructureRef; // dynamic array
-	UINT16              usNumberOfStructures;
-	UINT16              usNumberOfStructuresStored;
-}; // 24 bytes
+struct STRUCTURE_FILE_REF {
+  STRUCTURE_FILE_REF *pPrev;
+  STRUCTURE_FILE_REF *pNext;
+  AuxObjectData *pAuxData;
+  RelTileLoc *pTileLocData;
+  UINT8 *pubStructureData;
+  DB_STRUCTURE_REF *pDBStructureRef;  // dynamic array
+  UINT16 usNumberOfStructures;
+  UINT16 usNumberOfStructuresStored;
+};  // 24 bytes
 
 #define STRUCTURE_FILE_EXTENSION "JSD"
 
-#define STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA		0x01
-#define STRUCTURE_FILE_CONTAINS_STRUCTUREDATA		0x02
+#define STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA 0x01
+#define STRUCTURE_FILE_CONTAINS_STRUCTUREDATA 0x02
 
 #endif

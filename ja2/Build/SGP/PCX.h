@@ -3,7 +3,6 @@
 
 #include "SGP/Types.h"
 
-
-SGPImage* LoadPCXFileToImage(char const* filename, UINT16 fContents);
+SGPImage *LoadPCXFileToImage(char const *filename, UINT16 fContents);
 
 #endif

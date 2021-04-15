@@ -7,37 +7,26 @@
 /** Supporting wchar_t so far. */
 #define WCHAR_SUPPORT
 
-
 class InvalidEncodingException;
-
 
 /**
  * Exception which will be thrown in case
  * of invalid encoding. */
-class InvalidEncodingException : public std::exception
-{
-public:
-  InvalidEncodingException(const char *what)
-    :m_what(what)
-  {
-  }
+class InvalidEncodingException : public std::exception {
+ public:
+  InvalidEncodingException(const char *what) : m_what(what) {}
 
-  virtual ~InvalidEncodingException() throw ()
-  {
-  }
+  virtual ~InvalidEncodingException() throw() {}
 
-  const char* what() const throw ()
-  {
-    return m_what.c_str();
-  }
+  const char *what() const throw() { return m_what.c_str(); }
 
-protected:
+ protected:
   std::string m_what;
 };
 
-
 #if defined(_MSC_VER)
-#pragma warning( disable : 4290 )   /* disable Visual Studio warnings of unsupported throw specification */
+#pragma warning(disable : 4290) /* disable Visual Studio warnings of \
+                                   unsupported throw specification */
 #endif
 
 /**
@@ -48,9 +37,8 @@ protected:
  * It is possible to create the object from UTF-8, UTF-16, UTF-32 encoded
  * strings and covert object into UTF-8, UTF-16 and UTF-32 encoded strings.
  */
-class UTF8String
-{
-public:
+class UTF8String {
+ public:
   /** Create object from existing UTF-8 encoded string. */
   UTF8String(const char *utf8Encoded);
 
@@ -69,7 +57,7 @@ public:
 #endif
 
   /** Get UTF-8 encoded string. */
-  const char* getUTF8() const;
+  const char *getUTF8() const;
 
   /** Get UTF-16 encoded string.
    * @return Array of code points including trailing 0x0000. */
@@ -81,9 +69,10 @@ public:
 
 #ifdef WCHAR_SUPPORT
 
-/** Get wchar_t string.
- * @return Reference to the internal array of wchar_t characters.  The array includes trailing zero. */
-  const std::vector<wchar_t>& getWCHAR();
+  /** Get wchar_t string.
+   * @return Reference to the internal array of wchar_t characters.  The array
+   * includes trailing zero. */
+  const std::vector<wchar_t> &getWCHAR();
 
 #endif
 
@@ -94,7 +83,7 @@ public:
    * Trailing zero is not included. */
   size_t getNumBytes() const;
 
-protected:
+ protected:
   /** UTF-8 encoded string. */
   std::string m_encoded;
 
@@ -109,4 +98,3 @@ protected:
   /** Append UTF32 encoded data to the string. */
   void append(const uint32_t *utf32Encoded);
 };
-

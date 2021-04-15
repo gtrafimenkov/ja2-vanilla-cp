@@ -3,7 +3,6 @@
 
 #include "SGP/Types.h"
 
-
 void InitStrategicMovementCosts();
 
 UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector);

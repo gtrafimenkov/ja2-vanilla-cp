@@ -5,24 +5,18 @@
 #include "TileEngine/TileDat.h"
 #include "TileEngine/WorldTilesetEnums.h"
 
-typedef void (*TILESET_CALLBACK)( void );
+typedef void (*TILESET_CALLBACK)(void);
 
-
-struct TILESET
-{
-	wchar_t							zName[ 32 ];
-	CHAR8								TileSurfaceFilenames[ NUMBEROFTILETYPES ][32];
-	UINT8								ubAmbientID;
-	TILESET_CALLBACK		MovementCostFnc;
+struct TILESET {
+  wchar_t zName[32];
+  CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
+  UINT8 ubAmbientID;
+  TILESET_CALLBACK MovementCostFnc;
 };
 
-
-
-extern TILESET	 gTilesets[ NUM_TILESETS ];
-
+extern TILESET gTilesets[NUM_TILESETS];
 
 void InitEngineTilesets(void);
-
 
 // THESE FUNCTIONS WILL SET TERRAIN VALUES - CALL ONE FOR EACH TILESET
 void SetTilesetOneTerrainValues(void);

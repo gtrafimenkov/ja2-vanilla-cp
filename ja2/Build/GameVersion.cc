@@ -15,19 +15,14 @@ const char g_version_label[] = "JA2 Vanilla CP (" BUILD_INFO ")";
 // loading the game.
 char const g_version_number[16] = "Build 04.12.02";
 
-
 //
-//		Keeps track of the saved game version.  Increment the saved game version whenever
-//	you will invalidate the saved game file
+//		Keeps track of the saved game version.  Increment the saved game
+// version whenever 	you will invalidate the saved game file
 
-#define			SAVE_GAME_VERSION					99
+#define SAVE_GAME_VERSION 99
 
-const	UINT32	guiSavedGameVersion = SAVE_GAME_VERSION;
-
+const UINT32 guiSavedGameVersion = SAVE_GAME_VERSION;
 
 #include "gtest/gtest.h"
 
-TEST(GameVersion, asserts)
-{
-  EXPECT_EQ(lengthof(g_version_number), 16);
-}
+TEST(GameVersion, asserts) { EXPECT_EQ(lengthof(g_version_number), 16); }

@@ -1,0 +1,21 @@
+# Run manually to reformat a file:
+# clang-format -i --style=file <file>
+# find . -iname '*.cc' -o -iname '*.h' -o -iname '*.h.in' | xargs clang-format -i --style=file
+
+# For possible options see https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+BasedOnStyle: Google
+ColumnLimit:  100
+
+IncludeBlocks: Regroup
+
+IncludeCategories:
+
+  - Regex:           '^<'
+    Priority:        10
+
+  - Regex:           '.*'
+    Priority:        30
+
+  - Regex:           '"SDL.*[.]h"'
+    Priority:        60

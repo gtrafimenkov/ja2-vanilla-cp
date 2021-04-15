@@ -3,24 +3,22 @@
 
 #include "JA2Types.h"
 
+#define MOVE_TILE_CLEAR 1
+#define MOVE_TILE_TEMP_BLOCKED -1
+#define MOVE_TILE_STATIONARY_BLOCKED -2
 
-#define			MOVE_TILE_CLEAR										1
-#define			MOVE_TILE_TEMP_BLOCKED					 -1
-#define			MOVE_TILE_STATIONARY_BLOCKED		 -2
+void UnMarkMovementReserved(SOLDIERTYPE &);
 
+BOOLEAN HandleNextTile(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT16 sFinalDestTile);
 
-void UnMarkMovementReserved(SOLDIERTYPE&);
+void HandleNextTileWaiting(SOLDIERTYPE *pSoldier);
 
-BOOLEAN HandleNextTile( SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT16 sFinalDestTile );
+bool TeleportSoldier(SOLDIERTYPE &, GridNo, bool force);
 
-void HandleNextTileWaiting(SOLDIERTYPE* pSoldier);
+void SwapMercPositions(SOLDIERTYPE &s1, SOLDIERTYPE &s2);
 
-bool TeleportSoldier(SOLDIERTYPE&, GridNo, bool force);
+void SetDelayedTileWaiting(SOLDIERTYPE *pSoldier, INT16 sCauseGridNo, INT8 bValue);
 
-void SwapMercPositions(SOLDIERTYPE& s1, SOLDIERTYPE& s2);
-
-void SetDelayedTileWaiting( SOLDIERTYPE *pSoldier, INT16 sCauseGridNo, INT8 bValue );
-
-BOOLEAN CanExchangePlaces( SOLDIERTYPE *pSoldier1, SOLDIERTYPE *pSoldier2, BOOLEAN fShow );
+BOOLEAN CanExchangePlaces(SOLDIERTYPE *pSoldier1, SOLDIERTYPE *pSoldier2, BOOLEAN fShow);
 
 #endif

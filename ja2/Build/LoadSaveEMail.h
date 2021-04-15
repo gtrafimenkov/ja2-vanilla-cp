@@ -3,7 +3,6 @@
 
 #include "Laptop/EMail.h"
 
-
 void LoadEmailFromSavedGame(HWFILE);
 void SaveEmailToSavedGame(HWFILE);
 

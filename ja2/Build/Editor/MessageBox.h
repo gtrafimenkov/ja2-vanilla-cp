@@ -1,23 +1,21 @@
 #ifndef __MESSAGEBOX_H
 #define __MESSAGEBOX_H
 
-enum
-{
-	MESSAGEBOX_NONE,
-	MESSAGEBOX_DONE,
-	MESSAGEBOX_WAIT
-};
+#include "SGP/Types.h"
+
+enum { MESSAGEBOX_NONE, MESSAGEBOX_DONE, MESSAGEBOX_WAIT };
 
 extern UINT8 gubMessageBoxStatus;
 extern BOOLEAN gfMessageBoxResult;
 
-void CreateMessageBox(wchar_t const* msg);
+void CreateMessageBox(wchar_t const *msg);
 BOOLEAN MessageBoxHandled(void);
 void RemoveMessageBox(void);
 
-//NOTES:
-//Rewrote the damn thing.  It is better now because you have less management issues.
-//In your screen's main loop, instead of using the previous method, you would use the following syntax:
+// NOTES:
+// Rewrote the damn thing.  It is better now because you have less management
+// issues. In your screen's main loop, instead of using the previous method, you
+// would use the following syntax:
 //
 //	if( gubMessageBoxState )
 //	{

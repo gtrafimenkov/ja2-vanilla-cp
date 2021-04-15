@@ -3,8 +3,7 @@
 
 #include "JA2Types.h"
 
-
-void ExtractSmokeEffectFromFile(HWFILE, SMOKEEFFECT*);
-void InjectSmokeEffectIntoFile(HWFILE, SMOKEEFFECT const*);
+void ExtractSmokeEffectFromFile(HWFILE, SMOKEEFFECT *);
+void InjectSmokeEffectIntoFile(HWFILE, SMOKEEFFECT const *);
 
 #endif

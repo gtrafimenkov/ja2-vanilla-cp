@@ -3,9 +3,8 @@
 
 #include "JA2Types.h"
 
-
-SOLDIERTYPE* RemoveFirstAIListEntry();
-bool         BuildAIListForTeam(INT8 team);
-bool         MoveToFrontOfAIList(SOLDIERTYPE*);
+SOLDIERTYPE *RemoveFirstAIListEntry();
+bool BuildAIListForTeam(INT8 team);
+bool MoveToFrontOfAIList(SOLDIERTYPE *);
 
 #endif

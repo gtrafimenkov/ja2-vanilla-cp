@@ -1,9 +1,8 @@
-#include "gtest/gtest.h"
-
 #include "SGP/SGPStrings.h"
 
-TEST(SGPStringsTest, ReplacePath)
-{
+#include "gtest/gtest.h"
+
+TEST(SGPStringsTest, ReplacePath) {
   char buf[256];
 
   // replacing extension

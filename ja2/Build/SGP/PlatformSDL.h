@@ -16,7 +16,7 @@
  *
  */
 #ifdef __APPLE__
-  #define EXPENSIVE_SDL_UPDATE_RECT    (1)
+#define EXPENSIVE_SDL_UPDATE_RECT (1)
 #else
-  #define EXPENSIVE_SDL_UPDATE_RECT    (0)
+#define EXPENSIVE_SDL_UPDATE_RECT (0)
 #endif

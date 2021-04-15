@@ -7,8 +7,8 @@ void EnterCharProfile(void);
 void ExitCharProfile(void);
 void HandleCharProfile(void);
 void RenderCharProfile(void);
-void ResetCharacterStats( void );
-void InitIMPSubPageList( void );
+void ResetCharacterStats(void);
+void InitIMPSubPageList(void);
 
 extern BOOLEAN fButtonPendingFlag;
 extern BOOLEAN fReDrawCharProfile;
@@ -45,23 +45,23 @@ extern INT32 iPersonality;
 // attitude
 extern INT32 iAttitude;
 
-enum{
-	IMP_HOME_PAGE,
-	IMP_BEGIN,
+enum {
+  IMP_HOME_PAGE,
+  IMP_BEGIN,
   IMP_FINISH,
-	IMP_MAIN_PAGE,
-	IMP_PERSONALITY,
-	IMP_PERSONALITY_QUIZ,
-	IMP_PERSONALITY_FINISH,
-	IMP_ATTRIBUTE_ENTRANCE,
-	IMP_ATTRIBUTE_PAGE,
-	IMP_ATTRIBUTE_FINISH,
-	IMP_PORTRAIT,
-	IMP_VOICE,
-	IMP_ABOUT_US,
-	IMP_CONFIRM,
+  IMP_MAIN_PAGE,
+  IMP_PERSONALITY,
+  IMP_PERSONALITY_QUIZ,
+  IMP_PERSONALITY_FINISH,
+  IMP_ATTRIBUTE_ENTRANCE,
+  IMP_ATTRIBUTE_PAGE,
+  IMP_ATTRIBUTE_FINISH,
+  IMP_PORTRAIT,
+  IMP_VOICE,
+  IMP_ABOUT_US,
+  IMP_CONFIRM,
 
-	IMP_NUM_PAGES,
+  IMP_NUM_PAGES,
 };
 
 #define COST_OF_PROFILE 3000

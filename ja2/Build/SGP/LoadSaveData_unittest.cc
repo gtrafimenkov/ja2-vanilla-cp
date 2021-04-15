@@ -1,11 +1,10 @@
 ﻿#include "gtest/gtest.h"
 
 #include "SGP/LoadSaveData.h"
+
 #include "SGP/FileMan.h"
 
-
-TEST(LoadSaveData, integers)
-{
+TEST(LoadSaveData, integers) {
   char buf[100];
 
   {
@@ -54,8 +53,7 @@ TEST(LoadSaveData, integers)
   }
 }
 
-TEST(LoadSaveData, wcharToUTF16English)
-{
+TEST(LoadSaveData, wcharToUTF16English) {
   char buf[100];
 
   DataWriter writer(buf);
@@ -75,8 +73,7 @@ TEST(LoadSaveData, wcharToUTF16English)
   }
 }
 
-TEST(LoadSaveData, wcharToUTF16Russian)
-{
+TEST(LoadSaveData, wcharToUTF16Russian) {
   char buf[100];
 
   DataWriter writer(buf);
@@ -93,8 +90,7 @@ TEST(LoadSaveData, wcharToUTF16Russian)
   }
 }
 
-TEST(LoadSaveData, utf16ToWideString)
-{
+TEST(LoadSaveData, utf16ToWideString) {
   char buf[100];
   DataWriter writer(buf);
 
@@ -123,8 +119,7 @@ TEST(LoadSaveData, utf16ToWideString)
   }
 }
 
-TEST(LoadSaveData, utf32ToWideString)
-{
+TEST(LoadSaveData, utf32ToWideString) {
   char buf[100];
   DataWriter writer(buf);
 
@@ -153,8 +148,7 @@ TEST(LoadSaveData, utf32ToWideString)
   }
 }
 
-TEST(LoadSaveData, floatAndDoubleFormat)
-{
+TEST(LoadSaveData, floatAndDoubleFormat) {
   // We need to make sure that on the current platform
   // float and double have the same binary representation
   // as on Windows.  Otherwise, there will be problems with
@@ -187,7 +181,7 @@ TEST(LoadSaveData, floatAndDoubleFormat)
   //   printf("double size: %d\n", sizeof(double));
   // }
 
-  ASSERT_EQ(sizeof(float),  4);
+  ASSERT_EQ(sizeof(float), 4);
   ASSERT_EQ(sizeof(double), 8);
 
   {
@@ -198,11 +192,16 @@ TEST(LoadSaveData, floatAndDoubleFormat)
     float f;
 
     char *S = buf;
-    EXTR_FLOAT(S, f); EXPECT_EQ(f, 0         );
-    EXTR_FLOAT(S, f); EXPECT_EQ(f, 1         );
-    EXTR_FLOAT(S, f); EXPECT_EQ(f, -1        );
-    EXTR_FLOAT(S, f); EXPECT_EQ(f, 1.1234678f);
-    EXTR_FLOAT(S, f); EXPECT_EQ(f, 12345.678f);
+    EXTR_FLOAT(S, f);
+    EXPECT_EQ(f, 0);
+    EXTR_FLOAT(S, f);
+    EXPECT_EQ(f, 1);
+    EXTR_FLOAT(S, f);
+    EXPECT_EQ(f, -1);
+    EXTR_FLOAT(S, f);
+    EXPECT_EQ(f, 1.1234678f);
+    EXTR_FLOAT(S, f);
+    EXPECT_EQ(f, 12345.678f);
   }
 
   {
@@ -213,10 +212,15 @@ TEST(LoadSaveData, floatAndDoubleFormat)
     double d;
 
     char *S = buf;
-    EXTR_DOUBLE(S, d); EXPECT_EQ(d, 0         );
-    EXTR_DOUBLE(S, d); EXPECT_EQ(d, 1         );
-    EXTR_DOUBLE(S, d); EXPECT_EQ(d, -1        );
-    EXTR_DOUBLE(S, d); EXPECT_EQ(d, 1.1234678 );
-    EXTR_DOUBLE(S, d); EXPECT_EQ(d, 12345.678 );
+    EXTR_DOUBLE(S, d);
+    EXPECT_EQ(d, 0);
+    EXTR_DOUBLE(S, d);
+    EXPECT_EQ(d, 1);
+    EXTR_DOUBLE(S, d);
+    EXPECT_EQ(d, -1);
+    EXTR_DOUBLE(S, d);
+    EXPECT_EQ(d, 1.1234678);
+    EXTR_DOUBLE(S, d);
+    EXPECT_EQ(d, 12345.678);
   }
 }

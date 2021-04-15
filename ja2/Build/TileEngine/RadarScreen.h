@@ -3,27 +3,26 @@
 
 #include "SGP/Types.h"
 
-
-void LoadRadarScreenBitmap(const char* filename);
+void LoadRadarScreenBitmap(const char *filename);
 
 // RADAR WINDOW DEFINES
-#define	RADAR_WINDOW_X				543
-#define RADAR_WINDOW_TM_Y				INTERFACE_START_Y + 13
-#define RADAR_WINDOW_SM_Y				INV_INTERFACE_START_Y + 13
-#define RADAR_WINDOW_WIDTH		88
-#define RADAR_WINDOW_HEIGHT		44
+#define RADAR_WINDOW_X 543
+#define RADAR_WINDOW_TM_Y INTERFACE_START_Y + 13
+#define RADAR_WINDOW_SM_Y INV_INTERFACE_START_Y + 13
+#define RADAR_WINDOW_WIDTH 88
+#define RADAR_WINDOW_HEIGHT 44
 
 void InitRadarScreen(void);
 void RenderRadarScreen(void);
 void MoveRadarScreen(void);
 
 // toggle rendering flag of radar screen
-void ToggleRadarScreenRender( void );
+void ToggleRadarScreenRender(void);
 
 // clear out the video object for the radar map
-void ClearOutRadarMapImage( void );
+void ClearOutRadarMapImage(void);
 
 // do we render the radar screen?..or the squad list?
-extern BOOLEAN   fRenderRadarScreen;
+extern BOOLEAN fRenderRadarScreen;
 
 #endif

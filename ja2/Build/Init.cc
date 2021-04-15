@@ -1,16 +1,24 @@
+#include "Init.h"
+
 #include "Editor/EditScreen.h"
 #include "Editor/SummaryInfo.h"
 #include "GameSettings.h"
 #include "GameState.h"
-#include "Init.h"
 #include "JAScreens.h"
 #include "Laptop/Laptop.h"
 #include "Local.h"
+#include "SGP/CursorControl.h"
+#include "SGP/HImage.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Shading.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
 #include "Screens.h"
 #include "Strategic/GameInit.h"
-#include "Strategic/StrategicMovementCosts.h"
-#include "Strategic/StrategicMovement.h"
 #include "Strategic/StrategicMap.h"
+#include "Strategic/StrategicMovement.h"
+#include "Strategic/StrategicMovementCosts.h"
 #include "SysGlobals.h"
 #include "Tactical/AnimationData.h"
 #include "Tactical/DialogueControl.h"
@@ -32,151 +40,136 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
-#include "SGP/CursorControl.h"
-#include "SGP/HImage.h"
-#include "SGP/MouseSystem.h"
-#include "SGP/Shading.h"
-#include "SGP/Video.h"
-#include "SGP/VObject.h"
-#include "SGP/VSurface.h"
 
+// The InitializeGame function is responsible for setting up all data and Gaming
+// Engine tasks which will run the game
 
-// The InitializeGame function is responsible for setting up all data and Gaming Engine
-// tasks which will run the game
+ScreenID InitializeJA2(void) try {
+  gfWorldLoaded = FALSE;
 
+  // Load external text
+  LoadAllExternalText();
 
-ScreenID InitializeJA2(void)
-try
-{
-	gfWorldLoaded = FALSE;
+  gsRenderCenterX = 805;
+  gsRenderCenterY = 805;
 
-	// Load external text
-	LoadAllExternalText();
+  // Init animation system
+  InitAnimationSystem();
 
-	gsRenderCenterX = 805;
-	gsRenderCenterY = 805;
+  // Init lighting system
+  InitLightingSystem();
 
-	// Init animation system
-	InitAnimationSystem();
+  // Init dialog queue system
+  InitalizeDialogueControl();
 
-	// Init lighting system
-	InitLightingSystem();
+  InitStrategicEngine();
 
-	// Init dialog queue system
-	InitalizeDialogueControl();
+  // needs to be called here to init the SectorInfo struct
+  InitStrategicMovementCosts();
 
-	InitStrategicEngine();
+  // Init tactical engine
+  InitTacticalEngine();
 
-	//needs to be called here to init the SectorInfo struct
-	InitStrategicMovementCosts( );
+  // Init timer system
+  // Moved to the splash screen code.
+  // InitializeJA2Clock( );
 
-	// Init tactical engine
-	InitTacticalEngine();
+  // INit shade tables
+  BuildShadeTable();
 
-	// Init timer system
-	//Moved to the splash screen code.
-	//InitializeJA2Clock( );
+  // INit intensity tables
+  BuildIntensityTable();
 
-	// INit shade tables
-	BuildShadeTable( );
+  // Init Event Manager
+  InitializeEventManager();
 
-	// INit intensity tables
-	BuildIntensityTable( );
+  // Initailize World
+  InitializeWorld();
 
-	// Init Event Manager
-	InitializeEventManager();
+  InitTileCache();
 
-	// Initailize World
-	InitializeWorld();
+  InitMercPopupBox();
 
-	InitTileCache( );
-
-	InitMercPopupBox( );
-
-  if(GameState::getInstance()->isEditorMode())
-  {
-    //UNCOMMENT NEXT LINE TO ALLOW FORCE UPDATES...
-    //LoadGlobalSummary();
-    if( gfMustForceUpdateAllMaps )
-    {
+  if (GameState::getInstance()->isEditorMode()) {
+    // UNCOMMENT NEXT LINE TO ALLOW FORCE UPDATES...
+    // LoadGlobalSummary();
+    if (gfMustForceUpdateAllMaps) {
       ApologizeOverrideAndForceUpdateEverything();
     }
   }
 
-	switch (GameState::getInstance()->getMode())
-	{
-		case GAME_MODE_EDITOR:
-			DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Beginning JA2 using -editor commandline argument...");
-			gfAutoLoadA9 = FALSE;
-			goto editor;
+  switch (GameState::getInstance()->getMode()) {
+    case GAME_MODE_EDITOR:
+      DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Beginning JA2 using -editor commandline argument...");
+      gfAutoLoadA9 = FALSE;
+      goto editor;
 
-		case GAME_MODE_EDITOR_AUTO:
-			DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Beginning JA2 using -editorauto commandline argument...");
-			gfAutoLoadA9 = TRUE;
-editor:
-			//For editor purposes, need to know the default map file.
-			strcpy(g_filename, "none");
-			//also set the sector
-			SetWorldSectorInvalid();
-			gfIntendOnEnteringEditor = TRUE;
-			gGameOptions.fGunNut     = TRUE;
-			return GAME_SCREEN;
+    case GAME_MODE_EDITOR_AUTO:
+      DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1,
+               "Beginning JA2 using -editorauto commandline argument...");
+      gfAutoLoadA9 = TRUE;
+    editor:
+      // For editor purposes, need to know the default map file.
+      strcpy(g_filename, "none");
+      // also set the sector
+      SetWorldSectorInvalid();
+      gfIntendOnEnteringEditor = TRUE;
+      gGameOptions.fGunNut = TRUE;
+      return GAME_SCREEN;
 
-		default: return INIT_SCREEN;
-	}
+    default:
+      return INIT_SCREEN;
+  }
+} catch (...) {
+  return ERROR_SCREEN;
 }
-catch (...) { return ERROR_SCREEN; }
 
-
-void ShutdownJA2(void)
-{
+void ShutdownJA2(void) {
   UINT32 uiIndex;
 
-	FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
-	InvalidateScreen( );
-	// Remove cursor....
-	SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
+  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  InvalidateScreen();
+  // Remove cursor....
+  SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-	RefreshScreen();
+  RefreshScreen();
 
-	ShutdownStrategicLayer();
+  ShutdownStrategicLayer();
 
-	// remove temp files built by laptop
-	ClearOutTempLaptopFiles( );
+  // remove temp files built by laptop
+  ClearOutTempLaptopFiles();
 
-	// Shutdown queue system
-	ShutdownDialogueControl();
+  // Shutdown queue system
+  ShutdownDialogueControl();
 
   // Shutdown Screens
-  for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++)
-  {
-		void (*const shutdown)(void) = GameScreens[uiIndex].ShutdownScreen;
-		if (shutdown != NULL) shutdown();
+  for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
+    void (*const shutdown)(void) = GameScreens[uiIndex].ShutdownScreen;
+    if (shutdown != NULL) shutdown();
   }
 
+  ShutdownLightingSystem();
 
-	ShutdownLightingSystem();
+  CursorDatabaseClear();
 
-	CursorDatabaseClear();
+  ShutdownTacticalEngine();
 
-	ShutdownTacticalEngine( );
+  // Shutdown Overhead
+  ShutdownOverhead();
 
-	// Shutdown Overhead
-	ShutdownOverhead( );
+  DeInitAnimationSystem();
 
-	DeInitAnimationSystem();
+  DeinitializeWorld();
 
-	DeinitializeWorld( );
+  DeleteTileCache();
 
-	DeleteTileCache( );
+  ShutdownJA2Clock();
 
-	ShutdownJA2Clock( );
+  ShutdownFonts();
 
-	ShutdownFonts();
+  ShutdownJA2Sound();
 
-	ShutdownJA2Sound( );
+  ShutdownEventManager();
 
-	ShutdownEventManager( );
-
-	ClearOutVehicleList();
+  ClearOutVehicleList();
 }

@@ -1,26 +1,26 @@
-#include "Editor/EditorCallbackPrototypes.h"
-#include "SGP/HImage.h"
-#include "TileEngine/IsometricUtils.h"
-#include "TileEngine/TileDef.h"
-#include "Editor/EditSys.h"
-#include "SGP/VSurface.h"
-#include "SGP/VObject.h"
-#include "SGP/MouseSystem.h"
-#include "SGP/ButtonSystem.h"
-#include "SGP/Input.h"
-#include "TileEngine/SysUtil.h"
-#include "SGP/Font.h"
-#include "Utils/FontControl.h"
-#include "Editor/EditScreen.h"
-#include "Editor/SelectWin.h"
-#include "TileEngine/WorldDef.h"
-#include "Tactical/WorldItems.h"
-#include "Editor/EditorDefines.h"
 #include "Editor/EditorTerrain.h"
-#include "Editor/EditorTaskbarUtils.h"
-#include "Editor/CursorModes.h"
-#include "SGP/English.h"
 
+#include "Editor/CursorModes.h"
+#include "Editor/EditScreen.h"
+#include "Editor/EditSys.h"
+#include "Editor/EditorCallbackPrototypes.h"
+#include "Editor/EditorDefines.h"
+#include "Editor/EditorTaskbarUtils.h"
+#include "Editor/SelectWin.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "Tactical/WorldItems.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"
+#include "Utils/FontControl.h"
 
 BOOLEAN gfShowTerrainTileButtons;
 UINT8 ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];
@@ -30,231 +30,184 @@ BOOLEAN fUseTerrainWeights = FALSE;
 INT32 TerrainTileSelected = 0, TerrainForegroundTile, TerrainBackgroundTile;
 INT32 TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
 
-void EntryInitEditorTerrainInfo()
-{
-	//ResetTerrainTileWeights();
-	if( !fUseTerrainWeights )
-	{
-		ResetTerrainTileWeights();
-	}
+void EntryInitEditorTerrainInfo() {
+  // ResetTerrainTileWeights();
+  if (!fUseTerrainWeights) {
+    ResetTerrainTileWeights();
+  }
 }
 
-void ResetTerrainTileWeights()
-{
-	INT8 x;
-	for( x=0; x < NUM_TERRAIN_TILE_REGIONS; x++ )
-	{
-		ubTerrainTileButtonWeight[x] = 0;
-	}
-	usTotalWeight = 0;
-	fUseTerrainWeights = FALSE;
-	gfRenderTaskbar = TRUE;
+void ResetTerrainTileWeights() {
+  INT8 x;
+  for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+    ubTerrainTileButtonWeight[x] = 0;
+  }
+  usTotalWeight = 0;
+  fUseTerrainWeights = FALSE;
+  gfRenderTaskbar = TRUE;
 }
 
-void HideTerrainTileButtons()
-{
-	INT8 x;
-	if( gfShowTerrainTileButtons )
-	{
-		for( x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++ )
-		{
-			DisableEditorRegion( x );
-		}
-		gfShowTerrainTileButtons=FALSE;
-	}
+void HideTerrainTileButtons() {
+  INT8 x;
+  if (gfShowTerrainTileButtons) {
+    for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+      DisableEditorRegion(x);
+    }
+    gfShowTerrainTileButtons = FALSE;
+  }
 }
 
-void ShowTerrainTileButtons()
-{
-	INT8 x;
-	if( !gfShowTerrainTileButtons )
-	{
-		for( x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++ )
-		{
-			EnableEditorRegion( x );
-		}
-		gfShowTerrainTileButtons=TRUE;
-	}
+void ShowTerrainTileButtons() {
+  INT8 x;
+  if (!gfShowTerrainTileButtons) {
+    for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+      EnableEditorRegion(x);
+    }
+    gfShowTerrainTileButtons = TRUE;
+  }
 }
 
-void RenderTerrainTileButtons()
-{
-	// If needed, display the ground tile images
-	if(gfShowTerrainTileButtons)
-	{
-		UINT16 usFillColorDark, usFillColorLight, usFillColorRed;
-		UINT16 x, usX, usX2, usY, usY2;
+void RenderTerrainTileButtons() {
+  // If needed, display the ground tile images
+  if (gfShowTerrainTileButtons) {
+    UINT16 usFillColorDark, usFillColorLight, usFillColorRed;
+    UINT16 x, usX, usX2, usY, usY2;
 
-		usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
-		usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
-		usFillColorRed = Get16BPPColor(FROMRGB(255, 0, 0));
+    usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
+    usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
+    usFillColorRed = Get16BPPColor(FROMRGB(255, 0, 0));
 
-		usY = 369;
-		usY2 = 391;
+    usY = 369;
+    usY2 = 391;
 
-		SetFont( SMALLCOMPFONT );
-		SetFontForeground( FONT_YELLOW );
+    SetFont(SMALLCOMPFONT);
+    SetFontForeground(FONT_YELLOW);
 
-		for( x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++ )
-		{
-			usX = 261 + (x * 42);
-			usX2 = usX + 42;
+    for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+      usX = 261 + (x * 42);
+      usX2 = usX + 42;
 
-			if ( x == CurrentPaste && !fUseTerrainWeights )
-			{
-				ColorFillVideoSurfaceArea(ButtonDestBuffer , usX, usY, usX2, usY2, usFillColorRed);
-			}
-			else
-			{
-				ColorFillVideoSurfaceArea(ButtonDestBuffer, usX, usY, usX2, usY2, usFillColorDark);
-				ColorFillVideoSurfaceArea(ButtonDestBuffer, usX + 1, usY + 1, usX2, usY2, usFillColorLight);
-			}
-			ColorFillVideoSurfaceArea(ButtonDestBuffer, usX + 1, usY + 1, usX2 - 1, usY2 - 1, 0);
+      if (x == CurrentPaste && !fUseTerrainWeights) {
+        ColorFillVideoSurfaceArea(ButtonDestBuffer, usX, usY, usX2, usY2, usFillColorRed);
+      } else {
+        ColorFillVideoSurfaceArea(ButtonDestBuffer, usX, usY, usX2, usY2, usFillColorDark);
+        ColorFillVideoSurfaceArea(ButtonDestBuffer, usX + 1, usY + 1, usX2, usY2, usFillColorLight);
+      }
+      ColorFillVideoSurfaceArea(ButtonDestBuffer, usX + 1, usY + 1, usX2 - 1, usY2 - 1, 0);
 
-			const HVOBJECT ts = TileElemFromTileType(x)->hTileSurface;
-			ts->CurrentShade(DEFAULT_SHADE_LEVEL);
-			BltVideoObject(ButtonDestBuffer, ts, 0, usX + 1, usY + 1);
+      const HVOBJECT ts = TileElemFromTileType(x)->hTileSurface;
+      ts->CurrentShade(DEFAULT_SHADE_LEVEL);
+      BltVideoObject(ButtonDestBuffer, ts, 0, usX + 1, usY + 1);
 
-			if( fUseTerrainWeights )
-			{
-				mprintf( usX+2, usY+2, L"%d", ubTerrainTileButtonWeight[ x ] );
-			}
-		}
-	}
+      if (fUseTerrainWeights) {
+        mprintf(usX + 2, usY + 2, L"%d", ubTerrainTileButtonWeight[x]);
+      }
+    }
+  }
 }
 
-//This callback is used for each of the terrain tile buttons.  The userData[0] field
-//contains the terrain button's index value.
-void TerrainTileButtonRegionCallback(MOUSE_REGION *reg,INT32 reason)
-{
-	if(reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-	{
-		gfRenderTaskbar = TRUE;
-		TerrainTileSelected = MSYS_GetRegionUserData(reg,0);
-		if(TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND )
-		{
-			TerrainForegroundTile = TerrainTileSelected;
-			CurrentPaste = (UINT16)TerrainForegroundTile;
-			//iEditorToolbarState = TBAR_MODE_DRAW;
-			if( _KeyDown( SHIFT ) )
-			{
-				fUseTerrainWeights = TRUE;
-			}
-			if( fUseTerrainWeights )
-			{
-				//SHIFT+LEFTCLICK adds weight to the selected terrain tile.
-				if( ubTerrainTileButtonWeight[ TerrainTileSelected ] < 10 )
-				{
-					ubTerrainTileButtonWeight[ TerrainTileSelected ]++;
-					usTotalWeight++;
-				}
-			}
-			else
-			{ //Regular LEFTCLICK selects only that terrain tile.
-				//When total weight is 0, then the only selected tile is drawn.
-				ResetTerrainTileWeights();
-			}
-		}
-		else if(TerrainTileDrawMode == TERRAIN_TILES_BACKGROUND )
-		{
-			TerrainBackgroundTile = TerrainTileSelected;
-			iEditorToolbarState = TBAR_MODE_SET_BGRND;
-		}
-	}
-	if(reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
-	{
-		gfRenderTaskbar = TRUE;
-		TerrainTileSelected = MSYS_GetRegionUserData( reg, 0 );
-		if(TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND )
-		{
-			TerrainForegroundTile = TerrainTileSelected;
-			iEditorToolbarState = TBAR_MODE_DRAW;
-			if( ubTerrainTileButtonWeight[ TerrainTileSelected ] )
-			{
-				ubTerrainTileButtonWeight[ TerrainTileSelected ]--;
-				usTotalWeight--;
-			}
-		}
-	}
+// This callback is used for each of the terrain tile buttons.  The userData[0]
+// field contains the terrain button's index value.
+void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+  if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
+    gfRenderTaskbar = TRUE;
+    TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
+    if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
+      TerrainForegroundTile = TerrainTileSelected;
+      CurrentPaste = (UINT16)TerrainForegroundTile;
+      // iEditorToolbarState = TBAR_MODE_DRAW;
+      if (_KeyDown(SHIFT)) {
+        fUseTerrainWeights = TRUE;
+      }
+      if (fUseTerrainWeights) {
+        // SHIFT+LEFTCLICK adds weight to the selected terrain tile.
+        if (ubTerrainTileButtonWeight[TerrainTileSelected] < 10) {
+          ubTerrainTileButtonWeight[TerrainTileSelected]++;
+          usTotalWeight++;
+        }
+      } else {  // Regular LEFTCLICK selects only that terrain tile.
+        // When total weight is 0, then the only selected tile is drawn.
+        ResetTerrainTileWeights();
+      }
+    } else if (TerrainTileDrawMode == TERRAIN_TILES_BACKGROUND) {
+      TerrainBackgroundTile = TerrainTileSelected;
+      iEditorToolbarState = TBAR_MODE_SET_BGRND;
+    }
+  }
+  if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
+    gfRenderTaskbar = TRUE;
+    TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
+    if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
+      TerrainForegroundTile = TerrainTileSelected;
+      iEditorToolbarState = TBAR_MODE_DRAW;
+      if (ubTerrainTileButtonWeight[TerrainTileSelected]) {
+        ubTerrainTileButtonWeight[TerrainTileSelected]--;
+        usTotalWeight--;
+      }
+    }
+  }
 }
 
-void ChooseWeightedTerrainTile()
-{
-	UINT16 x, usWeight;
-	INT16 sRandomNum;
-	if(!usTotalWeight)
-	{ //Not in the weighted mode.  CurrentPaste will already contain the selected tile.
-		return;
-	}
-	sRandomNum = rand() % usTotalWeight;
-	for( x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++ )
-	{
-		usWeight = ubTerrainTileButtonWeight[ x ];
-		sRandomNum -= usWeight;
-		if( sRandomNum <= 0 && usWeight )
-		{
-			CurrentPaste = x;
-			return;
-		}
-	}
+void ChooseWeightedTerrainTile() {
+  UINT16 x, usWeight;
+  INT16 sRandomNum;
+  if (!usTotalWeight) {  // Not in the weighted mode.  CurrentPaste will already
+                         // contain the selected tile.
+    return;
+  }
+  sRandomNum = rand() % usTotalWeight;
+  for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+    usWeight = ubTerrainTileButtonWeight[x];
+    sRandomNum -= usWeight;
+    if (sRandomNum <= 0 && usWeight) {
+      CurrentPaste = x;
+      return;
+    }
+  }
 }
-
 
 UINT32 guiSearchType;
-UINT32 count, maxCount=0, calls=0;
+UINT32 count, maxCount = 0, calls = 0;
 
+static void Fill(INT32 x, INT32 y) {
+  INT32 iMapIndex;
 
-static void Fill(INT32 x, INT32 y)
-{
-	INT32 iMapIndex;
+  count++;
+  calls++;
 
-	count++;
-	calls++;
+  if (count > maxCount) maxCount = count;
 
-	if( count > maxCount )
-		maxCount = count;
+  iMapIndex = y * WORLD_COLS + x;
+  if (!GridNoOnVisibleWorldTile((INT16)iMapIndex)) {
+    count--;
+    return;
+  }
+  const UINT32 uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
+  if (guiSearchType == uiCheckType)
+    PasteTextureCommon(iMapIndex);
+  else {
+    count--;
+    return;
+  }
 
-	iMapIndex = y * WORLD_COLS + x;
-	if( !GridNoOnVisibleWorldTile( (INT16)iMapIndex ) )
-	{
-		count--;
-		return;
-	}
-	const UINT32 uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
-	if( guiSearchType == uiCheckType )
-		PasteTextureCommon( iMapIndex );
-	else
-	{
-		count--;
-		return;
-	}
-
-	if( y > 0 )
-		Fill( x, y-1 );
-	if( y < WORLD_ROWS - 1 )
-		Fill( x, y+1 );
-	if( x > 0 )
-		Fill( x-1, y );
-	if( x < WORLD_COLS - 1 )
-		Fill( x+1, y );
-	count--;
+  if (y > 0) Fill(x, y - 1);
+  if (y < WORLD_ROWS - 1) Fill(x, y + 1);
+  if (x > 0) Fill(x - 1, y);
+  if (x < WORLD_COLS - 1) Fill(x + 1, y);
+  count--;
 }
 
+void TerrainFill(UINT32 iMapIndex) {
+  INT16 sX, sY;
+  // determine what we should be looking for to replace...
+  guiSearchType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
 
-void TerrainFill( UINT32 iMapIndex )
-{
-	INT16 sX, sY;
-	//determine what we should be looking for to replace...
-	guiSearchType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
+  // check terminating conditions
+  if (guiSearchType == CurrentPaste) return;
 
-	//check terminating conditions
-	if( guiSearchType == CurrentPaste )
-		return;
+  ConvertGridNoToXY((INT16)iMapIndex, &sX, &sY);
 
-	ConvertGridNoToXY( (INT16)iMapIndex, &sX, &sY );
+  count = 0;
 
-	count = 0;
-
-	Fill( sX, sY );
-
+  Fill(sX, sY);
 }

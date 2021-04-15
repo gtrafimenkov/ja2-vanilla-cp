@@ -1,12 +1,26 @@
+#include "JAScreens.h"
+
 #include "Directories.h"
 #include "Editor/EditScreen.h"
 #include "GameLoop.h"
 #include "GameScreen.h"
 #include "GameVersion.h"
 #include "Init.h"
-#include "JAScreens.h"
 #include "Local.h"
 #include "MainMenuScreen.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Random.h"
+#include "SGP/SGP.h"
+#include "SGP/Timer.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
 #include "Screens.h"
 #include "Strategic/GameClock.h"
 #include "Strategic/GameInit.h"
@@ -24,506 +38,410 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/Utilities.h"
-#include "SGP/CursorControl.h"
-#include "SGP/Debug.h"
-#include "SGP/English.h"
-#include "SGP/Font.h"
-#include "SGP/HImage.h"
-#include "SGP/Input.h"
-#include "SGP/MouseSystem.h"
-#include "SGP/Random.h"
-#include "SGP/SGP.h"
-#include "SGP/Timer.h"
-#include "SGP/Video.h"
-#include "SGP/VObject.h"
-#include "SGP/VSurface.h"
-
 
 #define MAX_DEBUG_PAGES 4
 
-
 // GLOBAL FOR PAL EDITOR
-UINT8	 CurrentPalette = 0;
-static BACKGROUND_SAVE* guiBackgroundRect = NO_BGND_RECT;
-BOOLEAN	gfExitPalEditScreen = FALSE;
-BOOLEAN	gfExitDebugScreen = FALSE;
+UINT8 CurrentPalette = 0;
+static BACKGROUND_SAVE *guiBackgroundRect = NO_BGND_RECT;
+BOOLEAN gfExitPalEditScreen = FALSE;
+BOOLEAN gfExitDebugScreen = FALSE;
 static BOOLEAN FirstTime = TRUE;
-BOOLEAN	gfDoneWithSplashScreen = FALSE;
-
+BOOLEAN gfDoneWithSplashScreen = FALSE;
 
 INT8 gCurDebugPage = 0;
-
 
 static void DefaultDebugPage1(void);
 static void DefaultDebugPage2(void);
 static void DefaultDebugPage3(void);
 static void DefaultDebugPage4(void);
 
+RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {DefaultDebugPage1, DefaultDebugPage2,
+                                                     DefaultDebugPage3, DefaultDebugPage4};
 
-RENDER_HOOK				gDebugRenderOverride[ MAX_DEBUG_PAGES ] =
-{
-	DefaultDebugPage1,
-	DefaultDebugPage2,
-	DefaultDebugPage3,
-	DefaultDebugPage4
-};
+void DisplayFrameRate() {
+  static UINT32 uiFPS = 0;
+  static UINT32 uiFrameCount = 0;
 
+  // Increment frame count
+  uiFrameCount++;
 
-void DisplayFrameRate( )
-{
-	static UINT32		uiFPS = 0;
-	static UINT32		uiFrameCount = 0;
+  if (COUNTERDONE(FPSCOUNTER)) {
+    // Reset counter
+    RESETCOUNTER(FPSCOUNTER);
 
-	// Increment frame count
-	uiFrameCount++;
+    uiFPS = uiFrameCount;
+    uiFrameCount = 0;
+  }
 
-	if ( COUNTERDONE( FPSCOUNTER ) )
-	{
-		// Reset counter
-		RESETCOUNTER( FPSCOUNTER );
+  if (gbFPSDisplay == SHOW_FULL_FPS) {
+    // FRAME RATE
+    SetVideoOverlayTextF(g_fps_overlay, L"%ld", __min(uiFPS, 1000));
 
-		uiFPS = uiFrameCount;
-		uiFrameCount = 0;
-	}
-
-	if ( gbFPSDisplay == SHOW_FULL_FPS )
-	{
-		// FRAME RATE
-		SetVideoOverlayTextF(g_fps_overlay, L"%ld", __min(uiFPS, 1000));
-
-		// TIMER COUNTER
-		SetVideoOverlayTextF(g_counter_period_overlay, L"%ld", __min(giTimerDiag, 1000));
-	}
+    // TIMER COUNTER
+    SetVideoOverlayTextF(g_counter_period_overlay, L"%ld", __min(giTimerDiag, 1000));
+  }
 }
 
+ScreenID ErrorScreenHandle(void) {
+  InputAtom InputEvent;
+  static BOOLEAN fFirstTime = FALSE;
 
-ScreenID ErrorScreenHandle(void)
-{
-  InputAtom  InputEvent;
-	static BOOLEAN	fFirstTime = FALSE;
+  // Create string
+  SetFontAttributes(LARGEFONT1, FONT_MCOLOR_LTGRAY);
+  MPrint(50, 200, L"RUNTIME ERROR");
+  MPrint(50, 225, L"PRESS <ESC> TO EXIT");
 
-	// Create string
-	SetFontAttributes(LARGEFONT1, FONT_MCOLOR_LTGRAY);
-	MPrint(50, 200, L"RUNTIME ERROR");
-	MPrint(50, 225, L"PRESS <ESC> TO EXIT");
+  SetFontAttributes(FONT12ARIAL, FONT_YELLOW);
+  mprintf(50, 255, L"%hs", gubErrorText);
 
-	SetFontAttributes(FONT12ARIAL, FONT_YELLOW);
-	mprintf(50, 255, L"%hs", gubErrorText);
+  if (!fFirstTime) {
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
+    fFirstTime = TRUE;
+  }
 
-	if ( !fFirstTime )
-	{
-		DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String( "Runtime Error: %s ", gubErrorText ) );
-		fFirstTime = TRUE;
-	}
+  // For quick setting of new video stuff / to be changed
+  InvalidateScreen();
 
-	// For quick setting of new video stuff / to be changed
-	InvalidateScreen( );
+  // Check for esc
+  while (DequeueEvent(&InputEvent)) {
+    if (InputEvent.usEvent == KEY_DOWN) {
+      if (InputEvent.usParam == SDLK_ESCAPE ||
+          (InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN)) {  // Exit the program
+        DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
 
-	// Check for esc
-	while (DequeueEvent(&InputEvent))
-  {
-      if( InputEvent.usEvent == KEY_DOWN )
-			{
-				if (InputEvent.usParam == SDLK_ESCAPE || (InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN))
-				{ // Exit the program
-					DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
-
-					// handle shortcut exit
-					HandleShortCutExitState( );
-				}
-			}
-	}
-
-	return( ERROR_SCREEN );
-}
-
-
-ScreenID InitScreenHandle(void)
-{
-  static UINT32 splashDisplayedMoment = 0;
-	static UINT8					ubCurrentScreen = 255;
-
-	if ( ubCurrentScreen == 255 )
-	{
-    if(isEnglishVersion())
-    {
-      if( gfDoneWithSplashScreen )
-      {
-        ubCurrentScreen = 0;
-      }
-      else
-      {
-        SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
-        return( INTRO_SCREEN );
+        // handle shortcut exit
+        HandleShortCutExitState();
       }
     }
-    else
-    {
+  }
+
+  return (ERROR_SCREEN);
+}
+
+ScreenID InitScreenHandle(void) {
+  static UINT32 splashDisplayedMoment = 0;
+  static UINT8 ubCurrentScreen = 255;
+
+  if (ubCurrentScreen == 255) {
+    if (isEnglishVersion()) {
+      if (gfDoneWithSplashScreen) {
+        ubCurrentScreen = 0;
+      } else {
+        SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+        return (INTRO_SCREEN);
+      }
+    } else {
       ubCurrentScreen = 0;
     }
-	}
+  }
 
-	if ( ubCurrentScreen == 0 )
-	{
-		ubCurrentScreen = 1;
+  if (ubCurrentScreen == 0) {
+    ubCurrentScreen = 1;
 
-		// Init screen
+    // Init screen
 
-		SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
+    SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
 
-		const INT32 x = 10;
-		const INT32 y = SCREEN_HEIGHT;
+    const INT32 x = 10;
+    const INT32 y = SCREEN_HEIGHT;
 
-		mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
+    mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
 
-		InvalidateScreen( );
+    InvalidateScreen();
 
-		//ATE: Set to true to reset before going into main screen!
+    // ATE: Set to true to reset before going into main screen!
 
-		SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     splashDisplayedMoment = GetClock();
-		return( INIT_SCREEN );
-	}
+    return (INIT_SCREEN);
+  }
 
-	if ( ubCurrentScreen == 1 )
-	{
-		ubCurrentScreen = 2;
-		return( InitializeJA2( ) );
-	}
+  if (ubCurrentScreen == 1) {
+    ubCurrentScreen = 2;
+    return (InitializeJA2());
+  }
 
-	if ( ubCurrentScreen == 2 )
-	{
+  if (ubCurrentScreen == 2) {
     // wait 3 seconds since the splash displayed and then switch
     // to the main menu
-    if((GetClock() - splashDisplayedMoment) >= 3000)
-    {
-      InitMainMenu( );
+    if ((GetClock() - splashDisplayedMoment) >= 3000) {
+      InitMainMenu();
       ubCurrentScreen = 3;
     }
-		return( INIT_SCREEN );
-	}
+    return (INIT_SCREEN);
+  }
 
-	// Let one frame pass....
-	if ( ubCurrentScreen == 3 )
-	{
-		ubCurrentScreen = 4;
-		SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
-		return( INIT_SCREEN );
-	}
+  // Let one frame pass....
+  if (ubCurrentScreen == 3) {
+    ubCurrentScreen = 4;
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    return (INIT_SCREEN);
+  }
 
-	if ( ubCurrentScreen == 4 )
-	{
-		SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
-		InitNewGame();
-	}
-	return( INIT_SCREEN );
+  if (ubCurrentScreen == 4) {
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    InitNewGame();
+  }
+  return (INIT_SCREEN);
 }
 
-
-static BOOLEAN PalEditKeyboardHook(InputAtom* pInputEvent);
+static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent);
 static void PalEditRenderHook(void);
 
+ScreenID PalEditScreenHandle(void) {
+  static BOOLEAN FirstTime = TRUE;
 
-ScreenID PalEditScreenHandle(void)
-{
-	static BOOLEAN FirstTime = TRUE;
+  if (gfExitPalEditScreen) {
+    gfExitPalEditScreen = FALSE;
+    FirstTime = TRUE;
+    FreeBackgroundRect(guiBackgroundRect);
+    guiBackgroundRect = NO_BGND_RECT;
+    SetRenderHook(NULL);
+    SetUIKeyboardHook(NULL);
+    return (GAME_SCREEN);
+  }
 
-	if ( gfExitPalEditScreen )
-	{
-		gfExitPalEditScreen = FALSE;
-		FirstTime = TRUE;
-		FreeBackgroundRect(guiBackgroundRect);
-		guiBackgroundRect = NO_BGND_RECT;
-		SetRenderHook(NULL);
-		SetUIKeyboardHook(NULL);
-		return( GAME_SCREEN );
-	}
+  if (FirstTime) {
+    FirstTime = FALSE;
 
-	if ( FirstTime )
-	{
-		FirstTime = FALSE;
+    SetRenderHook(PalEditRenderHook);
+    SetUIKeyboardHook(PalEditKeyboardHook);
 
-		SetRenderHook(PalEditRenderHook);
-		SetUIKeyboardHook(PalEditKeyboardHook);
+    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, 50, 10, 550, 390);
+  } else {
+    (*(GameScreens[GAME_SCREEN].HandleScreen))();
+  }
 
-		guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, 50, 10, 550, 390);
-	}
-	else
-	{
-
-		(*(GameScreens[GAME_SCREEN].HandleScreen))();
-
-	}
-
-	return( PALEDIT_SCREEN );
+  return (PALEDIT_SCREEN);
 }
 
-
-static void PalEditRenderHook(void)
-{
-	const SOLDIERTYPE* const sel = GetSelectedMan();
-	if (sel != NULL)
-	{
-		// Set to current
-		DisplayPaletteRep(sel->HeadPal,  50,  10, FRAME_BUFFER);
-		DisplayPaletteRep(sel->PantsPal, 50,  50, FRAME_BUFFER);
-		DisplayPaletteRep(sel->VestPal,  50,  90, FRAME_BUFFER);
-		DisplayPaletteRep(sel->SkinPal,  50, 130, FRAME_BUFFER);
-	}
+static void PalEditRenderHook(void) {
+  const SOLDIERTYPE *const sel = GetSelectedMan();
+  if (sel != NULL) {
+    // Set to current
+    DisplayPaletteRep(sel->HeadPal, 50, 10, FRAME_BUFFER);
+    DisplayPaletteRep(sel->PantsPal, 50, 50, FRAME_BUFFER);
+    DisplayPaletteRep(sel->VestPal, 50, 90, FRAME_BUFFER);
+    DisplayPaletteRep(sel->SkinPal, 50, 130, FRAME_BUFFER);
+  }
 }
 
+static void CyclePaletteReplacement(SOLDIERTYPE &s, PaletteRepID pal) {
+  UINT8 ubPaletteRep = GetPaletteRepIndexFromID(pal);
+  const UINT8 ubType = gpPalRep[ubPaletteRep].ubType;
 
-static void CyclePaletteReplacement(SOLDIERTYPE& s, PaletteRepID pal)
-{
-	UINT8 ubPaletteRep = GetPaletteRepIndexFromID(pal);
-	const UINT8 ubType = gpPalRep[ubPaletteRep].ubType;
+  ubPaletteRep++;
 
-	ubPaletteRep++;
+  // Count start and end index
+  UINT8 ubStartRep = 0;
+  for (UINT32 cnt = 0; cnt < ubType; ++cnt) {
+    ubStartRep = ubStartRep + gubpNumReplacementsPerRange[cnt];
+  }
 
-	// Count start and end index
-	UINT8 ubStartRep = 0;
-	for (UINT32 cnt = 0; cnt < ubType; ++cnt)
-	{
-		ubStartRep = ubStartRep + gubpNumReplacementsPerRange[cnt];
-	}
+  const UINT8 ubEndRep = ubStartRep + gubpNumReplacementsPerRange[ubType];
 
-	const UINT8 ubEndRep = ubStartRep + gubpNumReplacementsPerRange[ubType];
+  if (ubPaletteRep == ubEndRep) ubPaletteRep = ubStartRep;
+  SET_PALETTEREP_ID(pal, gpPalRep[ubPaletteRep].ID);
 
-	if (ubPaletteRep == ubEndRep) ubPaletteRep = ubStartRep;
-	SET_PALETTEREP_ID(pal, gpPalRep[ubPaletteRep].ID);
-
-	CreateSoldierPalettes(s);
+  CreateSoldierPalettes(s);
 }
 
+static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent) {
+  if (pInputEvent->usEvent != KEY_DOWN) return FALSE;
 
-static BOOLEAN PalEditKeyboardHook(InputAtom* pInputEvent)
-{
-	if (pInputEvent->usEvent != KEY_DOWN) return FALSE;
+  SOLDIERTYPE *const sel = GetSelectedMan();
+  if (sel == NULL) return FALSE;
 
-	SOLDIERTYPE* const sel = GetSelectedMan();
-	if (sel == NULL) return FALSE;
+  switch (pInputEvent->usParam) {
+    case SDLK_ESCAPE:
+      gfExitPalEditScreen = TRUE;
+      break;
 
-  switch (pInputEvent->usParam)
-  {
-  	case SDLK_ESCAPE: gfExitPalEditScreen = TRUE; break;
+    case 'h':
+      CyclePaletteReplacement(*sel, sel->HeadPal);
+      break;
+    case 'v':
+      CyclePaletteReplacement(*sel, sel->VestPal);
+      break;
+    case 'p':
+      CyclePaletteReplacement(*sel, sel->PantsPal);
+      break;
+    case 's':
+      CyclePaletteReplacement(*sel, sel->SkinPal);
+      break;
 
-  	case 'h': CyclePaletteReplacement(*sel, sel->HeadPal);  break;
-  	case 'v': CyclePaletteReplacement(*sel, sel->VestPal);  break;
-  	case 'p': CyclePaletteReplacement(*sel, sel->PantsPal); break;
-  	case 's': CyclePaletteReplacement(*sel, sel->SkinPal);  break;
-
-  	default: return FALSE;
+    default:
+      return FALSE;
   }
   return TRUE;
 }
 
+static BOOLEAN CheckForAndExitTacticalDebug(void) {
+  if (gfExitDebugScreen) {
+    FirstTime = TRUE;
+    gfExitDebugScreen = FALSE;
+    FreeBackgroundRect(guiBackgroundRect);
+    guiBackgroundRect = NO_BGND_RECT;
+    SetRenderHook(NULL);
+    SetUIKeyboardHook(NULL);
 
-static BOOLEAN CheckForAndExitTacticalDebug(void)
-{
-	if ( gfExitDebugScreen )
-	{
-		FirstTime = TRUE;
-		gfExitDebugScreen = FALSE;
-		FreeBackgroundRect( guiBackgroundRect );
-		guiBackgroundRect = NO_BGND_RECT;
-		SetRenderHook(NULL);
-		SetUIKeyboardHook(NULL);
-
-		return( TRUE );
-	}
-
-	return( FALSE );
-}
-
-
-static BOOLEAN DebugKeyboardHook(InputAtom* pInputEvent);
-static void DebugRenderHook(void);
-
-
-ScreenID DebugScreenHandle(void)
-{
-	if ( CheckForAndExitTacticalDebug() )
-	{
-		return( GAME_SCREEN );
-	}
-
-	if (guiBackgroundRect == NO_BGND_RECT)
-	{
-		guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, 0, 0, 600, 360);
-	}
-
-
-	if ( FirstTime )
-	{
-		FirstTime = FALSE;
-
-		SetRenderHook(DebugRenderHook);
-		SetUIKeyboardHook(DebugKeyboardHook);
-	}
-	else
-	{
-
-		(*(GameScreens[GAME_SCREEN].HandleScreen))();
-
-	}
-
-	return( DEBUG_SCREEN );
-}
-
-
-static void DebugRenderHook(void)
-{
-	gDebugRenderOverride[ gCurDebugPage ]( );
-}
-
-
-static BOOLEAN DebugKeyboardHook(InputAtom* pInputEvent)
-{
-  if (pInputEvent->usEvent == KEY_UP)
-  {
-  	switch (pInputEvent->usParam)
-  	{
-  		case 'q':
-				gfExitDebugScreen = TRUE;
-				return TRUE;
-
-  		case SDLK_PAGEUP:
-				gCurDebugPage++;
-				if (gCurDebugPage == MAX_DEBUG_PAGES) gCurDebugPage = 0;
-				FreeBackgroundRect(guiBackgroundRect);
-				guiBackgroundRect = NO_BGND_RECT;
-  			break;
-
-  		case SDLK_PAGEDOWN:
-				gCurDebugPage--;
-				if (gCurDebugPage < 0) gCurDebugPage = MAX_DEBUG_PAGES - 1;
-				FreeBackgroundRect(guiBackgroundRect);
-				guiBackgroundRect = NO_BGND_RECT;
-  			break;
-  	}
+    return (TRUE);
   }
 
-	return FALSE;
+  return (FALSE);
 }
 
+static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent);
+static void DebugRenderHook(void);
 
-void SetDebugRenderHook( RENDER_HOOK pDebugRenderOverride, INT8 ubPage )
-{
-	gDebugRenderOverride[ ubPage ] = pDebugRenderOverride;
+ScreenID DebugScreenHandle(void) {
+  if (CheckForAndExitTacticalDebug()) {
+    return (GAME_SCREEN);
+  }
+
+  if (guiBackgroundRect == NO_BGND_RECT) {
+    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, 0, 0, 600, 360);
+  }
+
+  if (FirstTime) {
+    FirstTime = FALSE;
+
+    SetRenderHook(DebugRenderHook);
+    SetUIKeyboardHook(DebugKeyboardHook);
+  } else {
+    (*(GameScreens[GAME_SCREEN].HandleScreen))();
+  }
+
+  return (DEBUG_SCREEN);
 }
 
+static void DebugRenderHook(void) { gDebugRenderOverride[gCurDebugPage](); }
 
-static void DefaultDebugPage1(void)
-{
-	SetFont( LARGEFONT1 );
-	gprintf( 0,0,L"DEBUG PAGE ONE" );
+static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
+  if (pInputEvent->usEvent == KEY_UP) {
+    switch (pInputEvent->usParam) {
+      case 'q':
+        gfExitDebugScreen = TRUE;
+        return TRUE;
+
+      case SDLK_PAGEUP:
+        gCurDebugPage++;
+        if (gCurDebugPage == MAX_DEBUG_PAGES) gCurDebugPage = 0;
+        FreeBackgroundRect(guiBackgroundRect);
+        guiBackgroundRect = NO_BGND_RECT;
+        break;
+
+      case SDLK_PAGEDOWN:
+        gCurDebugPage--;
+        if (gCurDebugPage < 0) gCurDebugPage = MAX_DEBUG_PAGES - 1;
+        FreeBackgroundRect(guiBackgroundRect);
+        guiBackgroundRect = NO_BGND_RECT;
+        break;
+    }
+  }
+
+  return FALSE;
 }
 
-
-static void DefaultDebugPage2(void)
-{
-	SetFont( LARGEFONT1 );
-	gprintf( 0,0,L"DEBUG PAGE TWO" );
+void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage) {
+  gDebugRenderOverride[ubPage] = pDebugRenderOverride;
 }
 
-
-static void DefaultDebugPage3(void)
-{
-	SetFont( LARGEFONT1 );
-	gprintf( 0,0,L"DEBUG PAGE THREE" );
+static void DefaultDebugPage1(void) {
+  SetFont(LARGEFONT1);
+  gprintf(0, 0, L"DEBUG PAGE ONE");
 }
 
-
-static void DefaultDebugPage4(void)
-{
-	SetFont( LARGEFONT1 );
-	gprintf( 0,0,L"DEBUG PAGE FOUR" );
+static void DefaultDebugPage2(void) {
+  SetFont(LARGEFONT1);
+  gprintf(0, 0, L"DEBUG PAGE TWO");
 }
 
-
-#define SMILY_DELAY						100
-#define SMILY_END_DELAY				1000
-
-ScreenID SexScreenHandle(void)
-{
-	static UINT8					ubCurrentScreen = 0;
-	static SGPVObject* guiSMILY;
-	static INT8						bCurFrame = 0;
-	static UINT32					uiTimeOfLastUpdate = 0, uiTime;
-
-	// OK, Clear screen and show smily face....
-	FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
-	InvalidateScreen( );
-	// Remove cursor....
-	SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
-
-	if ( ubCurrentScreen == 0 )
-	{
-		// Load face....
-		guiSMILY = AddVideoObjectFromFile(INTERFACEDIR "/luckysmile.sti");
-
-		// Init screen
-		bCurFrame = 0;
-
-		ubCurrentScreen = 1;
-
-		uiTimeOfLastUpdate = GetJA2Clock( );
-
-		return( SEX_SCREEN );
-
-	}
-
-	// Update frame
-	uiTime = GetJA2Clock( );
-
-	// if we are animation smile...
-	if ( ubCurrentScreen == 1 )
-	{
-		PlayJA2StreamingSampleFromFile(SOUNDSDIR "/sex.wav", HIGHVOLUME, 1, MIDDLEPAN, NULL);
-		if ( ( uiTime - uiTimeOfLastUpdate ) > SMILY_DELAY )
-		{
-			uiTimeOfLastUpdate = uiTime;
-
-			bCurFrame++;
-
-			if ( bCurFrame == 32 )
-			{
-				// Start end delay
-				ubCurrentScreen = 2;
-			}
-		}
-	}
-
-	if ( ubCurrentScreen == 2 )
-	{
-		if ( ( uiTime - uiTimeOfLastUpdate ) > SMILY_END_DELAY )
-		{
-			uiTimeOfLastUpdate = uiTime;
-
-			ubCurrentScreen = 0;
-
-			// Remove video object...
-			DeleteVideoObject(guiSMILY);
-
-			FadeInGameScreen( );
-
-			// Advance time...
-			// Chris.... do this based on stats?
-			WarpGameTime( ( ( 5 + Random( 20 ) ) * NUM_SEC_IN_MIN ), WARPTIME_NO_PROCESSING_OF_EVENTS );
-
-			return( GAME_SCREEN );
-		}
-	}
-
-	// Calculate smily face positions...
-	ETRLEObject const& pTrav = guiSMILY->SubregionProperties(0);
-	INT16       const  sX    = (SCREEN_WIDTH  - pTrav.usWidth)  / 2;
-	INT16       const  sY    = (SCREEN_HEIGHT - pTrav.usHeight) / 2;
-
-	BltVideoObject(FRAME_BUFFER, guiSMILY, bCurFrame < 24 ? 0 : bCurFrame % 8, sX, sY);
-
-	InvalidateRegion(sX, sY, sX + pTrav.usWidth, sY + pTrav.usHeight);
-
-	return( SEX_SCREEN );
+static void DefaultDebugPage3(void) {
+  SetFont(LARGEFONT1);
+  gprintf(0, 0, L"DEBUG PAGE THREE");
 }
 
+static void DefaultDebugPage4(void) {
+  SetFont(LARGEFONT1);
+  gprintf(0, 0, L"DEBUG PAGE FOUR");
+}
+
+#define SMILY_DELAY 100
+#define SMILY_END_DELAY 1000
+
+ScreenID SexScreenHandle(void) {
+  static UINT8 ubCurrentScreen = 0;
+  static SGPVObject *guiSMILY;
+  static INT8 bCurFrame = 0;
+  static UINT32 uiTimeOfLastUpdate = 0, uiTime;
+
+  // OK, Clear screen and show smily face....
+  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  InvalidateScreen();
+  // Remove cursor....
+  SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+
+  if (ubCurrentScreen == 0) {
+    // Load face....
+    guiSMILY = AddVideoObjectFromFile(INTERFACEDIR "/luckysmile.sti");
+
+    // Init screen
+    bCurFrame = 0;
+
+    ubCurrentScreen = 1;
+
+    uiTimeOfLastUpdate = GetJA2Clock();
+
+    return (SEX_SCREEN);
+  }
+
+  // Update frame
+  uiTime = GetJA2Clock();
+
+  // if we are animation smile...
+  if (ubCurrentScreen == 1) {
+    PlayJA2StreamingSampleFromFile(SOUNDSDIR "/sex.wav", HIGHVOLUME, 1, MIDDLEPAN, NULL);
+    if ((uiTime - uiTimeOfLastUpdate) > SMILY_DELAY) {
+      uiTimeOfLastUpdate = uiTime;
+
+      bCurFrame++;
+
+      if (bCurFrame == 32) {
+        // Start end delay
+        ubCurrentScreen = 2;
+      }
+    }
+  }
+
+  if (ubCurrentScreen == 2) {
+    if ((uiTime - uiTimeOfLastUpdate) > SMILY_END_DELAY) {
+      uiTimeOfLastUpdate = uiTime;
+
+      ubCurrentScreen = 0;
+
+      // Remove video object...
+      DeleteVideoObject(guiSMILY);
+
+      FadeInGameScreen();
+
+      // Advance time...
+      // Chris.... do this based on stats?
+      WarpGameTime(((5 + Random(20)) * NUM_SEC_IN_MIN), WARPTIME_NO_PROCESSING_OF_EVENTS);
+
+      return (GAME_SCREEN);
+    }
+  }
+
+  // Calculate smily face positions...
+  ETRLEObject const &pTrav = guiSMILY->SubregionProperties(0);
+  INT16 const sX = (SCREEN_WIDTH - pTrav.usWidth) / 2;
+  INT16 const sY = (SCREEN_HEIGHT - pTrav.usHeight) / 2;
+
+  BltVideoObject(FRAME_BUFFER, guiSMILY, bCurFrame < 24 ? 0 : bCurFrame % 8, sX, sY);
+
+  InvalidateRegion(sX, sY, sX + pTrav.usWidth, sY + pTrav.usHeight);
+
+  return (SEX_SCREEN);
+}

@@ -12,6 +12,6 @@
  * If path is not null, the path of filename is replaced by path, otherwise it
  * is kept.  The extension of filename is replaced by ext.
  */
-void ReplacePath(char* buf, size_t size, char const* path, char const* filename, char const* ext);
+void ReplacePath(char *buf, size_t size, char const *path, char const *filename, char const *ext);
 
 #endif

@@ -3,8 +3,7 @@
 
 #include "TileEngine/ExplosionControl.h"
 
-
-void ExtractExplosionTypeFromFile(HWFILE, EXPLOSIONTYPE*);
-void InjectExplosionTypeIntoFile(HWFILE, EXPLOSIONTYPE const*);
+void ExtractExplosionTypeFromFile(HWFILE, EXPLOSIONTYPE *);
+void InjectExplosionTypeIntoFile(HWFILE, EXPLOSIONTYPE const *);
 
 #endif

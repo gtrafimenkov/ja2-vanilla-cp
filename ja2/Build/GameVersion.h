@@ -3,7 +3,6 @@
 
 #include "SGP/Types.h"
 
-
 //
 //	Keeps track of the game version
 //
@@ -11,10 +10,9 @@
 extern const char g_version_label[];
 extern const char g_version_number[16];
 
-
 //
-//		Keeps track of the saved game version.  Increment the saved game version whenever
-//	you will invalidate the saved game file
+//		Keeps track of the saved game version.  Increment the saved game
+// version whenever 	you will invalidate the saved game file
 //
 
 extern const UINT32 guiSavedGameVersion;
