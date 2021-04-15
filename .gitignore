@@ -5,12 +5,11 @@
 *.o
 *.pdb
 *~
+/build
 /data
 /Data
 /DevInfo
 /ja2-vanilla-cp
+/ja2-vanilla-cp-*
 /Ja2.set
 /SavedGames
-SDL.dll
-/build
-ja2-vanilla-cp-*

@@ -7,10 +7,10 @@
             "browse": {
                 "path": [
                     "${workspaceFolder}",
-                    "${workspaceFolder}/_build/lib-utf8cpp/source",
-                    "${workspaceFolder}/_build/lib-slog",
-                    "${workspaceFolder}/_build/lib-smacker/libsmacker",
-                    "${workspaceFolder}/_build/lib-gtest/include",
+                    "${workspaceFolder}/libs/utf8cpp/source",
+                    "${workspaceFolder}/libs/slog",
+                    "${workspaceFolder}/libs/smacker",
+                    "${workspaceFolder}/libs/gtest/include",
                     "${workspaceFolder}/Build"
                 ],
                 "limitSymbolsToIncludedHeaders": true,

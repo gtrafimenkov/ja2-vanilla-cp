@@ -4,7 +4,7 @@
 #include "sgp/Types.h"
 #include "SDL.h"
 extern "C" {
-#include "_build/lib-smacker/libsmacker/smacker.h"
+#include "libsmacker/smacker.h"
 }
 
 enum

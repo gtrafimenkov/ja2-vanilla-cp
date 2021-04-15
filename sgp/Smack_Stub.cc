@@ -8,7 +8,7 @@
 #include "sgp/FileMan.h"
 
 extern "C" {
-#include "smacker.h"
+#include "libsmacker/smacker.h"
 }
 
 #define SMKTRACK 0
@@ -23,16 +23,16 @@ BOOLEAN SmackCheckStatus(CHAR8 smkstatus) {
   return FALSE;
 }
 
-BOOLEAN SmkVideoSwitch (smk SmkObj, BOOLEAN sw) 
+BOOLEAN SmkVideoSwitch (smk SmkObj, BOOLEAN sw)
 {
   return (SmackCheckStatus ( smk_enable_video (SmkObj, sw)));
-} 
+}
 
 BOOLEAN SmkAudioSwitch (smk SmkObj, BOOLEAN sw) {
   return SmackCheckStatus (smk_enable_audio (SmkObj, SMKTRACK, sw));
 }
 
-void SmackPrintFlickInfo(unsigned long width, unsigned long height, UCHAR8 scale, unsigned long framecount, 
+void SmackPrintFlickInfo(unsigned long width, unsigned long height, UCHAR8 scale, unsigned long framecount,
                     DOUBLE usf, UCHAR8 a_channels, UCHAR8 a_depth, UCHAR8 a_rate)
 {
   printf ("Video -- Frames: %lu Width: %lu Height: %lu Scale: %d \n", framecount, width, height, scale);
@@ -40,7 +40,7 @@ void SmackPrintFlickInfo(unsigned long width, unsigned long height, UCHAR8 scale
 }
 
 // read all smackaudio and convert it to 22050Hz on the fly (44100 originally)
-UINT32 SmackGetAudio (const smk SmkObj, const INT16* audiobuffer) 
+UINT32 SmackGetAudio (const smk SmkObj, const INT16* audiobuffer)
 {
   UINT32 n_samples = 0,  smacklen = 0;
   UINT32 i, index;
@@ -51,13 +51,13 @@ UINT32 SmackGetAudio (const smk SmkObj, const INT16* audiobuffer)
   do {
     smacklen = smk_get_audio_size (SmkObj, SMKTRACK);
     smackaudio = (INT16*) smk_get_audio (SmkObj, SMKTRACK);
-    index = 0; 
+    index = 0;
     for  ( i = 0 ; i < smacklen/8; i++ )
       {
         *paudio++ = ((smackaudio[ index   ] +smackaudio[index+2]) / 2 );
         *paudio++ = ((smackaudio[ index +1] +smackaudio[index+3]) / 2 );
         index += 4;
-      } 
+      }
     n_samples += i;
   } while (  smk_next(SmkObj) != SMK_DONE  );
   SmkAudioSwitch  (SmkObj, DISABLE);
@@ -71,7 +71,7 @@ void SmackWriteAudio (INT16* abuffer, UINT32 size)
   fclose(fp);
 }
 
-UCHAR8* SmackToMemory (SGPFile* File) 
+UCHAR8* SmackToMemory (SGPFile* File)
 {
   UCHAR8* smacktomemory;
   UINT32 FileSize=FileGetSize(File);
@@ -98,7 +98,7 @@ Smack* SmackOpen(SGPFile* FileHandle, UINT32 Flags, UINT32 ExtraFlag)
   INT16* audiobuffer;
 UCHAR8* smackloaded;
 UINT32 smacksize = FileGetSize(FileHandle);
-  flickinfo = (Smack*)malloc (sizeof (Smack)); 
+  flickinfo = (Smack*)malloc (sizeof (Smack));
   if ( ! flickinfo ) return NULL;
 
   smackloaded = SmackToMemory (FileHandle);
@@ -151,7 +151,7 @@ UINT32 SmackDoFrame(Smack* Smk)
 
   if (  framerate > millisecondspassed ) {
     delay = framerate-millisecondspassed;
-  } 
+  }
   else // video is delayed - so skip frames according to delay but take fps into account
     {
       skipframes = millisecondspassed / (UINT16)framerate;
@@ -168,9 +168,9 @@ UINT32 SmackDoFrame(Smack* Smk)
       if (skiptime+delay <= i*framerate) {
         delay =  i*(framerate)-skiptime-delay ;
       }
-      else { delay =  0; 
+      else { delay =  0;
       // need to find a nice way to compensate for lagging video
-        //Smk->LastTick = SDL_GetTicks(); 
+        //Smk->LastTick = SDL_GetTicks();
         //skipframes = skiptime+delay / (UINT16)framerate;
         //delay = (skiptime+delay) % (UINT16)framerate;
         //i=0;
@@ -216,9 +216,9 @@ void SmackToBuffer(Smack* Smk, UINT32 Left, UINT32 Top, UINT32 Pitch, UINT32 Des
   // dump_bmp (smackpal, smackframe, 640, 480, Smk->FrameNum);
   buf=(UINT16*)Buf;
   pframe=smackframe;
-  // hardcoded copy to frambuffer without taking sdl methods into account. 
+  // hardcoded copy to frambuffer without taking sdl methods into account.
   // maybe need to find a way to blit it later
-  if (Flags == SMACKBUFFER565) 
+  if (Flags == SMACKBUFFER565)
     {
       buf+=Left + Top*halfpitch;
       for (i =0; i < DestHeight ; i++) {
@@ -244,7 +244,7 @@ void SmackToBuffer(Smack* Smk, UINT32 Left, UINT32 Top, UINT32 Pitch, UINT32 Des
     }
 }
 
-// not needed for now... 
+// not needed for now...
 /*
 SDL_Surface* SmackBufferOpen(UINT32 BlitType, UINT32 Width, UINT32 Height, UINT32 ZoomW, UINT32 ZoomH)
 {

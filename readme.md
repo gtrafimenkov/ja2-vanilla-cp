@@ -42,4 +42,4 @@ make -j$(nproc)
   2004 under Source Code License Agreement ("SFI-SCLA").  See [SFI-SCLA](SFI-SCLA.txt)
 - changes since `commit 8287b98` are released to the public domain, but only changes
   themselves.  The whole work is still subject to SFI-SCLA
-- all libraries in `_build/lib-*` have their own licenses
+- all libraries in `libs` have their own licenses

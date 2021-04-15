@@ -37,11 +37,11 @@ MAIN_BINARY  := ja2-vanilla-cp-$(TARGET_ARCH)
 endif
 
 MAIN_SOURCES := $(shell find Build -name '*.cc') $(shell find sgp -name '*.cc')
-MAIN_SOURCES += $(shell find _build/lib-slog/slog -name '*.c')
-MAIN_SOURCES += _build/lib-smacker/libsmacker/smacker.c
-MAIN_SOURCES += _build/lib-smacker/libsmacker/smk_hufftree.c
-MAIN_SOURCES += _build/lib-smacker/libsmacker/smk_bitstream.c
-MAIN_SOURCES += _build/lib-gtest/src/gtest-all.cc
+MAIN_SOURCES += $(shell find libs/slog/slog -name '*.c')
+MAIN_SOURCES += libs/smacker/libsmacker/smacker.c
+MAIN_SOURCES += libs/smacker/libsmacker/smk_hufftree.c
+MAIN_SOURCES += libs/smacker/libsmacker/smk_bitstream.c
+MAIN_SOURCES += libs/gtest/src/gtest-all.cc
 MAIN_OBJS0   := $(filter %.o, $(MAIN_SOURCES:.c=.o) $(MAIN_SOURCES:.cc=.o) $(MAIN_SOURCES:.cpp=.o))
 MAIN_OBJS    := $(addprefix $(BUILD_DIR)/,$(MAIN_OBJS0))
 MAIN_DEPS    := $(OBJS:.o=.d)
@@ -86,7 +86,7 @@ ifdef MINGW_ARCH
 	AR             := $(MINGW_ARCH)-ar
 	CC             := $(MINGW_ARCH)-gcc
 	CXX            := $(MINGW_ARCH)-g++
-	LOCAL_SDL_LIB  := _build/SDL2-devel-2.0.14-mingw/SDL2-2.0.14/$(MINGW_ARCH)
+	LOCAL_SDL_LIB  := libs/SDL2-devel-2.0.14-mingw/SDL2-2.0.14/$(MINGW_ARCH)
 endif
 
 ifdef DEBUGBUILD
@@ -97,11 +97,11 @@ CFLAGS += -DBUILD_INFO=\"$(BUILD_INFO)\"
 
 CFLAGS += -I .
 CFLAGS += -I Build
-CFLAGS += -I _build/lib-slog
-CFLAGS += -I _build/lib-smacker/libsmacker
-CFLAGS += -I _build/lib-utf8cpp/source
-CFLAGS += -I _build/lib-gtest/include
-CFLAGS += -I _build/lib-gtest
+CFLAGS += -I libs/slog
+CFLAGS += -I libs/smacker
+CFLAGS += -I libs/utf8cpp/source
+CFLAGS += -I libs/gtest/include
+CFLAGS += -I libs/gtest
 
 ifdef LOCAL_SDL_LIB
 	CFLAGS_SDL  := $(shell $(LOCAL_SDL_LIB)/bin/sdl2-config --cflags | sed s@/opt/local/$(MINGW_ARCH)/@$(LOCAL_SDL_LIB)/@g)
