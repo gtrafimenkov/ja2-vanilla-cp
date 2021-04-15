@@ -36,7 +36,7 @@ else
 MAIN_BINARY  := ja2-vanilla-cp-$(TARGET_ARCH)
 endif
 
-MAIN_SOURCES := $(shell find Build -name '*.cc') $(shell find sgp -name '*.cc')
+MAIN_SOURCES := $(shell find ja2 -name '*.cc')
 MAIN_SOURCES += $(shell find libs/slog/slog -name '*.c')
 MAIN_SOURCES += libs/smacker/libsmacker/smacker.c
 MAIN_SOURCES += libs/smacker/libsmacker/smk_hufftree.c
@@ -95,8 +95,7 @@ endif
 
 CFLAGS += -DBUILD_INFO=\"$(BUILD_INFO)\"
 
-CFLAGS += -I .
-CFLAGS += -I Build
+CFLAGS += -I ja2/Build
 CFLAGS += -I libs/slog
 CFLAGS += -I libs/smacker
 CFLAGS += -I libs/utf8cpp/source

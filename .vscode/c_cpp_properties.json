@@ -11,7 +11,7 @@
                     "${workspaceFolder}/libs/slog",
                     "${workspaceFolder}/libs/smacker",
                     "${workspaceFolder}/libs/gtest/include",
-                    "${workspaceFolder}/Build"
+                    "${workspaceFolder}/ja2/Build"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
