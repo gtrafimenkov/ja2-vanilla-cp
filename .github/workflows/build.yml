@@ -6,12 +6,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    # runs-on: ${{ matrix.os }}
-    # strategy:
-    #   matrix:
-    #     os:
-    #       - ubuntu-18.04
-    #       - ubuntu-20.04
+
+    strategy:
+      matrix:
+        target_arch:
+          - linux-gcc-amd64
+          - linux-gcc-x86
+          - linux-clang-amd64
+          - linux-clang-x86
+          - win32
+          - win64
 
     steps:
 
@@ -22,30 +26,28 @@ jobs:
         uname -a
         cat /etc/os-release
 
-    - name: Install dependencies
-      run: make install-build-dependencies
+    - name: Install dependencies for Linux build
+      run: make install-build-dependencies-linux
+      if: ${{ startsWith(matrix.target_arch, 'linux') }}
 
-    - name: Build linux-gcc-amd64
-      run: make -j$(nproc) TARGET_ARCH=linux-gcc-amd64
+    - name: Install dependencies for x86 build
+      run: make install-build-dependencies-x86
+      if: ${{ endsWith(matrix.target_arch, '-x86') }}
 
-    - name: Build linux-gcc-x86
-      run: make -j$(nproc) TARGET_ARCH=linux-gcc-x86
+    - name: Install dependencies for clang build
+      run: make install-build-dependencies-clang
+      if: ${{ contains(matrix.target_arch, '-clang-') }}
 
-    - name: Build linux-clang-amd64
-      run: make -j$(nproc) TARGET_ARCH=linux-clang-amd64
+    - name: Install dependencies for Windows build
+      run: make install-build-dependencies-win
+      if: ${{ startsWith(matrix.target_arch, 'win') }}
 
-    - name: Build linux-clang-x86
-      run: make -j$(nproc) TARGET_ARCH=linux-clang-x86
-
-    - name: Build win32
-      run: make -j$(nproc) TARGET_ARCH=win32
-
-    - name: Build win64
-      run: make -j$(nproc) TARGET_ARCH=win64
+    - name: Build
+      run: make -j$(nproc) TARGET_ARCH=${{ matrix.target_arch }}
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: binaries-from-${{ matrix.os }}
+        name: binaries-for-${{ matrix.target_arch }}
         path: build/ja2-vanilla-cp-*
         retention-days: 14

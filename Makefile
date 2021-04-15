@@ -149,14 +149,24 @@ $(BUILD_DIR)/%.o: %.c
 clean:
 	rm -rf build
 
-install-build-dependencies:
+install-build-dependencies-linux:
+	sudo apt-get install -y \
+		libsdl2-dev \
+		build-essential
+
+install-build-dependencies-clang:
+	sudo apt-get install -y \
+		clang
+
+install-build-dependencies-x86:
 	sudo dpkg --add-architecture i386
 	sudo apt update
 	sudo apt-get install -y \
-		libsdl2-dev libsdl2-dev:i386 \
-		build-essential \
-		clang \
+		libsdl2-dev:i386 \
 		gcc-multilib \
-		g++-multilib \
+		g++-multilib
+
+install-build-dependencies-win:
+	sudo apt-get install -y \
 		gcc-mingw-w64 gcc-mingw-w64-i686 \
 		g++-mingw-w64 g++-mingw-w64-i686
