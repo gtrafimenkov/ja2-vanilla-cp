@@ -46,22 +46,22 @@ TEST(FileManTest, FindFiles) {
 #define PS PATH_SEPARATOR_STR
 
   // find one file with .txt estension
-  // result on Linux: "_unittests/find-files/lowercase-ext.txt"
-  // result on Win:   "_unittests/find-files\lowercase-ext.txt"
+  // result on Linux: "unittests/find-files/lowercase-ext.txt"
+  // result on Win:   "unittests/find-files\lowercase-ext.txt"
 
-  std::string testDir = "_unittests/find-files";
+  std::string testDir = "unittests/find-files";
 
   std::vector<std::string> results = FindFilesInDir(testDir, ".txt", false, false);
   ASSERT_EQ(results.size(), 1);
-  EXPECT_STREQ(results[0].c_str(), "_unittests/find-files" PS "lowercase-ext.txt");
+  EXPECT_STREQ(results[0].c_str(), "unittests/find-files" PS "lowercase-ext.txt");
 
-  results = FindFilesInDir("_unittests" PS "find-files", ".txt", false, false);
+  results = FindFilesInDir("unittests" PS "find-files", ".txt", false, false);
   ASSERT_EQ(results.size(), 1);
-  EXPECT_STREQ(results[0].c_str(), "_unittests" PS "find-files" PS "lowercase-ext.txt");
+  EXPECT_STREQ(results[0].c_str(), "unittests" PS "find-files" PS "lowercase-ext.txt");
 
   results = FindFilesInDir(testDir, ".TXT", false, false);
   ASSERT_EQ(results.size(), 1);
-  EXPECT_STREQ(results[0].c_str(), "_unittests/find-files" PS "uppercase-ext.TXT");
+  EXPECT_STREQ(results[0].c_str(), "unittests/find-files" PS "uppercase-ext.TXT");
 
   results = FindFilesInDir(testDir, ".TXT", false, true);
   ASSERT_EQ(results.size(), 1);
@@ -70,13 +70,13 @@ TEST(FileManTest, FindFiles) {
   results = FindFilesInDir(testDir, ".tXt", true, false);
   std::sort(results.begin(), results.end());
   ASSERT_EQ(results.size(), 2);
-  EXPECT_STREQ(results[0].c_str(), "_unittests/find-files" PS "lowercase-ext.txt");
-  EXPECT_STREQ(results[1].c_str(), "_unittests/find-files" PS "uppercase-ext.TXT");
+  EXPECT_STREQ(results[0].c_str(), "unittests/find-files" PS "lowercase-ext.txt");
+  EXPECT_STREQ(results[1].c_str(), "unittests/find-files" PS "uppercase-ext.TXT");
 
   results = FindFilesInDir(testDir, ".tXt", true, false, true);
   ASSERT_EQ(results.size(), 2);
-  EXPECT_STREQ(results[0].c_str(), "_unittests/find-files" PS "lowercase-ext.txt");
-  EXPECT_STREQ(results[1].c_str(), "_unittests/find-files" PS "uppercase-ext.TXT");
+  EXPECT_STREQ(results[0].c_str(), "unittests/find-files" PS "lowercase-ext.txt");
+  EXPECT_STREQ(results[1].c_str(), "unittests/find-files" PS "uppercase-ext.TXT");
 
   results = FindFilesInDir(testDir, ".tXt", true, true, true);
   ASSERT_EQ(results.size(), 2);
@@ -85,9 +85,9 @@ TEST(FileManTest, FindFiles) {
 
   results = FindAllFilesInDir(testDir, true);
   ASSERT_EQ(results.size(), 3);
-  EXPECT_STREQ(results[0].c_str(), "_unittests/find-files" PS "file-without-extension");
-  EXPECT_STREQ(results[1].c_str(), "_unittests/find-files" PS "lowercase-ext.txt");
-  EXPECT_STREQ(results[2].c_str(), "_unittests/find-files" PS "uppercase-ext.TXT");
+  EXPECT_STREQ(results[0].c_str(), "unittests/find-files" PS "file-without-extension");
+  EXPECT_STREQ(results[1].c_str(), "unittests/find-files" PS "lowercase-ext.txt");
+  EXPECT_STREQ(results[2].c_str(), "unittests/find-files" PS "uppercase-ext.TXT");
 
 #undef PS
 }

@@ -154,8 +154,8 @@ TEST(LoadSaveData, floatAndDoubleFormat) {
   // as on Windows.  Otherwise, there will be problems with
   // loading saved games made on Windows.
 
-  std::string floatsPath = "_unittests/datatypes/floats.bin";
-  std::string doublesPath = "_unittests/datatypes/doubles.bin";
+  std::string floatsPath = "unittests/datatypes/floats.bin";
+  std::string doublesPath = "unittests/datatypes/doubles.bin";
 
   // // Test data were previously written with the following code.
   // {
