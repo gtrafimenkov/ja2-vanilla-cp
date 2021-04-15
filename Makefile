@@ -95,12 +95,14 @@ endif
 
 CFLAGS += -DBUILD_INFO=\"$(BUILD_INFO)\"
 
-CFLAGS += -I ja2/Build
-CFLAGS += -I libs/slog
-CFLAGS += -I libs/smacker
-CFLAGS += -I libs/utf8cpp/source
-CFLAGS += -I libs/gtest/include
-CFLAGS += -I libs/gtest
+INCLUDE_OPTIONS += -I ja2/Build
+INCLUDE_OPTIONS += -I libs/slog
+INCLUDE_OPTIONS += -I libs/smacker
+INCLUDE_OPTIONS += -I libs/utf8cpp/source
+INCLUDE_OPTIONS += -I libs/gtest/include
+INCLUDE_OPTIONS += -I libs/gtest
+
+CFLAGS += $(INCLUDE_OPTIONS)
 
 ifdef LOCAL_SDL_LIB
 	CFLAGS_SDL  := $(shell $(LOCAL_SDL_LIB)/bin/sdl2-config --cflags | sed s@/opt/local/$(MINGW_ARCH)/@$(LOCAL_SDL_LIB)/@g)
@@ -174,12 +176,21 @@ install-build-dependencies-win:
 		gcc-mingw-w64 gcc-mingw-w64-i686 \
 		g++-mingw-w64 g++-mingw-w64-i686
 
-CLANG_FORMATTER ?= ~/bin/clang+llvm-11.1.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang-format
+CLANG_TOOLS ?= ~/bin/clang+llvm-11.1.0-x86_64-linux-gnu-ubuntu-16.04
 
 format:
 	find ja2 \( -iname '*.c' -o -iname '*.cc' -o -iname '*.cpp' -o -iname '*.h' \) \
-		| xargs $(CLANG_FORMATTER) -i --style=file
+		| xargs $(CLANG_TOOLS)/bin/clang-format -i --style=file
 
 format-modified:
 	git status --porcelain | egrep -e '[.](c|cc|cpp|h)$$' | awk '{print $$2}' \
-		| xargs $(CLANG_FORMATTER) -i --style=file
+		| xargs $(CLANG_TOOLS)/bin/clang-format -i --style=file
+
+clang-tidy:
+	$(CLANG_TOOLS)/bin/clang-tidy \
+		"-checks=-*,bugprone-*,modernize-*" \
+		-dump-config \
+		-- \
+			$(INCLUDE_OPTIONS) -I /usr/include/SDL2
+
+		# -header-filter=.* \
