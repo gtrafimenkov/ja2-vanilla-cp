@@ -1,25 +1,22 @@
 {
-    "configurations": [
-        {
-            "name": "Linux",
-            "defines": [],
-            "intelliSenseMode": "${default}",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}",
-                    "${workspaceFolder}/libs/utf8cpp/source",
-                    "${workspaceFolder}/libs/slog",
-                    "${workspaceFolder}/libs/smacker",
-                    "${workspaceFolder}/libs/gtest/include",
-                    "${workspaceFolder}/ja2/Build"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "/usr/bin/clang",
-            "cStandard": "c17",
-            "cppStandard": "c++17"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Linux",
+      "defines": [],
+      "intelliSenseMode": "${default}",
+      "compilerPath": "/usr/bin/clang",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "includePath": [
+        "${default}",
+        "${workspaceFolder}/libs/utf8cpp/source",
+        "${workspaceFolder}/libs/slog",
+        "${workspaceFolder}/libs/smacker",
+        "${workspaceFolder}/libs/gtest/include",
+        "${workspaceFolder}/ja2/Build",
+        "/usr/include/SDL2/"
+      ]
+    }
+  ],
+  "version": 4
 }
