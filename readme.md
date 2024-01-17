@@ -35,6 +35,11 @@ make -j$(nproc)
 - install the original version of the game (from the original game CDs, Steam, gog.com, etc.)
 - copy the builded binary to the game directory alongside the original ja2.exe
 - launch the builded binary
+- use Alt-Enter to switch to the full screen mode
+
+## Playthroughs
+
+- Novice difficulty, Realistic mode: https://www.youtube.com/playlist?list=PL8iRB1T52TXuVmf0s-tnJKhS3smpFTXKy
 
 ## License
 
