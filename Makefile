@@ -44,7 +44,7 @@ MAIN_SOURCES += libs/smacker/libsmacker/smk_bitstream.c
 MAIN_SOURCES += libs/gtest/src/gtest-all.cc
 MAIN_OBJS0   := $(filter %.o, $(MAIN_SOURCES:.c=.o) $(MAIN_SOURCES:.cc=.o) $(MAIN_SOURCES:.cpp=.o))
 MAIN_OBJS    := $(addprefix $(BUILD_DIR)/,$(MAIN_OBJS0))
-MAIN_DEPS    := $(OBJS:.o=.d)
+MAIN_DEPS    := $(MAIN_OBJS:.o=.d)
 
 ifeq "$(TARGET_ARCH)" "linux-gcc-amd64"
 	AR             := ar
