@@ -23,9 +23,10 @@ This project is only for maintaining the vanilla game.
 
 ## How to build
 
-- `mkdir build && cd build && cmake ..`
-- on Windows open Visual Studio solution `build/ja2vcp.sln` and build it.
-- on Linux: `make -j$(nproc)`
+```
+cmake -B build
+cmake --build build --parallel
+```
 
 ## How to play the game
 

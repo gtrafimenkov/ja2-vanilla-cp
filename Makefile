@@ -1,8 +1,13 @@
-.PHONY: build clean run
+.PHONY: build clean run test
 
-build:
-	mkdir -p build
-	cd build && cmake .. && make -j $(nproc)
+build: ./build/ja2vcp
+
+./build/ja2vcp:
+	cmake -B build
+	cmake --build build --parallel
+
+test: ./build/ja2vcp
+	./build/ja2vcp --unittests
 
 clean:
 	rm -rf build
