@@ -22,7 +22,7 @@
 #include "TileEngine/Structure.h"
 #include "Utils/Text.h"
 #ifdef _DEBUG
-#include "Video.h"
+#include "SGP/Video.h"
 #endif
 #include "SGP/Debug.h"
 #include "Strategic/StrategicMap.h"
@@ -924,7 +924,7 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
     gsBestCover = sBestCover;
     SetRenderFlags(RENDER_FLAG_FULL);
     RenderWorld();
-    RenderCoverDebug();
+    //RenderCoverDebug();
     InvalidateScreen();
     RefreshScreen();
     /*
