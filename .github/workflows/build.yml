@@ -26,9 +26,8 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
-    - run: cmake --build build --parallel
+    - run: cmake -B build
+    - run: cmake --build build --parallel --config Debug
     - run: build\Debug\ja2vcp.exe --unittests
-    - run: cmake -B build-release -DCMAKE_BUILD_TYPE=Release
-    - run: cmake --build build-release --parallel
-    - run: build-release\Release\ja2vcp.exe --unittests
+    - run: cmake --build build --parallel --config Release
+    - run: build\Release\ja2vcp.exe --unittests
