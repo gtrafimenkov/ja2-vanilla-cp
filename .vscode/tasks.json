@@ -6,7 +6,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "make -j4 DEBUGBUILD=1",
+      "command": "make -C build",
       "problemMatcher": [
         "$gcc"
       ]

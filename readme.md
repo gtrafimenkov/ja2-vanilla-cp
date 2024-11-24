@@ -23,11 +23,9 @@ This project is only for maintaining the vanilla game.
 
 ## How to build
 
-You will need a Linux based system:
-
 ```
-make install-build-dependencies-linux
-make -j$(nproc)
+cmake -B build
+cmake --build build --parallel
 ```
 
 ## How to play the game

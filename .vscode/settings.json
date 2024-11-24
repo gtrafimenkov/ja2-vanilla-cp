@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "libs": true
+  },
+  "editor.formatOnSave": true
+}

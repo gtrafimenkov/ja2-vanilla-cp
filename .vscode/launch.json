@@ -8,7 +8,7 @@
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/ja2-vanilla-cp",
+      "program": "${workspaceFolder}/build/ja2vcp",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
