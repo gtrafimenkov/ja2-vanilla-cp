@@ -1,12 +1,10 @@
 .PHONY: build clean run test
 
-build: ./build/ja2vcp
-
-./build/ja2vcp:
+build:
 	cmake -B build
 	cmake --build build --parallel
 
-test: ./build/ja2vcp
+test:
 	./build/ja2vcp --unittests
 
 clean:

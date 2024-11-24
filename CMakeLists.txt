@@ -10,7 +10,7 @@ add_subdirectory(libs/googletest)
 file(GLOB_RECURSE SRC_FILES ja2/Build/*.cc libs/slog/slog/*.c libs/smacker/libsmacker/*.c)
 
 add_executable(ja2vcp ${SRC_FILES})
-target_include_directories(ja2vcp PRIVATE ja2/Build ja2/Build/Editor ja2/Build/Laptop ja2/Build/SGP ja2/Build/Strategic ja2/Build/Tactical ja2/Build/TacticalAI ja2/Build/TileEngine ja2/Build/Utils)
+target_include_directories(ja2vcp PRIVATE ja2/Build)
 target_include_directories(ja2vcp PRIVATE libs/googletest/googletest/include)
 target_include_directories(ja2vcp PRIVATE libs/slog)
 target_include_directories(ja2vcp PRIVATE libs/smacker)
