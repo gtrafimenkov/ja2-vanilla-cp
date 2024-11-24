@@ -1,4 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
+
+# Using the same debug library as google test.
+# Otherwise it will not link.
+if(WIN32)
+  # https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_RUNTIME_LIBRARY.html
+  # https://stackoverflow.com/questions/10113017/setting-the-msvc-runtime-in-cmake#56776146
+  cmake_policy(SET CMP0091 NEW)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 project(ja2vcp)
 
 set(CMAKE_CXX_STANDARD 17)
