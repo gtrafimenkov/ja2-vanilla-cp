@@ -1,8 +1,12 @@
-.PHONY: build clean run test
+.PHONY: build build-release clean run test
 
 build:
-	cmake -B build
+	cmake -B build -DCMAKE_BUILD_TYPE=Debug
 	cmake --build build --parallel
+
+build-release:
+	cmake -B build-release -DCMAKE_BUILD_TYPE=Release
+	cmake --build build-release --parallel
 
 test:
 	./build/ja2vcp --unittests

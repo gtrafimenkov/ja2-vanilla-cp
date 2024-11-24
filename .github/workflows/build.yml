@@ -15,16 +15,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Build
-      run: make build
-
-    - name: Test
-      run: make test
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+    - run: cmake --build build --parallel
+    - run: ./build/ja2vcp --unittests
+    - run: cmake -B build-release -DCMAKE_BUILD_TYPE=Release
+    - run: cmake --build build-release --parallel
 
   build-on-windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
-    - run: cmake -B build
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
     - run: cmake --build build --parallel
+    - run: cmake -B build-release -DCMAKE_BUILD_TYPE=Release
+    - run: cmake --build build-release --parallel
