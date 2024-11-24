@@ -622,10 +622,6 @@ HWFILE FileMan::openForWriting(const char *filename) {
   int mode;
   const char *fmode = GetFileOpenModes(FILE_ACCESS_WRITE, &mode);
 
-  if (truncate) {
-    mode |= O_TRUNC;
-  }
-
   int d = open3(filename, mode | O_CREAT, 0600);
   return getSGPFileFromFD(d, filename, fmode);
 }
