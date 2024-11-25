@@ -27,6 +27,9 @@
 #include "TileEngine/RenderWorld.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL.h"
+#include "SDL_hints.h"
+#include "SDL_render.h"
 #include "SDL_video.h"
 
 #define BUFFER_READY 0x00
