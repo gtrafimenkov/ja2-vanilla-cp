@@ -10,24 +10,19 @@ on:
 jobs:
 
   build-on-linux:
-
     runs-on: ubuntu-20.04
-
     steps:
     - uses: actions/checkout@v3
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
-    - run: cmake --build build --parallel
+    - run: python xx.py build-debug
+    - run: python xx.py build-release
     - run: ./build/ja2vcp --unittests
-    - run: cmake -B build-release -DCMAKE_BUILD_TYPE=Release
-    - run: cmake --build build-release --parallel
     - run: ./build-release/ja2vcp --unittests
 
   build-on-windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
-    - run: cmake -B build
-    - run: cmake --build build --parallel --config Debug
+    - run: python xx.py build-debug
+    - run: python xx.py build-release
     - run: build\Debug\ja2vcp.exe --unittests
-    - run: cmake --build build --parallel --config Release
     - run: build\Release\ja2vcp.exe --unittests

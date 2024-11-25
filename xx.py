@@ -2,14 +2,19 @@
 #
 # Helper script to run different useful commands on the repository.
 
-import subprocess
 import os
+import platform
+import subprocess
 import sys
 
 USAGE = """Helper script.
 
 Commands:
+  build                 - build debug version
+  build-debug           - build debug version
+  build-release         - build release version
   format-modified       - format modified files using clang-format
+  clean                 - cleanup repository from all unwanted files
 """
 
 def get_modified_files():
@@ -40,7 +45,27 @@ def main():
 
     command = args[0]
 
-    if command == "format-modified":
+    if command in ["build", "build-debug"]:
+
+        if platform.system() == 'Windows':
+            subprocess.run(["cmake", "-B", "build"])
+            subprocess.run(["cmake", "--build", "build", "--parallel", "--config", "Debug"])
+        else:
+            subprocess.run(["cmake", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"])
+            subprocess.run(["cmake", "--build", "build", "--parallel"])
+
+    elif command == "build-release":
+
+        if platform.system() == 'Windows':
+            subprocess.run(["cmake", "-B", "build"])
+            subprocess.run(["cmake", "--build", "build", "--parallel", "--config", "Release"])
+        else:
+            subprocess.run(["cmake", "-B", "build-release", "-DCMAKE_BUILD_TYPE=Release"])
+            subprocess.run(["cmake", "--build", "build-release", "--parallel"])
+
+    elif command == "clean":
+        subprocess.run(["git", "clean", "-fdx"])
+    elif command == "format-modified":
         modified_files = get_modified_files()
         source_files = filter_source_files(modified_files)
         format_files(source_files)
