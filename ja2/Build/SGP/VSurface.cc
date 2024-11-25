@@ -10,6 +10,15 @@
 #include "SGP/VObjectBlitters.h"
 #include "SGP/Video.h"
 
+#include "SDL_pixels.h"
+#include "SDL_surface.h"
+
+int _LockSurface(SDL_Surface *surface) { return SDL_LockSurface(surface); }
+void _UnlockSurface(SDL_Surface *surface) { SDL_UnlockSurface(surface); }
+
+int _Surface_GetPitch(SDL_Surface *surface) { return surface->pitch; }
+void *_Surface_GetPixels(SDL_Surface *surface) { return surface->pixels; };
+
 extern SGPVSurface *gpVSurfaceHead;
 
 SGPVSurface::SGPVSurface(UINT16 const w, UINT16 const h, UINT8 const bpp)
@@ -41,6 +50,10 @@ SGPVSurface::SGPVSurface(SDL_Surface *const s)
     : surface_(s), p16BPPPalette(), next_(gpVSurfaceHead) {
   gpVSurfaceHead = this;
 }
+
+UINT16 SGPVSurface::Width() const { return surface_->w; }
+UINT16 SGPVSurface::Height() const { return surface_->h; }
+UINT8 SGPVSurface::BPP() const { return surface_->format->BitsPerPixel; }
 
 SGPVSurface::~SGPVSurface() {
   for (SGPVSurface **anchor = &gpVSurfaceHead;; anchor = &(*anchor)->next_) {

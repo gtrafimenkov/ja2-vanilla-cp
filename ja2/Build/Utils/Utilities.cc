@@ -12,6 +12,8 @@
 #include "Tactical/OverheadTypes.h"
 #include "Utils/FontControl.h"
 
+#include "SDL_pixels.h"
+
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *const pal, const char *const col_file) try {
   AutoSGPFile f(FileMan::openForReadingSmart(col_file, true));
 

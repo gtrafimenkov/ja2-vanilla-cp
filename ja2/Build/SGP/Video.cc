@@ -27,6 +27,8 @@
 #include "TileEngine/RenderWorld.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_video.h"
+
 #define BUFFER_READY 0x00
 #define BUFFER_DIRTY 0x02
 
@@ -290,7 +292,7 @@ void InvalidateScreen(void) {
   guiFrameBufferState = BUFFER_DIRTY;
 }
 
-//#define SCROLL_TEST
+// #define SCROLL_TEST
 
 static void ScrollJA2Background(INT16 sScrollXIncrement, INT16 sScrollYIncrement) {
   SDL_Surface *Frame = FrameBuffer;

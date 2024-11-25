@@ -1,13 +1,12 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 
-#include <SDL_video.h>
-
 #include "SGP/Types.h"
 
 #define VIDEO_NO_CURSOR 0xFFFF
 #define GAME_WINDOW g_game_window
 
+struct SDL_Window;
 extern SDL_Window *g_game_window;
 
 void VideoSetFullScreen(BOOLEAN enable);

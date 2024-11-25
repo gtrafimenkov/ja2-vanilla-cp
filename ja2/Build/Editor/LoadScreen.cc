@@ -53,6 +53,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_timer.h"
+
 static BOOLEAN gfErrorCatch = FALSE;
 static wchar_t gzErrorCatchString[256] = L"";
 

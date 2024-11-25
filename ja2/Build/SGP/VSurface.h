@@ -1,12 +1,18 @@
 #ifndef VSURFACE_H
 #define VSURFACE_H
 
-#include <SDL.h>
-
 #include "SGP/AutoObj.h"
 #include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
+
+struct SDL_Surface;
+
+// XXX GT temporary until implementation is moved to cc file
+int _LockSurface(SDL_Surface *surface);
+void _UnlockSurface(SDL_Surface *surface);
+int _Surface_GetPitch(SDL_Surface *surface);
+void *_Surface_GetPixels(SDL_Surface *surface);
 
 #define BACKBUFFER g_back_buffer
 #define FRAME_BUFFER g_frame_buffer
@@ -31,9 +37,9 @@ class SGPVSurface {
  public:
   virtual ~SGPVSurface();
 
-  UINT16 Width() const { return surface_->w; }
-  UINT16 Height() const { return surface_->h; }
-  UINT8 BPP() const { return surface_->format->BitsPerPixel; }
+  UINT16 Width() const;
+  UINT16 Height() const;
+  UINT8 BPP() const;
 
   // Set palette, also sets 16BPP palette
   void SetPalette(const SGPPaletteEntry *src_pal);
@@ -77,10 +83,10 @@ class SGPVSurface {
 
     template <typename T>
     T *Buffer() {
-      return static_cast<T *>(surface_->pixels);
+      return static_cast<T *>(_Surface_GetPixels(surface_));
     }
 
-    UINT32 Pitch() { return surface_->pitch; }
+    UINT32 Pitch() { return _Surface_GetPitch(surface_); }
 
    protected:
     SDL_Surface *surface_;
@@ -89,9 +95,9 @@ class SGPVSurface {
  public:
   class Lock : public LockBase {
    public:
-    explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { SDL_LockSurface(surface_); }
+    explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { _LockSurface(surface_); }
 
-    ~Lock() { SDL_UnlockSurface(surface_); }
+    ~Lock() { _UnlockSurface(surface_); }
   };
 
   class Lockable : public LockBase {
@@ -99,13 +105,13 @@ class SGPVSurface {
     explicit Lockable() : LockBase(0) {}
 
     ~Lockable() {
-      if (surface_) SDL_UnlockSurface(surface_);
+      if (surface_) _UnlockSurface(surface_);
     }
 
     void Lock(SGPVSurface *const vs) {
-      if (surface_) SDL_UnlockSurface(surface_);
+      if (surface_) _UnlockSurface(surface_);
       surface_ = vs->surface_;
-      if (surface_) SDL_LockSurface(surface_);
+      if (surface_) _LockSurface(surface_);
     }
   };
 };
