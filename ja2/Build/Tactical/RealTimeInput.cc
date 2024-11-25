@@ -383,7 +383,7 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
                                         !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
                                       PopupAssignmentMenuInTactical();
                                     } else {
-                                      if (!_KeyDown(ALT)) {
+                                      if (!IsKeyDown(ALT)) {
                                         ResetMultiSelection();
                                         *puiNewEvent = I_SELECT_MERC;
                                       } else {
@@ -408,7 +408,7 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
                                       }
                                     }
                                   } else {
-                                    if (!_KeyDown(ALT)) {
+                                    if (!IsKeyDown(ALT)) {
                                       ResetMultiSelection();
                                       *puiNewEvent = I_SELECT_MERC;
                                     } else {
@@ -959,7 +959,7 @@ void GetRTMousePositionInput(UIEventKind *const puiNewEvent) {
           } else {
             const SOLDIERTYPE *const tgt = gUIFullTarget;
             if (tgt != NULL) {
-              if (IsValidTalkableNPC(tgt, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) &&
+              if (IsValidTalkableNPC(tgt, FALSE, FALSE, FALSE) && !IsKeyDown(SHIFT) &&
                   !AM_AN_EPC(sel) && tgt->bTeam != ENEMY_TEAM && !ValidQuickExchangePosition()) {
                 MoveTargetSoldier = gUIFullTarget;
                 *puiNewEvent = T_CHANGE_TO_TALKING;

@@ -8,6 +8,9 @@
 #include "SGP/UTF8String.h"
 #include "SGP/Video.h"
 
+#include "SDL_events.h"
+#include "SDL_keycode.h"
+
 // The gfKeyState table is used to track which of the keys is up or down at any
 // one time. This is used while polling the interface.
 
@@ -261,17 +264,17 @@ void KeyDown(const SDL_Keysym *KeySym) {
   switch (KeySym->sym) {
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      _KeyDown(SHIFT) = TRUE;
+      gfKeyState[SHIFT] = TRUE;
       break;
 
     case SDLK_LCTRL:
     case SDLK_RCTRL:
-      _KeyDown(CTRL) = TRUE;
+      gfKeyState[CTRL] = TRUE;
       break;
 
     case SDLK_LALT:
     case SDLK_RALT:
-      _KeyDown(ALT) = TRUE;
+      gfKeyState[ALT] = TRUE;
       break;
 
     case SDLK_PRINTSCREEN:
@@ -288,17 +291,17 @@ void KeyUp(const SDL_Keysym *KeySym) {
   switch (KeySym->sym) {
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      _KeyDown(SHIFT) = FALSE;
+      gfKeyState[SHIFT] = FALSE;
       break;
 
     case SDLK_LCTRL:
     case SDLK_RCTRL:
-      _KeyDown(CTRL) = FALSE;
+      gfKeyState[CTRL] = FALSE;
       break;
 
     case SDLK_LALT:
     case SDLK_RALT:
-      _KeyDown(ALT) = FALSE;
+      gfKeyState[ALT] = FALSE;
       break;
 
     case SDLK_PRINTSCREEN:
@@ -314,7 +317,7 @@ void KeyUp(const SDL_Keysym *KeySym) {
       break;
 
     case SDLK_RETURN:
-      if (_KeyDown(ALT)) {
+      if (IsKeyDown(ALT)) {
         VideoToggleFullScreen();
         break;
       }
@@ -451,3 +454,5 @@ static void HandleSingleClicksAndButtonRepeats(void) {
     guiRightButtonRepeatTimer = 0;
   }
 }
+
+BOOLEAN IsKeyDown(int a) { return gfKeyState[a]; }

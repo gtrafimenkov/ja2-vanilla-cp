@@ -78,6 +78,9 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 static BOOLEAN gfCorruptMap = FALSE;
 static BOOLEAN gfCorruptSchedules = FALSE;
 BOOLEAN gfProfileDataLoaded = FALSE;

@@ -1,7 +1,6 @@
 #ifndef SMACK_STUB_H
 #define SMACK_STUB_H
 
-#include "SDL.h"
 #include "SGP/Types.h"
 extern "C" {
 #include "libsmacker/smacker.h"

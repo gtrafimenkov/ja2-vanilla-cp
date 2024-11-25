@@ -40,6 +40,9 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 // Defines
 #define NUM_FACE_SLOTS 50
 

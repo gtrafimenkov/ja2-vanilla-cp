@@ -11,6 +11,8 @@ extern "C" {
 #include "libsmacker/smacker.h"
 }
 
+#include "SDL_timer.h"
+
 #define SMKTRACK 0
 
 typedef unsigned char UCHAR8;

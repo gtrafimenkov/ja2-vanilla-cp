@@ -44,10 +44,10 @@ struct trail_t {
 #define MAP_WIDTH 18
 #define MAP_LENGTH MAP_WIDTH *MAP_WIDTH
 
-//#define EASYWATERCOST	TRAVELCOST_FLAT / 2
-//#define ISWATER(t)	(((t)==TRAVELCOST_KNEEDEEP) ||
+// #define EASYWATERCOST	TRAVELCOST_FLAT / 2
+// #define ISWATER(t)	(((t)==TRAVELCOST_KNEEDEEP) ||
 //((t)==TRAVELCOST_DEEPWATER)) #define NOPASS (TRAVELCOST_OBSTACLE) #define
-// VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
+//  VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 #define TRAILCELLTYPE UINT32
 
 static path_t pathQB[MAXpathQ];
@@ -167,7 +167,7 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
   if (g.fPlayer) {
     // if player is holding down SHIFT key, find the shortest route instead of
     // the quickest route!
-    if (_KeyDown(SHIFT)) {
+    if (IsKeyDown(SHIFT)) {
       fPlotDirectPath = TRUE;
     }
 

@@ -32,6 +32,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #ifdef JA2BETAVERSION
 #include "Debug.h"
 #endif

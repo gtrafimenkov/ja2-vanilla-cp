@@ -66,6 +66,9 @@
 #include "Utils/Text.h"
 #include "Utils/Utilities.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 #if defined JA2BETAVERSION
 #include "Strategic_AI.h"
 #endif
@@ -4247,7 +4250,7 @@ void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier) {
 
   AdjustAniSpeed(pSoldier);
 
-  if (_KeyDown(SDLK_SPACE)) {
+  if (IsKeyDown(SDLK_SPACE)) {
     // pSoldier->sAniDelay = 1000;
   }
 }
@@ -5460,7 +5463,7 @@ static int trig[8] = { 2, 3, 4, 5, 6, 7, 8, 1 };
 }
 #endif
 
-//#if 0
+// #if 0
 UINT8 atan8(INT16 sXPos, INT16 sYPos, INT16 sXPos2, INT16 sYPos2) {
   DOUBLE test_x = sXPos2 - sXPos;
   DOUBLE test_y = sYPos2 - sYPos;
@@ -7009,8 +7012,8 @@ void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo,
           // we have a strucxture with items in it
           // look for orientation and use angle accordingly....
           if (bZLevel > 0) {
-            //#if 0
-            // Get direction to face....
+            // #if 0
+            //  Get direction to face....
             if ((pStructure = FindStructure(
                      (INT16)sGridNo, (STRUCTURE_HASITEMONTOP | STRUCTURE_OPENABLE))) != NULL) {
               fDoNormalPickup = FALSE;
@@ -7042,7 +7045,7 @@ void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo,
               // Change to pickup animation
               EVENT_InitNewSoldierAnim(pSoldier, ADJACENT_GET_ITEM, 0, FALSE);
             }
-            //#endif
+            // #endif
           }
 
           if (fDoNormalPickup) {

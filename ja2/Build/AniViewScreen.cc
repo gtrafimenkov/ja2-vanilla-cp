@@ -19,6 +19,8 @@
 #include "TileEngine/WorldDef.h"
 #include "Utils/FontControl.h"
 
+#include "SDL_keycode.h"
+
 BOOLEAN gfAniEditMode = FALSE;
 static UINT16 usStartAnim = 0;
 static UINT8 ubStartHeight = 0;

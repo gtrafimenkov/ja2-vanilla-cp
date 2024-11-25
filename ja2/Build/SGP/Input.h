@@ -1,10 +1,12 @@
 #ifndef __INPUT_
 #define __INPUT_
 
-#include <SDL_events.h>
-#include <SDL_keyboard.h>
-
 #include "SGP/Types.h"
+
+struct SDL_MouseButtonEvent;
+struct SDL_MouseWheelEvent;
+struct SDL_Keysym;
+struct SDL_TextInputEvent;
 
 #define KEY_DOWN 0x0001
 #define KEY_UP 0x0002
@@ -63,15 +65,12 @@ void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos);
 
 void DequeueAllKeyBoardEvents(void);
 
-extern BOOLEAN
-    gfKeyState[SDL_SCANCODE_TO_KEYCODE(SDL_NUM_SCANCODES)];  // TRUE = Pressed, FALSE = Not Pressed
-
 extern UINT16 gusMouseXPos;         // X position of the mouse on screen
 extern UINT16 gusMouseYPos;         // y position of the mouse on screen
 extern BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
 extern BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
 
-#define _KeyDown(a) gfKeyState[(a)]
+BOOLEAN IsKeyDown(int a);
 #define _LeftButtonDown gfLeftButtonState
 #define _RightButtonDown gfRightButtonState
 

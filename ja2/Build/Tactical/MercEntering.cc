@@ -32,6 +32,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+
 #define MAX_MERC_IN_HELI 20
 #define MAX_HELI_SCRIPT 30
 #define ME_SCRIPT_DELAY 100
@@ -259,7 +261,7 @@ void HandleHeliDrop() {
       guiPendingOverrideEvent = LU_BEGINUILOCK;
     }
 
-    if (_KeyDown(SDLK_ESCAPE)) {
+    if (IsKeyDown(SDLK_ESCAPE)) {
       // Loop through all mercs not yet placed
       for (cnt = gbCurDrop; cnt < gbNumHeliSeatsOccupied; cnt++) {
         // Add merc to sector

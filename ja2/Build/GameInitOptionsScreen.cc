@@ -26,6 +26,8 @@
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #define GIO_TITLE_FONT FONT16ARIAL  // FONT14ARIAL
 #define GIO_TITLE_COLOR FONT_MCOLOR_WHITE
 

@@ -116,7 +116,7 @@ void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
       TerrainForegroundTile = TerrainTileSelected;
       CurrentPaste = (UINT16)TerrainForegroundTile;
       // iEditorToolbarState = TBAR_MODE_DRAW;
-      if (_KeyDown(SHIFT)) {
+      if (IsKeyDown(SHIFT)) {
         fUseTerrainWeights = TRUE;
       }
       if (fUseTerrainWeights) {

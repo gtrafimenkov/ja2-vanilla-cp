@@ -23,6 +23,8 @@
 #include "Utils/MusicControl.h"
 #include "Utils/Text.h"
 
+#include "SDL_keycode.h"
+
 static BOOLEAN gfIntroScreenEntry = TRUE;
 static BOOLEAN gfIntroScreenExit;
 

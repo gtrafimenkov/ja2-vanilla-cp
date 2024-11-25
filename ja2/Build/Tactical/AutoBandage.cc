@@ -36,6 +36,8 @@
 #include "Utils/Message.h"
 #include "Utils/Text.h"
 
+#include "SDL_keycode.h"
+
 // max number of merc faces per row in autobandage box
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
 

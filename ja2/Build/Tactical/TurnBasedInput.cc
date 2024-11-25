@@ -66,7 +66,9 @@
 #include "Utils/MusicControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
-//#include "medical.h"
+
+#include "SDL_keycode.h"
+// #include "medical.h"
 #include "Cheats.h"
 #include "GameRes.h"
 #include "GameSettings.h"
@@ -686,7 +688,7 @@ void GetTBMousePositionInput(UIEventKind *const puiNewEvent) {
               // ATE: Don't do this automatically for enemies......
               if (tgt->bTeam != ENEMY_TEAM) {
                 MoveTargetSoldier = tgt;
-                if (IsValidTalkableNPC(tgt, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) &&
+                if (IsValidTalkableNPC(tgt, FALSE, FALSE, FALSE) && !IsKeyDown(SHIFT) &&
                     !AM_AN_EPC(sel) && !ValidQuickExchangePosition()) {
                   *puiNewEvent = T_CHANGE_TO_TALKING;
                   return;
@@ -860,7 +862,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     case ACTION_MODE:
     case HANDCURSOR_MODE:
 
-      if (_KeyDown(CTRL)) {
+      if (IsKeyDown(CTRL)) {
         if (!fCtrlDown) {
           ErasePath();
           gfPlotNewMovement = TRUE;
@@ -868,7 +870,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
         fCtrlDown = TRUE;
         *puiNewEvent = HC_ON_TERRAIN;
       }
-      if (!(_KeyDown(CTRL)) && fCtrlDown) {
+      if (!(IsKeyDown(CTRL)) && fCtrlDown) {
         fCtrlDown = FALSE;
         *puiNewEvent = M_ON_TERRAIN;
         gfPlotNewMovement = TRUE;
@@ -882,7 +884,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
   switch (gCurrentUIMode) {
     case MOVE_MODE:
 
-      if (_KeyDown(ALT)) {
+      if (IsKeyDown(ALT)) {
         if (!fAltDown) {
           // Get currently selected guy and change reverse....
           if (GetSelectedMan() != NULL) {
@@ -893,7 +895,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
         }
         fAltDown = TRUE;
       }
-      if (!_KeyDown(ALT) && fAltDown) {
+      if (!IsKeyDown(ALT) && fAltDown) {
         if (GetSelectedMan() != NULL) {
           gUIUseReverse = FALSE;
           ErasePath();
@@ -909,7 +911,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
 
   // Check realtime input!
   if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
-    // if (_KeyDown(SDLK_CAPSLOCK)) //&& !fShifted)
+    // if (IsKeyDown(SDLK_CAPSLOCK)) //&& !fShifted)
     //{
     //	fShifted = TRUE;
     //	if ( gCurrentUIMode != ACTION_MODE && gCurrentUIMode !=
@@ -918,7 +920,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     //		*puiNewEvent = CA_ON_TERRAIN;
     //	}
     //}
-    // if (!(_KeyDown(SDLK_CAPSLOCK)) && fShifted)
+    // if (!(IsKeyDown(SDLK_CAPSLOCK)) && fShifted)
     //{
     //	fShifted = FALSE;
     //	{
@@ -926,14 +928,14 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     //	}
     //}
 
-    if (_KeyDown(SHIFT))  //&& !fShifted )
+    if (IsKeyDown(SHIFT))  //&& !fShifted )
     {
       fShifted2 = TRUE;
       if (gCurrentUIMode != MOVE_MODE && gCurrentUIMode != CONFIRM_MOVE_MODE) {
         // puiNewEvent = M_ON_TERRAIN;
       }
     }
-    if (!(_KeyDown(SHIFT)) && fShifted2) {
+    if (!(IsKeyDown(SHIFT)) && fShifted2) {
       fShifted2 = FALSE;
       if (gCurrentUIMode != ACTION_MODE && gCurrentUIMode != CONFIRM_ACTION_MODE) {
         //	*puiNewEvent = A_ON_TERRAIN;
@@ -941,25 +943,25 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     }
   }
 
-  if (_KeyDown(SDLK_DELETE)) {
+  if (IsKeyDown(SDLK_DELETE)) {
     DisplayCoverOfSelectedGridNo();
 
     fDeleteDown = TRUE;
   }
 
-  if (!_KeyDown(SDLK_DELETE) && fDeleteDown) {
+  if (!IsKeyDown(SDLK_DELETE) && fDeleteDown) {
     RemoveCoverOfSelectedGridNo();
 
     fDeleteDown = FALSE;
   }
 
-  if (_KeyDown(SDLK_END)) {
+  if (IsKeyDown(SDLK_END)) {
     DisplayGridNoVisibleToSoldierGrid();
 
     fEndDown = TRUE;
   }
 
-  if (!_KeyDown(SDLK_END) && fEndDown) {
+  if (!IsKeyDown(SDLK_END) && fEndDown) {
     RemoveVisibleGridNoAtSelectedGridNo();
 
     fEndDown = FALSE;
@@ -1033,9 +1035,10 @@ static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
 
     case '-':
       // If the display cover or line of sight is being displayed
-      if (_KeyDown(SDLK_END) || _KeyDown(SDLK_DELETE)) {
-        if (_KeyDown(SDLK_DELETE)) ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover - 1);
-        if (_KeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS - 1);
+      if (IsKeyDown(SDLK_END) || IsKeyDown(SDLK_DELETE)) {
+        if (IsKeyDown(SDLK_DELETE))
+          ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover - 1);
+        if (IsKeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS - 1);
       }
       break;
 
@@ -1060,9 +1063,10 @@ static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
 
     case '=':
       // if the display cover or line of sight is being displayed
-      if (_KeyDown(SDLK_END) || _KeyDown(SDLK_DELETE)) {
-        if (_KeyDown(SDLK_DELETE)) ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover + 1);
-        if (_KeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS + 1);
+      if (IsKeyDown(SDLK_END) || IsKeyDown(SDLK_DELETE)) {
+        if (IsKeyDown(SDLK_DELETE))
+          ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover + 1);
+        if (IsKeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS + 1);
       } else if (!(gTacticalStatus.uiFlags & INCOMBAT)) {  // ATE: This key will select everybody in
                                                            // the sector
         FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -2317,7 +2321,7 @@ static void CreatePlayerControlledMonster(void) {
   MercCreateStruct.sSectorY = gWorldSectorY;
   MercCreateStruct.bSectorZ = gbWorldSectorZ;
   // Note:  only gets called if Alt and/or Ctrl isn't pressed!
-  MercCreateStruct.bBodyType = (_KeyDown(SDLK_INSERT) ? QUEENMONSTER : ADULTFEMALEMONSTER);
+  MercCreateStruct.bBodyType = (IsKeyDown(SDLK_INSERT) ? QUEENMONSTER : ADULTFEMALEMONSTER);
   MercCreateStruct.bTeam = CREATURE_TEAM;
   MercCreateStruct.sInsertionGridNo = usMapPos;
   RandomizeNewSoldierStats(&MercCreateStruct);

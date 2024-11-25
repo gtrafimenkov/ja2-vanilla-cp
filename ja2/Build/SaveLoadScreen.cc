@@ -44,6 +44,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #if defined JA2BETAVERSION
 #include "Tactical/SoldierInitList.h"
 #endif
@@ -509,12 +511,12 @@ static void GetSaveLoadScreenUserInput(void) {
   // If we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) return;
 
-  DisplayOnScreenNumber(_KeyDown(ALT));
+  DisplayOnScreenNumber(IsKeyDown(ALT));
 
-  if (_KeyDown(CTRL) || fWasCtrlHeldDownLastFrame) {
+  if (IsKeyDown(CTRL) || fWasCtrlHeldDownLastFrame) {
     DisplaySaveGameEntry(gbSelectedSaveLocation);
   }
-  fWasCtrlHeldDownLastFrame = _KeyDown(CTRL);
+  fWasCtrlHeldDownLastFrame = IsKeyDown(CTRL);
 
   SGPPoint mouse_pos;
   GetMousePos(&mouse_pos);
@@ -560,7 +562,7 @@ static void GetSaveLoadScreenUserInput(void) {
     } else if (e.usEvent == KEY_UP) {
       switch (e.usParam) {
         case 'a':
-          if (_KeyDown(ALT) && !gfSaveGame) {
+          if (IsKeyDown(ALT) && !gfSaveGame) {
             INT8 const slot = GetNumberForAutoSave(TRUE);
             if (slot == -1) break;
 
@@ -571,7 +573,7 @@ static void GetSaveLoadScreenUserInput(void) {
           break;
 
         case 'b':
-          if (_KeyDown(ALT) && !gfSaveGame) {
+          if (IsKeyDown(ALT) && !gfSaveGame) {
             INT8 const slot = GetNumberForAutoSave(FALSE);
             if (slot == -1) break;
 
@@ -750,8 +752,9 @@ static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx) {
       y--;
     }
 
-    if (!gfSaveGame && _KeyDown(CTRL) && is_selected) {  // The user is LOADING and holding down the
-                                                         // CTRL key, display the additional info
+    if (!gfSaveGame && IsKeyDown(CTRL) &&
+        is_selected) {  // The user is LOADING and holding down the
+                        // CTRL key, display the additional info
       // Create a string for difficulty level
       wchar_t difficulty[256];
       swprintf(difficulty, lengthof(difficulty), L"%ls %ls",

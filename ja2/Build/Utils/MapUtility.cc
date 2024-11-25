@@ -26,6 +26,9 @@
 #include "Utils/Quantize.h"
 #include "Utils/STIConvert.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 #define MINIMAP_X_SIZE 88
 #define MINIMAP_Y_SIZE 44
 

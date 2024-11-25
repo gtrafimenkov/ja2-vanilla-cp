@@ -60,6 +60,8 @@
 #include "Utils/AnimatedProgressBar.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_pixels.h"
+
 #define SET_MOVEMENTCOST(a, b, c, d) \
   ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
 #define FORCE_SET_MOVEMENTCOST(a, b, c, d) (gubWorldMovementCosts[a][b][c] = d)

@@ -46,6 +46,8 @@
 #include "TileEngine/WorldDef.h"
 #include "math.h"
 
+#include "SDL_pixels.h"
+
 #define MAX_LIGHT_TEMPLATES 32  // maximum number of light types
 
 // stucture of node in linked list for lights

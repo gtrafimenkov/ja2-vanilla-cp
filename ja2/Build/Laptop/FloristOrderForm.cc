@@ -24,6 +24,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #define FLOWER_ORDEER_TINY_FONT FONT10ARIAL
 #define FLOWER_ORDEER_SMALL_FONT FONT12ARIAL
 #define FLOWER_ORDEER_BIG_FONT FONT12ARIAL

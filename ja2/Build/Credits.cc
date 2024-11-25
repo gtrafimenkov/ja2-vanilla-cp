@@ -22,6 +22,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 struct CRDT_NODE {
   INT16 sPosY;
   INT16 sHeightOfString;  // The height of the displayed string

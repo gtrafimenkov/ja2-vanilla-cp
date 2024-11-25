@@ -67,11 +67,13 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #ifdef JA2BETAVERSION
 #include "Cheats.h"
 #endif
 
-//#define INVULNERABILITY
+// #define INVULNERABILITY
 
 BOOLEAN gfTransferTacticalOppositionToAutoResolve = FALSE;
 
@@ -2193,7 +2195,7 @@ static void HandleAutoResolveInput(void) {
           break;
 
         case 'x':
-          if (_KeyDown(ALT)) {
+          if (IsKeyDown(ALT)) {
             HandleShortCutExitState();
           }
           break;
@@ -3091,7 +3093,7 @@ static BOOLEAN IsBattleOver(void) {
   return TRUE;
 }
 
-//#define TESTSURRENDER
+// #define TESTSURRENDER
 
 static void SetupSurrenderInterface(void);
 

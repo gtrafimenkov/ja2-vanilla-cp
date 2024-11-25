@@ -39,9 +39,9 @@
 // skiplist has extra level of pointers every 4 elements, so a level 5is
 // optimized for 4 to the power of 5 elements, or 2 to the power of 10, 1024
 
-//#define PATHAI_VISIBLE_DEBUG
+// #define PATHAI_VISIBLE_DEBUG
 
-//#define PATHAI_SKIPLIST_DEBUG
+// #define PATHAI_SKIPLIST_DEBUG
 
 #ifdef PATHAI_VISIBLE_DEBUG
 #include "SGP/Video.h"
@@ -119,20 +119,20 @@ static INT32 iSkipListLevelLimit[8] = {0, 4, 16, 64, 256, 1024, 4192, 16384};
 #define ESTIMATEC                                             \
   (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) \
               : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)))
-//#define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) :
+// #define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) :
 //(TRAVELCOST_FLAT * dy * 14 ) / 10 + dx) ) )
 #define ESTIMATE ESTIMATEC
 
 #define MAXCOST (9990)
-//#define MAXCOST (255)
-//#define TOTALCOST( pCurrPtr ) (pCurrPtr->usCostSoFar + pCurrPtr->usCostToGo)
+// #define MAXCOST (255)
+// #define TOTALCOST( pCurrPtr ) (pCurrPtr->usCostSoFar + pCurrPtr->usCostToGo)
 #define TOTALCOST(ptr) (ptr->usTotalCost)
 #define XLOC(a) (a % MAPWIDTH)
 #define YLOC(a) (a / MAPWIDTH)
-//#define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
+// #define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
 #define LEGDISTANCE(x1, y1, x2, y2) (abs(x2 - x1) + abs(y2 - y1))
-//#define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) >
-// LEGDISTANCE(NDX->sLocation,sDestination) )
+// #define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) >
+//  LEGDISTANCE(NDX->sLocation,sDestination) )
 #define FARTHER(ndx, NDX) (ndx->ubLegDistance > NDX->ubLegDistance)
 
 #define SETLOC(str, loc) \
@@ -1488,7 +1488,7 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
         // do a sorted que insert of the new path
         // COMMENTED OUT TO DO BOUNDS CHECKER CC JAN 18 99
         // QUEINSERT(pNewPtr);
-        //#define SkipListInsert( pNewPtr )
+        // #define SkipListInsert( pNewPtr )
         {
           pCurr = pQueueHead;
           uiCost = TOTALCOST(pNewPtr);
@@ -2181,7 +2181,7 @@ INT16 UIPlotPath(SOLDIERTYPE *const pSold, const INT16 sDestGridno, const INT8 b
   // This function is specifically for UI calls to the pathing routine, to
   // check whether the shift key is pressed, etc.
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     gfPlotDirectPath = TRUE;
   }
 
