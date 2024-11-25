@@ -8,6 +8,8 @@
 #include "SGP/Types.h"
 #include "SGP/WCheck.h"
 
+#include "SDL_pixels.h"
+
 #define CONVERT_ADD_APPDATA 0x0001
 #define CONVERT_ADD_JA2DATA 0x0003
 #define CONVERT_ETRLE_COMPRESS 0x0020

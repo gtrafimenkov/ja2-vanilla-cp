@@ -34,6 +34,8 @@
 #include "Utils/Message.h"
 #include "Utils/MusicControl.h"
 
+#include "SDL_pixels.h"
+
 // GAME BALANCING DEFINITIONS FOR CREATURE SPREADING
 // Hopefully, adjusting these following definitions will ease the balancing of
 // the creature spreading. The one note here is that for any definitions that
@@ -1236,7 +1238,7 @@ bool GetWarpOutOfMineCodes(INT16 *const sector_x, INT16 *const sector_y, INT8 *c
   INT32 lair_id = giLairID;
   if (lair_id == -1) lair_id = giDestroyedLairID;
 
-  //:Now make sure the mercs are in the previously infested mine
+  //: Now make sure the mercs are in the previously infested mine
   INT16 const x = gWorldSectorX;
   INT16 const y = gWorldSectorY;
   INT8 const z = gbWorldSectorZ;

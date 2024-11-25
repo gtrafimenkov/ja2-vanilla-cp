@@ -3,6 +3,8 @@
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
 
+#include "SDL_pixels.h"
+
 #define COLOUR_BITS 6
 #define MAX_COLOURS 255
 

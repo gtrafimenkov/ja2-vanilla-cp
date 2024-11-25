@@ -9,6 +9,8 @@
 #include "SGP/ImgFmt.h"
 #include "SGP/MemMan.h"
 
+#include "SDL_pixels.h"
+
 static SGPImage *STCILoadIndexed(UINT16 contents, HWFILE, STCIHeader const *);
 static SGPImage *STCILoadRGB(UINT16 contents, HWFILE, STCIHeader const *);
 
