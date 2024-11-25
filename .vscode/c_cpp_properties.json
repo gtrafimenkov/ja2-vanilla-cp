@@ -8,7 +8,7 @@
       "cppStandard": "c++17",
       "includePath": [
         "${default}",
-        "${workspaceFolder}/ja2/Build",
+        "${workspaceFolder}/ja2",
         "${workspaceFolder}/libs/googletest/googletest/include",
         "${workspaceFolder}/libs/sdl2/include",
         "${workspaceFolder}/libs/slog",
