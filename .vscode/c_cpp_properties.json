@@ -4,17 +4,16 @@
       "name": "Linux",
       "defines": [],
       "intelliSenseMode": "${default}",
-      "compilerPath": "/usr/bin/clang",
       "cStandard": "c17",
       "cppStandard": "c++17",
       "includePath": [
         "${default}",
-        "${workspaceFolder}/libs/utf8cpp/source",
+        "${workspaceFolder}/ja2/Build",
+        "${workspaceFolder}/libs/googletest/googletest/include",
+        "${workspaceFolder}/libs/sdl2/include",
         "${workspaceFolder}/libs/slog",
         "${workspaceFolder}/libs/smacker",
-        "${workspaceFolder}/libs/gtest/include",
-        "${workspaceFolder}/ja2/Build",
-        "/usr/include/SDL2/"
+        "${workspaceFolder}/libs/utf8cpp/source"
       ]
     }
   ],
