@@ -1,5 +1,6 @@
 #include "TileEngine/RenderWorld.h"
 
+#include <algorithm>
 #include <math.h>
 #include <stdint.h>
 
@@ -688,7 +689,7 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
                 uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
               zlevel_shadows:
                 INT16 const world_y = GetMapXYWorldY(iTempPosX_M, iTempPosY_M);
-                sZLevel = __max(((world_y - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
+                sZLevel = std::max(((world_y - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
                 break;
               }
 
@@ -837,7 +838,7 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
                   ubShadeLevel = s.ubFadeLevel;
                 } else {
                   ubShadeLevel = pNode->ubShadeLevel & 0x0f;
-                  ubShadeLevel = __max(ubShadeLevel - 2, DEFAULT_SHADE_LEVEL);
+                  ubShadeLevel = std::max(ubShadeLevel - 2, DEFAULT_SHADE_LEVEL);
                   ubShadeLevel |= pNode->ubShadeLevel & 0x30;
                 }
                 pShadeTable = s.pShades[ubShadeLevel];
@@ -1004,7 +1005,8 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
                 sXPos += pTrav.sOffsetX;
                 sYPos += pTrav.sOffsetY;
 
-                INT16 const h = MIN((INT16)uiBrushHeight, gsVIEWPORT_WINDOW_END_Y - sYPos);
+                INT16 const h =
+                    std::min((INT16)uiBrushHeight, (int16_t)(gsVIEWPORT_WINDOW_END_Y - sYPos));
                 RegisterBackgroundRect(uiDirtyFlags, sXPos, sYPos, uiBrushWidth, h);
                 if (fSaveZ) {
                   RegisterBackgroundRect(uiDirtyFlags | BGND_FLAG_SAVE_Z, sXPos, sYPos,
@@ -1364,7 +1366,7 @@ static void RenderTiles(RenderTilesFlags const uiFlags, INT32 const iStartPointX
              * taskbar. */
             if (iTempPosY_S < 360) {
               ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, iTempPosX_S + 40,
-                                        MIN(iTempPosY_S + 20, 360),
+                                        std::min(iTempPosY_S + 20, 360),
                                         Get16BPPColor(FROMRGB(0, 0, 0)));
             }
           }
@@ -2229,10 +2231,10 @@ static void Blt8BPPDataTo16BPPBufferTransZIncClip(UINT16 *pBuffer, UINT32 uiDest
   }
 
   // Calculate rows hanging off each side of the screen
-  const INT32 LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), usWidth);
-  INT32 TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  const INT32 RightSkip = __min(MAX(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
-  const INT32 BottomSkip = __min(__max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
+  const INT32 LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), usWidth);
+  INT32 TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), usHeight);
+  const INT32 RightSkip = std::min(std::max(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
+  const INT32 BottomSkip = std::min(std::max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   const INT32 BlitLength = usWidth - LeftSkip - RightSkip;
@@ -2711,10 +2713,10 @@ static void Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(
   }
 
   // Calculate rows hanging off each side of the screen
-  const INT32 LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), usWidth);
-  INT32 TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  const INT32 RightSkip = __min(MAX(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
-  const INT32 BottomSkip = __min(__max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
+  const INT32 LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), usWidth);
+  INT32 TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), usHeight);
+  const INT32 RightSkip = std::min(std::max(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
+  const INT32 BottomSkip = std::min(std::max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   const INT32 BlitLength = usWidth - LeftSkip - RightSkip;
@@ -3197,10 +3199,10 @@ static void Blt8BPPDataTo16BPPBufferTransZIncObscureClip(UINT16 *pBuffer, UINT32
   }
 
   // Calculate rows hanging off each side of the screen
-  const INT32 LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), usWidth);
-  INT32 TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  const INT32 RightSkip = __min(MAX(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
-  const INT32 BottomSkip = __min(__max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
+  const INT32 LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), usWidth);
+  INT32 TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), usHeight);
+  const INT32 RightSkip = std::min(std::max(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
+  const INT32 BottomSkip = std::min(std::max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
 
   UINT32 uiLineFlag = iTempY & 1;
 
@@ -3700,10 +3702,10 @@ static void Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(
   }
 
   // Calculate rows hanging off each side of the screen
-  const INT32 LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), usWidth);
-  INT32 TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  const INT32 RightSkip = __min(MAX(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
-  const INT32 BottomSkip = __min(__max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
+  const INT32 LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), usWidth);
+  INT32 TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), usHeight);
+  const INT32 RightSkip = std::min(std::max(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
+  const INT32 BottomSkip = std::min(std::max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
 
   UINT32 uiLineFlag = iTempY & 1;
 
@@ -4248,10 +4250,10 @@ static void Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(
   }
 
   // Calculate rows hanging off each side of the screen
-  const INT32 LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), usWidth);
-  INT32 TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  const INT32 RightSkip = __min(MAX(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
-  const INT32 BottomSkip = __min(__max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
+  const INT32 LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), usWidth);
+  INT32 TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), usHeight);
+  const INT32 RightSkip = std::min(std::max(ClipX2, iTempX + usWidth) - ClipX2, usWidth);
+  const INT32 BottomSkip = std::min(std::max(ClipY2, iTempY + usHeight) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   const INT32 BlitLength = usWidth - LeftSkip - RightSkip;
@@ -4871,10 +4873,10 @@ static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sB
   gOldClipRect = gClippingRect;
 
   // Set new clipped rect
-  gClippingRect.iLeft = __max(gsVIEWPORT_START_X, sLeft);
-  gClippingRect.iRight = __min(gsVIEWPORT_END_X, sRight);
-  gClippingRect.iTop = __max(gsVIEWPORT_WINDOW_START_Y, sTop);
-  gClippingRect.iBottom = __min(gsVIEWPORT_WINDOW_END_Y, sBottom);
+  gClippingRect.iLeft = std::max(gsVIEWPORT_START_X, sLeft);
+  gClippingRect.iRight = std::min(gsVIEWPORT_END_X, sRight);
+  gClippingRect.iTop = std::max(gsVIEWPORT_WINDOW_START_Y, sTop);
+  gClippingRect.iBottom = std::min(gsVIEWPORT_WINDOW_END_Y, sBottom);
 
   gsEndXS = sRight + VIEWPORT_XOFFSET_S;
   gsEndYS = sBottom + VIEWPORT_YOFFSET_S;

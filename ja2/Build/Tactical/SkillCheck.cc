@@ -1,5 +1,7 @@
 #include "Tactical/SkillCheck.h"
 
+#include <algorithm>
+
 #include "SGP/Random.h"
 #include "Strategic/StrategicMap.h"
 #include "Tactical/DialogueControl.h"
@@ -20,7 +22,7 @@ INT8 EffectiveStrength(const SOLDIERTYPE *s) {
   iEffStrength += (s->bStrength / 2) * (s->bLife + bBandaged / 2) / (s->bLifeMax);
 
   // ATE: Make sure at least 2...
-  iEffStrength = __max(iEffStrength, 2);
+  iEffStrength = std::max(iEffStrength, 2);
 
   return ((INT8)iEffStrength);
 }
@@ -230,7 +232,7 @@ INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
 
       fForceDamnSound = TRUE;
 
-      iSkill = __max(EffectiveMechanical(pSoldier), EffectiveExplosive(pSoldier)) * 7;
+      iSkill = std::max(EffectiveMechanical(pSoldier), EffectiveExplosive(pSoldier)) * 7;
       if (iSkill == 0) {
         break;
       }

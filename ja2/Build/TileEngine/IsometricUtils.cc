@@ -1,5 +1,7 @@
 #include "TileEngine/IsometricUtils.h"
 
+#include <algorithm>
+
 #include "SGP/MouseSystem.h"
 #include "SGP/Random.h"
 #include "SysGlobals.h"
@@ -294,9 +296,9 @@ INT16 NewGridNo(INT16 sGridno, INT16 sDirInc) {
 
 INT16 DirectionInc(INT16 sDirection) {
   if ((sDirection < 0) || (sDirection > 7)) {
-    //#ifdef BETAVERSION
-    //   NumMessage("DirectionInc: Invalid direction received, = ",direction);
-    //#endif
+    // #ifdef BETAVERSION
+    //    NumMessage("DirectionInc: Invalid direction received, = ",direction);
+    // #endif
 
     // direction = random(8);	// replace garbage with random direction
     sDirection = 1;
@@ -403,7 +405,7 @@ INT16 SpacesAway(INT16 sOrigin, INT16 sDest) {
   sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
   sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
-  return (__max(sRows, sCols));
+  return (std::max(sRows, sCols));
 }
 
 INT16 CardinalSpacesAway(INT16 sOrigin, INT16 sDest)

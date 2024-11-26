@@ -610,10 +610,10 @@ static UINT32 GetWidthOfString(wchar_t const *const str) {
     Font font;
     switch (c) {
       case L'\0':
-        return MAX(w, max_w);
+        return std::max(w, max_w);
 
       case L'\n':
-        max_w = MAX(w, max_w);
+        max_w = std::max(w, max_w);
         w = 0;
         continue;
 

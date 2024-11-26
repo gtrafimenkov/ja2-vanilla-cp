@@ -1,5 +1,6 @@
 #include "Editor/EditorMapInfo.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -149,17 +150,17 @@ void ExtractAndUpdateMapInfo() {
   INT32 temp;
   BOOLEAN fUpdateLight1 = FALSE;
   // extract light1 colors
-  temp = MIN(GetNumericStrictValueFromField(1), 255);
+  temp = std::min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1 && temp != gEditorLightColor.r) {
     fUpdateLight1 = TRUE;
     gEditorLightColor.r = (UINT8)temp;
   }
-  temp = MIN(GetNumericStrictValueFromField(2), 255);
+  temp = std::min(GetNumericStrictValueFromField(2), 255);
   if (temp != -1 && temp != gEditorLightColor.g) {
     fUpdateLight1 = TRUE;
     gEditorLightColor.g = (UINT8)temp;
   }
-  temp = MIN(GetNumericStrictValueFromField(3), 255);
+  temp = std::min(GetNumericStrictValueFromField(3), 255);
   if (temp != -1 && temp != gEditorLightColor.b) {
     fUpdateLight1 = TRUE;
     gEditorLightColor.b = (UINT8)temp;
@@ -171,9 +172,9 @@ void ExtractAndUpdateMapInfo() {
   }
 
   // extract radius
-  temp = MAX(MIN(GetNumericStrictValueFromField(4), 8), 1);
+  temp = std::max(std::min(GetNumericStrictValueFromField(4), 8), 1);
   if (temp != -1) gsLightRadius = (INT16)temp;
-  temp = MAX(MIN(GetNumericStrictValueFromField(5), 15), 1);
+  temp = std::max(std::min(GetNumericStrictValueFromField(5), 15), 1);
   if (temp != -1 && temp != gusLightLevel) {
     gusLightLevel = (UINT16)temp;
     gfRenderWorld = TRUE;
@@ -195,11 +196,13 @@ void ExtractAndUpdateMapInfo() {
     gExitGrid.ubGotoSectorX = (UINT8)(str[1] - '0');
     if (str[2] >= '0' && str[2] <= '9')
       gExitGrid.ubGotoSectorX = (UINT8)(gExitGrid.ubGotoSectorX * 10 + str[2] - '0');
-    gExitGrid.ubGotoSectorX = (UINT8)MAX(MIN(gExitGrid.ubGotoSectorX, 16), 1);
-    gExitGrid.ubGotoSectorY = (UINT8)MAX(MIN(gExitGrid.ubGotoSectorY, 16), 1);
+    gExitGrid.ubGotoSectorX =
+        (UINT8)std::max(std::min(gExitGrid.ubGotoSectorX, (uint8_t)16), (uint8_t)1);
+    gExitGrid.ubGotoSectorY =
+        (UINT8)std::max(std::min(gExitGrid.ubGotoSectorY, (uint8_t)16), (uint8_t)1);
   }
-  gExitGrid.ubGotoSectorZ = (UINT8)MAX(MIN(GetNumericStrictValueFromField(8), 3), 0);
-  gExitGrid.usGridNo = (UINT16)MAX(MIN(GetNumericStrictValueFromField(9), 25600), 0);
+  gExitGrid.ubGotoSectorZ = (UINT8)std::max(std::min(GetNumericStrictValueFromField(8), 3), 0);
+  gExitGrid.usGridNo = (UINT16)std::max(std::min(GetNumericStrictValueFromField(9), 25600), 0);
 
   UpdateMapInfoFields();
 }

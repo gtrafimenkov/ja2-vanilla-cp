@@ -1,5 +1,6 @@
 #include "Tactical/ShopKeeperInterface.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -209,8 +210,8 @@
 #define CHANCE_FOR_SHOPKEEPER_IDLE_QUOTE 40
 
 #define MAX_SUBOBJECTS_PER_OBJECT \
-  MAX(MAX_OBJECTS_PER_SLOT, (2 + MAX_ATTACHMENTS))  // (2nd part is main item, ammo/payload, and 4
-                                                    // attachments)
+  std::max(MAX_OBJECTS_PER_SLOT, (2 + MAX_ATTACHMENTS))  // (2nd part is main item, ammo/payload,
+                                                         // and 4 attachments)
 
 #define REALLY_BADLY_DAMAGED_THRESHOLD 30
 
@@ -2151,7 +2152,7 @@ static void StoreObjectsInNextFreeDealerInvSlot(UINT16 usItemIndex,
   // can't use the real #, because CreateItems() will blindly set the bStatus
   // for however many we tell it, beyond 8
   MakeObjectOutOfDealerItems(usItemIndex, pSpclItemInfo, &(pDealerInvSlot->ItemObject),
-                             (UINT8)MIN(ubHowMany, MAX_OBJECTS_PER_SLOT));
+                             (UINT8)std::min(ubHowMany, (uint8_t)MAX_OBJECTS_PER_SLOT));
 
   if (ubHowMany > MAX_OBJECTS_PER_SLOT) {
     // HACK:  Override ItemObject->ubNumberOfObjects (1-8) with the REAL # of
@@ -5017,7 +5018,7 @@ static BOOLEAN ShopkeeperAutoPlaceObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more
     // than MAX_OBJECTS_PER_SLOT at a time
-    pObject->ubNumberOfObjects = MIN(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    pObject->ubNumberOfObjects = std::min((uint8_t)MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
     ubObjectsLeftToPlace -= pObject->ubNumberOfObjects;
 
     if (!AutoPlaceObject(pSoldier, pObject, fNewItem)) {
@@ -5052,7 +5053,7 @@ static void ShopkeeperAddItemToPool(INT16 const sGridNo, OBJECTTYPE *const pObje
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more
     // than MAX_OBJECTS_PER_SLOT at a time
-    pObject->ubNumberOfObjects = MIN(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    pObject->ubNumberOfObjects = std::min((uint8_t)MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
     ubObjectsLeftToPlace -= pObject->ubNumberOfObjects;
 
     AddItemToPool(sGridNo, pObject, VISIBLE, ubLevel, 0, 0);

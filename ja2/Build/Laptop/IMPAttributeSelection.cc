@@ -1,5 +1,7 @@
 #include "Laptop/IMPAttributeSelection.h"
 
+#include <algorithm>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/IMPCompileCharacter.h"
@@ -407,7 +409,7 @@ void RenderAttributeBoxes(void) {
     INT32 val = GetCurrentAttributeValue(i);
 
     // Compensate for zeroed skills: x pos is at least 0
-    INT16 sX = MAX(0, val - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50;
+    INT16 sX = std::max(0, val - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50;
     INT16 sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * i;
 
     sX += SKILL_SLIDE_START_X;

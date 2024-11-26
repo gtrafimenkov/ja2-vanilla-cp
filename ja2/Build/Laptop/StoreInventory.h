@@ -12,7 +12,7 @@ struct STORE_INVENTORY {
                                 // sell this item in days prior to today
 };
 
-// Enums used for the access the MAX dealers array
+// Enums used for the access the std::max dealers array
 enum {
   BOBBY_RAY_NEW,
   BOBBY_RAY_USED,

@@ -1,5 +1,6 @@
 #include "Strategic/QueenCommand.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "Macro.h"
@@ -374,9 +375,9 @@ void PrepareEnemyForSectorBattle() {
 
   UINT8 const n_stationary_enemies = total_admins + total_troops + total_elites;
   if (n_stationary_enemies > 32) {
-    total_admins = MIN(total_admins, 32);
-    total_troops = MIN(total_troops, 32 - total_admins);
-    total_elites = MIN(total_elites, 32 - total_admins + total_troops);
+    total_admins = std::min(total_admins, (uint8_t)32);
+    total_troops = std::min(total_troops, (uint8_t)(32 - total_admins));
+    total_elites = std::min(total_elites, (uint8_t)(32 - total_admins + total_troops));
   }
 
   sector.ubAdminsInBattle += total_admins;

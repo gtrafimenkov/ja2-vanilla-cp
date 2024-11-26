@@ -1,5 +1,7 @@
 #include "Strategic/Scheduling.h"
 
+#include <algorithm>
+
 #include "GameState.h"
 #include "JAScreens.h"
 #include "Macro.h"
@@ -408,7 +410,7 @@ void SaveSchedules(HWFILE const f) {
     ++n_schedules;
   }
 
-  UINT8 n_to_save = MIN(n_schedules, 32);
+  UINT8 n_to_save = std::min(n_schedules, 32);
   FileWrite(f, &n_to_save, sizeof(UINT8));
 
   // Save each schedule

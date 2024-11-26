@@ -1,5 +1,6 @@
 #include "Editor/SectorSummary.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -1683,8 +1684,8 @@ static void MapMoveCallback(MOUSE_REGION *reg, INT32 reason) {
     gfRenderMap = TRUE;
     return;
   }
-  gsHiSectorX = MIN((reg->RelativeXPos / 13) + 1, 16);
-  gsHiSectorY = MIN((reg->RelativeYPos / 13) + 1, 16);
+  gsHiSectorX = std::min((reg->RelativeXPos / 13) + 1, 16);
+  gsHiSectorY = std::min((reg->RelativeYPos / 13) + 1, 16);
   if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
     gsPrevX = gsHiSectorX;
     gsPrevY = gsHiSectorY;
@@ -1700,8 +1701,8 @@ static void MapClickCallback(MOUSE_REGION *reg, INT32 reason) {
       gsSelSectorX = 0;
       SelectNextField();
     }
-    gsSelSectorX = MIN((reg->RelativeXPos / 13) + 1, 16);
-    gsSelSectorY = MIN((reg->RelativeYPos / 13) + 1, 16);
+    gsSelSectorX = std::min((reg->RelativeXPos / 13) + 1, 16);
+    gsSelSectorY = std::min((reg->RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {  // clicked in a new sector
       gfOverrideDirty = TRUE;
       sLastX = gsSelSectorX;

@@ -1,5 +1,6 @@
 #include "Tactical/ArmsDealerInvInit.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "Laptop/BobbyR.h"
@@ -722,8 +723,8 @@ static UINT8 GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer,
     }
   }
 
-  ubMinCoolness = MAX(1, MIN(9, ubMinCoolness));
-  ubMaxCoolness = MAX(2, MIN(10, ubMaxCoolness));
+  ubMinCoolness = std::max((uint8_t)1, std::min((uint8_t)9, ubMinCoolness));
+  ubMaxCoolness = std::max((uint8_t)2, std::min((uint8_t)10, ubMaxCoolness));
 
   // if item is too cool for current level of progress
   if (ubItemCoolness > ubMaxCoolness) {

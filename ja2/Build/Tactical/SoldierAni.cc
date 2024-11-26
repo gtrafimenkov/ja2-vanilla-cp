@@ -67,7 +67,7 @@
 
 #define NO_JUMP 0
 #define MAX_ANIFRAMES_PER_FLASH 2
-//#define		TIME_FOR_RANDOM_ANIM_CHECK	10
+// #define		TIME_FOR_RANDOM_ANIM_CHECK	10
 #define TIME_FOR_RANDOM_ANIM_CHECK 2
 
 const SOLDIERTYPE *gLastMercTalkedAboutKilling = NULL;
@@ -581,7 +581,7 @@ BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
         case 448:
 
           // CODE: HANDLE BURST
-          // FIRST CHECK IF WE'VE REACHED MAX FOR GUN
+          // FIRST CHECK IF WE'VE REACHED std::max FOR GUN
           fStop = FALSE;
 
           if (pSoldier->bDoBurst > Weapon[pSoldier->usAttackingWeapon].ubShotsPerBurst) {
@@ -2832,8 +2832,8 @@ void CheckForAndHandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorpse)
   ChangeSoldierState(pSoldier, state, 0, FALSE);
 }
 
-//#define TESTFALLBACK
-//#define TESTFALLFORWARD
+// #define TESTFALLBACK
+// #define TESTFALLFORWARD
 
 static void CheckForAndHandleSoldierIncompacitated(SOLDIERTYPE *pSoldier) {
   INT16 sNewGridNo;

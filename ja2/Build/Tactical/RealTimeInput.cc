@@ -1,5 +1,7 @@
 #include "Tactical/RealTimeInput.h"
 
+#include <math.h>
+
 #include "GameSettings.h"
 #include "SGP/CursorControl.h"
 #include "SGP/English.h"

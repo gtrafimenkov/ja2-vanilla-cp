@@ -1,5 +1,6 @@
 #include "Tactical/HandleItems.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -877,7 +878,7 @@ void HandleSoldierDropBomb(SOLDIERTYPE *const s, INT16 const sGridNo) {
     StatChange(*s, EXPLODEAMT, 25, FROM_SUCCESS);
 
     INT8 const trap_lvl = EffectiveExplosive(s) / 20 + EffectiveExpLevel(s) / 3;
-    o.bTrap = __min(trap_lvl, 10);
+    o.bTrap = std::min(trap_lvl, (int8_t)10);
     o.ubBombOwner = s->ubID + 2;
 
     // we now know there is something nasty here
@@ -2283,7 +2284,7 @@ static void BombMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) {
       }
 
       if (ArmBomb(&gpTempSoldier->inv[HANDPOS], timer)) {
-        gpTempSoldier->inv[HANDPOS].bTrap = __min(
+        gpTempSoldier->inv[HANDPOS].bTrap = std::min(
             10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
         // HACK IMMINENT!
         // value of 1 is stored in maps for SIDE of bomb owner... when we want

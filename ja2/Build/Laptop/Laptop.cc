@@ -1,5 +1,6 @@
 #include "Laptop/Laptop.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Cheats.h"
@@ -1125,7 +1126,7 @@ ScreenID LaptopScreenHandle() {
     while (iRealPercentage < 100) {
       const UINT32 uiCurrTime = GetClock();
       iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-      iPercentage = MIN(iPercentage, 100);
+      iPercentage = std::min(iPercentage, 100);
 
       iRealPercentage = iPercentage;
 
@@ -1558,7 +1559,7 @@ static void LeaveLapTopScreen(void) {
 
         const UINT32 uiCurrTime = GetClock();
         iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-        iPercentage = MIN(iPercentage, 100);
+        iPercentage = std::min(iPercentage, 100);
         iPercentage = 100 - iPercentage;
 
         iRealPercentage = iPercentage;

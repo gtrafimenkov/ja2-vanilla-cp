@@ -1,5 +1,6 @@
 #include "Tactical/ArmsDealerInit.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Macro.h"
@@ -323,7 +324,9 @@ static void SimulateArmsDealerCustomer(void) {
           // blood given by player will be available
           ubItemsSold = HowManyItemsAreSold(
               ubArmsDealer, usItemIndex,
-              (UINT8)__min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems),
+              (UINT8)std::min(
+                  (uint8_t)3,
+                  (uint8_t)gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems),
               FALSE);
         } else {
           ubItemsSold = HowManyItemsAreSold(
@@ -451,7 +454,7 @@ static void ConvertCreatureBloodToElixir(void) {
   ubBloodAvailable = gArmsDealersInventory[ARMS_DEALER_GABBY][JAR_CREATURE_BLOOD].ubTotalItems;
   if (ubBloodAvailable) {
     // start converting blood into elixir!
-    // ubAmountToConvert = (UINT8) __min( 5 + Random( 3 ), ubBloodAvailable );
+    // ubAmountToConvert = (UINT8) std::min( 5 + Random( 3 ), ubBloodAvailable );
     ubAmountToConvert = ubBloodAvailable;
 
     // create item info describing a perfect item
@@ -1421,7 +1424,7 @@ static void AddItemToArmsDealerInventory(ArmsDealerID const ubArmsDealer, UINT16
       // if we didn't find any inactive elements already allocated
       if (!fFoundOne) {
         // then we're going to have to allocate some more space...
-        ubElementsToAdd = MAX(SPECIAL_ITEMS_ALLOCED_AT_ONCE, ubHowMany);
+        ubElementsToAdd = std::max((uint8_t)SPECIAL_ITEMS_ALLOCED_AT_ONCE, ubHowMany);
 
         // if there aren't any allocated at all right now
         if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced == 0) {
@@ -1652,7 +1655,7 @@ BOOLEAN AddDeadArmsDealerItemsToWorld(SOLDIERTYPE const *const pSoldier) {
         // of where this function is called, there are times when we're not
         // guarenteed that sGridNo is good
         while (ubLeftToDrop > 0) {
-          ubNowDropping = MIN(ubLeftToDrop, ubHowManyMaxAtATime);
+          ubNowDropping = std::min(ubLeftToDrop, ubHowManyMaxAtATime);
 
           MakeObjectOutOfDealerItems(usItemIndex, &SpclItemInfo, &TempObject, ubNowDropping);
           AddItemToPool(pSoldier->sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
@@ -2375,12 +2378,12 @@ UINT32 CalculateMinutesClosedBetween(ArmsDealerID const ubArmsDealer, UINT32 uiS
   if (uiStartTime < uiEndTime) {
     if (uiStartTime < uiOpeningTime) {
       // add how many minutes in the time range BEFORE the store opened that day
-      uiMinutesClosed += (MIN(uiOpeningTime, uiEndTime) - uiStartTime);
+      uiMinutesClosed += (std::min(uiOpeningTime, uiEndTime) - uiStartTime);
     }
 
     if (uiEndTime > uiClosingTime) {
       // add how many minutes in the time range AFTER the store closed that day
-      uiMinutesClosed += (uiEndTime - MAX(uiClosingTime, uiStartTime));
+      uiMinutesClosed += (uiEndTime - std::max(uiClosingTime, uiStartTime));
     }
   } else {
     Assert(uiEndTime < uiStartTime);

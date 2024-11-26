@@ -1,5 +1,7 @@
 #include "Utils/MusicControl.h"
 
+#include <algorithm>
+
 #include "Directories.h"
 #include "GameScreen.h"
 #include "JAScreens.h"
@@ -67,7 +69,7 @@ static void StartMusicBasedOnMode(void);
 void MusicSetVolume(UINT32 uiVolume) {
   INT32 uiOldMusicVolume = uiMusicVolume;
 
-  uiMusicVolume = __min(uiVolume, MAXVOLUME);
+  uiMusicVolume = std::min(uiVolume, (uint32_t)MAXVOLUME);
 
   if (uiMusicHandle != NO_SAMPLE) {
     // get volume and if 0 stop music!
@@ -155,7 +157,7 @@ void MusicPoll(void) {
     if (fMusicFadingIn) {
       if (uiMusicHandle != NO_SAMPLE) {
         iVol = SoundGetVolume(uiMusicHandle);
-        iVol = __min((INT32)uiMusicVolume, iVol + gbFadeSpeed);
+        iVol = std::min((INT32)uiMusicVolume, iVol + gbFadeSpeed);
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == (INT32)uiMusicVolume) {
           fMusicFadingIn = FALSE;
@@ -167,7 +169,7 @@ void MusicPoll(void) {
         iVol = SoundGetVolume(uiMusicHandle);
         iVol = (iVol >= 1) ? iVol - gbFadeSpeed : 0;
 
-        iVol = __max((INT32)iVol, 0);
+        iVol = std::max((INT32)iVol, 0);
 
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == 0) {
@@ -178,7 +180,7 @@ void MusicPoll(void) {
       }
     }
 
-    //#endif
+    // #endif
 
     if (gfMusicEnded) {
       // OK, based on our music mode, play another!

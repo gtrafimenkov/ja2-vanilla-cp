@@ -1,5 +1,6 @@
 #include "Editor/EditorBuildings.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -465,17 +466,17 @@ void ExtractAndUpdateDoorInfo() {
 
   door.sGridNo = (INT16)iDoorMapIndex;
 
-  num = MIN(GetNumericStrictValueFromField(0), NUM_LOCKS - 1);
+  num = std::min(GetNumericStrictValueFromField(0), NUM_LOCKS - 1);
   door.ubLockID = (UINT8)num;
   SetInputFieldStringWithNumericStrictValue(0, num);
   if (num >= 0) fCursor = TRUE;
 
-  num = MIN(MAX(GetNumericStrictValueFromField(1), 0), 10);
+  num = std::min(std::max(GetNumericStrictValueFromField(1), 0), 10);
   door.ubTrapID = (UINT8)num;
   SetInputFieldStringWithNumericStrictValue(1, num);
   if (num) fCursor = TRUE;
 
-  num = MIN(MAX(GetNumericStrictValueFromField(2), 0), 20);
+  num = std::min(std::max(GetNumericStrictValueFromField(2), 0), 20);
   if (door.ubTrapID && !num) num = 1;  // Can't have a trap without a traplevel!
   door.ubTrapLevel = (UINT8)num;
   SetInputFieldStringWithNumericStrictValue(2, num);
@@ -589,7 +590,7 @@ void ExtractAndUpdateBuildingInfo() {
   wchar_t str[4];
   INT32 temp;
   // extract light1 colors
-  temp = MIN(GetNumericStrictValueFromField(1), 255);
+  temp = std::min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1) {
     gubCurrRoomNumber = (UINT8)temp;
   } else {

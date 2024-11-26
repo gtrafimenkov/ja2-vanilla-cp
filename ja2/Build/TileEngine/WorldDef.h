@@ -101,7 +101,7 @@ struct LEVELNODE {
   LevelnodeFlags uiFlags;
 
   UINT8 ubSumLights;  // LIGHTING INFO
-  UINT8 ubMaxLights;  // MAX LIGHTING INFO
+  UINT8 ubMaxLights;  // std::max LIGHTING INFO
 
   union {
     LEVELNODE *pPrevNode;       // FOR LAND, GOING BACKWARDS POINTER

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Macro.h"
 #include "Strategic/Assignments.h"
 #include "Strategic/StrategicMap.h"
@@ -394,7 +396,7 @@ BOOLEAN IsActionAffordable(SOLDIERTYPE *pSoldier) {
       break;
 
     case AI_ACTION_PICKUP_ITEM:  // grab things lying on the ground
-      bMinPointsNeeded = __max(MinPtsToMove(pSoldier), AP_PICKUP_ITEM);
+      bMinPointsNeeded = std::max(MinPtsToMove(pSoldier), (int8_t)AP_PICKUP_ITEM);
       break;
 
     case AI_ACTION_OPEN_OR_CLOSE_DOOR:
@@ -602,12 +604,12 @@ INT16 RandDestWithinRange(SOLDIERTYPE *pSoldier) {
     sOrigX = usOrigin % MAXCOL;
     sOrigY = usOrigin / MAXCOL;
 
-    sMaxLeft = MIN(usMaxDist, sOrigX);
-    sMaxRight = MIN(usMaxDist, MAXCOL - (sOrigX + 1));
+    sMaxLeft = std::min((int16_t)usMaxDist, sOrigX);
+    sMaxRight = std::min((int16_t)usMaxDist, (int16_t)(MAXCOL - (sOrigX + 1)));
 
     // determine maximum vertical limits
-    sMaxUp = MIN(usMaxDist, sOrigY);
-    sMaxDown = MIN(usMaxDist, MAXROW - (sOrigY + 1));
+    sMaxUp = std::min((int16_t)usMaxDist, sOrigY);
+    sMaxDown = std::min((int16_t)usMaxDist, (int16_t)(MAXROW - (sOrigY + 1)));
 
     sXRange = sMaxLeft + sMaxRight + 1;
     sYRange = sMaxUp + sMaxDown + 1;
@@ -1883,8 +1885,8 @@ UINT8 SoldierDifficultyLevel(SOLDIERTYPE *pSoldier) {
       break;
   }
 
-  bDifficulty = __max(bDifficulty, 0);
-  bDifficulty = __min(bDifficulty, 4);
+  bDifficulty = std::max(bDifficulty, (int8_t)0);
+  bDifficulty = std::min(bDifficulty, (int8_t)4);
 
   return ((UINT8)bDifficulty);
 }

@@ -1,5 +1,7 @@
 #include "Strategic/MapScreenHelicopter.h"
 
+#include <algorithm>
+
 #include "Directories.h"
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
@@ -1438,7 +1440,7 @@ void PayOffSkyriderDebtIfAny() {
 
   // if we owe him anything, and have any money
   if ((iAmountOwed > 0) && (LaptopSaveInfo.iCurrentBalance > 0)) {
-    iPayAmount = MIN(iAmountOwed, LaptopSaveInfo.iCurrentBalance);
+    iPayAmount = std::min(iAmountOwed, LaptopSaveInfo.iCurrentBalance);
 
     // pay the man what we can
     gMercProfiles[SKYRIDER].iBalance += iPayAmount;

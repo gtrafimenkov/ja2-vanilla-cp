@@ -219,9 +219,9 @@ UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale,
       bmod = bscale * pPalette[cnt].b / 256;
     }
 
-    UINT8 r = __min(rmod, 255);
-    UINT8 g = __min(gmod, 255);
-    UINT8 b = __min(bmod, 255);
+    UINT8 r = std::min((uint8_t)rmod, (uint8_t)255);
+    UINT8 g = std::min((uint8_t)gmod, (uint8_t)255);
+    UINT8 b = std::min((uint8_t)bmod, (uint8_t)255);
     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
   }
   return p16BPPPalette;

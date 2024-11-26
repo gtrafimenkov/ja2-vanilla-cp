@@ -1,5 +1,6 @@
 #include "Laptop/AIMArchives.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Directories.h"
@@ -219,7 +220,7 @@ void RenderAimArchives() {
 
   // Draw the mug shot border and face
   INT32 const start = gubPageNum * MAX_NUMBER_OLD_MERCS_ON_PAGE;
-  INT32 const n_faces = MIN(OLD_MERCS_COUNT - start, MAX_NUMBER_OLD_MERCS_ON_PAGE);
+  INT32 const n_faces = std::min(OLD_MERCS_COUNT - start, MAX_NUMBER_OLD_MERCS_ON_PAGE);
   INT32 face_idx = start;
   for (INT32 i = 0; i != n_faces; ++i, ++face_idx) {
     INT32 const x =
@@ -368,7 +369,7 @@ static void InitAlumniFaceRegions(void) {
   gfFaceMouseRegionsActive = TRUE;
 
   INT32 const start = gubPageNum * MAX_NUMBER_OLD_MERCS_ON_PAGE;
-  INT32 const n_faces = MIN(OLD_MERCS_COUNT - start, MAX_NUMBER_OLD_MERCS_ON_PAGE);
+  INT32 const n_faces = std::min(OLD_MERCS_COUNT - start, MAX_NUMBER_OLD_MERCS_ON_PAGE);
   INT32 face_idx = start;
   UINT16 const w = AIM_ALUMNI_ALUMNI_FACE_WIDTH;
   UINT16 const h = AIM_ALUMNI_ALUMNI_FACE_HEIGHT;
@@ -389,7 +390,7 @@ static void RemoveAimAlumniFaceRegion(void) {
   gfFaceMouseRegionsActive = FALSE;
 
   size_t const start = gubPageNum * MAX_NUMBER_OLD_MERCS_ON_PAGE;
-  size_t const n_faces = MIN(OLD_MERCS_COUNT - start, MAX_NUMBER_OLD_MERCS_ON_PAGE);
+  size_t const n_faces = std::min((size_t)(OLD_MERCS_COUNT - start), (size_t)MAX_NUMBER_OLD_MERCS_ON_PAGE);
   for (size_t i = 0; i < n_faces; ++i) {
     MSYS_RemoveRegion(&gMercAlumniFaceMouseRegions[i]);
   }

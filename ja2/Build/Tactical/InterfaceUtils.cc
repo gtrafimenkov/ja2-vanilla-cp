@@ -24,7 +24,7 @@
 #define BANDAGE_BAR FROMRGB(222, 132, 132)
 #define BLEEDING_BAR_SHADOW FROMRGB(128, 128, 60)
 #define BLEEDING_BAR FROMRGB(240, 240, 20)
-#define CURR_BREATH_BAR_SHADOW FROMRGB(8, 12, 118)  // the MAX max breatth, always at 100%
+#define CURR_BREATH_BAR_SHADOW FROMRGB(8, 12, 118)  // the std::max max breatth, always at 100%
 #define CURR_BREATH_BAR FROMRGB(8, 12, 160)
 #define CURR_MAX_BREATH FROMRGB(0, 0, 0)  // the current max breath, black
 #define CURR_MAX_BREATH_SHADOW FROMRGB(0, 0, 0)
@@ -84,7 +84,7 @@ static void DrawLifeUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 YPos,
                           UINT32 const MaxHeight, UINT16 *const pDestBuf) {
   UINT32 Height;
 
-  // FIRST DO MAX LIFE
+  // FIRST DO std::max LIFE
   Height = MaxHeight * s.bLife / 100;
   DrawBar(XPos, YPos, Height, Get16BPPColor(LIFE_BAR), Get16BPPColor(LIFE_BAR_SHADOW), pDestBuf);
 
@@ -150,7 +150,7 @@ void DrawSoldierUIBars(SOLDIERTYPE const &s, INT16 const sXPos, INT16 const sYPo
   if (s.bLife == 0) return;
 
   if (!(s.uiStatusFlags & SOLDIER_ROBOT)) {
-    // DO MAX BREATH
+    // DO std::max BREATH
     // brown guy
     UINT16 Region;
     if (guiCurrentScreen != MAP_SCREEN && GetSelectedMan() == &s &&

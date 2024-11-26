@@ -1,5 +1,6 @@
 #include "TacticalAI/FindLocations.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Macro.h"
@@ -423,7 +424,7 @@ static INT32 CalcCoverValue(SOLDIERTYPE *pMe, INT16 sMyGridNo, INT32 iMyThreat, 
       ((MAX_THREAT_RANGE - iRange) * Threat[uiThreatIndex].iCertainty) / MAX_THREAT_RANGE;
 
   // divide by a 100 to make the numbers more managable and avoid 32-bit limit
-  iThisScale = MAX(iMyPosValue, iHisPosValue) / 100;
+  iThisScale = std::max(iMyPosValue, iHisPosValue) / 100;
   iThisScale = (iThisScale * iReductionFactor) / 100;
   *iTotalScale += iThisScale;
   // this helps to decide the percent improvement later
@@ -566,7 +567,7 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
     // action points left (rounded down) tiles away, since minimum
     // cost to move per tile is 1 points.
     iMaxMoveTilesLeft =
-        __max(0, pSoldier->bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
+        std::max(0, pSoldier->bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
     // NumMessage("In BLACK, maximum tiles to move left = ",maxMoveTilesLeft);
 
     // if we can't go as far as the usual full search range
@@ -710,15 +711,15 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
 #endif
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   iRoamRange = RoamingRange(pSoldier, &sOrigin);
@@ -1066,7 +1067,7 @@ INT16 FindSpotMaxDistFromOpponents(SOLDIERTYPE *pSoldier) {
     gubNPCAPBudget = pSoldier->bActionPoints;
   } else {
     // even if not under pressure, limit to 1 turn's travelling distance
-    gubNPCAPBudget = __min(pSoldier->bActionPoints / 2, CalcActionPoints(pSoldier));
+    gubNPCAPBudget = std::min((int8_t)(pSoldier->bActionPoints / 2), CalcActionPoints(pSoldier));
 
     iSearchRange = gubNPCAPBudget / 2;
   }
@@ -1085,24 +1086,24 @@ INT16 FindSpotMaxDistFromOpponents(SOLDIERTYPE *pSoldier) {
   // use the min macro here to make sure we don't wrap the UINT8 to 255...
 
 #if 0 /* doppelt? */
-	gubNPCAPBudget = 	gubNPCAPBudget = __min( gubNPCAPBudget, gubNPCAPBudget - GetAPsToChangeStance( pSoldier, ANIM_STAND ) );
+	gubNPCAPBudget = 	gubNPCAPBudget = std::min( gubNPCAPBudget, gubNPCAPBudget - GetAPsToChangeStance( pSoldier, ANIM_STAND ) );
 #else
-  gubNPCAPBudget =
-      __min(gubNPCAPBudget, gubNPCAPBudget - GetAPsToChangeStance(pSoldier, ANIM_STAND));
+  gubNPCAPBudget = std::min(gubNPCAPBudget,
+                            (uint8_t)(gubNPCAPBudget - GetAPsToChangeStance(pSoldier, ANIM_STAND)));
 #endif
   // NumMessage("Search Range = ",iSearchRange);
   // NumMessage("gubNPCAPBudget = ",gubNPCAPBudget);
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   // Call FindBestPath to set flags in all locations that we can
@@ -1232,15 +1233,15 @@ INT16 FindNearestUngassedLand(SOLDIERTYPE *pSoldier) {
     // NumMessage("Trying iSearchRange = ", iSearchRange);
 
     // determine maximum horizontal limits
-    sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+    sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+    sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+    sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+    sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1335,15 +1336,15 @@ INT16 FindNearbyDarkerSpot(SOLDIERTYPE *pSoldier) {
   // this should almost never need to search farther than 5 or 10 squares...
   for (iSearchRange = 5; iSearchRange <= 15; iSearchRange += 5) {
     // determine maximum horizontal limits
-    sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+    sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+    sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+    sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+    sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1488,12 +1489,12 @@ INT8 SearchForItems(SOLDIERTYPE &s, ItemSearchReason const reason, UINT16 const 
   search_range /= 2;
 
   // determine maximum horizontal limits
-  INT16 const max_left = MIN(search_range, s.sGridNo % MAXCOL);
-  INT16 const max_right = MIN(search_range, MAXCOL - (s.sGridNo % MAXCOL + 1));
+  INT16 const max_left = std::min(search_range, s.sGridNo % MAXCOL);
+  INT16 const max_right = std::min(search_range, MAXCOL - (s.sGridNo % MAXCOL + 1));
 
   // determine maximum vertical limits
-  INT16 const max_up = MIN(search_range, s.sGridNo / MAXROW);
-  INT16 const max_down = MIN(search_range, MAXROW - (s.sGridNo / MAXROW + 1));
+  INT16 const max_up = std::min(search_range, s.sGridNo / MAXROW);
+  INT16 const max_down = std::min(search_range, MAXROW - (s.sGridNo / MAXROW + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1655,15 +1656,15 @@ INT16 FindClosestDoor(SOLDIERTYPE *pSoldier) {
   iSearchRange = 5;
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1811,15 +1812,15 @@ INT16 FindNearbyPointOnEdgeOfMap(SOLDIERTYPE *pSoldier, INT8 *pbDirection) {
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
 
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1880,9 +1881,9 @@ INT16 FindClosestBoxingRingSpot(SOLDIERTYPE *pSoldier, BOOLEAN fInRing) {
   iSearchRange = 7;
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   if (pSoldier->bTeam == OUR_TEAM && !fInRing) {
@@ -1891,9 +1892,9 @@ INT16 FindClosestBoxingRingSpot(SOLDIERTYPE *pSoldier, BOOLEAN fInRing) {
   }
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (pSoldier->sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
@@ -1928,15 +1929,15 @@ INT16 FindNearestOpenableNonDoor(INT16 sStartGridNo) {
   iSearchRange = 7;
 
   // determine maximum horizontal limits
-  sMaxLeft = MIN(iSearchRange, (sStartGridNo % MAXCOL));
+  sMaxLeft = std::min(iSearchRange, (sStartGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = MIN(iSearchRange, MAXCOL - ((sStartGridNo % MAXCOL) + 1));
+  sMaxRight = std::min(iSearchRange, MAXCOL - ((sStartGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = MIN(iSearchRange, (sStartGridNo / MAXROW));
+  sMaxUp = std::min(iSearchRange, (sStartGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = MIN(iSearchRange, MAXROW - ((sStartGridNo / MAXROW) + 1));
+  sMaxDown = std::min(iSearchRange, MAXROW - ((sStartGridNo / MAXROW) + 1));
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {

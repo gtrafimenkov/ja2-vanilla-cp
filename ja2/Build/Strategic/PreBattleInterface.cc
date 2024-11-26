@@ -1,5 +1,6 @@
 #include "Strategic/PreBattleInterface.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -571,7 +572,7 @@ static void DoTransitionFromMapscreenToPreBattleInterface(void) {
   while (iPercentage < 100) {
     uiCurrTime = GetClock();
     iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-    iPercentage = MIN(iPercentage, 100);
+    iPercentage = std::min(iPercentage, 100);
 
     // Factor the percentage so that it is modified by a gravity falling
     // acceleration effect.
@@ -589,8 +590,8 @@ static void DoTransitionFromMapscreenToPreBattleInterface(void) {
       iTop = sStartTop + (sEndTop - sStartTop + 1) * iPercentage / 100;
 
     SGPBox const DstRect = {iLeft - iWidth * iPercentage / 200, iTop - iHeight * iPercentage / 200,
-                            MAX(1, iWidth * iPercentage / 100),
-                            MAX(1, iHeight * iPercentage / 100)};
+                            std::max(1, iWidth * iPercentage / 100),
+                            std::max(1, iHeight * iPercentage / 100)};
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, &PBIRect, &DstRect);
 
@@ -765,7 +766,7 @@ void RenderPreBattleInterface() {
     }
 
     {
-      INT32 const y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * MAX(guiNumUninvolved, 1);
+      INT32 const y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * std::max(guiNumUninvolved, (uint32_t)1);
       BltVideoObject(dst, vo, UNINVOLVED_HEADER, 8, y);
     }
 
@@ -784,12 +785,12 @@ void RenderPreBattleInterface() {
     PrintConfined(224, 38, 52, gpStrategicString[STR_PB_MILITIA]);
 
     // Draw the bottom columns
-    for (INT32 i = 0; i < (INT32)MAX(guiNumUninvolved, 1); ++i) {
+    for (INT32 i = 0; i < (INT32)std::max(guiNumUninvolved, (uint32_t)1); ++i) {
       INT32 const y = BOTTOM_Y - ROW_HEIGHT * (i + 1) + 1;
       BltVideoObject(dst, vo, BOTTOM_COLUMN, 161, y);
     }
 
-    for (INT32 i = 0; i < (INT32)(21 - MAX(guiNumUninvolved, 1)); ++i) {
+    for (INT32 i = 0; i < (INT32)(21 - std::max(guiNumUninvolved, (uint32_t)1)); ++i) {
       INT32 const y = TOP_Y + ROW_HEIGHT * i;
       BltVideoObject(dst, vo, TOP_COLUMN, 186, y);
     }

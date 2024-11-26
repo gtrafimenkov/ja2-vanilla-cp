@@ -1,5 +1,6 @@
 #include "Utils/TextInput.h"
 
+#include <algorithm>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -1123,7 +1124,7 @@ void SetExclusive24HourTimeValue(UINT8 ubField, UINT16 usTime) {
     SetInputFieldStringWith16BitString(ubField, L"");
     return;
   }
-  usTime = MIN(1439, usTime);
+  usTime = std::min((uint16_t)1439, usTime);
 
   TEXTINPUTNODE *const curr = GetTextInputField(ubField);
   if (!curr) return;

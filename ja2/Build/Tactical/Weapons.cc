@@ -1,5 +1,6 @@
 #include "Tactical/Weapons.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Directories.h"
@@ -631,9 +632,9 @@ INT8 ArmourVersusExplosivesPercent(SOLDIERTYPE *pSoldier) {
   if (pSoldier->inv[VESTPOS].usItem) {
     iVest = ExplosiveEffectiveArmour(&(pSoldier->inv[VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iVest = __min(65, 65 * iVest /
-                          (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection +
-                           Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection));
+    iVest = std::min(65, 65 * iVest /
+                             (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection +
+                              Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
     iVest = 0;
   }
@@ -641,7 +642,8 @@ INT8 ArmourVersusExplosivesPercent(SOLDIERTYPE *pSoldier) {
   if (pSoldier->inv[HELMETPOS].usItem) {
     iHelmet = ExplosiveEffectiveArmour(&(pSoldier->inv[HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = __min(15, 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection);
+    iHelmet =
+        std::min(15, 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
     iHelmet = 0;
   }
@@ -649,7 +651,7 @@ INT8 ArmourVersusExplosivesPercent(SOLDIERTYPE *pSoldier) {
   if (pSoldier->inv[LEGPOS].usItem) {
     iLeg = ExplosiveEffectiveArmour(&(pSoldier->inv[LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = __min(25, 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
+    iLeg = std::min(25, 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
     iLeg = 0;
   }
@@ -1077,7 +1079,7 @@ static BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
           if (pSoldier->bAimTime && !pSoldier->bDoBurst) {
             // gain extra exp for aiming, up to the amount from
             // the difficulty of the shot
-            usExpGain += __min(pSoldier->bAimTime, usExpGain);
+            usExpGain += std::min((uint16_t)pSoldier->bAimTime, usExpGain);
           }
 
           // base pts extra for hitting
@@ -1131,7 +1133,7 @@ static BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
         if (pSoldier->bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the throw
-          usExpGain += (2 * __min(pSoldier->bAimTime, usExpGain));
+          usExpGain += (2 * std::min((uint16_t)pSoldier->bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -1308,10 +1310,11 @@ static void UseBlade(SOLDIERTYPE *const pSoldier, INT16 const sTargetGridNo) {
         bMaxDrop = (iImpact / 20);
 
         // the duller they get, the slower they get any worse...
-        bMaxDrop = __min(bMaxDrop, pSoldier->inv[pSoldier->ubAttackingHand].bStatus[0] / 10);
+        bMaxDrop =
+            std::min(bMaxDrop, (int8_t)(pSoldier->inv[pSoldier->ubAttackingHand].bStatus[0] / 10));
 
         // as long as its still > USABLE, it drops another point 1/2 the time
-        bMaxDrop = __max(bMaxDrop, 2);
+        bMaxDrop = std::max(bMaxDrop, (int8_t)2);
 
         pSoldier->inv[pSoldier->ubAttackingHand].bStatus[0] -=
             (INT8)Random(bMaxDrop);  // 0 to (maxDrop - 1)
@@ -1345,7 +1348,7 @@ static void UseBlade(SOLDIERTYPE *const pSoldier, INT16 const sTargetGridNo) {
         if (pSoldier->bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the attack
-          usExpGain += (2 * __min(pSoldier->bAimTime, usExpGain));
+          usExpGain += (2 * std::min((uint16_t)pSoldier->bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -2176,7 +2179,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
 
       pSoldier2 = GetRobotController(pSoldier);
       if (pSoldier2) {
-        iMarksmanship = __max(iMarksmanship, EffectiveMarksmanship(pSoldier2));
+        iMarksmanship = std::max(iMarksmanship, (int32_t)EffectiveMarksmanship(pSoldier2));
       }
     }
   }
@@ -2327,7 +2330,8 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
       // to make early enemies easy CJC note: IDIOT!  This should have been a
       // min.  It's kind of too late now... CJC 2002-05-17: changed the max to a
       // min to make this work.
-      iChance += __min(0, gbDiff[DIFF_ENEMY_TO_HIT_MOD][SoldierDifficultyLevel(pSoldier)]);
+      iChance +=
+          std::min(0, (int32_t)gbDiff[DIFF_ENEMY_TO_HIT_MOD][SoldierDifficultyLevel(pSoldier)]);
     }
   }
 
@@ -2530,7 +2534,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
           if (iRange > POINT_BLANK_RANGE) {
             // reduce chance to hit with distance to the prone/immersed target
             iPenalty = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE);  // penalty -3%/tile
-            iPenalty = __min(iPenalty, AIM_PENALTY_TARGET_PRONE);
+            iPenalty = std::min(iPenalty, AIM_PENALTY_TARGET_PRONE);
 
             iChance -= iPenalty;
           }
@@ -2559,7 +2563,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
     }
 
     // penalty for amount that enemy has moved
-    iPenalty = __min(((pTarget->bTilesMoved * 3) / 2), 30);
+    iPenalty = std::min(((pTarget->bTilesMoved * 3) / 2), 30);
     iChance -= iPenalty;
 
     // if target sees us, he may have a chance to dodge before the gun goes off
@@ -3481,7 +3485,7 @@ INT32 CalcMaxTossRange(const SOLDIERTYPE *pSoldier, UINT16 usItem, BOOLEAN fArme
       // start with the range based on the soldier's strength and the item's
       // weight
       INT32 iThrowingStrength = (EffectiveStrength(pSoldier) * 2 + 100) / 3;
-      iRange = 2 + (iThrowingStrength / __min((3 + (Item[usItem].ubWeight) / 3), 4));
+      iRange = 2 + (iThrowingStrength / std::min((3 + (Item[usItem].ubWeight) / 3), 4));
     } else {  // not as aerodynamic!
 
       // start with the range based on the soldier's strength and the item's
@@ -3593,7 +3597,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
   } else {
     iMaxRange = CalcMaxTossRange(pSoldier, usHandItem, TRUE) * CELL_X_SIZE;
 
-    // NumMessage("MAX RANGE = ",maxRange);
+    // NumMessage("std::max RANGE = ",maxRange);
 
     // bonus if range is less than 1/2 maximum range, penalty if it's more
 

@@ -1,5 +1,7 @@
 #include "Tactical/DrugsAndAlcohol.h"
 
+#include <algorithm>
+
 #include "Macro.h"
 #include "SGP/Random.h"
 #include "Tactical/Interface.h"
@@ -155,7 +157,7 @@ BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
       if (bRegenPointsGained > 0) {
         // can't go above the points you get for a full boost
         pSoldier->bRegenerationCounter =
-            __min(pSoldier->bRegenerationCounter + bRegenPointsGained, REGEN_POINTS_PER_BOOSTER);
+            std::min(pSoldier->bRegenerationCounter + bRegenPointsGained, REGEN_POINTS_PER_BOOSTER);
       }
       pSoldier->bRegenBoostersUsedToday++;
     }
@@ -248,7 +250,8 @@ void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier) {
     //		bBandaged = BANDAGED( pSoldier );
 
     // increase life
-    pSoldier->bLife = __min(pSoldier->bLife + LIFE_GAIN_PER_REGEN_POINT, pSoldier->bLifeMax);
+    pSoldier->bLife =
+        std::min((int8_t)(pSoldier->bLife + LIFE_GAIN_PER_REGEN_POINT), pSoldier->bLifeMax);
 
     if (pSoldier->bLife == pSoldier->bLifeMax) {
       pSoldier->bBleeding = 0;

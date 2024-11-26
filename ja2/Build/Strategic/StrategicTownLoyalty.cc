@@ -1,5 +1,6 @@
 #include "Strategic/StrategicTownLoyalty.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -214,7 +215,7 @@ void IncrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyIncrease) {
   // the sChange value only do a maximum of 10000 pts at a time...
   uiRemainingIncrement = uiLoyaltyIncrease;
   while (uiRemainingIncrement) {
-    sThisIncrement = (INT16)MIN(uiRemainingIncrement, 10000);
+    sThisIncrement = (INT16)std::min(uiRemainingIncrement, (uint32_t)10000);
 
     // up the gain value
     gTownLoyalty[bTownId].sChange += (INT16)sThisIncrement;
@@ -247,7 +248,7 @@ void DecrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyDecrease) {
   // the sChange value only do a maximum of 10000 pts at a time...
   uiRemainingDecrement = uiLoyaltyDecrease;
   while (uiRemainingDecrement) {
-    sThisDecrement = (INT16)MIN(uiRemainingDecrement, 10000);
+    sThisDecrement = (INT16)std::min(uiRemainingDecrement, (uint32_t)10000);
 
     // down the gain value
     gTownLoyalty[bTownId].sChange -= sThisDecrement;

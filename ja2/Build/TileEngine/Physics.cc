@@ -1497,7 +1497,7 @@ static void CalculateLaunchItemBasicParams(const SOLDIERTYPE *pSoldier, const OB
                                             dMagForce, pItem, psFinalGridNo);
     }
   } else {
-    // Use MAX force, vary angle....
+    // Use std::max force, vary angle....
     dMagForce = CalculateSoldierMaxForce(pSoldier, dDegrees, pItem, fArmed);
 
     if (ubLevel == 0) {

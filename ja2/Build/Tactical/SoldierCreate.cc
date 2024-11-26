@@ -1,5 +1,6 @@
 #include "Tactical/SoldierCreate.h"
 
+#include <algorithm>
 #include <math.h>
 #include <string.h>
 
@@ -1000,8 +1001,8 @@ INT8 CalcDifficultyModifier(UINT8 ubSoldierClass) {
   // just starting on easy Assert( bDiffModifier <= 100 );
 
   // limit the range of the combined factors to between 0 and 100
-  bDiffModifier = __max(0, bDiffModifier);
-  bDiffModifier = __min(100, bDiffModifier);
+  bDiffModifier = std::max((int8_t)0, bDiffModifier);
+  bDiffModifier = std::min((int8_t)100, bDiffModifier);
 
   // DON'T change this function without carefully considering the impact on
   // GenerateRandomEquipment(),
@@ -1234,16 +1235,16 @@ void CreateDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *pp,
       break;
   }
 
-  pp->bExpLevel = MAX(1, pp->bExpLevel);  // minimum exp. level of 1
-  pp->bExpLevel = MIN(9, pp->bExpLevel);  // maximum exp. level of 9
+  pp->bExpLevel = std::max((int8_t)1, pp->bExpLevel);  // minimum exp. level of 1
+  pp->bExpLevel = std::min((int8_t)9, pp->bExpLevel);  // maximum exp. level of 9
 
   ubStatsLevel = pp->bExpLevel + bStatsModifier;
 #if 0 /* unsigned < 0 ? */
-	ubStatsLevel = MAX( 0, ubStatsLevel );	//minimum stats level of 0
+	ubStatsLevel = std::max( 0, ubStatsLevel );	//minimum stats level of 0
 #else
   ubStatsLevel = ubStatsLevel;  // minimum stats level of 0
 #endif
-  ubStatsLevel = MIN(9, ubStatsLevel);  // maximum stats level of 9
+  ubStatsLevel = std::min((uint8_t)9, ubStatsLevel);  // maximum stats level of 9
 
   // Set the minimum base attribute
   bBaseAttribute = 49 + (4 * ubStatsLevel);
@@ -1559,8 +1560,8 @@ void ModifySoldierAttributesWithNewRelativeLevel(SOLDIERTYPE *s, INT8 bRelativeA
   // Rel level 0: Lvl 1, 1: Lvl 2-3, 2: Lvl 4-5, 3: Lvl 6-7, 4: Lvl 8-9
   s->bExpLevel = (INT8)(2 * bRelativeAttributeLevel + Random(2));
 
-  s->bExpLevel = MAX(1, s->bExpLevel);  // minimum level of 1
-  s->bExpLevel = MIN(9, s->bExpLevel);  // maximum level of 9
+  s->bExpLevel = std::max((int8_t)1, s->bExpLevel);  // minimum level of 1
+  s->bExpLevel = std::min((int8_t)9, s->bExpLevel);  // maximum level of 9
 
   // Set the minimum base attribute
   bBaseAttribute = 49 + (4 * s->bExpLevel);
@@ -1740,16 +1741,16 @@ void RandomizeRelativeLevel(INT8 *pbRelLevel, UINT8 ubSoldierClass) {
   if (SOLDIER_CLASS_MILITIA(ubSoldierClass)) {
     // Militia never get to roll bad/great results at all (to avoid great
     // equipment drops from them if killed)
-    bAdjustedRoll = __max(1, bAdjustedRoll);
-    bAdjustedRoll = __min(8, bAdjustedRoll);
+    bAdjustedRoll = std::max((int8_t)1, bAdjustedRoll);
+    bAdjustedRoll = std::min((int8_t)8, bAdjustedRoll);
     if (IsAutoResolveActive()) {  // Artificially strengthen militia strength for
                                   // sake of gameplay
       bAdjustedRoll++;
     }
   } else {
     // max-min this to a range of 0-9
-    bAdjustedRoll = __max(0, bAdjustedRoll);
-    bAdjustedRoll = __min(9, bAdjustedRoll);
+    bAdjustedRoll = std::max((int8_t)0, bAdjustedRoll);
+    bAdjustedRoll = std::min((int8_t)9, bAdjustedRoll);
     if (IsAutoResolveActive()) {  // Artificially weaken enemy/creature strength
                                   // for sake of gameplay
       if (bAdjustedRoll > 0) {
@@ -1896,7 +1897,7 @@ static void CopyProfileItems(SOLDIERTYPE &s, SOLDIERCREATE_STRUCT const &c) {
       OBJECTTYPE *const slot = &s.inv[slot_id];
 
       UINT32 const slot_limit = MoneySlotLimit(slot_id);
-      UINT32 const slot_amount = MIN(money_left, slot_limit);
+      UINT32 const slot_amount = std::min(money_left, slot_limit);
       CreateMoney(slot_amount, slot);
       money_left -= slot_amount;
     }

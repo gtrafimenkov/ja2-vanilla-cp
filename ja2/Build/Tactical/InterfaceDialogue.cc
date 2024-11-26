@@ -1,5 +1,6 @@
 #include "Tactical/InterfaceDialogue.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -381,7 +382,7 @@ void InternalInitTalkingMenu(UINT8 const ubCharacterNum, INT16 sX, INT16 sY) {
     }
 
     // Check for bottom
-    sY = MIN(sY, gsVIEWPORT_WINDOW_END_Y - gTalkPanel.usHeight);
+    sY = std::min(sY, (int16_t)(gsVIEWPORT_WINDOW_END_Y - gTalkPanel.usHeight));
   }
 
   // Set values
@@ -3589,7 +3590,7 @@ UINT32 CalcMedicalCost(UINT8 ubId) {
   uiCostSoFar *= 10;
 
   // always ask for at least $10
-  uiCostSoFar = __max(10, uiCostSoFar);
+  uiCostSoFar = std::max((uint32_t)10, uiCostSoFar);
 
   return (uiCostSoFar);
 }

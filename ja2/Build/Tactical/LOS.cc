@@ -1,5 +1,6 @@
 #include "Tactical/LOS.h"
 
+#include <algorithm>
 #include <math.h>
 #include <string.h>
 
@@ -840,7 +841,7 @@ static INT32 LineOfSightTest(GridNo start_pos, FLOAT dStartZ, GridNo end_pos, FL
           iStepsToTravelY = 1000000;
         }
 
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = std::min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         /*
                                         if (qIncrX > 0)
@@ -880,7 +881,7 @@ static INT32 LineOfSightTest(GridNo start_pos, FLOAT dStartZ, GridNo end_pos, FL
                                         }
 
                                         // add 1 to the # of steps to travel to
-           go INTO the next tile iStepsToTravel = __min( iStepsToTravelX,
+           go INTO the next tile iStepsToTravel = std::min( iStepsToTravelX,
            iStepsToTravelY ) + 1;
                                         //iStepsToTravel = 1;
                                         */
@@ -1399,7 +1400,7 @@ INT32 SoldierToSoldierLineOfSightTest(const SOLDIERTYPE *const pStartSoldier,
     } else {
       bEffectiveCamo = pEndSoldier->bCamo * (100 - pEndSoldier->bTilesMoved * 5) / 100;
     }
-    bEffectiveCamo = __max(bEffectiveCamo, 0);
+    bEffectiveCamo = std::max(bEffectiveCamo, (int8_t)0);
 
     if (gAnimControl[pEndSoldier->usAnimState].ubEndHeight < ANIM_STAND) {
       // reduce visibility by up to a third for camouflage!
@@ -1591,7 +1592,7 @@ iRange )
         return( iImpact );
 
         // only start reducing impact at distances greater than one range
-        //return( __max( 1, iImpact * ( 100 - ( PERCENT_BULLET_SLOWED_BY_RANGE *
+        //return( std::max( 1, iImpact * ( 100 - ( PERCENT_BULLET_SLOWED_BY_RANGE *
 iDistanceTravelled ) / iRange ) / 100 ) );
 
 }
@@ -1872,7 +1873,7 @@ static BOOLEAN BulletHitMerc(BULLET *pBullet, STRUCTURE *pStructure, BOOLEAN fIn
     if (iDamage < iImpact) {
       iImpact = iDamage;
     }
-    uiChanceThrough = (UINT8)__max(0, (iImpact - 20));
+    uiChanceThrough = (UINT8)std::max(0, (iImpact - 20));
     if (PreRandom(100) < uiChanceThrough) {
       // bullet MAY go through
       // adjust for bullet going through person
@@ -2380,7 +2381,7 @@ static UINT8 CalcChanceToGetThrough(BULLET *pBullet) {
         }
 
         // add 1 to the # of steps to travel to go INTO the next tile
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = std::min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         pBullet->qCurrX += pBullet->qIncrX * iStepsToTravel;
         pBullet->qCurrY += pBullet->qIncrY * iStepsToTravel;
@@ -2535,7 +2536,7 @@ static UINT8 CalcChanceToGetThrough(BULLET *pBullet) {
 
           // reduce the impact reduction of a structure tile to that of the
           // bullet, since it can't do MORE than stop it.
-          iTotalStructureImpact = __min(iTotalStructureImpact, pBullet->iImpact);
+          iTotalStructureImpact = std::min(iTotalStructureImpact, pBullet->iImpact);
 
           // add to "impact reduction" based on strength of structure weighted
           // by probability of hitting it
@@ -3138,7 +3139,7 @@ void MoveBullet(BULLET *const pBullet) {
   FIXEDPT qWindowBottomHeight;
   FIXEDPT qWindowTopHeight;
 
-  // CHECK MIN TIME ELAPSED
+  // CHECK std::min TIME ELAPSED
   uiTime = GetJA2Clock();
 
   if ((uiTime - pBullet->uiLastUpdate) < pBullet->usClockTicksPerUpdate) {
@@ -3481,13 +3482,13 @@ void MoveBullet(BULLET *const pBullet) {
         }
 
         // add 1 to the # of steps to travel to go INTO the next tile
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = std::min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         // special coding (compared with other versions above) to deal with
         // bullets hitting the ground
         if (pBullet->qCurrZ + pBullet->qIncrZ * iStepsToTravel < qLandHeight) {
           iStepsToTravel =
-              __min(iStepsToTravel, abs((pBullet->qCurrZ - qLandHeight) / pBullet->qIncrZ));
+              std::min(iStepsToTravel, abs((pBullet->qCurrZ - qLandHeight) / pBullet->qIncrZ));
           pBullet->qCurrX += pBullet->qIncrX * iStepsToTravel;
           pBullet->qCurrY += pBullet->qIncrY * iStepsToTravel;
           pBullet->qCurrZ += pBullet->qIncrZ * iStepsToTravel;

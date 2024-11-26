@@ -1,6 +1,7 @@
 #include "SGP/SoundMan.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <assert.h>
 #include <string.h>
 
@@ -317,7 +318,7 @@ BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
   SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
   if (channel == NULL) return FALSE;
 
-  channel->uiFadeVolume = __min(uiVolume, MAXVOLUME);
+  channel->uiFadeVolume = std::min(uiVolume, (uint32_t)MAXVOLUME);
   return TRUE;
 }
 
@@ -327,7 +328,7 @@ BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
   SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
   if (channel == NULL) return FALSE;
 
-  channel->Pan = __min(uiPan, 127);
+  channel->Pan = std::min(uiPan, (uint32_t)127);
   return TRUE;
 }
 
@@ -804,7 +805,7 @@ static void SoundCallback(void *userdata, Uint8 *stream, int len) {
         size_t amount;
 
       mixing:
-        amount = MIN(samples, s->n_samples - Sound->pos);
+        amount = std::min(samples, (size_t)(s->n_samples - Sound->pos));
         if (s->uiFlags & SAMPLE_16BIT) {
           if (s->uiFlags & SAMPLE_STEREO) {
             const INT16 *const src = (const INT16 *)s->pData + Sound->pos * 2;

@@ -1,5 +1,6 @@
 #include "Tactical/Items.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <stdio.h>
 #include <string.h>
@@ -1795,7 +1796,7 @@ void CleanUpStack(OBJECTTYPE *const o, OBJECTTYPE *const cursor_o) {
         INT8 &dst_status = o->bStatus[k];
         if (dst_status >= max_points) continue;
 
-        INT8 const points_to_move = MIN(max_points - dst_status, src_status);
+        INT8 const points_to_move = std::min((int8_t)(max_points - dst_status), src_status);
         dst_status += points_to_move;
         src_status -= points_to_move;
         if (src_status != 0) continue;
@@ -1816,7 +1817,7 @@ void CleanUpStack(OBJECTTYPE *const o, OBJECTTYPE *const cursor_o) {
       INT8 &dst_status = o->bStatus[k];
       if (dst_status >= max_points) continue;
 
-      INT8 const points_to_move = MIN(max_points - dst_status, src_status);
+      INT8 const points_to_move = std::min((int8_t)(max_points - dst_status), src_status);
       dst_status += points_to_move;
       src_status -= points_to_move;
       if (src_status != 0) continue;
@@ -1921,8 +1922,8 @@ BOOLEAN ReloadGun(SOLDIERTYPE *pSoldier, OBJECTTYPE *pGun, OBJECTTYPE *pAmmo) {
       usNewAmmoItem = pAmmo->usItem;
 
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove =
-            __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = std::min(pAmmo->ubShotsLeft[0], (uint8_t)(Weapon[pGun->usItem].ubMagSize -
+                                                                    pGun->ubGunShotsLeft));
       } else {
         ubBulletsToMove = pAmmo->ubShotsLeft[0];
       }
@@ -1931,19 +1932,19 @@ BOOLEAN ReloadGun(SOLDIERTYPE *pSoldier, OBJECTTYPE *pGun, OBJECTTYPE *pAmmo) {
                Weapon[pGun->usItem].ubMagSize) {
       usNewAmmoItem = pAmmo->usItem - 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove =
-            __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = std::min(pAmmo->ubShotsLeft[0], (uint8_t)(Weapon[pGun->usItem].ubMagSize -
+                                                                    pGun->ubGunShotsLeft));
       } else {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
+        ubBulletsToMove = std::min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
       }
     } else  // mag is smaller than weapon mag
     {
       usNewAmmoItem = pAmmo->usItem + 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove =
-            __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = std::min(pAmmo->ubShotsLeft[0], (uint8_t)(Weapon[pGun->usItem].ubMagSize -
+                                                                    pGun->ubGunShotsLeft));
       } else {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
+        ubBulletsToMove = std::min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
       }
     }
 
@@ -2575,9 +2576,9 @@ BOOLEAN PlaceObject(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
     // placement in an empty slot
     ubNumberToDrop = pObj->ubNumberOfObjects;
 
-    if (ubNumberToDrop > __max(ubSlotLimit, 1)) {
+    if (ubNumberToDrop > std::max(ubSlotLimit, (uint8_t)1)) {
       // drop as many as possible into pocket
-      ubNumberToDrop = __max(ubSlotLimit, 1);
+      ubNumberToDrop = std::max(ubSlotLimit, (uint8_t)1);
     }
 
     // could be wrong type of object for slot... need to check...
@@ -2674,7 +2675,7 @@ BOOLEAN PlaceObject(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
         } else {
           SwapObjs(pObj, pInSlot);
         }
-      } else if (pObj->ubNumberOfObjects <= __max(ubSlotLimit, 1)) {
+      } else if (pObj->ubNumberOfObjects <= std::max(ubSlotLimit, (uint8_t)1)) {
         // swapping
         SwapObjs(pObj, pInSlot);
       } else {
@@ -2960,7 +2961,8 @@ UINT8 AddKeysToSlot(SOLDIERTYPE &s, INT8 const key_ring_pos, OBJECTTYPE const &k
   KEY_ON_RING &keyring = s.pKeyRing[key_ring_pos];
   if (keyring.ubNumber == 0) keyring.ubKeyID = key.ubKeyID;
   // Only take what we can
-  UINT8 const n_added = MIN(key.ubNumberOfObjects, Item[key.usItem].ubPerPocket - keyring.ubNumber);
+  UINT8 const n_added =
+      std::min(key.ubNumberOfObjects, (uint8_t)(Item[key.usItem].ubPerPocket - keyring.ubNumber));
   keyring.ubNumber += n_added;
   return n_added;
 }
@@ -3770,9 +3772,9 @@ void WaterDamage(SOLDIERTYPE &s) {
     // reduce camouflage by 2% per tile of deep water
     // and 1% for medium water
     if (s.bOverTerrainType == DEEP_WATER) {
-      s.bCamo = __max(0, s.bCamo - 2);
+      s.bCamo = std::max(0, s.bCamo - 2);
     } else {
-      s.bCamo = __max(0, s.bCamo - 1);
+      s.bCamo = std::max(0, s.bCamo - 1);
     }
     if (s.bCamo == 0) {
       // Reload palettes....
@@ -3824,8 +3826,8 @@ BOOLEAN ApplyCamo(SOLDIERTYPE *const pSoldier, OBJECTTYPE *const pObj, BOOLEAN *
   // points are used up at a rate of 50% kit = 100% camo on guy
   // add 1 to round off
   bPointsToUse = (100 - pSoldier->bCamo + 1) / 2;
-  bPointsToUse = __min(bPointsToUse, usTotalKitPoints);
-  pSoldier->bCamo = __min(100, pSoldier->bCamo + bPointsToUse * 2);
+  bPointsToUse = std::min(bPointsToUse, (int8_t)usTotalKitPoints);
+  pSoldier->bCamo = std::min(100, pSoldier->bCamo + bPointsToUse * 2);
 
   UseKitPoints(*pObj, bPointsToUse, *pSoldier);
 
@@ -3868,7 +3870,7 @@ BOOLEAN ApplyCanteen(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs
     }
   }
 
-  sPointsToUse = __min(20, usTotalKitPoints);
+  sPointsToUse = std::min((uint16_t)20, usTotalKitPoints);
 
   // CJC Feb 9.  Canteens don't seem effective enough, so doubled return from
   // them
@@ -3905,7 +3907,7 @@ BOOLEAN ApplyElixir(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs)
   DeductPoints(pSoldier, AP_CAMOFLAGE, 0);
 
   sPointsToUse = (MAX_HUMAN_CREATURE_SMELL - pSoldier->bMonsterSmell) * 2;
-  sPointsToUse = __min(sPointsToUse, usTotalKitPoints);
+  sPointsToUse = std::min(sPointsToUse, (int16_t)usTotalKitPoints);
 
   UseKitPoints(*pObj, sPointsToUse, *pSoldier);
 

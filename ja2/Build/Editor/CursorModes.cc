@@ -1,5 +1,7 @@
 #include "Editor/CursorModes.h"
 
+#include <algorithm>
+
 #include "Editor/EditScreen.h"
 #include "Editor/EditorBuildings.h"
 #include "Editor/EditorDefines.h"
@@ -294,10 +296,10 @@ static BOOLEAN HandleAreaSelection(const INT16 sGridX, const INT16 sGridY) {
 }
 
 static void ValidateSelectionRegionBoundaries(void) {
-  gSelectRegion.iLeft = MAX(MIN(159, gSelectRegion.iLeft), 0);
-  gSelectRegion.iRight = MAX(MIN(159, gSelectRegion.iRight), 0);
-  gSelectRegion.iTop = MAX(MIN(159, gSelectRegion.iTop), 0);
-  gSelectRegion.iBottom = MAX(MIN(159, gSelectRegion.iBottom), 0);
+  gSelectRegion.iLeft = std::max(std::min(159, gSelectRegion.iLeft), 0);
+  gSelectRegion.iRight = std::max(std::min(159, gSelectRegion.iRight), 0);
+  gSelectRegion.iTop = std::max(std::min(159, gSelectRegion.iTop), 0);
+  gSelectRegion.iBottom = std::max(std::min(159, gSelectRegion.iBottom), 0);
 }
 
 static void EnsureSelectionType(void) {

@@ -441,7 +441,7 @@ void CalcNewActionPoints(SOLDIERTYPE *pSoldier) {
   // Don't max out if we are drugged....
   if (!GetDrugEffect(pSoldier, DRUG_TYPE_ADRENALINE)) {
     pSoldier->bActionPoints =
-        __min(pSoldier->bActionPoints, gubMaxActionPoints[pSoldier->ubBodyType]);
+        std::min(pSoldier->bActionPoints, (int8_t)gubMaxActionPoints[pSoldier->ubBodyType]);
   }
 
   pSoldier->bInitialActionPoints = pSoldier->bActionPoints;
@@ -1905,8 +1905,8 @@ void EVENT_FireSoldierWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
       // Set the TOTAL number of bullets to be fired
       // Can't shoot more bullets than we have in our magazine!
       pSoldier->bBulletsLeft =
-          __min(Weapon[pSoldier->inv[pSoldier->ubAttackingHand].usItem].ubShotsPerBurst,
-                pSoldier->inv[pSoldier->ubAttackingHand].ubGunShotsLeft);
+          std::min(Weapon[pSoldier->inv[pSoldier->ubAttackingHand].usItem].ubShotsPerBurst,
+                   pSoldier->inv[pSoldier->ubAttackingHand].ubGunShotsLeft);
     } else if (IsValidSecondHandShot(pSoldier)) {
       // two-pistol attack - two bullets!
       pSoldier->bBulletsLeft = 2;
@@ -4757,7 +4757,7 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *const pSoldier, INT16 sLifeDeduct, INT16 sB
     // reduce breath loss to a smaller degree, except for the queen...
     if (pSoldier->ubBodyType == QUEENMONSTER) {
       // in fact, reduce breath loss by MORE!
-      sReductionFactor = __min(sReductionFactor, 8);
+      sReductionFactor = std::min(sReductionFactor, (int16_t)8);
       sReductionFactor *= 2;
     } else {
       sReductionFactor /= 2;
@@ -4862,7 +4862,7 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *const pSoldier, INT16 sLifeDeduct, INT16 sB
     INT16 sTestOne, sTestTwo, sChanceToDrop;
 
     sTestOne = EffectiveStrength(pSoldier);
-    sTestTwo = (2 * (__max(sLifeDeduct, (sBreathLoss / 100))));
+    sTestTwo = (2 * (std::max(sLifeDeduct, (int16_t)(sBreathLoss / 100))));
 
     const SOLDIERTYPE *const attacker = pSoldier->attacker;
     if (attacker != NULL && attacker->ubBodyType == BLOODCAT) {
@@ -4871,7 +4871,7 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *const pSoldier, INT16 sLifeDeduct, INT16 sB
     }
 
     // If damage > effective strength....
-    sChanceToDrop = (__max(0, (sTestTwo - sTestOne)));
+    sChanceToDrop = (std::max(0, (sTestTwo - sTestOne)));
 
     // ATE: Increase odds of NOT dropping an UNDROPPABLE OBJECT
     if ((pSoldier->inv[HANDPOS].fFlags & OBJECT_UNDROPPABLE)) {
@@ -6440,8 +6440,8 @@ static UINT16 *CreateEnemyGlow16BPPPalette(const SGPPaletteEntry *pPalette, UINT
   UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
 
   for (UINT32 cnt = 0; cnt < 256; cnt++) {
-    UINT8 r = __max(rscale, pPalette[cnt].r);
-    UINT8 g = __max(gscale, pPalette[cnt].g);
+    UINT8 r = std::max((uint8_t)rscale, pPalette[cnt].r);
+    UINT8 g = std::max((uint8_t)gscale, pPalette[cnt].g);
     UINT8 b = pPalette[cnt].b;
     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
   }
@@ -6460,12 +6460,12 @@ static UINT16 *CreateEnemyGreyGlow16BPPPalette(const SGPPaletteEntry *pPalette, 
     UINT32 gmod = 100 * lumin / 256;
     UINT32 bmod = 100 * lumin / 256;
 
-    rmod = __max(rscale, rmod);
-    gmod = __max(gscale, gmod);
+    rmod = std::max(rscale, rmod);
+    gmod = std::max(gscale, gmod);
 
-    UINT8 r = __min(rmod, 255);
-    UINT8 g = __min(gmod, 255);
-    UINT8 b = __min(bmod, 255);
+    UINT8 r = std::min((uint8_t)rmod, (uint8_t)255);
+    UINT8 g = std::min((uint8_t)gmod, (uint8_t)255);
+    UINT8 b = std::min((uint8_t)bmod, (uint8_t)255);
     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
   }
   return p16BPPPalette;

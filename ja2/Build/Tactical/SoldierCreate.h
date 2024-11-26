@@ -67,7 +67,7 @@ struct SOLDIERCREATE_STRUCT {
   INT8 bLife;
   INT8 bAgility;
   INT8 bDexterity;
-  INT8 bExpLevel;
+  int8_t bExpLevel;
   INT8 bMarksmanship;
   INT8 bMedical;
   INT8 bMechanical;

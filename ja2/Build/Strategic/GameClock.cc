@@ -1,5 +1,6 @@
 #include "Strategic/GameClock.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -408,7 +409,8 @@ static void SetClockResolutionToCompressMode(INT32 iCompressMode) {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond((UINT8)MAX(1, (UINT8)(guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(
+        (UINT8)std::max((uint8_t)1, (UINT8)(guiGameSecondsPerRealSecond / 60)));
   }
 
   // if the compress mode is X0 or X1
@@ -501,7 +503,7 @@ static void SetClockResolutionToDefault(void) { gubClockResolution = 1; }
 
 // Valid range is 0 - 60 times per second.
 static void SetClockResolutionPerSecond(UINT8 ubNumTimesPerSecond) {
-  ubNumTimesPerSecond = (UINT8)(MAX(0, MIN(60, ubNumTimesPerSecond)));
+  ubNumTimesPerSecond = (UINT8)(std::max((uint8_t)0, std::min((uint8_t)60, ubNumTimesPerSecond)));
   gubClockResolution = ubNumTimesPerSecond;
 }
 
@@ -567,7 +569,7 @@ void UpdateClock() {
   // Because we debug so much, breakpoints tend to break the game, and cause
   // unnecessary headaches. This line ensures that no more than 1 real-second
   // passes between frames.  This otherwise has no effect on anything else.
-  uiLastSecondTime = MAX(uiNewTime - 1000, uiLastSecondTime);
+  uiLastSecondTime = std::max(uiNewTime - 1000, uiLastSecondTime);
 
   // 1000's of a second difference since last second.
   uiThousandthsOfThisSecondProcessed = uiNewTime - uiLastSecondTime;
@@ -592,7 +594,7 @@ void UpdateClock() {
       uiNewTimeProcessed =
           guiGameSecondsPerRealSecond * guiTimesThisSecondProcessed / gubClockResolution;
 
-      uiNewTimeProcessed = MAX(uiNewTimeProcessed, uiLastTimeProcessed);
+      uiNewTimeProcessed = std::max(uiNewTimeProcessed, uiLastTimeProcessed);
 
       uiAmountToAdvanceTime = uiNewTimeProcessed - uiLastTimeProcessed;
 

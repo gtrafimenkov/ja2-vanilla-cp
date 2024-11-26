@@ -18,7 +18,7 @@ class Vector {
   T const &operator[](size_t const i) const { return v_[i]; }
 
   void PushBack(const T &e) {
-    if (size_ >= capacity_) Reserve(MAX(1, size_ * 2));
+    if (size_ >= capacity_) Reserve(std::max(1, size_ * 2));
     new (&v_[size_]) T(e);
     ++size_;
   }
@@ -41,7 +41,7 @@ void Vector<T>::Reserve(size_t const n) {
   size_t i;
   T *const old_v = v_;
   size_t const old_size = size_;
-  size_t const new_size = MIN(old_size, n);
+  size_t const new_size = std::min(old_size, n);
   try {
     for (i = 0; i < new_size; ++i) new (&new_v[i]) T(old_v[i]);
   } catch (...) {

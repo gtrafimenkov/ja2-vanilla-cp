@@ -1925,10 +1925,10 @@ static void CreatePopUpBoxForMovementBox(void) {
   // adjust position to try to keep it in the map area as good as possible
   SGPBox const &area = GetBoxArea(box);
   if (area.x + area.w >= MAP_VIEW_START_X + MAP_VIEW_WIDTH) {
-    SetBoxX(box, MAX(MAP_VIEW_START_X, MAP_VIEW_START_X + MAP_VIEW_WIDTH - area.w));
+    SetBoxX(box, std::max(MAP_VIEW_START_X, MAP_VIEW_START_X + MAP_VIEW_WIDTH - area.w));
   }
   if (area.y + area.h >= MAP_VIEW_START_Y + MAP_VIEW_HEIGHT) {
-    SetBoxY(box, MAX(MAP_VIEW_START_Y, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - area.h));
+    SetBoxY(box, std::max(MAP_VIEW_START_Y, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - area.h));
   }
 }
 

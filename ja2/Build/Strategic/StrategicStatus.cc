@@ -1,5 +1,6 @@
 #include "Strategic/StrategicStatus.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "GameSettings.h"
@@ -57,8 +58,8 @@ void ModifyPlayerReputation(INT8 bRepChange) {
   iNewBadRep = (INT32)gStrategicStatus.ubBadReputation - bRepChange;
 
   // keep within a 0-100 range (0 = Saint, 100 = Satan)
-  iNewBadRep = __max(0, iNewBadRep);
-  iNewBadRep = __min(100, iNewBadRep);
+  iNewBadRep = std::max(0, iNewBadRep);
+  iNewBadRep = std::min(100, iNewBadRep);
 
   gStrategicStatus.ubBadReputation = (UINT8)iNewBadRep;
 }
@@ -271,7 +272,9 @@ void HandleEnricoEmail(void) {
   // grant some leeway for the next day, could have started moving
   // at night...
   gStrategicStatus.ubNumNewSectorsVisitedToday =
-      __min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
+      std::min(gStrategicStatus.ubNumNewSectorsVisitedToday,
+               (uint8_t)NEW_SECTORS_EQUAL_TO_ACTIVITY) /
+      3;
 }
 
 static INT8 SoldierClassToRankIndex(UINT8 ubSoldierClass);

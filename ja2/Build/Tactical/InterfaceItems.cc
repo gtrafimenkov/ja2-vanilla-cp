@@ -323,7 +323,8 @@ struct INV_REGIONS {
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS (sX,sY get set via
 // InitInvSlotInterface() )
 static INV_REGIONS const gSMInvData[] = {
-#define M(w, h) {w, h}
+#define M(w, h) \
+  { w, h }
     M(HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT),  // HELMETPOS
     M(VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT),  // VESTPOS
     M(LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT),  // LEGPOS,
@@ -1540,8 +1541,8 @@ void InternalInitItemDescriptionBox(OBJECTTYPE *const o, const INT16 sX, const I
   }
 
   if (ITEM_PROS_AND_CONS(o->usItem)) {
-    INT16 const pros_cons_indent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT),
-                                         StringPixLength(gzConsLabel, ITEMDESC_FONT)) +
+    INT16 const pros_cons_indent = std::max(StringPixLength(gzProsLabel, ITEMDESC_FONT),
+                                            StringPixLength(gzConsLabel, ITEMDESC_FONT)) +
                                    10;
     const SGPBox *const box = (in_map ? &g_map_itemdesc_pros_cons_box : &g_itemdesc_pros_cons_box);
     UINT16 const x = box->x + pros_cons_indent + gsInvDescX;
@@ -2007,8 +2008,8 @@ void RenderItemDescriptionBox(void) {
       SetFontForeground(FONT_BLACK);
       SetFontShadow(ITEMDESC_FONTSHADOW2);
 
-      INT16 const pros_cons_indent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT),
-                                           StringPixLength(gzConsLabel, ITEMDESC_FONT)) +
+      INT16 const pros_cons_indent = std::max(StringPixLength(gzProsLabel, ITEMDESC_FONT),
+                                              StringPixLength(gzConsLabel, ITEMDESC_FONT)) +
                                      10;
       x += pros_cons_indent;
       w -= pros_cons_indent + StringPixLength(DOTDOTDOT, ITEMDESC_FONT);

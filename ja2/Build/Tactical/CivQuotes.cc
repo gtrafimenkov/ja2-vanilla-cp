@@ -272,7 +272,7 @@ void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16
     }
 
     // Check for bottom
-    sY = MIN(sY, gsVIEWPORT_WINDOW_END_Y - gusCivQuoteBoxHeight);
+    sY = std::min(sY, (int16_t)(gsVIEWPORT_WINDOW_END_Y - gusCivQuoteBoxHeight));
   }
 
   UINT16 const w = gusCivQuoteBoxWidth;

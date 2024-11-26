@@ -1,5 +1,6 @@
 #include "Strategic/Assignments.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -1757,7 +1758,7 @@ static void FatigueCharacter(SOLDIERTYPE &s) {
     INT32 const percent_encumbrance = CalculateCarriedWeight(&s);
     if (percent_encumbrance > 100) {
       INT32 const breath_loss = max_breath_loss * percent_encumbrance / 100;
-      max_breath_loss = MIN(breath_loss, 127);
+      max_breath_loss = std::min(breath_loss, 127);
     }
   }
 
@@ -2124,11 +2125,11 @@ INT16 GetSoldierTrainingPts(const SOLDIERTYPE *s, INT8 bTrainStat, BOOLEAN fAtGu
 
   // calculate normal training pts - what it would be if his stats were "normal"
   // (ignoring drugs, fatigue)
-  *pusMaxPts = __max(s->bWisdom * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
+  *pusMaxPts = std::max(s->bWisdom * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
 
   // calculate effective training pts
   UINT16 sTrainingPts =
-      __max(EffectiveWisdom(s) * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
+      std::max(EffectiveWisdom(s) * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range
   // sector in Alma
@@ -2165,11 +2166,11 @@ INT16 GetSoldierStudentPts(const SOLDIERTYPE *s, INT8 bTrainStat, BOOLEAN fAtGun
 
   // calculate normal training pts - what it would be if his stats were "normal"
   // (ignoring drugs, fatigue)
-  *pusMaxPts = __max(s->bWisdom * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
+  *pusMaxPts = std::max(s->bWisdom * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
 
   // calculate effective training pts
   UINT16 sTrainingPts =
-      __max(EffectiveWisdom(s) * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
+      std::max(EffectiveWisdom(s) * (TRAINING_RATING_CAP - bSkill) / SELF_TRAINING_DIVISOR, 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range
   // sector in Alma

@@ -1,5 +1,6 @@
 #include "SGP/LoadSaveData.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Macro.h"
@@ -27,7 +28,7 @@ void wchar_to_utf16(const wchar_t *string, void *outputBuf, int charsToWrite) {
 #endif
 
     // calculating number of characters to copy
-    int charsToCopy = MIN(charsToWrite, stringLen);
+    int charsToCopy = std::min(charsToWrite, (int)stringLen);
     memcpy(outputBuf, utf16_string, charsToCopy * 2);
     if (charsToCopy < charsToWrite) {
       memset(((char *)outputBuf) + charsToCopy * 2, 0, (charsToWrite - charsToCopy) * 2);
@@ -125,7 +126,7 @@ UTF8String DataReader::readUTF32(int numChars) {
 void DataReader::readUTF16(wchar_t *buffer, int numChars, const IEncodingCorrector *fixer) {
   UTF8String str = readUTF16(numChars, fixer);
   std::vector<wchar_t> wstr = str.getWCHAR();
-  int charsToCopy = MIN(wstr.size(), numChars);
+  int charsToCopy = std::min((int)wstr.size(), numChars);
   memcpy(buffer, wstr.data(), charsToCopy * sizeof(wchar_t));
 }
 
@@ -135,7 +136,7 @@ void DataReader::readUTF16(wchar_t *buffer, int numChars, const IEncodingCorrect
 void DataReader::readUTF32(wchar_t *buffer, int numChars) {
   UTF8String str = readUTF32(numChars);
   std::vector<wchar_t> wstr = str.getWCHAR();
-  int charsToCopy = MIN(wstr.size(), numChars);
+  int charsToCopy = std::min((int)wstr.size(), numChars);
   memcpy(buffer, wstr.data(), charsToCopy * sizeof(wchar_t));
 }
 

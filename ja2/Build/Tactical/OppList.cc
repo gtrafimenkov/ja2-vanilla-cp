@@ -1,5 +1,6 @@
 #include "Tactical/OppList.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -594,7 +595,7 @@ void HandleSight(SOLDIERTYPE &s, SightFlags const sight_flags) {
   if (s.bNewSituation && !(s.uiStatusFlags & SOLDIER_PC)) {
     HaultSoldierFromSighting(&s, TRUE);
   }
-  s.bNewSituation = __max(s.bNewSituation, temp_new_situation);
+  s.bNewSituation = std::max(s.bNewSituation, temp_new_situation);
 
   // If we've been told to radio the results
   if (sight_flags & SIGHT_RADIO) {
@@ -869,7 +870,7 @@ INT16 DistanceVisible(const SOLDIERTYPE *pSoldier, INT8 bFacingDir, INT8 bSubjec
 
   // let tanks see and be seen further (at night)
   if ((TANK(pSoldier) && sDistVisible > 0) || (pSubject && TANK(pSubject))) {
-    sDistVisible = __max(sDistVisible + 5, MaxDistanceVisible());
+    sDistVisible = std::max((int16_t)(sDistVisible + 5), MaxDistanceVisible());
   }
 
   if (gpWorldLevelData[pSoldier->sGridNo].ubExtFlags[bLevel] &
@@ -877,7 +878,7 @@ INT16 DistanceVisible(const SOLDIERTYPE *pSoldier, INT8 bFacingDir, INT8 bSubjec
     if (!IsWearingHeadGear(*pSoldier, GASMASK)) {
       // in gas without a gas mask; reduce max distance visible to 2 tiles at
       // most
-      sDistVisible = __min(sDistVisible, 2);
+      sDistVisible = std::min(sDistVisible, (int16_t)2);
     }
   }
 
@@ -3001,7 +3002,7 @@ UINT8 MovementNoise(SOLDIERTYPE *pSoldier)  // XXX TODO000B
   */
   // NumMessage("Modified Stealth = ",stealthSkill);
 
-  iStealthSkill = __max(iStealthSkill, 0);
+  iStealthSkill = std::max(iStealthSkill, 0);
 
   if (!pSoldier->bStealthMode)  // REGULAR movement
   {
@@ -4545,7 +4546,7 @@ static void CommunicateWatchedLoc(const SOLDIERTYPE *const watcher, const INT16 
     } else {
       // increment to max
       gubWatchedLocPoints[ubLoop][bLoopPoint] =
-          __max(gubWatchedLocPoints[ubLoop][bLoopPoint], ubPoints);
+          std::max(gubWatchedLocPoints[ubLoop][bLoopPoint], ubPoints);
 
       gfWatchedLocReset[ubLoop][bLoopPoint] = FALSE;
       gfWatchedLocHasBeenIncremented[ubLoop][bLoopPoint] = TRUE;

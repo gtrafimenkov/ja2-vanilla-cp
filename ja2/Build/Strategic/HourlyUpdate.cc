@@ -1,5 +1,7 @@
 #include "Strategic/HourlyUpdate.h"
 
+#include <algorithm>
+
 #include "JAScreens.h"
 #include "Laptop/Finances.h"
 #include "Laptop/History.h"
@@ -219,11 +221,12 @@ static void HourlyLarryUpdate(void) {
         // values) so long as he keeps consuming, keep number above level at
         // which he cracked
         gMercProfiles[LARRY_NORMAL].bNPCData =
-            __max(gMercProfiles[LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
+            std::max(gMercProfiles[LARRY_NORMAL].bNPCData, (int8_t)LARRY_FALLS_OFF_WAGON);
         gMercProfiles[LARRY_NORMAL].bNPCData += (INT8)Random(usTemptation);
         // allow value to keep going up to 24 (about 2 days since we subtract
         // Random( 2 ) when he has no access )
-        gMercProfiles[LARRY_NORMAL].bNPCData = __min(gMercProfiles[LARRY_NORMAL].bNPCData, 24);
+        gMercProfiles[LARRY_NORMAL].bNPCData =
+            std::min(gMercProfiles[LARRY_NORMAL].bNPCData, (int8_t)24);
         if (fBar) {
           // take $ from player's account
           usCashAmount = Item[ALCOHOL].usPrice;

@@ -1,5 +1,7 @@
 #include "Strategic/StrategicEventHandler.h"
 
+#include <algorithm>
+
 #include "Laptop/BobbyRMailOrder.h"
 #include "Laptop/EMail.h"
 #include "Laptop/History.h"
@@ -171,7 +173,7 @@ void BobbyRayPurchaseEventCallback(const UINT8 ubOrderID) {
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
             const INT8 status = (70 + Random(11)) * (INT32)Object.bStatus[0] / 100;
-            Object.bStatus[0] = MAX(1, status);
+            Object.bStatus[0] = std::max((int8_t)1, status);
             AddItemToPool(usStandardMapPos, &Object, INVISIBLE, 0, 0, 0);
           } else {
             // record # delivered for later addition...
@@ -193,7 +195,7 @@ void BobbyRayPurchaseEventCallback(const UINT8 ubOrderID) {
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
             const INT8 status = (70 + Random(11)) * (INT32)Object.bStatus[0] / 100;
-            Object.bStatus[0] = MAX(1, status);
+            Object.bStatus[0] = std::max((int8_t)1, status);
             pObject[uiCount++] = Object;
           } else {
             ++ubItemsDelivered;
@@ -212,7 +214,8 @@ void BobbyRayPurchaseEventCallback(const UINT8 ubOrderID) {
     } else {
       while (ubItemsDelivered) {
         // treat 0s as 1s :-)
-        const UINT8 ubTempNumItems = __min(ubItemsDelivered, __max(1, Item[usItem].ubPerPocket));
+        const UINT8 ubTempNumItems =
+            std::min(ubItemsDelivered, std::max((uint8_t)1, Item[usItem].ubPerPocket));
         CreateItems(usItem, purchase->bItemQuality, ubTempNumItems, &Object);
 
         // stack as many as possible
@@ -907,7 +910,7 @@ static void DropOffItemsInMeduna(UINT8 ubOrderNum) {
 
     while (ubItemsDelivered) {
       // treat 0s as 1s :-)
-      ubTempNumItems = __min(ubItemsDelivered, __max(1, Item[usItem].ubPerPocket));
+      ubTempNumItems = std::min(ubItemsDelivered, std::max((uint8_t)1, Item[usItem].ubPerPocket));
       CreateItems(usItem, gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].bItemQuality,
                   ubTempNumItems, &Object);
 

@@ -725,7 +725,8 @@ static BOOLEAN DamageSoldierFromBlast(SOLDIERTYPE *const pSoldier, SOLDIERTYPE *
            String("Incrementing Attack: Explosion dishing out damage, Count now %d",
                   gTacticalStatus.ubAttackBusyCount));
 
-  sNewWoundAmt = sWoundAmt - __min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
+  sNewWoundAmt =
+      sWoundAmt - std::min(sWoundAmt, (int16_t)35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
   if (sNewWoundAmt < 0) {
     sNewWoundAmt = 0;
   }
@@ -953,7 +954,7 @@ static BOOLEAN ExpAffect(const INT16 sBombGridNo, const INT16 sGridNo, const UIN
     if (sBreathAmt < 0) sBreathAmt = 0;
 
     // damage structures
-    if (uiDist <= __max(1, (UINT32)(pExplosive->ubDamage / 30))) {
+    if (uiDist <= std::max((uint32_t)1, (UINT32)(pExplosive->ubDamage / 30))) {
       if (Item[usItem].usItemClass & IC_GRENADE) {
         sStructDmgAmt = sWoundAmt / 3;
       } else  // most explosives
@@ -1020,7 +1021,9 @@ static BOOLEAN ExpAffect(const INT16 sBombGridNo, const INT16 sGridNo, const UIN
     // Get blood quantity....
     InternalDropBlood(
         sGridNo, 0, HUMAN,
-        __max(MAXBLOODQUANTITY - uiDist * 2 /* XXX always >= 0, because uiDist is unsigned */, 0),
+        std::max((uint8_t)(MAXBLOODQUANTITY -
+                           uiDist * 2) /* XXX always >= 0, because uiDist is unsigned */,
+                 (uint8_t)0),
         1);
   }
 

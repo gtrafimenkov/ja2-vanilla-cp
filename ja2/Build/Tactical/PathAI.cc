@@ -10,6 +10,7 @@
 
 #include "Tactical/PathAI.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "GameSettings.h"
@@ -269,14 +270,14 @@ ABSMAX_SKIPLIST_LEVEL );\
 }
 */
 
-#define SkipListRemoveHead()                                                \
-  {                                                                         \
-    pDel = pQueueHead->pNext[0];                                            \
-    for (iLoop = 0; iLoop < __min(bSkipListLevel, pDel->bLevel); iLoop++) { \
-      pQueueHead->pNext[iLoop] = pDel->pNext[iLoop];                        \
-    }                                                                       \
-    iSkipListSize--;                                                        \
-    ClosedListAdd(pDel);                                                    \
+#define SkipListRemoveHead()                                                   \
+  {                                                                            \
+    pDel = pQueueHead->pNext[0];                                               \
+    for (iLoop = 0; iLoop < std::min(bSkipListLevel, pDel->bLevel); iLoop++) { \
+      pQueueHead->pNext[iLoop] = pDel->pNext[iLoop];                           \
+    }                                                                          \
+    iSkipListSize--;                                                           \
+    ClosedListAdd(pDel);                                                       \
   }
 
 #define SkipListInsert(pNew)                                                                     \
@@ -410,9 +411,9 @@ void ShutDownPathAI(void) {
 static void ReconfigurePathAI(INT32 iNewMaxSkipListLevel, INT32 iNewMaxTrailTree,
                               INT32 iNewMaxPathQ) {
   // make sure the specified parameters are reasonable
-  iNewMaxSkipListLevel = __max(iNewMaxSkipListLevel, ABSMAX_SKIPLIST_LEVEL);
-  iNewMaxTrailTree = __max(iNewMaxTrailTree, ABSMAX_TRAIL_TREE);
-  iNewMaxPathQ = __max(iNewMaxPathQ, ABSMAX_PATHQ);
+  iNewMaxSkipListLevel = std::max(iNewMaxSkipListLevel, ABSMAX_SKIPLIST_LEVEL);
+  iNewMaxTrailTree = std::max(iNewMaxTrailTree, ABSMAX_TRAIL_TREE);
+  iNewMaxPathQ = std::max(iNewMaxPathQ, ABSMAX_PATHQ);
   // assign them
   iMaxSkipListLevel = iNewMaxSkipListLevel;
   iMaxTrailTree = iNewMaxTrailTree;
@@ -540,7 +541,8 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   fPathAroundPeople = ((fFlags & PATH_THROUGH_PEOPLE) == 0);
   fCloseGoodEnough = ((fFlags & PATH_CLOSE_GOOD_ENOUGH) != 0);
   if (fCloseGoodEnough) {
-    sClosePathLimit = __min(PythSpacesAway((INT16)s->sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
+    sClosePathLimit =
+        std::min(PythSpacesAway((INT16)s->sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
     if (sClosePathLimit <= 0) {
       return (0);
     }

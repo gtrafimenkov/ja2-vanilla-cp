@@ -1,5 +1,6 @@
 #include "Tactical/MercEntering.h"
 
+#include <algorithm>
 #include <string.h>
 
 #include "Directories.h"
@@ -315,7 +316,7 @@ void HandleHeliDrop() {
       if (fFadingHeliIn) {
         if (uiSoundSample != NO_SAMPLE) {
           iVol = SoundGetVolume(uiSoundSample);
-          iVol = __min(HIGHVOLUME, iVol + 5);
+          iVol = std::min(HIGHVOLUME, iVol + 5);
           SoundSetVolume(uiSoundSample, iVol);
           if (iVol == HIGHVOLUME) fFadingHeliIn = FALSE;
         } else {
@@ -325,7 +326,7 @@ void HandleHeliDrop() {
         if (uiSoundSample != NO_SAMPLE) {
           iVol = SoundGetVolume(uiSoundSample);
 
-          iVol = __max(0, iVol - 5);
+          iVol = std::max(0, iVol - 5);
 
           SoundSetVolume(uiSoundSample, iVol);
           if (iVol == 0) {

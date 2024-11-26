@@ -746,7 +746,7 @@ void HandleAirRaid() {
         if (guiSoundSample != NO_SAMPLE) {
           if ((giNumFrames % 10) == 0) {
             iVol = SoundGetVolume(guiSoundSample);
-            iVol = __min(HIGHVOLUME, iVol + 1);
+            iVol = std::min(HIGHVOLUME, iVol + 1);
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == HIGHVOLUME) gfFadingRaidIn = FALSE;
           }
@@ -758,7 +758,7 @@ void HandleAirRaid() {
           if ((giNumFrames % 10) == 0) {
             iVol = SoundGetVolume(guiSoundSample);
 
-            iVol = __max(0, iVol - 1);
+            iVol = std::max(0, iVol - 1);
 
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == 0) {

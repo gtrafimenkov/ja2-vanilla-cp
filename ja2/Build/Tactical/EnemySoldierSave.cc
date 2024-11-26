@@ -1,5 +1,6 @@
 #include "Tactical/EnemySoldierSave.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <string.h>
 
@@ -531,7 +532,8 @@ void NewWayOfLoadingCiviliansFromTempFile() {
       }
 
       if (dp->bLife < dp->bLifeMax) {  // Add 4 life for every hour that passes.
-        INT32 const new_life = MIN(dp->bLife + time_since_last_loaded / 15, dp->bLifeMax);
+        INT32 const new_life =
+            std::min((int32_t)(dp->bLife + time_since_last_loaded / 15), (int32_t)dp->bLifeMax);
         dp->bLife = (INT8)new_life;
       }
 

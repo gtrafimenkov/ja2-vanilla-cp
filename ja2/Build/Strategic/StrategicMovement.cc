@@ -1,5 +1,6 @@
 #include "Strategic/StrategicMovement.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <stdio.h>
 #include <string.h>
@@ -1347,7 +1348,7 @@ static void PrepareGroupsForSimultaneousArrival() {
     if (g.ubNextX != first_group.ubSectorX) continue;
     if (g.ubNextY != first_group.ubSectorY) continue;
     if (IsGroupTheHelicopterGroup(g)) continue;
-    latest_arrival_time = MAX(g.uiArrivalTime, latest_arrival_time);
+    latest_arrival_time = std::max(g.uiArrivalTime, latest_arrival_time);
     g.uiFlags |= GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED | GROUPFLAG_MARKER;
   }
 
@@ -2845,7 +2846,7 @@ static INT16 VehicleFuelRemaining(SOLDIERTYPE const &vs) {
 
 static void SpendVehicleFuel(SOLDIERTYPE &vs, INT16 const fuel_spent) {
   Assert(vs.uiStatusFlags & SOLDIER_VEHICLE);
-  vs.sBreathRed = MAX(0, vs.sBreathRed - fuel_spent);
+  vs.sBreathRed = std::max(0, vs.sBreathRed - fuel_spent);
   vs.bBreath = (vs.sBreathRed + 99) / 100;
 }
 
@@ -2864,7 +2865,7 @@ void AddFuelToVehicle(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVehicle) {
   if (pItem->bStatus) {  // Fill 'er up.
     sFuelNeeded = 10000 - pVehicle->sBreathRed;
     sFuelAvailable = pItem->bStatus[0] * 50;
-    sFuelAdded = MIN(sFuelNeeded, sFuelAvailable);
+    sFuelAdded = std::min(sFuelNeeded, sFuelAvailable);
     // Add to vehicle
     pVehicle->sBreathRed += sFuelAdded;
     pVehicle->bBreath = (INT8)(pVehicle->sBreathRed / 100);
@@ -3013,7 +3014,7 @@ static BOOLEAN TestForBloodcatAmbush(GROUP const *const pGroup) {
       // come back up to the maximum if left long enough.
       INT32 iBloodCatDiff;
       iBloodCatDiff = pSector->bBloodCatPlacements - pSector->bBloodCats;
-      pSector->bBloodCats += (INT8)MIN(iHoursElapsed / 18, iBloodCatDiff);
+      pSector->bBloodCats += (INT8)std::min(iHoursElapsed / 18, iBloodCatDiff);
     }
     // Once 0, the bloodcats will never recupe.
   } else if (pSector->bBloodCats == -1) {  // If we haven't been ambushed by bloodcats yet...
@@ -3024,25 +3025,25 @@ static BOOLEAN TestForBloodcatAmbush(GROUP const *const pGroup) {
 
       // maximum of 3 bloodcats or 1 for every 6%, 5%, 4% progress based on
       // easy, normal, and hard, respectively
-      bProgressMaxCats =
-          (INT8)MAX(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
+      bProgressMaxCats = (INT8)std::max(
+          CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
 
       // make sure bloodcats don't outnumber mercs by a factor greater than 2
       bNumMercMaxCats =
           (INT8)(PlayerMercsInSector(pGroup->ubSectorX, pGroup->ubSectorY, pGroup->ubSectorZ) * 2);
 
       // choose the lowest number of cats calculated by difficulty and progress.
-      pSector->bBloodCats = (INT8)MIN(bDifficultyMaxCats, bProgressMaxCats);
+      pSector->bBloodCats = (INT8)std::min(bDifficultyMaxCats, bProgressMaxCats);
 
       if (gGameOptions.ubDifficultyLevel !=
           DIF_LEVEL_HARD) {  // if not hard difficulty, ensure cats never
                              // outnumber mercs by a factor of 2 (min 3 bloodcats)
-        pSector->bBloodCats = (INT8)MIN(pSector->bBloodCats, bNumMercMaxCats);
-        pSector->bBloodCats = (INT8)MAX(pSector->bBloodCats, 3);
+        pSector->bBloodCats = (INT8)std::min(pSector->bBloodCats, bNumMercMaxCats);
+        pSector->bBloodCats = (INT8)std::max(pSector->bBloodCats, (int8_t)3);
       }
 
       // ensure that there aren't more bloodcats than placements
-      pSector->bBloodCats = (INT8)MIN(pSector->bBloodCats, pSector->bBloodCatPlacements);
+      pSector->bBloodCats = (INT8)std::min(pSector->bBloodCats, pSector->bBloodCatPlacements);
     }
   } else if (ubSectorID != SEC_I16) {
     if (!gfAutoAmbush && PreChance(95)) {  // already ambushed here.  But 5%

@@ -1,5 +1,6 @@
 #include "Laptop/InsuranceContract.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -141,7 +142,8 @@ struct InsuranceInfo {
 static InsuranceInfo insurance_info[3];
 
 static void SetNumberOfDisplayedInsuranceMercs(void) {
-  gubNumberofDisplayedInsuranceGrids = MIN(g_n_insurable_mercs - gsCurrentInsuranceMercIndex, 3);
+  gubNumberofDisplayedInsuranceGrids =
+      std::min((uint8_t)(g_n_insurable_mercs - gsCurrentInsuranceMercIndex), (uint8_t)3);
 }
 
 static GUIButtonRef MakeButtonBig(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,

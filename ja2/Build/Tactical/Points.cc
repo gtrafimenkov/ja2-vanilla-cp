@@ -1,5 +1,7 @@
 #include "Tactical/Points.h"
 
+#include <algorithm>
+
 #include "SGP/Debug.h"
 #include "SGP/WCheck.h"
 #include "Tactical/AnimationControl.h"
@@ -740,10 +742,10 @@ UINT8 CalcAPsToBurst(INT8 const bBaseActionPoints, OBJECTTYPE const &o) {
     // NB round UP, so 21-25 APs pay full
     INT8 const bAttachPos = FindAttachment(&o, SPRING_AND_BOLT_UPGRADE);
     if (bAttachPos != -1) {
-      return (__max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) /
+      return (std::max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) /
              (100 + o.bAttachStatus[bAttachPos] / 5);
     } else {
-      return __max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM);
+      return std::max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM);
     }
   }
 }
@@ -980,7 +982,7 @@ UINT8 MinAPsToShootOrStab(SOLDIERTYPE &s, GridNo gridno, bool const add_turning_
   } else if (IsValidSecondHandShot(&s)) {  // Charge the maximum of the two
     UINT8 const ap_1st = BaseAPsToShootOrStab(full_aps, aim_skill, in_hand);
     UINT8 const ap_2nd = BaseAPsToShootOrStab(full_aps, aim_skill, s.inv[SECONDHANDPOS]);
-    ap_cost += __max(ap_1st, ap_2nd);
+    ap_cost += std::max(ap_1st, ap_2nd);
   } else {
     ap_cost += BaseAPsToShootOrStab(full_aps, aim_skill, in_hand);
   }
