@@ -1,7 +1,12 @@
 #include "Tactical/CivQuotes.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/FileMan.h"
 #include "SGP/MouseSystem.h"

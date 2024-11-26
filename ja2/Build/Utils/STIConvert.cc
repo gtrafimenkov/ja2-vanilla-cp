@@ -1,5 +1,8 @@
 #include "Utils/STIConvert.h"
 
+#include <stdio.h>
+#include <string.h>
+
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
@@ -47,7 +50,7 @@
 #define GREEN_MASK_24 0x0000FF00
 #define BLUE_MASK_24 0x000000FF
 
-//#define JA2_OBJECT_DATA_SIZE	16
+// #define JA2_OBJECT_DATA_SIZE	16
 
 static void ConvertRGBDistribution555To565(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
   for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {

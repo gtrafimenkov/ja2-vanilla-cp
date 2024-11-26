@@ -1,5 +1,9 @@
 #include "Laptop/Finances.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"

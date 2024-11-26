@@ -1,5 +1,7 @@
 #include "Strategic/Quests.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
 #include "Laptop/BobbyRMailOrder.h"
 #include "Laptop/History.h"

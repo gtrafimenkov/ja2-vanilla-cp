@@ -1,6 +1,9 @@
 #include "Editor/EditorTaskbarUtils.h"
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Editor/CursorModes.h"

@@ -1,5 +1,9 @@
 #include "Strategic/MapScreenInterfaceTownMineInfo.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "HelpScreen.h"
 #include "Laptop/Finances.h"

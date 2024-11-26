@@ -48,12 +48,6 @@
 #define __func__ __FUNCTION__
 #endif
 
-#if !defined(_WIN32)
-/* Not Visual Studio, not MINGW */
-#define __max(a, b) ((a) > (b) ? (a) : (b))
-#define __min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-
 /**************************************************************
  *
  *************************************************************/

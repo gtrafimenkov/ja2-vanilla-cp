@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "SGP/Platform.h"
 #include "gtest/gtest.h"
 
 TEST(FileManTest, joinPaths) {

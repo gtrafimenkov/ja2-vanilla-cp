@@ -1,5 +1,7 @@
 #include "Init.h"
 
+#include <string.h>
+
 #include "Editor/EditScreen.h"
 #include "Editor/SummaryInfo.h"
 #include "GameSettings.h"

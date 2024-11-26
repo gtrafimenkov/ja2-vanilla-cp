@@ -1,12 +1,6 @@
 #ifndef SGPSTRINGS_H
 #define SGPSTRINGS_H
 
-#include <cwchar>
-#include <stdio.h>
-#include <string.h>
-
-#include "SGP/PlatformStrings.h"
-
 /*
  * Replace the path and/or extension of a filename.
  * If path is not null, the path of filename is replaced by path, otherwise it

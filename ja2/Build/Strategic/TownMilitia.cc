@@ -1,9 +1,14 @@
 #include "Strategic/TownMilitia.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "JAScreens.h"
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"

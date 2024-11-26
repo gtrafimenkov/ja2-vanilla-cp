@@ -1,6 +1,7 @@
 #include "TileEngine/TileDef.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Editor/EditSys.h"
 #include "SGP/Debug.h"

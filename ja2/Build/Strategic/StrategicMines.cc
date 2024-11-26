@@ -1,5 +1,7 @@
 #include "Strategic/StrategicMines.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
 #include "Laptop/Finances.h"
 #include "Laptop/History.h"

@@ -1,17 +1,10 @@
-/*********************************************************************************
- * SGP Digital Sound Module
- *
- *		This module handles the playing of digital samples, preloaded or
- *streamed.
- *
- * Derek Beland, May 28, 1997
- *********************************************************************************/
-
 #include "SGP/SoundMan.h"
 
 #include <SDL.h>
 #include <assert.h>
+#include <string.h>
 
+#include "Macro.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
@@ -19,7 +12,7 @@
 #include "SGP/Timer.h"
 
 // Uncomment this to disable the startup of sound hardware
-//#define SOUND_DISABLE
+// #define SOUND_DISABLE
 
 #ifdef WITH_SOUND_DEBUG
 #define SNDDBG(fmt, ...) (void)fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)

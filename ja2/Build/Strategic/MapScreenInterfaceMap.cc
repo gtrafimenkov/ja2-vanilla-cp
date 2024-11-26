@@ -1,6 +1,9 @@
 #include "Strategic/MapScreenInterfaceMap.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Laptop/Finances.h"

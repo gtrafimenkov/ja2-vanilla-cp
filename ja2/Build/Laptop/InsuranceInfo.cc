@@ -1,5 +1,7 @@
 #include "Laptop/InsuranceInfo.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/Insurance.h"
 #include "Laptop/InsuranceText.h"

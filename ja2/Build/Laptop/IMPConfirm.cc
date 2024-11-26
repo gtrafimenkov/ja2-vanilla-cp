@@ -1,5 +1,7 @@
 #include "Laptop/IMPConfirm.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/Finances.h"

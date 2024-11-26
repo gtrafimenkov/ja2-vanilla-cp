@@ -1,5 +1,7 @@
 #include "Laptop/CharProfile.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/IMPAboutUs.h"
 #include "Laptop/IMPAttributeEntrance.h"

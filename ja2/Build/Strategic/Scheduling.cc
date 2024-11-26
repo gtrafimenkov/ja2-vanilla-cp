@@ -2,6 +2,7 @@
 
 #include "GameState.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"
@@ -37,7 +38,7 @@ extern const wchar_t *gszScheduleActions[NUM_SCHEDULE_ACTIONS];
 // waketime is the # of minutes in the day minus the sleep time
 #define WAKETIME(x) (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x)
 
-//#define DISABLESCHEDULES
+// #define DISABLESCHEDULES
 
 SCHEDULENODE *gpScheduleList = NULL;
 UINT8 gubScheduleID = 0;

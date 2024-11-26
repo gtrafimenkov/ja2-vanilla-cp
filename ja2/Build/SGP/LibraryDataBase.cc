@@ -2,8 +2,10 @@
 
 #include <cstdlib>
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Exceptions.h"
 #include "SGP/FileMan.h"

@@ -1,5 +1,11 @@
 #include "TacticalAI/FindLocations.h"
 
+#include <string.h>
+
+#include "Macro.h"
+#include "SGP/Debug.h"
+#include "SGP/Video.h"
+#include "Strategic/StrategicMap.h"
 #include "Tactical/AnimationControl.h"
 #include "Tactical/AnimationData.h"
 #include "Tactical/Boxing.h"
@@ -8,6 +14,7 @@
 #include "Tactical/LOS.h"
 #include "Tactical/OppList.h"
 #include "Tactical/PathAI.h"
+#include "Tactical/PathAIDebug.h"
 #include "Tactical/Points.h"
 #include "Tactical/SoldierProfile.h"
 #include "Tactical/StructureWrap.h"
@@ -15,21 +22,15 @@
 #include "Tactical/WorldItems.h"
 #include "TacticalAI/AI.h"
 #include "TacticalAI/AIInternals.h"
+#include "TileEngine/Environment.h"
 #include "TileEngine/IsometricUtils.h"
+#include "TileEngine/Lighting.h"
 #include "TileEngine/MapEdgepoints.h"
 #include "TileEngine/RenderFun.h"
 #include "TileEngine/RenderWorld.h"
 #include "TileEngine/Structure.h"
-#include "Utils/Text.h"
-#ifdef _DEBUG
-#include "SGP/Video.h"
-#endif
-#include "SGP/Debug.h"
-#include "Strategic/StrategicMap.h"
-#include "Tactical/PathAIDebug.h"
-#include "TileEngine/Environment.h"
-#include "TileEngine/Lighting.h"
 #include "TileEngine/WorldMan.h"
+#include "Utils/Text.h"
 
 #ifdef _DEBUG
 INT16 gsCoverValue[WORLD_MAX];
@@ -924,7 +925,7 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
     gsBestCover = sBestCover;
     SetRenderFlags(RENDER_FLAG_FULL);
     RenderWorld();
-    //RenderCoverDebug();
+    // RenderCoverDebug();
     InvalidateScreen();
     RefreshScreen();
     /*

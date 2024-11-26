@@ -1,9 +1,10 @@
 
-#if !defined(_MSC_VER)
-#include <strings.h>
-#endif
-#include "SGP/FileMan.h"
 #include "SGP/SmackStub.h"
+
+#include <stdio.h>
+#include <string.h>
+
+#include "SGP/FileMan.h"
 #include "SGP/SoundMan.h"
 #include "Utils/SoundControl.h"
 

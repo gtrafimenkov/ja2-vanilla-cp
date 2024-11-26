@@ -1,5 +1,7 @@
 #include "TileEngine/Buildings.h"
 
+#include <string.h>
+
 #include "SGP/Random.h"
 #include "SGP/Types.h"
 #include "Strategic/StrategicMap.h"

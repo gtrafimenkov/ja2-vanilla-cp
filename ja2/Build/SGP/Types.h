@@ -2,14 +2,6 @@
 #define __TYPES_
 
 #include <stdint.h>
-#include <stdlib.h>
-
-#include "SGP/Platform.h"
-#include "SGP/SGPStrings.h"
-
-#define UNIMPLEMENTED                                                                     \
-  fprintf(stderr, "===> %s:%d: %s() is not implemented\n", __FILE__, __LINE__, __func__); \
-  abort();
 
 #ifdef WITH_FIXMES
 #define FIXME fprintf(stderr, "===> %s:%d: %s() FIXME\n", __FILE__, __LINE__, __func__);
@@ -19,9 +11,6 @@
 
 #define lengthof(a) (sizeof(a) / sizeof(a[0]))
 #define endof(a) ((a) + lengthof(a))
-
-#define MAX(a, b) __max(a, b)
-#define MIN(a, b) __min(a, b)
 
 #define FOR_EACHX(type, iter, array, x) \
   for (type *iter = (array); iter != endof((array)); (x), ++iter)

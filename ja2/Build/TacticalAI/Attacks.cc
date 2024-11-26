@@ -1,4 +1,5 @@
 #include "GameSettings.h"
+#include "Macro.h"
 #include "Strategic/StrategicMap.h"
 #include "Tactical/AnimationControl.h"
 #include "Tactical/Items.h"

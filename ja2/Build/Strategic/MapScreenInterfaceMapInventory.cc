@@ -1,5 +1,9 @@
 #include "Strategic/MapScreenInterfaceMapInventory.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Buffer.h"

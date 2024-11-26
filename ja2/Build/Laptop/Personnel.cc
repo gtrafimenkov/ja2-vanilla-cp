@@ -1,12 +1,16 @@
 #include "Laptop/Personnel.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Laptop/EMail.h"
 #include "Laptop/Finances.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

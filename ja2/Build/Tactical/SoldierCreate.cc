@@ -1,10 +1,12 @@
 #include "Tactical/SoldierCreate.h"
 
 #include <math.h>
+#include <string.h>
 
 #include "Editor/EditorMercs.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

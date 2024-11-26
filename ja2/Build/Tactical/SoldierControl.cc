@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdexcept>
+#include <string.h>
 
 #include "GameSettings.h"
 #include "JAScreens.h"

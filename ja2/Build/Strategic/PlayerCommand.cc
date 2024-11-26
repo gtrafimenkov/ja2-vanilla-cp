@@ -1,5 +1,9 @@
 #include "Strategic/PlayerCommand.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameSettings.h"
 #include "Laptop/EMail.h"
 #include "Laptop/LaptopSave.h"

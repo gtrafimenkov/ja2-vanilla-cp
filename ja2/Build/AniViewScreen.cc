@@ -1,5 +1,10 @@
 #include "AniViewScreen.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"

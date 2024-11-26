@@ -6,12 +6,15 @@
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/LibraryDataBase.h"
 #include "SGP/Logger.h"
 #include "SGP/MemMan.h"

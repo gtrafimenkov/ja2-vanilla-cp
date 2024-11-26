@@ -1,5 +1,9 @@
 #include "Laptop/IMPVoices.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/IMPMainPage.h"

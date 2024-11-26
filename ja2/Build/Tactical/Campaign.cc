@@ -1,5 +1,9 @@
 #include "Tactical/Campaign.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameSettings.h"
 #include "Laptop/EMail.h"
 #include "SGP/Debug.h"

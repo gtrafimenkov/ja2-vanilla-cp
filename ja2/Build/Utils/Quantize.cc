@@ -1,5 +1,7 @@
 #include "Utils/Quantize.h"
 
+#include <string.h>
+
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
 

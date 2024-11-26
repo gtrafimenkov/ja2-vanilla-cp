@@ -1,5 +1,8 @@
-
 #include "Strategic/Assignments.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "GameSettings.h"
@@ -9,6 +12,7 @@
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

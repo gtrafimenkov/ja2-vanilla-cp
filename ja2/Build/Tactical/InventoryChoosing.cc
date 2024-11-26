@@ -1,6 +1,9 @@
 #include "Tactical/InventoryChoosing.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "Strategic/AutoResolve.h"

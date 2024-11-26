@@ -1,5 +1,8 @@
 #include "Tactical/ArmsDealerInit.h"
 
+#include <string.h>
+
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"

@@ -8,6 +8,7 @@
 #include "SGP/HImage.h"
 #include "SGP/Line.h"
 #include "SGP/MouseSystem.h"
+#include "SGP/SGPStrings.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"

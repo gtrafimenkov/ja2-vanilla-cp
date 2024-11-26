@@ -1,5 +1,7 @@
 #include "Strategic/StrategicPathing.h"
 
+#include <string.h>
+
 #include "SGP/Debug.h"
 #include "SGP/English.h"
 #include "SGP/Input.h"

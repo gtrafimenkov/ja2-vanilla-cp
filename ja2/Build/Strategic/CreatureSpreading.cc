@@ -4,6 +4,7 @@
 
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"
@@ -354,8 +355,8 @@ void InitCreatureQuest() {
   AddEveryDayStrategicEvent(EVENT_CREATURE_NIGHT_PLANNING, 1320, 0);
 
   // Got to give the queen some early protection, so do some creature spreading.
-  while (i--) {  //# times spread is based on difficulty, and the values in the
-                 // defines.
+  while (i--) {  // # times spread is based on difficulty, and the values in the
+                 //  defines.
     SpreadCreatures();
   }
 }

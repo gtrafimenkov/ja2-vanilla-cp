@@ -1,11 +1,16 @@
 #include "Strategic/MapScreenInterface.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Laptop/EMail.h"
 #include "Laptop/Finances.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
@@ -3437,10 +3442,10 @@ static BOOLEAN CanSoldierMoveWithVehicleId(const SOLDIERTYPE *const pSoldier,
   if (pSoldier->bAssignment == VEHICLE) {
     iVehicle2Id = pSoldier->iVehicleId;
   } else
-      // if soldier IS a vehicle
-      if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
-    iVehicle2Id = pSoldier->bVehicleID;
-  }
+    // if soldier IS a vehicle
+    if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+      iVehicle2Id = pSoldier->bVehicleID;
+    }
 
   // if also (in) a vehicle
   if (iVehicle2Id != -1) {

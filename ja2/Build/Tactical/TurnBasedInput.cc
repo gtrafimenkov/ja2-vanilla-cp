@@ -1,5 +1,9 @@
 #include "Tactical/TurnBasedInput.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Editor/EditScreen.h"
 #include "GameLoop.h"
 #include "JAScreens.h"

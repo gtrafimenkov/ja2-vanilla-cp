@@ -1,5 +1,7 @@
 #include "SaveLoadGame.h"
 
+#include <string.h>
+
 #include "SGP/FileMan.h"
 #include "gtest/gtest.h"
 

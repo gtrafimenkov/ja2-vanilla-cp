@@ -1,8 +1,10 @@
 #include "Strategic/StrategicAI.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/Font.h"

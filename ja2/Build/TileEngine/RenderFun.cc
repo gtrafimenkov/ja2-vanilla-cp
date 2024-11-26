@@ -1,5 +1,7 @@
 #include "TileEngine/RenderFun.h"
 
+#include <string.h>
+
 #include "SGP/Input.h"
 #include "SGP/Random.h"
 #include "Tactical/DialogueControl.h"

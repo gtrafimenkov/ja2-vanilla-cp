@@ -1,5 +1,9 @@
 #include "Tactical/HandleUI.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Local.h"

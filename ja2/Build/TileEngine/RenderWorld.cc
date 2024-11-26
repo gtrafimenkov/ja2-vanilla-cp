@@ -6,6 +6,7 @@
 #include "GameSettings.h"
 #include "GameState.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"
@@ -138,7 +139,7 @@ INT16 gsCY;
 double gdScaleX;
 double gdScaleY;
 
-#define FASTMAPROWCOLTOPOS(r, c) ((r)*WORLD_COLS + (c))
+#define FASTMAPROWCOLTOPOS(r, c) ((r) * WORLD_COLS + (c))
 
 bool g_scroll_inertia = false;
 
@@ -2552,7 +2553,7 @@ BlitNTL2:
 		or		al, al
 		jz		BlitNTL5  // dir = 0 no change
 		js		BlitNTL4               // dir < 0 z-level down
-                     // dir > 0 z-level up (default)
+                    // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitNTL5
 
@@ -2604,7 +2605,7 @@ BlitTrans2:
 		or		al, al
 		jz		BlitTrans5  // dir = 0 no change
 		js		BlitTrans4         // dir < 0 z-level down
-                       // dir > 0 z-level up (default)
+                      // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitTrans5
 
@@ -3033,7 +3034,7 @@ BlitNTL2:
 		or		al, al
 		jz		BlitNTL5  // dir = 0 no change
 		js		BlitNTL4               // dir < 0 z-level down
-                     // dir > 0 z-level up (default)
+                    // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitNTL5
 
@@ -3085,7 +3086,7 @@ BlitTrans2:
 		or		al, al
 		jz		BlitTrans5  // dir = 0 no change
 		js		BlitTrans4         // dir < 0 z-level down
-                       // dir > 0 z-level up (default)
+                      // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitTrans5
 
@@ -3545,7 +3546,7 @@ BlitNTL2:
 		or		al, al
 		jz		BlitNTL5  // dir = 0 no change
 		js		BlitNTL4               // dir < 0 z-level down
-                     // dir > 0 z-level up (default)
+                    // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitNTL5
 
@@ -3597,7 +3598,7 @@ BlitTrans2:
 		or		al, al
 		jz		BlitTrans5  // dir = 0 no change
 		js		BlitTrans4         // dir < 0 z-level down
-                       // dir > 0 z-level up (default)
+                      // dir > 0 z-level up (default)
 		add		dx, Z_STRIP_DELTA_Y
 		jmp		BlitTrans5
 
@@ -4063,7 +4064,7 @@ BlitNTL2:
 		or		al, al
 		jz		BlitNTL5  // dir = 0 no change
 		js		BlitNTL4               // dir < 0 z-level down
-                     // dir > 0 z-level up (default)
+                    // dir > 0 z-level up (default)
 		add		dx, Z_SUBLAYERS
 		jmp		BlitNTL5
 
@@ -4115,7 +4116,7 @@ BlitTrans2:
 		or		al, al
 		jz		BlitTrans5  // dir = 0 no change
 		js		BlitTrans4         // dir < 0 z-level down
-                       // dir > 0 z-level up (default)
+                      // dir > 0 z-level up (default)
 		add		dx, Z_SUBLAYERS
 		jmp		BlitTrans5
 
@@ -4588,7 +4589,7 @@ BlitNTL2:
 		or		al, al
 		jz		BlitNTL5  // dir = 0 no change
 		js		BlitNTL4               // dir < 0 z-level down
-                     // dir > 0 z-level up (default)
+                    // dir > 0 z-level up (default)
 		add		dx, Z_SUBLAYERS
 		jmp		BlitNTL5
 
@@ -4640,7 +4641,7 @@ BlitTrans2:
 		or		al, al
 		jz		BlitTrans5  // dir = 0 no change
 		js		BlitTrans4         // dir < 0 z-level down
-                       // dir > 0 z-level up (default)
+                      // dir > 0 z-level up (default)
 		add		dx, Z_SUBLAYERS
 		jmp		BlitTrans5
 

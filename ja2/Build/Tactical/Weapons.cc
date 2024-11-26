@@ -1,5 +1,7 @@
 #include "Tactical/Weapons.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
 #include "SGP/Debug.h"
@@ -74,7 +76,7 @@
 
 // JA2 GOLD: for weapons and attachments, give penalties only for status values
 // below 85
-#define WEAPON_STATUS_MOD(x) ((x) >= 85 ? 100 : (((x)*100) / 85))
+#define WEAPON_STATUS_MOD(x) ((x) >= 85 ? 100 : (((x) * 100) / 85))
 
 BOOLEAN gfNextFireJam = FALSE;
 BOOLEAN gfNextShotKills = FALSE;
@@ -84,91 +86,138 @@ BOOLEAN gfReportHitChances = FALSE;
 
 // TODO: Move strings to extern file
 
-#define NOWEAPON(range)                                                                   \
-  {                                                                                       \
-    NOGUNCLASS, NOT_GUN, NOAMMO, 0, 0, 0, 0, 0, 0, 0, range, 0, 0, 0, 0, NO_WEAPON_SOUND, \
-        NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                 \
-  }  // XXX it is magazine size, not range
-#define PISTOL(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd)                   \
-  {                                                                                             \
-    HANDGUNCLASS, GUN_PISTOL, ammo, rt, rof, 0, 0, update, impact, deadl, clip, range, 200, av, \
-        hv, sd, NO_WEAPON_SOUND, S_RELOAD_PISTOL, S_LNL_PISTOL                                  \
-  }
+#define NOWEAPON(range) \
+  {NOGUNCLASS,          \
+   NOT_GUN,             \
+   NOAMMO,              \
+   0,                   \
+   0,                   \
+   0,                   \
+   0,                   \
+   0,                   \
+   0,                   \
+   0,                   \
+   range,               \
+   0,                   \
+   0,                   \
+   0,                   \
+   0,                   \
+   NO_WEAPON_SOUND,     \
+   NO_WEAPON_SOUND,     \
+   NO_WEAPON_SOUND,     \
+   NO_WEAPON_SOUND}  // XXX it is magazine size, not range
+#define PISTOL(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd) \
+  {HANDGUNCLASS,    GUN_PISTOL,      ammo,        rt,    rof, 0,  0,  update, \
+   impact,          deadl,           clip,        range, 200, av, hv, sd,     \
+   NO_WEAPON_SOUND, S_RELOAD_PISTOL, S_LNL_PISTOL}
 #define M_PISTOL(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, \
                  sd, bsd)                                                                         \
-  {                                                                                               \
-    HANDGUNCLASS, GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, impact, deadl, clip, \
-        range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL                                \
-  }
+  {HANDGUNCLASS, GUN_M_PISTOL,    ammo,        rt,    rof, burstrof, burstpenal, update,          \
+   impact,       deadl,           clip,        range, 200, av,       hv,         sd,              \
+   bsd,          S_RELOAD_PISTOL, S_LNL_PISTOL}
 #define SMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, \
             bsd)                                                                                 \
-  {                                                                                              \
-    SMGCLASS, GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, impact, deadl, clip, range,  \
-        200, av, hv, sd, bsd, S_RELOAD_SMG, S_LNL_SMG                                            \
-  }
-#define SN_RIFLE(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd)                 \
-  {                                                                                             \
-    RIFLECLASS, GUN_SN_RIFLE, ammo, rt, rof, 0, 0, update, impact, deadl, clip, range, 200, av, \
-        hv, sd, NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE                                    \
-  }
-#define RIFLE(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd)                     \
-  {                                                                                              \
-    RIFLECLASS, GUN_RIFLE, ammo, rt, rof, 0, 0, update, impact, deadl, clip, range, 200, av, hv, \
-        sd, NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE                                         \
-  }
+  {SMGCLASS, GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update,       impact,   deadl,        \
+   clip,     range,   200,  av, hv,  sd,       bsd,        S_RELOAD_SMG, S_LNL_SMG}
+#define SN_RIFLE(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd) \
+  {RIFLECLASS,      GUN_SN_RIFLE,   ammo,       rt,    rof, 0,  0,  update,     \
+   impact,          deadl,          clip,       range, 200, av, hv, sd,         \
+   NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE}
+#define RIFLE(ammo, update, impact, rt, rof, deadl, clip, range, av, hv, sd) \
+  {RIFLECLASS,      GUN_RIFLE,      ammo,       rt,    rof, 0,  0,  update,  \
+   impact,          deadl,          clip,       range, 200, av, hv, sd,      \
+   NO_WEAPON_SOUND, S_RELOAD_RIFLE, S_LNL_RIFLE}
 #define ASRIFLE(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, \
                 sd, bsd)                                                                         \
   {                                                                                              \
-    RIFLECLASS, GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, impact, deadl, clip,  \
-        range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE                                 \
-  }
+      RIFLECLASS, GUN_AS_RIFLE,   ammo,       rt,    rof, burstrof, burstpenal, update,          \
+      impact,     deadl,          clip,       range, 200, av,       hv,         sd,              \
+      bsd,        S_RELOAD_RIFLE, S_LNL_RIFLE}
 #define SHOTGUN(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, \
                 sd, bsd)                                                                         \
-  {                                                                                              \
-    SHOTGUNCLASS, GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, impact, deadl, clip, \
-        range, 200, av, hv, sd, bsd, S_RELOAD_SHOTGUN, S_LNL_SHOTGUN                             \
-  }
+  {SHOTGUNCLASS, GUN_SHOTGUN, ammo,  rt,  rof, burstrof, burstpenal, update, impact,             \
+   deadl,        clip,        range, 200, av,  hv,       sd,         bsd,    S_RELOAD_SHOTGUN,   \
+   S_LNL_SHOTGUN}
 #define LMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, clip, range, av, hv, sd, \
             bsd)                                                                                 \
-  {                                                                                              \
-    MGCLASS, GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, impact, deadl, clip, range,   \
-        200, av, hv, sd, bsd, S_RELOAD_LMG, S_LNL_LMG                                            \
-  }
-#define BLADE(impact, rof, deadl, range, av, sd)                                                 \
-  {                                                                                              \
-    KNIFECLASS, NOT_GUN, NOAMMO, AP_READY_KNIFE, rof, 0, 0, 0, impact, deadl, 0, range, 200, av, \
-        0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                 \
-  }
-#define THROWINGBLADE(impact, rof, deadl, range, av, sd)                                         \
-  {                                                                                              \
-    KNIFECLASS, NOT_GUN, NOAMMO, AP_READY_KNIFE, rof, 0, 0, 0, impact, deadl, 0, range, 200, av, \
-        0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                 \
-  }
-#define PUNCHWEAPON(impact, rof, deadl, av, sd)                                         \
-  {                                                                                     \
-    KNIFECLASS, NOT_GUN, NOAMMO, 0, rof, 0, 0, 0, impact, deadl, 0, 10, 200, av, 0, sd, \
-        NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                               \
-  }
-#define LAUNCHER(update, rt, rof, deadl, range, av, hv, sd)                                  \
-  {                                                                                          \
-    RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 1, deadl, 0, range, 200, av, hv, sd, \
-        NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                    \
-  }
-#define LAW(update, rt, rof, deadl, range, av, hv, sd)                                        \
-  {                                                                                           \
-    RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, 1, range, 200, av, hv, sd, \
-        NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                     \
-  }
-#define CANNON(update, rt, rof, deadl, range, av, hv, sd)                                     \
-  {                                                                                           \
-    RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, 1, range, 200, av, hv, sd, \
-        NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                                     \
-  }
-#define MONSTSPIT(impact, rof, deadl, clip, range, av, hv, sd)                                    \
-  {                                                                                               \
-    MONSTERCLASS, NOT_GUN, AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, impact, deadl, clip, range, \
-        200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND                        \
-  }
+  {MGCLASS, GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update,       impact,   deadl,         \
+   clip,    range,   200,  av, hv,  sd,       bsd,        S_RELOAD_LMG, S_LNL_LMG}
+#define BLADE(impact, rof, deadl, range, av, sd) \
+  {KNIFECLASS,                                   \
+   NOT_GUN,                                      \
+   NOAMMO,                                       \
+   AP_READY_KNIFE,                               \
+   rof,                                          \
+   0,                                            \
+   0,                                            \
+   0,                                            \
+   impact,                                       \
+   deadl,                                        \
+   0,                                            \
+   range,                                        \
+   200,                                          \
+   av,                                           \
+   0,                                            \
+   sd,                                           \
+   NO_WEAPON_SOUND,                              \
+   NO_WEAPON_SOUND,                              \
+   NO_WEAPON_SOUND}
+#define THROWINGBLADE(impact, rof, deadl, range, av, sd) \
+  {KNIFECLASS,                                           \
+   NOT_GUN,                                              \
+   NOAMMO,                                               \
+   AP_READY_KNIFE,                                       \
+   rof,                                                  \
+   0,                                                    \
+   0,                                                    \
+   0,                                                    \
+   impact,                                               \
+   deadl,                                                \
+   0,                                                    \
+   range,                                                \
+   200,                                                  \
+   av,                                                   \
+   0,                                                    \
+   sd,                                                   \
+   NO_WEAPON_SOUND,                                      \
+   NO_WEAPON_SOUND,                                      \
+   NO_WEAPON_SOUND}
+#define PUNCHWEAPON(impact, rof, deadl, av, sd) \
+  {KNIFECLASS,                                  \
+   NOT_GUN,                                     \
+   NOAMMO,                                      \
+   0,                                           \
+   rof,                                         \
+   0,                                           \
+   0,                                           \
+   0,                                           \
+   impact,                                      \
+   deadl,                                       \
+   0,                                           \
+   10,                                          \
+   200,                                         \
+   av,                                          \
+   0,                                           \
+   sd,                                          \
+   NO_WEAPON_SOUND,                             \
+   NO_WEAPON_SOUND,                             \
+   NO_WEAPON_SOUND}
+#define LAUNCHER(update, rt, rof, deadl, range, av, hv, sd)                             \
+  {RIFLECLASS,     NOT_GUN, NOAMMO, rt,  rof, 0,  0,  update,          1,               \
+   deadl,          0,       range,  200, av,  hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, \
+   NO_WEAPON_SOUND}
+#define LAW(update, rt, rof, deadl, range, av, hv, sd)                                  \
+  {RIFLECLASS,     NOT_GUN, NOAMMO, rt,  rof, 0,  0,  update,          80,              \
+   deadl,          1,       range,  200, av,  hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, \
+   NO_WEAPON_SOUND}
+#define CANNON(update, rt, rof, deadl, range, av, hv, sd)                               \
+  {RIFLECLASS,     NOT_GUN, NOAMMO, rt,  rof, 0,  0,  update,          80,              \
+   deadl,          1,       range,  200, av,  hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, \
+   NO_WEAPON_SOUND}
+#define MONSTSPIT(impact, rof, deadl, clip, range, av, hv, sd)                         \
+  {MONSTERCLASS,    NOT_GUN,         AMMOMONST,      AP_READY_KNIFE, rof, 0,  0,  250, \
+   impact,          deadl,           clip,           range,          200, av, hv, sd,  \
+   NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND}
 
 // ranges are in world units, calculated by:
 // 100 + real-range-in-metres/10

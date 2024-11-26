@@ -1,5 +1,8 @@
 #include "SGP/LoadSaveData.h"
 
+#include <string.h>
+
+#include "Macro.h"
 #include "SGP/UTF8String.h"
 
 /** Encode wchar_t into UTF-16 and write to the buffer.

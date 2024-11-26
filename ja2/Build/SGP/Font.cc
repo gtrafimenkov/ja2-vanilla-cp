@@ -1,6 +1,7 @@
 #include "SGP/Font.h"
 
 #include <stdarg.h>
+#include <wchar.h>
 
 #include "GameRes.h"
 #include "Local.h"

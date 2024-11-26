@@ -1,6 +1,9 @@
 #include "Strategic/QuestDebugSystem.h"
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Laptop/AIMMembers.h"
@@ -47,7 +50,7 @@
 
 #include "SDL_keycode.h"
 
-//#ifdef JA2BETAVERSION
+// #ifdef JA2BETAVERSION
 
 #define QUEST_DEBUG_FILE "QuestDebugRecordLog.txt"
 
@@ -3026,4 +3029,4 @@ static void GetDebugLocationString(const UINT16 usProfileID, wchar_t *const pzTe
   }
 }
 
-//#endif
+// #endif

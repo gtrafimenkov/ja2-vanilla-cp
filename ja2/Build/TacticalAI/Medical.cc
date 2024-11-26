@@ -1,5 +1,7 @@
 #include "TacticalAI/Medical.h"
 
+#include <string.h>
+
 #include "SGP/Types.h"
 #include "Strategic/Assignments.h"
 #include "Tactical/AnimationControl.h"

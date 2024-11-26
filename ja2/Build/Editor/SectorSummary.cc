@@ -1,5 +1,9 @@
 #include "Editor/SectorSummary.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Editor/EditScreen.h"
 #include "Editor/EditorDefines.h"
@@ -9,6 +13,7 @@
 #include "GameRes.h"
 #include "GameState.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/English.h"

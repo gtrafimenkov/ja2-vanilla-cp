@@ -1,5 +1,8 @@
 #include "Laptop/IMPCompileCharacter.h"
 
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/IMPPortraits.h"

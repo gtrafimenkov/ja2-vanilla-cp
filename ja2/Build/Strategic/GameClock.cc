@@ -1,9 +1,14 @@
 #include "Strategic/GameClock.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "FadeScreen.h"
 #include "GameScreen.h"
 #include "JAScreens.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
@@ -31,7 +36,7 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 
-//#define DEBUG_GAME_CLOCK
+// #define DEBUG_GAME_CLOCK
 
 extern BOOLEAN gfFadeOut;
 

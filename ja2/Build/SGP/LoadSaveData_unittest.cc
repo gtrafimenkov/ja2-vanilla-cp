@@ -1,8 +1,9 @@
-﻿#include "gtest/gtest.h"
+﻿#include "SGP/LoadSaveData.h"
 
-#include "SGP/LoadSaveData.h"
+#include <stdio.h>
 
 #include "SGP/FileMan.h"
+#include "gtest/gtest.h"
 
 TEST(LoadSaveData, integers) {
   char buf[100];

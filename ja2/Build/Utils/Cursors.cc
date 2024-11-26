@@ -1,5 +1,9 @@
 #include "Utils/Cursors.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Font.h"
@@ -12,10 +16,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
-#define SCURSOR(name) \
-  { name, NULL, 0, 0 }
-#define ECURSOR() \
-  { NULL, NULL, USE_OUTLINE_BLITTER, 0 }
+#define SCURSOR(name) {name, NULL, 0, 0}
+#define ECURSOR() {NULL, NULL, USE_OUTLINE_BLITTER, 0}
 
 static CursorFileData CursorFileDatabase[] = {
     SCURSOR(CURSORSDIR "/cursor.sti"), SCURSOR(CURSORSDIR "/cur_targ.sti"),

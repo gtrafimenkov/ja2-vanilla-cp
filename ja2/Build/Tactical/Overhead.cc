@@ -1,9 +1,12 @@
 #include "Tactical/Overhead.h"
 
+#include <string.h>
+
 #include "Editor/EditorMercs.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/MouseSystem.h"
@@ -4633,7 +4636,7 @@ static void HandleSuppressionFire(const SOLDIERTYPE *const targeted_merc,
       }
 
     }  // end of examining one soldier
-  }    // end of loop
+  }  // end of loop
 }
 
 BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE *const pSoldier, SOLDIERTYPE *const pTarget,

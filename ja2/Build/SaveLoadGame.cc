@@ -1,6 +1,9 @@
 #include "SaveLoadGame.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Cheats.h"
 #include "Directories.h"

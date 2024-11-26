@@ -1,5 +1,7 @@
 #include "Laptop/AIMHistory.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/AIM.h"
 #include "Laptop/Laptop.h"

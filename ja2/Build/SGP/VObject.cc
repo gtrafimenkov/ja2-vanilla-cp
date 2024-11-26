@@ -1,6 +1,7 @@
 #include "SGP/VObject.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"

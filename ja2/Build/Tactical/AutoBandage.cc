@@ -1,5 +1,7 @@
 #include "Tactical/AutoBandage.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Local.h"
 #include "MercPortrait.h"

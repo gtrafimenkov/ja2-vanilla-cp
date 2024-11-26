@@ -9,14 +9,14 @@
 
 #include "Utils/Cinematics.h"
 
+#include <string.h>
+
 #include "Intro.h"
 #include "Local.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
-//#include "Smack.h" // XXX
-
 #include "SGP/HImage.h"
-#include "SGP/SmackStub.h"  // XXX
+#include "SGP/SmackStub.h"
 #include "SGP/SoundMan.h"
 #include "SGP/Types.h"
 #include "SGP/VSurface.h"

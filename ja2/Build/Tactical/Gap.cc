@@ -4,6 +4,7 @@
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"
 #include "SGP/MemMan.h"
+#include "SGP/SGPStrings.h"
 #include "SGP/SoundMan.h"
 #include "Utils/SoundControl.h"
 

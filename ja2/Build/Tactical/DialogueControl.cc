@@ -1,6 +1,9 @@
 #include "Tactical/DialogueControl.h"
 
 #include <queue>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "GameLoop.h"

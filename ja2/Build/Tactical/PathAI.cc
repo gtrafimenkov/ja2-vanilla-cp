@@ -10,6 +10,8 @@
 
 #include "Tactical/PathAI.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
 #include "SGP/English.h"
 #include "SGP/Input.h"

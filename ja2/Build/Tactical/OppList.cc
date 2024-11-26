@@ -1,8 +1,13 @@
-#include "SGP/Font.h"
-//#include "TacticalAI/AI.h"
+#include "Tactical/OppList.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameRes.h"
 #include "GameSettings.h"
 #include "SGP/Debug.h"
+#include "SGP/Font.h"
 #include "SGP/Random.h"
 #include "Strategic/GameClock.h"
 #include "Strategic/Meanwhile.h"
@@ -20,7 +25,6 @@
 #include "Tactical/Items.h"
 #include "Tactical/Keys.h"
 #include "Tactical/LOS.h"
-#include "Tactical/OppList.h"
 #include "Tactical/Overhead.h"
 #include "Tactical/OverheadTypes.h"
 #include "Tactical/Points.h"
@@ -53,7 +57,7 @@
 
 static const BOOLEAN gbShowEnemies = FALSE;  // XXX seems to be a debug switch
 
-//#define TESTOPPLIST
+// #define TESTOPPLIST
 
 // for ManLooksForMan()
 #define MANLOOKSFOROTHERTEAMS 0

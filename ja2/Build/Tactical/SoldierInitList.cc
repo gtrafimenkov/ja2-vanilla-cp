@@ -1,6 +1,7 @@
 #include "Tactical/SoldierInitList.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
 #include "Editor/EditorMercs.h"

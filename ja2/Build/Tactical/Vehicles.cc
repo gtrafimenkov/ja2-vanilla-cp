@@ -1,6 +1,7 @@
 #include "Tactical/Vehicles.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "JAScreens.h"
 #include "SGP/Debug.h"

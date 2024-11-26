@@ -4,6 +4,7 @@
 #include "Laptop/EMail.h"
 #include "Laptop/History.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"
 #include "Strategic/GameClock.h"

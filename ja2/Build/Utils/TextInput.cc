@@ -1,7 +1,11 @@
 #include "Utils/TextInput.h"
 
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"

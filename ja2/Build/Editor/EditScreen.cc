@@ -1,5 +1,9 @@
 #include "Editor/EditScreen.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Editor/CursorModes.h"
 #include "Editor/EditSys.h"
 #include "Editor/EditorBuildings.h"

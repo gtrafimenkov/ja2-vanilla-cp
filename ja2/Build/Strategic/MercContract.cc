@@ -1,5 +1,9 @@
 #include "Strategic/MercContract.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameScreen.h"
 #include "JAScreens.h"
 #include "Laptop/EMail.h"

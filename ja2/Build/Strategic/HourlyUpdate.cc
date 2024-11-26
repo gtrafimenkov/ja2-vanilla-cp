@@ -3,6 +3,7 @@
 #include "JAScreens.h"
 #include "Laptop/Finances.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "ScreenIDs.h"
 #include "Strategic/Assignments.h"

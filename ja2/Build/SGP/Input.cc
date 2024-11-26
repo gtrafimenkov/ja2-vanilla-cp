@@ -1,6 +1,7 @@
 #include "SGP/Input.h"
 
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/English.h"
 #include "SGP/MemMan.h"
 #include "SGP/Timer.h"
@@ -420,8 +421,7 @@ void DequeueAllKeyBoardEvents(void) {
 #else
   // dequeue all the events waiting in the windows queue
   MSG KeyMessage;
-  while (PeekMessage(&KeyMessage, ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
-    ;
+  while (PeekMessage(&KeyMessage, ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE));
 
   // Deque all the events waiting in the SGP queue
   InputAtom InputEvent;

@@ -1,5 +1,9 @@
 #include "Tactical/InterfacePanels.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "GameScreen.h"
 #include "GameSettings.h"

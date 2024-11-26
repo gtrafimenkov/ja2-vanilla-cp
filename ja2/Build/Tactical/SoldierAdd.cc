@@ -1,5 +1,8 @@
 #include "Tactical/SoldierAdd.h"
 
+#include <math.h>
+#include <string.h>
+
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "Strategic/Meanwhile.h"

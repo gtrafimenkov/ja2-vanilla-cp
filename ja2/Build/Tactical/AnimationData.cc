@@ -1,6 +1,7 @@
 #include "Tactical/AnimationData.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
 #include "SGP/Debug.h"
@@ -28,7 +29,7 @@ static UINT8 gubNumAnimProfiles = 0;
 INT8 gbAnimUsageHistory[NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS];
 
 #define M(name, file, type, flags, dir, profile) \
-  { name, file, type, flags, dir, TO_INIT, NULL, 0, profile }
+  {name, file, type, flags, dir, TO_INIT, NULL, 0, profile}
 
 AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES] = {
     M(RGMBASICWALKING, ANIMSDIR "/s_merc/s_r_walk.sti", S_STRUCT, 0, 8, -1),

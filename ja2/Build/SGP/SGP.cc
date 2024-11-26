@@ -6,9 +6,10 @@
 #include "GameLoop.h"
 #include "GameRes.h"
 #include "GameState.h"
-#include "Init.h"  // XXX should not be used in SGP
+#include "Init.h"
 #include "Intro.h"
 #include "JA2Splash.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Exceptions.h"
@@ -23,7 +24,7 @@
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
-#include "SaveLoadGame.h"  // XXX should not be used in SGP
+#include "SaveLoadGame.h"
 #include "gtest/gtest.h"
 #include "slog/slog.h"
 

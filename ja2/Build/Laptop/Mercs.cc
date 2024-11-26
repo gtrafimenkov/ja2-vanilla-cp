@@ -1,5 +1,9 @@
 #include "Laptop/Mercs.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
 #include "Laptop/EMail.h"

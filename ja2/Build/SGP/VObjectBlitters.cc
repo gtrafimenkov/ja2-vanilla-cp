@@ -1,8 +1,11 @@
 #include "SGP/VObjectBlitters.h"
 
 #include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"

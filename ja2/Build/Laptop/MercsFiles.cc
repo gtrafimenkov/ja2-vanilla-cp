@@ -1,5 +1,9 @@
 #include "Laptop/MercsFiles.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Cheats.h"
 #include "Directories.h"
 #include "Laptop/AIMMembers.h"

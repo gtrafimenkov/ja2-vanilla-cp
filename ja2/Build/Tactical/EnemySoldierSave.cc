@@ -1,8 +1,10 @@
 #include "Tactical/EnemySoldierSave.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Editor/EditorMercs.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"

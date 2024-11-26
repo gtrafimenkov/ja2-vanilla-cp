@@ -1,5 +1,9 @@
 #include "Laptop/BobbyRMailOrder.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/BobbyR.h"
 #include "Laptop/BobbyRGuns.h"
@@ -990,8 +994,9 @@ static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, 
         usStandardCost = 0;
     }
 
-    iShippingCost = (INT32)(
-        (gpNewBobbyrShipments[iOrderNum].uiPackageWeight / (FLOAT)10) * usStandardCost + .5);
+    iShippingCost =
+        (INT32)((gpNewBobbyrShipments[iOrderNum].uiPackageWeight / (FLOAT)10) * usStandardCost +
+                .5);
   }
 
   // erase the old area

@@ -1,5 +1,7 @@
 #include "Laptop/BobbyR.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/BobbyRGuns.h"
 #include "Laptop/Laptop.h"

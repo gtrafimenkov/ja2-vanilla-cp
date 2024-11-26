@@ -1,8 +1,11 @@
 #include "Strategic/StrategicStatus.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
 #include "Laptop/EMail.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "Strategic/GameClock.h"
@@ -182,87 +185,87 @@ void HandleEnricoEmail(void) {
     AddEmail(ENRICO_SETBACK, ENRICO_SETBACK_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_MAJOR_SETBACK;
   } else
-      // test for a first minor setback
-      if (((ubHighestProgress - ubCurrentProgress) >= MINOR_SETBACK_THRESHOLD) &&
-          !(gStrategicStatus.usEnricoEmailFlags &
-            (ENRICO_EMAIL_SENT_MINOR_SETBACK | ENRICO_EMAIL_SENT_MAJOR_SETBACK))) {
-    AddEmail(ENRICO_SETBACK_2, ENRICO_SETBACK_2_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
-    gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_MINOR_SETBACK;
-  } else
+    // test for a first minor setback
+    if (((ubHighestProgress - ubCurrentProgress) >= MINOR_SETBACK_THRESHOLD) &&
+        !(gStrategicStatus.usEnricoEmailFlags &
+          (ENRICO_EMAIL_SENT_MINOR_SETBACK | ENRICO_EMAIL_SENT_MAJOR_SETBACK))) {
+      AddEmail(ENRICO_SETBACK_2, ENRICO_SETBACK_2_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+      gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_MINOR_SETBACK;
+    } else
       // if player is back at his maximum progress after having suffered a minor
       // setback
       if ((ubHighestProgress == ubCurrentProgress) &&
           (gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_MINOR_SETBACK)) {
-    // remember that the original setback has been overcome, so another one can
-    // generate another E-mail
-    gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_FLAG_SETBACK_OVER;
-  } else if (GetWorldDay() > (UINT32)(gStrategicStatus.usLastDayOfPlayerActivity)) {
-    INT8 bComplaint = 0;
-    UINT8 ubTolerance;
+        // remember that the original setback has been overcome, so another one can
+        // generate another E-mail
+        gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_FLAG_SETBACK_OVER;
+      } else if (GetWorldDay() > (UINT32)(gStrategicStatus.usLastDayOfPlayerActivity)) {
+        INT8 bComplaint = 0;
+        UINT8 ubTolerance;
 
-    gStrategicStatus.ubNumberOfDaysOfInactivity++;
-    ubTolerance = LackOfProgressTolerance();
+        gStrategicStatus.ubNumberOfDaysOfInactivity++;
+        ubTolerance = LackOfProgressTolerance();
 
-    if (gStrategicStatus.ubNumberOfDaysOfInactivity >= ubTolerance) {
-      if (gStrategicStatus.ubNumberOfDaysOfInactivity == ubTolerance) {
-        // send email
-        if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS1)) {
-          bComplaint = 1;
-        } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2)) {
-          bComplaint = 2;
-        } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
-          bComplaint = 3;
-        }
-      } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == (UINT32)ubTolerance * 2) {
-        // six days? send 2nd or 3rd message possibly
-        if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2)) {
-          bComplaint = 2;
-        } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
-          bComplaint = 3;
-        }
+        if (gStrategicStatus.ubNumberOfDaysOfInactivity >= ubTolerance) {
+          if (gStrategicStatus.ubNumberOfDaysOfInactivity == ubTolerance) {
+            // send email
+            if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS1)) {
+              bComplaint = 1;
+            } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2)) {
+              bComplaint = 2;
+            } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
+              bComplaint = 3;
+            }
+          } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == (UINT32)ubTolerance * 2) {
+            // six days? send 2nd or 3rd message possibly
+            if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2)) {
+              bComplaint = 2;
+            } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
+              bComplaint = 3;
+            }
 
-      } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == ubTolerance * 3) {
-        // nine days??? send 3rd message possibly
-        if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
-          bComplaint = 3;
+          } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == ubTolerance * 3) {
+            // nine days??? send 3rd message possibly
+            if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
+              bComplaint = 3;
+            }
+          }
+
+          if (bComplaint != 0) {
+            switch (bComplaint) {
+              case 3:
+                AddEmail(LACK_PLAYER_PROGRESS_3, LACK_PLAYER_PROGRESS_3_LENGTH, MAIL_ENRICO,
+                         GetWorldTotalMin());
+                gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS3;
+                break;
+              case 2:
+                AddEmail(LACK_PLAYER_PROGRESS_2, LACK_PLAYER_PROGRESS_2_LENGTH, MAIL_ENRICO,
+                         GetWorldTotalMin());
+                gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS2;
+                break;
+              default:
+                AddEmail(LACK_PLAYER_PROGRESS_1, LACK_PLAYER_PROGRESS_1_LENGTH, MAIL_ENRICO,
+                         GetWorldTotalMin());
+                gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS1;
+                break;
+            }
+
+            AddHistoryToPlayersLog(HISTORY_ENRICO_COMPLAINED, 0, GetWorldTotalMin(), -1, -1);
+          }
+
+          // penalize loyalty!
+          if (gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2) {
+            DecrementTownLoyaltyEverywhere(
+                LOYALTY_PENALTY_INACTIVE *
+                (gStrategicStatus.ubNumberOfDaysOfInactivity - LackOfProgressTolerance() + 1));
+          } else {
+            // on first complaint, give a day's grace...
+            DecrementTownLoyaltyEverywhere(
+                LOYALTY_PENALTY_INACTIVE *
+                (gStrategicStatus.ubNumberOfDaysOfInactivity - LackOfProgressTolerance()));
+          }
         }
       }
-
-      if (bComplaint != 0) {
-        switch (bComplaint) {
-          case 3:
-            AddEmail(LACK_PLAYER_PROGRESS_3, LACK_PLAYER_PROGRESS_3_LENGTH, MAIL_ENRICO,
-                     GetWorldTotalMin());
-            gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS3;
-            break;
-          case 2:
-            AddEmail(LACK_PLAYER_PROGRESS_2, LACK_PLAYER_PROGRESS_2_LENGTH, MAIL_ENRICO,
-                     GetWorldTotalMin());
-            gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS2;
-            break;
-          default:
-            AddEmail(LACK_PLAYER_PROGRESS_1, LACK_PLAYER_PROGRESS_1_LENGTH, MAIL_ENRICO,
-                     GetWorldTotalMin());
-            gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS1;
-            break;
-        }
-
-        AddHistoryToPlayersLog(HISTORY_ENRICO_COMPLAINED, 0, GetWorldTotalMin(), -1, -1);
-      }
-
-      // penalize loyalty!
-      if (gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2) {
-        DecrementTownLoyaltyEverywhere(
-            LOYALTY_PENALTY_INACTIVE *
-            (gStrategicStatus.ubNumberOfDaysOfInactivity - LackOfProgressTolerance() + 1));
-      } else {
-        // on first complaint, give a day's grace...
-        DecrementTownLoyaltyEverywhere(
-            LOYALTY_PENALTY_INACTIVE *
-            (gStrategicStatus.ubNumberOfDaysOfInactivity - LackOfProgressTolerance()));
-      }
-    }
-  }
 
   // reset # of new sectors visited 'today'
   // grant some leeway for the next day, could have started moving

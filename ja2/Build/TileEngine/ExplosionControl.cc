@@ -1,7 +1,10 @@
 #include "TileEngine/ExplosionControl.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"

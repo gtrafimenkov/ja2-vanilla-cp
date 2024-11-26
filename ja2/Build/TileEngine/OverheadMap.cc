@@ -1,9 +1,12 @@
 #include "TileEngine/OverheadMap.h"
 
+#include <stdio.h>
+
 #include "Directories.h"
 #include "GameLoop.h"
 #include "GameState.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"
@@ -54,7 +57,7 @@ extern SOLDIERINITNODE *gpSelected;
 #define NORMAL_MAP_SCREEN_BY 2400
 #define NORMAL_MAP_SCREEN_TY 860
 
-#define FASTMAPROWCOLTOPOS(r, c) ((r)*WORLD_COLS + (c))
+#define FASTMAPROWCOLTOPOS(r, c) ((r) * WORLD_COLS + (c))
 
 struct SMALL_TILE_SURF {
   HVOBJECT vo;

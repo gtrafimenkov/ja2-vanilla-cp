@@ -1,5 +1,7 @@
 #include "Tactical/HandleDoors.h"
 
+#include <string.h>
+
 #include "GameRes.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"

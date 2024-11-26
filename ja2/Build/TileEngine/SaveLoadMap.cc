@@ -1,5 +1,7 @@
 #include "TileEngine/SaveLoadMap.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"

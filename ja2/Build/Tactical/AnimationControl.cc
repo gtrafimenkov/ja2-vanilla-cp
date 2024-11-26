@@ -1,5 +1,7 @@
 #include "Tactical/AnimationControl.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "SGP/FileMan.h"
 #include "Tactical/AnimationData.h"
@@ -35,7 +37,7 @@ RANDOM_ANI_DEF gRandomAnimDefs[TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE];
 #define C ANIM_CROUCH
 #define P ANIM_PRONE
 #define M(name, speed, move, flags, height, end_height) \
-  { name, move, flags, speed, height, end_height }
+  {name, move, flags, speed, height, end_height}
 
 const ANIMCONTROLTYPE gAnimControl[NUMANIMATIONSTATES] = {
     // NAME                             SPEED MOVE  FLAGS HEIGHT

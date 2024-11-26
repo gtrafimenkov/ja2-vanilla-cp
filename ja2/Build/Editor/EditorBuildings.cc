@@ -1,5 +1,9 @@
 #include "Editor/EditorBuildings.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Editor/CursorModes.h"
 #include "Editor/EditSys.h"
@@ -12,6 +16,7 @@
 #include "Editor/SelectWin.h"
 #include "Editor/SmoothingUtils.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"

@@ -4,9 +4,11 @@
 #include <vector>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
+#include "SGP/SGPStrings.h"
 #include "Tactical/AnimationCache.h"
 #include "Tactical/AnimationData.h"
 #include "TileEngine/Structure.h"

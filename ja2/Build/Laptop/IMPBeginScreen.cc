@@ -1,5 +1,7 @@
 #include "Laptop/IMPBeginScreen.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/IMPAttributeSelection.h"

@@ -1,6 +1,9 @@
 #include "Strategic/StrategicMap.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "FadeScreen.h"
@@ -11,6 +14,7 @@
 #include "Laptop/History.h"
 #include "LoadingScreen.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Debug.h"

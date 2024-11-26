@@ -10,6 +10,7 @@
 #include "Editor/EditorTaskbarUtils.h"
 #include "Editor/ItemStatistics.h"
 #include "Editor/PopupMenu.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Input.h"
 #include "SGP/Types.h"

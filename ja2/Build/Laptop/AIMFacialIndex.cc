@@ -1,5 +1,9 @@
 #include "Laptop/AIMFacialIndex.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/AIM.h"
 #include "Laptop/AIMSort.h"

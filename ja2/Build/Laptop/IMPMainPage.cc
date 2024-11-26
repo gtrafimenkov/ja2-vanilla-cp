@@ -1,5 +1,9 @@
 #include "Laptop/IMPMainPage.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
 #include "Laptop/Finances.h"

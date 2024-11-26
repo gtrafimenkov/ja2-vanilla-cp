@@ -1,5 +1,9 @@
 #include "Tactical/MercHiring.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "JAScreens.h"
 #include "Laptop/History.h"
 #include "Laptop/LaptopSave.h"

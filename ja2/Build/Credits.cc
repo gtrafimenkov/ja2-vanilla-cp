@@ -1,5 +1,7 @@
 #include "Credits.h"
 
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Local.h"
 #include "SGP/Debug.h"

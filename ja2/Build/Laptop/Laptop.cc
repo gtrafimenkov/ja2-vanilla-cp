@@ -1,5 +1,7 @@
 #include "Laptop/Laptop.h"
 
+#include <string.h>
+
 #include "Cheats.h"
 #include "Directories.h"
 #include "GameLoop.h"
@@ -43,6 +45,7 @@
 #include "Laptop/MercsNoAccount.h"
 #include "Laptop/Personnel.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Debug.h"

@@ -1,5 +1,7 @@
 #include "Utils/DebugControl.h"
 
+#include <stdio.h>
+
 #include "SGP/Types.h"
 
 #ifdef _ANIMSUBSYSTEM_DEBUG

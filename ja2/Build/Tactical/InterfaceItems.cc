@@ -1,11 +1,16 @@
 #include "Tactical/InterfaceItems.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
@@ -318,8 +323,7 @@ struct INV_REGIONS {
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS (sX,sY get set via
 // InitInvSlotInterface() )
 static INV_REGIONS const gSMInvData[] = {
-#define M(w, h) \
-  { w, h }
+#define M(w, h) {w, h}
     M(HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT),  // HELMETPOS
     M(VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT),  // VESTPOS
     M(LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT),  // LEGPOS,

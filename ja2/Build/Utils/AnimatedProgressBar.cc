@@ -1,5 +1,8 @@
 #include "Utils/AnimatedProgressBar.h"
 
+#include <wchar.h>
+
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"

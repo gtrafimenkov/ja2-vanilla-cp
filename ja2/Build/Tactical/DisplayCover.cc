@@ -1,6 +1,9 @@
 #include "Tactical/DisplayCover.h"
 
+#include <string.h>
+
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "Strategic/GameClock.h"
 #include "Strategic/StrategicMap.h"

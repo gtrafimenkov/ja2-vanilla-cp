@@ -1,11 +1,16 @@
 #include "Strategic/PreBattleInterface.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Cheats.h"
 #include "Directories.h"
 #include "GameScreen.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

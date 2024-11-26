@@ -1,5 +1,7 @@
 #include "Utils/WordWrap.h"
 
+#include <wchar.h>
+
 #include "SGP/Font.h"
 #include "SGP/MemMan.h"
 #include "SGP/VSurface.h"

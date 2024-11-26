@@ -1,5 +1,9 @@
 #include "Strategic/MapScreen.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Cheats.h"
 #include "Directories.h"
 #include "FadeScreen.h"

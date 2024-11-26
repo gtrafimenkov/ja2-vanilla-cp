@@ -1,5 +1,7 @@
 #include "Strategic/StrategicTurns.h"
 
+#include <stdlib.h>
+
 #include "JAScreens.h"
 #include "ScreenIDs.h"
 #include "Strategic/Assignments.h"

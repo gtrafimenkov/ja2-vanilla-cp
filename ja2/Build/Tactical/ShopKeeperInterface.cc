@@ -1,5 +1,9 @@
 #include "Tactical/ShopKeeperInterface.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "GameLoop.h"
 #include "GameSettings.h"
@@ -7,6 +11,7 @@
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
@@ -1667,10 +1672,12 @@ static void InitializeShopKeeper(BOOLEAN fResetPage) {
 #else
     else if (gSelectArmsDealerInfo.ubCurrentPage > gSelectArmsDealerInfo.ubNumberOfPages)
 #endif
-    { gSelectArmsDealerInfo.ubCurrentPage = 1; }
+    {
+      gSelectArmsDealerInfo.ubCurrentPage = 1;
+    }
 
     else if (gSelectArmsDealerInfo.uiNumDistinctInventoryItems != 0)
-        gSelectArmsDealerInfo.ubCurrentPage = 1;
+      gSelectArmsDealerInfo.ubCurrentPage = 1;
   }
 
   // if there is no inventory

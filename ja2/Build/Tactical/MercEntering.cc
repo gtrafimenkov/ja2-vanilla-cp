@@ -1,5 +1,7 @@
 #include "Tactical/MercEntering.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "SGP/CursorControl.h"
 #include "SGP/English.h"

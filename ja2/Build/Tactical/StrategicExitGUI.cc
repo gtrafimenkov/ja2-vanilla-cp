@@ -1,5 +1,9 @@
 #include "Tactical/StrategicExitGUI.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "FadeScreen.h"
 #include "GameScreen.h"

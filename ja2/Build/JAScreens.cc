@@ -7,6 +7,7 @@
 #include "GameVersion.h"
 #include "Init.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MainMenuScreen.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Debug.h"

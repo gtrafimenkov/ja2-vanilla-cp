@@ -1,6 +1,7 @@
 #include "Strategic/GameInit.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Cheats.h"
 #include "GameLoop.h"

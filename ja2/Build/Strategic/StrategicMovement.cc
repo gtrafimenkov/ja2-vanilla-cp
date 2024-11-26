@@ -1,9 +1,13 @@
 #include "Strategic/StrategicMovement.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
@@ -2933,7 +2937,7 @@ void RandomizePatrolGroupLocation(GROUP *pGroup) {  // Make sure this is an enem
   }
   // double it (they go back and forth) -- it's using zero based indices, so you
   // have to add one to get the number of actual waypoints in one direction.
-  ubTotalWaypoints = (UINT8)((ubMaxWaypointID)*2);
+  ubTotalWaypoints = (UINT8)((ubMaxWaypointID) * 2);
 
   // pick the waypoint they start at
   ubChosen = (UINT8)Random(ubTotalWaypoints);

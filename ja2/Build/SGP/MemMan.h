@@ -20,11 +20,7 @@ void ShutdownMemoryManager(void);
 void *XMalloc(size_t size);
 void *XRealloc(void *ptr, size_t size);
 
-static inline void *MallocZ(const size_t n) {
-  void *const p = MemAlloc(n);
-  memset(p, 0, n);
-  return p;
-}
+void *MallocZ(const size_t n);
 
 template <typename T>
 static inline void FreeNull(T *&r) throw() {

@@ -1,6 +1,9 @@
 #include "SysGlobals.h"
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "GameLoop.h"
 #include "SGP/Types.h"

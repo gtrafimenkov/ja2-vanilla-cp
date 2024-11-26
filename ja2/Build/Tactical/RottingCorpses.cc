@@ -1,5 +1,7 @@
 #include "Tactical/RottingCorpses.h"
 
+#include <string.h>
+
 #include "Directories.h"
 #include "GameSettings.h"
 #include "SGP/Debug.h"
@@ -51,7 +53,7 @@
 
 #define CORPSE_INDEX_OFFSET 10000
 
-//#define		DELAY_UNTIL_ROTTING		( 1 * NUM_SEC_IN_DAY )
+// #define		DELAY_UNTIL_ROTTING		( 1 * NUM_SEC_IN_DAY )
 #define DELAY_UNTIL_ROTTING (1 * NUM_SEC_IN_DAY / 60)
 #define DELAY_UNTIL_DONE_ROTTING (3 * NUM_SEC_IN_DAY / 60)
 

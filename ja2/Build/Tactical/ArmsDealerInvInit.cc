@@ -4,6 +4,7 @@
 
 #include "Laptop/BobbyR.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "SGP/Types.h"

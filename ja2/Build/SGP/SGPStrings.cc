@@ -1,5 +1,7 @@
 #include "SGP/SGPStrings.h"
 
+#include <stdio.h>
+
 void ReplacePath(char *const buf, size_t const size, char const *path, char const *const filename,
                  char const *const ext) {
   char const *base = filename;

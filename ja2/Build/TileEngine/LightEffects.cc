@@ -1,5 +1,7 @@
 #include "TileEngine/LightEffects.h"
 
+#include <string.h>
+
 #include "SGP/FileMan.h"
 #include "SGP/Random.h"
 #include "SaveLoadGame.h"

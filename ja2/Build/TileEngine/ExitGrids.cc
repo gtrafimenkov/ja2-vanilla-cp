@@ -1,5 +1,7 @@
 #include "TileEngine/ExitGrids.h"
 
+#include <string.h>
+
 #include "Editor/EditorUndo.h"
 #include "Editor/Smooth.h"
 #include "SGP/Debug.h"

@@ -1,5 +1,9 @@
 #include "Laptop/InsuranceContract.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "JAScreens.h"
 #include "Laptop/EMail.h"
@@ -9,6 +13,7 @@
 #include "Laptop/InsuranceText.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"

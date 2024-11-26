@@ -1,7 +1,12 @@
 #include "Tactical/HandleItems.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameSettings.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"

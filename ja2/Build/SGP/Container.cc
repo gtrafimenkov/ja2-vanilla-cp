@@ -1,28 +1,7 @@
-//*****************************************************************************
-//
-// Purpose : Function definition for the Container
-//
-// Modification History :
-// 25 nov 96 TS creation
-//
-// 19 Dec 97 AM Replace all memcpy() with memmove(), since overlap possibilities
-//							abound (and there were already bugs
-// in do_copy() for ordered lists) 							While the
-// memcpy() was working in _DEBUG mode, it was failing
-// reproducibly in RELEASE mode whenever regions overlapped!
-// Having read the code, I strongly suggest that you DO NOT use this
-// stuff at all and write your own instead. Tarun was no Carmack...
-//																									-
-// Alex Meduna
-// 1998	KM Detached all references to this file from JA2 as it caused a lot of
-// hard to debug
-//         crashes.  The VOBJECT/VSURFACE lists are now self-maintained and no
-//         longer use the
-//				 this crap.  DON'T USE THIS -- NO MATTER WHAT!!!
-//*****************************************************************************
 #include "SGP/Container.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "SGP/Debug.h"
 #include "SGP/MemMan.h"

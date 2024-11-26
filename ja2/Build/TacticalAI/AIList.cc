@@ -1,17 +1,7 @@
-/*
- *
- * This file contains code for the AI linked list which
- * (in TURNBASED COMBAT) keeps track of which AI guy should
- * be handled next.
- *
- * The basic plan is to insert everyone into this list by their
- * alert status at the beginning of the turn, in descending order
- * (BLACK, then RED, then YELLOW, then GREEN)
- *
- */
 #include "TacticalAI/AIList.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "SGP/Debug.h"
 #include "Tactical/AnimationData.h"

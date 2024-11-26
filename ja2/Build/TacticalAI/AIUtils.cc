@@ -1,3 +1,4 @@
+#include "Macro.h"
 #include "Strategic/Assignments.h"
 #include "Strategic/StrategicMap.h"
 #include "Tactical/AnimationControl.h"

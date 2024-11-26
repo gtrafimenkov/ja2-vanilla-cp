@@ -1,6 +1,7 @@
 #include "Tactical/WorldItems.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "GameSettings.h"
 #include "SGP/FileMan.h"

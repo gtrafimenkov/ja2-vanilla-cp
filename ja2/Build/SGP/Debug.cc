@@ -1,11 +1,12 @@
 #include "SGP/Debug.h"
 
-#if defined(SGP_DEBUG) || defined(FORCE_ASSERTS_ON)
-
 #include <SDL.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "SGP/Timer.h"
+
+#if defined(SGP_DEBUG) || defined(FORCE_ASSERTS_ON)
 
 static BOOLEAN gfRecordToFile = FALSE;
 static BOOLEAN gfRecordToDebugger = TRUE;

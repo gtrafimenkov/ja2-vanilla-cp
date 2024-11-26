@@ -1,19 +1,21 @@
-// sgp
+#include "Editor/EditorTaskbarCreation.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
-#include "SGP/ButtonSystem.h"
-#include "SGP/Font.h"
-#include "Utils/FontControl.h"
-// editor
 #include "Editor/EditorCallbackPrototypes.h"
 #include "Editor/EditorDefines.h"
 #include "Editor/EditorMapInfo.h"
 #include "Editor/EditorMercs.h"
-#include "Editor/EditorTaskbarCreation.h"
 #include "Editor/EditorTaskbarUtils.h"
-// tactical
+#include "SGP/ButtonSystem.h"
+#include "SGP/Font.h"
 #include "Tactical/OverheadTypes.h"
 #include "Tactical/SoldierControl.h"
 #include "Tactical/SoldierCreate.h"
+#include "Utils/FontControl.h"
 
 static void InitEditorItemStatsButtons(void) {
   INT16 const y = TASKBAR_Y;

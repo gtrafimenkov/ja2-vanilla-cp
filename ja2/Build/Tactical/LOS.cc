@@ -1,6 +1,7 @@
 #include "Tactical/LOS.h"
 
 #include <math.h>
+#include <string.h>
 
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
@@ -126,9 +127,9 @@ static const UINT32 guiStructureHitChance[MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_H
 #define MAX_AIMING_SCREWUP (RADIANS_IN_CIRCLE * 15 / 360)
 // min aiming screwup is X degrees, gets divided by distance in tiles
 #define MIN_AIMING_SCREWUP (RADIANS_IN_CIRCLE * 22 / 360)
-//#define MAX_AIMING_SCREWUP 0.2618
-// equal to 10 degrees
-//#define MAX_AIMING_SCREWUP_VERTIC 0.1745
+// #define MAX_AIMING_SCREWUP 0.2618
+//  equal to 10 degrees
+// #define MAX_AIMING_SCREWUP_VERTIC 0.1745
 
 #define SMELL_REDUCTION_FOR_NEARBY_OBSTACLE 80
 

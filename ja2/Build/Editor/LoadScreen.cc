@@ -1,6 +1,9 @@
 #include "Editor/LoadScreen.h"
 
 #include <cstdarg>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Editor/EditScreen.h"
@@ -23,6 +26,7 @@
 #include "GameState.h"
 #include "JAScreens.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

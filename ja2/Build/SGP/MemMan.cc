@@ -7,9 +7,10 @@
 //                    MemAlloc/MemFree, and reporting of any errors
 #include "SGP/MemMan.h"
 
-#include <new>  // std::bad_alloc
+#include <new>
 #include <stdexcept>
 #include <stdlib.h>
+#include <string.h>
 
 #include "MessageBoxScreen.h"
 #include "MouseSystem.h"
@@ -96,5 +97,11 @@ void *XMalloc(size_t const size) {
 void *XRealloc(void *const ptr, size_t const size) {
   void *const p = realloc(ptr, size);
   if (!p) throw std::bad_alloc();
+  return p;
+}
+
+void *MallocZ(const size_t n) {
+  void *const p = MemAlloc(n);
+  memset(p, 0, n);
   return p;
 }

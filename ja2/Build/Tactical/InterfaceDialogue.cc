@@ -1,11 +1,16 @@
 #include "Tactical/InterfaceDialogue.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "FadeScreen.h"
 #include "GameLoop.h"
 #include "GameScreen.h"
 #include "GameSettings.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"

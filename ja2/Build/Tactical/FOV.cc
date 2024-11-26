@@ -1,5 +1,7 @@
 #include "Tactical/FOV.h"
 
+#include <string.h>
+
 #include "SGP/Input.h"
 #include "SGP/Random.h"
 #include "Strategic/StrategicMap.h"
@@ -165,7 +167,7 @@ static void BuildSightDir(UINT32 dir, UINT32 *One, UINT32 *Two, UINT32 *Three, U
   }
 }
 
-//#if 0
+// #if 0
 
 #define NUM_SLANT_ROOF_SLOTS 200
 
@@ -677,4 +679,4 @@ void RevealRoofsAndItems(SOLDIERTYPE *const pSoldier, const BOOLEAN fShowLocator
   // LookForDoors(pSoldier,UNAWARE);
 }
 
-//#endif
+// #endif

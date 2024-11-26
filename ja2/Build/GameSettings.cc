@@ -1,5 +1,7 @@
 #include "GameSettings.h"
 
+#include <string.h>
+
 #include "Cheats.h"
 #include "GameRes.h"
 #include "GameVersion.h"

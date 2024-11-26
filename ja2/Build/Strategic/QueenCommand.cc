@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"
@@ -794,7 +795,7 @@ void AddPossiblePendingEnemiesToBattle() {
                                    : g.ubSectorY < g.ubNextY ? INSERTION_CODE_SOUTH
                                    : g.ubSectorY > g.ubNextY ? INSERTION_CODE_NORTH
                                                              : 0;  // XXX exception?
-      }                                                            // XXX else exception?
+      }  // XXX else exception?
       /* Add the number of each type of troop and place them in the appropriate
        * positions */
       AddEnemiesToBattle(g, strategic_insertion_code, n_admins, n_troops, n_elites);

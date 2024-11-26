@@ -5,6 +5,7 @@
 #include "Directories.h"
 #include "Editor/EditorDefines.h"
 #include "Editor/EditorTaskbarUtils.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"

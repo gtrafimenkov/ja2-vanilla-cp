@@ -3,6 +3,7 @@
 #include "Directories.h"
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"

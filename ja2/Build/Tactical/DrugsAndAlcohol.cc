@@ -1,5 +1,6 @@
 #include "Tactical/DrugsAndAlcohol.h"
 
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "Tactical/Interface.h"
 #include "Tactical/Items.h"

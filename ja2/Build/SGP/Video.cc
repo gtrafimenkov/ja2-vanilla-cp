@@ -8,9 +8,11 @@
 #include <fcntl.h>
 #include <stdarg.h>
 #include <stdexcept>
+#include <stdio.h>
 
 #include "FadeScreen.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/Font.h"

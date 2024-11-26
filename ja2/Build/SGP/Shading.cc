@@ -1,5 +1,7 @@
 #include "SGP/Shading.h"
 
+#include <string.h>
+
 #include "SGP/HImage.h"
 #include "SGP/VObject.h"
 

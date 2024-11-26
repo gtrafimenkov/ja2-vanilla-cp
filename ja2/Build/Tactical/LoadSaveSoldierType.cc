@@ -1,6 +1,7 @@
 #include "Tactical/LoadSaveSoldierType.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "SGP/Debug.h"
 #include "SGP/LoadSaveData.h"

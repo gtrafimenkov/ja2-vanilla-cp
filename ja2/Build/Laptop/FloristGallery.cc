@@ -1,5 +1,9 @@
 #include "Laptop/FloristGallery.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Directories.h"
 #include "Laptop/Florist.h"
 #include "Laptop/Laptop.h"
@@ -37,7 +41,7 @@
 #define FLOR_GALLERY_FLOWER_BUTTON_X LAPTOP_SCREEN_UL_X + 7
 #define FLOR_GALLERY_FLOWER_BUTTON_Y LAPTOP_SCREEN_WEB_UL_Y + 74
 
-//#define FLOR_GALLERY_FLOWER_BUTTON_OFFSET_X		250
+// #define FLOR_GALLERY_FLOWER_BUTTON_OFFSET_X		250
 
 #define FLOR_GALLERY_FLOWER_BUTTON_OFFSET_Y 112
 

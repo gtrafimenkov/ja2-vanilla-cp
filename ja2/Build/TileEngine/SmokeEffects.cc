@@ -1,6 +1,7 @@
 #include "TileEngine/SmokeEffects.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
 #include "SGP/Debug.h"

@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
 #include "SGP/Debug.h"
@@ -48,7 +49,7 @@
 
 #define OUTDOORS_START_ANGLE (FLOAT)(PI / 4)
 #define INDOORS_START_ANGLE (FLOAT)(PI / 30)
-//#define INDOORS_START_ANGLE
+// #define INDOORS_START_ANGLE
 //(FLOAT)( 0 )
 #define GLAUNCHER_START_ANGLE (FLOAT)(PI / 8)
 #define GLAUNCHER_HIGHER_LEVEL_START_ANGLE (FLOAT)(PI / 6)
@@ -65,12 +66,12 @@
 
 #define TIME_MULTI 1.8
 
-//#define TIME_MULTI			2.2
+// #define TIME_MULTI			2.2
 
 #define DELTA_T (1.0 * TIME_MULTI)
 
 #define GRAVITY (9.8 * 2.5)
-//#define					GRAVITY
+// #define					GRAVITY
 //( 9.8 * 2.8 )
 
 #define NUM_OBJECT_SLOTS 50
@@ -89,7 +90,7 @@ real Kdl = (float)(0.1 * TIME_MULTI);  // LINEAR DAMPENING ( WIND RESISTANCE )
 #define SCALE_VERT_VAL_TO_HORZ(f) ((f / HEIGHT_UNITS) * CELL_X_SIZE)
 #define SCALE_HORZ_VAL_TO_VERT(f) ((f / CELL_X_SIZE) * HEIGHT_UNITS)
 
-#define REALOBJ2ID(o) ((o)-ObjectSlots)
+#define REALOBJ2ID(o) ((o) - ObjectSlots)
 
 /// OBJECT POOL FUNCTIONS
 static REAL_OBJECT *GetFreeObjectSlot(void) {
@@ -1893,7 +1894,7 @@ static BOOLEAN DoCatchObject(REAL_OBJECT *pObject) {
   return (TRUE);
 }
 
-//#define TESTDUDEXPLOSIVES
+// #define TESTDUDEXPLOSIVES
 
 static void HandleArmedObjectImpact(REAL_OBJECT *pObject) {
   INT16 sZ;

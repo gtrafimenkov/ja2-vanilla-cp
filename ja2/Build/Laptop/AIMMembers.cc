@@ -1,6 +1,7 @@
 #include "Laptop/AIMMembers.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "Directories.h"
 #include "GameRes.h"

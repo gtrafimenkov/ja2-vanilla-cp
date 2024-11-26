@@ -1,7 +1,12 @@
 #include "Strategic/StrategicTownLoyalty.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "GameSettings.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
@@ -289,19 +294,19 @@ static void UpdateTownLoyaltyRating(INT8 bTownId) {
       gTownLoyalty[bTownId].sChange %= GAIN_PTS_PER_LOYALTY_PT;
     }
   } else
-      // if loyalty is ready to decrease
-      if (sRatingChange < 0) {
-    // check if we'd be going below zero
-    if ((gTownLoyalty[bTownId].ubRating + sRatingChange) < 0) {
-      // set to zero and null out gain pts
-      gTownLoyalty[bTownId].ubRating = 0;
-      gTownLoyalty[bTownId].sChange = 0;
-    } else {
-      // decrement loyalty rating, reduce sChange
-      gTownLoyalty[bTownId].ubRating += sRatingChange;
-      gTownLoyalty[bTownId].sChange %= GAIN_PTS_PER_LOYALTY_PT;
+    // if loyalty is ready to decrease
+    if (sRatingChange < 0) {
+      // check if we'd be going below zero
+      if ((gTownLoyalty[bTownId].ubRating + sRatingChange) < 0) {
+        // set to zero and null out gain pts
+        gTownLoyalty[bTownId].ubRating = 0;
+        gTownLoyalty[bTownId].sChange = 0;
+      } else {
+        // decrement loyalty rating, reduce sChange
+        gTownLoyalty[bTownId].ubRating += sRatingChange;
+        gTownLoyalty[bTownId].sChange %= GAIN_PTS_PER_LOYALTY_PT;
+      }
     }
-  }
 
   // check old aginst new, if diff, dirty map panel
   if (ubOldLoyaltyRating != gTownLoyalty[bTownId].ubRating) {

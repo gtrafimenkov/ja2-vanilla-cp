@@ -1,6 +1,7 @@
 #include "Tactical/Keys.h"
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"

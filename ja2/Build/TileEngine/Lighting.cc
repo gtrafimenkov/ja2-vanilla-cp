@@ -18,8 +18,10 @@
 #include "TileEngine/Lighting.h"
 
 #include <stdexcept>
+#include <stdio.h>
 
 #include "Editor/EditSys.h"
+#include "Macro.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"

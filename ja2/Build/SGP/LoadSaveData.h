@@ -1,6 +1,7 @@
 #ifndef LOADSAVEDATA_H
 #define LOADSAVEDATA_H
 
+#include <string.h>
 #include <string>
 
 #include "SGP/IEncodingCorrector.h"

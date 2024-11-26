@@ -180,11 +180,7 @@ class MouseRegion : private MOUSE_REGION {
  public:
   MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h, INT8 const priority,
               UINT16 const cursor, MOUSE_CALLBACK const movecallback,
-              MOUSE_CALLBACK const buttoncallback) {
-    MOUSE_REGION *const r = this;
-    memset(r, 0, sizeof(*r));
-    MSYS_DefineRegion(r, x, y, x + w, y + h, priority, cursor, movecallback, buttoncallback);
-  }
+              MOUSE_CALLBACK const buttoncallback);
 
   ~MouseRegion() { MSYS_RemoveRegion(this); }
 

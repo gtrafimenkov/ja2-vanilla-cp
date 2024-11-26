@@ -1,5 +1,9 @@
 #include "Editor/EditorItems.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
 #include "Editor/EditScreen.h"
 #include "Editor/EditSys.h"
 #include "Editor/EditorDefines.h"
@@ -7,6 +11,7 @@
 #include "Editor/EditorTaskbarUtils.h"
 #include "Editor/ItemStatistics.h"
 #include "Editor/SelectWin.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"

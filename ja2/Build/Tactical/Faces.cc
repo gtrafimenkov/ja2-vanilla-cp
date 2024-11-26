@@ -1,6 +1,9 @@
 #include "Tactical/Faces.h"
 
 #include <stdexcept>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "GameSettings.h"

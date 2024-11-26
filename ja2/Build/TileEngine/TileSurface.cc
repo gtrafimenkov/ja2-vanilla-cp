@@ -3,12 +3,14 @@
 #include <stdexcept>
 
 #include "Editor/Smooth.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
 #include "SGP/MouseSystem.h"
 #include "SGP/PODObj.h"
+#include "SGP/SGPStrings.h"
 #include "SGP/VObject.h"
 #include "SysGlobals.h"
 #include "TileEngine/Structure.h"

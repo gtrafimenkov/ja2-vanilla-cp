@@ -1,22 +1,11 @@
-
-//=================================================================================================
-//	MouseSystem.c
-//
-//	Routines for handling prioritized mouse regions. The system as setup
-// below allows the use of 	callback functions for each region, as well as
-// allowing a different cursor to be defined for 	each region.
-//
-//	Written by Bret Rowdon, Jan 30 '97
-//  Re-Written by Kris Morness, since...
-//
-//=================================================================================================
-
 #include "SGP/MouseSystem.h"
 
 #include <stdexcept>
+#include <string.h>
 
 #include "JAScreens.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Debug.h"
@@ -711,4 +700,12 @@ void MOUSE_REGION::AllowDisabledRegionFastHelp(bool const allow) {
   } else {
     uiFlags &= ~MSYS_ALLOW_DISABLED_FASTHELP;
   }
+}
+
+MouseRegion::MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h,
+                         INT8 const priority, UINT16 const cursor,
+                         MOUSE_CALLBACK const movecallback, MOUSE_CALLBACK const buttoncallback) {
+  MOUSE_REGION *const r = this;
+  memset(r, 0, sizeof(*r));
+  MSYS_DefineRegion(r, x, y, x + w, y + h, priority, cursor, movecallback, buttoncallback);
 }
