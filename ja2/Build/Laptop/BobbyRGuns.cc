@@ -404,7 +404,7 @@ static void CalcFirstIndexForPage(STORE_INVENTORY *pInv, UINT32 uiItemClass);
 static UINT32 CalculateTotalPurchasePrice();
 static void CreateMouseRegionForBigImage(UINT16 usPosY, UINT8 ubCount,
                                          const INVTYPE *const items[]);
-static void DisableBobbyRButtons(void);
+static void DisableBobbyRButtons();
 static void DisplayAmmoInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
 static void DisplayArmourInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
                               UINT16 usBobbyIndex);
@@ -1063,7 +1063,7 @@ static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static UINT8 GetNextPurchaseNumber(void);
+static UINT8 GetNextPurchaseNumber();
 
 static void PurchaseBobbyRayItem(UINT16 usItemNumber) {
   UINT8 ubPurchaseNumber;
@@ -1158,7 +1158,7 @@ static UINT8 CheckIfItemIsPurchased(UINT16 usItemNumber) {
   return (BOBBY_RAY_NOT_PURCHASED);
 }
 
-static UINT8 GetNextPurchaseNumber(void) {
+static UINT8 GetNextPurchaseNumber() {
   UINT8 i;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
@@ -1243,7 +1243,7 @@ static UINT32 CalculateTotalPurchasePrice() {
   return total;
 }
 
-static void DisableBobbyRButtons(void) {
+static void DisableBobbyRButtons() {
   // if it is the last page, disable the next page button
   EnableButton(guiBobbyRNextPage, gubNumPages != 0 && gubCurPage < gubNumPages - 1);
 

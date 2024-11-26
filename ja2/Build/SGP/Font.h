@@ -54,14 +54,14 @@ void SetFontAttributes(Font, UINT8 foreground, UINT8 shadow = DEFAULT_SHADOW, UI
 
 Font LoadFontFile(const char *filename);
 UINT16 GetFontHeight(Font);
-void InitializeFontManager(void);
+void InitializeFontManager();
 void UnloadFont(Font);
 
 UINT32 GetCharWidth(HVOBJECT Font, wchar_t c);
 
 INT16 StringPixLength(const wchar_t *string, Font);
-extern void SaveFontSettings(void);
-extern void RestoreFontSettings(void);
+extern void SaveFontSettings();
+extern void RestoreFontSettings();
 
 void FindFontRightCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
                               const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);

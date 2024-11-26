@@ -5,14 +5,14 @@
 
 void SetUpInterface();
 void ResetInterface();
-void RenderTopmostTacticalInterface(void);
-void RenderTacticalInterface(void);
+void RenderTopmostTacticalInterface();
+void RenderTacticalInterface();
 
-void RenderTacticalInterfaceWhileScrolling(void);
+void RenderTacticalInterfaceWhileScrolling();
 
 void EraseInterfaceMenus(BOOLEAN fIgnoreUIUnLock);
 
-void ResetInterfaceAndUI(void);
+void ResetInterfaceAndUI();
 
 bool AreWeInAUIMenu();
 

@@ -109,7 +109,7 @@ DOORTRAP const DoorTrapTable[NUM_DOOR_TRAPS] = {
 // added, or removed, the actual size of the DoorTable may change.
 DOOR *DoorTable = NULL;
 
-void LoadLockTable(void) try {
+void LoadLockTable() try {
   UINT32 uiBytesToRead;
   const char *pFileName = BINARYDATADIR "/Locks.bin";
 

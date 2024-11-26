@@ -54,7 +54,7 @@ extern GARRISON_GROUP *gGarrisonGroup;
 
 INT16 gsInterrogationGridNo[3] = {7756, 7757, 7758};
 
-static void ValidateEnemiesHaveWeapons(void) {}
+static void ValidateEnemiesHaveWeapons() {}
 
 // Counts enemies and crepitus, but not bloodcats.
 UINT8 NumHostilesInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
@@ -286,7 +286,7 @@ void EndTacticalBattleForEnemy() {
   }
 }
 
-static UINT8 NumFreeEnemySlots(void) {
+static UINT8 NumFreeEnemySlots() {
   UINT8 ubNumFreeSlots = 0;
   INT32 i;
   // Count the number of free enemy slots.  It is possible to have multiple

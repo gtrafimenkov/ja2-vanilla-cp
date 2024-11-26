@@ -406,7 +406,7 @@ static UINT8 const AmbientVols[NUM_AMBIENTS] = {
     25   // night bird 2
 };
 
-void ShutdownJA2Sound(void) { SoundStopAll(); }
+void ShutdownJA2Sound() { SoundStopAll(); }
 
 UINT32 PlayJA2Sample(SoundID const usNum, UINT32 const ubVolume, UINT32 const ubLoops,
                      UINT32 const uiPan) {
@@ -488,13 +488,13 @@ void SetSpeechVolume(UINT32 uiNewVolume) {
   guiSpeechVolume = std::min(uiNewVolume, (uint32_t)MAXVOLUME);
 }
 
-UINT32 GetSpeechVolume(void) { return (guiSpeechVolume); }
+UINT32 GetSpeechVolume() { return (guiSpeechVolume); }
 
 void SetSoundEffectsVolume(UINT32 uiNewVolume) {
   guiSoundEffectsVolume = std::min(uiNewVolume, (uint32_t)MAXVOLUME);
 }
 
-UINT32 GetSoundEffectsVolume(void) { return (guiSoundEffectsVolume); }
+UINT32 GetSoundEffectsVolume() { return (guiSoundEffectsVolume); }
 
 UINT32 CalculateSpeechVolume(UINT32 uiVolume) {
   return (uiVolume * guiSpeechVolume + HIGHVOLUME / 2) / HIGHVOLUME;
@@ -636,7 +636,7 @@ static POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];
 static UINT32 guiNumPositionSnds = 0;
 static BOOLEAN gfPositionSoundsActive = FALSE;
 
-static INT32 GetFreePositionSnd(void) {
+static INT32 GetFreePositionSnd() {
   for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
     if (!gPositionSndData[i].fAllocated) return (INT32)i;
   }
@@ -646,7 +646,7 @@ static INT32 GetFreePositionSnd(void) {
   return -1;
 }
 
-static void RecountPositionSnds(void) {
+static void RecountPositionSnds() {
   INT32 uiCount;
 
   for (uiCount = guiNumPositionSnds - 1; (uiCount >= 0); uiCount--) {
@@ -706,7 +706,7 @@ void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo) {
   }
 }
 
-void SetPositionSndsActive(void) {
+void SetPositionSndsActive() {
   gfPositionSoundsActive = TRUE;
   for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND &p = gPositionSndData[i];
@@ -719,7 +719,7 @@ void SetPositionSndsActive(void) {
   }
 }
 
-void SetPositionSndsInActive(void) {
+void SetPositionSndsInActive() {
   gfPositionSoundsActive = FALSE;
   for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND &p = gPositionSndData[i];
@@ -803,7 +803,7 @@ static INT8 PositionSoundVolume(INT8 const initial_volume, GridNo const grid_no)
   return (INT8)(initial_volume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
-void SetPositionSndsVolumeAndPanning(void) {
+void SetPositionSndsVolumeAndPanning() {
   for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND const &p = gPositionSndData[i];
     if (!p.fAllocated) continue;

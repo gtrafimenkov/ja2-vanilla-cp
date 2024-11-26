@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-void InitJA2SplashScreen(void);
+void InitJA2SplashScreen();
 
 extern UINT32 guiSplashFrameFade;
 extern UINT32 guiSplashStartTime;

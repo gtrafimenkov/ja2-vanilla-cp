@@ -38,11 +38,11 @@ static BOOLEAN fReDrawVoicesScreenFlag = FALSE;
 // the portrait region, for player to click on and re-hear voice
 static MOUSE_REGION gVoicePortraitRegion;
 
-static void CreateIMPVoiceMouseRegions(void);
-static void CreateIMPVoicesButtons(void);
+static void CreateIMPVoiceMouseRegions();
+static void CreateIMPVoicesButtons();
 static void PlayVoice();
 
-void EnterIMPVoices(void) {
+void EnterIMPVoices() {
   // create buttons
   CreateIMPVoicesButtons();
 
@@ -56,9 +56,9 @@ void EnterIMPVoices(void) {
   PlayVoice();
 }
 
-static void RenderVoiceIndex(void);
+static void RenderVoiceIndex();
 
-void RenderIMPVoices(void) {
+void RenderIMPVoices() {
   // render background
   RenderProfileBackGround();
 
@@ -78,10 +78,10 @@ void RenderIMPVoices(void) {
   PrintImpText();
 }
 
-static void DestroyIMPVoiceMouseRegions(void);
-static void DestroyIMPVoicesButtons(void);
+static void DestroyIMPVoiceMouseRegions();
+static void DestroyIMPVoicesButtons();
 
-void ExitIMPVoices(void) {
+void ExitIMPVoices() {
   // destroy buttons for IMP Voices page
   DestroyIMPVoicesButtons();
 
@@ -89,7 +89,7 @@ void ExitIMPVoices(void) {
   DestroyIMPVoiceMouseRegions();
 }
 
-void HandleIMPVoices(void) {
+void HandleIMPVoices() {
   // do we need to re write screen
   if (fReDrawVoicesScreenFlag) {
     RenderIMPVoices();
@@ -99,7 +99,7 @@ void HandleIMPVoices(void) {
   }
 }
 
-static void IncrementVoice(void) {
+static void IncrementVoice() {
   // cycle to next voice
 
   iCurrentVoices++;
@@ -110,7 +110,7 @@ static void IncrementVoice(void) {
   }
 }
 
-static void DecrementVoice(void) {
+static void DecrementVoice() {
   // cycle to previous voice
 
   iCurrentVoices--;
@@ -138,7 +138,7 @@ static void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPVoicesButtons(void) {
+static void CreateIMPVoicesButtons() {
   // will create buttons need for the IMP Voices screen
   const INT16 dx = LAPTOP_SCREEN_UL_X;
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
@@ -150,7 +150,7 @@ static void CreateIMPVoicesButtons(void) {
              BtnIMPVoicesDoneCallback);  // Done button
 }
 
-static void DestroyIMPVoicesButtons(void) {
+static void DestroyIMPVoicesButtons() {
   // will destroy buttons created for IMP Voices screen
 
   // the next button
@@ -244,7 +244,7 @@ static void PlayVoice() {
 
 static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateIMPVoiceMouseRegions(void) {
+static void CreateIMPVoiceMouseRegions() {
   // will create mouse regions needed for the IMP voices page
   MSYS_DefineRegion(&gVoicePortraitRegion, LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176,
                     LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100,
@@ -252,7 +252,7 @@ static void CreateIMPVoiceMouseRegions(void) {
                     IMPPortraitRegionButtonCallback);
 }
 
-static void DestroyIMPVoiceMouseRegions(void) {
+static void DestroyIMPVoiceMouseRegions() {
   // will destroy already created mouse reiogns for IMP voices page
   MSYS_RemoveRegion(&gVoicePortraitRegion);
 }
@@ -266,7 +266,7 @@ static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-static void RenderVoiceIndex(void) {
+static void RenderVoiceIndex() {
   wchar_t sString[32];
   INT16 sX, sY;
 

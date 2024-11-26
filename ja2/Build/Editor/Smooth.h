@@ -9,7 +9,7 @@
 #define IsLocationInArea(x, y, r) \
   (((x) >= r->iLeft) && ((x) <= r->iRight) && ((y) >= r->iTop) && ((y) <= r->iBottom))
 
-void SmoothAllTerrainWorld(void);
+void SmoothAllTerrainWorld();
 void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSmooth);
 
 void SmoothTerrainRadius(UINT32 iMapIndex, UINT32 uiCheckType, UINT8 ubRadius,

@@ -34,7 +34,7 @@ BOOLEAN fExitingVehicleToSquad = FALSE;
 
 INT32 iCurrentTacticalSquad = FIRST_SQUAD;
 
-void InitSquads(void) {
+void InitSquads() {
   // init the squad lists to NULL ptrs.
   INT32 iCounter = 0;
 
@@ -59,7 +59,7 @@ BOOLEAN IsThisSquadFull(INT8 bSquadValue) {
   return TRUE;
 }
 
-INT8 GetFirstEmptySquad(void) {
+INT8 GetFirstEmptySquad() {
   UINT8 ubCounter = 0;
 
   for (ubCounter = 0; ubCounter < NUMBER_OF_SQUADS; ubCounter++) {
@@ -370,7 +370,7 @@ void CopyPathOfCharacterToSquad(SOLDIERTYPE *const pCharacter, const INT8 bSquad
   }
 }
 
-INT32 CurrentSquad(void) {
+INT32 CurrentSquad() {
   // returns which squad is current squad
 
   return (iCurrentTacticalSquad);
@@ -439,7 +439,7 @@ BOOLEAN SetCurrentSquad(INT32 iCurrentSquad, BOOLEAN fForce) {
   return (TRUE);
 }
 
-void RebuildCurrentSquad(void) {
+void RebuildCurrentSquad() {
   // rebuilds current squad to reset faces in tactical
 
   // check if valid value passed
@@ -478,7 +478,7 @@ void RebuildCurrentSquad(void) {
   }
 }
 
-void ExamineCurrentSquadLights(void) {
+void ExamineCurrentSquadLights() {
   // OK, we should add lights for any guy currently bInSector who is not bad
   // OKLIFE...
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -535,7 +535,7 @@ void SetDefaultSquadOnSectorEntry(BOOLEAN fForce) {
   SetCurrentSquad(NO_CURRENT_SQUAD, FALSE);
 }
 
-INT32 GetLastSquadActive(void) {
+INT32 GetLastSquadActive() {
   // find id of last squad in the list with active mercs in it
   INT32 iCounter = 0;
   INT32 iLastSquad = 0;

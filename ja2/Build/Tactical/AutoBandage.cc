@@ -174,7 +174,7 @@ void ShouldBeginAutoBandage() {
   }
 }
 
-static void DisplayAutoBandageUpdatePanel(void);
+static void DisplayAutoBandageUpdatePanel();
 
 BOOLEAN HandleAutoBandage() {
   InputAtom InputEvent;
@@ -229,14 +229,14 @@ BOOLEAN HandleAutoBandage() {
   return (FALSE);
 }
 
-void SetAutoBandageComplete(void) {
+void SetAutoBandageComplete() {
   // this will set the fact autobandage is complete
   fAutoBandageComplete = TRUE;
 }
 
-static void DestroyTerminateAutoBandageButton(void);
-static void RemoveFacesForAutoBandage(void);
-static void SetUpAutoBandageUpdatePanel(void);
+static void DestroyTerminateAutoBandageButton();
+static void RemoveFacesForAutoBandage();
+static void SetUpAutoBandageUpdatePanel();
 
 void AutoBandage(BOOLEAN fStart) {
   if (fStart) {
@@ -337,10 +337,10 @@ static void BeginAutoBandageCallBack(MessageBoxReturnValue const bExitValue) {
   }
 }
 
-static void AddFacesToAutoBandageBox(void);
+static void AddFacesToAutoBandageBox();
 
 // the update box for autobandaging mercs
-static void SetUpAutoBandageUpdatePanel(void) {
+static void SetUpAutoBandageUpdatePanel() {
   const SOLDIERTYPE **next_doctor = gdoctor_list;
   const SOLDIERTYPE **next_patient = gpatient_list;
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -366,7 +366,7 @@ static void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY);
 static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(INT32 iIndex, INT16 sCurrentXPosition,
                                                          INT16 sCurrentYPosition);
 
-static void DisplayAutoBandageUpdatePanel(void) {
+static void DisplayAutoBandageUpdatePanel() {
   INT32 iNumberDoctors = 0, iNumberPatients = 0;
   INT32 iNumberDoctorsHigh = 0, iNumberPatientsHigh = 0;
   INT32 iNumberDoctorsWide = 0, iNumberPatientsWide = 0;
@@ -684,7 +684,7 @@ static void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DestroyTerminateAutoBandageButton(void) {
+static void DestroyTerminateAutoBandageButton() {
   // destroy the kill autobandage button
   if (!fAutoEndBandageButtonCreated) {
     // not around, don't destroy what ain't there
@@ -698,7 +698,7 @@ static void DestroyTerminateAutoBandageButton(void) {
   RemoveButton(iEndAutoBandageButton[1]);
 }
 
-static void AddFacesToAutoBandageBox(void) {
+static void AddFacesToAutoBandageBox() {
   INT32 iCounter = 0;
   INT32 iNumberOfDoctors = 0;
 
@@ -725,7 +725,7 @@ static void AddFacesToAutoBandageBox(void) {
   giMercPanelImage = AddVideoObjectFromFile(INTERFACEDIR "/panels.sti");
 }
 
-static void RemoveFacesForAutoBandage(void) {
+static void RemoveFacesForAutoBandage() {
   INT32 iCounter = 0, iNumberOfDoctors = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {

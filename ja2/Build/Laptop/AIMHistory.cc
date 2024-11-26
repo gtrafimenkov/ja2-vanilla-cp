@@ -92,8 +92,8 @@ enum AimHistoryTextLocations {
 
 void EnterInitAimHistory() { memset(&AimHistorySubPagesVisitedFlag, 0, NUM_AIM_HISTORY_PAGES); }
 
-static void DisableAimHistoryButton(void);
-static void InitAimHistoryMenuBar(void);
+static void DisableAimHistoryButton();
+static void InitAimHistoryMenuBar();
 
 void EnterAimHistory() {
   gfExitingAimHistory = FALSE;
@@ -129,7 +129,7 @@ static void LoadAIMHistoryText(wchar_t buf[], UINT32 entry) {
 }
 
 static void DisplayAimHistoryParagraph(UINT8 ubPageNum, UINT8 ubNumParagraphs);
-static void InitTocMenu(void);
+static void InitTocMenu();
 
 void RenderAimHistory() {
   wchar_t sText[AIM_HISTORY_LINE_SIZE];
@@ -203,7 +203,7 @@ void RenderAimHistory() {
 
 static void BtnHistoryMenuButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void InitAimHistoryMenuBar(void) {
+static void InitAimHistoryMenuBar() {
   UINT16 i, usPosX;
 
   guiHistoryMenuButtonImage = LoadButtonImage(LAPTOPDIR "/bottombuttons2.sti", 0, 1);
@@ -266,7 +266,7 @@ static void DisplayAimHistoryParagraph(UINT8 ubPageNum, UINT8 ubNumParagraphs) {
 
 static void SelectHistoryTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void InitTocMenu(void) {
+static void InitTocMenu() {
   UINT16 i, usPosY;
   UINT8 ubLocInFile[] = {IN_THE_BEGINNING, THE_ISLAND_METAVIRA, GUS_TARBALLS, WORD_FROM_FOUNDER,
                          INCORPORATION};
@@ -363,7 +363,7 @@ static void ResetAimHistoryButtons() {
   FOR_EACH(GUIButtonRef, i, guiHistoryMenuButton) { (*i)->uiFlags &= ~BUTTON_CLICKED_ON; }
 }
 
-static void DisableAimHistoryButton(void) {
+static void DisableAimHistoryButton() {
   if (gfExitingAimHistory) return;
 
   if (gubCurPageNum == 0) {

@@ -41,31 +41,31 @@ extern BOOLEAN gfSkyriderEmptyHelpGiven;
 
 void SetInfoChar(SOLDIERTYPE const *);
 void EndMapScreen(BOOLEAN fDuringFade);
-void ReBuildCharactersList(void);
+void ReBuildCharactersList();
 
-void HandlePreloadOfMapGraphics(void);
-void HandleRemovalOfPreLoadedMapGraphics(void);
+void HandlePreloadOfMapGraphics();
+void HandleRemovalOfPreLoadedMapGraphics();
 
 void ChangeSelectedMapSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 
 BOOLEAN CanExtendContractForSoldier(const SOLDIERTYPE *s);
 
-void TellPlayerWhyHeCantCompressTime(void);
+void TellPlayerWhyHeCantCompressTime();
 
 // the info character
 extern INT8 bSelectedInfoChar;
 
-SOLDIERTYPE *GetSelectedInfoChar(void);
+SOLDIERTYPE *GetSelectedInfoChar();
 void ChangeSelectedInfoChar(INT8 bCharNumber, BOOLEAN fResetSelectedList);
 
-void MAPEndItemPointer(void);
+void MAPEndItemPointer();
 
 void CopyPathToAllSelectedCharacters(PathSt *pPath);
-void CancelPathsOfAllSelectedCharacters(void);
+void CancelPathsOfAllSelectedCharacters();
 
 INT32 GetPathTravelTimeDuringPlotting(PathSt *pPath);
 
-void AbortMovementPlottingMode(void);
+void AbortMovementPlottingMode();
 
 BOOLEAN CanChangeSleepStatusForSoldier(const SOLDIERTYPE *s);
 
@@ -87,12 +87,12 @@ void RebuildContractBoxForMerc(const SOLDIERTYPE *s);
 void InternalMAPBeginItemPointer(SOLDIERTYPE *pSoldier);
 BOOLEAN ContinueDialogue(SOLDIERTYPE *pSoldier, BOOLEAN fDone);
 BOOLEAN GetMouseMapXY(INT16 *psMapWorldX, INT16 *psMapWorldY);
-void EndConfirmMapMoveMode(void);
-BOOLEAN CanDrawSectorCursor(void);
-void RememberPreviousPathForAllSelectedChars(void);
+void EndConfirmMapMoveMode();
+BOOLEAN CanDrawSectorCursor();
+void RememberPreviousPathForAllSelectedChars();
 void MapScreenDefaultOkBoxCallback(MessageBoxReturnValue);
-void SetUpCursorForStrategicMap(void);
-void DrawFace(void);
+void SetUpCursorForStrategicMap();
+void DrawFace();
 
 extern GUIButtonRef giMapInvDoneButton;
 extern BOOLEAN fInMapMode;
@@ -104,11 +104,11 @@ extern GUIButtonRef giCharInfoButton[2];
 extern BOOLEAN fDrawCharacterList;
 
 // create/destroy inventory button as needed
-void CreateDestroyMapInvButton(void);
+void CreateDestroyMapInvButton();
 
-void MapScreenInit(void);
-ScreenID MapScreenHandle(void);
-void MapScreenShutdown(void);
+void MapScreenInit();
+ScreenID MapScreenHandle();
+void MapScreenShutdown();
 
 void LockMapScreenInterface(bool lock);
 void MakeDialogueEventEnterMapScreen();

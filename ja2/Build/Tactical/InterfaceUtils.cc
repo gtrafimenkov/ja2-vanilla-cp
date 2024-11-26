@@ -51,7 +51,7 @@ static SGPVObject *giCarPortraits[NUMBER_CAR_PORTRAITS];
 static SGPVObject *guiBrownBackgroundForTeamPanel;  // backgrounds for breath max background
 
 // Load in the portraits for the car faces that will be use in mapscreen
-void LoadCarPortraitValues(void) {
+void LoadCarPortraitValues() {
   // the car portrait file names
   static char const *const pbCarPortraitFileNames[] = {
       INTERFACEDIR "/eldorado.sti", INTERFACEDIR "/hummer.sti", INTERFACEDIR "/ice cream truck.sti",
@@ -64,7 +64,7 @@ void LoadCarPortraitValues(void) {
 }
 
 // get rid of the images we loaded for the mapscreen car portraits
-void UnLoadCarPortraits(void) {
+void UnLoadCarPortraits() {
   // car protraits loaded?
   if (!giCarPortraits[0]) return;
   for (INT32 i = 0; i != NUMBER_CAR_PORTRAITS; ++i) {

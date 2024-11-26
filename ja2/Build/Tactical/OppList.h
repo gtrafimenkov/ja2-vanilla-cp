@@ -81,22 +81,22 @@ extern UINT8 gubBestToMakeSightingSize;
 INT16 AdjustMaxSightRangeForEnvEffects(INT8 bLightLevel, INT16 sDistVisible);
 void HandleSight(SOLDIERTYPE &, SightFlags);
 void AllTeamsLookForAll(UINT8 ubAllowInterrupts);
-void GloballyDecideWhoSeesWho(void);
+void GloballyDecideWhoSeesWho();
 UINT16 GetClosestMerc(UINT16 usSoldierIndex);
-INT16 MaxDistanceVisible(void);
+INT16 MaxDistanceVisible();
 INT16 DistanceVisible(const SOLDIERTYPE *pSoldier, INT8 bFacingDir, INT8 bSubjectDir,
                       INT16 sSubjectGridNo, INT8 bLevel);
 void RecalculateOppCntsDueToNoLongerNeutral(SOLDIERTYPE *pSoldier);
 
-void InitOpponentKnowledgeSystem(void);
+void InitOpponentKnowledgeSystem();
 void InitSoldierOppList(SOLDIERTYPE &);
 void BetweenTurnsVisibilityAdjustments();
 void RemoveManAsTarget(SOLDIERTYPE *pSoldier);
 void RadioSightings(SOLDIERTYPE *pSoldier, SOLDIERTYPE *about, UINT8 ubTeamToRadioTo);
-void DebugSoldierPage1(void);
-void DebugSoldierPage2(void);
-void DebugSoldierPage3(void);
-void DebugSoldierPage4(void);
+void DebugSoldierPage1();
+void DebugSoldierPage2();
+void DebugSoldierPage3();
+void DebugSoldierPage4();
 
 UINT8 MovementNoise(SOLDIERTYPE *pSoldier);
 UINT8 DoorOpeningNoise(SOLDIERTYPE *pSoldier);
@@ -116,13 +116,13 @@ INT8 GetWatchedLocPoints(UINT8 ubID, INT16 sGridNo, INT8 bLevel);
 INT8 GetHighestVisibleWatchedLoc(const SOLDIERTYPE *s);
 INT8 GetHighestWatchedLocPoints(const SOLDIERTYPE *s);
 
-void TurnOffEveryonesMuzzleFlashes(void);
+void TurnOffEveryonesMuzzleFlashes();
 void TurnOffTeamsMuzzleFlashes(UINT8 ubTeam);
 void EndMuzzleFlash(SOLDIERTYPE *pSoldier);
 void NonCombatDecayPublicOpplist(UINT32 uiTime);
 
-void CheckHostileOrSayQuoteList(void);
-void InitOpplistForDoorOpening(void);
+void CheckHostileOrSayQuoteList();
+void InitOpplistForDoorOpening();
 
 void AddToShouldBecomeHostileOrSayQuoteList(SOLDIERTYPE *s);
 

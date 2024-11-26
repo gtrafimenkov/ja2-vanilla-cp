@@ -6,16 +6,16 @@
 
 #define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
 
-void FadeInGameScreen(void);
-void FadeOutGameScreen(void);
+void FadeInGameScreen();
+void FadeOutGameScreen();
 
-typedef void (*MODAL_HOOK)(void);
+typedef void (*MODAL_HOOK)();
 
 extern BOOLEAN gfGameScreenLocateToSoldier;
 extern BOOLEAN gfEnteringMapScreen;
 extern SOLDIERTYPE *gPreferredInitialSelectedGuy;
 
-void UpdateTeamPanelAssignments(void);
+void UpdateTeamPanelAssignments();
 
 #define TACTICAL_MODAL_NOMOUSE 1
 #define TACTICAL_MODAL_WITHMOUSE 2
@@ -23,10 +23,10 @@ void UpdateTeamPanelAssignments(void);
 extern MODAL_HOOK gModalDoneCallback;
 
 void EnterModalTactical(INT8 bMode);
-void EndModalTactical(void);
+void EndModalTactical();
 
 // handle the entrance of the mercs at the beginning of the game
-void InitHelicopterEntranceByMercs(void);
+void InitHelicopterEntranceByMercs();
 
 void InternalLeaveTacticalScreen(ScreenID uiNewScreen);
 
@@ -35,11 +35,11 @@ extern BOOLEAN gfBeginEndTurn;
 extern VIDEO_OVERLAY *g_fps_overlay;
 extern VIDEO_OVERLAY *g_counter_period_overlay;
 
-void EnterTacticalScreen(void);
+void EnterTacticalScreen();
 void LeaveTacticalScreen(ScreenID uiNewScreen);
 
-void MainGameScreenInit(void);
-ScreenID MainGameScreenHandle(void);
-void MainGameScreenShutdown(void);
+void MainGameScreenInit();
+ScreenID MainGameScreenHandle();
+void MainGameScreenShutdown();
 
 #endif

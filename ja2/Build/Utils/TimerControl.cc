@@ -111,7 +111,7 @@ static UINT32 TimeProc(UINT32 const interval, void *) {
   return interval;
 }
 
-void InitializeJA2Clock(void) {
+void InitializeJA2Clock() {
 #ifdef CALLBACKTIMER
   SDL_InitSubSystem(SDL_INIT_TIMER);
 
@@ -125,7 +125,7 @@ void InitializeJA2Clock(void) {
 #endif
 }
 
-void ShutdownJA2Clock(void) {
+void ShutdownJA2Clock() {
 #ifdef CALLBACKTIMER
   SDL_RemoveTimer(g_timer);
 #endif
@@ -145,7 +145,7 @@ void SetCustomizableTimerCallbackAndDelay(INT32 const delay,
   gpCustomizableTimerCallback = callback;
 }
 
-void CheckCustomizableTimer(void) {
+void CheckCustomizableTimer() {
   if (!gpCustomizableTimerCallback) return;
   if (!TIMECOUNTERDONE(giTimerCustomizable, 0)) return;
 
@@ -157,7 +157,7 @@ void CheckCustomizableTimer(void) {
   callback();
 }
 
-void ResetJA2ClockGlobalTimers(void) {
+void ResetJA2ClockGlobalTimers() {
   UINT32 const now = GetJA2Clock();
 
   guiCompressionStringBaseTime = now;

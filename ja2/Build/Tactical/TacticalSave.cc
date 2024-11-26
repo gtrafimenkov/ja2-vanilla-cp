@@ -282,8 +282,8 @@ void AddItemsToUnLoadedSector(INT16 const sMapX, INT16 const sMapY, INT8 const b
 
 extern BOOLEAN gfInMeanwhile;
 
-static void SaveNPCInformationToProfileStruct(void);
-static void SetLastTimePlayerWasInSector(void);
+static void SaveNPCInformationToProfileStruct();
+static void SetLastTimePlayerWasInSector();
 static void SaveRottingCorpsesToTempCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 
 void SaveCurrentSectorsInformationToTempItemFile() {
@@ -417,7 +417,7 @@ static UINT32 GetSectorFlags(INT16 const x, INT16 const y, UINT8 const z) {
 }
 
 static void LoadAndAddWorldItemsFromTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-static UINT32 GetLastTimePlayerWasInSector(void);
+static UINT32 GetLastTimePlayerWasInSector();
 static void LoadRottingCorpsesFromTempCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 
 void LoadCurrentSectorsInformationFromTempItemsFile() {
@@ -515,7 +515,7 @@ void LoadCurrentSectorsInformationFromTempItemsFile() {
   StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated();
 }
 
-static void SetLastTimePlayerWasInSector(void) {
+static void SetLastTimePlayerWasInSector() {
   if (gbWorldSectorZ == 0) {
     SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)].uiTimeCurrentSectorWasLastLoaded =
         GetWorldTotalMin();
@@ -529,7 +529,7 @@ static void SetLastTimePlayerWasInSector(void) {
   }
 }
 
-static UINT32 GetLastTimePlayerWasInSector(void) {
+static UINT32 GetLastTimePlayerWasInSector() {
   if (gbWorldSectorZ == 0) {
     return SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)].uiTimeCurrentSectorWasLastLoaded;
   } else if (gbWorldSectorZ > 0) {
@@ -670,7 +670,7 @@ void AddWorldItemsToUnLoadedSector(const INT16 sMapX, const INT16 sMapY, const I
   }
 }
 
-static void SaveNPCInformationToProfileStruct(void) {
+static void SaveNPCInformationToProfileStruct() {
   // Only do this on save now... on traversal this is handled in the strategic
   // code
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) return;

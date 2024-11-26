@@ -230,7 +230,7 @@ void RenderFuneral() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void DisplayFuneralRipTombStone(void) {
+static void DisplayFuneralRipTombStone() {
   // rip tombstone
   BltVideoObjectOutlineShadow(FRAME_BUFFER, guiClosedSign, 0, FUNERAL_CLOSED_RIP_SIGN_X + 5,
                               FUNERAL_CLOSED_RIP_SIGN_Y + 5);

@@ -859,7 +859,7 @@ static void ProcessUpdateStats(MERCPROFILESTRUCT &p, SOLDIERTYPE *const pSoldier
   }
 }
 
-void HandleAnyStatChangesAfterAttack(void) {
+void HandleAnyStatChangesAfterAttack() {
   // must check everyone on player's team, not just the shooter
   FOR_EACH_IN_TEAM(s, OUR_TEAM) { ProcessUpdateStats(GetProfile(s->ubProfile), s); }
 }
@@ -1081,7 +1081,7 @@ void HandleUnhiredMercDeaths(INT32 iProfileID) {
   }
 }
 
-static UINT8 CalcImportantSectorControl(void);
+static UINT8 CalcImportantSectorControl();
 
 // These HAVE to total 100% at all times!!!
 #define PROGRESS_PORTION_KILLS 25
@@ -1090,7 +1090,7 @@ static UINT8 CalcImportantSectorControl(void);
 
 // returns a number between 0-100, this is an estimate of how far a player has
 // progressed through the game
-UINT8 CurrentPlayerProgressPercentage(void) {
+UINT8 CurrentPlayerProgressPercentage() {
   UINT32 uiCurrentIncome;
   UINT32 uiPossibleIncome;
   UINT8 ubCurrentProgress;
@@ -1159,7 +1159,7 @@ UINT8 CurrentPlayerProgressPercentage(void) {
   return (ubCurrentProgress);
 }
 
-UINT8 HighestPlayerProgressPercentage(void) {
+UINT8 HighestPlayerProgressPercentage() {
   if (gfEditMode) return 0;
 
   return (gStrategicStatus.ubHighestProgress);
@@ -1168,7 +1168,7 @@ UINT8 HighestPlayerProgressPercentage(void) {
 // monitors the highest level of progress that player has achieved so far
 // (checking hourly), as opposed to his immediate situation (which may be worse
 // if he's suffered a setback).
-void HourlyProgressUpdate(void) {
+void HourlyProgressUpdate() {
   UINT8 ubCurrentProgress;
 
   ubCurrentProgress = CurrentPlayerProgressPercentage();
@@ -1261,7 +1261,7 @@ void BuildStatChangeString(wchar_t *const wString, size_t const Length, wchar_t 
            sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
 }
 
-static UINT8 CalcImportantSectorControl(void) {
+static UINT8 CalcImportantSectorControl() {
   UINT8 ubMapX, ubMapY;
   UINT8 ubSectorControlPts = 0;
 

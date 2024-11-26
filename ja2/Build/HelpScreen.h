@@ -59,9 +59,9 @@ struct HELP_SCREEN_STRUCT {
 extern HELP_SCREEN_STRUCT gHelpScreen;
 
 BOOLEAN ShouldTheHelpScreenComeUp(HelpScreenID, BOOLEAN fForceHelpScreenToComeUp);
-void HelpScreenHandler(void);
-void InitHelpScreenSystem(void);
-void NewScreenSoResetHelpScreen(void);
+void HelpScreenHandler();
+void InitHelpScreenSystem();
+void NewScreenSoResetHelpScreen();
 HelpScreenID HelpScreenDetermineWhichMapScreenHelpToShow();
 
 #endif

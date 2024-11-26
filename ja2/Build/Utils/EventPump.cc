@@ -59,7 +59,7 @@ static void AddGameEventToQueue(UINT32 const uiEvent, UINT16 const usDelay, PTR 
 
 static BOOLEAN ExecuteGameEvent(EVENT *pEvent);
 
-BOOLEAN DequeAllGameEvents(void) {
+BOOLEAN DequeAllGameEvents() {
   UINT32 uiQueueSize;
   UINT32 cnt;
 
@@ -112,7 +112,7 @@ BOOLEAN DequeAllGameEvents(void) {
   return TRUE;
 }
 
-BOOLEAN DequeueAllDemandGameEvents(void) {
+BOOLEAN DequeueAllDemandGameEvents() {
   // Dequeue all events on the demand queue (only)
 
   while (EventQueueSize(DEMAND_EVENT_QUEUE) > 0) {
@@ -268,7 +268,7 @@ static BOOLEAN ExecuteGameEvent(EVENT *pEvent) {
   return TRUE;
 }
 
-BOOLEAN ClearEventQueue(void) {
+BOOLEAN ClearEventQueue() {
   // clear out the event queue
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     EVENT *Event = RemoveEvent(0, PRIMARY_EVENT_QUEUE);

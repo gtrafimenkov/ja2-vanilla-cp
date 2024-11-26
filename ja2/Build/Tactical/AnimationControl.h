@@ -515,8 +515,8 @@ extern RANDOM_ANI_DEF gRandomAnimDefs[][MAX_RANDOM_ANIMS_PER_BODYTYPE];
 // Corpse Defines
 extern UINT16 gubAnimSurfaceCorpseID[][NUMANIMATIONSTATES];
 
-void LoadAnimationStateInstructions(void);
-void InitAnimationSurfacesPerBodytype(void);
+void LoadAnimationStateInstructions();
+void InitAnimationSurfacesPerBodytype();
 bool IsAnimationValidForBodyType(SOLDIERTYPE const &, UINT16 new_state);
 UINT16 SubstituteBodyTypeAnimation(const SOLDIERTYPE *s, UINT16 anim_state);
 char const *GetBodyTypePaletteSubstitution(SOLDIERTYPE const *, UINT8 ubBodyType);

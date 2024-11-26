@@ -10,15 +10,15 @@
 enum { GUI_CLEAR_EVENT, GUI_LCLICK_EVENT, GUI_RCLICK_EVENT, GUI_MOVE_EVENT };
 
 // Taskbar manipulation functions
-void DoTaskbar(void);
-void ProcessEditorRendering(void);
-void EnableEditorTaskbar(void);
+void DoTaskbar();
+void ProcessEditorRendering();
+void EnableEditorTaskbar();
 
 /* Disable the task bar, but leave it on screen. Used when a selection window is
  * up. */
 void DisableEditorTaskbar();
 
-void CreateEditorTaskbar(void);
+void CreateEditorTaskbar();
 void DeleteEditorTaskbar();
 
 // Button manipulation functions

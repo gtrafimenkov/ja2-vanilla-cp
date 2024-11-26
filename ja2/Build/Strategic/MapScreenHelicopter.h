@@ -26,7 +26,7 @@
 
 #define SPIEL_ABOUT_ESTONI_AIRSPACE 26
 #define CONFIRM_DESTINATION 27
-//#define DESTINATION_TOO_FAR 28		// unused
+// #define DESTINATION_TOO_FAR 28		// unused
 #define ALTERNATE_FUEL_SITE 26
 #define ARRIVED_IN_HOSTILE_SECTOR 29
 #define BELIEVED_ENEMY_SECTOR 30  // may become unused
@@ -62,7 +62,7 @@ enum {
 // helicopter vehicle id value
 extern INT32 iHelicopterVehicleId;
 
-static inline VEHICLETYPE &GetHelicopter(void) {
+static inline VEHICLETYPE &GetHelicopter() {
   Assert(0 <= iHelicopterVehicleId && iHelicopterVehicleId < ubNumberOfVehicles);
   VEHICLETYPE &v = pVehicleList[iHelicopterVehicleId];
   Assert(v.fValid);
@@ -122,64 +122,64 @@ BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier);
 void HelicopterDialogue(UINT8 ubDialogueCondition);
 
 // is the helicopter available for flight?
-BOOLEAN CanHelicopterFly(void);
+BOOLEAN CanHelicopterFly();
 
 // is the pilot alive and on our side?
-BOOLEAN IsHelicopterPilotAvailable(void);
+BOOLEAN IsHelicopterPilotAvailable();
 
 // have helicopter take off
-void TakeOffHelicopter(void);
+void TakeOffHelicopter();
 
 // test whether or not a sector contains a fuel site
 bool IsRefuelSiteInSector(INT16 sector);
 
 // update which refueling sites are controlled by player & therefore available
-void UpdateRefuelSiteAvailability(void);
+void UpdateRefuelSiteAvailability();
 
 // setup helicopter for player
 void SetUpHelicopterForPlayer(INT16 sX, INT16 sY);
 
 // the intended path of the helicopter
-INT32 DistanceOfIntendedHelicopterPath(void);
+INT32 DistanceOfIntendedHelicopterPath();
 
 // handle a little wait for hover
-void HandleHeliHoverLong(void);
+void HandleHeliHoverLong();
 
 // handle a LONG wait in hover mode
-void HandleHeliHoverTooLong(void);
+void HandleHeliHoverTooLong();
 
 // drop off everyone in helicopter
-void DropOffEveryOneInHelicopter(void);
+void DropOffEveryOneInHelicopter();
 
 // handle heli entering this sector
 BOOLEAN HandleHeliEnteringSector(INT16 sX, INT16 sY);
 
 // set up helic, if it doesn't have a mvt group
-void SetUpHelicopterForMovement(void);
+void SetUpHelicopterForMovement();
 
 // number of passengers in helicopter
-INT32 GetNumberOfPassengersInHelicopter(void);
+INT32 GetNumberOfPassengersInHelicopter();
 
 // skyrider talking to player
 void SkyRiderTalk(UINT16 usQuoteNum);
 
 // handle animation of sectors for mapscreen
-void HandleAnimationOfSectors(void);
+void HandleAnimationOfSectors();
 
 // check and handle skyrider monologue
-void CheckAndHandleSkyriderMonologues(void);
+void CheckAndHandleSkyriderMonologues();
 
-void HandleHelicopterOnGroundGraphic(void);
+void HandleHelicopterOnGroundGraphic();
 
-void HandleHelicopterOnGroundSkyriderProfile(void);
+void HandleHelicopterOnGroundSkyriderProfile();
 
 // will a sam site under the players control shoot down an airraid?
 // BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY );
 
 // is the helicopter capable of taking off for the player?
-BOOLEAN CanHelicopterTakeOff(void);
+BOOLEAN CanHelicopterTakeOff();
 
-void InitializeHelicopter(void);
+void InitializeHelicopter();
 
 bool IsSkyriderIsFlyingInSector(INT16 x, INT16 y);
 
@@ -187,12 +187,12 @@ bool IsGroupTheHelicopterGroup(GROUP const &);
 
 INT16 GetNumSafeSectorsInPath();
 
-INT16 GetNumUnSafeSectorsInPath(void);
+INT16 GetNumUnSafeSectorsInPath();
 
 bool SoldierAboardAirborneHeli(SOLDIERTYPE const &);
 
-void MoveAllInHelicopterToFootMovementGroup(void);
+void MoveAllInHelicopterToFootMovementGroup();
 
-void PayOffSkyriderDebtIfAny(void);
+void PayOffSkyriderDebtIfAny();
 
 #endif

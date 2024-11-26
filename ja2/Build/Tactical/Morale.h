@@ -56,9 +56,9 @@ extern void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sM
 extern void RefreshSoldierMorale(SOLDIERTYPE *pSoldier);
 extern INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier);
 
-void HourlyMoraleUpdate(void);
+void HourlyMoraleUpdate();
 void DailyMoraleUpdate(SOLDIERTYPE *pSoldier);
 
-void DecayTacticalMoraleModifiers(void);
+void DecayTacticalMoraleModifiers();
 
 #endif

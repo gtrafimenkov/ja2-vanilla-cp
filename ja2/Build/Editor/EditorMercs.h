@@ -51,19 +51,19 @@ enum _ForUseWithIndicateSelectedMerc {
 
 void IndicateSelectedMerc(INT16 sID);
 
-void GameInitEditorMercsInfo(void);
-void GameShutdownEditorMercsInfo(void);
-void EntryInitEditorMercsInfo(void);
-void UpdateMercsInfo(void);
+void GameInitEditorMercsInfo();
+void GameShutdownEditorMercsInfo();
+void EntryInitEditorMercsInfo();
+void UpdateMercsInfo();
 
-void ProcessMercEditing(void);
+void ProcessMercEditing();
 void AddMercToWorld(INT32 iMapIndex);
 void HandleRightClickOnMerc(INT32 iMapIndex);
 void SetMercEditingMode(UINT8 ubNewMode);
 
-void ResetAllMercPositions(void);
+void ResetAllMercPositions();
 
-void EraseMercWaypoint(void);
+void EraseMercWaypoint();
 void AddMercWaypoint(UINT32 iMapIndex);
 
 void SetEnemyColorCode(UINT8 ubColorCode);
@@ -77,7 +77,7 @@ void SetMercDirection(INT8 bDirection);
 void SetMercRelativeEquipment(INT8 bLevel);
 void SetMercRelativeAttributes(INT8 bLevel);
 
-void DeleteSelectedMerc(void);
+void DeleteSelectedMerc();
 
 void ExtractCurrentMercModeInfo(BOOLEAN fKillTextInputMode);
 
@@ -96,7 +96,7 @@ extern BOOLEAN gfRoofPlacement;
 
 extern void SetEnemyDroppableStatus(UINT32 uiSlot, BOOLEAN fDroppable);
 
-void RenderMercStrings(void);
+void RenderMercStrings();
 
 extern BOOLEAN gfShowPlayers;
 extern BOOLEAN gfShowEnemies;
@@ -111,19 +111,19 @@ extern BOOLEAN gfUseScheduleData2;
 
 void UpdateScheduleAction(UINT8 ubNewAction);
 void FindScheduleGridNo(UINT8 ubScheduleData);
-void ClearCurrentSchedule(void);
-void CancelCurrentScheduleAction(void);
+void ClearCurrentSchedule();
+void CancelCurrentScheduleAction();
 void RegisterCurrentScheduleAction(INT32 iMapIndex);
-void StartScheduleAction(void);
+void StartScheduleAction();
 
-void InitDetailedPlacementForMerc(void);
-void KillDetailedPlacementForMerc(void);
+void InitDetailedPlacementForMerc();
+void KillDetailedPlacementForMerc();
 
 void CopyMercPlacement(INT32 iMapIndex);
 void PasteMercPlacement(INT32 iMapIndex);
 
-void ExtractAndUpdateMercSchedule(void);
+void ExtractAndUpdateMercSchedule();
 
-void DeleteSelectedMercsItem(void);
+void DeleteSelectedMercsItem();
 
 #endif

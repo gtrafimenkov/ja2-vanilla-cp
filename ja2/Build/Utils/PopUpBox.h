@@ -53,7 +53,7 @@ void ResizeBoxToText(PopUpBox *);
 void ForceUpDateOfBox(PopUpBox *);
 
 // force redraw of ALL boxes
-void MarkAllBoxesAsAltered(void);
+void MarkAllBoxesAsAltered();
 
 // is the box being displayed?
 BOOLEAN IsBoxShown(const PopUpBox *);
@@ -65,7 +65,7 @@ BOOLEAN GetBoxShadeFlag(const PopUpBox *, INT32 iLineNumber);
 void SetBoxLineForeground(PopUpBox *, INT32 iStringValue, UINT8 ubColor);
 
 // hide all visible boxes
-void HideAllBoxes(void);
+void HideAllBoxes();
 
 // add a second column monochrome string
 void AddSecondColumnMonoString(PopUpBox *, const wchar_t *pString);

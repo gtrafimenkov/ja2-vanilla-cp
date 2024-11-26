@@ -8,12 +8,12 @@
 
 #define FADE_IN_REALFADE 12
 
-typedef void (*FADE_HOOK)(void);
+typedef void (*FADE_HOOK)();
 
 extern FADE_HOOK gFadeInDoneCallback;
 extern FADE_HOOK gFadeOutDoneCallback;
 
-typedef void (*FADE_FUNCTION)(void);
+typedef void (*FADE_FUNCTION)();
 
 extern BOOLEAN gfFadeInitialized;
 extern BOOLEAN gfFadeIn;
@@ -23,12 +23,12 @@ extern BOOLEAN gfFadeInVideo;
 BOOLEAN HandleBeginFadeIn(ScreenID uiScreenExit);
 BOOLEAN HandleBeginFadeOut(ScreenID uiScreenExit);
 
-BOOLEAN HandleFadeOutCallback(void);
-BOOLEAN HandleFadeInCallback(void);
+BOOLEAN HandleFadeOutCallback();
+BOOLEAN HandleFadeInCallback();
 
-void FadeInNextFrame(void);
-void FadeOutNextFrame(void);
+void FadeInNextFrame();
+void FadeOutNextFrame();
 
-ScreenID FadeScreenHandle(void);
+ScreenID FadeScreenHandle();
 
 #endif

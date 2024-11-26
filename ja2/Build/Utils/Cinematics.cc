@@ -40,7 +40,7 @@ struct SMKFLIC {
 static SMKFLIC SmkList[4];
 static UINT32 guiSmackPixelFormat = SMACKBUFFER565;
 
-BOOLEAN SmkPollFlics(void) {
+BOOLEAN SmkPollFlics() {
   BOOLEAN fFlicStatus = FALSE;
   FOR_EACH(SMKFLIC, i, SmkList) {
     if (!(i->uiFlags & SMK_FLIC_PLAYING)) continue;
@@ -72,7 +72,7 @@ BOOLEAN SmkPollFlics(void) {
   return fFlicStatus;
 }
 
-void SmkInitialize(void) {
+void SmkInitialize() {
   // Wipe the flic list clean
   memset(SmkList, 0, sizeof(SmkList));
 
@@ -80,7 +80,7 @@ void SmkInitialize(void) {
   SmackUseMMX(1);
 }
 
-void SmkShutdown(void) {
+void SmkShutdown() {
   // Close and deallocate any open flics
   FOR_EACH(SMKFLIC, i, SmkList) {
     if (i->uiFlags & SMK_FLIC_OPEN) SmkCloseFlic(i);
@@ -105,8 +105,8 @@ SMKFLIC *SmkPlayFlic(const char *const filename, const UINT32 left, const UINT32
   return sf;
 }
 
-static SMKFLIC *SmkGetFreeFlic(void);
-static void SmkSetupVideo(void);
+static SMKFLIC *SmkGetFreeFlic();
+static void SmkSetupVideo();
 
 static SMKFLIC *SmkOpenFlic(const char *const filename) try {
   SMKFLIC *const sf = SmkGetFreeFlic();
@@ -152,14 +152,14 @@ void SmkCloseFlic(SMKFLIC *const sf) {
   memset(sf, 0, sizeof(*sf));
 }
 
-static SMKFLIC *SmkGetFreeFlic(void) {
+static SMKFLIC *SmkGetFreeFlic() {
   FOR_EACH(SMKFLIC, i, SmkList) {
     if (!(i->uiFlags & SMK_FLIC_OPEN)) return i;
   }
   return NULL;
 }
 
-static void SmkSetupVideo(void) {
+static void SmkSetupVideo() {
   UINT32 red;
   UINT32 green;
   UINT32 blue;

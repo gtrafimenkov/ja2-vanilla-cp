@@ -104,7 +104,7 @@ extern UINT16 gusNumAnimatedTiles;
 extern UINT16 gusAnimatedTiles[MAX_ANIMATED_TILES];
 extern UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES];
 
-void CreateTileDatabase(void);
+void CreateTileDatabase();
 
 // Land level manipulation functions
 
@@ -129,6 +129,6 @@ void SetSpecificDatabaseValues(UINT16 type, UINT16 database_elem, TILE_ELEMENT &
                                bool use_raised_object_type);
 
 void AllocateAnimTileData(TILE_ELEMENT *pTileElem, UINT8 ubNumFrames);
-void DeallocateTileDatabase(void);
+void DeallocateTileDatabase();
 
 #endif

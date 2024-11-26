@@ -1,8 +1,8 @@
 #ifndef __MERCS_FILES_H
 #define __MERCS_FILES_H
 
-void EnterMercsFiles(void);
-void ExitMercsFiles(void);
-void RenderMercsFiles(void);
+void EnterMercsFiles();
+void ExitMercsFiles();
+void RenderMercsFiles();
 
 #endif

@@ -43,8 +43,8 @@ const char *const szMusicList[] = {
 BOOLEAN gfForceMusicToTense = FALSE;
 static BOOLEAN gfDontRestartSong = FALSE;
 
-static BOOLEAN MusicFadeIn(void);
-static BOOLEAN MusicStop(void);
+static BOOLEAN MusicFadeIn();
+static BOOLEAN MusicStop();
 static void MusicStopCallback(void *pData);
 
 void MusicPlay(UINT32 uiNum) {
@@ -64,7 +64,7 @@ void MusicPlay(UINT32 uiNum) {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 }
 
-static void StartMusicBasedOnMode(void);
+static void StartMusicBasedOnMode();
 
 void MusicSetVolume(UINT32 uiVolume) {
   INT32 uiOldMusicVolume = uiMusicVolume;
@@ -96,13 +96,13 @@ void MusicSetVolume(UINT32 uiVolume) {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-UINT32 MusicGetVolume(void) { return (uiMusicVolume); }
+UINT32 MusicGetVolume() { return (uiMusicVolume); }
 
 //		Stops the currently playing music.
 //
 //	Returns:	TRUE if the music was stopped, FALSE if an error
 // occurred
-static BOOLEAN MusicStop(void) {
+static BOOLEAN MusicStop() {
   if (uiMusicHandle != NO_SAMPLE) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
@@ -121,7 +121,7 @@ static BOOLEAN MusicStop(void) {
 //
 //	Returns:	TRUE if the music has begun fading, FALSE if an error
 // occurred
-static BOOLEAN MusicFadeOut(void) {
+static BOOLEAN MusicFadeOut() {
   if (uiMusicHandle != NO_SAMPLE) {
     fMusicFadingOut = TRUE;
     return (TRUE);
@@ -133,7 +133,7 @@ static BOOLEAN MusicFadeOut(void) {
 //
 //	Returns:	TRUE if the music has begun fading in, FALSE if an error
 // occurred
-static BOOLEAN MusicFadeIn(void) {
+static BOOLEAN MusicFadeIn() {
   if (uiMusicHandle != NO_SAMPLE) {
     fMusicFadingIn = TRUE;
     return (TRUE);
@@ -141,9 +141,9 @@ static BOOLEAN MusicFadeIn(void) {
   return (FALSE);
 }
 
-static void DoneFadeOutDueToEndMusic(void);
+static void DoneFadeOutDueToEndMusic();
 
-void MusicPoll(void) {
+void MusicPoll() {
   INT32 iVol;
 
   SoundServiceStreams();
@@ -243,7 +243,7 @@ void SetMusicMode(UINT8 ubMusicMode) {
   gubOldMusicMode = gubMusicMode;
 }
 
-static void StartMusicBasedOnMode(void) {
+static void StartMusicBasedOnMode() {
   static BOOLEAN fFirstTime = TRUE;
 
   if (fFirstTime) {
@@ -341,7 +341,7 @@ static void MusicStopCallback(void *pData) {
 
 void SetMusicFadeSpeed(INT8 bFadeSpeed) { gbFadeSpeed = bFadeSpeed; }
 
-static void DoneFadeOutDueToEndMusic(void) {
+static void DoneFadeOutDueToEndMusic() {
   // Quit game....
   InternalLeaveTacticalScreen(MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );

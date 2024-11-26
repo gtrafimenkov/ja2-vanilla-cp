@@ -24,7 +24,7 @@
 static BULLET gBullets[NUM_BULLET_SLOTS];
 UINT32 guiNumBullets = 0;
 
-static BULLET *GetFreeBullet(void) {
+static BULLET *GetFreeBullet() {
   BULLET *b;
   for (b = gBullets; b != gBullets + guiNumBullets; ++b) {
     if (!b->fAllocated) return b;
@@ -34,7 +34,7 @@ static BULLET *GetFreeBullet(void) {
   return b;
 }
 
-static void RecountBullets(void) {
+static void RecountBullets() {
   INT32 uiCount;
 
   for (uiCount = guiNumBullets - 1; (uiCount >= 0); uiCount--) {
@@ -157,7 +157,7 @@ void LocateBullet(BULLET *b) {
   LocateGridNo(b->sGridNo);
 }
 
-void UpdateBullets(void) {
+void UpdateBullets() {
   UINT32 uiCount;
   LEVELNODE *pNode;
   BOOLEAN fDeletedSome = FALSE;
@@ -347,7 +347,7 @@ void StopBullet(BULLET *b) {
   RemoveStruct(b->sGridNo, BULLETTILE2);
 }
 
-void DeleteAllBullets(void) {
+void DeleteAllBullets() {
   for (UINT32 i = 0; i < guiNumBullets; ++i) {
     BULLET *const b = &gBullets[i];
     if (b->fAllocated) {

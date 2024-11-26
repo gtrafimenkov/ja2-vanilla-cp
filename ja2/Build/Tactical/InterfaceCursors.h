@@ -197,8 +197,8 @@ struct UICursor {
 extern const UICursor gUICursors[NUM_UI_CURSORS];
 
 void SetUICursor(UICursorID);
-void DrawUICursor(void);
-void HideUICursor(void);
+void DrawUICursor();
+void HideUICursor();
 
 extern UINT16 gusCurMousePos;
 

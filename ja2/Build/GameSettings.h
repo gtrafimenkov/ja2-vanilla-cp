@@ -92,17 +92,17 @@ extern GAME_SETTINGS gGameSettings;
 // game.
 extern GAME_OPTIONS gGameOptions;
 
-void SaveGameSettings(void);
-void LoadGameSettings(void);
+void SaveGameSettings();
+void LoadGameSettings();
 
-void InitGameOptions(void);
+void InitGameOptions();
 
-void DisplayGameSettings(void);
+void DisplayGameSettings();
 
 bool MeanwhileSceneSeen(UINT8 meanwhile_id);
 void SetMeanwhileSceneSeen(UINT8 meanwhile_id);
 
-BOOLEAN CanGameBeSaved(void);
+BOOLEAN CanGameBeSaved();
 
 void CDromEjectionErrorMessageBoxCallBack(MessageBoxReturnValue);
 

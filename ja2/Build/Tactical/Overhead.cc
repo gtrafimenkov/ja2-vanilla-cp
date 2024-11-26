@@ -217,7 +217,7 @@ static INT8 gbNumMercsUntilWaitingOver = 0;
 static UINT32 guiWaitingForAllMercsToExitTimer = 0;
 BOOLEAN gfKillingGuysForLosingBattle = FALSE;
 
-static INT32 GetFreeMercSlot(void) {
+static INT32 GetFreeMercSlot() {
   for (UINT32 i = 0; i < guiNumMercSlots; ++i) {
     if (MercSlots[i] == NULL) return i;
   }
@@ -227,7 +227,7 @@ static INT32 GetFreeMercSlot(void) {
   return -1;
 }
 
-static void RecountMercSlots(void) {
+static void RecountMercSlots() {
   // set equal to 0 as a default
   for (INT32 i = (INT32)guiNumMercSlots - 1; i >= 0; --i) {
     if (MercSlots[i] != NULL) {
@@ -259,7 +259,7 @@ BOOLEAN RemoveMercSlot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-static INT32 GetFreeAwaySlot(void) {
+static INT32 GetFreeAwaySlot() {
   for (UINT32 i = 0; i < guiNumAwaySlots; ++i) {
     if (AwaySlots[i] == NULL) return i;
   }
@@ -269,7 +269,7 @@ static INT32 GetFreeAwaySlot(void) {
   return -1;
 }
 
-static void RecountAwaySlots(void) {
+static void RecountAwaySlots() {
   for (INT32 i = guiNumAwaySlots - 1; i >= 0; --i) {
     if (AwaySlots[i] != NULL) {
       guiNumAwaySlots = i + 1;
@@ -324,7 +324,7 @@ void MoveSoldierFromAwayToMercSlot(SOLDIERTYPE *const pSoldier) {
   AddMercSlot(pSoldier);
 }
 
-void InitTacticalEngine(void) {
+void InitTacticalEngine() {
   InitRenderParams(0);
   InitializeTacticalInterface();
   InitializeGameVideoObjects();
@@ -340,7 +340,7 @@ void InitTacticalEngine(void) {
   InitOverhead();
 }
 
-void ShutdownTacticalEngine(void) {
+void ShutdownTacticalEngine() {
   DeleteSpreadBurstGraphics();
   DeleteInterfacePanelGraphics();
   DeleteFacesGraphics();
@@ -396,7 +396,7 @@ void InitOverhead() {
   ZeroAnimSurfaceCounts();
 }
 
-void ShutdownOverhead(void) {
+void ShutdownOverhead() {
   // Delete any soldiers which have been created!
   FOR_EACH_SOLDIER(i) DeleteSoldier(*i);
 }
@@ -452,17 +452,17 @@ static BOOLEAN NextAIToHandle(UINT32 uiCurrAISlot) {
   return FALSE;
 }
 
-void PauseAITemporarily(void) {
+void PauseAITemporarily() {
   gfPauseAllAI = TRUE;
   giPauseAllAITimer = GetJA2Clock();
 }
 
-void PauseAIUntilManuallyUnpaused(void) {
+void PauseAIUntilManuallyUnpaused() {
   gfPauseAllAI = TRUE;
   giPauseAllAITimer = 0;
 }
 
-void UnPauseAI(void) {
+void UnPauseAI() {
   // overrides any timer too
   gfPauseAllAI = FALSE;
   giPauseAllAITimer = 0;
@@ -470,9 +470,9 @@ void UnPauseAI(void) {
 
 static void HandleBloodForNewGridNo(const SOLDIERTYPE *pSoldier);
 static BOOLEAN HandleAtNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving);
-static void HandleCreatureTenseQuote(void);
+static void HandleCreatureTenseQuote();
 
-void ExecuteOverhead(void) {
+void ExecuteOverhead() {
   // Diagnostic Stuff
   static INT32 iTimerTest = 0;
 
@@ -2025,7 +2025,7 @@ void SlideToLocation(const INT16 sDestGridNo) {
   gfPlotNewMovement = TRUE;
 }
 
-void RebuildAllSoldierShadeTables(void) { FOR_EACH_SOLDIER(i) CreateSoldierPalettes(*i); }
+void RebuildAllSoldierShadeTables() { FOR_EACH_SOLDIER(i) CreateSoldierPalettes(*i); }
 
 void HandlePlayerTeamMemberDeath(SOLDIERTYPE *pSoldier) {
   VerifyPublicOpplistDueToDeath(pSoldier);
@@ -2592,7 +2592,7 @@ static void HickCowAttacked(SOLDIERTYPE *pNastyGuy, SOLDIERTYPE *pTarget) {
   }
 }
 
-static void MilitiaChangesSides(void) {
+static void MilitiaChangesSides() {
   // make all the militia change sides
   if (!IsTeamActive(MILITIA_TEAM)) return;
 
@@ -3663,7 +3663,7 @@ static bool SoldierHasSeenEnemiesLastFewTurns(SOLDIERTYPE const &s) {
   return false;
 }
 
-static BOOLEAN WeSeeNoOne(void) {
+static BOOLEAN WeSeeNoOne() {
   FOR_EACH_MERC(i) {
     const SOLDIERTYPE *const s = *i;
     if (s->bTeam == OUR_TEAM && s->bOppCnt > 0) return FALSE;
@@ -3671,7 +3671,7 @@ static BOOLEAN WeSeeNoOne(void) {
   return TRUE;
 }
 
-static BOOLEAN NobodyAlerted(void) {
+static BOOLEAN NobodyAlerted() {
   FOR_EACH_MERC(i) {
     const SOLDIERTYPE *const s = *i;
     if (s->bTeam != OUR_TEAM && !s->bNeutral && s->bLife >= OKLIFE &&
@@ -3682,7 +3682,7 @@ static BOOLEAN NobodyAlerted(void) {
   return (TRUE);
 }
 
-static BOOLEAN WeSawSomeoneThisTurn(void) {
+static BOOLEAN WeSawSomeoneThisTurn() {
   FOR_EACH_MERC(i) {
     const SOLDIERTYPE *const s = *i;
     if (s->bTeam != OUR_TEAM) continue;
@@ -3832,9 +3832,9 @@ BOOLEAN CheckForEndOfCombatMode(BOOLEAN fIncrementTurnsNotSeen) {
   return (FALSE);
 }
 
-static void DeathNoMessageTimerCallback(void) { CheckAndHandleUnloadingOfCurrentWorld(); }
+static void DeathNoMessageTimerCallback() { CheckAndHandleUnloadingOfCurrentWorld(); }
 
-static BOOLEAN CheckForLosingEndOfBattle(void);
+static BOOLEAN CheckForLosingEndOfBattle();
 static bool KillIncompacitatedEnemyInSector();
 static UINT8 NumEnemyInSectorExceptCreatures();
 
@@ -4178,7 +4178,7 @@ void CycleVisibleEnemies(SOLDIERTYPE *pSrcSoldier) {
   }
 }
 
-UINT NumberOfMercsOnPlayerTeam(void) {
+UINT NumberOfMercsOnPlayerTeam() {
   INT8 bNumber = 0;
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (!(s->uiStatusFlags & SOLDIER_VEHICLE)) bNumber++;
@@ -4196,7 +4196,7 @@ BOOLEAN PlayerTeamFull() {
   return (TRUE);
 }
 
-UINT8 NumPCsInSector(void) {
+UINT8 NumPCsInSector() {
   UINT8 ubNumPlayers = 0;
   FOR_EACH_MERC(i) {
     const SOLDIERTYPE *const s = *i;
@@ -4284,9 +4284,9 @@ UINT8 NumCapableEnemyInSector() {
   return n_enemies;
 }
 
-static void DeathTimerCallback(void);
+static void DeathTimerCallback();
 
-static BOOLEAN CheckForLosingEndOfBattle(void) {
+static BOOLEAN CheckForLosingEndOfBattle() {
   INT8 bNumDead = 0, bNumNotOK = 0, bNumInBattle = 0, bNumNotOKRealMercs = 0;
   BOOLEAN fMadeCorpse;
   BOOLEAN fDoCapture = FALSE;
@@ -5029,7 +5029,7 @@ SOLDIERTYPE *ReduceAttackBusyGivenTarget(SOLDIERTYPE *const target) {
   return InternalReduceAttackBusyCount(target->attacker, FALSE, target);
 }
 
-void ResetAllMercSpeeds(void) {
+void ResetAllMercSpeeds() {
   FOR_EACH_SOLDIER(s) {
     if (s->bInSector) SetSoldierAniSpeed(s);
   }
@@ -5063,7 +5063,7 @@ static void HandleBloodForNewGridNo(const SOLDIERTYPE *pSoldier) {
   }
 }
 
-void CencelAllActionsForTimeCompression(void) {
+void CencelAllActionsForTimeCompression() {
   FOR_EACH_SOLDIER(s) {
     if (!s->bInSector) continue;
 
@@ -5127,7 +5127,7 @@ void RemoveSoldierFromTacticalSector(SOLDIERTYPE &s) {
   }
 }
 
-static void DoneFadeOutDueToDeath(void) {
+static void DoneFadeOutDueToDeath() {
   // Quit game....
   InternalLeaveTacticalScreen(MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );
@@ -5138,7 +5138,7 @@ static void EndBattleWithUnconsciousGuysCallback(MessageBoxReturnValue const bEx
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-void InitializeTacticalStatusAtBattleStart(void) {
+void InitializeTacticalStatusAtBattleStart() {
   gTacticalStatus.ubArmyGuysKilled = 0;
 
   gTacticalStatus.fPanicFlags = 0;
@@ -5168,7 +5168,7 @@ void InitializeTacticalStatusAtBattleStart(void) {
   FOR_EACH_SOLDIER(s) { s->ubMiscSoldierFlags = 0; }
 }
 
-static void DeathTimerCallback(void) {
+static void DeathTimerCallback() {
   const wchar_t *text;
   if (gTacticalStatus.Team[CREATURE_TEAM].bMenInSector >
       gTacticalStatus.Team[ENEMY_TEAM].bMenInSector) {
@@ -5180,7 +5180,7 @@ static void DeathTimerCallback(void) {
                EndBattleWithUnconsciousGuysCallback, NULL);
 }
 
-void CaptureTimerCallback(void) {
+void CaptureTimerCallback() {
   const wchar_t *text;
   if (gfSurrendered) {
     text = LargeTacticalStr[3];
@@ -5192,7 +5192,7 @@ void CaptureTimerCallback(void) {
   gfSurrendered = FALSE;
 }
 
-void DoPOWPathChecks(void) {
+void DoPOWPathChecks() {
   /* loop through all mercs on our team and if they are POWs in sector, do POW
    * path check and put on a squad if available */
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -5214,7 +5214,7 @@ void DoPOWPathChecks(void) {
   }
 }
 
-BOOLEAN HostileCiviliansPresent(void) {
+BOOLEAN HostileCiviliansPresent() {
   if (!IsTeamActive(CIV_TEAM)) return FALSE;
 
   CFOR_EACH_IN_TEAM(s, CIV_TEAM) {
@@ -5226,7 +5226,7 @@ BOOLEAN HostileCiviliansPresent(void) {
   return FALSE;
 }
 
-BOOLEAN HostileBloodcatsPresent(void) {
+BOOLEAN HostileBloodcatsPresent() {
   if (!IsTeamActive(CREATURE_TEAM)) return FALSE;
 
   CFOR_EACH_IN_TEAM(s, CREATURE_TEAM) {
@@ -5244,7 +5244,7 @@ BOOLEAN HostileBloodcatsPresent(void) {
 
 static void DoCreatureTensionQuote(SOLDIERTYPE *pSoldier);
 
-static void HandleCreatureTenseQuote(void) {
+static void HandleCreatureTenseQuote() {
   // Check for quote seeing creature attacks....
   if (gubQuest[QUEST_CREATURES] == QUESTDONE) return;
   if (!(gTacticalStatus.uiFlags & IN_CREATURE_LAIR)) return;

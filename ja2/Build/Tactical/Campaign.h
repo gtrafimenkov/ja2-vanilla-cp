@@ -68,12 +68,12 @@ void StatChange(SOLDIERTYPE &, StatKind, UINT16 n_chances, StatChangeCause);
 void HandleUnhiredMercImprovement(MERCPROFILESTRUCT &);
 void HandleUnhiredMercDeaths(INT32 iProfileID);
 
-UINT8 CurrentPlayerProgressPercentage(void);
-UINT8 HighestPlayerProgressPercentage(void);
+UINT8 CurrentPlayerProgressPercentage();
+UINT8 HighestPlayerProgressPercentage();
 
-void HourlyProgressUpdate(void);
+void HourlyProgressUpdate();
 
-void HandleAnyStatChangesAfterAttack(void);
+void HandleAnyStatChangesAfterAttack();
 
 void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType);
 

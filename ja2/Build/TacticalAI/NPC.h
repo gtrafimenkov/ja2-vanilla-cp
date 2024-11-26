@@ -69,7 +69,7 @@ extern void TriggerNPCRecordImmediately(UINT8 ubTriggerNPC, UINT8 ubTriggerNPCRe
 BOOLEAN TriggerNPCWithGivenApproach(UINT8 ubTriggerNPC, Approach);
 
 bool ReloadQuoteFile(UINT8 ubNPC);
-void ReloadAllQuoteFiles(void);
+void ReloadAllQuoteFiles();
 
 // Save and loads the npc info to a saved game file
 void SaveNPCInfoToSaveGameFile(HWFILE);
@@ -110,7 +110,7 @@ void HandleNPCChangesForTacticalTraversal(const SOLDIERTYPE *s);
 
 BOOLEAN NPCHasUnusedHostileRecord(UINT8 ubNPC, Approach);
 
-void ResetOncePerConvoRecordsForAllNPCsInLoadedSector(void);
+void ResetOncePerConvoRecordsForAllNPCsInLoadedSector();
 
 INT16 NPCConsiderInitiatingConv(const SOLDIERTYPE *pNPC);
 

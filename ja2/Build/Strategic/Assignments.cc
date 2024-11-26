@@ -251,12 +251,12 @@ CanSoldierRepairSAM( SOLDIERTYPE *pSoldier, INT8 bRepairPoints ); BOOLEAN
 IsSoldierCloseEnoughToSAMControlPanel( SOLDIERTYPE *pSoldier );
 */
 
-void InitSectorsWithSoldiersList(void) {
+void InitSectorsWithSoldiersList() {
   // init list of sectors
   memset(&fSectorsWithSoldiers, 0, sizeof(fSectorsWithSoldiers));
 }
 
-void BuildSectorsWithSoldiersList(void) {
+void BuildSectorsWithSoldiersList() {
   // fills array with pressence of player controlled characters
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     fSectorsWithSoldiers[s->sSectorX + s->sSectorY * MAP_WORLD_X][s->bSectorZ] = TRUE;
@@ -777,13 +777,13 @@ static JoinSquadResult CanCharacterSquad(SOLDIERTYPE const &s, INT8 const squad_
 
 bool IsCharacterInTransit(SOLDIERTYPE const &s) { return s.bAssignment == IN_TRANSIT; }
 
-static void CheckForAndHandleHospitalPatients(void);
+static void CheckForAndHandleHospitalPatients();
 static void HandleDoctorsInSector(INT16 x, INT16 y, INT8 z);
-static void HandleNaturalHealing(void);
+static void HandleNaturalHealing();
 static void HandleRepairmenInSector(INT16 sX, INT16 sY, INT8 bZ);
 static void HandleRestFatigueAndSleepStatus();
 static void HandleTrainingInSector(INT16 sMapX, INT16 sMapY, INT8 bZ);
-static void ReportTrainersTraineesWithoutPartners(void);
+static void ReportTrainersTraineesWithoutPartners();
 static void UpdatePatientsWhoAreDoneHealing();
 
 void UpdateAssignments() {
@@ -1298,7 +1298,7 @@ static UINT16 HealPatient(SOLDIERTYPE *pPatient, SOLDIERTYPE *pDoctor, UINT16 us
 
 static void HealHospitalPatient(SOLDIERTYPE *pPatient, UINT16 usHealingPtsLeft);
 
-static void CheckForAndHandleHospitalPatients(void) {
+static void CheckForAndHandleHospitalPatients() {
   if (!fSectorsWithSoldiers[HOSPITAL_SECTOR_X + HOSPITAL_SECTOR_Y * MAP_WORLD_X][0]) {
     // nobody in the hospital sector... leave
     return;
@@ -2449,7 +2449,7 @@ void AssignmentDone(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote, BOOLEAN fMeToo) {
 static void HandleHealingByNaturalCauses(SOLDIERTYPE *pSoldier);
 
 // handle natural healing for all mercs on players team
-static void HandleNaturalHealing(void) {
+static void HandleNaturalHealing() {
   FOR_EACH_IN_TEAM(i, OUR_TEAM) {
     SOLDIERTYPE &s = *i;
     // mechanical members don't regenerate!
@@ -2547,7 +2547,7 @@ void CheckIfSoldierUnassigned(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static void CreateDestroyMouseRegionsForRemoveMenu(void);
+static void CreateDestroyMouseRegionsForRemoveMenu();
 
 // Check if we can only remove character from team
 static BOOLEAN HandleRemoveMenu(const INT8 remove_char) {
@@ -2569,12 +2569,12 @@ static BOOLEAN HandleRemoveMenu(const INT8 remove_char) {
 
 static void AssignmentMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void AssignmentMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void CheckAndUpdateTacticalAssignmentPopUpPositions(void);
+static void CheckAndUpdateTacticalAssignmentPopUpPositions();
 static SOLDIERTYPE *GetSelectedAssignSoldier(BOOLEAN fNullOK);
-static void PositionCursorForTacticalAssignmentBox(void);
+static void PositionCursorForTacticalAssignmentBox();
 
 // Create/destroy mouse regions for the map screen assignment main menu
-static void CreateDestroyMouseRegionsForAssignmentMenu(void) {
+static void CreateDestroyMouseRegionsForAssignmentMenu() {
   static BOOLEAN fCreated = FALSE;
 
   if (HandleRemoveMenu(bSelectedAssignChar)) return;
@@ -2623,12 +2623,12 @@ static void CreateDestroyMouseRegionsForAssignmentMenu(void) {
   }
 }
 
-static void HandleShadingOfLinesForVehicleMenu(void);
+static void HandleShadingOfLinesForVehicleMenu();
 static void VehicleMenuMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void VehicleMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void VehicleMenuCancelBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyMouseRegionForVehicleMenu(void) {
+static void CreateDestroyMouseRegionForVehicleMenu() {
   static BOOLEAN fCreated = FALSE;
 
   PopUpBox *const box = ghVehicleBox;
@@ -2763,7 +2763,7 @@ static void SetBoxTextAttrs(PopUpBox *const box) {
   SetBoxSecondaryShade(box, FONT_YELLOW);
 }
 
-static PopUpBox *CreateRepairBox(void);
+static PopUpBox *CreateRepairBox();
 static BOOLEAN IsRobotInThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 static void DisplayRepairMenu(SOLDIERTYPE const &s) {
@@ -2858,7 +2858,7 @@ static void MakeRepairRegion(const INT32 idx, const UINT16 x, const UINT16 y, co
   MSYS_SetRegionUserData(r, 1, data);
 }
 
-static void CreateDestroyMouseRegionForRepairMenu(void) {
+static void CreateDestroyMouseRegionForRepairMenu() {
   static BOOLEAN fCreated = FALSE;
 
   if (fShowRepairMenu && !fCreated) {
@@ -3129,9 +3129,9 @@ static BOOLEAN MakeSureMedKitIsInHand(SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-static void HandleShadingOfLinesForAttributeMenus(void);
-static void HandleShadingOfLinesForSquadMenu(void);
-static void HandleShadingOfLinesForTrainingMenu(void);
+static void HandleShadingOfLinesForAttributeMenus();
+static void HandleShadingOfLinesForSquadMenu();
+static void HandleShadingOfLinesForTrainingMenu();
 
 // updates which menus are selectable based on character status
 void HandleShadingOfLinesForAssignmentMenus() {
@@ -3192,7 +3192,7 @@ static void HideBoxIfShownMap(PopUpBox *const box) {
   gfRenderPBInterface = TRUE;
 }
 
-static void ShowAssignmentBox(void) {
+static void ShowAssignmentBox() {
   if (fInMapMode) {
     const SOLDIERTYPE *const s = GetSelectedInfoChar();
     if (s->bLife == 0 || s->bAssignment == ASSIGNMENT_POW) {
@@ -3209,12 +3209,12 @@ static void ShowAssignmentBox(void) {
   }
 }
 
-static void CreateDestroyMouseRegionsForTrainingMenu(void);
-static void CreateDestroyMouseRegionsForAttributeMenu(void);
+static void CreateDestroyMouseRegionsForTrainingMenu();
+static void CreateDestroyMouseRegionsForAttributeMenu();
 static void CreateDestroyMouseRegionsForSquadMenu();
-static BOOLEAN HandleShowingOfMovementBox(void);
+static BOOLEAN HandleShowingOfMovementBox();
 
-void DetermineWhichAssignmentMenusCanBeShown(void) {
+void DetermineWhichAssignmentMenusCanBeShown() {
   BOOLEAN fCharacterNoLongerValid = FALSE;
 
   if (fInMapMode) {
@@ -3321,7 +3321,7 @@ void DetermineWhichAssignmentMenusCanBeShown(void) {
 
 static void AssignmentScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void CreateDestroyScreenMaskForAssignmentAndContractMenus(void) {
+void CreateDestroyScreenMaskForAssignmentAndContractMenus() {
   static BOOLEAN fCreated = FALSE;
   // will create a screen mask to catch mouse input to disable assignment menus
 
@@ -3379,7 +3379,7 @@ static void AssignmentScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-void ClearScreenMaskForMapScreenExit(void) {
+void ClearScreenMaskForMapScreenExit() {
   // reset show assignment menu
   fShowAssignmentMenu = FALSE;
 
@@ -3404,7 +3404,7 @@ static void ContractMenuMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ContractMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Create/destroy mouse regions for the map screen Contract main menu
-void CreateDestroyMouseRegionsForContractMenu(void) {
+void CreateDestroyMouseRegionsForContractMenu() {
   static BOOLEAN fCreated = FALSE;
 
   if (HandleRemoveMenu(bSelectedContractChar)) return;
@@ -3453,7 +3453,7 @@ void CreateDestroyMouseRegionsForContractMenu(void) {
 static void TrainingMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void TrainingMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyMouseRegionsForTrainingMenu(void) {
+static void CreateDestroyMouseRegionsForTrainingMenu() {
   static BOOLEAN fCreated = FALSE;
 
   PopUpBox *const box = ghTrainingBox;
@@ -3507,7 +3507,7 @@ static void CreateDestroyMouseRegionsForTrainingMenu(void) {
 static void AttributeMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void AttributesMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyMouseRegionsForAttributeMenu(void) {
+static void CreateDestroyMouseRegionsForAttributeMenu() {
   static BOOLEAN fCreated = FALSE;
 
   // will create/destroy mouse regions for the map screen attribute  menu
@@ -3566,7 +3566,7 @@ static void CreateDestroyMouseRegionsForAttributeMenu(void) {
 static void RemoveMercMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void RemoveMercMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyMouseRegionsForRemoveMenu(void) {
+static void CreateDestroyMouseRegionsForRemoveMenu() {
   static BOOLEAN fCreated = FALSE;
 
   // will create/destroy mouse regions for the map screen attribute  menu
@@ -3622,7 +3622,7 @@ static void CreateDestroyMouseRegionsForRemoveMenu(void) {
 
 static void SquadMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void SquadMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void CreateSquadBox(void);
+static void CreateSquadBox();
 
 static void CreateDestroyMouseRegionsForSquadMenu() {
   static BOOLEAN fCreated = FALSE;
@@ -3981,7 +3981,7 @@ static void ContractMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu(void);
+static BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu();
 
 static void TrainingMenuMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   // mvt callback handler for assignment region
@@ -4546,10 +4546,10 @@ static PopUpBox *MakeBox(const SGPPoint pos, const UINT32 flags) {
                         guiPOPUPTEX, 6, 6, 4, 4, 2);
 }
 
-static UINT32 GetLastSquadListedInSquadMenu(void);
+static UINT32 GetLastSquadListedInSquadMenu();
 
 // Create a pop up box for squad selection
-static void CreateSquadBox(void) {
+static void CreateSquadBox() {
   PopUpBox *const box = MakeBox(SquadPosition, 0);
   ghSquadBox = box;
 
@@ -4578,7 +4578,7 @@ static void CreateSquadBox(void) {
   }
 }
 
-static void CreateEPCBox(void) {
+static void CreateEPCBox() {
   // will create a pop up box for squad selection
   PopUpBox *const box = MakeBox(AssignmentPosition, POPUP_BOX_FLAG_CENTER_TEXT);
   ghEpcBox = box;
@@ -4598,7 +4598,7 @@ static void CreateEPCBox(void) {
   }
 }
 
-static void HandleShadingOfLinesForSquadMenu(void) {
+static void HandleShadingOfLinesForSquadMenu() {
   if (!fShowSquadMenu) return;
 
   PopUpBox *const box = ghSquadBox;
@@ -4617,7 +4617,7 @@ static void HandleShadingOfLinesForSquadMenu(void) {
   }
 }
 
-static PopUpBox *CreateVehicleBox(void);
+static PopUpBox *CreateVehicleBox();
 
 static bool DisplayVehicleMenu(SOLDIERTYPE const &s) {
   // First, clear pop up box
@@ -4643,12 +4643,12 @@ static bool DisplayVehicleMenu(SOLDIERTYPE const &s) {
   return vehicle_present;
 }
 
-static PopUpBox *CreateVehicleBox(void) {
+static PopUpBox *CreateVehicleBox() {
   ghVehicleBox = MakeBox(VehiclePosition, POPUP_BOX_FLAG_CENTER_TEXT);
   return ghVehicleBox;
 }
 
-static PopUpBox *CreateRepairBox(void) {
+static PopUpBox *CreateRepairBox() {
   ghRepairBox = MakeBox(RepairPosition, POPUP_BOX_FLAG_CENTER_TEXT);
   return ghRepairBox;
 }
@@ -4881,7 +4881,7 @@ void SetTacticalPopUpAssignmentBoxXY() {
   gsAssignmentBoxesY = sY;
 }
 
-static void RepositionMouseRegions(void) {
+static void RepositionMouseRegions() {
   INT16 const sDeltaX = gsAssignmentBoxesX - gAssignmentMenuRegion[0].RegionTopLeftX;
   INT16 const sDeltaY = gsAssignmentBoxesY - gAssignmentMenuRegion[0].RegionTopLeftY +
                         GetTopMarginSize(ghAssignmentBox);
@@ -4922,7 +4922,7 @@ static void AdjustBoxPos(SGPBox const &assignment_area, PopUpBox *const other_bo
   SetBoxXY(other_box, x, y);
 }
 
-static void CheckAndUpdateTacticalAssignmentPopUpPositions(void) {
+static void CheckAndUpdateTacticalAssignmentPopUpPositions() {
   if (!fShowAssignmentMenu) return;
   if (fInMapMode) return;
 
@@ -4978,7 +4978,7 @@ static void CheckAndUpdateTacticalAssignmentPopUpPositions(void) {
   RepositionMouseRegions();
 }
 
-static void PositionCursorForTacticalAssignmentBox(void) {
+static void PositionCursorForTacticalAssignmentBox() {
   // position cursor over y of on duty in tactical assignments
   if (gGameSettings.fOptions[TOPTION_DONT_MOVE_MOUSE]) return;
 
@@ -5134,7 +5134,7 @@ static bool CanCharacterRepairVehicle(SOLDIERTYPE const &s, VEHICLETYPE const &v
   return true;
 }
 
-static SOLDIERTYPE *GetRobotSoldier(void);
+static SOLDIERTYPE *GetRobotSoldier();
 
 static BOOLEAN IsRobotInThisSector(INT16 const sSectorX, INT16 const sSectorY,
                                    INT8 const bSectorZ) {
@@ -5143,7 +5143,7 @@ static BOOLEAN IsRobotInThisSector(INT16 const sSectorX, INT16 const sSectorY,
          !s->fBetweenSectors;
 }
 
-static SOLDIERTYPE *GetRobotSoldier(void) {
+static SOLDIERTYPE *GetRobotSoldier() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (AM_A_ROBOT(s)) return s;
   }
@@ -5468,7 +5468,7 @@ static BOOLEAN HandleAssignmentExpansionAndHighLightForAssignMenu(SOLDIERTYPE *p
   return (FALSE);
 }
 
-static BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu(void) {
+static BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu() {
   if (fShowAttributeMenu) {
     switch (gbTrainingMode) {
       case TRAIN_SELF:
@@ -5490,7 +5490,7 @@ static BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu(void) {
   return (FALSE);
 }
 
-static BOOLEAN HandleShowingOfMovementBox(void) {
+static BOOLEAN HandleShowingOfMovementBox() {
   // if the list is being shown, then show it
   if (fShowMapScreenMovementList) {
     MarkAllBoxesAsAltered();
@@ -5510,7 +5510,7 @@ static BOOLEAN HandleShowingOfMovementBox(void) {
   return (FALSE);
 }
 
-static void HandleShadingOfLinesForTrainingMenu(void) {
+static void HandleShadingOfLinesForTrainingMenu() {
   if (!fShowTrainingMenu) return;
 
   PopUpBox *const box = ghTrainingBox;
@@ -5527,7 +5527,7 @@ static void HandleShadingOfLinesForTrainingMenu(void) {
   ShadeStringInBox(box, TRAIN_MENU_TRAIN_BY_OTHER, !CanCharacterBeTrainedByOther(&s));
 }
 
-static void HandleShadingOfLinesForAttributeMenus(void) {
+static void HandleShadingOfLinesForAttributeMenus() {
   // will do the same as updateassignments...but with training pop up box
   // strings
   if (!fShowAttributeMenu) return;
@@ -5566,7 +5566,7 @@ static BOOLEAN ValidTrainingPartnerInSameSectorOnAssignmentFound(SOLDIERTYPE *pT
                                                                  INT8 bTargetAssignment,
                                                                  INT8 bTargetStat);
 
-static void ReportTrainersTraineesWithoutPartners(void) {
+static void ReportTrainersTraineesWithoutPartners() {
   // check for each instructor
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bAssignment == TRAIN_TEAMMATE && s->bLife > 0 &&
@@ -5769,7 +5769,7 @@ BOOLEAN IsAnyOneOnPlayersTeamOnThisAssignment(INT8 bAssignment) {
   return FALSE;
 }
 
-void RebuildAssignmentsBox(void) {
+void RebuildAssignmentsBox() {
   // destroy and recreate assignments box
   if (ghAssignmentBox != NO_POPUP_BOX) {
     RemoveBox(ghAssignmentBox);
@@ -6226,7 +6226,7 @@ static UINT8 CalcSoldierNeedForSleep(SOLDIERTYPE const &s) {
   return need_for_sleep;
 }
 
-static UINT32 GetLastSquadListedInSquadMenu(void) {
+static UINT32 GetLastSquadListedInSquadMenu() {
   UINT32 uiMaxSquad;
 
   uiMaxSquad = GetLastSquadActive() + 1;

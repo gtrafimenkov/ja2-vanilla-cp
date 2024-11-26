@@ -49,6 +49,6 @@ void PasteRoads(UINT32 iMapIndex);
 void PasteTexture(UINT32 iMapIndex);
 void PasteTextureCommon(UINT32 iMapIndex);
 
-void RaiseWorldLand(void);
+void RaiseWorldLand();
 
 #endif

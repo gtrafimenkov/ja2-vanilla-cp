@@ -175,7 +175,7 @@ BOOLEAN GetMouseWorldCoords(INT16 *psMouseX, INT16 *psMouseY) {
   return (TRUE);
 }
 
-GridNo GetMouseMapPos(void) {
+GridNo GetMouseMapPos() {
   static GridNo sSameCursorPos = NOWHERE;
   static UINT32 uiOldFrameNumber = 99999;
 

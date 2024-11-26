@@ -46,7 +46,7 @@ struct LibraryFile {
 };
 
 void InitializeFileDatabase(const std::vector<std::string> &libraries);
-void ShutDownFileDatabase(void);
+void ShutDownFileDatabase();
 bool CheckIfFileExistInLibrary(char const *filename);
 
 BOOLEAN OpenFileFromLibrary(const char *filename, LibraryFile *);

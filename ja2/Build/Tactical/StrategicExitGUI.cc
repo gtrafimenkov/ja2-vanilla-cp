@@ -348,9 +348,9 @@ static void InternalInitSectorExitMenu(UINT8 const ubDirection, INT16 const sAdd
   LockPauseState(LOCK_PAUSE_21);
 }
 
-static void DoneFadeInWarp(void) {}
+static void DoneFadeInWarp() {}
 
-static void DoneFadeOutWarpCallback(void) {
+static void DoneFadeOutWarpCallback() {
   // Warp!
   FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM) {
     // Are we in this sector, On the current squad?
@@ -410,7 +410,7 @@ void InitSectorExitMenu(UINT8 const ubDirection, INT16 const sAdditionalData) {
   InternalInitSectorExitMenu(ubDirection, sAdditionalData);
 }
 
-static void UpdateSectorExitMenu(void) {
+static void UpdateSectorExitMenu() {
   if (gExitDialog.fGotoSector) {
     gExitDialog.uiLoadCheckButton->uiFlags |= BUTTON_CLICKED_ON;
   } else {
@@ -665,7 +665,7 @@ static void CheckLoadMapCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SingleMoveAction(void) {
+static void SingleMoveAction() {
   // KM: New logic Mar2 '99
   if (!gExitDialog.fMultipleSquadsInSector) {
     if (gTacticalStatus.fEnemyInSector) {  // if enemy in sector, and mercs will be left
@@ -690,7 +690,7 @@ static void SingleMoveAction(void) {
   */
 }
 
-static void AllMoveAction(void) {
+static void AllMoveAction() {
   // KM: New logic Mar2 '99
   if (!gExitDialog.fMultipleSquadsInSector) {
     gExitDialog.fGotoSectorDisabled = TRUE;

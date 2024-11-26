@@ -20,12 +20,12 @@ extern UINT16 gusSelectionDensity;
 extern UINT16 gusSavedSelectionType;
 extern UINT16 gusSavedBuildingSelectionType;
 
-BOOLEAN PerformDensityTest(void);
+BOOLEAN PerformDensityTest();
 void SetDrawingMode(INT32 iMode);
-void UpdateCursorAreas(void);
-void IncreaseSelectionDensity(void);
-void DecreaseSelectionDensity(void);
-void RemoveCursors(void);
+void UpdateCursorAreas();
+void IncreaseSelectionDensity();
+void DecreaseSelectionDensity();
+void RemoveCursors();
 
 extern wchar_t SelTypeWidth[lengthof("Width: xx")];
 extern const wchar_t *const wszSelType[6];
@@ -34,6 +34,6 @@ extern BOOLEAN gfCurrentSelectionWithRightButton;
 
 extern SGPRect gSelectRegion;
 
-void RemoveBuildingLayout(void);
+void RemoveBuildingLayout();
 
 #endif

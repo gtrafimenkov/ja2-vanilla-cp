@@ -5,9 +5,9 @@
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
 
-void InitializeGame(void);
-void ShutdownGame(void);
-void GameLoop(void);
+void InitializeGame();
+void ShutdownGame();
+void GameLoop();
 
 // handle exit from game due to shortcut key
 void HandleShortCutExitState();
@@ -16,7 +16,7 @@ void SetPendingNewScreen(ScreenID);
 
 extern ScreenID guiPendingScreen;
 
-void NextLoopCheckForEnoughFreeHardDriveSpace(void);
+void NextLoopCheckForEnoughFreeHardDriveSpace();
 
 // callback to confirm game is over
 void EndGameMessageBoxCallBack(MessageBoxReturnValue);

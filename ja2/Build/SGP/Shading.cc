@@ -18,7 +18,7 @@ static float guiShadePercent = 0.48f;
  * the index into the table and the entry at that point will be a pixel that is
  * 25% darker.
  */
-void BuildShadeTable(void) {
+void BuildShadeTable() {
   for (UINT16 red = 0; red < 256; red += 4) {
     for (UINT16 green = 0; green < 256; green += 4) {
       for (UINT16 blue = 0; blue < 256; blue += 4) {
@@ -37,7 +37,7 @@ void BuildShadeTable(void) {
  * GetRgbDistribution() has been called, and the globals for masks and shifts
  * have been initialized by that function), and before any blitting is done.
  */
-void BuildIntensityTable(void) {
+void BuildIntensityTable() {
   const float dShadedPercent = 0.80f;
 
   for (UINT16 red = 0; red < 256; red += 4) {

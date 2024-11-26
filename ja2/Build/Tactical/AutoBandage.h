@@ -3,19 +3,19 @@
 
 #include "SGP/Types.h"
 
-//#define VISIBLE_AUTO_BANDAGE
+// #define VISIBLE_AUTO_BANDAGE
 
 void AutoBandage(BOOLEAN fStart);
-void BeginAutoBandage(void);
+void BeginAutoBandage();
 
-BOOLEAN HandleAutoBandage(void);
+BOOLEAN HandleAutoBandage();
 
-void ShouldBeginAutoBandage(void);
+void ShouldBeginAutoBandage();
 
 void SetAutoBandagePending(BOOLEAN fSet);
-void HandleAutoBandagePending(void);
+void HandleAutoBandagePending();
 
 // ste the autobandage as complete
-void SetAutoBandageComplete(void);
+void SetAutoBandageComplete();
 
 #endif

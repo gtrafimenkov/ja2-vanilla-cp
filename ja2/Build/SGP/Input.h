@@ -56,14 +56,14 @@ extern BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags);
 extern void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2);
 void RestrictMouseCursor(const SGPRect *pRectangle);
 extern void SetSafeMousePosition(int x, int y);
-extern void FreeMouseCursor(void);
-extern BOOLEAN IsCursorRestricted(void);
+extern void FreeMouseCursor();
+extern BOOLEAN IsCursorRestricted();
 extern void GetRestrictedClipCursor(SGPRect *pRectangle);
-extern void RestoreCursorClipRect(void);
+extern void RestoreCursorClipRect();
 
 void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos);
 
-void DequeueAllKeyBoardEvents(void);
+void DequeueAllKeyBoardEvents();
 
 extern UINT16 gusMouseXPos;         // X position of the mouse on screen
 extern UINT16 gusMouseYPos;         // y position of the mouse on screen

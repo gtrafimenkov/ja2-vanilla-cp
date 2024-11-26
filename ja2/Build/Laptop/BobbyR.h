@@ -5,10 +5,10 @@
 #include "Laptop/StoreInventory.h"
 #include "Tactical/ItemTypes.h"
 
-void EnterBobbyR(void);
-void ExitBobbyR(void);
-void HandleBobbyR(void);
-void RenderBobbyR(void);
+void EnterBobbyR();
+void ExitBobbyR();
+void HandleBobbyR();
+void RenderBobbyR();
 
 #define BOBBYR_BACKGROUND_WIDTH 125
 #define BOBBYR_BACKGROUND_HEIGHT 100
@@ -20,14 +20,14 @@ void RenderBobbyR(void);
 
 extern LaptopMode guiLastBobbyRayPage;
 
-void DrawBobbyRWoodBackground(void);
-void DeleteBobbyRWoodBackground(void);
-void InitBobbyRWoodBackground(void);
-void DailyUpdateOfBobbyRaysNewInventory(void);
-void DailyUpdateOfBobbyRaysUsedInventory(void);
+void DrawBobbyRWoodBackground();
+void DeleteBobbyRWoodBackground();
+void InitBobbyRWoodBackground();
+void DailyUpdateOfBobbyRaysNewInventory();
+void DailyUpdateOfBobbyRaysUsedInventory();
 void AddFreshBobbyRayInventory(UINT16 usItemIndex);
-void InitBobbyRayInventory(void);
-void CancelAllPendingBRPurchaseOrders(void);
+void InitBobbyRayInventory();
+void CancelAllPendingBRPurchaseOrders();
 INT16 GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, UINT16 usItemIndex, BOOLEAN fUsed);
 
 #endif

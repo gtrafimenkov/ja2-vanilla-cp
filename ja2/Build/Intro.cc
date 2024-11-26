@@ -83,12 +83,12 @@ static char const *const gpzSmackerFileNames[] = {
 // or end game cinematic
 static INT8 gbIntroScreenMode = -1;
 
-static void EnterIntroScreen(void);
-static void ExitIntroScreen(void);
-static void GetIntroScreenUserInput(void);
-static void HandleIntroScreen(void);
+static void EnterIntroScreen();
+static void ExitIntroScreen();
+static void GetIntroScreenUserInput();
+static void HandleIntroScreen();
 
-ScreenID IntroScreenHandle(void) {
+ScreenID IntroScreenHandle() {
   if (gfIntroScreenEntry) {
     EnterIntroScreen();
     gfIntroScreenEntry = FALSE;
@@ -114,10 +114,10 @@ ScreenID IntroScreenHandle(void) {
 }
 
 static INT32 GetNextIntroVideo(UINT32 uiCurrentVideo);
-static void PrepareToExitIntroScreen(void);
+static void PrepareToExitIntroScreen();
 static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay);
 
-static void EnterIntroScreen(void) {
+static void EnterIntroScreen() {
   INT32 iFirstVideoID = -1;
 
   ClearMainMenu();
@@ -144,12 +144,12 @@ static void EnterIntroScreen(void) {
   }
 }
 
-static void ExitIntroScreen(void) {
+static void ExitIntroScreen() {
   // shutdown smaker
   SmkShutdown();
 }
 
-static void HandleIntroScreen(void) {
+static void HandleIntroScreen() {
   BOOLEAN fFlicStillPlaying = FALSE;
 
   // if we are exiting this screen, this frame, dont update the screen
@@ -175,7 +175,7 @@ static void HandleIntroScreen(void) {
   InvalidateScreen();
 }
 
-static void GetIntroScreenUserInput(void) {
+static void GetIntroScreenUserInput() {
   SGPPoint MousePos;
   GetMousePos(&MousePos);
 
@@ -202,9 +202,9 @@ static void GetIntroScreenUserInput(void) {
   }
 }
 
-static void DisplaySirtechSplashScreen(void);
+static void DisplaySirtechSplashScreen();
 
-static void PrepareToExitIntroScreen(void) {
+static void PrepareToExitIntroScreen() {
   // if its the intro at the begining of the game
   if (gbIntroScreenMode == INTRO_BEGINING) {
     // go to the init screen
@@ -321,7 +321,7 @@ void SetIntroType(INT8 bIntroType) {
   }
 }
 
-static void DisplaySirtechSplashScreen(void) {
+static void DisplaySirtechSplashScreen() {
   FRAME_BUFFER->Fill(0);
   BltVideoObjectOnce(FRAME_BUFFER, INTERFACEDIR "/sirtechsplash.sti", 0, 0, 0);
   InvalidateScreen();

@@ -95,7 +95,7 @@ static void BlitMFont(VIDEO_OVERLAY *const ovr) {
   MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), ovr->sX, ovr->sY, ovr->zText);
 }
 
-void MainGameScreenInit(void) {
+void MainGameScreenInit() {
   gpZBuffer = InitZBuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
   InitializeBackgroundRects();
 
@@ -118,7 +118,7 @@ void MainGameScreenInit(void) {
 // The ShutdownGame function will free up/undo all things that were started in
 // InitializeGame() It will also be responsible to making sure that all Gaming
 // Engine tasks exit properly
-void MainGameScreenShutdown(void) {
+void MainGameScreenShutdown() {
   ShutdownZBuffer(gpZBuffer);
   ShutdownBackgroundRects();
   RemoveVideoOverlay(g_fps_overlay);
@@ -133,7 +133,7 @@ void FadeInGameScreen() {
 
 void FadeOutGameScreen() { FadeOutNextFrame(); }
 
-void EnterTacticalScreen(void) {
+void EnterTacticalScreen() {
   guiTacticalLeaveScreen = FALSE;
 
   SetPositionSndsActive();
@@ -274,10 +274,10 @@ void InternalLeaveTacticalScreen(ScreenID const uiNewScreen) {
   FinishAnySkullPanelAnimations();
 }
 
-static void HandleModalTactical(void);
-static void TacticalScreenLocateToSoldier(void);
+static void HandleModalTactical();
+static void TacticalScreenLocateToSoldier();
 
-ScreenID MainGameScreenHandle(void) {
+ScreenID MainGameScreenHandle() {
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
   //	if( ( !gfTacticalDoHeliRun && !gfFirstHeliRun ) &&
@@ -547,7 +547,7 @@ void EnableFPSOverlay(BOOLEAN fEnable) {
   EnableVideoOverlay(fEnable, g_counter_period_overlay);
 }
 
-static void TacticalScreenLocateToSoldier(void) {
+static void TacticalScreenLocateToSoldier() {
   SOLDIERTYPE *const prefer = gPreferredInitialSelectedGuy;
   if (prefer != NULL) {
     gPreferredInitialSelectedGuy = NULL;
@@ -611,7 +611,7 @@ void EndModalTactical() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void HandleModalTactical(void) {
+static void HandleModalTactical() {
   RestoreBackgroundRects();
 
   RenderWorld();
@@ -639,7 +639,7 @@ static void HandleModalTactical(void) {
   EndFrameBufferRender();
 }
 
-void InitHelicopterEntranceByMercs(void) {
+void InitHelicopterEntranceByMercs() {
   if (DidGameJustStart()) {
     AIR_RAID_DEFINITION AirRaidDef;
 

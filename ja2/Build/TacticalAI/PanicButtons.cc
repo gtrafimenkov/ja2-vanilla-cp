@@ -169,9 +169,9 @@ void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
 
   sPanicTriggerGridNo = gTacticalStatus.sPanicTriggerGridNo[bPanicTrigger];
 
-  uiPercentEnemiesKilled = (UINT32)(
-      100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-      (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
+                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                             gTacticalStatus.ubArmyGuysKilled));
   if (gTacticalStatus.ubPanicTolerance[bPanicTrigger] > uiPercentEnemiesKilled) {
     // not yet... not yet
     return;
@@ -335,7 +335,7 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
   return (-1);
 }
 
-void InitPanicSystem(void) {
+void InitPanicSystem() {
   // start by assuming there is no panic bombs or triggers here
   gTacticalStatus.the_chosen_one = NULL;
   FindPanicBombsAndTriggers();
@@ -348,9 +348,9 @@ INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
   INT8 bClosestTrigger = -1;
   UINT32 uiPercentEnemiesKilled;
 
-  uiPercentEnemiesKilled = (UINT32)(
-      100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-      (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
+                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                             gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     if (gTacticalStatus.sPanicTriggerGridNo[bLoop] != NOWHERE) {
@@ -384,7 +384,7 @@ INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
   return (bClosestTrigger);
 }
 
-BOOLEAN NeedToRadioAboutPanicTrigger(void) {
+BOOLEAN NeedToRadioAboutPanicTrigger() {
   UINT32 uiPercentEnemiesKilled;
   INT8 bLoop;
 
@@ -403,9 +403,9 @@ BOOLEAN NeedToRadioAboutPanicTrigger(void) {
     }
   }
 
-  uiPercentEnemiesKilled = (UINT32)(
-      100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-      (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
+                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                             gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     // if the bomb exists and its tolerance has been exceeded

@@ -18,10 +18,10 @@ void DrawItemUIBarEx(OBJECTTYPE const &, UINT8 ubStatus, INT16 sXPos, INT16 sYPo
 void RenderSoldierFace(SOLDIERTYPE const &, INT16 sFaceX, INT16 sFaceY);
 
 // load portraits for cars
-void LoadCarPortraitValues(void);
+void LoadCarPortraitValues();
 
 // get rid of the loaded portraits for cars
-void UnLoadCarPortraits(void);
+void UnLoadCarPortraits();
 
 void LoadInterfaceUtilsGraphics();
 void DeleteInterfaceUtilsGraphics();

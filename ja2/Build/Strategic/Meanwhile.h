@@ -38,14 +38,14 @@ void ScheduleMeanwhileEvent(INT16 x, INT16 y, UINT16 trigger_event, UINT8 meanwh
 
 void BeginMeanwhile(UINT8 ubMeanwhileID);
 
-void CheckForMeanwhileOKStart(void);
-void EndMeanwhile(void);
+void CheckForMeanwhileOKStart();
+void EndMeanwhile();
 
 bool AreInMeanwhile();
-UINT8 GetMeanwhileID(void);
-BOOLEAN AreReloadingFromMeanwhile(void);
+UINT8 GetMeanwhileID();
+BOOLEAN AreReloadingFromMeanwhile();
 
-void LocateToMeanwhileCharacter(void);
+void LocateToMeanwhileCharacter();
 
 // post meanwhile event for town liberation
 void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId);
@@ -54,7 +54,7 @@ void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId);
 void HandleMeanWhileEventPostingForSAMLiberation(INT8 bSAMId);
 
 // trash world has been called, should we do the first meanwhile?
-void HandleFirstMeanWhileSetUpWithTrashWorld(void);
+void HandleFirstMeanWhileSetUpWithTrashWorld();
 
 // battle ended, check if we should set up a meanwhile?
 void HandleFirstBattleEndingWhileInTown(INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ,
@@ -68,19 +68,19 @@ void HandleShortCuttingOfMeanwhileSceneByPlayer(UINT8 ubMeanwhileID, INT32 iLast
                                                 INT32 iLastProfileAction);
 
 // handle release of creatures meanwhile
-void HandleCreatureRelease(void);
+void HandleCreatureRelease();
 
 // handle sending flowers to the queen
 void HandleFlowersMeanwhileScene(INT8 bTimeCode);
 
 // player reaches the outskirts of Meduna
-void HandleOutskirtsOfMedunaMeanwhileScene(void);
+void HandleOutskirtsOfMedunaMeanwhileScene();
 
 // let player know about Madlab after certain status % reached
-void HandleScientistAWOLMeanwhileScene(void);
+void HandleScientistAWOLMeanwhileScene();
 
 // handle chopper used meanwhile
-void HandleKillChopperMeanwhileScene(void);
+void HandleKillChopperMeanwhileScene();
 
 extern MEANWHILE_DEFINITION gCurrentMeanwhileDef;
 extern MEANWHILE_DEFINITION gMeanwhileDef[NUM_MEANWHILES];

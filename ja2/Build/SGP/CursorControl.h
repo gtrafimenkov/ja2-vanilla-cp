@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-void CursorDatabaseClear(void);
+void CursorDatabaseClear();
 BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex);
 
 #define USE_OUTLINE_BLITTER 0x08
@@ -65,7 +65,7 @@ extern UINT16 gsCurMouseWidth;
 
 void SetExternMouseCursor(SGPVObject const &, UINT16 region_idx);
 
-typedef void (*MOUSEBLT_HOOK)(void);
+typedef void (*MOUSEBLT_HOOK)();
 
 void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
                         UINT16 suNumDataFiles);

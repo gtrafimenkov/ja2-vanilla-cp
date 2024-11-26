@@ -403,7 +403,7 @@ static void InitDisplayGfxAllFromTileData(DisplaySpec *const ds, const UINT32 ob
 // things around, then this is where the initialization part is done.  I have
 // also changed this from previously being loaded every single time you go into a
 // selection window which was redundant and CPU consuming.
-void InitJA2SelectionWindow(void) {
+void InitJA2SelectionWindow() {
   INT32 iCount;
   INT32 iCount2;
   INT32 iCount3;
@@ -577,7 +577,7 @@ static DisplayList *TrashList(DisplayList *pNode);
 //	Unloads selection window button images and makes sure any display list
 // that may remain in memory 	is removed.
 //
-void ShutdownJA2SelectionWindow(void) {
+void ShutdownJA2SelectionWindow() {
   INT16 x;
 
   for (x = 0; x < 4; x++) UnloadGenericButtonIcon((INT16)iButtonIcons[x]);
@@ -593,7 +593,7 @@ void ShutdownJA2SelectionWindow(void) {
 //
 //	Removes the selection window from the screen.
 //
-void RemoveJA2SelectionWindow(void) {
+void RemoveJA2SelectionWindow() {
   RemoveButton(iSelectWin);
   RemoveButton(iCancelWin);
   RemoveButton(iScrollUp);
@@ -622,14 +622,14 @@ static DisplayList *TrashList(DisplayList *pNode) {
   return (NULL);
 }
 
-static void DrawSelections(void);
+static void DrawSelections();
 
 //----------------------------------------------------------------------------------------------
 //	RenderSelectionWindow
 //
 //	Displays the current selection window
 //
-void RenderSelectionWindow(void) {
+void RenderSelectionWindow() {
   INT32 iSX, iSY, iEX, iEY;
   UINT16 usFillColor;
   static UINT8 usFillGreen = 0;
@@ -828,7 +828,7 @@ static void AddToSelectionList(DisplayList *pNode) {
 //
 //	Removes everything from the current selection list
 //
-BOOLEAN ClearSelectionList(void) {
+BOOLEAN ClearSelectionList() {
   INT32 iIndex;
   DisplayList *pNode;
 
@@ -877,7 +877,7 @@ static BOOLEAN RemoveFromSelectionList(DisplayList *pNode) {
 // taken into account so 	that objects with higher counts will be chosen more
 // often.
 //
-INT32 GetRandomSelection(void) {
+INT32 GetRandomSelection() {
   INT32 iRandNum, iTotalCounts;
   INT32 iIndex, iSelectedIndex, iNextCount;
 
@@ -930,7 +930,7 @@ static Selections const &FindInSelectionList(DisplayList const &n) {
 
 //	Copies the current selection list to a save buffer. Used in case we want
 // to cancel a 	selection window.
-static void SaveSelectionList(void) {
+static void SaveSelectionList() {
   INT32 iIndex;
 
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++) OldSelList[iIndex] = pSelList[iIndex];
@@ -944,7 +944,7 @@ static void SaveSelectionList(void) {
 //	Copies the selection list in the save buffer back to the current
 // selection list.
 //
-void RestoreSelectionList(void) {
+void RestoreSelectionList() {
   INT32 iIndex;
 
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++) pSelList[iIndex] = OldSelList[iIndex];
@@ -978,7 +978,7 @@ static void UpClkCallback(GUI_BUTTON *button, INT32 reason) {
 
 /* Perform the calculations required to actually scroll a selection window up by
  * one line. */
-void ScrollSelWinUp(void) {
+void ScrollSelWinUp() {
   INT16 iCutOff = iTopWinCutOff;
   for (DisplayList *i = pDispList; i; i = i->pNext) {
     iCutOff = i->iY;
@@ -988,7 +988,7 @@ void ScrollSelWinUp(void) {
 }
 
 /* Performs the actual calculations for scrolling a selection window down. */
-void ScrollSelWinDown(void) {
+void ScrollSelWinDown() {
   INT16 iCutOff = iTopWinCutOff;
   for (DisplayList *i = pDispList; i; i = i->pNext) {
     if (i->iY <= iTopWinCutOff) break;
@@ -1005,7 +1005,7 @@ static void DwnClkCallback(GUI_BUTTON *button, INT32 reason) {
 static void DisplayWindowFunc(DisplayList *, INT16 top_cut_off, SGPBox const *area);
 
 //	Displays the objects in the display list to the selection window.
-static void DrawSelections(void) {
+static void DrawSelections() {
   SGPRect ClipRect, NewRect;
 
   NewRect.iLeft = g_sel_win_box.x;

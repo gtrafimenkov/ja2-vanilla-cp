@@ -3989,7 +3989,7 @@ bool HasObjectImprint(OBJECTTYPE const &o) {
 }
 
 #ifdef JA2TESTVERSION
-void DumpItemsList(void) {
+void DumpItemsList() {
   CHAR8 zPrintFileName[60];
   FILE *FDump;
   UINT16 usItem;

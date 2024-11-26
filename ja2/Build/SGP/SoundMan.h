@@ -10,11 +10,11 @@
 #define SOUND_ERROR 0xffffffff
 
 // Zeros out the structs for the system info, and initializes the cache.
-void InitializeSoundManager(void);
+void InitializeSoundManager();
 
 /* Silences all currently playing sound, deallocates any memory allocated, and
  * releases the sound hardware. */
-void ShutdownSoundManager(void);
+void ShutdownSoundManager();
 
 UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
                            void (*end_callback)(void *), void *data);
@@ -54,7 +54,7 @@ UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, 
  * in some cases (heavy file loading) it might be desirable.
  * If you are using the end of sample callbacks, you must call this function
  * periodically to check the sample's status. */
-void SoundServiceStreams(void);
+void SoundServiceStreams();
 
 /* This function should be polled by the application if random samples are
  * used. The time marks on each are checked and if it is time to spawn a new
@@ -62,12 +62,12 @@ void SoundServiceStreams(void);
  * there is room, a new one is made and the count updated.
  * If random samples are not being used, there is no purpose in polling this
  * function. */
-void SoundServiceRandom(void);
+void SoundServiceRandom();
 
 // Stops all currently playing sounds.
-void SoundStopAll(void);
+void SoundStopAll();
 
-void SoundStopAllRandom(void);
+void SoundStopAllRandom();
 
 /* Stops the playing of a sound instance, if still playing.
  *

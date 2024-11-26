@@ -49,7 +49,7 @@ static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 // The InitializeGame function is responsible for setting up all data and Gaming
 // Engine tasks which will run the game
 
-void InitializeGame(void) {
+void InitializeGame() {
   UINT32 uiIndex;
 
   // Initlaize mouse subsystems
@@ -67,7 +67,7 @@ void InitializeGame(void) {
 
   // Initialize Game Screens.
   for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
-    void (*const init)(void) = GameScreens[uiIndex].InitializeScreen;
+    void (*const init)() = GameScreens[uiIndex].InitializeScreen;
     if (init) init();
   }
 
@@ -90,7 +90,7 @@ void InitializeGame(void) {
 // InitializeGame() It will also be responsible to making sure that all Gaming
 // Engine tasks exit properly
 
-void ShutdownGame(void) {
+void ShutdownGame() {
   // handle shutdown of game with respect to preloaded mapscreen graphics
   HandleRemovalOfPreLoadedMapGraphics();
 
@@ -157,7 +157,7 @@ static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen);
 // This is the main Gameloop. This should eventually by one big switch statement
 // which represents the state of the game (i.e. Main Menu, PC Generation, Combat
 // loop, etc....) This function exits constantly and reenters constantly
-void GameLoop(void) try {
+void GameLoop() try {
   InputAtom InputEvent;
   ScreenID uiOldScreen = guiCurrentScreen;
 

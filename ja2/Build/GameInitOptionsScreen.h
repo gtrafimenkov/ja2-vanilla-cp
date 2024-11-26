@@ -3,6 +3,6 @@
 
 #include "ScreenIDs.h"
 
-ScreenID GameInitOptionsScreenHandle(void);
+ScreenID GameInitOptionsScreenHandle();
 
 #endif

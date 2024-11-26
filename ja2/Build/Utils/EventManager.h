@@ -16,8 +16,8 @@ enum EventQueueID { PRIMARY_EVENT_QUEUE, SECONDARY_EVENT_QUEUE, DEMAND_EVENT_QUE
 
 #define EVENT_EXPIRED 0x00000002
 
-void InitializeEventManager(void);
-void ShutdownEventManager(void);
+void InitializeEventManager();
+void ShutdownEventManager();
 
 void AddEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSize, EventQueueID);
 EVENT *RemoveEvent(UINT32 uiIndex, EventQueueID);

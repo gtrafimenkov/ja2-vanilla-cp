@@ -12,15 +12,15 @@ void LoadRadarScreenBitmap(const char *filename);
 #define RADAR_WINDOW_WIDTH 88
 #define RADAR_WINDOW_HEIGHT 44
 
-void InitRadarScreen(void);
-void RenderRadarScreen(void);
-void MoveRadarScreen(void);
+void InitRadarScreen();
+void RenderRadarScreen();
+void MoveRadarScreen();
 
 // toggle rendering flag of radar screen
-void ToggleRadarScreenRender(void);
+void ToggleRadarScreenRender();
 
 // clear out the video object for the radar map
-void ClearOutRadarMapImage(void);
+void ClearOutRadarMapImage();
 
 // do we render the radar screen?..or the squad list?
 extern BOOLEAN fRenderRadarScreen;

@@ -368,10 +368,10 @@ SOLDIERTYPE *gUIFullTarget;
 SoldierFindFlags guiUIFullTargetFlags;
 
 static void ClearEvent(UI_EVENT *pUIEvent);
-static void SetUIMouseCursor(void);
+static void SetUIMouseCursor();
 
 // MAIN TACTICAL UI HANDLER
-ScreenID HandleTacticalUI(void) {
+ScreenID HandleTacticalUI() {
   LEVELNODE *pIntTile;
   static LEVELNODE *pOldIntTile = NULL;
 
@@ -584,7 +584,7 @@ ScreenID HandleTacticalUI(void) {
   return (ReturnVal);
 }
 
-static void SetUIMouseCursor(void) {
+static void SetUIMouseCursor() {
   BOOLEAN fForceUpdateNewCursor = FALSE;
   BOOLEAN fUpdateNewCursor = TRUE;
   static INT16 sOldExitGridNo = NOWHERE;
@@ -2042,7 +2042,7 @@ BOOLEAN SelectedMercCanAffordMove() {
   return (FALSE);
 }
 
-static void RemoveTacticalCursor(void) {
+static void RemoveTacticalCursor() {
   guiNewUICursor = NO_UICURSOR;
   ErasePath();
 }
@@ -4206,7 +4206,7 @@ void SetInterfaceHeightLevel() {
   }
 }
 
-BOOLEAN ValidQuickExchangePosition(void) {
+BOOLEAN ValidQuickExchangePosition() {
   BOOLEAN fOnValidGuy = FALSE;
   static BOOLEAN fOldOnValidGuy = FALSE;
 

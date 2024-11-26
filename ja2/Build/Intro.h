@@ -4,7 +4,7 @@
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
 
-ScreenID IntroScreenHandle(void);
+ScreenID IntroScreenHandle();
 
 // enums used for when the intro screen can come up, used with
 // 'gbIntroScreenMode'

@@ -140,9 +140,9 @@ static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void LoadMessageSliderBar(void);
+static void LoadMessageSliderBar();
 
-void HandleLoadOfMapBottomGraphics(void) {
+void HandleLoadOfMapBottomGraphics() {
   // will load the graphics needed for the mapscreen interface bottom
   // will create buttons for interface bottom
   guiMAPBOTTOMPANEL = AddVideoObjectFromFile(INTERFACEDIR "/map_screen_bottom.sti");
@@ -151,11 +151,11 @@ void HandleLoadOfMapBottomGraphics(void) {
   LoadMessageSliderBar();
 }
 
-static void CreateButtonsForMapScreenInterfaceBottom(void);
-static void CreateCompressModePause(void);
-static void CreateMapScreenBottomMessageScrollBarRegion(void);
+static void CreateButtonsForMapScreenInterfaceBottom();
+static void CreateCompressModePause();
+static void CreateMapScreenBottomMessageScrollBarRegion();
 
-void LoadMapScreenInterfaceBottom(void) {
+void LoadMapScreenInterfaceBottom() {
   CreateButtonsForMapScreenInterfaceBottom();
   CreateMapScreenBottomMessageScrollBarRegion();
 
@@ -163,19 +163,19 @@ void LoadMapScreenInterfaceBottom(void) {
   CreateCompressModePause();
 }
 
-static void DeleteMessageSliderBar(void);
+static void DeleteMessageSliderBar();
 
-void DeleteMapBottomGraphics(void) {
+void DeleteMapBottomGraphics() {
   DeleteVideoObject(guiMAPBOTTOMPANEL);
   // delete slider bar icon
   DeleteMessageSliderBar();
 }
 
-static void DeleteMapScreenBottomMessageScrollRegion(void);
+static void DeleteMapScreenBottomMessageScrollRegion();
 static void DestroyButtonsForMapScreenInterfaceBottom();
-static void RemoveCompressModePause(void);
+static void RemoveCompressModePause();
 
-void DeleteMapScreenInterfaceBottom(void) {
+void DeleteMapScreenInterfaceBottom() {
   // will delete graphics loaded for the mapscreen interface bottom
 
   DestroyButtonsForMapScreenInterfaceBottom();
@@ -185,16 +185,16 @@ void DeleteMapScreenInterfaceBottom(void) {
   RemoveCompressModePause();
 }
 
-static void DisplayCompressMode(void);
-static void DisplayCurrentBalanceForMapBottom(void);
-static void DisplayCurrentBalanceTitleForMapBottom(void);
-static void DisplayProjectedDailyMineIncome(void);
-static void DisplayScrollBarSlider(void);
+static void DisplayCompressMode();
+static void DisplayCurrentBalanceForMapBottom();
+static void DisplayCurrentBalanceTitleForMapBottom();
+static void DisplayProjectedDailyMineIncome();
+static void DisplayScrollBarSlider();
 static void DrawNameOfLoadedSector();
-static void EnableDisableBottomButtonsAndRegions(void);
-static void EnableDisableMessageScrollButtonsAndRegions(void);
+static void EnableDisableBottomButtonsAndRegions();
+static void EnableDisableMessageScrollButtonsAndRegions();
 
-void RenderMapScreenInterfaceBottom(void) {
+void RenderMapScreenInterfaceBottom() {
   // will render the map screen bottom interface
   CHAR8 bFilename[32];
 
@@ -270,7 +270,7 @@ static GUIButtonRef MakeArrowButton(const INT32 grayed, const INT32 off, const I
   return btn;
 }
 
-static void CreateButtonsForMapScreenInterfaceBottom(void) {
+static void CreateButtonsForMapScreenInterfaceBottom() {
   guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP] =
       MakeExitButton(6, 15, 456, 410, BtnLaptopCallback, pMapScreenBottomFastHelp[0]);
   guiMapBottomExitButtons[MAP_EXIT_TO_TACTICAL] =
@@ -439,7 +439,7 @@ static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void EnableDisableMessageScrollButtonsAndRegions(void) {
+static void EnableDisableMessageScrollButtonsAndRegions() {
   UINT8 ubNumMessages;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
@@ -468,7 +468,7 @@ static void EnableDisableMessageScrollButtonsAndRegions(void) {
   }
 }
 
-static void DisplayCompressMode(void) {
+static void DisplayCompressMode() {
   INT16 sX, sY;
   static UINT8 usColor = FONT_LTGREEN;
 
@@ -502,20 +502,20 @@ static void DisplayCompressMode(void) {
   MPrint(sX, sY, Time);
 }
 
-static void CreateCompressModePause(void) {
+static void CreateCompressModePause() {
   MSYS_DefineRegion(&gMapPauseRegion, 487, 456, 522, 467, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                     MSYS_NO_CALLBACK, CompressModeClickCallback);
   gMapPauseRegion.SetFastHelpText(pMapScreenBottomFastHelp[7]);
 }
 
-static void RemoveCompressModePause(void) { MSYS_RemoveRegion(&gMapPauseRegion); }
+static void RemoveCompressModePause() { MSYS_RemoveRegion(&gMapPauseRegion); }
 
-static void LoadMessageSliderBar(void) {
+static void LoadMessageSliderBar() {
   // this function will load the message slider bar
   guiSliderBar = AddVideoObjectFromFile(INTERFACEDIR "/map_screen_bottom_arrows.sti");
 }
 
-static void DeleteMessageSliderBar(void) {
+static void DeleteMessageSliderBar() {
   // this function will delete message slider bar
   DeleteVideoObject(guiSliderBar);
 }
@@ -532,7 +532,7 @@ static MOUSE_REGION MapMessageBoxRegion;
 
 static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateMapScreenBottomMessageScrollBarRegion(void) {
+static void CreateMapScreenBottomMessageScrollBarRegion() {
   const INT8 prio = MSYS_PRIORITY_NORMAL;
   {
     const UINT16 x = MESSAGE_SCROLL_AREA_START_X;
@@ -552,7 +552,7 @@ static void CreateMapScreenBottomMessageScrollBarRegion(void) {
   }
 }
 
-static void DeleteMapScreenBottomMessageScrollRegion(void) {
+static void DeleteMapScreenBottomMessageScrollRegion() {
   MSYS_RemoveRegion(&gMapMessageScrollBarRegion);
   MSYS_RemoveRegion(&MapMessageBoxRegion);
 }
@@ -606,7 +606,7 @@ static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReas
   }
 }
 
-static void DisplayScrollBarSlider(void) {
+static void DisplayScrollBarSlider() {
   // will display the scroll bar icon
   UINT8 ubNumMessages;
   UINT8 ubSliderOffset;
@@ -624,9 +624,9 @@ static void DisplayScrollBarSlider(void) {
   }
 }
 
-static void EnableDisableTimeCompressButtons(void);
+static void EnableDisableTimeCompressButtons();
 
-static void EnableDisableBottomButtonsAndRegions(void) {
+static void EnableDisableBottomButtonsAndRegions() {
   // this enables and disables the buttons MAP_EXIT_TO_LAPTOP,
   // MAP_EXIT_TO_TACTICAL, and MAP_EXIT_TO_OPTIONS
   for (ExitToWhere iExitButtonIndex = MAP_EXIT_TO_LAPTOP; iExitButtonIndex <= MAP_EXIT_TO_OPTIONS;
@@ -653,7 +653,7 @@ static void EnableDisableBottomButtonsAndRegions(void) {
   }
 }
 
-static void EnableDisableTimeCompressButtons(void) {
+static void EnableDisableTimeCompressButtons() {
   if (!AllowedToTimeCompress()) {
     DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE]);
     DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS]);
@@ -673,7 +673,7 @@ void EnableDisAbleMapScreenOptionsButton(BOOLEAN fEnable) {
   EnableButton(guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS], fEnable);
 }
 
-BOOLEAN AllowedToTimeCompress(void) {
+BOOLEAN AllowedToTimeCompress() {
   // if already leaving, disallow any other attempts to exit
   if (fLeavingMapScreen) {
     return (FALSE);
@@ -767,7 +767,7 @@ BOOLEAN AllowedToTimeCompress(void) {
   return (TRUE);
 }
 
-static void DisplayCurrentBalanceTitleForMapBottom(void) {
+static void DisplayCurrentBalanceTitleForMapBottom() {
   const wchar_t *sString;
   INT16 sFontX, sFontY;
 
@@ -785,7 +785,7 @@ static void DisplayCurrentBalanceTitleForMapBottom(void) {
   SetFontDestBuffer(FRAME_BUFFER);
 }
 
-static void DisplayCurrentBalanceForMapBottom(void) {
+static void DisplayCurrentBalanceForMapBottom() {
   // show the current balance for the player on the map panel bottom
   wchar_t sString[128];
   INT16 sFontX, sFontY;
@@ -828,7 +828,7 @@ static void CompressMaskClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void DisplayProjectedDailyMineIncome(void) {
+static void DisplayProjectedDailyMineIncome() {
   INT32 iRate = 0;
   static INT32 iOldRate = -1;
   wchar_t sString[128];
@@ -852,7 +852,7 @@ static void DisplayProjectedDailyMineIncome(void) {
   MPrint(sFontX, sFontY, sString);
 }
 
-BOOLEAN CommonTimeCompressionChecks(void) {
+BOOLEAN CommonTimeCompressionChecks() {
   if (bSelectedDestChar != -1 || fPlotForHelicopter) {
     // abort plotting movement
     AbortMovementPlottingMode();
@@ -984,7 +984,7 @@ BOOLEAN AllowedToExitFromMapscreenTo(ExitToWhere const bExitToWhere) {
   return (TRUE);
 }
 
-void HandleExitsFromMapScreen(void) {
+void HandleExitsFromMapScreen() {
   // if going somewhere
   if (gbExitingMapScreenToWhere == MAP_EXIT_TO_INVALID) return;
 
@@ -1066,7 +1066,7 @@ void MapScreenMsgScrollUp(UINT8 ubLinesUp) {
   }
 }
 
-void MoveToEndOfMapScreenMessageList(void) {
+void MoveToEndOfMapScreenMessageList() {
   UINT8 ubDesiredMessageIndex;
   UINT8 ubNumMessages;
 

@@ -5,11 +5,11 @@
 #include "SGP/Types.h"
 
 void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE &);
-void MercDailyUpdate(void);
+void MercDailyUpdate();
 void MercsContractIsFinished(SOLDIERTYPE *s);
 void RPCWhineAboutNoPay(SOLDIERTYPE &);
 void MercComplainAboutEquipment(UINT8 ubProfileID);
 BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier);
-void UpdateBuddyAndHatedCounters(void);
+void UpdateBuddyAndHatedCounters();
 void HourlyCamouflageUpdate();
 #endif

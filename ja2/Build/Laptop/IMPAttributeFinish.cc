@@ -19,14 +19,14 @@ static BUTTON_PICS *giIMPAttributeFinishButtonImage[2];
 GUIButtonRef giIMPAttributeFinishButton[2];
 
 // function definitions
-extern void SetGeneratedCharacterAttributes(void);
+extern void SetGeneratedCharacterAttributes();
 
 static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateAttributeFinishButtons(void);
+static void CreateAttributeFinishButtons();
 
-void EnterIMPAttributeFinish(void) {
+void EnterIMPAttributeFinish() {
   // create the needed buttons
   CreateAttributeFinishButtons();
 
@@ -34,7 +34,7 @@ void EnterIMPAttributeFinish(void) {
   RenderIMPAttributeFinish();
 }
 
-void RenderIMPAttributeFinish(void) {
+void RenderIMPAttributeFinish() {
   // render background
   RenderProfileBackGround();
 
@@ -42,14 +42,14 @@ void RenderIMPAttributeFinish(void) {
   RenderBeginIndent(110, 93);
 }
 
-static void DestroyAttributeFinishButtons(void);
+static void DestroyAttributeFinishButtons();
 
-void ExitIMPAttributeFinish(void) {
+void ExitIMPAttributeFinish() {
   // destroy the buttons for this screen
   DestroyAttributeFinishButtons();
 }
 
-void HandleIMPAttributeFinish(void) {}
+void HandleIMPAttributeFinish() {}
 
 static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
@@ -63,7 +63,7 @@ static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK clic
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void CreateAttributeFinishButtons(void) {
+static void CreateAttributeFinishButtons() {
   // this procedure will create the buttons needed for the attribute finish
   // screen
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
@@ -73,7 +73,7 @@ static void CreateAttributeFinishButtons(void) {
              BtnIMPAttributeFinishNoCallback);  // No button
 }
 
-static void DestroyAttributeFinishButtons(void) {
+static void DestroyAttributeFinishButtons() {
   // this procedure will destroy the buttons for the attribute finish screen
 
   // the yes  button

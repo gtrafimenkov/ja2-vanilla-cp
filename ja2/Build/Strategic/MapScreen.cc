@@ -450,7 +450,7 @@ extern BOOLEAN gfFadeOutDone;
 
 extern BOOLEAN gfMilitiaPopupCreated;
 
-void CancelMapUIMessage(void);
+void CancelMapUIMessage();
 
 // the tries to select a mapscreen character by his soldier ID
 void SetInfoChar(SOLDIERTYPE const *const s) {
@@ -461,7 +461,7 @@ void SetInfoChar(SOLDIERTYPE const *const s) {
   }
 }
 
-static void ContractBoxGlow(void) {
+static void ContractBoxGlow() {
   /* Why not?
           fResetContractGlow = FALSE;
   */
@@ -515,7 +515,7 @@ static void ContractListRegionBoxGlow(UINT16 usCount) {
 
 static void RenderHandPosItem();
 
-static void GlowItem(void) {
+static void GlowItem() {
   static INT32 iColorNum = 10;
   static BOOLEAN fDelta = FALSE;
   static BOOLEAN fOldItemGlow = FALSE;
@@ -563,7 +563,7 @@ static void GlowItem(void) {
   InvalidateRegion(3, 80, 65, 105);
 }
 
-static void GlowTrashCan(void) {
+static void GlowTrashCan() {
   static INT32 iColorNum = 10;
   static BOOLEAN fOldTrashCanGlow = FALSE;
 
@@ -604,7 +604,7 @@ static void GlowTrashCan(void) {
                                 (UINT16)(TRASH_CAN_HEIGHT + 2));
 }
 
-void DrawFace(void) {
+void DrawFace() {
   static const SOLDIERTYPE *old_merc = NULL;
 
   // draws the face of the currently selected merc, being displayed int he upper
@@ -920,7 +920,7 @@ static bool CharacterIsInTransitAndHasItemPickedUp(SOLDIERTYPE const *const s) {
   return s->bAssignment == IN_TRANSIT && fMapInventoryItem;
 }
 
-static void DisplayCharacterInfo(void) {
+static void DisplayCharacterInfo() {
   const SOLDIERTYPE *const s = GetSelectedInfoChar();
   if (s == NULL) return;
 
@@ -1029,7 +1029,7 @@ INT32 GetPathTravelTimeDuringPlotting(PathSt *pPath) {
 
 static INT32 GetGroundTravelTimeOfSoldier(const SOLDIERTYPE *s);
 
-static void DisplayGroundEta(void) {
+static void DisplayGroundEta() {
   if (fPlotForHelicopter) return;
 
   if (bSelectedDestChar == -1) {
@@ -1113,19 +1113,19 @@ static void HighLightSelection(HighLightState &state, INT32 const line, UINT16 c
   }
 }
 
-static void HighLightAssignLine(void) {
+static void HighLightAssignLine() {
   static HighLightState state = {STARTING_COLOR_NUM, false, MAX_CHARACTER_COUNT + 1};
   HighLightSelection(state, giAssignHighLine, ASSIGN_X, ASSIGN_WIDTH,
                      IsCharacterSelectedForAssignment);
 }
 
-static void HighLightDestLine(void) {
+static void HighLightDestLine() {
   static HighLightState state = {STARTING_COLOR_NUM, false, MAX_CHARACTER_COUNT + 1};
   HighLightSelection(state, giDestHighLine, DEST_ETA_X, DEST_ETA_WIDTH,
                      CharacterIsGettingPathPlotted);
 }
 
-static void HighLightSleepLine(void) {
+static void HighLightSleepLine() {
   static HighLightState state = {STARTING_COLOR_NUM, false, MAX_CHARACTER_COUNT + 1};
   HighLightSelection(state, giSleepHighLine, SLEEP_X, SLEEP_WIDTH, IsCharacterSelectedForSleep);
 }
@@ -1145,7 +1145,7 @@ static void AddCharacter(SOLDIERTYPE *const s) {
   }
 }
 
-static void LoadCharacters(void) {
+static void LoadCharacters() {
   UINT16 uiCount = 0;
 
   // fills array with pressence of player controlled characters
@@ -1172,9 +1172,9 @@ static void LoadCharacters(void) {
   }
 }
 
-static void EnableDisableTeamListRegionsAndHelpText(void);
+static void EnableDisableTeamListRegionsAndHelpText();
 
-static void DisplayCharacterList(void) {
+static void DisplayCharacterList() {
   if (fShowAssignmentMenu && !fTeamPanelDirty) {
     SetFontDestBuffer(FRAME_BUFFER);
     return;
@@ -1246,7 +1246,7 @@ static void DisplayCharacterList(void) {
 
 // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL
 // STARTUP
-void MapScreenInit(void) {
+void MapScreenInit() {
   // init palettes for big map
   InitializePalettesForMap();
 
@@ -1256,7 +1256,7 @@ void MapScreenInit(void) {
   guiUpdatePanelTactical = AddVideoObjectFromFile(INTERFACEDIR "/group_confirm_tactical.sti");
 }
 
-void MapScreenShutdown(void) {
+void MapScreenShutdown() {
   // free up alloced mapscreen messages
   FreeGlobalMessageList();
 
@@ -1268,53 +1268,53 @@ void MapScreenShutdown(void) {
   DeleteVideoObject(guiUpdatePanelTactical);
 }
 
-static void AddTeamPanelSortButtonsForMapScreen(void);
-static void BlitBackgroundToSaveBuffer(void);
-static void CheckForAndRenderNewMailOverlay(void);
-static void CheckForInventoryModeCancellation(void);
-static void CheckIfPlottingForCharacterWhileAirCraft(void);
-static void CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting(void);
+static void AddTeamPanelSortButtonsForMapScreen();
+static void BlitBackgroundToSaveBuffer();
+static void CheckForAndRenderNewMailOverlay();
+static void CheckForInventoryModeCancellation();
+static void CheckIfPlottingForCharacterWhileAirCraft();
+static void CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting();
 static void ContractButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void CreateDestroyMapCharacterScrollButtons(void);
-static void CreateDestroyTrashCanRegion(void);
-static void CreateMouseRegionsForTeamList(void);
-static void DetermineIfContractMenuCanBeShown(void);
+static void CreateDestroyMapCharacterScrollButtons();
+static void CreateDestroyTrashCanRegion();
+static void CreateMouseRegionsForTeamList();
+static void DetermineIfContractMenuCanBeShown();
 static void FaceRegionBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void HandleAnimatedCursorsForMapScreen(void);
-static void HandleAssignmentsDoneAndAwaitingFurtherOrders(void);
-static void HandleChangeOfHighLightedLine(void);
-static void HandleChangeOfInfoChar(void);
-static void HandleCharBarRender(void);
-static void HandleCommonGlowTimer(void);
-static void HandleContractTimeFlashForMercThatIsAboutLeave(void);
-static void HandleCursorOverRifleAmmo(void);
-static void HandleHighLightingOfLinesInTeamPanel(void);
-static void HandleMapInventoryCursor(void);
-static UINT32 HandleMapUI(void);
-static void HandlePostAutoresolveMessages(void);
-static void HandlePreBattleInterfaceWithInventoryPanelUp(void);
-static void HandleSpontanousTalking(void);
-static void InitPreviousPaths(void);
-static void InterruptTimeForMenus(void);
+static void HandleAnimatedCursorsForMapScreen();
+static void HandleAssignmentsDoneAndAwaitingFurtherOrders();
+static void HandleChangeOfHighLightedLine();
+static void HandleChangeOfInfoChar();
+static void HandleCharBarRender();
+static void HandleCommonGlowTimer();
+static void HandleContractTimeFlashForMercThatIsAboutLeave();
+static void HandleCursorOverRifleAmmo();
+static void HandleHighLightingOfLinesInTeamPanel();
+static void HandleMapInventoryCursor();
+static UINT32 HandleMapUI();
+static void HandlePostAutoresolveMessages();
+static void HandlePreBattleInterfaceWithInventoryPanelUp();
+static void HandleSpontanousTalking();
+static void InitPreviousPaths();
+static void InterruptTimeForMenus();
 static void ItemRegionBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ItemRegionMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void MapScreenMarkRegionBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void MapscreenMarkButtonsDirty(void);
-static void MonitorMapUIMessage(void);
-static void PlotPermanentPaths(void);
-static void PlotTemporaryPaths(void);
-static void RenderMapCursorsIndexesAnims(void);
-static void RenderTeamRegionBackground(void);
-static BOOLEAN RequestGiveSkyriderNewDestination(void);
-static void ResetAllSelectedCharacterModes(void);
-static void UpDateStatusOfContractBox(void);
-static void UpdateBadAssignments(void);
-static void UpdateCursorIfInLastSector(void);
-static void UpdatePausedStatesDueToTimeCompression(void);
-static void UpdateStatusOfMapSortButtons(void);
-static void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons(void);
+static void MapscreenMarkButtonsDirty();
+static void MonitorMapUIMessage();
+static void PlotPermanentPaths();
+static void PlotTemporaryPaths();
+static void RenderMapCursorsIndexesAnims();
+static void RenderTeamRegionBackground();
+static BOOLEAN RequestGiveSkyriderNewDestination();
+static void ResetAllSelectedCharacterModes();
+static void UpDateStatusOfContractBox();
+static void UpdateBadAssignments();
+static void UpdateCursorIfInLastSector();
+static void UpdatePausedStatesDueToTimeCompression();
+static void UpdateStatusOfMapSortButtons();
+static void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons();
 
-ScreenID MapScreenHandle(void) try {
+ScreenID MapScreenHandle() try {
   UINT32 uiNewScreen;
   INT32 iCounter = 0;
 
@@ -1972,7 +1972,7 @@ static void DrawStringRight(const wchar_t *str, UINT16 x, UINT16 y, UINT16 w, UI
 static void RenderMapHighlight(INT16 sMapX, INT16 sMapY, UINT16 usLineColor, BOOLEAN fStationary);
 static void RestoreMapSectorCursor(INT16 sMapX, INT16 sMapY);
 
-static void RenderMapCursorsIndexesAnims(void) {
+static void RenderMapCursorsIndexesAnims() {
   BOOLEAN fSelectedSectorHighlighted = FALSE;
   BOOLEAN fSelectedCursorIsYellow = TRUE;
   UINT16 usCursorColor;
@@ -2088,17 +2088,17 @@ static void RenderMapCursorsIndexesAnims(void) {
 
 static BOOLEAN AnyMovableCharsInOrBetweenThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 static BOOLEAN CanMoveBullseyeAndClickedOnIt(INT16 sMapX, INT16 sMapY);
-static void CancelChangeArrivalSectorMode(void);
-static void CancelOrShortenPlottedPath(void);
-static void CreateBullsEyeOrChopperSelectionPopup(void);
+static void CancelChangeArrivalSectorMode();
+static void CancelOrShortenPlottedPath();
+static void CreateBullsEyeOrChopperSelectionPopup();
 static void GetMapKeyboardInput(MapEvent &);
 static void PollLeftButtonInMapView(MapEvent &);
 static void PollRightButtonInMapView(MapEvent &);
-static void StartChangeSectorArrivalMode(void);
+static void StartChangeSectorArrivalMode();
 static void StartConfirmMapMoveMode(INT16 sMapY);
 
 // Drawing the Map
-static UINT32 HandleMapUI(void) {
+static UINT32 HandleMapUI() {
   MapEvent new_event = MAP_EVENT_NONE;
   INT16 sMapX = 0, sMapY = 0;
   INT16 sX, sY;
@@ -2537,8 +2537,8 @@ static void Teleport() {
 }
 
 static void ChangeCharacterListSortMethod(INT32 iValue);
-static void RequestContractMenu(void);
-static void RequestToggleMercInventoryPanel(void);
+static void RequestContractMenu();
+static void RequestToggleMercInventoryPanel();
 static void SelectAllCharactersInSquad(INT8 bSquadNumber);
 
 static void HandleModNone(UINT32 const key, MapEvent &new_event) {
@@ -2879,7 +2879,7 @@ static void GetMapKeyboardInput(MapEvent &new_event) {
   }
 }
 
-static void DestroyMouseRegionsForTeamList(void);
+static void DestroyMouseRegionsForTeamList();
 static void RemoveTeamPanelSortButtonsForMapScreen();
 
 void EndMapScreen(BOOLEAN fDuringFade) {
@@ -3170,7 +3170,7 @@ static void RenderMapHighlight(INT16 sMapX, INT16 sMapY, UINT16 usLineColor, BOO
 }
 
 static BOOLEAN CheckIfClickOnLastSectorInPath(INT16 sX, INT16 sY);
-static void DestinationPlottingCompleted(void);
+static void DestinationPlottingCompleted();
 
 static void PollLeftButtonInMapView(MapEvent &new_event) {
   static BOOLEAN fLBBeenPressedInMapView = FALSE;
@@ -3258,7 +3258,7 @@ static void PollLeftButtonInMapView(MapEvent &new_event) {
   fJustFinishedPlotting = FALSE;
 }
 
-static void HandleMilitiaRedistributionClick(void);
+static void HandleMilitiaRedistributionClick();
 
 static void PollRightButtonInMapView(MapEvent &new_event) {
   static BOOLEAN fRBBeenPressedInMapView = FALSE;
@@ -3395,7 +3395,7 @@ void CreateDestroyMapInvButton() {
   }
 }
 
-static void BltCharInvPanel(void) {
+static void BltCharInvPanel() {
   wchar_t sString[32];
 
   const SOLDIERTYPE *const pSoldier = GetSelectedInfoChar();
@@ -3469,7 +3469,7 @@ static void BltCharInvPanel(void) {
 }
 
 // check for and highlight any ammo
-static void HandleCursorOverRifleAmmo(void) {
+static void HandleCursorOverRifleAmmo() {
   if (!fShowInventoryFlag) return;
 
   if (gbCheckForMouseOverItemPos == -1) {
@@ -3737,7 +3737,7 @@ static void MAPBeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
   }
 }
 
-void MAPEndItemPointer(void) {
+void MAPEndItemPointer() {
   if (gpItemPointer != NULL) {
     gpItemPointer = NULL;
     gMPanelRegion.ChangeCursor(CURSOR_NORMAL);
@@ -3757,7 +3757,7 @@ void MAPEndItemPointer(void) {
 }
 
 // handle cursor for invenetory mode..update to object selected, if needed
-static void HandleMapInventoryCursor(void) {
+static void HandleMapInventoryCursor() {
   if (fMapInventoryItem) MSYS_SetCurrentCursor(EXTERN_CURSOR);
 }
 
@@ -3837,7 +3837,7 @@ static void DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInt
 
 static void ChangeMapScreenMaskCursor(UINT16 usCursor);
 
-void SetUpCursorForStrategicMap(void) {
+void SetUpCursorForStrategicMap() {
   if (!gfInChangeArrivalSectorMode) {
     // check if character is in destination plotting mode
     if (!fPlotForHelicopter) {
@@ -3865,7 +3865,7 @@ void SetUpCursorForStrategicMap(void) {
   }
 }
 
-static void HandleAnimatedCursorsForMapScreen(void) {
+static void HandleAnimatedCursorsForMapScreen() {
   if (COUNTERDONE(CURSORCOUNTER)) {
     RESETCOUNTER(CURSORCOUNTER);
     UpdateAnimatedCursorFrames(gMapScreenMaskRegion.Cursor);
@@ -3873,10 +3873,10 @@ static void HandleAnimatedCursorsForMapScreen(void) {
   }
 }
 
-static void ClearPreviousPaths(void);
-static void RestorePreviousPaths(void);
+static void ClearPreviousPaths();
+static void RestorePreviousPaths();
 
-void AbortMovementPlottingMode(void) {
+void AbortMovementPlottingMode() {
   // invalid if we're not plotting movement
   Assert(bSelectedDestChar != -1 || fPlotForHelicopter);
 
@@ -3921,7 +3921,7 @@ void AbortMovementPlottingMode(void) {
   gfRenderPBInterface = TRUE;
 }
 
-static void CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting(void) {
+static void CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting() {
   static BOOLEAN fInArea = FALSE;
 
   if ((gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) == 0) {
@@ -3947,9 +3947,9 @@ static void CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting(void) {
   }
 }
 
-static void RenderCharacterInfoBackground(void);
+static void RenderCharacterInfoBackground();
 
-static void BlitBackgroundToSaveBuffer(void) {
+static void BlitBackgroundToSaveBuffer() {
   // render map
   RenderMapRegionBackground();
 
@@ -3990,7 +3990,7 @@ static void TeamListInfoRegionMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void TeamListSleepRegionBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void TeamListSleepRegionMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateMouseRegionsForTeamList(void) {
+static void CreateMouseRegionsForTeamList() {
   // will create mouse regions for assignments, path plotting, character info
   // selection
 
@@ -4022,7 +4022,7 @@ static void CreateMouseRegionsForTeamList(void) {
   }
 }
 
-static void DestroyMouseRegionsForTeamList(void) {
+static void DestroyMouseRegionsForTeamList() {
   // will destroy mouse regions overlaying the team list area
   for (UINT i = 0; i < MAX_CHARACTER_COUNT; ++i) {
     CharacterRegions &r = g_character_regions[i];
@@ -4542,7 +4542,7 @@ static void TeamListContractRegionMvtCallBack(MOUSE_REGION *pRegion, INT32 iReas
   }
 }
 
-static void HandleHighLightingOfLinesInTeamPanel(void) {
+static void HandleHighLightingOfLinesInTeamPanel() {
   if (fShowInventoryFlag) {
     return;
   }
@@ -4565,7 +4565,7 @@ static void HandleHighLightingOfLinesInTeamPanel(void) {
   }
 }
 
-static void PlotPermanentPaths(void) {
+static void PlotPermanentPaths() {
   if (fPlotForHelicopter) {
     DisplayHelicopterPath();
   } else if (bSelectedDestChar != -1) {
@@ -4573,7 +4573,7 @@ static void PlotPermanentPaths(void) {
   }
 }
 
-static void PlotTemporaryPaths(void) {
+static void PlotTemporaryPaths() {
   INT16 sMapX, sMapY;
 
   // check to see if we have in fact moved are are plotting a path?
@@ -4637,7 +4637,7 @@ static void PlotTemporaryPaths(void) {
   }
 }
 
-void RenderMapRegionBackground(void) {
+void RenderMapRegionBackground() {
   // renders to save buffer when dirty flag set
 
   if (!fMapPanelDirty) {
@@ -4678,7 +4678,7 @@ void RenderMapRegionBackground(void) {
   gfMapPanelWasRedrawn = TRUE;
 }
 
-static void DisplayIconsForMercsAsleep(void);
+static void DisplayIconsForMercsAsleep();
 
 static void RenderTeamRegionBackground() {
   // Render to save buffer when dirty flag set
@@ -4703,7 +4703,7 @@ static void RenderTeamRegionBackground() {
   MapscreenMarkButtonsDirty();
 }
 
-static void RenderCharacterInfoBackground(void) {
+static void RenderCharacterInfoBackground() {
   // will render the background for the character info panel
 
   if (!fCharacterInfoPanelDirty) {
@@ -4736,9 +4736,9 @@ static void RenderCharacterInfoBackground(void) {
   RestoreExternBackgroundRect(0, 0, 261, 107);
 }
 
-static void HandleShadingOfLinesForContractMenu(void);
+static void HandleShadingOfLinesForContractMenu();
 
-static void DetermineIfContractMenuCanBeShown(void) {
+static void DetermineIfContractMenuCanBeShown() {
   if (!fShowContractMenu) {
     // destroy menus for contract region
     CreateDestroyMouseRegionsForContractMenu();
@@ -4772,7 +4772,7 @@ static void DetermineIfContractMenuCanBeShown(void) {
   }
 }
 
-static void CheckIfPlottingForCharacterWhileAirCraft(void) {
+static void CheckIfPlottingForCharacterWhileAirCraft() {
   // if we are in aircraft mode and plotting for character, reset plotting
   // character
   if (fShowAircraftFlag) {
@@ -4829,7 +4829,7 @@ static void ContractRegionBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void HandleShadingOfLinesForContractMenu(void) {
+static void HandleShadingOfLinesForContractMenu() {
   if (!fShowContractMenu) return;
 
   PopUpBox *const box = ghContractBox;
@@ -4864,7 +4864,7 @@ static void HandleShadingOfLinesForContractMenu(void) {
 
 static void SortListOfMercsInTeamPanel(BOOLEAN fRetainSelectedMercs);
 
-void ReBuildCharactersList(void) {
+void ReBuildCharactersList() {
   // rebuild character's list
 
   // add in characters
@@ -4895,7 +4895,7 @@ void ReBuildCharactersList(void) {
 }
 
 // handle change in info char
-static void HandleChangeOfInfoChar(void) {
+static void HandleChangeOfInfoChar() {
   static INT8 bOldInfoChar = -1;
 
   if (bSelectedInfoChar != bOldInfoChar) {
@@ -4924,7 +4924,7 @@ void RebuildContractBoxForMerc(const SOLDIERTYPE *const pCharacter) {
   CreateContractBox(pCharacter);
 }
 
-static void EnableDisableTeamListRegionsAndHelpText(void) {
+static void EnableDisableTeamListRegionsAndHelpText() {
   // check if valid character here, if so, then do nothing..other wise set help
   // text timer to a gazillion
   INT8 bCharNum;
@@ -4985,7 +4985,7 @@ static void EnableDisableTeamListRegionsAndHelpText(void) {
   }
 }
 
-static void ResetAllSelectedCharacterModes(void) {
+static void ResetAllSelectedCharacterModes() {
   // if in militia redistribution popup
   if (sSelectedMilitiaTown != 0) {
     sSelectedMilitiaTown = 0;
@@ -5018,7 +5018,7 @@ static void ResetAllSelectedCharacterModes(void) {
 }
 
 // automatically pause/unpause time compression during certain events
-static void UpdatePausedStatesDueToTimeCompression(void) {
+static void UpdatePausedStatesDueToTimeCompression() {
   // this executes every frame, so keep it optimized for speed!
 
   // if time is being compressed
@@ -5075,7 +5075,7 @@ BOOLEAN ContinueDialogue(SOLDIERTYPE *pSoldier, BOOLEAN fDone) {
   return (FALSE);
 }
 
-static void HandleSpontanousTalking(void) {
+static void HandleSpontanousTalking() {
   // simply polls if the talking guy is done, if so...send an end command to
   // continue dialogue
   if (!DialogueActive()) {
@@ -5085,7 +5085,7 @@ static void HandleSpontanousTalking(void) {
 }
 
 static void HandleNewDestConfirmation(INT16 sMapX, INT16 sMapY);
-static void RebuildWayPointsForAllSelectedCharsGroups(void);
+static void RebuildWayPointsForAllSelectedCharsGroups();
 
 static BOOLEAN CheckIfClickOnLastSectorInPath(INT16 sX, INT16 sY) {
   PathSt *const *ppMovePath = NULL;
@@ -5177,7 +5177,7 @@ static BOOLEAN CheckIfClickOnLastSectorInPath(INT16 sX, INT16 sY) {
 }
 
 // rebuild waypoints for selected character list
-static void RebuildWayPointsForAllSelectedCharsGroups(void) {
+static void RebuildWayPointsForAllSelectedCharsGroups() {
   // rebuild the waypoints for everyone in the selected character list
   BOOLEAN fGroupIDRebuilt[256];
   INT32 iVehicleId;
@@ -5221,7 +5221,7 @@ static void RebuildWayPointsForAllSelectedCharsGroups(void) {
 }
 
 // check if cursor needs to be set to checkmark or to the walking guy?
-static void UpdateCursorIfInLastSector(void) {
+static void UpdateCursorIfInLastSector() {
   INT16 sMapX = 0, sMapY = 0;
 
   // check to see if we are plotting a path, if so, see if we are highlighting
@@ -5306,7 +5306,7 @@ static void ItemRegionMvtCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 }
 
 // handle highlighting of team panel lines
-static void HandleChangeOfHighLightedLine(void) {
+static void HandleChangeOfHighLightedLine() {
   static INT32 iOldHighLine;
 
   if (fShowInventoryFlag) {
@@ -5334,7 +5334,7 @@ static void HandleChangeOfHighLightedLine(void) {
   }
 }
 
-static void HandleCharBarRender(void) {
+static void HandleCharBarRender() {
   if (fDisableDueToBattleRoster) return;  // check if the panel is disbled, if so, do not render
 
   const SOLDIERTYPE *const s = GetSelectedInfoChar();
@@ -5348,7 +5348,7 @@ static void HandleCharBarRender(void) {
 }
 
 // update the status of the contract box
-static void UpDateStatusOfContractBox(void) {
+static void UpDateStatusOfContractBox() {
   if (fShowContractMenu) {
     ForceUpDateOfBox(ghContractBox);
 
@@ -5393,7 +5393,7 @@ static void TrashCanMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void UpdateStatusOfMapSortButtons(void) {
+static void UpdateStatusOfMapSortButtons() {
   INT32 iCounter = 0;
   static BOOLEAN fShownLastTime = FALSE;
 
@@ -5425,7 +5425,7 @@ static void UpdateStatusOfMapSortButtons(void) {
 
 static void DoneInventoryMapBtnCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateDestroyTrashCanRegion(void) {
+static void CreateDestroyTrashCanRegion() {
   static BOOLEAN fCreated = FALSE;
 
   if (fShowInventoryFlag && !fCreated) {
@@ -5481,13 +5481,13 @@ static void StartConfirmMapMoveMode(INT16 sMapY) {
   gfInConfirmMapMoveMode = TRUE;
 }
 
-void EndConfirmMapMoveMode(void) {
+void EndConfirmMapMoveMode() {
   CancelMapUIMessage();
 
   gfInConfirmMapMoveMode = FALSE;
 }
 
-void CancelMapUIMessage(void) {
+void CancelMapUIMessage() {
   // and kill the message overlay
   EndUIMessage();
 
@@ -5495,7 +5495,7 @@ void CancelMapUIMessage(void) {
 }
 
 // automatically turns off mapscreen ui overlay messages when appropriate
-static void MonitorMapUIMessage(void) {
+static void MonitorMapUIMessage() {
   // if there is a map UI message being displayed
   if (g_ui_message_overlay != NULL) {
     // and if we're not in the middle of the "confirm move" sequence
@@ -5512,7 +5512,7 @@ static void MonitorMapUIMessage(void) {
 }
 
 // handle pre battle interface in relation to inventory
-static void HandlePreBattleInterfaceWithInventoryPanelUp(void) {
+static void HandlePreBattleInterfaceWithInventoryPanelUp() {
   if (gfPreBattleInterfaceActive && fShowInventoryFlag) {
     if (fShowDescriptionFlag) {
       // kill description
@@ -5527,11 +5527,11 @@ static void HandlePreBattleInterfaceWithInventoryPanelUp(void) {
 
 // update any bad assignments..error checking
 // this puts anyone who is on NO_ASSIGNMENT onto a free squad
-static void UpdateBadAssignments(void) {
+static void UpdateBadAssignments() {
   CFOR_EACH_IN_CHAR_LIST(c) { CheckIfSoldierUnassigned(c->merc); }
 }
 
-static void InterruptTimeForMenus(void) {
+static void InterruptTimeForMenus() {
   if (fShowAssignmentMenu || fShowContractMenu) {
     InterruptTime();
     PauseTimeForInterupt();
@@ -5543,7 +5543,7 @@ static void InterruptTimeForMenus(void) {
 
 static bool AnyMercsLeavingRealSoon();
 
-static void HandleContractTimeFlashForMercThatIsAboutLeave(void) {
+static void HandleContractTimeFlashForMercThatIsAboutLeave() {
   INT32 iCurrentTime;
 
   // grab the current time
@@ -5573,7 +5573,7 @@ static bool AnyMercsLeavingRealSoon() {
   return false;
 }
 
-void HandlePreloadOfMapGraphics(void) {
+void HandlePreloadOfMapGraphics() {
   guiSleepIcon = AddVideoObjectFromFile(INTERFACEDIR "/sleepicon.sti");
   guiCHARINFO = AddVideoObjectFromFile(INTERFACEDIR "/charinfo.sti");
   guiCHARLIST = AddVideoObjectFromFile(INTERFACEDIR "/newgoldpiece3.sti");
@@ -5600,7 +5600,7 @@ void HandlePreloadOfMapGraphics(void) {
   LoadMapScreenInterfaceMapGraphics();
 }
 
-void HandleRemovalOfPreLoadedMapGraphics(void) {
+void HandleRemovalOfPreLoadedMapGraphics() {
   DeleteMapBottomGraphics();
   DeleteVideoObject(guiSleepIcon);
 
@@ -5651,7 +5651,7 @@ static BOOLEAN CharacterIsInLoadedSectorAndWantsToMoveInventoryButIsNotAllowed(
 }
 
 // how many on team, if less than 2, disable prev/next merc buttons
-static void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons(void) {
+static void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons() {
   if (gfPreBattleInterfaceActive) return;
 
   const SOLDIERTYPE *const s = GetSelectedInfoChar();
@@ -5689,7 +5689,7 @@ static void NextInventoryMapBtnCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void CreateDestroyMapCharacterScrollButtons(void) {
+static void CreateDestroyMapCharacterScrollButtons() {
   static BOOLEAN fCreated = FALSE;
 
   if (fInMapMode && !fCreated) {
@@ -5715,7 +5715,7 @@ static void CreateDestroyMapCharacterScrollButtons(void) {
   }
 }
 
-void TellPlayerWhyHeCantCompressTime(void) {
+void TellPlayerWhyHeCantCompressTime() {
   // if we're locked into paused time compression by some event that enforces
   // that
   if (PauseStateLocked()) {
@@ -5779,7 +5779,7 @@ static void MapSortBtnCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void AddTeamPanelSortButtonsForMapScreen(void) {
+static void AddTeamPanelSortButtonsForMapScreen() {
   INT32 iImageIndex[MAX_SORT_METHODS] = {0, 1, 5, 2, 3, 4};  // sleep image is out or order (last)
 
   const char *const filename = GetMLGFilename(MLG_GOLDPIECEBUTTONS);
@@ -5950,7 +5950,7 @@ static void RemoveTeamPanelSortButtonsForMapScreen() {
   FOR_EACH(GUIButtonRef, i, giMapSortButton) RemoveButton(*i);
 }
 
-static void HandleCommonGlowTimer(void) {
+static void HandleCommonGlowTimer() {
   INT32 iCurrentTime = 0;
 
   // grab the current time
@@ -5969,7 +5969,7 @@ static void HandleCommonGlowTimer(void) {
 }
 
 // run through list of grunts and handle awating further orders
-static void HandleAssignmentsDoneAndAwaitingFurtherOrders(void) {
+static void HandleAssignmentsDoneAndAwaitingFurtherOrders() {
   // update "nothing to do" flags if necessary
   if (gfReEvaluateEveryonesNothingToDo) {
     ReEvaluateEveryonesNothingToDo();
@@ -5996,7 +5996,7 @@ static void HandleAssignmentsDoneAndAwaitingFurtherOrders(void) {
   }
 }
 
-static void DisplayIconsForMercsAsleep(void) {
+static void DisplayIconsForMercsAsleep() {
   // run throught he list of grunts to see who is asleep and who isn't
   INT32 iCounter;
 
@@ -6016,7 +6016,7 @@ static void DisplayIconsForMercsAsleep(void) {
 // Kris:  Added this function to blink the email icon on top of the laptop
 // button whenever we are in
 //       mapscreen and we have new email to read.
-static void CheckForAndRenderNewMailOverlay(void) {
+static void CheckForAndRenderNewMailOverlay() {
   if (fNewMailFlag) {
     if (GetJA2Clock() % 1000 < 667) {
       if (guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]
@@ -6074,7 +6074,7 @@ bool MapCharacterHasAccessibleInventory(SOLDIERTYPE const &s) {
          s.ubWhatKindOfMercAmI != MERC_TYPE__EPC && s.bLife >= OKLIFE;
 }
 
-static void CheckForInventoryModeCancellation(void) {
+static void CheckForInventoryModeCancellation() {
   if (fShowInventoryFlag || fShowDescriptionFlag) {
     // can't bail while player has an item in hand...
     if (fMapInventoryItem) return;
@@ -6193,9 +6193,9 @@ static void ChangeMapScreenMaskCursor(UINT16 usCursor) {
   }
 }
 
-static void ExplainWhySkyriderCantFly(void);
+static void ExplainWhySkyriderCantFly();
 
-static void CancelOrShortenPlottedPath(void) {
+static void CancelOrShortenPlottedPath() {
   INT16 sMapX, sMapY;
   UINT32 uiReturnValue;
 
@@ -6300,7 +6300,7 @@ static INT32 GetContractExpiryTime(const SOLDIERTYPE *const pSoldier) {
   }
 }
 
-SOLDIERTYPE *GetSelectedInfoChar(void) {
+SOLDIERTYPE *GetSelectedInfoChar() {
   if (bSelectedInfoChar == -1) return NULL;
   Assert(0 <= bSelectedInfoChar && bSelectedInfoChar < MAX_CHARACTER_COUNT);
   SOLDIERTYPE *const s = gCharactersList[bSelectedInfoChar].merc;
@@ -6464,7 +6464,7 @@ static INT16 CalcLocationValueForChar(const SOLDIERTYPE *const s) {
          s->bSectorZ * 1000;  // underground: add 1000 per sublevel
 }
 
-static void CancelChangeArrivalSectorMode(void) {
+static void CancelChangeArrivalSectorMode() {
   // "put him in change arrival sector" mode
   gfInChangeArrivalSectorMode = FALSE;
 
@@ -6530,7 +6530,7 @@ static BOOLEAN AnyMovableCharsInOrBetweenThisSector(INT16 sSectorX, INT16 sSecto
 
 static UINT8 PlayerMercsInHelicopterSector();
 
-static BOOLEAN RequestGiveSkyriderNewDestination(void) {
+static BOOLEAN RequestGiveSkyriderNewDestination() {
   // should we allow it?
   if (CanHelicopterFly()) {
     // if not warned already, and chopper empty, but mercs are in this sector
@@ -6568,7 +6568,7 @@ static BOOLEAN RequestGiveSkyriderNewDestination(void) {
   }
 }
 
-static void ExplainWhySkyriderCantFly(void) {
+static void ExplainWhySkyriderCantFly() {
   // do we owe him money?
   if (gMercProfiles[SKYRIDER].iBalance < 0) {
     // overdue cash
@@ -6604,7 +6604,7 @@ static UINT8 PlayerMercsInHelicopterSector() {
   return PlayerMercsInSector(g.ubSectorX, g.ubSectorY, 0);
 }
 
-static void RandomAwakeSelectedMercConfirmsStrategicMove(void);
+static void RandomAwakeSelectedMercConfirmsStrategicMove();
 static void WakeUpAnySleepingSelectedMercsOnFootOrDriving();
 
 static void HandleNewDestConfirmation(INT16 sMapX, INT16 sMapY) {
@@ -6658,7 +6658,7 @@ static void HandleNewDestConfirmation(INT16 sMapX, INT16 sMapY) {
   WakeUpAnySleepingSelectedMercsOnFootOrDriving();
 }
 
-static void RandomAwakeSelectedMercConfirmsStrategicMove(void) {
+static void RandomAwakeSelectedMercConfirmsStrategicMove() {
   INT32 iCounter;
   SOLDIERTYPE *selected_merc[20];
   UINT8 ubSelectedMercIndex[20];
@@ -6691,7 +6691,7 @@ static void RandomAwakeSelectedMercConfirmsStrategicMove(void) {
   }
 }
 
-static void DestinationPlottingCompleted(void) {
+static void DestinationPlottingCompleted() {
   // clear previous paths for selected characters and helicopter
   ClearPreviousPaths();
 
@@ -6708,7 +6708,7 @@ static void DestinationPlottingCompleted(void) {
   fEndPlotting = TRUE;
 }
 
-static void HandleMilitiaRedistributionClick(void) {
+static void HandleMilitiaRedistributionClick() {
   BOOLEAN fTownStillHidden;
   wchar_t sString[128];
 
@@ -6744,7 +6744,7 @@ static void HandleMilitiaRedistributionClick(void) {
   }
 }
 
-static void StartChangeSectorArrivalMode(void) {
+static void StartChangeSectorArrivalMode() {
   // "put him in change arrival sector" mode
   gfInChangeArrivalSectorMode = TRUE;
 
@@ -6775,7 +6775,7 @@ static BOOLEAN CanMoveBullseyeAndClickedOnIt(INT16 sMapX, INT16 sMapY) {
 
 static void BullsEyeOrChopperSelectionPopupCallback(MessageBoxReturnValue);
 
-static void CreateBullsEyeOrChopperSelectionPopup(void) {
+static void CreateBullsEyeOrChopperSelectionPopup() {
   wcscpy(gzUserDefinedButton1, pHelicopterEtaStrings[8]);
   wcscpy(gzUserDefinedButton2, pHelicopterEtaStrings[9]);
 
@@ -6813,12 +6813,12 @@ static void WakeUpAnySleepingSelectedMercsOnFootOrDriving() {
     /* We should be guaranteed that he CAN wake up to get this far, so report
      * errors, but don't force it */
     bool const success = SetMercAwake(&s, TRUE, FALSE);
-    (void)success;
+    (void) success;
     Assert(success);
   }
 }
 
-static void HandlePostAutoresolveMessages(void) {
+static void HandlePostAutoresolveMessages() {
   // KM: Autoresolve sets up this global sector value whenever the enemy gains
   // control of a sector.  As soon as we leave autoresolve and enter mapscreen,
   // then this gets called and handles ownership change for the sector. It also
@@ -6933,9 +6933,9 @@ void GetMapscreenMercDepartureString(SOLDIERTYPE const &s, wchar_t *const buf, s
   }
 }
 
-static void InitPreviousPaths(void) { g_prev_path = NULL; }
+static void InitPreviousPaths() { g_prev_path = NULL; }
 
-void RememberPreviousPathForAllSelectedChars(void) {
+void RememberPreviousPathForAllSelectedChars() {
   Assert(0 <= bSelectedDestChar && bSelectedDestChar < MAX_CHARACTER_COUNT);
   ClearStrategicPathList(g_prev_path, 0);
   g_prev_path = CopyPaths(GetSoldierMercPathPtr(gCharactersList[bSelectedDestChar].merc));
@@ -6957,7 +6957,7 @@ static bool RestorePath(PathSt *&path, UINT8 const group_id) {
   return true;
 }
 
-static void RestorePreviousPaths(void) {
+static void RestorePreviousPaths() {
   // invalid if we're not plotting movement
   Assert(bSelectedDestChar != -1 || fPlotForHelicopter);
 
@@ -6998,7 +6998,7 @@ static void RestorePreviousPaths(void) {
   }
 }
 
-static void ClearPreviousPaths(void) { g_prev_path = ClearStrategicPathList(g_prev_path, 0); }
+static void ClearPreviousPaths() { g_prev_path = ClearStrategicPathList(g_prev_path, 0); }
 
 static void SelectAllCharactersInSquad(INT8 bSquadNumber) {
   INT8 bCounter;
@@ -7036,7 +7036,7 @@ static void SelectAllCharactersInSquad(INT8 bSquadNumber) {
   }
 }
 
-BOOLEAN CanDrawSectorCursor(void) {
+BOOLEAN CanDrawSectorCursor() {
   return
       /* !fCursorIsOnMapScrollButtons        && */
       !fShowTownInfo && ghTownMineBox == NO_POPUP_BOX && !fShowUpdateBox &&
@@ -7064,7 +7064,7 @@ static void RestoreMapSectorCursor(INT16 sMapX, INT16 sMapY) {
   RestoreExternBackgroundRect(sScreenX, sScreenY, DMAP_GRID_X, DMAP_GRID_Y);
 }
 
-static void RequestToggleMercInventoryPanel(void) {
+static void RequestToggleMercInventoryPanel() {
   if (bSelectedDestChar != -1 || fPlotForHelicopter) {
     AbortMovementPlottingMode();
   }
@@ -7084,7 +7084,7 @@ static void RequestToggleMercInventoryPanel(void) {
   fTeamPanelDirty = TRUE;
 }
 
-static void RequestContractMenu(void) {
+static void RequestContractMenu() {
   if (gfPreBattleInterfaceActive) return;
 
   if (bSelectedDestChar != -1 || fPlotForHelicopter) {
@@ -7136,7 +7136,7 @@ static void ChangeCharacterListSortMethod(INT32 iValue) {
   SortListOfMercsInTeamPanel(TRUE);
 }
 
-static void MapscreenMarkButtonsDirty(void) {
+static void MapscreenMarkButtonsDirty() {
   // redraw buttons
   MarkButtonsDirty();
 

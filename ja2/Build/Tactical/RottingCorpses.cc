@@ -334,7 +334,7 @@ static const INT8 gDecapitatedCorpse[NUM_CORPSES] = {
 ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
 INT32 giNumRottingCorpse = 0;
 
-static ROTTING_CORPSE *GetFreeRottingCorpse(void) {
+static ROTTING_CORPSE *GetFreeRottingCorpse() {
   for (ROTTING_CORPSE *c = gRottingCorpse; c != gRottingCorpse + giNumRottingCorpse; ++c) {
     if (!c->fActivated) return c;
   }
@@ -1217,7 +1217,7 @@ INT16 GetGridNoOfCorpseGivenProfileID(const UINT8 ubProfileID) {
   return NOWHERE;
 }
 
-void DecayRottingCorpseAIWarnings(void) {
+void DecayRottingCorpseAIWarnings() {
   FOR_EACH_ROTTING_CORPSE(c) {
     if (c->def.ubAIWarningValue > 0) --c->def.ubAIWarningValue;
   }

@@ -25,19 +25,19 @@ enum {
   BR_VANCOUVER,
 };
 
-void GameInitBobbyRMailOrder(void);
-void EnterBobbyRMailOrder(void);
-void ExitBobbyRMailOrder(void);
-void HandleBobbyRMailOrder(void);
-void RenderBobbyRMailOrder(void);
+void GameInitBobbyRMailOrder();
+void EnterBobbyRMailOrder();
+void ExitBobbyRMailOrder();
+void HandleBobbyRMailOrder();
+void RenderBobbyRMailOrder();
 
-void BobbyRayMailOrderEndGameShutDown(void);
-void EnterInitBobbyRayOrder(void);
-void AddJohnsGunShipment(void);
+void BobbyRayMailOrderEndGameShutDown();
+void EnterInitBobbyRayOrder();
+void AddJohnsGunShipment();
 
-void CreateBobbyRayOrderTitle(void);
-void DestroyBobbyROrderTitle(void);
-void DrawBobbyROrderTitle(void);
+void CreateBobbyRayOrderTitle();
+void DestroyBobbyROrderTitle();
+void DrawBobbyROrderTitle();
 
 void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 usGridY,
                            BobbyRayPurchaseStruct *pBobbyRayPurchase, BOOLEAN fJustDisplayTitles,
@@ -61,7 +61,7 @@ struct NewBobbyRayOrderStruct {
 extern NewBobbyRayOrderStruct *gpNewBobbyrShipments;
 extern INT32 giNumberOfNewBobbyRShipment;
 
-UINT16 CountNumberOfBobbyPurchasesThatAreInTransit(void);
+UINT16 CountNumberOfBobbyPurchasesThatAreInTransit();
 
 void NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(HWFILE);
 void NewWayOfSavingBobbyRMailOrdersToSaveGameFile(HWFILE);

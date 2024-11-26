@@ -164,7 +164,7 @@ void InitializeWorld() {
   InitEngineTilesets();
 }
 
-static void DestroyTileSurfaces(void);
+static void DestroyTileSurfaces();
 
 void DeinitializeWorld() {
   TrashWorld();
@@ -258,7 +258,7 @@ void BuildTileShadeTables() {
   }
 }
 
-void DestroyTileShadeTables(void) {
+void DestroyTileShadeTables() {
   for (UINT32 i = 0; i < NUMBEROFTILETYPES; ++i) {
     const TILE_IMAGERY *const ti = gTileSurfaceArray[i];
     if (ti == NULL) continue;
@@ -276,7 +276,7 @@ void DestroyTileShadeTables(void) {
   }
 }
 
-static void DestroyTileSurfaces(void) {
+static void DestroyTileSurfaces() {
   FOR_EACH(TILE_IMAGERY *, i, gTileSurfaceArray) {
     if (!*i) continue;
     DeleteTileSurface(*i);
@@ -284,7 +284,7 @@ static void DestroyTileSurfaces(void) {
   }
 }
 
-static void CompileWorldTerrainIDs(void) {
+static void CompileWorldTerrainIDs() {
   for (INT16 sGridNo = 0; sGridNo < WORLD_MAX; ++sGridNo) {
     if (!GridNoOnVisibleWorldTile(sGridNo)) continue;
 
@@ -1059,7 +1059,7 @@ void AddTileToRecompileArea(INT16 sGridNo) {
   }
 }
 
-void RecompileLocalMovementCostsInAreaWithFlags(void) {
+void RecompileLocalMovementCostsInAreaWithFlags() {
   INT16 usGridNo;
   INT16 sGridX, sGridY;
   INT8 bDirLoop;
@@ -1421,7 +1421,7 @@ static void OptimizeMapForShadows() {
   }
 }
 
-static void SetBlueFlagFlags(void) {
+static void SetBlueFlagFlags() {
   FOR_EACH_WORLD_TILE(i) {
     for (LEVELNODE const *k = i->pStructHead; k; k = k->pNext) {
       if (k->usIndex != BLUEFLAG_GRAPHIC) continue;
@@ -1431,7 +1431,7 @@ static void SetBlueFlagFlags(void) {
   }
 }
 
-void InitLoadedWorld(void) {
+void InitLoadedWorld() {
   // if the current sector is not valid, dont init the world
   if (gWorldSectorX == 0 || gWorldSectorY == 0) {
     return;
@@ -2188,7 +2188,7 @@ void FreeLevelNodeList(LEVELNODE **const head) {
   }
 }
 
-void TrashWorld(void) {
+void TrashWorld() {
   if (!gfWorldLoaded) return;
 
   TrashWorldItems();

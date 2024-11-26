@@ -56,7 +56,7 @@ static void AddColor(NODE **const ppNode, const BYTE r, const BYTE g, const BYTE
   }
 }
 
-static void ReduceTree(void) {
+static void ReduceTree() {
   int i;
   // Find the deepest level containing at least one reducible node.
   for (i = COLOUR_BITS - 1; i > 0 && g_reducible_nodes[i] == NULL; i--) {

@@ -91,7 +91,7 @@ static const RPC_SMALL_FACE_VALUES gRPCSmallFaceValues[] = {
 
 static SGPVObject *guiPORTRAITICONS;
 
-static FACETYPE &GetFreeFace(void) {
+static FACETYPE &GetFreeFace() {
   for (FACETYPE *i = gFacesData; i != gFacesData + guiNumFaces; ++i) {
     if (!i->fAllocated) return *i;
   }
@@ -99,7 +99,7 @@ static FACETYPE &GetFreeFace(void) {
   throw std::runtime_error("Out of face slots");
 }
 
-static void RecountFaces(void) {
+static void RecountFaces() {
   INT32 uiCount;
 
   for (uiCount = guiNumFaces - 1; (uiCount >= 0); uiCount--) {
@@ -993,7 +993,7 @@ static void NewMouth(FACETYPE &f) {
   f.sMouthFrame = new_frame;
 }
 
-void HandleAutoFaces(void) {
+void HandleAutoFaces() {
   FOR_EACH_FACE(i) {
     FACETYPE &f = *i;
     if (f.fDisabled) continue;

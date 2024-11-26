@@ -30,7 +30,7 @@ extern const UINT8 gPurpendicularDirection[NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
 //                                                |Valid-------------------|
 #define MAPROWCOLTOPOS(r, c)                                                 \
   (((r < 0) || (r >= WORLD_ROWS) || (c < 0) || (c >= WORLD_COLS)) ? (0xffff) \
-                                                                  : ((r)*WORLD_COLS + (c)))
+                                                                  : ((r) * WORLD_COLS + (c)))
 
 #define GETWORLDINDEXFROMWORLDCOORDS(r, c) \
   ((INT16)(r / CELL_X_SIZE)) * WORLD_COLS + ((INT16)(c / CELL_Y_SIZE))
@@ -49,7 +49,7 @@ BOOLEAN GetMouseWorldCoords(INT16 *psMouseX, INT16 *psMouseY);
 
 /* Returns the GridNo of the tile the mouse cursor is currently over or NOWHERE
  * if the cursor is not over any tile. */
-GridNo GetMouseMapPos(void);
+GridNo GetMouseMapPos();
 
 void GetAbsoluteScreenXYFromMapPos(GridNo pos, INT16 *psWorldScreenX, INT16 *psWorldScreenY);
 GridNo GetMapPosFromAbsoluteScreenXY(INT16 sWorldScreenX, INT16 sWorldScreenY);
@@ -92,7 +92,7 @@ BOOLEAN FindFenceJumpDirection(SOLDIERTYPE const *, INT8 *out_direction = 0);
 
 // Simply chooses a random gridno within valid boundaries (for dropping things
 // in unloaded sectors)
-INT16 RandomGridNo(void);
+INT16 RandomGridNo();
 
 extern UINT32 guiForceRefreshMousePositionCalculation;
 

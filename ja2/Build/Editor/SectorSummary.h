@@ -3,20 +3,20 @@
 
 #include "SGP/Input.h"
 
-void CreateSummaryWindow(void);
+void CreateSummaryWindow();
 void DestroySummaryWindow();
-void RenderSummaryWindow(void);
-void LoadWorldInfo(void);
+void RenderSummaryWindow();
+void LoadWorldInfo();
 
 void UpdateSectorSummary(const wchar_t *gszFilename, BOOLEAN fUpdate);
 
-void SaveGlobalSummary(void);
+void SaveGlobalSummary();
 
 extern BOOLEAN gfGlobalSummaryExists;
 
 extern BOOLEAN gfSummaryWindowActive;
 
-void AutoLoadMap(void);
+void AutoLoadMap();
 
 BOOLEAN HandleSummaryInput(InputAtom *);
 

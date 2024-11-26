@@ -265,7 +265,7 @@ SGPPoint SquadPosition = {160, 150};
 // at least one merc was hired at some time
 BOOLEAN gfAtLeastOneMercWasHired = FALSE;
 
-void InitalizeVehicleAndCharacterList(void) {
+void InitalizeVehicleAndCharacterList() {
   // will init the vehicle and character lists to zero
   memset(&gCharactersList, 0, sizeof(gCharactersList));
 }
@@ -280,7 +280,7 @@ void ResetEntryForSelectedList(INT8 bEntry) {
   gCharactersList[bEntry].selected = FALSE;
 }
 
-void ResetSelectedListForMapScreen(void) {
+void ResetSelectedListForMapScreen() {
   // set all the entries int he selected list to false
   for (size_t i = 0; i != MAX_CHARACTER_COUNT; ++i) {
     gCharactersList[i].selected = FALSE;
@@ -324,7 +324,7 @@ void BuildSelectedListFromAToB(INT8 bA, INT8 bB) {
   }
 }
 
-BOOLEAN MultipleCharacterListEntriesSelected(void) {
+BOOLEAN MultipleCharacterListEntriesSelected() {
   UINT8 ubSelectedCnt = 0;
 
   // check if more than one person is selected in the selected list
@@ -437,7 +437,7 @@ void DeselectSelectedListMercsWhoCantMoveWithThisGuy(const SOLDIERTYPE *const pS
 
 static BOOLEAN AnyMercInSameSquadOrVehicleIsSelected(const SOLDIERTYPE *s);
 
-void SelectUnselectedMercsWhoMustMoveWithThisGuy(void) {
+void SelectUnselectedMercsWhoMustMoveWithThisGuy() {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -491,7 +491,7 @@ static BOOLEAN AnyMercInSameSquadOrVehicleIsSelected(const SOLDIERTYPE *const pS
   return (FALSE);
 }
 
-void RestoreBackgroundForAssignmentGlowRegionList(void) {
+void RestoreBackgroundForAssignmentGlowRegionList() {
   static INT32 iOldAssignmentLine = -1;
 
   // will restore the background region of the assignment list after a glow has
@@ -528,7 +528,7 @@ void RestoreBackgroundForAssignmentGlowRegionList(void) {
   }
 }
 
-void RestoreBackgroundForDestinationGlowRegionList(void) {
+void RestoreBackgroundForDestinationGlowRegionList() {
   static INT32 iOldDestinationLine = -1;
 
   // will restore the background region of the destinationz list after a glow
@@ -553,7 +553,7 @@ void RestoreBackgroundForDestinationGlowRegionList(void) {
   }
 }
 
-void RestoreBackgroundForContractGlowRegionList(void) {
+void RestoreBackgroundForContractGlowRegionList() {
   static INT32 iOldContractLine = -1;
 
   // will restore the background region of the destinationz list after a glow
@@ -581,7 +581,7 @@ void RestoreBackgroundForContractGlowRegionList(void) {
   }
 }
 
-void RestoreBackgroundForSleepGlowRegionList(void) {
+void RestoreBackgroundForSleepGlowRegionList() {
   static INT32 iOldSleepHighLine = -1;
 
   // will restore the background region of the destinations list after a glow
@@ -609,7 +609,7 @@ void RestoreBackgroundForSleepGlowRegionList(void) {
   }
 }
 
-void PlayGlowRegionSound(void) {
+void PlayGlowRegionSound() {
   // play a new message sound, if there is one playing, do nothing
   static UINT32 uiSoundId = 0;
 
@@ -705,12 +705,12 @@ BOOLEAN IsCharacterSelectedForSleep(INT16 sCharNumber) {
   return (FALSE);
 }
 
-void DisableTeamInfoPanels(void) {
+void DisableTeamInfoPanels() {
   // disable team info panel
   fDisableDueToBattleRoster = TRUE;
 }
 
-void EnableTeamInfoPanels(void) {
+void EnableTeamInfoPanels() {
   // enable team info panel
   fDisableDueToBattleRoster = FALSE;
 }
@@ -734,9 +734,9 @@ void DoMapMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zStri
   DoMessageBox(ubStyle, zString, uiExitScreen, usFlags, ReturnCallback, &centering_rect);
 }
 
-void GoDownOneLevelInMap(void) { JumpToLevel(iCurrentMapSectorZ + 1); }
+void GoDownOneLevelInMap() { JumpToLevel(iCurrentMapSectorZ + 1); }
 
-void GoUpOneLevelInMap(void) { JumpToLevel(iCurrentMapSectorZ - 1); }
+void GoUpOneLevelInMap() { JumpToLevel(iCurrentMapSectorZ - 1); }
 
 void JumpToLevel(INT32 iLevel) {
   if (gfPreBattleInterfaceActive) return;
@@ -761,7 +761,7 @@ void JumpToLevel(INT32 iLevel) {
 }
 
 // check against old contract times, update as nessacary
-void CheckAndUpdateBasedOnContractTimes(void) {
+void CheckAndUpdateBasedOnContractTimes() {
   INT32 iCounter = 0;
   INT32 iTimeRemaining = 0;
 
@@ -944,7 +944,7 @@ void HandleEquipmentLeftInDrassen(const UINT32 uiSlotIndex) {
   HandleEquipmentLeft(uiSlotIndex, BOBBYR_SHIPPING_DEST_SECTOR, 10433);
 }
 
-void InitLeaveList(void) {
+void InitLeaveList() {
   INT32 iCounter = 0;
 
   // init leave list with NULLS/zeroes
@@ -954,7 +954,7 @@ void InitLeaveList(void) {
   }
 }
 
-void ShutDownLeaveList(void) {
+void ShutDownLeaveList() {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
@@ -999,7 +999,7 @@ static void FreeLeaveListSlot(UINT32 uiSlotIndex) {
 }
 
 // first free slot in equip leave list
-static INT32 FindFreeSlotInLeaveList(void) {
+static INT32 FindFreeSlotInLeaveList() {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
@@ -1050,7 +1050,7 @@ static void SetUpMercAboutToLeaveEquipment(UINT32 ubProfileId, UINT32 uiSlotInde
   guiLeaveListOwnerProfileId[uiSlotIndex] = ubProfileId;
 }
 
-void HandleGroupAboutToArrive(void) {
+void HandleGroupAboutToArrive() {
   // reblit map to change the color of the "people in motion" marker
   fMapPanelDirty = TRUE;
 
@@ -1059,7 +1059,7 @@ void HandleGroupAboutToArrive(void) {
   //	fCharacterInfoPanelDirty = TRUE;
 }
 
-void CreateMapStatusBarsRegion(void) {
+void CreateMapStatusBarsRegion() {
   // create the status region over the bSelectedCharacter info region, to get
   // quick rundown of merc's status
   MSYS_DefineRegion(&gMapStatusBarsRegion, BAR_INFO_X - 3, BAR_INFO_Y - 42,
@@ -1067,13 +1067,13 @@ void CreateMapStatusBarsRegion(void) {
                     MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 }
 
-void RemoveMapStatusBarsRegion(void) {
+void RemoveMapStatusBarsRegion() {
   // remove the bSelectedInfoCharacter helath, breath and morale bars info
   // region
   MSYS_RemoveRegion(&gMapStatusBarsRegion);
 }
 
-void UpdateCharRegionHelpText(void) {
+void UpdateCharRegionHelpText() {
   SOLDIERTYPE const *const s = GetSelectedInfoChar();
 
   // health/energy/morale
@@ -1129,7 +1129,7 @@ void FindAndSetThisContractSoldier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleMAPUILoseCursorFromOtherScreen(void) {
+void HandleMAPUILoseCursorFromOtherScreen() {
   // rerender map without cursors
   fMapPanelDirty = TRUE;
 
@@ -1138,7 +1138,7 @@ void HandleMAPUILoseCursorFromOtherScreen(void) {
   }
 }
 
-void UpdateMapScreenAssignmentPositions(void) {
+void UpdateMapScreenAssignmentPositions() {
   // set the position of the pop up boxes
 
   if (guiCurrentScreen != MAP_SCREEN) {
@@ -1215,7 +1215,7 @@ void RandomMercInGroupSaysQuote(GROUP const &g, UINT16 const quote_num) {
   }
 }
 
-INT32 GetNumberOfPeopleInCharacterList(void) {
+INT32 GetNumberOfPeopleInCharacterList() {
   // get the number of valid mercs in the mapscreen character list
   INT32 count = 0;
   CFOR_EACH_IN_CHAR_LIST(c)++ count;
@@ -1300,7 +1300,7 @@ BOOLEAN MapscreenCanPassItemToChar(const SOLDIERTYPE *const pNewSoldier) {
   return (TRUE);
 }
 
-void GoToNextCharacterInList(void) {
+void GoToNextCharacterInList() {
   INT32 iCounter = 0, iCount = 0;
 
   if (fShowDescriptionFlag) return;
@@ -1331,7 +1331,7 @@ void GoToNextCharacterInList(void) {
   }
 }
 
-void GoToPrevCharacterInList(void) {
+void GoToPrevCharacterInList() {
   INT32 iCounter = 0, iCount = 0;
 
   if (fShowDescriptionFlag) return;
@@ -1395,10 +1395,10 @@ void HandleMinerEvent(UINT8 const bMinerNumber, INT16 const sQuoteNumber,
                     uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, FALSE);
 }
 
-static void StopMapScreenHelpText(void);
-static void StopShowingInterfaceFastHelpText(void);
+static void StopMapScreenHelpText();
+static void StopShowingInterfaceFastHelpText();
 
-void ShutDownUserDefineHelpTextRegions(void) {
+void ShutDownUserDefineHelpTextRegions() {
   // dirty the tactical panel
   fInterfacePanelDirty = DIRTYLEVEL2;
   SetRenderFlags(RENDER_FLAG_FULL);
@@ -1420,10 +1420,10 @@ void SetUpFastHelpRegion(INT32 x, INT32 y, INT32 width, const wchar_t *text) {
 }
 
 static void DisplayFastHelpRegions(FASTHELPREGION *pRegion, INT32 iSize);
-static void SetUpShutDownMapScreenHelpTextScreenMask(void);
+static void SetUpShutDownMapScreenHelpTextScreenMask();
 
 // handle the actual showing of the interface fast help text
-void HandleShowingOfTacticalInterfaceFastHelpText(void) {
+void HandleShowingOfTacticalInterfaceFastHelpText() {
   static BOOLEAN fTextActive = FALSE;
 
   if (fInterfaceFastHelpTextActive) {
@@ -1450,13 +1450,13 @@ void HandleShowingOfTacticalInterfaceFastHelpText(void) {
 }
 
 // start showing fast help text
-void StartShowingInterfaceFastHelpText(void) { fInterfaceFastHelpTextActive = TRUE; }
+void StartShowingInterfaceFastHelpText() { fInterfaceFastHelpTextActive = TRUE; }
 
 // stop showing interface fast help text
-static void StopShowingInterfaceFastHelpText(void) { fInterfaceFastHelpTextActive = FALSE; }
+static void StopShowingInterfaceFastHelpText() { fInterfaceFastHelpTextActive = FALSE; }
 
 // is the interface text up?
-BOOLEAN IsTheInterfaceFastHelpTextActive(void) { return (fInterfaceFastHelpTextActive); }
+BOOLEAN IsTheInterfaceFastHelpTextActive() { return (fInterfaceFastHelpTextActive); }
 
 static void DisplayUserDefineHelpTextRegions(FASTHELPREGION *pRegion);
 
@@ -1526,7 +1526,7 @@ static void DisplayUserDefineHelpTextRegions(FASTHELPREGION *pRegion) {
 }
 
 // stop the help text in mapscreen
-static void StopMapScreenHelpText(void) {
+static void StopMapScreenHelpText() {
   fTeamPanelDirty = TRUE;
   fMapPanelDirty = TRUE;
   fCharacterInfoPanelDirty = TRUE;
@@ -1537,7 +1537,7 @@ static void StopMapScreenHelpText(void) {
 
 static void MapScreenHelpTextScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void SetUpShutDownMapScreenHelpTextScreenMask(void) {
+static void SetUpShutDownMapScreenHelpTextScreenMask() {
   static BOOLEAN fCreated = FALSE;
 
   // create or destroy the screen mask as needed
@@ -1828,9 +1828,9 @@ static bool IsAnythingSelectedForMoving() {
   return false;
 }
 
-static void BuildMouseRegionsForMoveBox(void);
-static void ClearMouseRegionsForMoveBox(void);
-static void CreatePopUpBoxForMovementBox(void);
+static void BuildMouseRegionsForMoveBox();
+static void ClearMouseRegionsForMoveBox();
+static void CreatePopUpBoxForMovementBox();
 
 void CreateDestroyMovementBox(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
   static BOOLEAN fCreated = FALSE;
@@ -1896,7 +1896,7 @@ void SetUpMovingListsForSector(INT16 const x, INT16 const y, INT16 const z) {
 
 static void AddStringsToMoveBox(PopUpBox *);
 
-static void CreatePopUpBoxForMovementBox(void) {
+static void CreatePopUpBoxForMovementBox() {
   SGPPoint const MovePosition = {450, 100};
 
   // create the pop up box and mouse regions for movement list
@@ -1932,7 +1932,7 @@ static void CreatePopUpBoxForMovementBox(void) {
   }
 }
 
-static BOOLEAN AllOtherSoldiersInListAreSelected(void);
+static BOOLEAN AllOtherSoldiersInListAreSelected();
 
 static void AddStringsToMoveBox(PopUpBox *const box) {
   INT32 iCount = 0, iCountB = 0;
@@ -2053,7 +2053,7 @@ static void MakeRegion(const INT32 i, const UINT16 x, const UINT16 y, const UINT
   MSYS_SetRegionUserData(r, 2, val_b);
 }
 
-static void BuildMouseRegionsForMoveBox(void) {
+static void BuildMouseRegionsForMoveBox() {
   SGPBox const &area = GetBoxArea(ghMoveBox);
   INT32 const x = area.x;
   INT32 const y = area.y + GetTopMarginSize(ghMoveBox) -
@@ -2118,7 +2118,7 @@ static void BuildMouseRegionsForMoveBox(void) {
   MakeRegion(i++, x, y, w, h, CANCEL_REGION, 0);  // CANCEL line
 }
 
-static void ClearMouseRegionsForMoveBox(void) {
+static void ClearMouseRegionsForMoveBox() {
   INT32 iCounter = 0;
 
   // run through list of mouse regions
@@ -2143,9 +2143,9 @@ static void MoveMenuMvtCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void DeselectAllOtherSoldiersInList(void);
-static void HandleMoveoutOfSectorMovementTroops(void);
-static void SelectAllOtherSoldiersInList(void);
+static void DeselectAllOtherSoldiersInList();
+static void HandleMoveoutOfSectorMovementTroops();
+static void SelectAllOtherSoldiersInList();
 
 static void MoveMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   // btn callback handler for move box line regions
@@ -2300,7 +2300,7 @@ static BOOLEAN CanMoveBoxSoldierMoveStrategically(SOLDIERTYPE *pSoldier,
   return FALSE;
 }
 
-static void SelectAllOtherSoldiersInList(void) {
+static void SelectAllOtherSoldiersInList() {
   INT32 iCounter = 0;
   BOOLEAN fSomeCantMove = FALSE;
 
@@ -2321,7 +2321,7 @@ static void SelectAllOtherSoldiersInList(void) {
   }
 }
 
-static void DeselectAllOtherSoldiersInList(void) {
+static void DeselectAllOtherSoldiersInList() {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
@@ -2333,9 +2333,9 @@ static void DeselectAllOtherSoldiersInList(void) {
 }
 
 static INT8 FindSquadThatSoldierCanJoin(SOLDIERTYPE *pSoldier);
-static void HandleSettingTheSelectedListOfMercs(void);
+static void HandleSettingTheSelectedListOfMercs();
 
-static void HandleMoveoutOfSectorMovementTroops(void) {
+static void HandleMoveoutOfSectorMovementTroops() {
   INT32 iCounter = 0;
   SOLDIERTYPE *pSoldier = 0;
   INT32 iSquadNumber = -1;
@@ -2409,7 +2409,7 @@ static void HandleMoveoutOfSectorMovementTroops(void) {
   HandleSettingTheSelectedListOfMercs();
 }
 
-static void HandleSettingTheSelectedListOfMercs(void) {
+static void HandleSettingTheSelectedListOfMercs() {
   BOOLEAN fFirstOne = TRUE;
   INT32 iCounter = 0;
   BOOLEAN fSelected;
@@ -2463,7 +2463,7 @@ static void HandleSettingTheSelectedListOfMercs(void) {
   }
 }
 
-static BOOLEAN AllOtherSoldiersInListAreSelected(void) {
+static BOOLEAN AllOtherSoldiersInListAreSelected() {
   INT32 iCounter = 0, iCount = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
@@ -2517,7 +2517,7 @@ static INT8 FindSquadThatSoldierCanJoin(SOLDIERTYPE *pSoldier) {
   return (-1);
 }
 
-void ReBuildMoveBox(void) {
+void ReBuildMoveBox() {
   // check to see if we need to rebuild the movement box and mouse regions
   if (!fRebuildMoveBox) return;
 
@@ -2540,7 +2540,7 @@ void ReBuildMoveBox(void) {
 
 static void MoveScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void CreateScreenMaskForMoveBox(void) {
+void CreateScreenMaskForMoveBox() {
   if (!fScreenMaskForMoveCreated) {
     // set up the screen mask
     MSYS_DefineRegion(&gMoveBoxScreenMask, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -2551,7 +2551,7 @@ void CreateScreenMaskForMoveBox(void) {
   }
 }
 
-void RemoveScreenMaskForMoveBox(void) {
+void RemoveScreenMaskForMoveBox() {
   if (fScreenMaskForMoveCreated) {
     // remove the screen mask
     MSYS_RemoveRegion(&gMoveBoxScreenMask);
@@ -2573,7 +2573,7 @@ static void MoveScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void ResetSoldierUpdateBox(void) {
+static void ResetSoldierUpdateBox() {
   INT32 iCounter = 0;
 
   // delete any loaded faces
@@ -2634,7 +2634,7 @@ void AddReasonToWaitingListQueue(UpdateBoxReason const reason) {
   DialogueEvent::Add(new DialogueEventUpdateBoxSetReason(reason));
 }
 
-void AddDisplayBoxToWaitingQueue(void) {
+void AddDisplayBoxToWaitingQueue() {
   class DialogueEventUpdateBoxShow : public DialogueEvent {
    public:
     bool Execute() {
@@ -2933,7 +2933,7 @@ static void CreateDestroyUpdatePanelButtons(INT32 iX, INT32 iY, BOOLEAN fFourWid
   }
 }
 
-void CreateDestroyTheUpdateBox(void) {
+void CreateDestroyTheUpdateBox() {
   static BOOLEAN fCreated = FALSE;
 
   if (!fCreated && fShowUpdateBox) {
@@ -3056,13 +3056,13 @@ void EndUpdateBox(BOOLEAN fContinueTimeCompression) {
   }
 }
 
-void SetTixaAsFound(void) {
+void SetTixaAsFound() {
   // set the town of Tixa as found by the player
   fFoundTixa = TRUE;
   fMapPanelDirty = TRUE;
 }
 
-void SetOrtaAsFound(void) {
+void SetOrtaAsFound() {
   // set the town of Orta as found by the player
   fFoundOrta = TRUE;
   fMapPanelDirty = TRUE;
@@ -3122,7 +3122,7 @@ void CreateDestroyInsuranceMouseRegionForMercs(BOOLEAN fCreate) {
   }
 }
 
-BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void) {
+BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo() {
   // check a team is ready to go
   if (!(AnyMercsHired())) {
     // no mercs, leave
@@ -3376,7 +3376,7 @@ void ReportMapScreenMovementError(const INT8 bErrorNumber) {
 
 // we are checking to see if we need to in fact rebuild the characterlist for
 // mapscreen
-void HandleRebuildingOfMapScreenCharacterList(void) {
+void HandleRebuildingOfMapScreenCharacterList() {
   // check if we need to rebuild the list?
   if (fReBuildCharacterList) {
     // do the actual rebuilding
@@ -3387,7 +3387,7 @@ void HandleRebuildingOfMapScreenCharacterList(void) {
   }
 }
 
-void RequestToggleTimeCompression(void) {
+void RequestToggleTimeCompression() {
   if (!IsTimeBeingCompressed()) {
     StartTimeCompression();
   } else  // currently compressing
@@ -3396,7 +3396,7 @@ void RequestToggleTimeCompression(void) {
   }
 }
 
-void RequestIncreaseInTimeCompression(void) {
+void RequestIncreaseInTimeCompression() {
   if (IsTimeBeingCompressed()) {
     IncreaseGameTimeCompressionRate();
   } else {
@@ -3409,7 +3409,7 @@ void RequestIncreaseInTimeCompression(void) {
   }
 }
 
-void RequestDecreaseInTimeCompression(void) {
+void RequestDecreaseInTimeCompression() {
   if (IsTimeBeingCompressed()) {
     DecreaseGameTimeCompressionRate();
   } else {

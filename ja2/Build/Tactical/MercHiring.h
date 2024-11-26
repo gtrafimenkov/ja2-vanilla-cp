@@ -16,7 +16,7 @@
 
 // ATE: This define has been moved to be a function so that
 // we pick the most appropriate time of day to use...
-//#define		MERC_ARRIVAL_TIME_OF_DAY				 (7 * 60 +
+// #define		MERC_ARRIVAL_TIME_OF_DAY				 (7 * 60 +
 // 30)		// 7:30 am
 
 struct MERC_HIRE_STRUCT {
@@ -40,8 +40,8 @@ void MercArrivesCallback(SOLDIERTYPE &);
 bool IsMercHireable(MERCPROFILESTRUCT const &);
 bool IsMercDead(MERCPROFILESTRUCT const &);
 void HandleMercArrivesQuotes(SOLDIERTYPE &);
-void UpdateAnyInTransitMercsWithGlobalArrivalSector(void);
+void UpdateAnyInTransitMercsWithGlobalArrivalSector();
 
-UINT32 GetMercArrivalTimeOfDay(void);
+UINT32 GetMercArrivalTimeOfDay();
 
 #endif

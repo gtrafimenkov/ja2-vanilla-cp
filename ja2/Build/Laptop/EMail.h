@@ -172,23 +172,23 @@ extern Email *pEmailList;
 extern Email *MailToDelete;
 extern SGPVObject *guiEmailWarning;
 
-void GameInitEmail(void);
-void EnterEmail(void);
-void ExitEmail(void);
-void HandleEmail(void);
-void RenderEmail(void);
+void GameInitEmail();
+void EnterEmail();
+void ExitEmail();
+void HandleEmail();
+void RenderEmail();
 
 // message manipulation
-void LookForUnread(void);
+void LookForUnread();
 void AddEmailMessage(INT32 iMessageOffset, INT32 iMessageLength, INT32 iDate, UINT8 ubSender,
                      BOOLEAN fAlreadyRead, INT32 uiFirstData, UINT32 uiSecondData);
 void AddEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate);
 void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate);
-void DisplayNewMailBox(void);
-void CreateDestroyNewMailButton(void);
-void CreateDestroyDeleteNoticeMailButton(void);
-void ReDrawNewMailBox(void);
-void ShutDownEmailList(void);
+void DisplayNewMailBox();
+void CreateDestroyNewMailButton();
+void CreateDestroyDeleteNoticeMailButton();
+void ReDrawNewMailBox();
+void ShutDownEmailList();
 void AddEmailWithSpecialData(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender,
                              INT32 iDate, INT32 iFirstData, UINT32 uiSecondData);
 

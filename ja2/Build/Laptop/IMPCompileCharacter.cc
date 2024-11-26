@@ -28,9 +28,9 @@ static INT32 iLastElementInPersonalityList = 0;
 
 extern BOOLEAN fLoadingCharacterForPreviousImpProfile;
 
-static void SelectMercFace(void);
+static void SelectMercFace();
 
-void CreateACharacterFromPlayerEnteredStats(void) {
+void CreateACharacterFromPlayerEnteredStats() {
   MERCPROFILESTRUCT &p = GetProfile(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
   wcscpy(p.zName, pFullName);
@@ -63,7 +63,7 @@ void CreateACharacterFromPlayerEnteredStats(void) {
   SelectMercFace();
 }
 
-static BOOLEAN DoesCharacterHaveAnAttitude(void) {
+static BOOLEAN DoesCharacterHaveAnAttitude() {
   // simply checks if caracter has an attitude other than normal
   switch (iAttitude) {
     case ATT_LONER:
@@ -79,7 +79,7 @@ static BOOLEAN DoesCharacterHaveAnAttitude(void) {
   }
 }
 
-static BOOLEAN DoesCharacterHaveAPersoanlity(void) {
+static BOOLEAN DoesCharacterHaveAPersoanlity() {
   // only one we can get is PSYCHO, and that is not much of a penalty
   return (FALSE);
   /*
@@ -97,7 +97,7 @@ if( iPersonality != NO_PERSONALITYTRAIT )
   */
 }
 
-static void CreatePlayerAttitude(void) {
+static void CreatePlayerAttitude() {
   // this function will 'roll a die' and decide if any attitude does exists
   INT32 iAttitudeHits[NUM_ATTITUDES] = {0};
 
@@ -168,7 +168,7 @@ static void RemoveSkillFromSkillsList(INT32 const Skill) {
   }
 }
 
-static void ValidateSkillsList(void) {
+static void ValidateSkillsList() {
   // remove from the generated traits list any traits that don't match
   // the character's skills
   MERCPROFILESTRUCT &p = GetProfile(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
@@ -194,7 +194,7 @@ static void ValidateSkillsList(void) {
   }
 }
 
-static void CreatePlayerSkills(void) {
+static void CreatePlayerSkills() {
   ValidateSkillsList();
 
   iSkillA = SkillsList[Random(iLastElementInSkillsList)];
@@ -222,7 +222,7 @@ void AddAPersonalityToPersonalityList(INT8 bPersonality) {
   }
 }
 
-static void CreatePlayerPersonality(void) {
+static void CreatePlayerPersonality() {
   // only psycho is available since we have no quotes
   // SO if the array is not empty, give them psycho!
   if (iLastElementInPersonalityList == 0) {
@@ -273,22 +273,22 @@ static void CreatePlayerPersonality(void) {
   */
 }
 
-void CreatePlayersPersonalitySkillsAndAttitude(void) {
+void CreatePlayersPersonalitySkillsAndAttitude() {
   // creates personality and attitudes from curretly built list
   CreatePlayerPersonality();
   CreatePlayerAttitude();
 }
 
-void ResetSkillsAttributesAndPersonality(void) {
+void ResetSkillsAttributesAndPersonality() {
   // reset count of skills attributes and personality
   iLastElementInPersonalityList = 0;
   iLastElementInSkillsList = 0;
   iLastElementInAttitudeList = 0;
 }
 
-static void SetMercSkinAndHairColors(void);
+static void SetMercSkinAndHairColors();
 
-static void SelectMercFace(void) {
+static void SelectMercFace() {
   // this procedure will select the approriate face for the merc and save
   // offsets
   MERCPROFILESTRUCT &p = GetProfile(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
@@ -308,7 +308,7 @@ static void SelectMercFace(void) {
   SetMercSkinAndHairColors();
 }
 
-static void SetMercSkinAndHairColors(void) {
+static void SetMercSkinAndHairColors() {
 #define PINKSKIN "PINKSKIN"
 #define TANSKIN "TANSKIN"
 #define DARKSKIN "DARKSKIN"
@@ -335,9 +335,9 @@ static void SetMercSkinAndHairColors(void) {
   strcpy(p.SKIN, Colors[iPortraitNumber].Skin);
 }
 
-static BOOLEAN ShouldThisMercHaveABigBody(void);
+static BOOLEAN ShouldThisMercHaveABigBody();
 
-void HandleMercStatsForChangesInFace(void) {
+void HandleMercStatsForChangesInFace() {
   if (fLoadingCharacterForPreviousImpProfile) return;
 
   CreatePlayerSkills();
@@ -364,7 +364,7 @@ void HandleMercStatsForChangesInFace(void) {
   p.bSkillTrait2 = iSkillB;
 }
 
-static BOOLEAN ShouldThisMercHaveABigBody(void) {
+static BOOLEAN ShouldThisMercHaveABigBody() {
   // should this merc be a big body typ
   return (iPortraitNumber == 0 || iPortraitNumber == 6 || iPortraitNumber == 7) &&
          gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength >= 75;

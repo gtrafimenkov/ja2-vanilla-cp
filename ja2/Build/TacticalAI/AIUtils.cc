@@ -1963,7 +1963,7 @@ INT32 RangeChangeDesire(SOLDIERTYPE *pSoldier) {
   return (iRangeFactorMultiplier);
 }
 
-BOOLEAN ArmySeesOpponents(void) {
+BOOLEAN ArmySeesOpponents() {
   CFOR_EACH_IN_TEAM(s, ENEMY_TEAM) {
     if (s->bInSector && s->bLife >= OKLIFE && s->bOppCnt > 0) {
       return TRUE;

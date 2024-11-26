@@ -99,7 +99,7 @@ static INT16 gsTempActionGridNo = NOWHERE;
 #define NUM_EXPLOSION_SLOTS 100
 static EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
 
-static EXPLOSIONTYPE *GetFreeExplosion(void) {
+static EXPLOSIONTYPE *GetFreeExplosion() {
   FOR_EACH(EXPLOSIONTYPE, e, gExplosionData) {
     if (!e->fAllocated) return e;
   }
@@ -1617,7 +1617,7 @@ static void TogglePressureActionItemsInGridNo(INT16 sGridNo) {
   }
 }
 
-static void DelayedBillyTriggerToBlockOnExit(void) {
+static void DelayedBillyTriggerToBlockOnExit() {
   if (WhoIsThere2(gsTempActionGridNo, 0) == NULL) {
     TriggerNPCRecord(BILLY, 6);
   } else {
@@ -1626,7 +1626,7 @@ static void DelayedBillyTriggerToBlockOnExit(void) {
   }
 }
 
-static void BillyBlocksDoorCallback(void) { TriggerNPCRecord(BILLY, 6); }
+static void BillyBlocksDoorCallback() { TriggerNPCRecord(BILLY, 6); }
 
 static BOOLEAN HookerInRoom(UINT8 ubRoom) {
   FOR_EACH_IN_TEAM(s, CIV_TEAM) {
@@ -2084,7 +2084,7 @@ void HandleExplosionQueue() {
   }
 }
 
-void DecayBombTimers(void) {
+void DecayBombTimers() {
   UINT32 uiWorldBombIndex;
   UINT32 uiTimeStamp;
 
@@ -2425,7 +2425,7 @@ static void HandleBuldingDestruction(const INT16 sGridNo, const SOLDIERTYPE *con
   }
 }
 
-static INT32 FindActiveTimedBomb(void) {
+static INT32 FindActiveTimedBomb() {
   // Go through all the bombs in the world, and look for timed ones
   FOR_EACH_WORLD_BOMB(wb) {
     OBJECTTYPE const &o = GetWorldItem(wb->iItemIndex).o;
@@ -2436,9 +2436,9 @@ static INT32 FindActiveTimedBomb(void) {
   return -1;
 }
 
-BOOLEAN ActiveTimedBombExists(void) { return gfWorldLoaded && FindActiveTimedBomb() != -1; }
+BOOLEAN ActiveTimedBombExists() { return gfWorldLoaded && FindActiveTimedBomb() != -1; }
 
-void RemoveAllActiveTimedBombs(void) {
+void RemoveAllActiveTimedBombs() {
   for (;;) {
     const INT32 item_idx = FindActiveTimedBomb();
     if (item_idx == -1) break;

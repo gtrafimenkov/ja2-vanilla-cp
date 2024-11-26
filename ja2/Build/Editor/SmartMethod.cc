@@ -57,7 +57,7 @@ static UINT16 CalcSmartDoorIndex(UINT16 usWallOrientation) {
   return (UINT16)(1 + usWallOrientation + 4 * (gubDoorUIValue % 2));
 }
 
-static UINT16 CalcSmartDoorType(void) { return (UINT16)(FIRSTDOOR + gubDoorUIValue / 2); }
+static UINT16 CalcSmartDoorType() { return (UINT16)(FIRSTDOOR + gubDoorUIValue / 2); }
 
 static UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
   if (gubBrokenWallUIValue == 2)  // the hole in the wall

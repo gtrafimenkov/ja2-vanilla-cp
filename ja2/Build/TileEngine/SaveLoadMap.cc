@@ -378,7 +378,7 @@ void SaveRevealedStatusArrayToRevealedTempFile(INT16 const sSectorX, INT16 const
   gpRevealedMap = NULL;
 }
 
-static void SetMapRevealedStatus(void);
+static void SetMapRevealedStatus();
 
 void LoadRevealedStatusArrayFromRevealedTempFile() {
   CHAR8 zMapName[128];
@@ -416,7 +416,7 @@ static void SetSectorsRevealedBit(UINT16 usMapIndex) {
   gpRevealedMap[usByteNumber] |= 1 << ubBitNumber;
 }
 
-static void SetMapRevealedStatus(void) {
+static void SetMapRevealedStatus() {
   UINT16 usByteCnt;
   UINT8 ubBitCnt;
   UINT16 usMapIndex;

@@ -3,12 +3,12 @@
 
 #include "JA2Types.h"
 
-void ResetHeliSeats(void);
+void ResetHeliSeats();
 void AddMercToHeli(SOLDIERTYPE *s);
 
 void StartHelicopterRun(INT16 sGridNoSweetSpot);
 
-void HandleHeliDrop(void);
+void HandleHeliDrop();
 
 extern BOOLEAN gfIngagedInDrop;
 

@@ -11,9 +11,9 @@
 // make another screen active.
 
 struct Screens {
-  void (*InitializeScreen)(void);
-  ScreenID (*HandleScreen)(void);
-  void (*ShutdownScreen)(void);
+  void (*InitializeScreen)();
+  ScreenID (*HandleScreen)();
+  void (*ShutdownScreen)();
 };
 
 // This extern is made available to make sure that external modules will have

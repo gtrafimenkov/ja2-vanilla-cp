@@ -71,7 +71,7 @@ static const VehicleTypeInfo g_vehicle_type_info[] = {
 };
 
 // Loop through and create a few soldier squad ID's for vehicles ( max # 3 )
-void InitVehicles(void) {
+void InitVehicles() {
   INT32 cnt;
   for (cnt = 0; cnt < MAX_VEHICLES; cnt++) {
     // create mvt groups
@@ -138,7 +138,7 @@ void RemoveVehicleFromList(VEHICLETYPE &v) {
   memset(&v, 0, sizeof(v));
 }
 
-void ClearOutVehicleList(void) {
+void ClearOutVehicleList() {
   if (pVehicleList == NULL) return;
 
   FOR_EACH_VEHICLE(v) { v->pMercPath = ClearStrategicPathList(v->pMercPath, 0); }

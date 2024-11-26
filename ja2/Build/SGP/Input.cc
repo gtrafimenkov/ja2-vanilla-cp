@@ -90,7 +90,7 @@ BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
   return FALSE;
 }
 
-static void HandleSingleClicksAndButtonRepeats(void);
+static void HandleSingleClicksAndButtonRepeats();
 
 BOOLEAN DequeueEvent(InputAtom *Event) {
   HandleSingleClicksAndButtonRepeats();
@@ -360,7 +360,7 @@ void RestrictMouseCursor(const SGPRect *pRectangle) {
   fCursorWasClipped = TRUE;
 }
 
-void FreeMouseCursor(void) {
+void FreeMouseCursor() {
 #if 1  // XXX TODO0000
 #else
   ClipCursor(NULL);
@@ -368,7 +368,7 @@ void FreeMouseCursor(void) {
   fCursorWasClipped = FALSE;
 }
 
-void RestoreCursorClipRect(void) {
+void RestoreCursorClipRect() {
 #if 1  // XXX TODO0000
   UNIMPLEMENTED
 #else
@@ -389,7 +389,7 @@ void GetRestrictedClipCursor(SGPRect *pRectangle) {
 #endif
 }
 
-BOOLEAN IsCursorRestricted(void) { return fCursorWasClipped; }
+BOOLEAN IsCursorRestricted() { return fCursorWasClipped; }
 
 void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos) {
   int windowWidth, windowHeight;
@@ -415,7 +415,7 @@ void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos) {
   SDL_WarpMouseInWindow(GAME_WINDOW, windowPositionX, windowPositionY);
 }
 
-void DequeueAllKeyBoardEvents(void) {
+void DequeueAllKeyBoardEvents() {
 #if 1  // XXX TODO
   FIXME
 #else
@@ -431,7 +431,7 @@ void DequeueAllKeyBoardEvents(void) {
 #endif
 }
 
-static void HandleSingleClicksAndButtonRepeats(void) {
+static void HandleSingleClicksAndButtonRepeats() {
   UINT32 uiTimer = GetClock();
 
   // Is there a LEFT mouse button repeat

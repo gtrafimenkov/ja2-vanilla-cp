@@ -68,18 +68,18 @@ enum {
   NUM_CIV_QUOTES
 };
 
-void InitCivQuoteSystem(void);
+void InitCivQuoteSystem();
 
 void StartCivQuote(SOLDIERTYPE *pCiv);
 
 INT8 GetCivType(const SOLDIERTYPE *pCiv);
 
-void HandleCivQuote(void);
+void HandleCivQuote();
 
 void SaveCivQuotesToSaveGameFile(HWFILE);
 void LoadCivQuotesFromLoadGameFile(HWFILE);
 
-BOOLEAN ShutDownQuoteBoxIfActive(void);
+BOOLEAN ShutDownQuoteBoxIfActive();
 
 void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 sX, INT16 sY);
 

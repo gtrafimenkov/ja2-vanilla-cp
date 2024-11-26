@@ -119,6 +119,6 @@ BOOLEAN AddPeriodStrategicEventWithOffset(StrategicEventKind, UINT32 uiOnceEvery
  * (Kris), of any support needs. */
 void DeleteStrategicEvent(StrategicEventKind, UINT32 param);
 void DeleteAllStrategicEventsOfType(StrategicEventKind);
-void DeleteAllStrategicEvents(void);
+void DeleteAllStrategicEvents();
 
 #endif

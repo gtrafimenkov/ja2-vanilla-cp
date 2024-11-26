@@ -30,31 +30,31 @@ void ScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
 // tactical
 void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
 
-void ScrollString(void);
-void DisplayStringsInMapScreenMessageList(void);
+void ScrollString();
+void DisplayStringsInMapScreenMessageList();
 
-void FreeGlobalMessageList(void);
+void FreeGlobalMessageList();
 
-UINT8 GetRangeOfMapScreenMessages(void);
+UINT8 GetRangeOfMapScreenMessages();
 
 void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable);
 
 // will go and clear all displayed strings off the screen
-void ClearDisplayedListOfTacticalStrings(void);
+void ClearDisplayedListOfTacticalStrings();
 
 // clear ALL strings in the tactical Message Queue
-void ClearTacticalMessageQueue(void);
+void ClearTacticalMessageQueue();
 
 void LoadMapScreenMessagesFromSaveGameFile(HWFILE, bool stracLinuxFormat);
 void SaveMapScreenMessagesToSaveGameFile(HWFILE);
 
 // use these if you are not Kris
-void HideMessagesDuringNPCDialogue(void);
-void UnHideMessagesDuringNPCDialogue(void);
+void HideMessagesDuringNPCDialogue();
+void UnHideMessagesDuringNPCDialogue();
 
 // disable and enable scroll string, only to be used by Kris
-void DisableScrollMessages(void);
-void EnableScrollMessages(void);
+void DisableScrollMessages();
+void EnableScrollMessages();
 
 extern UINT8 gubStartOfMapScreenMessageList;
 

@@ -20,7 +20,7 @@ static BOOLEAN DbgGetLogFileName(STRING512 pcName) {
 }
 #endif
 
-BOOLEAN InitializeDebugManager(void) {
+BOOLEAN InitializeDebugManager() {
   gfRecordToFile = TRUE;
   gfRecordToDebugger = TRUE;
 

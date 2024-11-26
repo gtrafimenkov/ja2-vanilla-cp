@@ -7,15 +7,15 @@ extern BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
 extern UINT8 gubCurrRoomNumber;
 extern UINT8 gubMaxRoomNumber;
 
-void SetupTextInputForBuildings(void);
-void ExtractAndUpdateBuildingInfo(void);
+void SetupTextInputForBuildings();
+void ExtractAndUpdateBuildingInfo();
 
 // Initialization routines
-void GameInitEditorBuildingInfo(void);
+void GameInitEditorBuildingInfo();
 
 // Selection method callbacks
 // Building utility functions
-void UpdateBuildingsInfo(void);
+void UpdateBuildingsInfo();
 void KillBuilding(UINT32 iMapIndex);
 
 struct BUILDINGLAYOUTNODE {
@@ -31,20 +31,20 @@ extern INT16 gsBuildingLayoutAnchorGridNo;
 void CopyBuilding(INT32 iMapIndex);
 void MoveBuilding(INT32 iMapIndex);
 void PasteBuilding(INT32 iMapIndex);
-void DeleteBuildingLayout(void);
+void DeleteBuildingLayout();
 
 void ReplaceBuildingWithNewRoof(INT32 iMapIndex);
-void UpdateWallsView(void);
-void UpdateRoofsView(void);
+void UpdateWallsView();
+void UpdateRoofsView();
 
 void InitDoorEditing(INT32 iMapIndex);
-void ExtractAndUpdateDoorInfo(void);
+void ExtractAndUpdateDoorInfo();
 void KillDoorEditing();
-void RenderDoorEditingWindow(void);
+void RenderDoorEditingWindow();
 
 void AddLockedDoorCursors();
 void RemoveLockedDoorCursors();
-void FindNextLockedDoor(void);
+void FindNextLockedDoor();
 
 extern BOOLEAN gfEditingDoor;
 

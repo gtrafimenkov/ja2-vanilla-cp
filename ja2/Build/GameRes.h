@@ -60,7 +60,7 @@ char const *GetMLGFilename(MultiLanguageGraphic);
 void setGameVersion(GameVersion ver);
 
 /** Initialize game resources for the current version. */
-void InitGameResources(void);
+void InitGameResources();
 
 /**
  * Get encoding corrector for strings in data files.

@@ -185,10 +185,10 @@ extern FACETYPE *uiExternalStaticNPCFaces[];
 extern const ProfileID g_external_face_profile_ids[];
 
 // Functions for handling dialogue Q
-void InitalizeDialogueControl(void);
-void ShutdownDialogueControl(void);
-void EmptyDialogueQueue(void);
-void HandleDialogue(void);
+void InitalizeDialogueControl();
+void ShutdownDialogueControl();
+void EmptyDialogueQueue();
+void HandleDialogue();
 void HandleImportantMercQuote(SOLDIERTYPE *pSoldier, UINT16 usQuoteNumber);
 void HandleImportantMercQuoteLocked(SOLDIERTYPE *, UINT16 quote);
 
@@ -214,13 +214,13 @@ void HandleDialogueEnd(FACETYPE &);
 
 // Called to advance speech
 // Used for option when no speech sound file
-void DialogueAdvanceSpeech(void);
+void DialogueAdvanceSpeech();
 
-BOOLEAN DialogueQueueIsEmpty(void);
-BOOLEAN DialogueQueueIsEmptyOrSomebodyTalkingNow(void);
+BOOLEAN DialogueQueueIsEmpty();
+BOOLEAN DialogueQueueIsEmptyOrSomebodyTalkingNow();
 
 // set up and shutdown static external NPC faces
-void InitalizeStaticExternalNPCFaces(void);
+void InitalizeStaticExternalNPCFaces();
 void ShutdownStaticExternalNPCFaces();
 
 void SayQuoteFromAnyBodyInSector(UINT16 quote_id);
@@ -235,22 +235,22 @@ void SetEngagedInConvFromPCAction(SOLDIERTYPE *pSoldier);
 
 void SetStopTimeQuoteCallback(MODAL_HOOK pCallBack);
 
-BOOLEAN DialogueActive(void);
+BOOLEAN DialogueActive();
 
 extern INT32 giNPCReferenceCount;
 
 BOOLEAN GetMercPrecedentQuoteBitStatus(const MERCPROFILESTRUCT *, UINT8 ubQuoteBit);
 void SetMercPrecedentQuoteBitStatus(MERCPROFILESTRUCT *, UINT8 ubBitToSet);
 UINT8 GetQuoteBitNumberFromQuoteID(UINT32 uiQuoteID);
-void HandleShutDownOfMapScreenWhileExternfaceIsTalking(void);
+void HandleShutDownOfMapScreenWhileExternfaceIsTalking();
 
-void StopAnyCurrentlyTalkingSpeech(void);
+void StopAnyCurrentlyTalkingSpeech();
 
 // handle pausing of the dialogue queue
-void PauseDialogueQueue(void);
+void PauseDialogueQueue();
 
 // unpause the dialogue queue
-void UnPauseDialogueQueue(void);
+void UnPauseDialogueQueue();
 
 void SetExternMapscreenSpeechPanelXY(INT16 sXPos, INT16 sYPos);
 

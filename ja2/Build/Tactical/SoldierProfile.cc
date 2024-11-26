@@ -104,7 +104,7 @@ static AssassinInfo const g_assassin_info[] = {{JIM, {CAMBRIA, DRASSEN, ALMA, BA
 
 static INT16 CalcMedicalDeposit(MERCPROFILESTRUCT const &);
 static void DecideActiveTerrorists();
-static void StartSomeMercsOnAssignment(void);
+static void StartSomeMercsOnAssignment();
 
 void LoadMercProfiles() {
   {
@@ -394,7 +394,7 @@ void MakeRemainingAssassinsTougher() {
   }
 }
 
-static void StartSomeMercsOnAssignment(void) {
+static void StartSomeMercsOnAssignment() {
   UINT32 uiCnt;
   UINT32 uiChance;
 

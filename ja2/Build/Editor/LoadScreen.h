@@ -17,6 +17,6 @@ BOOLEAN ExternalSaveMap(const wchar_t *szFilename);
 
 void SetErrorCatchString(wchar_t const *fmt, ...);
 
-ScreenID LoadSaveScreenHandle(void);
+ScreenID LoadSaveScreenHandle();
 
 #endif

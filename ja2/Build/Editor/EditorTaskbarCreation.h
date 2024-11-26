@@ -1,6 +1,6 @@
 #ifndef __EDITOR_TASKBAR_CREATION_H
 #define __EDITOR_TASKBAR_CREATION_H
 
-void CreateEditorTaskbarInternal(void);
+void CreateEditorTaskbarInternal();
 
 #endif

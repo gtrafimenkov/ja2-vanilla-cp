@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-extern void InitializeRandom(void);
+extern void InitializeRandom();
 extern UINT32 Random(UINT32 uiRange);
 
 // Chance( 74 ) returns TRUE 74% of the time.  If uiChance >= 100, then it will

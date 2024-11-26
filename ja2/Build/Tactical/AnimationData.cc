@@ -525,7 +525,7 @@ static AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_
 #undef SUFFIX
 #undef PATH_STRUCT
 
-static void LoadAnimationProfiles(void);
+static void LoadAnimationProfiles();
 
 void InitAnimationSystem() {
   INT32 cnt1, cnt2;
@@ -547,7 +547,7 @@ void InitAnimationSystem() {
   }
 }
 
-static void DeleteAnimationProfiles(void);
+static void DeleteAnimationProfiles();
 
 void DeInitAnimationSystem() {
   FOR_EACH(AnimationSurfaceType, i, gAnimSurfaceDatabase) {
@@ -726,7 +726,7 @@ void ClearAnimationSurfacesUsageHistory(UINT16 usSoldierID) {
   }
 }
 
-static void LoadAnimationProfiles(void) try {
+static void LoadAnimationProfiles() try {
   AutoSGPFile f(FileMan::openForReadingSmart(ANIMPROFILEFILENAME, true));
 
   FileRead(f, &gubNumAnimProfiles, sizeof(gubNumAnimProfiles));
@@ -756,7 +756,7 @@ static void LoadAnimationProfiles(void) try {
   throw;
 }
 
-static void DeleteAnimationProfiles(void) {
+static void DeleteAnimationProfiles() {
   INT32 iProfileCount, iDirectionCount;
   ANIM_PROF_DIR *pProfileDir;
 

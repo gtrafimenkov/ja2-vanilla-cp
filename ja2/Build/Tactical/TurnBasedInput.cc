@@ -974,13 +974,13 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
 
 static void ChangeCurrentSquad(INT32 iSquad);
 static void ChangeSoldiersBodyType(SoldierBodyType, BOOLEAN fCreateNewPalette);
-static void CreateNextCivType(void);
-static void CreatePlayerControlledMonster(void);
-static void CreateRandomItem(void);
-static void CycleSelectedMercsItem(void);
-static void EscapeUILock(void);
-static void GrenadeTest1(void);
-static void GrenadeTest2(void);
+static void CreateNextCivType();
+static void CreatePlayerControlledMonster();
+static void CreateRandomItem();
+static void CycleSelectedMercsItem();
+static void EscapeUILock();
+static void GrenadeTest1();
+static void GrenadeTest2();
 static void HandleItemMenuKeys(InputAtom *, UIEventKind *);
 static void HandleMenuKeys(InputAtom *, UIEventKind *);
 static void HandleOpenDoorMenuKeys(InputAtom *, UIEventKind *);
@@ -989,19 +989,19 @@ static void HandleSelectMercSlot(UINT8 ubPanelSlot, bool force_select);
 static void HandleStealthChangeFromUIKeys();
 static void HandleTalkingMenuKeys(InputAtom *, UIEventKind *);
 static void ObliterateSector();
-static void RefreshSoldier(void);
-static void SetBurstMode(void);
-static void TeleportSelectedSoldier(void);
+static void RefreshSoldier();
+static void SetBurstMode();
+static void TeleportSelectedSoldier();
 static void TestCapture();
 static void TestMeanWhile(INT32 iID);
 static void ToggleCliffDebug();
-static void ToggleTreeTops(void);
-static void ToggleViewAllItems(void);
-static void ToggleViewAllMercs(void);
-static void ToggleWireFrame(void);
-static void ToggleZBuffer(void);
+static void ToggleTreeTops();
+static void ToggleViewAllItems();
+static void ToggleViewAllMercs();
+static void ToggleWireFrame();
+static void ToggleZBuffer();
 
-static void ToggleMapEdgepoints(void);
+static void ToggleMapEdgepoints();
 
 static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
   switch (key) {
@@ -2108,7 +2108,7 @@ BOOLEAN HandleCheckForExitArrowsInput(BOOLEAN fAdjustConfirm) {
 
 // Simple function implementations called by keyboard input
 
-static void CreateRandomItem(void) {
+static void CreateRandomItem() {
   OBJECTTYPE Object;
   const GridNo usMapPos = GetMouseMapPos();
   if (usMapPos != NOWHERE) {
@@ -2117,18 +2117,18 @@ static void CreateRandomItem(void) {
   }
 }
 
-static void ToggleViewAllMercs(void) {  // Set option to show all mercs
+static void ToggleViewAllMercs() {  // Set option to show all mercs
   gTacticalStatus.uiFlags ^= SHOW_ALL_MERCS;
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void ToggleViewAllItems(void) {
+static void ToggleViewAllItems() {
   gTacticalStatus.uiFlags ^= SHOW_ALL_ITEMS;
   ToggleItemGlow(gGameSettings.fOptions[TOPTION_GLOW_ITEMS]);
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void CycleSelectedMercsItem(void) {
+static void CycleSelectedMercsItem() {
   // Cycle selected guy's item...
   SOLDIERTYPE *const tgt = gUIFullTarget;
   if (tgt != NULL) {
@@ -2145,7 +2145,7 @@ static void CycleSelectedMercsItem(void) {
   }
 }
 
-static void ToggleWireFrame(void) {
+static void ToggleWireFrame() {
   UINT8 &show_wireframe = gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME];
   show_wireframe = !show_wireframe;
   wchar_t const *const msg = show_wireframe ? pMessageStrings[MSG_WIREFRAMES_ADDED]
@@ -2154,7 +2154,7 @@ static void ToggleWireFrame(void) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void RefreshSoldier(void) {
+static void RefreshSoldier() {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   SOLDIERTYPE *const tgt = gUIFullTarget;
   if (tgt != NULL) ReviveSoldier(tgt);
@@ -2197,7 +2197,7 @@ static void ChangeSoldiersBodyType(SoldierBodyType const ubBodyType,
   }
 }
 
-static void TeleportSelectedSoldier(void) {
+static void TeleportSelectedSoldier() {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   SOLDIERTYPE *const sel = GetSelectedMan();
   if (sel == NULL) return;
@@ -2218,7 +2218,7 @@ static void TeleportSelectedSoldier(void) {
   }
 }
 
-static void ToggleTreeTops(void) {
+static void ToggleTreeTops() {
   UINT8 &show_trees = gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS];
   show_trees = !show_trees;
   wchar_t const *const msg =
@@ -2227,13 +2227,13 @@ static void ToggleTreeTops(void) {
   SetTreeTopStateForMap();
 }
 
-static void ToggleZBuffer(void) {
+static void ToggleZBuffer() {
   UINT32 &flags = gTacticalStatus.uiFlags;
   flags ^= SHOW_Z_BUFFER;
   if (!(flags & SHOW_Z_BUFFER)) SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void SetBurstMode(void) {
+static void SetBurstMode() {
   SOLDIERTYPE *const sel = GetSelectedMan();
   if (sel != NULL) ChangeWeaponMode(sel);
 }
@@ -2246,7 +2246,7 @@ static void ObliterateSector() {
   }
 }
 
-static void CreateNextCivType(void) {
+static void CreateNextCivType() {
   static INT8 bBodyType = FATCIV;
 
   const GridNo usMapPos = GetMouseMapPos();
@@ -2288,7 +2288,7 @@ static void ToggleCliffDebug() {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, msg);
 }
 
-static void GrenadeTest1(void) {
+static void GrenadeTest1() {
   // Get mousexy
   INT16 sX, sY;
   if (GetMouseXY(&sX, &sY)) {
@@ -2301,7 +2301,7 @@ static void GrenadeTest1(void) {
   }
 }
 
-static void GrenadeTest2(void) {
+static void GrenadeTest2() {
   // Get mousexy
   INT16 sX, sY;
   if (GetMouseXY(&sX, &sY)) {
@@ -2314,7 +2314,7 @@ static void GrenadeTest2(void) {
   }
 }
 
-static void CreatePlayerControlledMonster(void) {
+static void CreatePlayerControlledMonster() {
   const GridNo usMapPos = GetMouseMapPos();
   if (usMapPos == NOWHERE) return;
 
@@ -2600,7 +2600,7 @@ static void TestMeanWhile(INT32 iID) {
   ScheduleMeanwhileEvent(x, y, 0, iID, QUEEN, 10);
 }
 
-static void EscapeUILock(void) {
+static void EscapeUILock() {
   // UNLOCK UI
   UnSetUIBusy(GetSelectedMan());
 
@@ -2613,7 +2613,7 @@ static void EscapeUILock(void) {
 
 #include "TileEngine/MapEdgepoints.h"
 
-static void ToggleMapEdgepoints(void) {
+static void ToggleMapEdgepoints() {
   static BOOLEAN fToggleEdgepointDisplay = FALSE;
   if (fToggleEdgepointDisplay ^= TRUE) {  // Show edgepoints
     ShowMapEdgepoints();
@@ -2686,7 +2686,7 @@ static void TestCapture() {
   EndCaptureSequence();
 }
 
-void PopupAssignmentMenuInTactical(void) {
+void PopupAssignmentMenuInTactical() {
   // do something
   fShowAssignmentMenu = TRUE;
   CreateDestroyAssignmentPopUpBoxes();

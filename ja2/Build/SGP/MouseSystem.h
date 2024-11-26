@@ -153,8 +153,8 @@ struct MOUSE_REGION {
 void MSYS_SetCurrentCursor(UINT16 Cursor);
 
 // External
-void MSYS_Init(void);
-void MSYS_Shutdown(void);
+void MSYS_Init();
+void MSYS_Shutdown();
 void MSYS_DefineRegion(MOUSE_REGION *region, UINT16 tlx, UINT16 tly, UINT16 brx, UINT16 bry,
                        INT8 priority, UINT16 crsr, MOUSE_CALLBACK movecallback,
                        MOUSE_CALLBACK buttoncallback);
@@ -168,10 +168,10 @@ INT32 MSYS_GetRegionUserData(MOUSE_REGION const *, UINT32 index);
 
 // This function will force a re-evaluation of mous regions
 // Usually used to force change of mouse cursor if panels switch, etc
-void RefreshMouseRegions(void);
+void RefreshMouseRegions();
 
 // Now also used by Wizardry -- DB
-void RenderFastHelp(void);
+void RenderFastHelp();
 
 // Hook to the SGP's mouse handler
 void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord);

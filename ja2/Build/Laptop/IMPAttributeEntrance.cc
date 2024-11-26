@@ -17,11 +17,11 @@ static GUIButtonRef giIMPAttributeEntranceButton[1];
 
 static void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPAttributeEntranceButtons(void);
+static void CreateIMPAttributeEntranceButtons();
 
-void EnterIMPAttributeEntrance(void) { CreateIMPAttributeEntranceButtons(); }
+void EnterIMPAttributeEntrance() { CreateIMPAttributeEntranceButtons(); }
 
-void RenderIMPAttributeEntrance(void) {
+void RenderIMPAttributeEntrance() {
   // the background
   RenderProfileBackGround();
 
@@ -29,16 +29,16 @@ void RenderIMPAttributeEntrance(void) {
   RenderAvgMercIndentFrame(90, 40);
 }
 
-static void DestroyIMPAttributeEntranceButtons(void);
+static void DestroyIMPAttributeEntranceButtons();
 
-void ExitIMPAttributeEntrance(void) {
+void ExitIMPAttributeEntrance() {
   // destroy the finish buttons
   DestroyIMPAttributeEntranceButtons();
 }
 
-void HandleIMPAttributeEntrance(void) {}
+void HandleIMPAttributeEntrance() {}
 
-static void CreateIMPAttributeEntranceButtons(void) {
+static void CreateIMPAttributeEntranceButtons() {
   // the begin button
   giIMPAttributeEntranceButtonImage[0] = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
   giIMPAttributeEntranceButton[0] = CreateIconAndTextButton(
@@ -49,7 +49,7 @@ static void CreateIMPAttributeEntranceButtons(void) {
   giIMPAttributeEntranceButton[0]->SetCursor(CURSOR_WWW);
 }
 
-static void DestroyIMPAttributeEntranceButtons(void) {
+static void DestroyIMPAttributeEntranceButtons() {
   // this function will destroy the buttons needed for the IMP attrib enter page
 
   // the begin  button

@@ -250,7 +250,7 @@ void StartHelicopterRun(INT16 sGridNoSweetSpot) {
   guiPendingOverrideEvent = LU_BEGINUILOCK;
 }
 
-static void HandleFirstHeliDropOfGame(void);
+static void HandleFirstHeliDropOfGame();
 
 void HandleHeliDrop() {
   UINT8 ubScriptCode;
@@ -542,7 +542,7 @@ void HandleHeliDrop() {
   }
 }
 
-static void HandleFirstHeliDropOfGame(void) {
+static void HandleFirstHeliDropOfGame() {
   // Are we in the first heli drop?
   if (gfFirstHeliRun) {
     SyncStrategicTurnTimes();

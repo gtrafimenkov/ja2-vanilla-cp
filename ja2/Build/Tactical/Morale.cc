@@ -131,7 +131,7 @@ static void DecayStrategicMorale(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void DecayTacticalMoraleModifiers(void) {
+void DecayTacticalMoraleModifiers() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // if the merc is in Arulco
     // CJC: decay modifiers while asleep! or POW!
@@ -197,7 +197,7 @@ void DecayTacticalMoraleModifiers(void) {
   }
 }
 
-static void DecayStrategicMoraleModifiers(void) {
+static void DecayStrategicMoraleModifiers() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // if the merc is active, in Arulco
     // CJC: decay modifiers while asleep! or POW!

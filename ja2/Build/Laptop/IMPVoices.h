@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPVoices(void);
-void RenderIMPVoices(void);
-void ExitIMPVoices(void);
-void HandleIMPVoices(void);
+void EnterIMPVoices();
+void RenderIMPVoices();
+void ExitIMPVoices();
+void HandleIMPVoices();
 
 extern INT32 iVoiceId;
 #endif

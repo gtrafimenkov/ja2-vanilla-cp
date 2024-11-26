@@ -12,7 +12,7 @@ enum MercPopupBoxFlags {
 };
 ENUM_BITSET(MercPopupBoxFlags)
 
-void InitMercPopupBox(void);
+void InitMercPopupBox();
 
 enum MercPopUpBackground {
   BASIC_MERC_POPUP_BACKGROUND = 0,

@@ -23,8 +23,8 @@ void GetNumberOfEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdm
  * sector in global focus (gWorldSectorX/Y) */
 void PrepareEnemyForSectorBattle();
 
-void AddPossiblePendingEnemiesToBattle(void);
-void EndTacticalBattleForEnemy(void);
+void AddPossiblePendingEnemiesToBattle();
+void EndTacticalBattleForEnemy();
 
 void ProcessQueenCmdImplicationsOfDeath(const SOLDIERTYPE *);
 
@@ -36,12 +36,12 @@ void LoadUnderGroundSectorInfoFromSavedGame(HWFILE);
 UNDERGROUND_SECTORINFO *FindUnderGroundSector(INT16 sMapX, INT16 sMapY, UINT8 bMapZ);
 
 void EnemyCapturesPlayerSoldier(SOLDIERTYPE *pSoldier);
-void BeginCaptureSquence(void);
-void EndCaptureSequence(void);
+void BeginCaptureSquence();
+void EndCaptureSequence();
 
 BOOLEAN PlayerSectorDefended(UINT8 ubSectorID);
 
-BOOLEAN OnlyHostileCivsInSector(void);
+BOOLEAN OnlyHostileCivsInSector();
 
 extern INT16 gsInterrogationGridNo[3];
 

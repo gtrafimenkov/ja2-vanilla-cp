@@ -383,7 +383,7 @@ UINT32 guiFailedPathChecks = 0;
 UINT32 guiUnsuccessfulPathChecks = 0;
 #endif
 
-static INT8 RandomSkipListLevel(void) {
+static INT8 RandomSkipListLevel() {
   INT8 bLevel = 1;
 
   while (Random(4) == 0 && bLevel < iMaxSkipListLevel - 1) {
@@ -392,7 +392,7 @@ static INT8 RandomSkipListLevel(void) {
   return (bLevel);
 }
 
-void InitPathAI(void) {
+void InitPathAI() {
   pathQ = MALLOCN(path_t, ABSMAX_PATHQ);
   trailCost = MALLOCN(TRAILCELLTYPE, MAPLENGTH);
   trailCostUsed = MALLOCNZ(UINT8, MAPLENGTH);
@@ -401,7 +401,7 @@ void InitPathAI(void) {
   pClosedHead = &(pathQ[QPOOLNDX]);
 }
 
-void ShutDownPathAI(void) {
+void ShutDownPathAI() {
   MemFree(pathQ);
   MemFree(trailCostUsed);
   MemFree(trailCost);
@@ -424,7 +424,7 @@ static void ReconfigurePathAI(INT32 iNewMaxSkipListLevel, INT32 iNewMaxTrailTree
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
-static void RestorePathAIToDefaults(void) {
+static void RestorePathAIToDefaults() {
   iMaxSkipListLevel = MAX_SKIPLIST_LEVEL;
   iMaxTrailTree = MAX_TRAIL_TREE;
   iMaxPathQ = MAX_PATHQ;

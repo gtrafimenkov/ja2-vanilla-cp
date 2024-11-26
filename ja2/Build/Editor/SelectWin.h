@@ -27,13 +27,13 @@ enum SelectWindow {
 extern BOOLEAN fAllDone;
 
 void CreateJA2SelectionWindow(SelectWindow);
-extern void InitJA2SelectionWindow(void);
-extern void ShutdownJA2SelectionWindow(void);
-extern void RemoveJA2SelectionWindow(void);
-extern void RenderSelectionWindow(void);
+extern void InitJA2SelectionWindow();
+extern void ShutdownJA2SelectionWindow();
+extern void RemoveJA2SelectionWindow();
+extern void RenderSelectionWindow();
 
-extern void ScrollSelWinUp(void);
-extern void ScrollSelWinDown(void);
+extern void ScrollSelWinUp();
+extern void ScrollSelWinDown();
 
 #define MAX_SELECTIONS 120
 
@@ -43,11 +43,11 @@ struct Selections {
   INT16 sCount;
 };
 
-INT32 GetRandomSelection(void);
-void RestoreSelectionList(void);
-BOOLEAN ClearSelectionList(void);
+INT32 GetRandomSelection();
+void RestoreSelectionList();
+BOOLEAN ClearSelectionList();
 
-void DisplaySelectionWindowGraphicalInformation(void);
+void DisplaySelectionWindowGraphicalInformation();
 
 extern INT32 iCurBank;
 extern Selections *pSelList;

@@ -81,9 +81,9 @@ struct MINE_STATUS_TYPE {
 };
 
 // init mines
-void InitializeMines(void);
+void InitializeMines();
 
-void HourlyMinesUpdate(void);
+void HourlyMinesUpdate();
 
 // get total left in this mine
 INT32 GetTotalLeftInMine(INT8 bMineIndex);
@@ -98,13 +98,13 @@ UINT32 GetMaxDailyRemovalFromMine(INT8 mine_id);
 INT8 GetTownAssociatedWithMine(INT8 bMineIndex);
 
 // posts the actual mine production events daily
-void PostEventsForMineProduction(void);
+void PostEventsForMineProduction();
 
 // the periodic checking for income from mines
-void HandleIncomeFromMines(void);
+void HandleIncomeFromMines();
 
 // predict income from mines
-INT32 PredictIncomeFromPlayerMines(void);
+INT32 PredictIncomeFromPlayerMines();
 
 // predict income from a mine
 UINT32 PredictDailyIncomeFromAMine(INT8 mine_id);
@@ -152,7 +152,7 @@ void ResetQueenRetookMine(UINT8 ubMinerProfileId);
 
 void QueenHasRegainedMineSector(INT8 bMineIndex);
 
-BOOLEAN HasAnyMineBeenAttackedByMonsters(void);
+BOOLEAN HasAnyMineBeenAttackedByMonsters();
 
 void PlayerAttackedHeadMiner(UINT8 ubMinerProfileId);
 

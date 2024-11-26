@@ -33,9 +33,9 @@ BOOLEAN fReDrawPortraitScreenFlag = FALSE;
 // face index
 INT32 iPortraitNumber = 0;
 
-static void CreateIMPPortraitButtons(void);
+static void CreateIMPPortraitButtons();
 
-void EnterIMPPortraits(void) {
+void EnterIMPPortraits() {
   // create buttons
   CreateIMPPortraitButtons();
 
@@ -45,7 +45,7 @@ void EnterIMPPortraits(void) {
 
 static void RenderPortrait(INT16 x, INT16 y);
 
-void RenderIMPPortraits(void) {
+void RenderIMPPortraits() {
   // render background
   RenderProfileBackGround();
 
@@ -62,14 +62,14 @@ void RenderIMPPortraits(void) {
   PrintImpText();
 }
 
-static void DestroyIMPPortraitButtons(void);
+static void DestroyIMPPortraitButtons();
 
-void ExitIMPPortraits(void) {
+void ExitIMPPortraits() {
   // destroy buttons for IMP portrait page
   DestroyIMPPortraitButtons();
 }
 
-void HandleIMPPortraits(void) {
+void HandleIMPPortraits() {
   // do we need to re write screen
   if (fReDrawPortraitScreenFlag) {
     RenderIMPPortraits();
@@ -87,7 +87,7 @@ static void RenderPortrait(INT16 const x,
   BltVideoObjectOnce(FRAME_BUFFER, filename, 0, LAPTOP_SCREEN_UL_X + x, LAPTOP_SCREEN_WEB_UL_Y + y);
 }
 
-static void IncrementPictureIndex(void) {
+static void IncrementPictureIndex() {
   // cycle to next picture
 
   iCurrentPortrait++;
@@ -98,7 +98,7 @@ static void IncrementPictureIndex(void) {
   }
 }
 
-static void DecrementPicture(void) {
+static void DecrementPicture() {
   // cycle to previous picture
 
   iCurrentPortrait--;
@@ -126,7 +126,7 @@ static void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPPortraitButtons(void) {
+static void CreateIMPPortraitButtons() {
   // will create buttons need for the IMP portrait screen
   const INT16 dx = LAPTOP_SCREEN_UL_X;
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
@@ -138,7 +138,7 @@ static void CreateIMPPortraitButtons(void) {
              BtnIMPPortraitDoneCallback);  // Done button
 }
 
-static void DestroyIMPPortraitButtons(void) {
+static void DestroyIMPPortraitButtons() {
   // will destroy buttons created for IMP Portrait screen
 
   // the next button

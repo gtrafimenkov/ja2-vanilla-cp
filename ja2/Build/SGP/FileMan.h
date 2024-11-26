@@ -9,7 +9,7 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
-//#include <windows.h>
+// #include <windows.h>
 #else
 #include <glob.h>
 #endif
@@ -80,7 +80,7 @@ FILE *GetRealFileHandleFromFileManFileHandle(HWFILE hFile);
 
 // Gets the amount of free space on the hard drive that the main executeablt is
 // runnning from
-UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(void);
+UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
 typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
 
@@ -156,7 +156,7 @@ class FileMan {
 
  private:
   /** Private constructor to avoid instantiation. */
-  FileMan(){};
+  FileMan() {};
 };
 
 /**

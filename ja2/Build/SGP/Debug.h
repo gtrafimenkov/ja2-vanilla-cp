@@ -29,19 +29,19 @@
 // it.
 extern void _FailMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile);
 
-#define Assert(a) (a) ? (void)0 : _FailMessage(NULL, __LINE__, __FILE__)
-#define AssertMsg(a, b) (a) ? (void)0 : _FailMessage(b, __LINE__, __FILE__)
+#define Assert(a) (a) ? (void) 0 : _FailMessage(NULL, __LINE__, __FILE__)
+#define AssertMsg(a, b) (a) ? (void) 0 : _FailMessage(b, __LINE__, __FILE__)
 
 #else
 
-#define Assert(a) ((void)0)
-#define AssertMsg(a, b) ((void)0)
+#define Assert(a) ((void) 0)
+#define AssertMsg(a, b) ((void) 0)
 
 #endif
 
 #ifdef SGP_DEBUG
 
-BOOLEAN InitializeDebugManager(void);
+BOOLEAN InitializeDebugManager();
 
 // If DEBUG_ is defined, we need to initialize all the debug macros. Otherwise
 // all the debug macros will be substituted by blank lines at compile time

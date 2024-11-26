@@ -6,7 +6,7 @@
 #include "TileEngine/WorldDef.h"
 
 // memory-accounting function
-void CountLevelNodes(void);
+void CountLevelNodes();
 
 class FailedToAddNode : public std::exception {
  public:
@@ -112,8 +112,8 @@ BOOLEAN IsRoofVisible2(INT16 sMapPos);
 LEVELNODE *FindLevelNodeBasedOnStructure(STRUCTURE const *);
 LEVELNODE *FindShadow(INT16 sGridNo, UINT16 usStructIndex);
 
-void WorldHideTrees(void);
-void WorldShowTrees(void);
+void WorldHideTrees();
+void WorldShowTrees();
 
 // this is found in editscreen.c
 // Andrew, you had worldman.c checked out at the time, so I stuck it here.
@@ -121,8 +121,8 @@ void WorldShowTrees(void);
 // worldman.c.
 extern UINT32 gCurrentBackground;
 
-void SetTreeTopStateForMap(void);
+void SetTreeTopStateForMap();
 
-void DebugLevelNodePage(void);
+void DebugLevelNodePage();
 
 #endif

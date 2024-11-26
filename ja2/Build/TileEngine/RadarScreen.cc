@@ -91,7 +91,7 @@ void LoadRadarScreenBitmap(const char *const filename) {
   fInterfacePanelDirty = DIRTYLEVEL1;
 }
 
-void ClearOutRadarMapImage(void) {
+void ClearOutRadarMapImage() {
   // If we have loaded, remove old one
   if (gusRadarImage) {
     DeleteVideoObject(gusRadarImage);
@@ -167,8 +167,8 @@ static void RadarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void CreateDestroyMouseRegionsForSquadList(void);
-static void RenderSquadList(void);
+static void CreateDestroyMouseRegionsForSquadList();
+static void RenderSquadList();
 
 void RenderRadarScreen() {
   // create / destroy squad list regions as nessacary
@@ -361,13 +361,13 @@ static void AdjustWorldCenterFromRadarCoords(INT16 sRadarX, INT16 sRadarY) {
   SetRenderCenter(sNewCenterWorldX, sNewCenterWorldY);
 }
 
-void ToggleRadarScreenRender(void) { fRenderRadarScreen = !fRenderRadarScreen; }
+void ToggleRadarScreenRender() { fRenderRadarScreen = !fRenderRadarScreen; }
 
 static void TacticalSquadListBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void TacticalSquadListMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
 // create destroy squad list regions as needed
-static void CreateDestroyMouseRegionsForSquadList(void) {
+static void CreateDestroyMouseRegionsForSquadList() {
   // will check the state of renderradarscreen flag and decide if we need to
   // create mouse regions for
   static BOOLEAN fCreated = FALSE;
@@ -420,7 +420,7 @@ static void CreateDestroyMouseRegionsForSquadList(void) {
 }
 
 // show list of squads
-static void RenderSquadList(void) {
+static void RenderSquadList() {
   INT16 const dx = RADAR_WINDOW_X;
   INT16 const dy = gsRadarY;
 

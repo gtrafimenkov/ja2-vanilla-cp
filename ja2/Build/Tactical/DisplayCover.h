@@ -3,13 +3,13 @@
 
 #include "JA2Types.h"
 
-void DisplayCoverOfSelectedGridNo(void);
-void RemoveCoverOfSelectedGridNo(void);
+void DisplayCoverOfSelectedGridNo();
+void RemoveCoverOfSelectedGridNo();
 
 void DisplayRangeToTarget(const SOLDIERTYPE *pSoldier, INT16 sTargetGridNo);
 
-void RemoveVisibleGridNoAtSelectedGridNo(void);
-void DisplayGridNoVisibleToSoldierGrid(void);
+void RemoveVisibleGridNoAtSelectedGridNo();
+void DisplayGridNoVisibleToSoldierGrid();
 
 void ChangeSizeOfDisplayCover(INT32 iNewSize);
 

@@ -383,7 +383,7 @@ static void HandleDelayedItemsArrival(UINT32 uiReason) {
   }
 }
 
-void AddSecondAirportAttendant(void) {
+void AddSecondAirportAttendant() {
   // add the second airport attendant to the Drassen airport...
   MERCPROFILESTRUCT &sal = GetProfile(SAL);
   sal.sSectorX = BOBBYR_SHIPPING_DEST_SECTOR_X;
@@ -391,7 +391,7 @@ void AddSecondAirportAttendant(void) {
   sal.bSectorZ = BOBBYR_SHIPPING_DEST_SECTOR_Z;
 }
 
-static void SetPabloToUnbribed(void) {
+static void SetPabloToUnbribed() {
   if (guiPabloExtraDaysBribed > 0) {
     // set new event for later on, because the player gave Pablo more money!
     AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay(), FACT_PABLOS_BRIBED,
@@ -402,7 +402,7 @@ static void SetPabloToUnbribed(void) {
   }
 }
 
-static void HandlePossiblyDamagedPackage(void) {
+static void HandlePossiblyDamagedPackage() {
   if (Random(100) < 70) {
     SetFactTrue(FACT_PACKAGE_DAMAGED);
     HandleDelayedItemsArrival(FACT_PACKAGE_DAMAGED);
@@ -605,7 +605,7 @@ void HandleNPCSystemEvent(UINT32 uiEvent) {
   }
 }
 
-void HandleEarlyMorningEvents(void) {
+void HandleEarlyMorningEvents() {
   UINT32 cnt;
   UINT32 uiAmount;
 
@@ -825,7 +825,7 @@ void RemoveAssassin(UINT8 ubProfile) {
   gMercProfiles[ubProfile].bLife = gMercProfiles[ubProfile].bLifeMax;
 }
 
-void CheckForMissingHospitalSupplies(void) {
+void CheckForMissingHospitalSupplies() {
   UINT8 ubMedicalObjects = 0;
 
   CFOR_EACH_WORLD_ITEM(wi) {

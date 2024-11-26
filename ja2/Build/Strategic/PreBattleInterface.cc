@@ -158,8 +158,8 @@ static void MakeButton(UINT idx, INT16 x, const wchar_t *text, GUI_CALLBACK clic
 }
 
 static void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason);
-static void CheckForRobotAndIfItsControlled(void);
-static void DoTransitionFromMapscreenToPreBattleInterface(void);
+static void CheckForRobotAndIfItsControlled();
+static void DoTransitionFromMapscreenToPreBattleInterface();
 static void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason);
 static void RetreatMercsCallback(GUI_BUTTON *btn, INT32 reason);
 
@@ -514,7 +514,7 @@ void InitPreBattleInterface(GROUP *const battle_group, bool const persistent_pbi
   DoTransitionFromMapscreenToPreBattleInterface();
 }
 
-static void DoTransitionFromMapscreenToPreBattleInterface(void) {
+static void DoTransitionFromMapscreenToPreBattleInterface() {
   UINT32 uiStartTime, uiCurrTime;
   INT32 iPercentage, iFactor;
   UINT32 uiTimeRange;
@@ -766,7 +766,8 @@ void RenderPreBattleInterface() {
     }
 
     {
-      INT32 const y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * std::max(guiNumUninvolved, (uint32_t)1);
+      INT32 const y =
+          BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * std::max(guiNumUninvolved, (uint32_t)1);
       BltVideoObject(dst, vo, UNINVOLVED_HEADER, 8, y);
     }
 
@@ -930,7 +931,7 @@ static void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ClearMovementForAllInvolvedPlayerGroups(void);
+static void ClearMovementForAllInvolvedPlayerGroups();
 static void PutNonSquadMercsInBattleSectorOnSquads(BOOLEAN fExitVehicles);
 
 static void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason) {
@@ -1075,7 +1076,7 @@ static void ActivateAutomaticAutoResolveStart() {
   AutoResolveBattleCallback(iPBButton[0], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }
 
-void CalculateNonPersistantPBIInfo(void) {
+void CalculateNonPersistantPBIInfo() {
   // We need to set up the non-persistant PBI
   if (!gfBlitBattleSectorLocator || gubPBSectorX != gWorldSectorX ||
       gubPBSectorY != gWorldSectorY ||
@@ -1181,7 +1182,7 @@ static void PutNonSquadMercsInPlayerGroupOnSquads(GROUP *const pGroup,
          * placement screen can't handle mercs on the same squad arriving from
          * different edges! */
         BOOLEAN const fSuccess = AddCharacterToSquad(&s, bUniqueVehicleSquad);
-        (void)fSuccess;
+        (void) fSuccess;
         Assert(fSuccess);
       }
     } else {
@@ -1207,7 +1208,7 @@ void WakeUpAllMercsInSectorUnderAttack() {
 }
 
 // we are entering the sector, clear out all mvt orders for grunts
-static void ClearMovementForAllInvolvedPlayerGroups(void) {
+static void ClearMovementForAllInvolvedPlayerGroups() {
   FOR_EACH_GROUP(i) {
     GROUP &g = *i;
     if (!PlayerGroupInvolvedInThisCombat(g)) continue;
@@ -1216,7 +1217,7 @@ static void ClearMovementForAllInvolvedPlayerGroups(void) {
   }
 }
 
-void RetreatAllInvolvedPlayerGroups(void) {
+void RetreatAllInvolvedPlayerGroups() {
   // make sure guys stop their off duty assignments, like militia training!
   // but don't exit vehicles - drive off in them!
   PutNonSquadMercsInBattleSectorOnSquads(FALSE);
@@ -1269,7 +1270,7 @@ static BOOLEAN CurrentBattleSectorIs(INT16 sSectorX, INT16 sSectorY, INT16 sSect
   }
 }
 
-static void CheckForRobotAndIfItsControlled(void) {
+static void CheckForRobotAndIfItsControlled() {
   // search for the robot on player's team
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bLife != 0 && AM_A_ROBOT(s)) {

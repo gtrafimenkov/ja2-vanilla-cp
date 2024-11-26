@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPFinish(void);
-void RenderIMPFinish(void);
-void ExitIMPFinish(void);
-void HandleIMPFinish(void);
+void EnterIMPFinish();
+void RenderIMPFinish();
+void ExitIMPFinish();
+void HandleIMPFinish();
 
 extern BOOLEAN fFinishedCharGeneration;
 

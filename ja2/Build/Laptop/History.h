@@ -3,10 +3,10 @@
 
 #include <cstdint>
 
-void GameInitHistory(void);
-void EnterHistory(void);
-void ExitHistory(void);
-void RenderHistory(void);
+void GameInitHistory();
+void EnterHistory();
+void ExitHistory();
+void RenderHistory();
 
 #define HISTORY_DATA_FILE TEMPDIR "/history.dat"
 

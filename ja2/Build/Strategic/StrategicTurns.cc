@@ -22,14 +22,14 @@
 
 static UINT32 guiLastTacticalRealTime = 0;
 
-void StrategicTurnsNewGame(void) {
+void StrategicTurnsNewGame() {
   // Sync game start time
   SyncStrategicTurnTimes();
 }
 
-void SyncStrategicTurnTimes(void) { guiLastTacticalRealTime = GetJA2Clock(); }
+void SyncStrategicTurnTimes() { guiLastTacticalRealTime = GetJA2Clock(); }
 
-void HandleStrategicTurn(void) {
+void HandleStrategicTurn() {
   UINT32 uiTime;
   UINT32 uiCheckTime;  // XXX HACK000E
 
@@ -77,7 +77,7 @@ void HandleStrategicTurn(void) {
   }
 }
 
-void HandleStrategicTurnImplicationsOfExitingCombatMode(void) {
+void HandleStrategicTurnImplicationsOfExitingCombatMode() {
   SyncStrategicTurnTimes();
   HandleTacticalEndTurn();
 }

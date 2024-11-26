@@ -109,7 +109,7 @@ void DisableEditorRegion(INT8 bRegionID) {
   }
 }
 
-static void RemoveEditorRegions(void) {
+static void RemoveEditorRegions() {
   INT32 x;
   MSYS_RemoveRegion(&EditorRegion);
   for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -151,7 +151,7 @@ static void InitEditorRegions() {
   MercRegion.Disable();
 }
 
-static void LoadEditorImages(void) {
+static void LoadEditorImages() {
   // Set up the merc inventory panel
   guiMercInventoryPanel = AddVideoObjectFromFile(EDITORDIR "/invpanel.sti");
   // Set up small omerta map
@@ -164,7 +164,7 @@ static void LoadEditorImages(void) {
   guiKeyImage = AddVideoObjectFromFile(EDITORDIR "/keyimage.sti");
 }
 
-static void DeleteEditorImages(void) {
+static void DeleteEditorImages() {
   // The merc inventory panel
   DeleteVideoObject(guiMercInventoryPanel);
   DeleteVideoObject(guiOmertaMap);
@@ -173,7 +173,7 @@ static void DeleteEditorImages(void) {
   UnloadGenericButtonIcon((INT16)giEditMercDirectionIcons[1]);
 }
 
-static void CreateEditorBuffers(void) {
+static void CreateEditorBuffers() {
   INT32 i;
 
   // create buffer for the transition slot for merc items.  This slot contains
@@ -190,7 +190,7 @@ static void CreateEditorBuffers(void) {
   }
 }
 
-static void DeleteEditorBuffers(void) {
+static void DeleteEditorBuffers() {
   INT32 i;
   DeleteVideoSurface(guiMercTempBuffer);
   for (i = 0; i < 9; i++) {
@@ -277,7 +277,7 @@ void DeleteEditorTaskbar() {
   DeleteEditorBuffers();
 }
 
-void DoTaskbar(void) {
+void DoTaskbar() {
   if (iTaskMode == TASK_NONE || iTaskMode == iCurrentTaskbar) {
     return;
   }
@@ -389,7 +389,7 @@ void DoTaskbar(void) {
 
 void DisableEditorTaskbar() { FOR_EACH(GUIButtonRef, i, iEditorButton) DisableButton(*i); }
 
-void EnableEditorTaskbar(void) {
+void EnableEditorTaskbar() {
   INT32 x;
 
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++) EnableButton(iEditorButton[x]);
@@ -545,7 +545,7 @@ static void RenderEntryPoint(INT16 const gridno, wchar_t const *const label) {
                        CENTER_JUSTIFIED | MARK_DIRTY);
 }
 
-static void RenderMapEntryPointsAndLights(void) {
+static void RenderMapEntryPointsAndLights() {
   if (gfSummaryWindowActive) return;
 
   SetFontShadow(FONT_NEARBLACK);
@@ -666,7 +666,7 @@ static void RenderDoorLockInfo() {
   }
 }
 
-static void RenderSelectedItemBlownUp(void) {
+static void RenderSelectedItemBlownUp() {
   INT16 screen_x;
   INT16 screen_y;
   GetGridNoScreenPos(gsItemGridNo, 0, &screen_x, &screen_y);
@@ -728,7 +728,7 @@ static void RenderSelectedItemBlownUp(void) {
   }
 }
 
-static void RenderEditorInfo(void) {
+static void RenderEditorInfo() {
   wchar_t FPSText[50];
 
   SetFontAttributes(FONT12POINT1, FONT_BLACK, NO_SHADOW);

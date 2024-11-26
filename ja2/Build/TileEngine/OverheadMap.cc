@@ -83,7 +83,7 @@ static INT16 gsStartRestrictedX;
 static INT16 gsStartRestrictedY;
 static INT16 gsOveritemPoolGridNo = NOWHERE;
 
-static void CopyOverheadDBShadetablesFromTileset(void);
+static void CopyOverheadDBShadetablesFromTileset();
 
 void InitNewOverheadDB(TileSetID const ubTilesetID) {
   if (gubSmTileNum == ubTilesetID) return;
@@ -234,11 +234,11 @@ static void DisplayMercNameInOverhead(SOLDIERTYPE const &s) {
   GDirtyPrint(sX, sY, s.name);
 }
 
-static GridNo GetOverheadMouseGridNoForFullSoldiersGridNo(void);
-static void HandleOverheadUI(void);
-static void RenderOverheadOverlays(void);
+static GridNo GetOverheadMouseGridNoForFullSoldiersGridNo();
+static void HandleOverheadUI();
+static void RenderOverheadOverlays();
 
-void HandleOverheadMap(void) {
+void HandleOverheadMap() {
   gfInOverheadMap = TRUE;
   gsOveritemPoolGridNo = NOWHERE;
 
@@ -366,7 +366,7 @@ void GoIntoOverheadMap() {
   }
 }
 
-static void HandleOverheadUI(void) {
+static void HandleOverheadUI() {
   InputAtom a;
   while (DequeueEvent(&a)) {
     if (a.usEvent == KEY_DOWN) {
@@ -642,7 +642,7 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
   BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
 }
 
-static void RenderOverheadOverlays(void) {
+static void RenderOverheadOverlays() {
   SGPVSurface::Lock l(FRAME_BUFFER);
   UINT16 *const pDestBuf = l.Buffer<UINT16>();
   UINT32 const uiDestPitchBYTES = l.Pitch();
@@ -788,9 +788,9 @@ static GridNo InternalGetOverheadMouseGridNo(const INT dy) {
   return GetMapPosFromAbsoluteScreenXY(sWorldScreenX, sWorldScreenY);
 }
 
-GridNo GetOverheadMouseGridNo(void) { return InternalGetOverheadMouseGridNo(-8); }
+GridNo GetOverheadMouseGridNo() { return InternalGetOverheadMouseGridNo(-8); }
 
-static GridNo GetOverheadMouseGridNoForFullSoldiersGridNo(void) {
+static GridNo GetOverheadMouseGridNoForFullSoldiersGridNo() {
   return InternalGetOverheadMouseGridNo(0);
 }
 
@@ -831,14 +831,14 @@ void CalculateRestrictedMapCoords(INT8 bDirection, INT16 *psX1, INT16 *psY1, INT
   }
 }
 
-static void CopyOverheadDBShadetablesFromTileset(void) {
+static void CopyOverheadDBShadetablesFromTileset() {
   // Loop through tileset
   for (size_t i = 0; i < NUMBEROFTILETYPES; ++i) {
     gSmTileSurf[i].vo->ShareShadetables(gTileSurfaceArray[i]->vo);
   }
 }
 
-void TrashOverheadMap(void) {
+void TrashOverheadMap() {
   if (gubSmTileNum == TILESET_INVALID) return;
   gubSmTileNum = TILESET_INVALID;
 

@@ -395,7 +395,7 @@ enum AmbientSoundID {
 
 typedef void (*SOUND_STOP_CALLBACK)(void *pData);
 
-void ShutdownJA2Sound(void);
+void ShutdownJA2Sound();
 UINT32 PlayJA2Sample(SoundID, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
 UINT32 PlayJA2StreamingSample(SoundID, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
 
@@ -413,10 +413,10 @@ UINT32 PlayLocationJA2StreamingSample(UINT16 grid_no, SoundID, UINT32 base_vol, 
 UINT32 PlaySoldierJA2Sample(SOLDIERTYPE const *s, SoundID, UINT32 base_vol, UINT32 ubLoops,
                             BOOLEAN fCheck);
 
-UINT32 GetSoundEffectsVolume(void);
+UINT32 GetSoundEffectsVolume();
 void SetSoundEffectsVolume(UINT32 uiNewVolume);
 
-UINT32 GetSpeechVolume(void);
+UINT32 GetSpeechVolume();
 void SetSpeechVolume(UINT32 uiNewVolume);
 
 // Calculates a volume based on the current Speech Volume level
@@ -430,9 +430,9 @@ INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo);
 
 INT32 NewPositionSnd(INT16 sGridNo, SOLDIERTYPE const *SoundSource, SoundID);
 void DeletePositionSnd(INT32 iPositionSndIndex);
-void SetPositionSndsActive(void);
-void SetPositionSndsInActive(void);
-void SetPositionSndsVolumeAndPanning(void);
+void SetPositionSndsActive();
+void SetPositionSndsInActive();
+void SetPositionSndsVolumeAndPanning();
 void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo);
 
 #endif

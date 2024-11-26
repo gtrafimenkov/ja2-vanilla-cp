@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterImpHomePage(void);
-void RenderImpHomePage(void);
-void ExitImpHomePage(void);
-void HandleImpHomePage(void);
+void EnterImpHomePage();
+void RenderImpHomePage();
+void ExitImpHomePage();
+void HandleImpHomePage();
 
 // minimun glow time
 #define MIN_GLOW_DELTA 100

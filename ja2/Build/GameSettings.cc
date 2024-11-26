@@ -36,9 +36,9 @@ GAME_OPTIONS gGameOptions;
 // options
 #define GAME_SETTING_CURRENT_VERSION 522
 
-static void InitGameSettings(void);
+static void InitGameSettings();
 
-void LoadGameSettings(void) {
+void LoadGameSettings() {
   try {
     AutoSGPFile f(FileMan::openForReadingSmart(GAME_SETTINGS_FILE, false));
 
@@ -99,7 +99,7 @@ fail:
   InitGameSettings();
 }
 
-void SaveGameSettings(void) {
+void SaveGameSettings() {
   // Record the current settings into the game settins structure
   GAME_SETTINGS &g = gGameSettings;
 
@@ -128,7 +128,7 @@ void SaveGameSettings(void) {
   FileWrite(f, data, sizeof(data));
 }
 
-static void InitGameSettings(void) {
+static void InitGameSettings() {
   SetSoundEffectsVolume(63);
   SetSpeechVolume(63);
   MusicSetVolume(63);

@@ -50,7 +50,7 @@ ItemHandleResult HandleItem(SOLDIERTYPE *pSoldier, INT16 usGridNo, INT8 bLevel, 
 void SoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);
 
 void HandleSoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);
-void HandleFlashingItems(void);
+void HandleFlashingItems();
 
 void SoldierDropItem(SOLDIERTYPE *, OBJECTTYPE *);
 
@@ -60,8 +60,8 @@ void SoldierGiveItemFromAnimation(SOLDIERTYPE *pSoldier);
 void SoldierGiveItem(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, OBJECTTYPE *pObject,
                      INT8 bInvPos);
 
-void NotifySoldiersToLookforItems(void);
-void AllSoldiersLookforItems(void);
+void NotifySoldiersToLookforItems();
+void AllSoldiersLookforItems();
 
 void SoldierGetItemFromWorld(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel,
                              const BOOLEAN *pfSelectionList);
@@ -81,7 +81,7 @@ BOOLEAN SetItemsVisibilityOn(GridNo, UINT8 level, Visibility bAllGreaterThan, BO
 
 void SetItemsVisibilityHidden(GridNo, UINT8 level);
 
-void RenderTopmostFlashingItems(void);
+void RenderTopmostFlashingItems();
 
 void RemoveAllUnburiedItems(INT16 sGridNo, UINT8 ubLevel);
 
@@ -100,7 +100,7 @@ INT8 GetLargestZLevelOfItemPool(const ITEM_POOL *pItemPool);
 
 BOOLEAN NearbyGroundSeemsWrong(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckAroundGridno,
                                INT16 *psProblemGridNo);
-void MineSpottedDialogueCallBack(void);
+void MineSpottedDialogueCallBack();
 
 extern INT16 gsBoobyTrapGridNo;
 extern SOLDIERTYPE *gpBoobyTrapSoldier;

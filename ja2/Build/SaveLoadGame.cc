@@ -167,8 +167,8 @@ static BYTE *InjectGameOptions(BYTE *const data, GAME_OPTIONS const &g) {
 }
 
 static void CalcJA2EncryptionSet(SAVED_GAME_HEADER const &);
-static void PauseBeforeSaveGame(void);
-static void UnPauseAfterSaveGame(void);
+static void PauseBeforeSaveGame();
+static void UnPauseAfterSaveGame();
 static void SaveGeneralInfo(HWFILE);
 static void SaveMeanwhileDefsToSaveGameFile(HWFILE);
 static void SaveMercProfiles(HWFILE);
@@ -584,7 +584,7 @@ void ExtractSavedGameHeaderFromFile(HWFILE const f, SAVED_GAME_HEADER &h, bool *
   }
 }
 
-static void HandleOldBobbyRMailOrders(void);
+static void HandleOldBobbyRMailOrders();
 static void LoadGeneralInfo(HWFILE, UINT32 savegame_version);
 static void LoadMeanwhileDefsFromSaveGameFile(HWFILE, UINT32 savegame_version);
 static void LoadOppListInfoFromSavedGame(HWFILE);
@@ -593,8 +593,8 @@ static void LoadSavedMercProfiles(HWFILE, UINT32 savegame_version, bool stracLin
 static void LoadSoldierStructure(HWFILE, UINT32 savegame_version, bool stracLinuxFormat);
 static void LoadTacticalStatusFromSavedGame(HWFILE, bool stracLinuxFormat);
 static void LoadWatchedLocsFromSavedGame(HWFILE);
-static void TruncateStrategicGroupSizes(void);
-static void UpdateMercMercContractInfo(void);
+static void TruncateStrategicGroupSizes();
+static void UpdateMercMercContractInfo();
 
 #define InitLoadGameFilePosition(slot) ((void)0)
 #define LoadGameFilePosition(slot, file, msg) ((void)0)
@@ -1968,7 +1968,7 @@ void GetBestPossibleSectorXYZValues(INT16 *const psSectorX, INT16 *const psSecto
   *pbSectorZ = gbWorldSectorZ;
 }
 
-static void PauseBeforeSaveGame(void) {
+static void PauseBeforeSaveGame() {
   // if we are not in the save load screen
   if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
     // Pause the game
@@ -1976,7 +1976,7 @@ static void PauseBeforeSaveGame(void) {
   }
 }
 
-static void UnPauseAfterSaveGame(void) {
+static void UnPauseAfterSaveGame() {
   // if we are not in the save load screen
   if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
     // UnPause time compression
@@ -1984,7 +1984,7 @@ static void UnPauseAfterSaveGame(void) {
   }
 }
 
-static void TruncateStrategicGroupSizes(void) {
+static void TruncateStrategicGroupSizes() {
   SECTORINFO *pSector;
   INT32 i;
   for (i = SEC_A1; i < SEC_P16; i++) {
@@ -2101,7 +2101,7 @@ static void TruncateStrategicGroupSizes(void) {
   }
 }
 
-static void UpdateMercMercContractInfo(void) {
+static void UpdateMercMercContractInfo() {
   UINT8 ubCnt;
 
   for (ubCnt = BIFF; ubCnt <= BUBBA; ubCnt++) {
@@ -2162,7 +2162,7 @@ INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave) {
   }
 }
 
-static void HandleOldBobbyRMailOrders(void) {
+static void HandleOldBobbyRMailOrders() {
   INT32 iCnt;
   INT32 iNewListCnt = 0;
 

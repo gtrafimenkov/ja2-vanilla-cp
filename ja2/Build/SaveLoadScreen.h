@@ -14,13 +14,13 @@ extern BOOLEAN gfSaveGame;
 
 extern BOOLEAN gfCameDirectlyFromGame;
 
-ScreenID SaveLoadScreenHandle(void);
+ScreenID SaveLoadScreenHandle();
 
 void DoSaveLoadMessageBox(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,
                           MSGBOX_CALLBACK ReturnCallback);
 
-void DoQuickSave(void);
-void DoQuickLoad(void);
+void DoQuickSave();
+void DoQuickLoad();
 
 bool AreThereAnySavedGameFiles();
 

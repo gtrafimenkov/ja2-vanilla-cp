@@ -95,15 +95,15 @@ DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(const SOLDIERTYPE *s);
 bool IsCharacterInTransit(SOLDIERTYPE const &);
 
 // handler for assignments -- called once per hour via event
-void UpdateAssignments(void);
+void UpdateAssignments();
 
 void MakeSoldiersTacticalAnimationReflectAssignment(SOLDIERTYPE *pSoldier);
 
 // build list of sectors with mercs
-void BuildSectorsWithSoldiersList(void);
+void BuildSectorsWithSoldiersList();
 
 // init sectors with soldiers list
-void InitSectorsWithSoldiersList(void);
+void InitSectorsWithSoldiersList();
 
 // is there a soldier in this sector?..only use after
 // BuildSectorsWithSoldiersList is called
@@ -112,10 +112,10 @@ BOOLEAN IsThereASoldierInThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSector
 void CheckIfSoldierUnassigned(SOLDIERTYPE *pSoldier);
 
 // figure out the assignment menu pop up box positions
-void DetermineBoxPositions(void);
+void DetermineBoxPositions();
 
 // set x,y position in tactical
-void SetTacticalPopUpAssignmentBoxXY(void);
+void SetTacticalPopUpAssignmentBoxXY();
 
 // get number of pts that are being used this strategic turn
 INT16 GetTownTrainPtsForCharacter(const SOLDIERTYPE *pTrainer, UINT16 *pusMaxPts);
@@ -162,9 +162,9 @@ extern BOOLEAN fFirstClickInAssignmentScreenMask;
 
 extern BOOLEAN gfReEvaluateEveryonesNothingToDo;
 
-void CreateDestroyMouseRegionsForContractMenu(void);
-void HandleShadingOfLinesForAssignmentMenus(void);
-void CreateDestroyScreenMaskForAssignmentAndContractMenus(void);
+void CreateDestroyMouseRegionsForContractMenu();
+void HandleShadingOfLinesForAssignmentMenus();
+void CreateDestroyScreenMaskForAssignmentAndContractMenus();
 
 void CreateDestroyAssignmentPopUpBoxes();
 void SetSoldierAssignmentHospital(SOLDIERTYPE &);
@@ -191,11 +191,11 @@ BOOLEAN HandleSelectedMercsBeingPutAsleep(BOOLEAN fWakeUp, BOOLEAN fDisplayWarni
 BOOLEAN IsAnyOneOnPlayersTeamOnThisAssignment(INT8 bAssignment);
 
 // rebuild assignments box
-void RebuildAssignmentsBox(void);
+void RebuildAssignmentsBox();
 
-void BandageBleedingDyingPatientsBeingTreated(void);
+void BandageBleedingDyingPatientsBeingTreated();
 
-void ReEvaluateEveryonesNothingToDo(void);
+void ReEvaluateEveryonesNothingToDo();
 
 // set assignment for list of characters
 void SetAssignmentForList(INT8 bAssignment, INT8 bParam);
@@ -208,15 +208,15 @@ void UnEscortEPC(SOLDIERTYPE *pSoldier);
 
 SOLDIERTYPE *AnyDoctorWhoCanHealThisPatient(SOLDIERTYPE *pPatient, BOOLEAN fThisHour);
 
-void DetermineWhichAssignmentMenusCanBeShown(void);
+void DetermineWhichAssignmentMenusCanBeShown();
 void ResumeOldAssignment(SOLDIERTYPE *pSoldier);
 bool PlayerSoldierTooTiredToTravel(SOLDIERTYPE &);
 
 void CreateContractBox(const SOLDIERTYPE *s);
 
 // screen mask for pop up menus
-void ClearScreenMaskForMapScreenExit(void);
+void ClearScreenMaskForMapScreenExit();
 
-void CreateMercRemoveAssignBox(void);
+void CreateMercRemoveAssignBox();
 
 #endif

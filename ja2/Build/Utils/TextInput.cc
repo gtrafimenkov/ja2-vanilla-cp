@@ -85,7 +85,7 @@ static UINT16 gusTextInputCursor = CURSOR_IBEAM;
 
 // Saves the current text input mode by pushing it onto our stack, then starts a
 // new one.
-static void PushTextInputLevel(void) {
+static void PushTextInputLevel() {
   STACKTEXTINPUTNODE *const pNewLevel = MALLOC(STACKTEXTINPUTNODE);
   pNewLevel->head = gpTextInputHead;
   pNewLevel->pColors = pColors;
@@ -97,7 +97,7 @@ static void PushTextInputLevel(void) {
 // After the currently text input mode is removed, we then restore the previous
 // one automatically.  Assert failure in this function will expose cases where
 // you are trigger happy with killing non-existant text input modes.
-static void PopTextInputLevel(void) {
+static void PopTextInputLevel() {
   STACKTEXTINPUTNODE *pLevel;
   gpTextInputHead = pInputStack->head;
   pColors = pInputStack->pColors;
@@ -447,7 +447,7 @@ void SelectNextField() {
   }
 }
 
-static void SelectPrevField(void) {
+static void SelectPrevField() {
   BOOLEAN fDone = FALSE;
   TEXTINPUTNODE *pStart;
 
@@ -518,7 +518,7 @@ void SetBevelColors(UINT16 usBrighterColor, UINT16 usDarkerColor) {
 void SetCursorColor(UINT16 usCursorColor) { pColors->usCursorColor = usCursorColor; }
 
 static void AddChar(wchar_t);
-static void DeleteHilitedText(void);
+static void DeleteHilitedText();
 static void HandleRegularInput(wchar_t);
 static void RemoveChars(size_t pos, size_t n);
 
@@ -751,7 +751,7 @@ static void AddChar(wchar_t const c) {
   *i = c;
 }
 
-static void DeleteHilitedText(void) {
+static void DeleteHilitedText() {
   UINT8 start = gubStartHilite;
   UINT8 end = gubCursorPos;
   if (start == end) return;
@@ -845,7 +845,7 @@ static void RenderBackgroundField(TEXTINPUTNODE const *const n) {
 
 /* Required in your screen loop to update the values, as well as blinking the
  * cursor. */
-static void RenderActiveTextField(void) {
+static void RenderActiveTextField() {
   TEXTINPUTNODE const *const n = gpActive;
   if (!n || !n->szString) return;
 
@@ -1018,7 +1018,7 @@ void KillClipboard() {
   }
 }
 
-static void ExecuteCopyCommand(void) {
+static void ExecuteCopyCommand() {
   UINT8 ubCount;
   UINT8 ubStart, ubEnd;
   if (!gpActive || !gpActive->szString) return;
@@ -1042,7 +1042,7 @@ static void ExecuteCopyCommand(void) {
   }
 }
 
-static void ExecutePasteCommand(void) {
+static void ExecutePasteCommand() {
   UINT8 ubCount;
   if (!gpActive || !szClipboard) return;
   DeleteHilitedText();
@@ -1054,7 +1054,7 @@ static void ExecutePasteCommand(void) {
   }
 }
 
-static void ExecuteCutCommand(void) {
+static void ExecuteCutCommand() {
   ExecuteCopyCommand();
   DeleteHilitedText();
 }

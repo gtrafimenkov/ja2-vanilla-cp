@@ -91,8 +91,8 @@ extern Font gpHugeFont;
 #define FONT_KHAKI 198
 #define FONT_DKKHAKI 201
 
-void InitializeFonts(void);
-void ShutdownFonts(void);
+void InitializeFonts();
+void ShutdownFonts();
 
 enum FontShade {
   FONT_SHADE_GREY_165 = 0,

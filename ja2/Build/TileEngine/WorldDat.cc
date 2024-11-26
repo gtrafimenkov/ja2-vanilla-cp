@@ -15,11 +15,11 @@
 
 TILESET gTilesets[NUM_TILESETS];
 
-static void SetTilesetFourTerrainValues(void);
-static void SetTilesetThreeTerrainValues(void);
-static void SetTilesetTwoTerrainValues(void);
+static void SetTilesetFourTerrainValues();
+static void SetTilesetThreeTerrainValues();
+static void SetTilesetTwoTerrainValues();
 
-void InitEngineTilesets(void) try {
+void InitEngineTilesets() try {
   AutoSGPFile f(FileMan::openForReadingSmart(BINARYDATADIR "/ja2set.dat", true));
 
   // READ # TILESETS and compare
@@ -98,7 +98,7 @@ void SetTilesetOneTerrainValues() {
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
-static void SetTilesetTwoTerrainValues(void) {
+static void SetTilesetTwoTerrainValues() {
   // FIRST TEXUTRES
   gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
   gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
@@ -121,7 +121,7 @@ static void SetTilesetTwoTerrainValues(void) {
   gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_GROUND;
 }
 
-static void SetTilesetThreeTerrainValues(void) {
+static void SetTilesetThreeTerrainValues() {
   // DIFFERENCE FROM #1 IS THAT ROADS ARE PAVED
 
   // FIRST TEXUTRES
@@ -148,7 +148,7 @@ static void SetTilesetThreeTerrainValues(void) {
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
-static void SetTilesetFourTerrainValues(void) {
+static void SetTilesetFourTerrainValues() {
   // DIFFERENCE FROM #1 IS THAT FLOOR2 IS NOT FLAT_FLOOR BUT FLAT_GROUND
 
   // FIRST TEXUTRES

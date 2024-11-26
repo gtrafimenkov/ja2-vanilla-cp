@@ -21,7 +21,7 @@ struct BUILDING {
 extern UINT8 gubBuildingInfo[WORLD_MAX];
 
 BUILDING *FindBuilding(INT16 sGridNo);
-void GenerateBuildings(void);
+void GenerateBuildings();
 INT16 FindClosestClimbPoint(INT16 sStartGridNo, INT16 sDesiredGridNo, BOOLEAN fClimbUp);
 BOOLEAN SameBuilding(INT16 sGridNo1, INT16 sGridNo2);
 

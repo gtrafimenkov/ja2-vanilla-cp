@@ -60,7 +60,7 @@ void SpreadEffect(INT16 sGridNo, UINT8 ubRadius, UINT16 usItem, SOLDIERTYPE *own
                   BOOLEAN fSubsequent, INT8 bLevel, const SMOKEEFFECT *s);
 void SpreadEffectSmoke(const SMOKEEFFECT *s, BOOLEAN subsequent, INT8 level);
 
-void DecayBombTimers(void);
+void DecayBombTimers();
 void SetOffBombsByFrequency(SOLDIERTYPE *s, INT8 bFrequency);
 BOOLEAN SetOffBombsInGridNo(SOLDIERTYPE *s, INT16 sGridNo, BOOLEAN fAllBombs, INT8 bLevel);
 void ActivateSwitchInGridNo(SOLDIERTYPE *s, INT16 sGridNo);
@@ -76,8 +76,8 @@ void UpdateSAMDoneRepair(INT16 x, INT16 y, INT16 z);
 void SaveExplosionTableToSaveGameFile(HWFILE);
 void LoadExplosionTableFromSavedGameFile(HWFILE);
 
-BOOLEAN ActiveTimedBombExists(void);
-void RemoveAllActiveTimedBombs(void);
+BOOLEAN ActiveTimedBombExists();
+void RemoveAllActiveTimedBombs();
 
 #define GASMASK_MIN_STATUS 70
 

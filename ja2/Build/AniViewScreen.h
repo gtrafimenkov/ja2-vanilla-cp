@@ -4,6 +4,6 @@
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
 
-ScreenID AniEditScreenHandle(void);
+ScreenID AniEditScreenHandle();
 
 #endif

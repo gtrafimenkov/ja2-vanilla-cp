@@ -104,14 +104,14 @@ struct STRATEGIC_STATUS {
   INT8 bPadding[70];  // XXX HACK000B
 };
 
-void InitStrategicStatus(void);
+void InitStrategicStatus();
 
 extern STRATEGIC_STATUS gStrategicStatus;
 
 void SaveStrategicStatusToSaveGameFile(HWFILE);
 void LoadStrategicStatusFromSaveGameFile(HWFILE);
 
-UINT8 CalcDeathRate(void);
+UINT8 CalcDeathRate();
 
 void ModifyPlayerReputation(INT8 bRepChange);
 
@@ -119,7 +119,7 @@ BOOLEAN MercThinksDeathRateTooHigh(MERCPROFILESTRUCT const &);
 BOOLEAN MercThinksBadReputationTooHigh(MERCPROFILESTRUCT const &);
 BOOLEAN MercThinksHisMoraleIsTooLow(SOLDIERTYPE const *);
 
-void HandleEnricoEmail(void);
+void HandleEnricoEmail();
 
 void TrackEnemiesKilled(UINT8 ubKilledHow, UINT8 ubSoldierClass);
 

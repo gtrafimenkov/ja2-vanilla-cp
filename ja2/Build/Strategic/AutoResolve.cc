@@ -292,7 +292,7 @@ static void PlayAutoResolveSample(SoundID const usNum, UINT32 const ubVolume, UI
   }
 }
 
-static void EliminateAllMercs(void) {
+static void EliminateAllMercs() {
   SOLDIERCELL *pAttacker = NULL;
   if (gpAR) {
     FOR_EACH_AR_ENEMY(i) {
@@ -315,7 +315,7 @@ static void EliminateAllMercs(void) {
   }
 }
 
-static void EliminateAllFriendlies(void) {
+static void EliminateAllFriendlies() {
   if (gpAR) {
     FOR_EACH_AR_MERC(i) { i->pSoldier->bLife = 0; }
     gpAR->ubAliveMercs = 0;
@@ -386,9 +386,9 @@ void EliminateAllEnemies(UINT8 ubSectorX, UINT8 ubSectorY) {
   gpBattleGroup = NULL;
 }
 
-static void RenderAutoResolve(void);
+static void RenderAutoResolve();
 
-static void DoTransitionFromPreBattleInterfaceToAutoResolve(void) {
+static void DoTransitionFromPreBattleInterfaceToAutoResolve() {
   UINT32 uiStartTime, uiCurrTime;
   INT32 iPercentage, iFactor;
   UINT32 uiTimeRange;
@@ -499,13 +499,13 @@ void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY) {
   }
 }
 
-static void CalculateAttackValues(void);
-static void CalculateAutoResolveInfo(void);
+static void CalculateAttackValues();
+static void CalculateAutoResolveInfo();
 static void CalculateSoldierCells(BOOLEAN fReset);
-static void CreateAutoResolveInterface(void);
+static void CreateAutoResolveInterface();
 static void DetermineTeamLeader(BOOLEAN fFriendlyTeam);
-static void HandleAutoResolveInput(void);
-static void ProcessBattleFrame(void);
+static void HandleAutoResolveInput();
+static void ProcessBattleFrame();
 static void RemoveAutoResolveInterface(bool delete_for_good);
 
 ScreenID AutoResolveScreenHandle() {
@@ -565,7 +565,7 @@ static void RefreshMerc(SOLDIERTYPE *pSoldier) {
 
 // Now assign the pSoldier->ubGroupIDs for the enemies, so we know where to
 // remove them.  Start with stationary groups first.
-static void AssociateEnemiesWithStrategicGroups(void) {
+static void AssociateEnemiesWithStrategicGroups() {
   SECTORINFO *pSector;
   UINT8 ubNumAdmins, ubNumTroops, ubNumElites;
   UINT8 ubNumElitesInGroup, ubNumTroopsInGroup, ubNumAdminsInGroup;
@@ -834,7 +834,7 @@ static void RenderSoldierCellBars(SOLDIERCELL *pCell) {
                             Get16BPPColor(FROMRGB(8, 107, 8)));
 }
 
-static void BuildInterfaceBuffer(void) {
+static void BuildInterfaceBuffer() {
   SGPRect ClipRect;
   SGPRect DestRect;
   INT32 x, y;
@@ -1036,7 +1036,7 @@ UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJ
   return uiMedcost;
 }
 
-static OBJECTTYPE *FindMedicalKit(void) {
+static OBJECTTYPE *FindMedicalKit() {
   FOR_EACH_AR_MERC(i) {
     SOLDIERTYPE &s = *i->pSoldier;
     INT32 const slot = FindObjClass(&s, IC_MEDKIT);
@@ -1048,7 +1048,7 @@ static OBJECTTYPE *FindMedicalKit(void) {
 
 static void AutoBandageFinishedCallback(MessageBoxReturnValue);
 
-static void AutoBandageMercs(void) {
+static void AutoBandageMercs() {
   OBJECTTYPE *kit = 0;
 
   // Do we have any doctors?  If so, bandage selves first.
@@ -1116,7 +1116,7 @@ static void AutoBandageMercs(void) {
   gpAR->uiTotalElapsedBattleTimeInMilliseconds += parallel_points_used * 200;
 }
 
-static void RenderAutoResolve(void) {
+static void RenderAutoResolve() {
   INT32 xp, yp;
   wchar_t str[100];
   UINT8 ubGood, ubBad;
@@ -1387,7 +1387,7 @@ static void PlayButtonCallback(GUI_BUTTON *btn, INT32 reason);
 static void RejectSurrenderCallback(GUI_BUTTON *btn, INT32 reason);
 static void RetreatButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateAutoResolveInterface(void) {
+static void CreateAutoResolveInterface() {
   AUTORESOLVE_STRUCT *const ar = gpAR;
 
   // Setup new autoresolve blanket interface.
@@ -1828,7 +1828,7 @@ static bool CanAnybodyBandage() {
   return false;
 }
 
-static void DetermineBandageButtonState(void) {
+static void DetermineBandageButtonState() {
   wchar_t const *help;
   bool enable = false;
   if (!IsAnybodyWounded())  // Does anyone need bandaging?
@@ -1849,7 +1849,7 @@ static void DetermineBandageButtonState(void) {
   b.SetFastHelpText(help);
 }
 
-static void SetupDoneInterface(void);
+static void SetupDoneInterface();
 
 static void BandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -1934,12 +1934,12 @@ static void MercCellMouseClickCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static void CalculateRowsAndColumns(void);
+static void CalculateRowsAndColumns();
 
 // Determine how many players, militia, and enemies that are going at it, and
 // use these values to figure out how many rows and columns we can use.  The will
 // effect the size of the panel.
-static void CalculateAutoResolveInfo(void) {
+static void CalculateAutoResolveInfo() {
   Assert(gpAR->ubSectorX >= 1 && gpAR->ubSectorX <= 16);
   Assert(gpAR->ubSectorY >= 1 && gpAR->ubSectorY <= 16);
 
@@ -1995,10 +1995,10 @@ static void CalculateAutoResolveInfo(void) {
   CalculateRowsAndColumns();
 }
 
-static void CreateTempPlayerMerc(void);
+static void CreateTempPlayerMerc();
 
 // Debug utilities
-static void ResetAutoResolveInterface(void) {
+static void ResetAutoResolveInterface() {
   guiPreRandomIndex = gpAR->uiPreRandomIndex;
 
   RemoveAutoResolveInterface(false);
@@ -2073,7 +2073,7 @@ static void ResetAutoResolveInterface(void) {
   CalculateAttackValues();
 }
 
-static void CalculateRowsAndColumns(void) {
+static void CalculateRowsAndColumns() {
   // now that we have the number on each team, calculate the number of rows and
   // columns to be used on the player's sides.  NOTE:  Militia won't appear on
   // the same row as mercs.
@@ -2169,7 +2169,8 @@ static void CalculateRowsAndColumns(void) {
     gpAR->rect.w = 146 + 55 * (std::max(std::max(gpAR->ubMercCols, gpAR->ubCivCols), (uint8_t)2) +
                                std::max(gpAR->ubEnemyCols, (uint8_t)2));
 
-  gpAR->sCenterStartX = 323 - gpAR->rect.w / 2 +
+  gpAR->sCenterStartX =
+      323 - gpAR->rect.w / 2 +
       std::max(std::max(gpAR->ubMercCols, (uint8_t)2), std::max(gpAR->ubCivCols, (uint8_t)2)) * 55;
 
   // Anywhere from 48*3 to 48*10
@@ -2190,7 +2191,7 @@ static void CalculateRowsAndColumns(void) {
   }
 }
 
-static void HandleAutoResolveInput(void) {
+static void HandleAutoResolveInput() {
   InputAtom InputEvent;
   BOOLEAN fResetAutoResolve = FALSE;
   while (DequeueEvent(&InputEvent)) {
@@ -2296,14 +2297,14 @@ static void RenderSoldierCellHealth(SOLDIERCELL *pCell) {
   MPrint(xp, yp, pStr);
 }
 
-static UINT8 GetUnusedMercProfileID(void) {
+static UINT8 GetUnusedMercProfileID() {
   for (;;) {
     const ProfileID pid = PreRandom(40);
     if (FindSoldierByProfileIDOnPlayerTeam(pid) == NULL) return pid;
   }
 }
 
-static void CreateTempPlayerMerc(void) {
+static void CreateTempPlayerMerc() {
   SOLDIERCREATE_STRUCT MercCreateStruct;
 
   // Init the merc create structure with basic information
@@ -2367,7 +2368,7 @@ static void ResetNextAttackCounter(SOLDIERCELL *pCell) {
   }
 }
 
-static void CalculateAttackValues(void) {
+static void CalculateAttackValues() {
   SOLDIERCELL *pCell;
   SOLDIERTYPE *pSoldier;
   UINT16 usBonus;
@@ -2549,7 +2550,7 @@ static void DrawDebugText(SOLDIERCELL *pCell) {
   }
 }
 
-static BOOLEAN IsBattleOver(void);
+static BOOLEAN IsBattleOver();
 
 static SOLDIERCELL *ChooseTarget(SOLDIERCELL *pAttacker) {
   INT32 iAvailableTargets;
@@ -3036,7 +3037,7 @@ static void TargetHitCallback(SOLDIERCELL *pTarget, INT32 index) {
   pTarget->uiFlags |= CELL_HITBYATTACKER | CELL_DIRTY;
 }
 
-static BOOLEAN IsBattleOver(void) {
+static BOOLEAN IsBattleOver() {
   INT32 iNumInvolvedMercs = 0;
   INT32 iNumMercsRetreated = 0;
   BOOLEAN fOnlyEPCsLeft = TRUE;
@@ -3101,9 +3102,9 @@ static BOOLEAN IsBattleOver(void) {
 
 // #define TESTSURRENDER
 
-static void SetupSurrenderInterface(void);
+static void SetupSurrenderInterface();
 
-static BOOLEAN AttemptPlayerCapture(void) {
+static BOOLEAN AttemptPlayerCapture() {
   BOOLEAN fConcious;
   INT32 iConciousEnemies;
 
@@ -3170,7 +3171,7 @@ static BOOLEAN AttemptPlayerCapture(void) {
   return TRUE;
 }
 
-static void SetupDoneInterface(void) {
+static void SetupDoneInterface() {
   gpAR->fRenderAutoResolve = TRUE;
 
   HideButton(gpAR->iButton[PAUSE_BUTTON]);
@@ -3192,7 +3193,7 @@ static void SetupDoneInterface(void) {
   }
 }
 
-static void SetupSurrenderInterface(void) {
+static void SetupSurrenderInterface() {
   HideButton(gpAR->iButton[PAUSE_BUTTON]);
   HideButton(gpAR->iButton[PLAY_BUTTON]);
   HideButton(gpAR->iButton[FAST_BUTTON]);
@@ -3207,7 +3208,7 @@ static void SetupSurrenderInterface(void) {
   gpAR->fPendingSurrender = TRUE;
 }
 
-static void HideSurrenderInterface(void) {
+static void HideSurrenderInterface() {
   HideButton(gpAR->iButton[PAUSE_BUTTON]);
   HideButton(gpAR->iButton[PLAY_BUTTON]);
   HideButton(gpAR->iButton[FAST_BUTTON]);
@@ -3239,7 +3240,7 @@ static void RejectSurrenderCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ProcessBattleFrame(void) {
+static void ProcessBattleFrame() {
   INT32 iRandom;
   SOLDIERCELL *pAttacker, *pTarget;
   UINT32 uiDiff;

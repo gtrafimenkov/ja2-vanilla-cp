@@ -150,11 +150,11 @@ static MOUSE_REGION gSelectedOptionTextRegion[NUM_GAME_OPTIONS];
 // Mouse regions for the area around the toggle boxs
 static MOUSE_REGION gSelectedToggleBoxAreaRegion;
 
-static void EnterOptionsScreen(void);
-static void ExitOptionsScreen(void);
-static void GetOptionsScreenUserInput(void);
-static void HandleOptionsScreen(void);
-static void RenderOptionsScreen(void);
+static void EnterOptionsScreen();
+static void ExitOptionsScreen();
+static void GetOptionsScreenUserInput();
+static void HandleOptionsScreen();
+static void RenderOptionsScreen();
 
 ScreenID OptionsScreenHandle() {
   if (gfOptionsScreenEntry) {
@@ -222,11 +222,11 @@ static void MusicSliderChangeCallBack(INT32 iNewValue);
 static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
 static void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
-static void SetOptionsScreenToggleBoxes(void);
+static void SetOptionsScreenToggleBoxes();
 static void SoundFXSliderChangeCallBack(INT32 iNewValue);
 static void SpeechSliderChangeCallBack(INT32 iNewValue);
 
-static void EnterOptionsScreen(void) {
+static void EnterOptionsScreen() {
   // Stop ambients...
   StopAmbients();
 
@@ -360,9 +360,9 @@ static void EnterOptionsScreen(void) {
   gfSettingOfDontAnimateSmoke = gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE];
 }
 
-static void GetOptionsScreenToggleBoxes(void);
+static void GetOptionsScreenToggleBoxes();
 
-static void ExitOptionsScreen(void) {
+static void ExitOptionsScreen() {
   UINT8 cnt;
 
   if (gfExitOptionsDueToMessageBox) {
@@ -429,15 +429,15 @@ static void ExitOptionsScreen(void) {
 }
 
 static void HandleHighLightedText(BOOLEAN fHighLight);
-static void HandleSliderBarMovementSounds(void);
+static void HandleSliderBarMovementSounds();
 
-static void HandleOptionsScreen(void) {
+static void HandleOptionsScreen() {
   HandleSliderBarMovementSounds();
 
   HandleHighLightedText(TRUE);
 }
 
-static void RenderOptionsScreen(void) {
+static void RenderOptionsScreen() {
   BltVideoObject(FRAME_BUFFER, guiOptionBackGroundImage, 0, 0, 0);
 
   // Get and display the titla image
@@ -495,7 +495,7 @@ static void RenderOptionsScreen(void) {
 
 static void SetOptionsExitScreen(ScreenID);
 
-static void GetOptionsScreenUserInput(void) {
+static void GetOptionsScreenUserInput() {
   SGPPoint MousePos;
   GetMousePos(&MousePos);
 
@@ -654,7 +654,7 @@ static void ConfirmQuitToMainMenuMessageBoxCallBack(MessageBoxReturnValue const 
   }
 }
 
-static void SetOptionsScreenToggleBoxes(void) {
+static void SetOptionsScreenToggleBoxes() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
@@ -665,7 +665,7 @@ static void SetOptionsScreenToggleBoxes(void) {
   }
 }
 
-static void GetOptionsScreenToggleBoxes(void) {
+static void GetOptionsScreenToggleBoxes() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
@@ -673,7 +673,7 @@ static void GetOptionsScreenToggleBoxes(void) {
   }
 }
 
-static void HandleSliderBarMovementSounds(void) {
+static void HandleSliderBarMovementSounds() {
   static UINT32 uiLastSoundFxTime = 0;
   static UINT32 uiLastSpeechTime = 0;
   static UINT32 uiLastPlayingSoundID = NO_SAMPLE;

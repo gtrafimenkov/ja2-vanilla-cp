@@ -85,14 +85,14 @@ void AddBaseDirtyRect(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   InvalidateRegionEx(iLeft, iTop, iRight, iBottom);
 }
 
-void ExecuteBaseDirtyRectQueue(void) {
+void ExecuteBaseDirtyRectQueue() {
   if (!gfViewportDirty) return;
   gfViewportDirty = FALSE;
 
   InvalidateScreen();
 }
 
-static BACKGROUND_SAVE *GetFreeBackgroundBuffer(void) {
+static BACKGROUND_SAVE *GetFreeBackgroundBuffer() {
   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
     BACKGROUND_SAVE *const b = gBackSaves[i];
     if (!b->fAllocated && !b->fFilled) return b;
@@ -174,7 +174,7 @@ void RegisterBackgroundRectSingleFilled(INT16 const x, INT16 const y, INT16 cons
   AddBaseDirtyRect(b->sLeft, b->sTop, b->sRight, b->sBottom);
 }
 
-void RestoreBackgroundRects(void) {
+void RestoreBackgroundRects() {
   {
     SGPVSurface::Lock lsrc(guiSAVEBUFFER);
     SGPVSurface::Lock ldst(FRAME_BUFFER);
@@ -205,7 +205,7 @@ void RestoreBackgroundRects(void) {
   EmptyBackgroundRects();
 }
 
-void EmptyBackgroundRects(void) {
+void EmptyBackgroundRects() {
   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
     BACKGROUND_SAVE *const b = gBackSaves[i];
     if (b->fFilled) {
@@ -237,7 +237,7 @@ void EmptyBackgroundRects(void) {
   }
 }
 
-void SaveBackgroundRects(void) {
+void SaveBackgroundRects() {
   SGPVSurface::Lock l(FRAME_BUFFER);
   UINT16 *const pSrcBuf = l.Buffer<UINT16>();
   UINT32 const uiDestPitchBYTES = l.Pitch();
@@ -287,22 +287,22 @@ void FreeBackgroundRectType(BackgroundFlags const uiFlags) {
   }
 }
 
-void InitializeBackgroundRects(void) { guiNumBackSaves = 0; }
+void InitializeBackgroundRects() { guiNumBackSaves = 0; }
 
-void InvalidateBackgroundRects(void) {
+void InvalidateBackgroundRects() {
   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
     gBackSaves[i]->fFilled = FALSE;
   }
 }
 
-void ShutdownBackgroundRects(void) {
+void ShutdownBackgroundRects() {
   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
     BACKGROUND_SAVE *const b = gBackSaves[i];
     if (b->fAllocated) FreeBackgroundRectNow(b);
   }
 }
 
-void UpdateSaveBuffer(void) {
+void UpdateSaveBuffer() {
   // Update saved buffer - do for the viewport size ony!
   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, SCREEN_WIDTH,
                      gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y);
@@ -448,7 +448,7 @@ void RemoveVideoOverlay(VIDEO_OVERLAY *const v) {
 }
 
 // FUnctions for entrie array of blitters
-void ExecuteVideoOverlays(void) {
+void ExecuteVideoOverlays() {
   FOR_EACH_VIDEO_OVERLAY(v) {
     // If we are scrolling but haven't saved yet, don't!
     if (!v->fActivelySaving && g_scroll_inertia) continue;
@@ -487,7 +487,7 @@ static void AllocateVideoOverlayArea(VIDEO_OVERLAY *const v) {
   v->pSaveArea = MALLOCN(UINT16, buf_size);
 }
 
-void AllocateVideoOverlaysArea(void) {
+void AllocateVideoOverlaysArea() {
   FOR_EACH_VIDEO_OVERLAY(v) { AllocateVideoOverlayArea(v); }
 }
 
@@ -510,7 +510,7 @@ void SaveVideoOverlaysArea(SGPVSurface *const src) {
   }
 }
 
-void DeleteVideoOverlaysArea(void) {
+void DeleteVideoOverlaysArea() {
   FOR_EACH_VIDEO_OVERLAY_SAFE(v) {
     if (v->pSaveArea != NULL) MemFree(v->pSaveArea);
     v->pSaveArea = NULL;

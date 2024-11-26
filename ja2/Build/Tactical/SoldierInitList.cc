@@ -227,7 +227,7 @@ void LoadSoldiersFromMap(HWFILE const f, bool stracLinuxFormat) {
 // are randomly filled based on the number needed. NOTE:  This function is called by
 // AddSoldierInitListTeamToWorld().  There is no other place it needs to 			 be
 // called.
-static void SortSoldierInitList(void) {
+static void SortSoldierInitList() {
   SOLDIERINITNODE *temp, *curr;
 
   if (!gSoldierInitHead) return;

@@ -10,7 +10,7 @@ UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
 
 #endif
 
-void InitializeRandom(void) {
+void InitializeRandom() {
   // Seed the random-number generator with current time so that
   // the numbers will be different every time we run.
   srand((unsigned)time(NULL));

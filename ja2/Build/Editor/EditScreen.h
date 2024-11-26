@@ -10,13 +10,13 @@
 
 extern BOOLEAN gfFakeLights;
 
-void DisplayWayPoints(void);
+void DisplayWayPoints();
 
 /* For all lights that are in the world (except lights attached to mercs), this
  * function places a marker at its location for editing purposes. */
-void ShowLightPositionHandles(void);
+void ShowLightPositionHandles();
 
-extern void ShowCurrentDrawingMode(void);
+extern void ShowCurrentDrawingMode();
 
 // Create and place a light of selected radius into the world.
 BOOLEAN PlaceLight(INT16 radius, GridNo pos);
@@ -35,13 +35,13 @@ extern TaskMode iTaskMode;
 
 void ProcessAreaSelection(BOOLEAN fWithLeftButton);
 
-void ShowEntryPoints(void);
+void ShowEntryPoints();
 
 extern BOOLEAN gfConfirmExitFirst;
 extern BOOLEAN gfIntendOnEnteringEditor;
 
-void EditScreenInit(void);
-ScreenID EditScreenHandle(void);
-void EditScreenShutdown(void);
+void EditScreenInit();
+ScreenID EditScreenHandle();
+void EditScreenShutdown();
 
 #endif

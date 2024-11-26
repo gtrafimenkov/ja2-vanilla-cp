@@ -185,12 +185,12 @@ UINT8 GetClosestOpponent(SOLDIERTYPE *pSoldier);
 void HandleSoldierAI(SOLDIERTYPE *pSoldier);
 void HandleInitialRedAlert(INT8 bTeam);
 
-void InitPanicSystem(void);
+void InitPanicSystem();
 bool InWaterOrGas(SOLDIERTYPE const *, GridNo);
 BOOLEAN IsActionAffordable(SOLDIERTYPE *pSoldier);
-void InitAI(void);
+void InitAI();
 
-void MakeClosestEnemyChosenOne(void);
+void MakeClosestEnemyChosenOne();
 
 void NewDest(SOLDIERTYPE *pSoldier, UINT16 sGridno);
 

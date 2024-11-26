@@ -109,7 +109,7 @@ static bool gfUpdateSummaryInfo = true;
 static void CreateFileDialog(const wchar_t *zTitle);
 static void TrashFDlgList(FDLG_LIST *);
 
-static void LoadSaveScreenEntry(void) {
+static void LoadSaveScreenEntry() {
   fEnteringLoadSaveScreen = FALSE;
   gbCurrentFileIOStatus = IOSTATUS_NONE;
 
@@ -153,11 +153,11 @@ static void LoadSaveScreenEntry(void) {
   iLastClickTime = 0;
 }
 
-static void RemoveFileDialog(void);
+static void RemoveFileDialog();
 static void RemoveFromFDlgList(FDLG_LIST **head, FDLG_LIST *node);
-static BOOLEAN ValidFilename(void);
+static BOOLEAN ValidFilename();
 
-static ScreenID ProcessLoadSaveScreenMessageBoxResult(void) {
+static ScreenID ProcessLoadSaveScreenMessageBoxResult() {
   FDLG_LIST *curr, *temp;
   gfRenderWorld = TRUE;
   RemoveMessageBox();
@@ -228,12 +228,12 @@ static ScreenID ProcessLoadSaveScreenMessageBoxResult(void) {
   return LOADSAVE_SCREEN;
 }
 
-static void DrawFileDialog(void);
-static BOOLEAN ExtractFilenameFromFields(void);
+static void DrawFileDialog();
+static BOOLEAN ExtractFilenameFromFields();
 static void HandleMainKeyEvents(InputAtom *pEvent);
-static ScreenID ProcessFileIO(void);
+static ScreenID ProcessFileIO();
 
-ScreenID LoadSaveScreenHandle(void) {
+ScreenID LoadSaveScreenHandle() {
   FDLG_LIST *FListNode;
   INT32 x;
   InputAtom DialogEvent;
@@ -449,7 +449,7 @@ static void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering) {
   }
 }
 
-static void RemoveFileDialog(void) {
+static void RemoveFileDialog() {
   INT32 x;
 
   MSYS_RemoveRegion(&BlanketRegion);
@@ -471,7 +471,7 @@ static void RemoveFileDialog(void) {
   RenderWorld();
 }
 
-static void DrawFileDialog(void) {
+static void DrawFileDialog() {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 179, 69, (179 + 281), 261,
                             Get16BPPColor(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 180, 70, (179 + 281), 261,
@@ -723,7 +723,7 @@ invalid:
   SetWorldSectorInvalid();
 }
 
-static void InitErrorCatchDialog(void) {
+static void InitErrorCatchDialog() {
   DoMessageBox(MSG_BOX_BASIC_STYLE, gzErrorCatchString, EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
   gfErrorCatch = FALSE;
 }
@@ -732,7 +732,7 @@ static void InitErrorCatchDialog(void) {
 // message on the screen and then update it which requires passing the screen
 // back to the main loop. When we come back for the next frame, we then actually
 // save or load the map.  So this process takes two full screen cycles.
-static ScreenID ProcessFileIO(void) {
+static ScreenID ProcessFileIO() {
   INT16 usStartX, usStartY;
   char ubNewFilename[50];
   switch (gbCurrentFileIOStatus) {
@@ -896,12 +896,12 @@ static void FDlgDwnCallback(GUI_BUTTON *butn, INT32 reason) {
   }
 }
 
-static BOOLEAN ExtractFilenameFromFields(void) {
+static BOOLEAN ExtractFilenameFromFields() {
   wcsncpy(gzFilename, GetStringFromField(0), lengthof(gzFilename));
   return ValidFilename();
 }
 
-static BOOLEAN ValidFilename(void) {
+static BOOLEAN ValidFilename() {
   const wchar_t *pDest;
   if (gzFilename[0] != '\0') {
     pDest = wcsstr(gzFilename, L".dat");

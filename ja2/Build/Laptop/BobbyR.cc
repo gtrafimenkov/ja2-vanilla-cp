@@ -406,8 +406,8 @@ static void HandleBobbyRUnderConstructionAni(BOOLEAN fReset) {
   }
 }
 
-static void InitBobbyRayNewInventory(void);
-static void InitBobbyRayUsedInventory(void);
+static void InitBobbyRayNewInventory();
+static void InitBobbyRayUsedInventory();
 
 void InitBobbyRayInventory() {
   // Initializes which NEW items can be bought at Bobby Rays
@@ -423,7 +423,7 @@ void InitBobbyRayInventory() {
   SetupStoreInventory(LaptopSaveInfo.BobbyRayUsedInventory, TRUE);
 }
 
-static void InitBobbyRayNewInventory(void) {
+static void InitBobbyRayNewInventory() {
   UINT16 i;
   UINT16 usBobbyrIndex = 0;
 
@@ -454,7 +454,7 @@ static void InitBobbyRayNewInventory(void) {
   LaptopSaveInfo.BobbyRayInventory[usBobbyrIndex].usItemIndex = BOBBYR_NO_ITEMS;
 }
 
-static void InitBobbyRayUsedInventory(void) {
+static void InitBobbyRayUsedInventory() {
   UINT16 i;
   UINT16 usBobbyrIndex = 0;
 
@@ -716,7 +716,7 @@ static void SimulateBobbyRayCustomer(STORE_INVENTORY *pInventoryArray, BOOLEAN f
   }
 }
 
-void CancelAllPendingBRPurchaseOrders(void) {
+void CancelAllPendingBRPurchaseOrders() {
   INT16 i;
 
   // remove all the BR-Order events off the event queue

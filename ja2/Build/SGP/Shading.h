@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-void BuildShadeTable(void);
-void BuildIntensityTable(void);
+void BuildShadeTable();
+void BuildIntensityTable();
 void SetShadeTablePercent(float uiShadePercent);
 
 extern UINT16 IntensityTable[65536];

@@ -68,14 +68,14 @@ struct LIGHT_SPRITE {
 };
 
 // Initializes the lighting system
-void InitLightingSystem(void);
+void InitLightingSystem();
 // Shuts down, and frees up all lights/memory
-void ShutdownLightingSystem(void);
+void ShutdownLightingSystem();
 // Resets all light sprites and deallocates templates
-void LightReset(void);
+void LightReset();
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-void SetDefaultWorldLightingColors(void);
+void SetDefaultWorldLightingColors();
 
 // Low-Level Template Interface
 
@@ -95,7 +95,7 @@ void LightSave(LightTemplate const *, char const *filename);
 // Sets the light color
 void LightSetColor(const SGPPaletteEntry *pPal);
 // Returns the active color
-const SGPPaletteEntry *LightGetColor(void);
+const SGPPaletteEntry *LightGetColor();
 
 // High-Level Sprite Interface
 
@@ -151,6 +151,6 @@ const char *LightSpriteGetTypeName(const LIGHT_SPRITE *);
 
 void CreateBiasedShadedPalettes(UINT16 *Shades[16], const SGPPaletteEntry ShadePal[256]);
 
-void LoadShadeTablesFromTextFile(void);
+void LoadShadeTablesFromTextFile();
 
 #endif

@@ -27,7 +27,7 @@ enum StructureDamageReason { STRUCTURE_DAMAGE_EXPLOSION = 1, STRUCTURE_DAMAGE_GU
 
 // functions at the structure database level
 STRUCTURE_FILE_REF *LoadStructureFile(const char *szFileName);
-void FreeAllStructureFiles(void);
+void FreeAllStructureFiles();
 void FreeStructureFile(STRUCTURE_FILE_REF *);
 
 //
@@ -82,7 +82,7 @@ BOOLEAN FindAndSwapStructure(INT16 sGridNo);
 // functions to work with the editor undo code
 //
 
-void DebugStructurePage1(void);
+void DebugStructurePage1();
 
 void AddZStripInfoToVObject(HVOBJECT, STRUCTURE_FILE_REF const *, BOOLEAN fFromAnimation,
                             INT16 sSTIStartIndex);

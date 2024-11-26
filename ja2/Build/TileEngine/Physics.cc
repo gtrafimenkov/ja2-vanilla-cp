@@ -93,7 +93,7 @@ real Kdl = (float)(0.1 * TIME_MULTI);  // LINEAR DAMPENING ( WIND RESISTANCE )
 #define REALOBJ2ID(o) ((o) - ObjectSlots)
 
 /// OBJECT POOL FUNCTIONS
-static REAL_OBJECT *GetFreeObjectSlot(void) {
+static REAL_OBJECT *GetFreeObjectSlot() {
   REAL_OBJECT *i = ObjectSlots;
   REAL_OBJECT const *const end = i + guiNumObjectSlots;
   for (; i != end; ++i) {
@@ -106,7 +106,7 @@ static REAL_OBJECT *GetFreeObjectSlot(void) {
   throw std::runtime_error("Out of physics object slots");
 }
 
-static void RecountObjectSlots(void) {
+static void RecountObjectSlots() {
   INT32 uiCount;
 
   for (uiCount = guiNumObjectSlots - 1; (uiCount >= 0); uiCount--) {

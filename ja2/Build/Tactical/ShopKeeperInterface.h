@@ -16,13 +16,13 @@ enum {
 };
 
 #define ARMS_INV_ITEM_SELECTED 0x00000001  // The item has been placed into the offer area
-//#define	ARMS_INV_PLAYERS_ITEM_SELECTED
-// 0x00000002			// The source location for the item has been
-// selected
+// #define	ARMS_INV_PLAYERS_ITEM_SELECTED
+//  0x00000002			// The source location for the item has been
+//  selected
 #define ARMS_INV_PLAYERS_ITEM_HAS_VALUE \
   0x00000004  // The Players item is worth something to this dealer
-//#define	ARMS_INV_ITEM_HIGHLIGHTED
-// 0x00000008			// If the items is highlighted
+// #define	ARMS_INV_ITEM_HIGHLIGHTED
+//  0x00000008			// If the items is highlighted
 #define ARMS_INV_ITEM_NOT_REPAIRED_YET \
   0x00000010                                // The item is in for repairs but not repaired yet
 #define ARMS_INV_ITEM_REPAIRED 0x00000020   // The item is repaired
@@ -62,9 +62,9 @@ extern INVENTORY_IN_SLOT gMoveingItem;
 
 extern OBJECTTYPE *pShopKeeperItemDescObject;
 
-void ShopKeeperScreenInit(void);
-ScreenID ShopKeeperScreenHandle(void);
-void ShopKeeperScreenShutdown(void);
+void ShopKeeperScreenInit();
+ScreenID ShopKeeperScreenHandle();
+void ShopKeeperScreenShutdown();
 
 void EnterShopKeeperInterfaceScreen(UINT8 ubArmsDealer);
 
@@ -82,14 +82,14 @@ void AddItemToPlayersOfferAreaAfterShopKeeperOpen(OBJECTTYPE *pItemObject, INT8 
 
 void BeginSkiItemPointer(UINT8 ubSource, INT8 bSlotNum, BOOLEAN fOfferToDealerFirst);
 
-void DeleteShopKeeperItemDescBox(void);
+void DeleteShopKeeperItemDescBox();
 
 BOOLEAN CanMercInteractWithSelectedShopkeeper(const SOLDIERTYPE *s);
 
-void RestrictSkiMouseCursor(void);
+void RestrictSkiMouseCursor();
 
 void DoSkiMessageBox(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,
                      MSGBOX_CALLBACK ReturnCallback);
-void StartSKIDescriptionBox(void);
+void StartSKIDescriptionBox();
 
 #endif

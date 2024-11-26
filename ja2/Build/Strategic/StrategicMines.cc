@@ -89,7 +89,7 @@ static const HEAD_MINER_TYPE gHeadMinerData[NUM_HEAD_MINERS] = {
     {CALVIN, {14, 15, 24, 23}, MINER_CALVIN_EXTERNAL_FACE},
     {CARL, {14, 15, 24, 23}, MINER_CARL_EXTERNAL_FACE}};
 
-void InitializeMines(void) {
+void InitializeMines() {
   UINT8 ubMineIndex;
   MINE_STATUS_TYPE *pMineStatus;
   UINT8 ubMineProductionIncreases;
@@ -183,7 +183,7 @@ void InitializeMines(void) {
   }
 }
 
-void HourlyMinesUpdate(void) {
+void HourlyMinesUpdate() {
   UINT8 ubMineIndex;
   MINE_STATUS_TYPE *pMineStatus;
 
@@ -502,7 +502,7 @@ static INT32 MineAMine(INT8 bMineIndex) {
   return iAmtExtracted;
 }
 
-void PostEventsForMineProduction(void) {
+void PostEventsForMineProduction() {
   UINT8 ubShift;
 
   for (ubShift = 0; ubShift < MINE_PRODUCTION_NUMBER_OF_PERIODS; ubShift++) {
@@ -513,7 +513,7 @@ void PostEventsForMineProduction(void) {
   }
 }
 
-void HandleIncomeFromMines(void) {
+void HandleIncomeFromMines() {
   INT32 iIncome = 0;
   // mine each mine, check if we own it and such
   for (INT8 bCounter = 0; bCounter < MAX_NUMBER_OF_MINES; ++bCounter) {
@@ -540,7 +540,7 @@ UINT32 PredictDailyIncomeFromAMine(INT8 const mine_id) {
   return amount < remaining ? amount : remaining;
 }
 
-INT32 PredictIncomeFromPlayerMines(void) {
+INT32 PredictIncomeFromPlayerMines() {
   INT32 iTotal = 0;
   INT8 bCounter = 0;
 
@@ -860,7 +860,7 @@ void QueenHasRegainedMineSector(INT8 bMineIndex) {
   }
 }
 
-BOOLEAN HasAnyMineBeenAttackedByMonsters(void) {
+BOOLEAN HasAnyMineBeenAttackedByMonsters() {
   UINT8 ubMineIndex;
 
   // find which mine this guy represents

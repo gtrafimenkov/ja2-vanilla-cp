@@ -15,7 +15,7 @@ void RebuildRoofUsingFloorInfo(INT32 iMapIndex, UINT16 usRoofType);
 
 void AddCave(INT32 iMapIndex, UINT16 usIndex);
 
-void AnalyseCaveMapForStructureInfo(void);
+void AnalyseCaveMapForStructureInfo();
 
 UINT16 PickAWallPiece(UINT16 usWallPieceType);
 

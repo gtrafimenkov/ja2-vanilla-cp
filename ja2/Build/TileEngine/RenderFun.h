@@ -9,7 +9,7 @@
 extern UINT8 gubWorldRoomHidden[MAX_ROOMS];
 extern UINT8 gubWorldRoomInfo[WORLD_MAX];
 
-void InitRoomDatabase(void);
+void InitRoomDatabase();
 
 void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier);
 

@@ -109,7 +109,7 @@ INT16 StringPixLength(wchar_t const *const string, Font const font) {
 }
 
 /* Saves the current font printing settings into temporary locations. */
-void SaveFontSettings(void) {
+void SaveFontSettings() {
   SaveFontDefault = FontDefault;
   SaveFontDestBuffer = FontDestBuffer;
   SaveFontDestRegion = FontDestRegion;
@@ -119,7 +119,7 @@ void SaveFontSettings(void) {
 }
 
 /* Restores the last saved font printing settings from the temporary lactions */
-void RestoreFontSettings(void) {
+void RestoreFontSettings() {
   FontDefault = SaveFontDefault;
   FontDestBuffer = SaveFontDestBuffer;
   FontDestRegion = SaveFontDestRegion;
@@ -287,7 +287,7 @@ void mprintf_buffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32
   MPrintBuffer(pDestBuf, uiDestPitchBYTES, x, y, str);
 }
 
-void InitializeFontManager(void) {
+void InitializeFontManager() {
   FontDefault = 0;
   SetFontDestBuffer(BACKBUFFER);
 }

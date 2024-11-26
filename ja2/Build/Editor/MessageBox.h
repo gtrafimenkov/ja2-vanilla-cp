@@ -9,8 +9,8 @@ extern UINT8 gubMessageBoxStatus;
 extern BOOLEAN gfMessageBoxResult;
 
 void CreateMessageBox(wchar_t const *msg);
-BOOLEAN MessageBoxHandled(void);
-void RemoveMessageBox(void);
+BOOLEAN MessageBoxHandled();
+void RemoveMessageBox();
 
 // NOTES:
 // Rewrote the damn thing.  It is better now because you have less management

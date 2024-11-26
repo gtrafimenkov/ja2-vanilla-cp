@@ -102,7 +102,7 @@ void DoSaveLoadMessageBoxWithRect(wchar_t const *zString, ScreenID uiExitScreen,
 
 extern BOOLEAN gfInMsgBox;
 
-ScreenID MessageBoxScreenHandle(void);
+ScreenID MessageBoxScreenHandle();
 void MessageBoxScreenShutdown();
 
 #endif

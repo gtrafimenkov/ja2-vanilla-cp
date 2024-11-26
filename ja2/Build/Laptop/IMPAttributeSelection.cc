@@ -95,15 +95,15 @@ static INT32 uiBarToReRender = -1;
 // are we actually coming back to edit, or are we restarting?
 BOOLEAN fReturnStatus = FALSE;
 
-void SetAttributes(void);
-void DrawBonusPointsRemaining(void);
-void SetGeneratedCharacterAttributes(void);
+void SetAttributes();
+void DrawBonusPointsRemaining();
+void SetGeneratedCharacterAttributes();
 
-static void CreateAttributeSliderButtons(void);
-static void CreateIMPAttributeSelectionButtons(void);
+static void CreateAttributeSliderButtons();
+static void CreateIMPAttributeSelectionButtons();
 static void CreateSlideRegionMouseRegions();
 
-void EnterIMPAttributeSelection(void) {
+void EnterIMPAttributeSelection() {
   // set attributes and skills
   if (!fReturnStatus && fFirstIMPAttribTime) {
     // re starting
@@ -127,7 +127,7 @@ void EnterIMPAttributeSelection(void) {
   RenderIMPAttributeSelection();
 }
 
-void RenderIMPAttributeSelection(void) {
+void RenderIMPAttributeSelection() {
   RenderProfileBackGround();
   RenderAttributeFrame(51, 87);
   RenderAttributeBoxes();
@@ -142,11 +142,11 @@ void RenderIMPAttributeSelection(void) {
   DrawBonusPointsRemaining();
 }
 
-static void DestroyAttributeSliderButtons(void);
-static void DestroyIMPAttributeSelectionButtons(void);
+static void DestroyAttributeSliderButtons();
+static void DestroyIMPAttributeSelectionButtons();
 static void DestroySlideRegionMouseRegions();
 
-void ExitIMPAttributeSelection(void) {
+void ExitIMPAttributeSelection() {
   DestroyAttributeSliderButtons();
   DestroySlideRegionMouseRegions();
   DestroyIMPAttributeSelectionButtons();
@@ -157,10 +157,10 @@ void ExitIMPAttributeSelection(void) {
 static void DecrementStat(INT32 iStatToDecrement);
 static INT32 GetCurrentAttributeValue(INT32 iAttribute);
 static void IncrementStat(INT32 iStatToIncrement);
-static void ProcessAttributes(void);
+static void ProcessAttributes();
 static void StatAtZeroBoxCallBack(MessageBoxReturnValue);
 
-void HandleIMPAttributeSelection(void) {
+void HandleIMPAttributeSelection() {
   // review mode, do not allow changes
   if (fReviewStats) return;
 
@@ -247,7 +247,7 @@ void HandleIMPAttributeSelection(void) {
   }
 }
 
-static void ProcessAttributes(void) {
+static void ProcessAttributes() {
   if (iCurrentStrength < 35) iCurrentStrength = 35;
   if (iCurrentDexterity < 35) iCurrentDexterity = 35;
   if (iCurrentAgility < 35) iCurrentAgility = 35;
@@ -371,7 +371,7 @@ static void DecrementStat(INT32 iStatToDecrement) {
 
 static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPAttributeSelectionButtons(void) {
+static void CreateIMPAttributeSelectionButtons() {
   // the finished button
   giIMPAttributeSelectionButtonImage[0] = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
   giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(
@@ -381,7 +381,7 @@ static void CreateIMPAttributeSelectionButtons(void) {
   giIMPAttributeSelectionButton[0]->SetCursor(CURSOR_WWW);
 }
 
-static void DestroyIMPAttributeSelectionButtons(void) {
+static void DestroyIMPAttributeSelectionButtons() {
   // Destroy the buttons needed for the IMP attrib enter page
   RemoveButton(giIMPAttributeSelectionButton[0]);
   UnloadButtonImage(giIMPAttributeSelectionButtonImage[0]);
@@ -399,7 +399,7 @@ static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RenderAttributeBoxes(void) {
+void RenderAttributeBoxes() {
   // this function will render the boxes in the sliding attribute bar, based on
   // position
   SetFontAttributes(FONT10ARIAL, FONT_WHITE, NO_SHADOW);
@@ -426,7 +426,7 @@ void RenderAttributeBoxes(void) {
 static void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateAttributeSliderButtons(void) {
+static void CreateAttributeSliderButtons() {
   // Create the buttons for the attribute slider
   // the finished button
   giIMPAttributeSelectionSliderButtonImage[0] =
@@ -454,7 +454,7 @@ static void CreateAttributeSliderButtons(void) {
   MarkButtonsDirty();
 }
 
-static void DestroyAttributeSliderButtons(void) {
+static void DestroyAttributeSliderButtons() {
   // Destroy the buttons used for attribute manipulation
   // get rid of image
   UnloadButtonImage(giIMPAttributeSelectionSliderButtonImage[0]);
@@ -673,7 +673,7 @@ static INT32 GetCurrentAttributeValue(INT32 attribute) {
   return val;
 }
 
-void SetAttributes(void) {
+void SetAttributes() {
   iCurrentStrength = 55;
   iCurrentDexterity = 55;
   iCurrentHealth = 55;
@@ -689,7 +689,7 @@ void SetAttributes(void) {
   iCurrentBonusPoints = 40;
 }
 
-void DrawBonusPointsRemaining(void) {
+void DrawBonusPointsRemaining() {
   // draws the amount of points remaining player has
 
   // just reviewing, don't blit stats
@@ -701,7 +701,7 @@ void DrawBonusPointsRemaining(void) {
                    LAPTOP_SCREEN_WEB_UL_Y + 71);
 }
 
-void SetGeneratedCharacterAttributes(void) {
+void SetGeneratedCharacterAttributes() {
   // Copy over the attributes and skills of the player generated character
   iStrength = iCurrentStrength;
   iDexterity = iCurrentDexterity;

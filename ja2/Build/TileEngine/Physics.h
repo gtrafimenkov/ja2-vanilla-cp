@@ -68,7 +68,7 @@ struct REAL_OBJECT {
 REAL_OBJECT *CreatePhysicalObject(const OBJECTTYPE *pGameObj, real dLifeLength, real xPos,
                                   real yPos, real zPos, real xForce, real yForce, real zForce,
                                   SOLDIERTYPE *owner, UINT8 ubActionCode, SOLDIERTYPE *target);
-void RemoveAllPhysicsObjects(void);
+void RemoveAllPhysicsObjects();
 
 BOOLEAN CalculateLaunchItemChanceToGetThrough(const SOLDIERTYPE *pSoldier, const OBJECTTYPE *pItem,
                                               INT16 sGridNo, UINT8 ubLevel, INT16 sEndZ,
@@ -80,7 +80,7 @@ void CalculateLaunchItemParamsForThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UIN
                                        UINT8 ubActionCode, SOLDIERTYPE *target);
 
 // SIMULATE WORLD
-void SimulateWorld(void);
+void SimulateWorld();
 
 void SavePhysicsTableToSaveGameFile(HWFILE);
 void LoadPhysicsTableFromSavedGameFile(HWFILE);

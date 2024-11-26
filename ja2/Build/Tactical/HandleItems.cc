@@ -77,7 +77,7 @@
 #define NUM_ITEM_FLASH_SLOTS 50
 #define MIN_LOB_RANGE 6
 
-typedef void (*ITEM_POOL_LOCATOR_HOOK)(void);
+typedef void (*ITEM_POOL_LOCATOR_HOOK)();
 
 struct ITEM_POOL_LOCATOR {
   ITEM_POOL *pItemPool;
@@ -1069,7 +1069,7 @@ static void HandleAutoPlaceFail(SOLDIERTYPE *const pSoldier, OBJECTTYPE *const o
   }
 }
 
-static void CheckForPickedOwnership(void);
+static void CheckForPickedOwnership();
 static BOOLEAN ContinuePastBoobyTrap(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT32 iItemIndex,
                                      BOOLEAN *pfSaidQuote);
 static BOOLEAN ItemExistsAtLocation(INT16 sGridNo, INT32 iItemIndex, UINT8 ubLevel);
@@ -1709,11 +1709,11 @@ ITEM_POOL *GetItemPool(UINT16 const usMapPos, UINT8 const ubLevel) {
   return 0;
 }
 
-void NotifySoldiersToLookforItems(void) {
+void NotifySoldiersToLookforItems() {
   FOR_EACH_MERC(i)(*i)->uiStatusFlags |= SOLDIER_LOOKFOR_ITEMS;
 }
 
-void AllSoldiersLookforItems(void) { FOR_EACH_MERC(i) RevealRoofsAndItems(*i, TRUE); }
+void AllSoldiersLookforItems() { FOR_EACH_MERC(i) RevealRoofsAndItems(*i, TRUE); }
 
 BOOLEAN AnyItemsVisibleOnLevel(const ITEM_POOL *pItemPool, INT8 bZLevel) {
   if ((gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
@@ -1850,7 +1850,7 @@ void DrawItemPoolList(const ITEM_POOL *const pItemPool, const INT8 bZLevel, cons
 
 /// ITEM POOL INDICATOR FUNCTIONS
 
-static ITEM_POOL_LOCATOR *GetFreeFlashItemSlot(void) {
+static ITEM_POOL_LOCATOR *GetFreeFlashItemSlot() {
   for (ITEM_POOL_LOCATOR *l = FlashItemSlots; l != FlashItemSlots + guiNumFlashItemSlots; ++l) {
     if (!l->pItemPool) return l;
   }
@@ -1860,7 +1860,7 @@ static ITEM_POOL_LOCATOR *GetFreeFlashItemSlot(void) {
   return NULL;
 }
 
-static void RecountFlashItemSlots(void) {
+static void RecountFlashItemSlots() {
   INT32 uiCount;
 
   for (uiCount = guiNumFlashItemSlots - 1; (uiCount >= 0); uiCount--) {
@@ -1924,7 +1924,7 @@ void HandleFlashingItems() {
   RecountFlashItemSlots();
 }
 
-void RenderTopmostFlashingItems(void) {
+void RenderTopmostFlashingItems() {
   for (UINT32 cnt = 0; cnt < guiNumFlashItemSlots; ++cnt) {
     ITEM_POOL_LOCATOR const *const l = &FlashItemSlots[cnt];
     ITEM_POOL const *const ip = l->pItemPool;
@@ -2376,7 +2376,7 @@ static void SetOffBoobyTrap() {
   RemoveItemFromPool(&wi);
 }
 
-static void BoobyTrapDialogueCallBack(void);
+static void BoobyTrapDialogueCallBack();
 
 static BOOLEAN ContinuePastBoobyTrap(SOLDIERTYPE *const pSoldier, const INT16 sGridNo,
                                      const INT32 iItemIndex, BOOLEAN *const pfSaidQuote) {
@@ -2449,7 +2449,7 @@ static BOOLEAN ContinuePastBoobyTrap(SOLDIERTYPE *const pSoldier, const INT16 sG
 
 static void BoobyTrapInMapScreenMessageBoxCallBack(MessageBoxReturnValue);
 
-static void BoobyTrapDialogueCallBack(void) {
+static void BoobyTrapDialogueCallBack() {
   gfJustFoundBoobyTrap = TRUE;
 
   // now prompt the user...
@@ -2708,9 +2708,9 @@ BOOLEAN NearbyGroundSeemsWrong(SOLDIERTYPE *const s, const INT16 sGridNo,
   return FALSE;
 }
 
-static void MineSpottedLocatorCallback(void);
+static void MineSpottedLocatorCallback();
 
-void MineSpottedDialogueCallBack(void) {
+void MineSpottedDialogueCallBack() {
   // ATE: REALLY IMPORTANT - ALL CALLBACK ITEMS SHOULD UNLOCK
   gTacticalStatus.fLockItemLocators = FALSE;
 
@@ -2724,7 +2724,7 @@ void MineSpottedDialogueCallBack(void) {
 
 static void MineSpottedMessageBoxCallBack(MessageBoxReturnValue);
 
-static void MineSpottedLocatorCallback(void) {
+static void MineSpottedLocatorCallback() {
   guiPendingOverrideEvent = LU_ENDUILOCK;
 
   // now ask the player if he wants to place a blue flag.
@@ -2820,7 +2820,7 @@ static void TestPotentialOwner(SOLDIERTYPE *const s) {
   MakeNPCGrumpyForMinorOffense(s, gpTempSoldier);
 }
 
-static void CheckForPickedOwnership(void) {
+static void CheckForPickedOwnership() {
   for (ITEM_POOL const *i = GetItemPool(gsTempGridno, gpTempSoldier->bLevel); i; i = i->pNext) {
     OBJECTTYPE const &o = GetWorldItem(i->iItemIndex).o;
     if (o.usItem != OWNERSHIP) continue;
@@ -2914,7 +2914,7 @@ BOOLEAN ContinuePastBoobyTrapInMapScreen(OBJECTTYPE *pObject, SOLDIERTYPE *pSold
 }
 
 // Well, clears all item pools
-static void ClearAllItemPools(void) {
+static void ClearAllItemPools() {
   UINT32 cnt;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {

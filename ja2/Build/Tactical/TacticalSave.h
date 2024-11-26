@@ -16,7 +16,7 @@ void SaveMapTempFilesToSavedGameFile(HWFILE);
 
 // Saves the Current Sectors, ( world Items, rotting corpses, ... )  to the
 // temporary file used to store the sectors items
-void SaveCurrentSectorsInformationToTempItemFile(void);
+void SaveCurrentSectorsInformationToTempItemFile();
 
 // Loads the Currents Sectors information ( world Items, rotting corpses, ... )
 // from the temporary file used to store the sectores items
@@ -80,7 +80,7 @@ void NewJA2EncryptedFileRead(HWFILE, BYTE *data, UINT32 uiBytesToRead);
 void NewJA2EncryptedFileWrite(HWFILE, BYTE const *data, UINT32 uiBytesToWrite);
 
 // If hacker's mess with our save/temp files, this is our final line of defence.
-void InitExitGameDialogBecauseFileHackDetected(void);
+void InitExitGameDialogBecauseFileHackDetected();
 
 void HandleAllReachAbleItemsInTheSector(INT16 x, INT16 y, INT8 z);
 

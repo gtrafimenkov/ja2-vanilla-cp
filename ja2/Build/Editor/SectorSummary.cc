@@ -222,10 +222,10 @@ static GUIButtonRef MakeRadioButton(INT16 const x, INT16 const y, GUI_CALLBACK c
   return CreateCheckBoxButton(x, y, EDITORDIR "/radiobutton.sti", MSYS_PRIORITY_HIGH, click);
 }
 
-static void LoadGlobalSummary(void);
+static void LoadGlobalSummary();
 static void MapClickCallback(MOUSE_REGION *reg, INT32 reason);
 static void MapMoveCallback(MOUSE_REGION *reg, INT32 reason);
-static void ReleaseSummaryWindow(void);
+static void ReleaseSummaryWindow();
 static void SummaryEnemyCallback(GUI_BUTTON *btn, INT32 reason);
 static void SummaryLoadMapCallback(GUI_BUTTON *btn, INT32 reason);
 static void SummaryOkayCallback(GUI_BUTTON *btn, INT32 reason);
@@ -378,7 +378,7 @@ void AutoLoadMap() {
   gfConfirmExitFirst = TRUE;
 }
 
-static void ReleaseSummaryWindow(void) {
+static void ReleaseSummaryWindow() {
   INT32 i;
   UINT32 uiCurrTimer;
   if (!gfSummaryWindowActive || gfPersistantSummary) return;
@@ -422,7 +422,7 @@ void DestroySummaryWindow() {
   if (gfWorldLoaded) gfConfirmExitFirst = TRUE;
 }
 
-static void RenderSectorInformation(void) {
+static void RenderSectorInformation() {
   // UINT16 str[ 100 ];
   MAPCREATE_STRUCT *m;
   SUMMARYFILE *s;
@@ -598,7 +598,7 @@ static void RenderSectorInformation(void) {
 }
 
 // 2)  CODE TRIGGER/ACTION NAMES
-static void RenderItemDetails(void) {
+static void RenderItemDetails() {
   FLOAT dAvgExistChance, dAvgStatus;
   OBJECTTYPE *pItem;
   INT32 index, i;
@@ -869,8 +869,8 @@ static void RenderItemDetails(void) {
   }
 }
 
-static void CalculateOverrideStatus(void);
-static void ExtractTempFilename(void);
+static void CalculateOverrideStatus();
+static void ExtractTempFilename();
 static void SetupItemDetailsMode(BOOLEAN fAllowRecursion);
 
 void RenderSummaryWindow() {
@@ -1560,8 +1560,8 @@ static void SummaryToggleProgressCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void CreateGlobalSummary(void);
-static void RegenerateSummaryInfoForAllOutdatedMaps(void);
+static void CreateGlobalSummary();
+static void RegenerateSummaryInfoForAllOutdatedMaps();
 
 BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
   if (!gfSummaryWindowActive) return FALSE;
@@ -1651,7 +1651,7 @@ BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
 
 /* This function can be very time consuming as it loads every map file with a
  * valid coordinate name, analyses it, and builds a new global summary file. */
-static void CreateGlobalSummary(void) {
+static void CreateGlobalSummary() {
   DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Generating GlobalSummary Information...");
 
   gfGlobalSummaryExists = FALSE;
@@ -1881,7 +1881,7 @@ static void SummaryOverrideCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void CalculateOverrideStatus(void) {
+static void CalculateOverrideStatus() {
   char szFilename[40];
   gfOverrideDirty = FALSE;
   gfOverride = FALSE;
@@ -1959,7 +1959,7 @@ static BOOLEAN LoadSummary(const INT32 x, const INT32 y, const UINT8 level,
   return TRUE;
 }
 
-static void LoadGlobalSummary(void) {
+static void LoadGlobalSummary() {
   DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Executing LoadGlobalSummary()...");
 
   gfMustForceUpdateAllMaps = FALSE;
@@ -2004,7 +2004,7 @@ static void LoadGlobalSummary(void) {
   DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "LoadGlobalSummary() finished...");
 }
 
-static void UpdateMasterProgress(void);
+static void UpdateMasterProgress();
 
 void WriteSectorSummaryUpdate(const char *const filename, const UINT8 ubLevel,
                               SUMMARYFILE *const sf) {
@@ -2041,7 +2041,7 @@ void WriteSectorSummaryUpdate(const char *const filename, const UINT8 ubLevel,
 
 double MasterStart, MasterEnd;
 
-static void UpdateMasterProgress(void) {
+static void UpdateMasterProgress() {
   if (gfUpdatingNow && gusTotal) {
     MasterStart = (gusCurrent / (double)gusTotal) * 100.0;
     gusCurrent++;
@@ -2070,7 +2070,7 @@ static void ReportError(const char *pSector, UINT8 ubLevel) {
   yp++;
 }
 
-static void RegenerateSummaryInfoForAllOutdatedMaps(void) {
+static void RegenerateSummaryInfoForAllOutdatedMaps() {
   INT32 x, y;
   SUMMARYFILE *pSF;
   // CreateProgressBar(0, 20, 120, 280, 12); //slave (individual)
@@ -2160,7 +2160,7 @@ static void SummaryUpdateCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ExtractTempFilename(void) {
+static void ExtractTempFilename() {
   wchar_t const *const str = GetStringFromField(1);
   if (wcscmp(gszTempFilename, str)) {
     wcscpy(gszTempFilename, str);

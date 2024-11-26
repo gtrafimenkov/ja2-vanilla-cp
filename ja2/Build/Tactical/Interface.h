@@ -73,7 +73,7 @@ extern MOUSE_REGION gRadarRegion;
 
 enum DirtyLevel { DIRTYLEVEL0 = 0, DIRTYLEVEL1 = 1, DIRTYLEVEL2 = 2 };
 
-void InitializeTacticalInterface(void);
+void InitializeTacticalInterface();
 extern DirtyLevel fInterfacePanelDirty;
 extern BOOLEAN gfPausedTacticalRenderFlags;
 extern DirtyLevel gfPausedTacticalRenderInterfaceFlags;
@@ -81,40 +81,40 @@ extern INT16 gsInterfaceLevel;
 extern BOOLEAN gfInMovementMenu;
 
 void PopupMovementMenu(UI_EVENT *pUIEvent);
-void PopDownMovementMenu(void);
-void RenderMovementMenu(void);
-void CancelMovementMenu(void);
+void PopDownMovementMenu();
+void RenderMovementMenu();
+void CancelMovementMenu();
 
-void PopDownOpenDoorMenu(void);
-void RenderOpenDoorMenu(void);
+void PopDownOpenDoorMenu();
+void RenderOpenDoorMenu();
 void InitDoorOpenMenu(SOLDIERTYPE *pSoldier, BOOLEAN fClosingDoor);
-BOOLEAN HandleOpenDoorMenu(void);
-void CancelOpenDoorMenu(void);
+BOOLEAN HandleOpenDoorMenu();
+void CancelOpenDoorMenu();
 
-void HandleInterfaceBackgrounds(void);
+void HandleInterfaceBackgrounds();
 
 void DrawSelectedUIAboveGuy(SOLDIERTYPE &);
 
-void CreateCurrentTacticalPanelButtons(void);
-void RemoveCurrentTacticalPanelButtons(void);
+void CreateCurrentTacticalPanelButtons();
+void RemoveCurrentTacticalPanelButtons();
 void SetCurrentTacticalPanelCurrentMerc(SOLDIERTYPE *s);
 void SetCurrentInterfacePanel(InterfacePanelKind);
 BOOLEAN IsMercPortraitVisible(const SOLDIERTYPE *s);
 
-void InitializeCurrentPanel(void);
-void ShutdownCurrentPanel(void);
+void InitializeCurrentPanel();
+void ShutdownCurrentPanel();
 
-void ClearInterface(void);
-void RestoreInterface(void);
+void ClearInterface();
+void RestoreInterface();
 
-void RenderArrows(void);
-void EraseRenderArrows(void);
+void RenderArrows();
+void EraseRenderArrows();
 
 #define EndDeadlockMsg() ((void)0)
 
 void DirtyMercPanelInterface(SOLDIERTYPE const *, DirtyLevel);
 
-void EndUIMessage(void);
+void EndUIMessage();
 void BeginUIMessage(BOOLEAN fUseSkullIcon, const wchar_t *text);
 
 // map screen version, for centering over the map area
@@ -133,32 +133,32 @@ enum MESSAGE_TYPES {
   PLAYER_TURN_MESSAGE
 };
 
-void HandleTopMessages(void);
+void HandleTopMessages();
 void AddTopMessage(MESSAGE_TYPES ubType);
-void EndTopMessage(void);
+void EndTopMessage();
 
 void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies);
 
 const wchar_t *GetSoldierHealthString(const SOLDIERTYPE *s);
 
-void ResetPhysicsTrajectoryUI(void);
-void SetupPhysicsTrajectoryUI(void);
-void EndPhysicsTrajectoryUI(void);
+void ResetPhysicsTrajectoryUI();
+void SetupPhysicsTrajectoryUI();
+void EndPhysicsTrajectoryUI();
 void BeginPhysicsTrajectoryUI(INT16 sGridNo, INT8 bLevel, BOOLEAN fBadCTGT);
 
 void InitPlayerUIBar(BOOLEAN fInterrupt);
 
-void ToggleTacticalPanels(void);
+void ToggleTacticalPanels();
 
-void DirtyTopMessage(void);
+void DirtyTopMessage();
 
 void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel);
-void HandleMultiPurposeLocator(void);
-void RenderTopmostMultiPurposeLocator(void);
+void HandleMultiPurposeLocator();
+void RenderTopmostMultiPurposeLocator();
 
 void GetSoldierAboveGuyPositions(const SOLDIERTYPE *s, INT16 *psX, INT16 *psY, BOOLEAN fRadio);
 
-void UpdateEnemyUIBar(void);
+void UpdateEnemyUIBar();
 
 extern BOOLEAN gfInOpenDoorMenu;
 extern UINT32 guiUIMessageTimeDelay;

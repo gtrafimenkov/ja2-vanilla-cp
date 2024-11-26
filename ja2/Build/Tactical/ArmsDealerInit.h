@@ -37,11 +37,11 @@ enum {
 #define ARMS_DEALER_KIT 0x00008000
 
 #define ARMS_DEALER_FACE 0x00010000
-//#define		ARMS_DEALER_THROWN
-// 0x00020000 #define		ARMS_DEALER_KEY
-// 0x00040000
+// #define		ARMS_DEALER_THROWN
+//  0x00020000 #define		ARMS_DEALER_KEY
+//  0x00040000
 
-//#define		ARMS_DEALER_VIDEO_CAMERA 0x00020000
+// #define		ARMS_DEALER_VIDEO_CAMERA 0x00020000
 
 #define ARMS_DEALER_DETONATORS 0x00040000
 
@@ -53,8 +53,8 @@ enum {
 
 #define ARMS_DEALER_MEDICAL 0x00800000 | ARMS_DEALER_MEDKIT
 
-//#define		ARMS_DEALER_EMPTY_JAR
-// 0x01000000
+// #define		ARMS_DEALER_EMPTY_JAR
+//  0x01000000
 #define ARMS_DEALER_CREATURE_PARTS 0x02000000
 #define ARMS_DEALER_ROCKET_RIFLE 0x04000000
 
@@ -194,8 +194,8 @@ extern const ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS];
 extern ARMS_DEALER_STATUS gArmsDealerStatus[NUM_ARMS_DEALERS];
 extern DEALER_ITEM_HEADER gArmsDealersInventory[NUM_ARMS_DEALERS][MAXITEMS];
 
-void InitAllArmsDealers(void);
-void ShutDownArmsDealers(void);
+void InitAllArmsDealers();
+void ShutDownArmsDealers();
 
 // Count only the # of "distinct" item types (for shopkeeper purposes)
 UINT32 CountDistinctItemsInArmsDealersInventory(ArmsDealerID);
@@ -214,7 +214,7 @@ ArmsDealerID GetArmsDealerIDFromMercID(UINT8 ubMercID);
 void SaveArmsDealerInventoryToSaveGameFile(HWFILE);
 void LoadArmsDealerInventoryFromSavedGameFile(HWFILE, UINT32 savegame_version);
 
-void DailyUpdateOfArmsDealersInventory(void);
+void DailyUpdateOfArmsDealersInventory();
 
 UINT8 GetTypeOfArmsDealer(UINT8 ubDealerID);
 

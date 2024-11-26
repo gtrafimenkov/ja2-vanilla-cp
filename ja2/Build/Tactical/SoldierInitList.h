@@ -41,8 +41,8 @@ void LoadSoldierInitListLinks(HWFILE);
 void NewWayOfLoadingEnemySoldierInitListLinks(HWFILE);
 void NewWayOfLoadingCivilianInitListLinks(HWFILE);
 
-void InitSoldierInitList(void);
-void KillSoldierInitList(void);
+void InitSoldierInitList();
+void KillSoldierInitList();
 SOLDIERINITNODE *AddBasicPlacementToSoldierInitList(BASIC_SOLDIERCREATE_STRUCT const &);
 void RemoveSoldierNodeFromInitList(SOLDIERINITNODE *pNode);
 SOLDIERINITNODE *FindSoldierInitNodeWithID(UINT16 usID);
@@ -56,18 +56,18 @@ void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumI
                                  UINT8 ubNumAdultMales, UINT8 ubNumAdultFemales);
 void AddSoldierInitListMilitia(UINT8 ubNumGreen, UINT8 ubNumReg, UINT8 ubNumElites);
 
-void AddSoldierInitListBloodcats(void);
+void AddSoldierInitListBloodcats();
 
-void UseEditorOriginalList(void);
-void UseEditorAlternateList(void);
+void UseEditorOriginalList();
+void UseEditorAlternateList();
 
 /* Any killed people that used detailed placement information must prevent that
  * from occurring again in the future.  Otherwise, the sniper guy with 99
  * marksmanship could appear again if the map was loaded again! */
 void EvaluateDeathEffectsToSoldierInitList(SOLDIERTYPE const &);
 
-void AddProfilesUsingProfileInsertionData(void);
-void AddProfilesNotUsingProfileInsertionData(void);
+void AddProfilesUsingProfileInsertionData();
+void AddProfilesNotUsingProfileInsertionData();
 
 void StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated();
 

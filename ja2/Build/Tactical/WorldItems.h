@@ -62,7 +62,7 @@ void LoadWorldItemsFromMap(HWFILE);
 
 void SaveWorldItemsToMap(HWFILE fp);
 
-void TrashWorldItems(void);
+void TrashWorldItems();
 
 struct WORLDBOMB {
   BOOLEAN fExists;
@@ -81,7 +81,7 @@ extern UINT32 guiNumWorldBombs;
 #define FOR_EACH_WORLD_BOMB(iter) BASE_FOR_EACH_WORLD_BOMB(WORLDBOMB, iter)
 #define CFOR_EACH_WORLD_BOMB(iter) BASE_FOR_EACH_WORLD_BOMB(const WORLDBOMB, iter)
 
-extern void FindPanicBombsAndTriggers(void);
+extern void FindPanicBombsAndTriggers();
 extern INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel);
 
 void RefreshWorldItemsIntoItemPools(const WORLDITEM *pItemList, INT32 iNumberOfItems);

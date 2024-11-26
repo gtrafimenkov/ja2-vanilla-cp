@@ -3,11 +3,11 @@
 
 #include "SGP/Types.h"
 
-void EnterMercsAccount(void);
-void ExitMercsAccount(void);
-void HandleMercsAccount(void);
-void RenderMercsAccount(void);
+void EnterMercsAccount();
+void ExitMercsAccount();
+void HandleMercsAccount();
+void RenderMercsAccount();
 
-UINT32 CalculateHowMuchPlayerOwesSpeck(void);
+UINT32 CalculateHowMuchPlayerOwesSpeck();
 
 #endif

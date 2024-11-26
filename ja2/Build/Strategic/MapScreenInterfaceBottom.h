@@ -27,37 +27,37 @@ extern BOOLEAN gfStartMapScreenToLaptopTransition;
 
 // function prototypes
 
-void LoadMapScreenInterfaceBottom(void);
-void DeleteMapScreenInterfaceBottom(void);
-void RenderMapScreenInterfaceBottom(void);
+void LoadMapScreenInterfaceBottom();
+void DeleteMapScreenInterfaceBottom();
+void RenderMapScreenInterfaceBottom();
 
 // delete map bottom graphics
-void DeleteMapBottomGraphics(void);
+void DeleteMapBottomGraphics();
 
 // load bottom graphics
-void HandleLoadOfMapBottomGraphics(void);
+void HandleLoadOfMapBottomGraphics();
 
 // allowed to time compress?
-BOOLEAN AllowedToTimeCompress(void);
+BOOLEAN AllowedToTimeCompress();
 
 void EnableDisAbleMapScreenOptionsButton(BOOLEAN fEnable);
 
 // create and destroy masks to cover the time compression buttons as needed
 void CreateDestroyMouseRegionMasksForTimeCompressionButtons();
 
-BOOLEAN CommonTimeCompressionChecks(void);
+BOOLEAN CommonTimeCompressionChecks();
 
 bool AnyUsableRealMercenariesOnTeam();
 
 void RequestTriggerExitFromMapscreen(ExitToWhere);
 BOOLEAN AllowedToExitFromMapscreenTo(ExitToWhere);
-void HandleExitsFromMapScreen(void);
+void HandleExitsFromMapScreen();
 
 void MapScreenMsgScrollDown(UINT8 ubLinesDown);
 void MapScreenMsgScrollUp(UINT8 ubLinesUp);
 
 void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex);
-void MoveToEndOfMapScreenMessageList(void);
+void MoveToEndOfMapScreenMessageList();
 
 // the dirty state of the mapscreen interface bottom
 extern BOOLEAN fMapScreenBottomDirty;

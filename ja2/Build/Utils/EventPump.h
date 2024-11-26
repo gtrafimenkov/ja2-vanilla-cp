@@ -71,10 +71,10 @@ struct EV_S_NOISE {
 };
 
 void AddGameEvent(GameEvent, UINT16 usDelay, PTR pEventData);
-BOOLEAN DequeAllGameEvents(void);
-BOOLEAN DequeueAllDemandGameEvents(void);
+BOOLEAN DequeAllGameEvents();
+BOOLEAN DequeueAllDemandGameEvents();
 
 // clean out the event queue
-BOOLEAN ClearEventQueue(void);
+BOOLEAN ClearEventQueue();
 
 #endif

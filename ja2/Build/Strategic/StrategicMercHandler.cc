@@ -455,7 +455,7 @@ void MercComplainAboutEquipment(UINT8 ubProfile) {
   }
 }
 
-void UpdateBuddyAndHatedCounters(void) {
+void UpdateBuddyAndHatedCounters() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // If the merc is active and on a combat assignment
     if (s->bAssignment >= ON_DUTY) continue;

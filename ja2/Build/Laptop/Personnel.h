@@ -3,11 +3,11 @@
 
 #include "JA2Types.h"
 
-void GameInitPersonnel(void);
-void EnterPersonnel(void);
-void ExitPersonnel(void);
-void HandlePersonnel(void);
-void RenderPersonnel(void);
+void GameInitPersonnel();
+void EnterPersonnel();
+void ExitPersonnel();
+void HandlePersonnel();
+void RenderPersonnel();
 
 // add character to:
 

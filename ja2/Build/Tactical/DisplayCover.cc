@@ -56,9 +56,9 @@ static VISIBLE_TO_SOLDIER_STRUCT gVisibleToSoldierStruct[DC__SOLDIER_VISIBLE_RAN
                                                         [DC__SOLDIER_VISIBLE_RANGE];
 static INT16 gsLastVisibleToSoldierGridNo = NOWHERE;
 
-static void AddCoverTileToEachGridNo(void);
+static void AddCoverTileToEachGridNo();
 static void CalculateCoverInRadiusAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange);
-static INT8 GetCurrentMercForDisplayCoverStance(void);
+static INT8 GetCurrentMercForDisplayCoverStance();
 
 void DisplayCoverOfSelectedGridNo() {
   SOLDIERTYPE const *const sel = GetSelectedMan();
@@ -104,7 +104,7 @@ void DisplayCoverOfSelectedGridNo() {
 
 static void AddCoverObjectToWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof);
 
-static void AddCoverTileToEachGridNo(void) {
+static void AddCoverTileToEachGridNo() {
   BOOLEAN const roof = gsInterfaceLevel != I_GROUND_LEVEL;
   for (UINT32 y = 0; y < DC_MAX_COVER_RANGE; ++y) {
     for (UINT32 x = 0; x < DC_MAX_COVER_RANGE; ++x) {
@@ -155,7 +155,7 @@ void RemoveCoverOfSelectedGridNo() {
 
 static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(const SOLDIERTYPE *pSoldier,
                                                       INT16 sTargetGridNo, INT8 bStance);
-static SOLDIERTYPE *GetCurrentMercForDisplayCover(void);
+static SOLDIERTYPE *GetCurrentMercForDisplayCover();
 
 static void CalculateCoverInRadiusAroundGridno(INT16 const sTargetGridNo, INT8 search_range) {
   // clear out the array first
@@ -311,9 +311,9 @@ static void RemoveCoverObjectFromWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN 
   }
 }
 
-static SOLDIERTYPE *GetCurrentMercForDisplayCover(void) { return GetSelectedMan(); }
+static SOLDIERTYPE *GetCurrentMercForDisplayCover() { return GetSelectedMan(); }
 
-static INT8 GetCurrentMercForDisplayCoverStance(void) {
+static INT8 GetCurrentMercForDisplayCoverStance() {
   const SOLDIERTYPE *const pSoldier = GetCurrentMercForDisplayCover();
   INT8 bStance;
 
@@ -370,7 +370,7 @@ void DisplayRangeToTarget(SOLDIERTYPE const *const s, INT16 const sTargetGridNo)
   }
 }
 
-static void AddVisibleToSoldierToEachGridNo(void);
+static void AddVisibleToSoldierToEachGridNo();
 static void CalculateVisibleToSoldierAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange);
 
 void DisplayGridNoVisibleToSoldierGrid() {
@@ -505,7 +505,7 @@ static void CalculateVisibleToSoldierAroundGridno(INT16 sTargetGridNo, INT8 bSea
   }
 }
 
-static void AddVisibleToSoldierToEachGridNo(void) {
+static void AddVisibleToSoldierToEachGridNo() {
   UINT32 uiCntX, uiCntY;
   INT8 bVisibleToSoldier = 0;
   BOOLEAN fRoof;

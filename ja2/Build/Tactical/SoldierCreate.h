@@ -215,6 +215,6 @@ void InternalTacticalRemoveSoldier(SOLDIERTYPE &, BOOLEAN fRemoveVehicle);
 void OkayToUpgradeEliteToSpecialProfiledEnemy(SOLDIERCREATE_STRUCT *pp);
 extern BOOLEAN gfProfiledEnemyAdded;  // needs to be saved (used by the above function)
 
-void TrashAllSoldiers(void);
+void TrashAllSoldiers();
 
 #endif

@@ -93,10 +93,10 @@
   { (b)--; }
 
 #define SET_BLOOD_FLOOR_STRENGTH(b, nb) \
-  { (b) = ((nb) << 2) | ((b)&0xE3); }
+  { (b) = ((nb) << 2) | ((b) & 0xE3); }
 
 #define SET_BLOOD_ROOF_STRENGTH(b, nb) \
-  { (b) = BLOOD_FLOOR_STRENGTH((nb)) << 5 | ((b)&0x1F); }
+  { (b) = BLOOD_FLOOR_STRENGTH((nb)) << 5 | ((b) & 0x1F); }
 
 #define DECAY_BLOOD_FLOOR_STRENGTH(b)             \
   {                                               \
@@ -140,7 +140,7 @@ void DecaySmells() {
   }
 }
 
-static void DecayBlood(void) {
+static void DecayBlood() {
   FOR_EACH_WORLD_TILE(pMapElement) {
     if (pMapElement->ubBloodInfo) {
       // delay blood timer!

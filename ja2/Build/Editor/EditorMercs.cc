@@ -236,7 +236,7 @@ void EntryInitEditorMercsInfo() {
   gfCanEditMercs = TRUE;
 }
 
-void ProcessMercEditing(void) {
+void ProcessMercEditing() {
   if (iEditMercMode != EDIT_MERC_NEXT_COLOR) return;
 
   // Handle changes to the merc colors
@@ -655,7 +655,7 @@ static void ShowEditMercColorSet(UINT8 ubPaletteRep, INT16 sSet) {
 //
 //	Displays the way points of the currently selected merc.
 //
-void DisplayWayPoints(void) {
+void DisplayWayPoints() {
   INT16 sX, sY;
   INT16 sXMapPos, sYMapPos;
   INT16 sScreenX, sScreenY;
@@ -761,7 +761,7 @@ void SetMercRelativeAttributes(INT8 bLevel) {
   gbDefaultRelativeAttributeLevel = bLevel;
 }
 
-static void UpdateMercItemSlots(void);
+static void UpdateMercItemSlots();
 static void SetMercEditability(BOOLEAN fEditable);
 
 void IndicateSelectedMerc(INT16 sID) {
@@ -983,7 +983,7 @@ void DeleteSelectedMerc() {
 
 static void CalcStringForValue(wchar_t *str, size_t length, INT32 iValue, UINT32 uiMax);
 
-static void SetupTextInputForMercProfile(void) {
+static void SetupTextInputForMercProfile() {
   wchar_t str[4];
   INT16 sNum;
 
@@ -997,7 +997,7 @@ static void SetupTextInputForMercProfile(void) {
   AddTextInputField(200, 430, 30, 20, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
-static void SetupTextInputForMercAttributes(void) {
+static void SetupTextInputForMercAttributes() {
   wchar_t str[4];
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
@@ -1045,7 +1045,7 @@ static void CalcStringForValue(wchar_t *str, size_t length, INT32 iValue, UINT32
     swprintf(str, length, L"%d", iValue);
 }
 
-static void ExtractAndUpdateMercAttributes(void) {
+static void ExtractAndUpdateMercAttributes() {
   // If we have just deleted the merc's detailed placement in the editor, we
   // don't need to extract the information
   if (!gpSelected->pDetailedPlacement) return;
@@ -1094,7 +1094,7 @@ static void ExtractAndUpdateMercAttributes(void) {
   UpdateSoldierWithStaticDetailedInformation(gpSelected->pSoldier, gpSelected->pDetailedPlacement);
 }
 
-static void ExtractAndUpdateMercProfile(void) {
+static void ExtractAndUpdateMercProfile() {
   INT16 sNum;
   static INT16 sPrev = NO_PROFILE;
 
@@ -1124,7 +1124,7 @@ static void ExtractAndUpdateMercProfile(void) {
   }
 }
 
-static void SetupTextInputForMercSchedule(void) {
+static void SetupTextInputForMercSchedule() {
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL);
   AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, L"", 6, INPUTTYPE_24HOURCLOCK);
@@ -1137,7 +1137,7 @@ static void SetupTextInputForMercSchedule(void) {
   SetExclusive24HourTimeValue(4, gCurrSchedule.usTime[3]);
 }
 
-static void UpdateScheduleInfo(void);
+static void UpdateScheduleInfo();
 
 void ExtractAndUpdateMercSchedule() {
   INT32 i;
@@ -1404,7 +1404,7 @@ void SpecifyEntryPoint(UINT32 iMapIndex) {
 }
 
 static void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate);
-static void DetermineScheduleEditability(void);
+static void DetermineScheduleEditability();
 
 void SetMercEditingMode(UINT8 ubNewMode) {
   // We need to update the taskbar for the buttons that were erased.
@@ -1599,7 +1599,7 @@ void SetMercEditingMode(UINT8 ubNewMode) {
   }
 }
 
-static void DisplayBodyTypeInfo(void) {
+static void DisplayBodyTypeInfo() {
   const wchar_t *str;  // XXX HACK000E
   switch (gpSelected->pBasicPlacement->bBodyType) {
     case BODY_RANDOM:
@@ -1693,7 +1693,7 @@ static void DisplayBodyTypeInfo(void) {
   DrawEditorInfoBox(str, FONT10ARIAL, 490, 4, 70, 20);
 }
 
-static void RenderMercInventoryPanel(void);
+static void RenderMercInventoryPanel();
 
 void UpdateMercsInfo() {
   if (!gfRenderMercInfo) return;
@@ -1932,7 +1932,7 @@ static void DrawRect(SGPRect *pRect, INT16 color) {
                 l.Buffer<UINT16>());
 }
 
-static void RenderSelectedMercsInventory(void) {
+static void RenderSelectedMercsInventory() {
   INT32 i;
   INT32 xp, yp;
   UINT8 ubFontColor;
@@ -2144,7 +2144,7 @@ static void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate) {
   gusMercsNewItemIndex = 0xffff;
 }
 
-static void RenderMercInventoryPanel(void) {
+static void RenderMercInventoryPanel() {
   INT32 x;
   // Draw the graphical panel
   BltVideoObject(FRAME_BUFFER, guiMercInventoryPanel, 0, MERCPANEL_X, MERCPANEL_Y);
@@ -2214,11 +2214,11 @@ void HandleMercInventoryPanel(INT16 sX, INT16 sY, INT8 bEvent) {
   }
 }
 
-static void SetDroppableCheckboxesBasedOnMercsInventory(void);
+static void SetDroppableCheckboxesBasedOnMercsInventory();
 
 /* When a new merc is selected, this function sets up all of the information
  * for the slots, selections, and hilites. */
-static void UpdateMercItemSlots(void) {
+static void UpdateMercItemSlots() {
   INT8 x;
   if (!gpSelected->pDetailedPlacement) {
     for (x = 0; x < 9; x++) {
@@ -2242,7 +2242,7 @@ static void UpdateMercItemSlots(void) {
   gbCurrHilite = -1;
 }
 
-static void SetDroppableCheckboxesBasedOnMercsInventory(void) {
+static void SetDroppableCheckboxesBasedOnMercsInventory() {
   OBJECTTYPE *pItem;
   INT32 i;
   if (gpSelected && gpSelected->pDetailedPlacement) {
@@ -2333,7 +2333,7 @@ void ChangeCivGroup(UINT8 ubNewCivGroup) {
   iEditorButton[MERCS_CIVILIAN_GROUP]->SpecifyText(gszCivGroupNames[gubCivGroup]);
 }
 
-static void RenderCurrentSchedule(void);
+static void RenderCurrentSchedule();
 
 void RenderMercStrings() {
   CFOR_EACH_SOLDIERINITNODE(curr) {
@@ -2409,7 +2409,7 @@ void SetMercTeamVisibility(INT8 bTeam, BOOLEAN fVisible) {
   }
 }
 
-static void DetermineScheduleEditability(void) {
+static void DetermineScheduleEditability() {
   INT32 i;
   EnableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
   EnableTextFields(1, 4);
@@ -2630,7 +2630,7 @@ void ClearCurrentSchedule() {
   MarkWorldDirty();
 }
 
-static void RenderCurrentSchedule(void) {
+static void RenderCurrentSchedule() {
   FLOAT dOffsetX, dOffsetY;
   FLOAT ScrnX, ScrnY;
   INT32 i;
@@ -2673,7 +2673,7 @@ static void RenderCurrentSchedule(void) {
   }
 }
 
-static void UpdateScheduleInfo(void) {
+static void UpdateScheduleInfo() {
   INT32 i;
   SCHEDULENODE *pSchedule;
   wchar_t str[6];

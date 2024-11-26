@@ -15,7 +15,7 @@ static EventList *hDemandEventQueue = NULL;
 
 #define QUEUE_RESIZE 20
 
-void InitializeEventManager(void) {
+void InitializeEventManager() {
   hEventQueue = new EventList(QUEUE_RESIZE);
   hDelayEventQueue = new EventList(QUEUE_RESIZE);
   /* Events on this queue are only processed when specifically called for by
@@ -23,7 +23,7 @@ void InitializeEventManager(void) {
   hDemandEventQueue = new EventList(QUEUE_RESIZE);
 }
 
-void ShutdownEventManager(void) {
+void ShutdownEventManager() {
   delete hEventQueue;
   delete hDelayEventQueue;
   delete hDemandEventQueue;

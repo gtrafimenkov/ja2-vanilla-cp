@@ -231,7 +231,7 @@ void SetEditorTerrainTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-static void ShowExitGrids(void) {
+static void ShowExitGrids() {
   UINT16 i;
   if (gfShowExitGrids) return;
   gfShowExitGrids = TRUE;

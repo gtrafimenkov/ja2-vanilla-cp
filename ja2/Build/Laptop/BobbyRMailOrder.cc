@@ -536,8 +536,8 @@ void HandleBobbyRMailOrder() {
   }
 }
 
-static void DisplayPackageWeight(void);
-static void DisplayShippingLocationCity(void);
+static void DisplayPackageWeight();
+static void DisplayShippingLocationCity();
 static void DrawShippingSpeedLights(UINT8 ubSelected);
 
 void RenderBobbyRMailOrder() {
@@ -1436,7 +1436,7 @@ static void DrawSelectedCity(UINT8 ubCityNumber) {
   }
 }
 
-static void DisplayShippingLocationCity(void) {
+static void DisplayShippingLocationCity() {
   wchar_t sTemp[40];
   UINT16 usPosY;
 
@@ -1720,7 +1720,7 @@ static UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService) {
   return (uiTotalCost);
 }
 
-static void ShutDownBobbyRNewMailOrders(void);
+static void ShutDownBobbyRNewMailOrders();
 
 void BobbyRayMailOrderEndGameShutDown() {
   ShutDownBobbyRNewMailOrders();
@@ -1733,7 +1733,7 @@ void BobbyRayMailOrderEndGameShutDown() {
   */
 }
 
-static void ShutDownBobbyRNewMailOrders(void) {
+static void ShutDownBobbyRNewMailOrders() {
   if (gpNewBobbyrShipments != NULL) {
     MemFree(gpNewBobbyrShipments);
     gpNewBobbyrShipments = NULL;
@@ -1769,7 +1769,7 @@ static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, UINT8 
                                  UINT8 ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR,
                                  UINT32 uiPackageWeight);
 
-static void PurchaseBobbyOrder(void) {
+static void PurchaseBobbyOrder() {
   // if the shipment is going to Drassen, add the inventory
   if (gbSelectedCity == BR_DRASSEN || gbSelectedCity == BR_MEDUNA) {
     //					BobbyRayOrderStruct *pBobbyRayPurchase;
@@ -1950,7 +1950,7 @@ static UINT32 CalcPackageTotalWeight() {
   return mass;
 }
 
-static void DisplayPackageWeight(void) {
+static void DisplayPackageWeight() {
   wchar_t zTemp[32];
   UINT32 uiTotalWeight = CalcPackageTotalWeight();
   //	FLOAT			fWeight = (FLOAT)(uiTotalWeight / 10.0);

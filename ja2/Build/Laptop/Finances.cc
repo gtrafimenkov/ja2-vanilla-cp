@@ -134,21 +134,21 @@ static MOUSE_REGION g_scroll_region;
 // internal functions
 static void ProcessAndEnterAFinacialRecord(UINT8 ubCode, UINT32 uiDate, INT32 iAmount,
                                            UINT8 ubSecondCode, INT32 iBalanceToDate);
-static void LoadFinances(void);
-static void RemoveFinances(void);
-static void ClearFinanceList(void);
-static void DrawRecordsColumnHeadersText(void);
-static void CreateFinanceButtons(void);
-static void DestroyFinanceButtons(void);
-static void GetBalanceFromDisk(void);
-static void WriteBalanceToDisk(void);
-static void AppendFinanceToEndOfFile(void);
-static void SetLastPageInRecords(void);
+static void LoadFinances();
+static void RemoveFinances();
+static void ClearFinanceList();
+static void DrawRecordsColumnHeadersText();
+static void CreateFinanceButtons();
+static void DestroyFinanceButtons();
+static void GetBalanceFromDisk();
+static void WriteBalanceToDisk();
+static void AppendFinanceToEndOfFile();
+static void SetLastPageInRecords();
 static void LoadInRecords(UINT32 page);
 
-static void SetFinanceButtonStates(void);
-static INT32 GetTodaysDebits(void);
-static INT32 GetYesterdaysDebits(void);
+static void SetFinanceButtonStates();
+static INT32 GetTodaysDebits();
+static INT32 GetYesterdaysDebits();
 
 void AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT32 iAmount) {
   // adds transaction to player's book(Financial List)
@@ -199,12 +199,12 @@ void AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate
   fMapScreenBottomDirty = TRUE;
 }
 
-INT32 GetCurrentBalance(void) {
+INT32 GetCurrentBalance() {
   // get balance to this minute
   return (LaptopSaveInfo.iCurrentBalance);
 }
 
-INT32 GetProjectedTotalDailyIncome(void) {
+INT32 GetProjectedTotalDailyIncome() {
   // return total  projected income, including what is earned today already
 
   // CJC: I DON'T THINK SO!
@@ -256,7 +256,7 @@ void EnterFinances() {
   RenderFinances();
 }
 
-void ExitFinances(void) {
+void ExitFinances() {
   LaptopSaveInfo.iCurrentFinancesPage = iCurrentPage;
 
   // not in finance system anymore
@@ -272,13 +272,13 @@ void ExitFinances(void) {
   RemoveFinances();
 }
 
-static void DisplayFinancePageNumberAndDateRange(void);
-static void DrawAPageOfRecords(void);
-static void DrawFinanceTitleText(void);
-static void DrawSummary(void);
-static void RenderBackGround(void);
+static void DisplayFinancePageNumberAndDateRange();
+static void DrawAPageOfRecords();
+static void DrawFinanceTitleText();
+static void DrawSummary();
+static void RenderBackGround();
 
-void RenderFinances(void) {
+void RenderFinances() {
   RenderBackGround();
 
   // if we are on the first page, draw the summary
@@ -296,7 +296,7 @@ void RenderFinances(void) {
   BlitTitleBarIcons();
 }
 
-static void LoadFinances(void) {
+static void LoadFinances() {
   // load Finance video objects into memory
 
   // title bar
@@ -315,7 +315,7 @@ static void LoadFinances(void) {
   guiLINE = AddVideoObjectFromFile(LAPTOPDIR "/divisionline.sti");
 }
 
-static void RemoveFinances(void) {
+static void RemoveFinances() {
   // delete Finance video objects from memory
   DeleteVideoObject(guiLONGLINE);
   DeleteVideoObject(guiLINE);
@@ -324,22 +324,22 @@ static void RemoveFinances(void) {
   DeleteVideoObject(guiTITLE);
 }
 
-static void RenderBackGround(void) {
+static void RenderBackGround() {
   // render generic background for Finance system
   BltVideoObject(FRAME_BUFFER, guiTITLE, 0, TOP_X, TOP_Y - 2);
   BltVideoObject(FRAME_BUFFER, guiTOP, 0, TOP_X, TOP_Y + 22);
 }
 
-static void DrawSummaryLines(void);
-static void DrawSummaryText(void);
+static void DrawSummaryLines();
+static void DrawSummaryText();
 
-static void DrawSummary(void) {
+static void DrawSummary() {
   // draw day's summary to screen
   DrawSummaryLines();
   DrawSummaryText();
 }
 
-static void DrawSummaryLines(void) {
+static void DrawSummaryLines() {
   // draw divider lines on screen
   // blit summary LINE object to screen
   BltVideoObject(FRAME_BUFFER, guiLINE, 0, DIVLINE_X, TOP_DIVLINE_Y);
@@ -350,10 +350,10 @@ static void DrawSummaryLines(void) {
   // BltVideoObject(FRAME_BUFFER, guiLINE, 0,DIVLINE_X, BOT_DIVLINE_Y2);
 }
 
-static void DrawRecordsBackGround(void);
-static void DrawRecordsText(void);
+static void DrawRecordsBackGround();
+static void DrawRecordsText();
 
-static void DrawAPageOfRecords(void) {
+static void DrawAPageOfRecords() {
   // this procedure will draw a series of financial records to the screen
 
   // (re-)render background
@@ -366,7 +366,7 @@ static void DrawAPageOfRecords(void) {
   DrawRecordsText();
 }
 
-static void DrawRecordsBackGround(void) {
+static void DrawRecordsBackGround() {
   // proceudre will draw the background for the list of financial records
   INT32 iCounter;
 
@@ -385,7 +385,7 @@ static void DrawRecordsBackGround(void) {
   DrawRecordsColumnHeadersText();
 }
 
-static void DrawRecordsColumnHeadersText(void) {
+static void DrawRecordsColumnHeadersText() {
   // write the headers text for each column
   SetFontAttributes(FINANCE_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
@@ -431,7 +431,7 @@ static void DrawStringCentered(const INT32 x, const INT32 y, const INT32 w,
 static void ProcessTransactionString(wchar_t pString[], size_t Length, const FinanceUnit *pFinance);
 
 // draws the text of the records
-static void DrawRecordsText(void) {
+static void DrawRecordsText() {
   SetFont(FINANCE_TEXT_FONT);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -476,20 +476,20 @@ static void DrawRecordsText(void) {
   }
 }
 
-static void DrawFinanceTitleText(void) {
+static void DrawFinanceTitleText() {
   // draw the pages title
   SetFontAttributes(FINANCE_HEADER_FONT, FONT_WHITE);
   MPrint(TITLE_X, TITLE_Y, pFinanceTitle);
 }
 
-static INT32 GetPreviousDaysIncome(void);
-static INT32 GetTodaysBalance(void);
-static INT32 GetTodaysDaysIncome(void);
-static INT32 GetTodaysOtherDeposits(void);
-static INT32 GetYesterdaysOtherDeposits(void);
+static INT32 GetPreviousDaysIncome();
+static INT32 GetTodaysBalance();
+static INT32 GetTodaysDaysIncome();
+static INT32 GetTodaysOtherDeposits();
+static INT32 GetYesterdaysOtherDeposits();
 static void SPrintMoneyNoDollarOnZero(wchar_t *Str, INT32 Amount);
 
-static void DrawSummaryText(void) {
+static void DrawSummaryText() {
   INT16 usX, usY;
   wchar_t pString[100];
   INT32 iBalance = 0;
@@ -616,7 +616,7 @@ static void DrawSummaryText(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void ClearFinanceList(void) {
+static void ClearFinanceList() {
   // remove each element from list of transactions
   FinanceUnit *pFinanceList = pFinanceListHead;
   FinanceUnit *pFinanceNode = pFinanceList;
@@ -652,8 +652,8 @@ static void ProcessAndEnterAFinacialRecord(const UINT8 ubCode, const UINT32 uiDa
   *i = fu;
 }
 
-static void LoadPreviousPage(void);
-static void LoadNextPage(void);
+static void LoadPreviousPage();
+static void LoadNextPage();
 
 static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
@@ -695,7 +695,7 @@ static void MakeButton(size_t const idx, BUTTON_PICS *const img, INT16 const x,
   btn->SetCursor(CURSOR_LAPTOP_SCREEN);
 }
 
-static void CreateFinanceButtons(void) {
+static void CreateFinanceButtons() {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/arrows.sti", 0, 1);
   MakeButton(PREV_PAGE_BUTTON, img, PREV_BTN_X, BtnFinanceDisplayPrevPageCallBack);
   MakeButton(NEXT_PAGE_BUTTON, UseLoadedButtonImage(img, 6, 7), NEXT_BTN_X,
@@ -713,7 +713,7 @@ static void CreateFinanceButtons(void) {
                     MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
 
-static void DestroyFinanceButtons(void) {
+static void DestroyFinanceButtons() {
   MSYS_RemoveRegion(&g_scroll_region);
   for (UINT32 i = 0; i != 4; ++i) {
     RemoveButton(giFinanceButton[i]);
@@ -772,20 +772,20 @@ static void ProcessTransactionString(wchar_t pString[], const size_t Length,
   }
 }
 
-static void DisplayFinancePageNumberAndDateRange(void) {
+static void DisplayFinancePageNumberAndDateRange() {
   SetFontAttributes(FINANCE_TEXT_FONT, FONT_BLACK, NO_SHADOW);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, L"%ls %d / %d", pFinanceHeaders[5], iCurrentPage + 1,
           guiLastPageInRecordsList + 2);
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void WriteBalanceToDisk(void) {
+static void WriteBalanceToDisk() {
   // will write the current balance to disk
   AutoSGPFile hFileHandle(FileMan::openForWriting(FINANCES_DATA_FILE));
   FileWrite(hFileHandle, &LaptopSaveInfo.iCurrentBalance, sizeof(INT32));
 }
 
-static void GetBalanceFromDisk(void) {
+static void GetBalanceFromDisk() {
   // will grab the current blanace from disk
   // assuming file already openned
   // this procedure will open and read in data to the finance list
@@ -802,7 +802,7 @@ static void GetBalanceFromDisk(void) {
 }
 
 // will write the current finance to disk
-static void AppendFinanceToEndOfFile(void) {
+static void AppendFinanceToEndOfFile() {
   AutoSGPFile f(FileMan::openForAppend(FINANCES_DATA_FILE));
 
   const FinanceUnit *const fu = pFinanceListHead;
@@ -819,7 +819,7 @@ static void AppendFinanceToEndOfFile(void) {
 }
 
 // Grabs the size of the file and interprets number of pages it will take up
-static void SetLastPageInRecords(void) {
+static void SetLastPageInRecords() {
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
   const UINT32 size = FileGetSize(f);
@@ -833,12 +833,12 @@ static void SetLastPageInRecords(void) {
                              (FINANCE_RECORD_SIZE * NUM_RECORDS_PER_PAGE);
 }
 
-static void LoadPreviousPage(void) {
+static void LoadPreviousPage() {
   if (iCurrentPage == 0) return;
   LoadInRecords(iCurrentPage - 1);
 }
 
-static void LoadNextPage(void) {
+static void LoadNextPage() {
   if (iCurrentPage > guiLastPageInRecordsList) return;
   LoadInRecords(iCurrentPage + 1);
 }
@@ -920,7 +920,7 @@ static void SPrintMoneyNoDollarOnZero(wchar_t *Str, INT32 Amount) {
 }
 
 // find out what today is, then go back 2 days, get balance for that day
-static INT32 GetPreviousDaysBalance(void) {
+static INT32 GetPreviousDaysBalance() {
   const UINT32 date_in_minutes = GetWorldTotalMin() - 60 * 24;
   const UINT32 date_in_days = date_in_minutes / (24 * 60);
 
@@ -960,7 +960,7 @@ static INT32 GetPreviousDaysBalance(void) {
   return balance;
 }
 
-static INT32 GetTodaysBalance(void) {
+static INT32 GetTodaysBalance() {
   const UINT32 date_in_minutes = GetWorldTotalMin();
   const UINT32 date_in_days = date_in_minutes / (24 * 60);
 
@@ -996,7 +996,7 @@ static INT32 GetTodaysBalance(void) {
 
 /* will return the income from the previous day, which is todays starting
  * balance - yesterdays starting balance */
-static INT32 GetPreviousDaysIncome(void) {
+static INT32 GetPreviousDaysIncome() {
   const UINT32 date_in_minutes = GetWorldTotalMin();
   const UINT32 date_in_days = date_in_minutes / (24 * 60);
 
@@ -1039,7 +1039,7 @@ static INT32 GetPreviousDaysIncome(void) {
   return iTotalPreviousIncome;
 }
 
-static INT32 GetTodaysDaysIncome(void) {
+static INT32 GetTodaysDaysIncome() {
   const UINT32 date_in_minutes = GetWorldTotalMin();
   const UINT32 date_in_days = date_in_minutes / (24 * 60);
 
@@ -1082,7 +1082,7 @@ static INT32 GetTodaysDaysIncome(void) {
   return iTotalIncome;
 }
 
-static void SetFinanceButtonStates(void) {
+static void SetFinanceButtonStates() {
   // this function will look at what page we are viewing, enable and disable
   // buttons as needed
 
@@ -1096,7 +1096,7 @@ static void SetFinanceButtonStates(void) {
 }
 
 // grab todays other deposits
-static INT32 GetTodaysOtherDeposits(void) {
+static INT32 GetTodaysOtherDeposits() {
   const UINT32 date_in_minutes = GetWorldTotalMin();
   const UINT32 date_in_days = date_in_minutes / (24 * 60);
 
@@ -1140,7 +1140,7 @@ static INT32 GetTodaysOtherDeposits(void) {
   return iTotalIncome;
 }
 
-static INT32 GetYesterdaysOtherDeposits(void) {
+static INT32 GetYesterdaysOtherDeposits() {
   const UINT32 iDateInMinutes = GetWorldTotalMin();
   const UINT32 date_in_days = iDateInMinutes / (24 * 60);
 
@@ -1184,7 +1184,7 @@ static INT32 GetYesterdaysOtherDeposits(void) {
   return iTotalPreviousIncome;
 }
 
-static INT32 GetTodaysDebits(void) {
+static INT32 GetTodaysDebits() {
   // return the expenses for today
 
   // currentbalance - todays balance - Todays income - other deposits
@@ -1193,7 +1193,7 @@ static INT32 GetTodaysDebits(void) {
           GetTodaysOtherDeposits());
 }
 
-static INT32 GetYesterdaysDebits(void) {
+static INT32 GetYesterdaysDebits() {
   // return the expenses for yesterday
 
   return (GetTodaysBalance() - GetPreviousDaysBalance() - GetPreviousDaysIncome() -

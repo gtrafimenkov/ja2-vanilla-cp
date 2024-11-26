@@ -53,14 +53,14 @@ BOOLEAN fLoadingCharacterForPreviousImpProfile = FALSE;
 static void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateConfirmButtons(void);
+static void CreateConfirmButtons();
 
-void EnterIMPConfirm(void) {
+void EnterIMPConfirm() {
   // create buttons
   CreateConfirmButtons();
 }
 
-void RenderIMPConfirm(void) {
+void RenderIMPConfirm() {
   // the background
   RenderProfileBackGround();
 
@@ -71,14 +71,14 @@ void RenderIMPConfirm(void) {
   PrintImpText();
 }
 
-static void DestroyConfirmButtons(void);
+static void DestroyConfirmButtons();
 
-void ExitIMPConfirm(void) {
+void ExitIMPConfirm() {
   // destroy buttons
   DestroyConfirmButtons();
 }
 
-void HandleIMPConfirm(void) {}
+void HandleIMPConfirm() {}
 
 static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
@@ -92,14 +92,14 @@ static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK clic
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void CreateConfirmButtons(void) {
+static void CreateConfirmButtons() {
   // create buttons for confirm screen
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
   MakeButton(0, pImpButtonText[16], dy + 254, BtnIMPConfirmYes);
   MakeButton(1, pImpButtonText[17], dy + 314, BtnIMPConfirmNo);
 }
 
-static void DestroyConfirmButtons(void) {
+static void DestroyConfirmButtons() {
   // destroy buttons for confirm screen
 
   RemoveButton(giIMPConfirmButton[0]);
@@ -111,7 +111,7 @@ static void DestroyConfirmButtons(void) {
 
 static void GiveItemsToPC(UINT8 ubProfileId);
 
-static BOOLEAN AddCharacterToPlayersTeam(void) {
+static BOOLEAN AddCharacterToPlayersTeam() {
   MERC_HIRE_STRUCT HireMercStruct;
 
   // last minute chage to make sure merc with right facehas not only the right
@@ -358,7 +358,7 @@ static void WriteOutCurrentImpCharacter(INT32 iProfileId) {
   InjectMercProfileIntoFile(hFile, gMercProfiles[iProfileId]);
 }
 
-static void LoadInCurrentImpCharacter(void) {
+static void LoadInCurrentImpCharacter() {
   INT32 iProfileId = 0;
 
   MERCPROFILESTRUCT p;

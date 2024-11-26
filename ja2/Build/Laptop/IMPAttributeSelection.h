@@ -3,12 +3,12 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPAttributeSelection(void);
-void RenderIMPAttributeSelection(void);
-void ExitIMPAttributeSelection(void);
-void HandleIMPAttributeSelection(void);
+void EnterIMPAttributeSelection();
+void RenderIMPAttributeSelection();
+void ExitIMPAttributeSelection();
+void HandleIMPAttributeSelection();
 
-void RenderAttributeBoxes(void);
+void RenderAttributeBoxes();
 
 extern BOOLEAN fReviewStats;
 extern BOOLEAN fFirstIMPAttribTime;

@@ -323,8 +323,7 @@ struct INV_REGIONS {
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS (sX,sY get set via
 // InitInvSlotInterface() )
 static INV_REGIONS const gSMInvData[] = {
-#define M(w, h) \
-  { w, h }
+#define M(w, h) {w, h}
     M(HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT),  // HELMETPOS
     M(VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT),  // VESTPOS
     M(LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT),  // LEGPOS,
@@ -624,7 +623,7 @@ static void EnableKeyRing(BOOLEAN fEnable) {
   }
 }
 
-void ShutdownKeyRingInterface(void) { MSYS_RemoveRegion(&gKeyRingPanel); }
+void ShutdownKeyRingInterface() { MSYS_RemoveRegion(&gKeyRingPanel); }
 
 void DisableInvRegions(BOOLEAN fDisable) {
   INT32 cnt;
@@ -1445,7 +1444,7 @@ void InitKeyItemDescriptionBox(SOLDIERTYPE *const pSoldier, const UINT8 ubPositi
   InternalInitItemDescriptionBox(pObject, sX, sY, 0, pSoldier);
 }
 
-static void SetAttachmentTooltips(void) {
+static void SetAttachmentTooltips() {
   for (UINT i = 0; i < MAX_ATTACHMENTS; ++i) {
     const UINT16 attachment = gpItemDescObject->usAttachItem[i];
     const wchar_t *const tip =
@@ -1459,7 +1458,7 @@ static void ItemDescAmmoCallback(GUI_BUTTON *btn, INT32 reason);
 static void ItemDescAttachmentsCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ItemDescCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ItemDescDoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void ReloadItemDesc(void);
+static void ReloadItemDesc();
 
 void InternalInitItemDescriptionBox(OBJECTTYPE *const o, const INT16 sX, const INT16 sY,
                                     const UINT8 ubStatusIndex, SOLDIERTYPE *const s) {
@@ -1655,7 +1654,7 @@ void InternalInitItemDescriptionBox(OBJECTTYPE *const o, const INT16 sX, const I
   }
 }
 
-static void ReloadItemDesc(void) {
+static void ReloadItemDesc() {
   guiItemGraphic = LoadTileGraphicForItem(Item[gpItemDescObject->usItem]);
 
   //
@@ -1696,7 +1695,7 @@ static void ItemDescAmmoCallback(GUI_BUTTON *const btn, INT32 const reason) {
   }
 }
 
-static void DoAttachment(void) {
+static void DoAttachment() {
   if (AttachObject(gpItemDescSoldier, gpItemDescObject, gpItemPointer)) {
     if (gpItemPointer->usItem == NOTHING) {
       // attachment attached, merge item consumed, etc
@@ -1851,7 +1850,7 @@ static void HighlightIf(const BOOLEAN cond) {
   SetFontForeground(cond ? ITEMDESC_FONTHIGHLIGHT : 5);
 }
 
-void RenderItemDescriptionBox(void) {
+void RenderItemDescriptionBox() {
   if (!gfInItemDescBox) return;
 
   wchar_t pStr[100];
@@ -3285,9 +3284,9 @@ void InitItemStackPopup(SOLDIERTYPE *const pSoldier, UINT8 const ubPosition, INT
   RestrictMouseCursor(&aRect);
 }
 
-static void DeleteItemStackPopup(void);
+static void DeleteItemStackPopup();
 
-static void EndItemStackPopupWithItemInHand(void) {
+static void EndItemStackPopupWithItemInHand() {
   if (gpItemPointer != NULL) {
     DeleteItemStackPopup();
   }
@@ -3338,7 +3337,7 @@ void RenderItemStackPopup(BOOLEAN fFullRender) {
                    gsItemPopupInvY + gsItemPopupInvHeight);
 }
 
-static void DeleteItemStackPopup(void) {
+static void DeleteItemStackPopup() {
   INT32 cnt;
 
   DeleteVideoObject(guiItemPopupBoxes);
@@ -3486,7 +3485,7 @@ void RenderKeyRingPopup(const BOOLEAN fFullRender) {
   InvalidateRegion(dx, dy, dx + gsKeyRingPopupInvWidth, dy + gsKeyRingPopupInvHeight);
 }
 
-void DeleteKeyRingPopup(void) {
+void DeleteKeyRingPopup() {
   if (!gfInKeyRingPopup) return;
 
   DeleteVideoObject(guiItemPopupBoxes);
@@ -3593,7 +3592,7 @@ static void ItemDescCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void RemoveMoney(void);
+static void RemoveMoney();
 
 static void ItemDescDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -3789,7 +3788,7 @@ BOOLEAN gfInItemPickupMenu = FALSE;
 // STUFF FOR POPUP ITEM INFO BOX
 void SetItemPickupMenuDirty(BOOLEAN fDirtyLevel) { gItemPickupMenu.fDirtyLevel = fDirtyLevel; }
 
-static void CalculateItemPickupMenuDimensions(void);
+static void CalculateItemPickupMenuDimensions();
 static void ItemPickMenuMouseClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ItemPickMenuMouseMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void ItemPickupAll(GUI_BUTTON *btn, INT32 reason);
@@ -4012,7 +4011,7 @@ static void SetupPickupPage(INT8 bPage) {
   SetItemPickupMenuDirty(DIRTYLEVEL2);
 }
 
-static void CalculateItemPickupMenuDimensions(void) {
+static void CalculateItemPickupMenuDimensions() {
   // Build background
   INT16 sY = 0;
 
@@ -4420,7 +4419,7 @@ static void BtnMoneyButtonCallback(GUI_BUTTON *const btn, INT32 const reason) {
   }
 }
 
-static void RemoveMoney(void) {
+static void RemoveMoney() {
   if (gRemoveMoney.uiMoneyRemoving != 0) {
     // if we are in the shop keeper interface
     if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
@@ -4587,7 +4586,7 @@ void SaveItemCursorToSavedGame(HWFILE const f) {
   FileWrite(f, data, sizeof(data));
 }
 
-void UpdateItemHatches(void) {
+void UpdateItemHatches() {
   SOLDIERTYPE *pSoldier = NULL;
 
   if (fInMapMode) {

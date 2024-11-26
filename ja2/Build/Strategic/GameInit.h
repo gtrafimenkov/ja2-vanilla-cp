@@ -4,13 +4,13 @@
 #include "SGP/Types.h"
 
 void InitNewGame();
-BOOLEAN AnyMercsHired(void);
+BOOLEAN AnyMercsHired();
 
-void InitStrategicLayer(void);
-void ShutdownStrategicLayer(void);
+void InitStrategicLayer();
+void ShutdownStrategicLayer();
 
-void ReStartingGame(void);
+void ReStartingGame();
 
-void InitBloodCatSectors(void);
+void InitBloodCatSectors();
 
 #endif

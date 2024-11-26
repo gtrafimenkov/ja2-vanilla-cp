@@ -49,13 +49,13 @@ enum {
 // into 18 smaller pieces.  So this function will go analyse the world, and
 // replaces any locations containing the original road tile information, delete
 // it, and replace it by inserting it's equivalent macro.
-void ReplaceObsoleteRoads(void);
+void ReplaceObsoleteRoads();
 
 // Road macros vary in size from 3 gridnos to 18 gridnos.  Using the anchor
 // gridno based off of the original road system, this function will place the new
 // macro (consisting of multiple road pieces in multiple gridnos).
 void PlaceRoadMacroAtGridNo(INT32 iMapIndex, INT32 iMacroID);
 
-void InitializeRoadMacros(void);
+void InitializeRoadMacros();
 
 #endif

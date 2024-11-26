@@ -280,7 +280,7 @@ static void InternallyClassifyEdgepoints(SOLDIERTYPE *pSoldier, INT16 sGridNo, I
   *psArray2 = REALLOC(*psArray2, INT16, *pusArraySize2);
 }
 
-static void ClassifyEdgepoints(void) {
+static void ClassifyEdgepoints() {
   SOLDIERTYPE Soldier;
   INT16 sGridNo = -1;
 

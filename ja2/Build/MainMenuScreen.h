@@ -3,9 +3,9 @@
 
 #include "ScreenIDs.h"
 
-void InitMainMenu(void);
-void ClearMainMenu(void);
+void InitMainMenu();
+void ClearMainMenu();
 
-ScreenID MainMenuScreenHandle(void);
+ScreenID MainMenuScreenHandle();
 
 #endif

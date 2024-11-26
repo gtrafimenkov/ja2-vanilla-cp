@@ -443,7 +443,7 @@ static ScreenID ExitMsgBox(MessageBoxReturnValue const ubExitCode) {
   return gMsgBox.uiExitScreen;
 }
 
-ScreenID MessageBoxScreenHandle(void) {
+ScreenID MessageBoxScreenHandle() {
   if (gfNewMessageBox) {
     // If in game screen....
     if (gfStartedFromGameScreen || gfStartedFromMapScreen) {

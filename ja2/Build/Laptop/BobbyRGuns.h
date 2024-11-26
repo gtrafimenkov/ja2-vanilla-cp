@@ -14,9 +14,9 @@
 #define BOBBYR_GUNS_BUTTON_FONT FONT10ARIAL
 #define BOBBYR_GUNS_TEXT_COLOR_ON FONT_NEARBLACK
 #define BOBBYR_GUNS_TEXT_COLOR_OFF FONT_NEARBLACK
-//#define		BOBBYR_GUNS_TEXT_COLOR_ON
-// FONT_MCOLOR_DKWHITE #define		BOBBYR_GUNS_TEXT_COLOR_OFF
-// FONT_MCOLOR_WHITE
+// #define		BOBBYR_GUNS_TEXT_COLOR_ON
+//  FONT_MCOLOR_DKWHITE #define		BOBBYR_GUNS_TEXT_COLOR_OFF
+//  FONT_MCOLOR_WHITE
 
 #define BOBBYR_GUNS_SHADOW_COLOR 169
 
@@ -25,23 +25,23 @@
 extern UINT16 gusCurWeaponIndex;
 extern UINT8 gubLastGunIndex;
 
-void GameInitBobbyRGuns(void);
-void EnterBobbyRGuns(void);
-void ExitBobbyRGuns(void);
-void RenderBobbyRGuns(void);
+void GameInitBobbyRGuns();
+void EnterBobbyRGuns();
+void ExitBobbyRGuns();
+void RenderBobbyRGuns();
 
-void DisplayBobbyRBrTitle(void);
-void DeleteBobbyBrTitle(void);
-void InitBobbyBrTitle(void);
+void DisplayBobbyRBrTitle();
+void DeleteBobbyBrTitle();
+void InitBobbyBrTitle();
 void InitBobbyMenuBar();
 void DeleteBobbyMenuBar();
 
 // BOOLEAN DisplayWeaponInfo();
 void DisplayItemInfo(UINT32 uiItemClass);
-void DeleteMouseRegionForBigImage(void);
+void DeleteMouseRegionForBigImage();
 void UpdateButtonText(UINT32 uiCurPage);
 UINT16 CalcBobbyRayCost(UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed);
-void SetFirstLastPagesForUsed(void);
+void SetFirstLastPagesForUsed();
 void SetFirstLastPagesForNew(UINT32 uiClass);
 
 #endif

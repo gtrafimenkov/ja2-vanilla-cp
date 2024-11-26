@@ -77,18 +77,18 @@ extern int iCurrentVoices;
 extern INT32 giMaxPersonalityQuizQuestion;
 extern BOOLEAN fStartOverFlag;
 
-extern void SetAttributes(void);
+extern void SetAttributes();
 
-void GameInitCharProfile(void) {
+void GameInitCharProfile() {
   LaptopSaveInfo.iVoiceId = 0;
   iCurrentPortrait = 0;
   iCurrentVoices = 0;
   iPortraitNumber = 0;
 }
 
-static void LoadImpGraphics(void);
+static void LoadImpGraphics();
 
-void EnterCharProfile(void) {
+void EnterCharProfile() {
   // reset previous page
   iPreviousImpPage = -1;
 
@@ -96,10 +96,10 @@ void EnterCharProfile(void) {
   LoadImpGraphics();
 }
 
-static void ExitOldIMPMode(void);
-static void RemoveImpGraphics(void);
+static void ExitOldIMPMode();
+static void RemoveImpGraphics();
 
-void ExitCharProfile(void) {
+void ExitCharProfile() {
   // get rid of graphics
   RemoveImpGraphics();
 
@@ -107,10 +107,10 @@ void ExitCharProfile(void) {
   ExitOldIMPMode();
 }
 
-static void EnterNewIMPMode(void);
-static BOOLEAN HasTheCurrentIMPPageBeenVisited(void);
+static void EnterNewIMPMode();
+static BOOLEAN HasTheCurrentIMPPageBeenVisited();
 
-void HandleCharProfile(void) {
+void HandleCharProfile() {
   if (fReDrawCharProfile) {
     // re draw
     RenderCharProfile();
@@ -213,7 +213,7 @@ void HandleCharProfile(void) {
   }
 }
 
-void RenderCharProfile(void) {
+void RenderCharProfile() {
   // button is waiting to go up?...do nothing,
 
   if (fButtonPendingFlag) {
@@ -278,9 +278,9 @@ void RenderCharProfile(void) {
   DisplayProgramBoundingBox(TRUE);
 }
 
-static void DestroyIMPButtons(void);
+static void DestroyIMPButtons();
 
-static void ExitOldIMPMode(void) {
+static void ExitOldIMPMode() {
   // exit old mode
 
   if (iPreviousImpPage == -1) {
@@ -344,9 +344,9 @@ static void ExitOldIMPMode(void) {
   }
 }
 
-static void CreateIMPButtons(void);
+static void CreateIMPButtons();
 
-static void EnterNewIMPMode(void) {
+static void EnterNewIMPMode() {
   // enter new mode
 
   switch (iCurrentImpPage) {
@@ -405,7 +405,7 @@ static void EnterNewIMPMode(void) {
   }
 }
 
-void ResetCharacterStats(void) {
+void ResetCharacterStats() {
   // attributes
   iStrength = 55;
   iDexterity = 55;
@@ -435,7 +435,7 @@ void ResetCharacterStats(void) {
   memset(&pNickName, 0, sizeof(pNickName));
 }
 
-static void LoadImpGraphics(void) {
+static void LoadImpGraphics() {
   // load all graphics needed for IMP
 
   LoadProfileBackGround();
@@ -478,7 +478,7 @@ static void LoadImpGraphics(void) {
   LoadAboutUsIndentFrame();
 }
 
-static void RemoveImpGraphics(void) {
+static void RemoveImpGraphics() {
   // remove all graphics needed for IMP
 
   RemoveProfileBackGround();
@@ -523,7 +523,7 @@ static void RemoveImpGraphics(void) {
 
 static void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPButtons(void) {
+static void CreateIMPButtons() {
   // create all the buttons global to the IMP system
 
   giIMPButtonImage[0] = LoadButtonImage(LAPTOPDIR "/button_3.sti", 0, 1);
@@ -540,7 +540,7 @@ static void CreateIMPButtons(void) {
   giIMPButton[0]->SetCursor(CURSOR_WWW);
 }
 
-static void DestroyIMPButtons(void) {
+static void DestroyIMPButtons() {
   // destroy the buttons we created
   RemoveButton(giIMPButton[0]);
   UnloadButtonImage(giIMPButtonImage[0]);
@@ -589,7 +589,7 @@ static void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void InitIMPSubPageList(void) {
+void InitIMPSubPageList() {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < IMP_CONFIRM; iCounter++) {
@@ -597,7 +597,7 @@ void InitIMPSubPageList(void) {
   }
 }
 
-static BOOLEAN HasTheCurrentIMPPageBeenVisited(void) {
+static BOOLEAN HasTheCurrentIMPPageBeenVisited() {
   // returns if we have vsisted the current IMP PageAlready
 
   // make sure we are not hosing memory

@@ -230,8 +230,8 @@ enum CursorSurfaceDefines {
   NUM_CURSOR_FILES
 };
 
-void InitCursors(void);
-void HandleAnimatedCursors(void);
+void InitCursors();
+void HandleAnimatedCursors();
 
 void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex);
 
@@ -245,7 +245,7 @@ void SetHitLocationText(const wchar_t *Text);
 void SetIntTileLocationText(const wchar_t *Text);
 void SetIntTileLocation2Text(const wchar_t *Text);
 
-const wchar_t *GetIntTileLocationText(void);
-const wchar_t *GetIntTileLocation2Text(void);
+const wchar_t *GetIntTileLocationText();
+const wchar_t *GetIntTileLocation2Text();
 
 #endif

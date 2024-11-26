@@ -106,7 +106,7 @@ static void BlitString(VIDEO_OVERLAY *pBlitter) {
 }
 
 // this function will go through list of display strings and clear them all out
-void ClearDisplayedListOfTacticalStrings(void) {
+void ClearDisplayedListOfTacticalStrings() {
   for (UINT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
       RemoveStringVideoOverlay(gpDisplayList[cnt]);
@@ -117,10 +117,10 @@ void ClearDisplayedListOfTacticalStrings(void) {
   }
 }
 
-static INT32 GetMessageQueueSize(void);
-static void PlayNewMessageSound(void);
+static INT32 GetMessageQueueSize();
+static void PlayNewMessageSound();
 
-void ScrollString(void) {
+void ScrollString() {
   // UPDATE TIMER
   UINT32 suiTimer = GetJA2Clock();
 
@@ -225,15 +225,15 @@ void ScrollString(void) {
   }
 }
 
-void DisableScrollMessages(void) {
+void DisableScrollMessages() {
   // will stop the scroll of messages in tactical and hide them during an NPC's
   // dialogue disble video overlay for tatcitcal scroll messages
   EnableDisableScrollStringVideoOverlay(FALSE);
 }
 
-void EnableScrollMessages(void) { EnableDisableScrollStringVideoOverlay(TRUE); }
+void EnableScrollMessages() { EnableDisableScrollStringVideoOverlay(TRUE); }
 
-void HideMessagesDuringNPCDialogue(void) {
+void HideMessagesDuringNPCDialogue() {
   // will stop the scroll of messages in tactical and hide them during an NPC's
   // dialogue
   fScrollMessagesHidden = TRUE;
@@ -248,7 +248,7 @@ void HideMessagesDuringNPCDialogue(void) {
   }
 }
 
-void UnHideMessagesDuringNPCDialogue(void) {
+void UnHideMessagesDuringNPCDialogue() {
   fScrollMessagesHidden = FALSE;
 
   for (INT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
@@ -462,7 +462,7 @@ static void AddStringToMapScreenMessageList(const wchar_t *pString, UINT16 usCol
   }
 }
 
-void DisplayStringsInMapScreenMessageList(void) {
+void DisplayStringsInMapScreenMessageList() {
   SetFontDestBuffer(FRAME_BUFFER, 17, 360 + 6, 407, 360 + 101);
 
   SetFont(MAP_SCREEN_MESSAGE_FONT);
@@ -507,7 +507,7 @@ void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable) {
 }
 
 // play beep when new message is added
-static void PlayNewMessageSound(void) {
+static void PlayNewMessageSound() {
   // play a new message sound, if there is one playing, do nothing
   static UINT32 uiSoundId = NO_SAMPLE;
 
@@ -633,7 +633,7 @@ void LoadMapScreenMessagesFromSaveGameFile(HWFILE const hFile, bool stracLinuxFo
   MoveToEndOfMapScreenMessageList();
 }
 
-static INT32 GetMessageQueueSize(void) {
+static INT32 GetMessageQueueSize() {
   INT32 iCounter = 0;
   for (const ScrollStringSt *i = pStringS; i != NULL; i = i->pNext) {
     iCounter++;
@@ -641,7 +641,7 @@ static INT32 GetMessageQueueSize(void) {
   return iCounter;
 }
 
-void ClearTacticalMessageQueue(void) {
+void ClearTacticalMessageQueue() {
   ClearDisplayedListOfTacticalStrings();
 
   // now run through all the tactical messages
@@ -657,7 +657,7 @@ void ClearTacticalMessageQueue(void) {
 
 static void WriteMessageToFile(const wchar_t *pString) {}
 
-void FreeGlobalMessageList(void) {
+void FreeGlobalMessageList() {
   FOR_EACH(ScrollStringSt *, i, gMapScreenMessageList) {
     ScrollStringSt *const s = *i;
     if (s != NULL) {
@@ -672,7 +672,7 @@ void FreeGlobalMessageList(void) {
   gubCurrentMapMessageString = 0;
 }
 
-UINT8 GetRangeOfMapScreenMessages(void) {
+UINT8 GetRangeOfMapScreenMessages() {
   // NOTE: End is non-inclusive, so start/end 0/0 means no messages, 0/1 means 1
   // message, etc.
   if (gubStartOfMapScreenMessageList <= gubEndOfMapScreenMessageList) {

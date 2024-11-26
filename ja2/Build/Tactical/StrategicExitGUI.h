@@ -21,8 +21,8 @@ enum {
 extern BOOLEAN gfInSectorExitMenu;
 
 void InitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData);
-void RenderSectorExitMenu(void);
-BOOLEAN HandleSectorExitMenu(void);
+void RenderSectorExitMenu();
+BOOLEAN HandleSectorExitMenu();
 void RemoveSectorExitMenu(BOOLEAN fOK);
 
 #endif

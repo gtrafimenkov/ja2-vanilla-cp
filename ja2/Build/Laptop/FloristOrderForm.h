@@ -1,13 +1,13 @@
 #ifndef __FLORIST_ORDER_FORM_H
 #define __FLORIST_ORDER_FORM_H
 
-void EnterFloristOrderForm(void);
-void ExitFloristOrderForm(void);
-void HandleFloristOrderForm(void);
-void RenderFloristOrderForm(void);
+void EnterFloristOrderForm();
+void ExitFloristOrderForm();
+void HandleFloristOrderForm();
+void RenderFloristOrderForm();
 
-void InitFloristOrderForm(void);
+void InitFloristOrderForm();
 
-void InitFloristOrderFormVariables(void);
+void InitFloristOrderFormVariables();
 
 #endif

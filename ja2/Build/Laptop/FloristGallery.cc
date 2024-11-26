@@ -90,7 +90,7 @@ static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click)
   return btn;
 }
 
-static void InitFlowerButtons(void);
+static void InitFlowerButtons();
 
 BOOLEAN EnterFloristGallery() {
   InitFloristDefaults();
@@ -111,7 +111,7 @@ BOOLEAN EnterFloristGallery() {
   return (TRUE);
 }
 
-static void DeleteFlowerButtons(void);
+static void DeleteFlowerButtons();
 
 void ExitFloristGallery() {
   UINT16 i;
@@ -137,7 +137,7 @@ void HandleFloristGallery() {
   }
 }
 
-static BOOLEAN DisplayFloralDescriptions(void);
+static BOOLEAN DisplayFloralDescriptions();
 
 void RenderFloristGallery() {
   DisplayFloristDefaults();
@@ -193,7 +193,7 @@ static void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void InitFlowerButtons(void) {
+static void InitFlowerButtons() {
   UINT16 i, j, count;
   UINT16 usPosY;
   char sTemp[40];
@@ -242,7 +242,7 @@ static void InitFlowerButtons(void) {
                gubCurFlowerIndex != FLOR_GALLERY_NUMBER_FLORAL_IMAGES - 1);
 }
 
-static void DeleteFlowerButtons(void) {
+static void DeleteFlowerButtons() {
   UINT16 i;
 
   for (i = 0; i < gubPrevNumberOfFlowers; i++) {
@@ -256,7 +256,7 @@ static void DeleteFlowerButtons(void) {
   }
 }
 
-static BOOLEAN DisplayFloralDescriptions(void) {
+static BOOLEAN DisplayFloralDescriptions() {
   UINT32 uiStartLoc = 0, i;
   UINT16 usPosY, usPrice;
 

@@ -1,9 +1,9 @@
 #ifndef __AIMHISTORY_H
 #define __AIMHISTORY_H
 
-void EnterAimHistory(void);
-void ExitAimHistory(void);
-void RenderAimHistory(void);
-void EnterInitAimHistory(void);
+void EnterAimHistory();
+void ExitAimHistory();
+void RenderAimHistory();
+void EnterInitAimHistory();
 
 #endif

@@ -52,7 +52,7 @@ static size_t guiMemFreed = 0;
 static UINT32 MemDebugCounter = 0;
 static BOOLEAN fMemManagerInit = FALSE;
 
-void InitializeMemoryManager(void) {
+void InitializeMemoryManager() {
   MemDebugCounter = 0;
   guiMemTotal = 0;
   guiMemAlloced = 0;
@@ -61,7 +61,7 @@ void InitializeMemoryManager(void) {
 }
 
 // Shuts down the memory manager.
-void ShutdownMemoryManager(void) {
+void ShutdownMemoryManager() {
   if (MemDebugCounter != 0) {
     DebugMsg(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, " ");
     DebugMsg(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, "***** WARNING - WARNING - WARNING *****");

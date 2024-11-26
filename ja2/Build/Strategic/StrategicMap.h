@@ -23,7 +23,7 @@ extern INT16 gWorldSectorX;
 extern INT16 gWorldSectorY;
 extern INT8 gbWorldSectorZ;
 
-#define NO_SECTOR ((UINT)-1)
+#define NO_SECTOR ((UINT) - 1)
 
 UINT GetWorldSector();
 
@@ -85,7 +85,7 @@ void JumpIntoAdjacentSector(UINT8 ubDirection, UINT8 ubJumpCode, INT16 sAddition
 
 bool CanGoToTacticalInSector(INT16 x, INT16 y, UINT8 z);
 
-void UpdateAirspaceControl(void);
+void UpdateAirspaceControl();
 
 bool IsThisSectorASAMSector(INT16 x, INT16 y, INT8 z);
 
@@ -104,17 +104,17 @@ void SetupNewStrategicGame();
 void LoadStrategicInfoFromSavedFile(HWFILE);
 void SaveStrategicInfoToSavedFile(HWFILE);
 
-void AllMercsHaveWalkedOffSector(void);
+void AllMercsHaveWalkedOffSector();
 
 void AdjustSoldierPathToGoOffEdge(SOLDIERTYPE *pSoldier, INT16 sEndGridNo,
                                   UINT8 ubTacticalDirection);
 
-void AllMercsWalkedToExitGrid(void);
+void AllMercsWalkedToExitGrid();
 
-void PrepareLoadedSector(void);
+void PrepareLoadedSector();
 
 // handle for slay...no better place to really put this stuff
-void HandleSlayDailyEvent(void);
+void HandleSlayDailyEvent();
 
 void HandleQuestCodeOnSectorEntry(INT16 sNewSectorX, INT16 sNewSectorY, INT8 bNewSectorZ);
 
@@ -122,7 +122,7 @@ void HandleQuestCodeOnSectorEntry(INT16 sNewSectorX, INT16 sNewSectorY, INT8 bNe
 // potential rejoining of group
 void HandleSoldierLeavingSectorByThemSelf(SOLDIERTYPE *pSoldier);
 
-BOOLEAN CheckAndHandleUnloadingOfCurrentWorld(void);
+BOOLEAN CheckAndHandleUnloadingOfCurrentWorld();
 
 // number of SAM sites under player control
 INT32 GetNumberOfSAMSitesUnderPlayerControl();
@@ -136,13 +136,13 @@ INT8 GetSAMIdFromSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 void SetupProfileInsertionDataForSoldier(const SOLDIERTYPE *s);
 
-BOOLEAN HandlePotentialBringUpAutoresolveToFinishBattle(void);
+BOOLEAN HandlePotentialBringUpAutoresolveToFinishBattle();
 
-void BeginLoadScreen(void);
+void BeginLoadScreen();
 
-void RemoveMercsInSector(void);
+void RemoveMercsInSector();
 
-void InitStrategicEngine(void);
+void InitStrategicEngine();
 
 // Used for determining the type of error message that comes up when you can't
 // traverse to an adjacent sector.  THESE VALUES DO NOT NEED TO BE SAVED!

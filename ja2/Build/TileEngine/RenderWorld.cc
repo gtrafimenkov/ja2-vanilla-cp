@@ -235,7 +235,7 @@ static RenderLayerFlags const g_render_fx_layer_flags[] = {
     TILES_DYNAMIC_STRUCTURES, TILES_DYNAMIC_ROOF,         TILES_DYNAMIC_HIGHMERCS,
     TILES_DYNAMIC_ONROOF,     TILES_DYNAMIC_TOPMOST};
 
-static void ResetLayerOptimizing(void) {
+static void ResetLayerOptimizing() {
   uiLayerUsedFlags = TILES_LAYER_ALL;
   uiAdditiveLayerUsedFlags = TILES_LAYER_NONE;
 }
@@ -1412,18 +1412,18 @@ static void ScrollBackground(INT16 sScrollXIncrement, INT16 sScrollYIncrement) {
 
 static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY,
                               BOOLEAN fForceAdjust, BOOLEAN fCheckOnly);
-static void ClearMarkedTiles(void);
+static void ClearMarkedTiles();
 static void ExamineZBufferRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-static void RenderDynamicWorld(void);
-static void RenderMarkedWorld(void);
+static void RenderDynamicWorld();
+static void RenderMarkedWorld();
 static void RenderRoomInfo(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S,
                            INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS);
-static void RenderStaticWorld(void);
+static void RenderStaticWorld();
 
 // Render routine takes center X, Y and Z coordinate and gets world
 // Coordinates for the window from that using the following functions
 // For coordinate transformations
-void RenderWorld(void) {
+void RenderWorld() {
   gfRenderFullThisFrame = FALSE;
 
   // If we are testing renderer, set background to pink!
@@ -1512,7 +1512,7 @@ void RenderWorld(void) {
 }
 
 static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-static void ResetRenderParameters(void);
+static void ResetRenderParameters();
 
 // Start with a center X,Y,Z world coordinate and render direction
 // Determine WorldIntersectionPoint and the starting block from these
@@ -1577,7 +1577,7 @@ void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
   if (!gfDoVideoScroll) AddBaseDirtyRect(sLeft, sTop, sRight, sBottom);
 }
 
-static void RenderStaticWorld(void) {
+static void RenderStaticWorld() {
   RenderLayerID sLevelIDs[9];
 
   // Calculate render starting parameters
@@ -1621,7 +1621,7 @@ static void RenderStaticWorld(void) {
   ResetRenderParameters();
 }
 
-static void RenderMarkedWorld(void) {
+static void RenderMarkedWorld() {
   RenderLayerID sLevelIDs[4];
 
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
@@ -1665,7 +1665,7 @@ static void RenderMarkedWorld(void) {
   ResetRenderParameters();
 }
 
-static void RenderDynamicWorld(void) {
+static void RenderDynamicWorld() {
   RenderLayerID sLevelIDs[10];
 
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
@@ -1753,13 +1753,13 @@ static BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, IN
   return fAGoodMove;
 }
 
-static UINT ScrollSpeed(void) {
+static UINT ScrollSpeed() {
   UINT speed = 20 << (IsKeyDown(SHIFT) ? 2 : gubCurScrollSpeedID);
   if (!gfDoVideoScroll) speed *= 2;
   return speed;
 }
 
-void ScrollWorld(void) {
+void ScrollWorld() {
   static UINT8 ubOldScrollSpeed = 0;
   static BOOLEAN fFirstTimeInSlideToMode = TRUE;
 
@@ -2172,11 +2172,11 @@ static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY
   return fScrollGood;
 }
 
-static void ClearMarkedTiles(void) {
+static void ClearMarkedTiles() {
   FOR_EACH_WORLD_TILE(i) { i->uiFlags &= ~MAPELEMENT_REDRAW; }
 }
 
-void InvalidateWorldRedundency(void) {
+void InvalidateWorldRedundency() {
   SetRenderFlags(RENDER_FLAG_CHECKZ);
   FOR_EACH_WORLD_TILE(i) { i->uiFlags |= MAPELEMENT_REEVALUATE_REDUNDENCY; }
 }
@@ -4966,7 +4966,7 @@ static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sB
   }
 }
 
-static void ResetRenderParameters(void) {
+static void ResetRenderParameters() {
   // Restore clipping rect
   gClippingRect = gOldClipRect;
 }

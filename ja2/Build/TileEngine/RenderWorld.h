@@ -99,9 +99,9 @@ extern double gdScaleY;
 
 extern BOOLEAN gfIgnoreScrollDueToCenterAdjust;
 
-void ScrollWorld(void);
+void ScrollWorld();
 void InitRenderParams(UINT8 ubRestrictionID);
-void RenderWorld(void);
+void RenderWorld();
 
 void ResetSpecificLayerOptimizing(RenderLayerFlags);
 
@@ -119,7 +119,7 @@ extern BOOLEAN gfScrollPending;
 void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
                            BOOLEAN fDynamicsToo);
 
-void InvalidateWorldRedundency(void);
+void InvalidateWorldRedundency();
 
 void SetRenderCenter(INT16 sNewX, INT16 sNewY);
 

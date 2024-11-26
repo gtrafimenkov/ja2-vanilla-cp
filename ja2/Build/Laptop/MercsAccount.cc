@@ -138,7 +138,7 @@ void HandleMercsAccount() {
   }
 }
 
-static void DisplayHiredMercs(void);
+static void DisplayHiredMercs();
 
 void RenderMercsAccount() {
   wchar_t sText[100];
@@ -212,7 +212,7 @@ static void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DisplayHiredMercs(void) {
+static void DisplayHiredMercs() {
   UINT16 usPosY;
   UINT32 uiContractCharge;
   wchar_t sTemp[20];
@@ -274,7 +274,7 @@ static void DisplayHiredMercs(void) {
                    MERC_ACCOUNT_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
 }
 
-static void SettleMercAccounts(void) {
+static void SettleMercAccounts() {
   //	SOLDIERTYPE *pSoldier;
   INT16 i;
   UINT8 ubMercID;

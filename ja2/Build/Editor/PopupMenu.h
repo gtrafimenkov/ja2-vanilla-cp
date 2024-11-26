@@ -60,6 +60,6 @@ enum PopupMenuID {
 
 // These are the two main functions that outside users would call.
 void InitPopupMenu(GUIButtonRef, PopupMenuID, UINT8 ubDirection);
-BOOLEAN ProcessPopupMenuIfActive(void);
+BOOLEAN ProcessPopupMenuIfActive();
 
 #endif

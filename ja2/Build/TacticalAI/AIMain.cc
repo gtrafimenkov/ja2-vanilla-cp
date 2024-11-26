@@ -50,7 +50,7 @@
 
 #define DEADLOCK_DELAY 15000
 
-//#define TESTAI
+// #define TESTAI
 
 #define AI_LIMIT_PER_UPDATE 1
 
@@ -66,7 +66,7 @@ INT8 gbDiff[MAX_DIFF_PARMS][5] = {
     {4, 6, 8, 10, 13}       // DIFF_MAX_COVER_RANGE
 };
 
-void InitAI(void) {
+void InitAI() {
   // If we are not loading a saved game ( if we are, this has already been
   // called )
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -144,8 +144,8 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
   } else if (!(pSoldier->fAIFlags & AI_HANDLE_EVERY_FRAME))  // if set to handle every frame, ignore
                                                              // delay!
   {
-    //#ifndef AI_PROFILING
-    // Time to handle guys in realtime (either combat or not )
+    // #ifndef AI_PROFILING
+    //  Time to handle guys in realtime (either combat or not )
     if (!TIMECOUNTERDONE(pSoldier->AICounter, AI_DELAY)) {
       // CAMFIELD, LOOK HERE!
       return;
@@ -153,7 +153,7 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
       // Reset counter!
       RESETTIMECOUNTER(pSoldier->AICounter, AI_DELAY);
     }
-    //#endif
+    // #endif
   }
 
   if (pSoldier->fAIFlags & AI_HANDLE_EVERY_FRAME)  // if set to handle every frame, ignore delay!

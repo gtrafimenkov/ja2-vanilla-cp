@@ -63,7 +63,7 @@ static const ARMY_GUN_CHOICE_TYPE gExtendedArmyGunChoices[ARMY_GUN_LEVELS] = {
 
 static void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon);
 
-void InitArmyGunTypes(void) {
+void InitArmyGunTypes() {
   UINT32 uiGunLevel;
   UINT32 uiChoice;
   INT8 bItemNo;
@@ -1778,4 +1778,4 @@ static void EquipTank(SOLDIERCREATE_STRUCT *pp) {
   pp->Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
 }
 
-void ResetMortarsOnTeamCount(void) { guiMortarsRolledByTeam = 0; }
+void ResetMortarsOnTeamCount() { guiMortarsRolledByTeam = 0; }

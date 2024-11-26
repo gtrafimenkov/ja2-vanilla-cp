@@ -128,8 +128,8 @@ void EnterInitAimArchives() {
 }
 
 static void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void DisableAimArchiveButton(void);
-static void InitAlumniFaceRegions(void);
+static void DisableAimArchiveButton();
+static void InitAlumniFaceRegions();
 
 void EnterAimArchives() {
   gfDrawPopUpBox = FALSE;
@@ -168,7 +168,7 @@ void EnterAimArchives() {
 }
 
 static void CreateDestroyDoneMouseRegion(UINT16 usPosY);
-static void RemoveAimAlumniFaceRegion(void);
+static void RemoveAimAlumniFaceRegion();
 
 void ExitAimArchives() {
   DeleteVideoObject(guiAlumniFrame);
@@ -207,7 +207,7 @@ void HandleAimArchives() {
   }
 }
 
-static void DisplayAlumniOldMercPopUp(void);
+static void DisplayAlumniOldMercPopUp();
 
 void RenderAimArchives() {
   DrawAimDefaults();
@@ -263,7 +263,7 @@ static void SelectAlumniFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason)
 }
 
 static void ChangingAimArchiveSubPage(UINT8 ubSubPageNumber);
-static void ResetAimArchiveButtons(void);
+static void ResetAimArchiveButtons();
 
 static void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   UINT8 const ubRetValue = btn->GetUserData();
@@ -280,7 +280,7 @@ static void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ResetAimArchiveButtons(void) {
+static void ResetAimArchiveButtons() {
   int i = 0;
 
   for (i = 0; i < 3; i++) {
@@ -294,7 +294,7 @@ static void DisableAimArchiveButton() {
   }
 }
 
-static void DisplayAlumniOldMercPopUp(void) {
+static void DisplayAlumniOldMercPopUp() {
   UINT8 i, ubNumLines = 11;  // 17
   UINT16 usPosY;
   UINT8 ubNumDescLines;
@@ -364,7 +364,7 @@ static void DisplayAlumniOldMercPopUp(void) {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void InitAlumniFaceRegions(void) {
+static void InitAlumniFaceRegions() {
   if (gfFaceMouseRegionsActive) return;
   gfFaceMouseRegionsActive = TRUE;
 
@@ -385,12 +385,13 @@ static void InitAlumniFaceRegions(void) {
   }
 }
 
-static void RemoveAimAlumniFaceRegion(void) {
+static void RemoveAimAlumniFaceRegion() {
   if (!gfFaceMouseRegionsActive) return;
   gfFaceMouseRegionsActive = FALSE;
 
   size_t const start = gubPageNum * MAX_NUMBER_OLD_MERCS_ON_PAGE;
-  size_t const n_faces = std::min((size_t)(OLD_MERCS_COUNT - start), (size_t)MAX_NUMBER_OLD_MERCS_ON_PAGE);
+  size_t const n_faces =
+      std::min((size_t)(OLD_MERCS_COUNT - start), (size_t)MAX_NUMBER_OLD_MERCS_ON_PAGE);
   for (size_t i = 0; i < n_faces; ++i) {
     MSYS_RemoveRegion(&gMercAlumniFaceMouseRegions[i]);
   }

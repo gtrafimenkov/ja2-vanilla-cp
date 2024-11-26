@@ -1,8 +1,8 @@
 #ifndef __INSURANCE_COMMENTS_H
 #define __INSURANCE_COMMENTS_H
 
-void EnterInsuranceComments(void);
-void ExitInsuranceComments(void);
-void RenderInsuranceComments(void);
+void EnterInsuranceComments();
+void ExitInsuranceComments();
+void RenderInsuranceComments();
 
 #endif

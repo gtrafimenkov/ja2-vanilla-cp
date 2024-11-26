@@ -17,7 +17,7 @@
 #include "Tactical/SoldierCreate.h"
 #include "Utils/FontControl.h"
 
-static void InitEditorItemStatsButtons(void) {
+static void InitEditorItemStatsButtons() {
   INT16 const y = TASKBAR_Y;
   iEditorButton[ITEMSTATS_PANEL] =
       CreateLabel(NULL, 0, 0, 0, 480, y + 1, 160, 99, MSYS_PRIORITY_NORMAL);
@@ -112,7 +112,7 @@ static void MakeButtonInventory(UINT idx, INT16 x, INT16 y, INT32 pos) {
   btn->SetUserData(pos);
 }
 
-static void InitEditorMercsToolbar(void) {
+static void InitEditorMercsToolbar() {
   MakeCheck(MERCS_PLAYERTOGGLE, 4, 2, MercsTogglePlayers, EDITORDIR "/smcheckbox.sti",
             L"Toggle viewing of players");
   MakeCheck(MERCS_ENEMYTOGGLE, 4, 22, MercsToggleEnemies, EDITORDIR "/smcheckbox.sti",
@@ -309,7 +309,7 @@ static void InitEditorMercsToolbar(void) {
   MakeButtonInventory(MERCS_PACK4_SLOT, MERCPANEL_X + 166, MERCPANEL_Y + 75, BIGPOCK4POS);
 }
 
-static void InitEditorBuildingsToolbar(void) {
+static void InitEditorBuildingsToolbar() {
   iEditorButton[BUILDING_TOGGLE_ROOF_VIEW] =
       MakeTextButton(L"ROOFS", FONT_YELLOW, 110, 40, 50, 15, BuildingToggleRoofViewCallback);
   iEditorButton[BUILDING_TOGGLE_WALL_VIEW] =
@@ -376,7 +376,7 @@ static void InitEditorBuildingsToolbar(void) {
              L"Cycle brush size");
 }
 
-static void InitEditorItemsToolbar(void) {
+static void InitEditorItemsToolbar() {
   INT16 const y = TASKBAR_Y;
   iEditorButton[ITEMS_WEAPONS] =
       CreateTextButton(L"Weapons", BLOCKFONT, FONT_MCOLOR_DKWHITE, FONT_BLACK, 100, y + 80, 59, 20,
@@ -411,7 +411,7 @@ static void InitEditorItemsToolbar(void) {
              NULL);
 }
 
-static void InitEditorMapInfoToolbar(void) {
+static void InitEditorMapInfoToolbar() {
   MakeButton(MAPINFO_ADD_LIGHT1_SOURCE, 10, 2, BtnDrawLightsCallback, EDITORDIR "/light.sti",
              L"Add ambient light source");
 
@@ -453,7 +453,7 @@ static void InitEditorMapInfoToolbar(void) {
              L"Specify isolated point for validation purposes.");
 }
 
-static void InitEditorOptionsToolbar(void) {
+static void InitEditorOptionsToolbar() {
   MakeButton(OPTIONS_NEW_MAP, 71, 41, BtnNewMapCallback, EDITORDIR "/new.sti", L"New map");
   MakeButton(OPTIONS_NEW_BASEMENT, 101, 41, BtnNewBasementCallback, EDITORDIR "/new.sti",
              L"New basement");
@@ -468,7 +468,7 @@ static void InitEditorOptionsToolbar(void) {
   MakeButton(OPTIONS_QUIT_GAME, 281, 41, BtnQuitCallback, EDITORDIR "/cancel.sti", L"Exit game.");
 }
 
-static void InitEditorTerrainToolbar(void) {
+static void InitEditorTerrainToolbar() {
   MakeButton(TERRAIN_FGROUND_TEXTURES, 100, 40, BtnFgGrndCallback, EDITORDIR "/downgrid.sti",
              L"Draw ground textures");
   MakeButton(TERRAIN_BGROUND_TEXTURES, 130, 40, BtnBkGrndCallback, EDITORDIR "/upgrid.sti",

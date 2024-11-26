@@ -14,16 +14,16 @@
 extern UINT8 gubCambriaMedicalObjects;
 
 void CheckForKingpinsMoneyMissing(BOOLEAN fFirstCheck);
-void CheckForMissingHospitalSupplies(void);
+void CheckForMissingHospitalSupplies();
 
 void BobbyRayPurchaseEventCallback(UINT8 ubOrderID);
 
-void HandleStolenItemsReturned(void);
+void HandleStolenItemsReturned();
 
-void AddSecondAirportAttendant(void);
+void AddSecondAirportAttendant();
 
 void HandleNPCSystemEvent(UINT32 uiEvent);
-void HandleEarlyMorningEvents(void);
+void HandleEarlyMorningEvents();
 
 void MakeCivGroupHostileOnNextSectorEntrance(UINT8 ubCivGroup);
 

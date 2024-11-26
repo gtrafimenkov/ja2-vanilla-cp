@@ -50,9 +50,9 @@ static void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLengt
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void PrintIMPPersonalityQuizQuestionAndAnswers(void);
+static void PrintIMPPersonalityQuizQuestionAndAnswers();
 
-void PrintImpText(void) {
+void PrintImpText() {
   INT16 sWidth = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
 
   // looks at current page and prints text needed
@@ -313,7 +313,7 @@ void PrintImpText(void) {
 
 static void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset);
 
-static void PrintIMPPersonalityQuizQuestionAndAnswers(void) {
+static void PrintIMPPersonalityQuizQuestionAndAnswers() {
   if (giCurrentPersonalityQuizQuestion < 0) {
     return;
   }

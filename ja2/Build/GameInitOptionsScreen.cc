@@ -164,17 +164,17 @@ static void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 static void EnterGIOScreen();
 static void ExitGIOScreen();
-static void HandleGIOScreen(void);
-static void RenderGIOScreen(void);
-static void GetGIOScreenUserInput(void);
-static void RestoreGIOButtonBackGrounds(void);
-static void DoneFadeOutForExitGameInitOptionScreen(void);
-static void DisplayMessageToUserAboutGameDifficulty(void);
+static void HandleGIOScreen();
+static void RenderGIOScreen();
+static void GetGIOScreenUserInput();
+static void RestoreGIOButtonBackGrounds();
+static void DoneFadeOutForExitGameInitOptionScreen();
+static void DisplayMessageToUserAboutGameDifficulty();
 static void ConfirmGioDifSettingMessageBoxCallBack(MessageBoxReturnValue);
-static BOOLEAN DisplayMessageToUserAboutIronManMode(void);
+static BOOLEAN DisplayMessageToUserAboutIronManMode();
 static void ConfirmGioIronManMessageBoxCallBack(MessageBoxReturnValue);
 
-ScreenID GameInitOptionsScreenHandle(void) {
+ScreenID GameInitOptionsScreenHandle() {
   if (gfGIOScreenEntry) {
     EnterGIOScreen();
     gfGIOScreenEntry = FALSE;
@@ -361,7 +361,7 @@ static void ExitGIOScreen() {
   gfGIOScreenEntry = TRUE;
 }
 
-static void HandleGIOScreen(void) {
+static void HandleGIOScreen() {
   if (gubGameOptionScreenHandler != GIO_NOTHING) {
     switch (gubGameOptionScreenHandler) {
       case GIO_CANCEL:
@@ -395,7 +395,7 @@ static void HandleGIOScreen(void) {
   RestoreGIOButtonBackGrounds();
 }
 
-static void RenderGIOScreen(void) {
+static void RenderGIOScreen() {
   UINT16 usPosY;
 
   BltVideoObject(FRAME_BUFFER, guiGIOMainBackGroundImage, 0, 0, 0);
@@ -492,7 +492,7 @@ static void RenderGIOScreen(void) {
                        LEFT_JUSTIFIED);
 }
 
-static void GetGIOScreenUserInput(void) {
+static void GetGIOScreenUserInput() {
   InputAtom Event;
 
   while (DequeueEvent(&Event)) {
@@ -574,7 +574,7 @@ static void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static UINT8 GetCurrentDifficultyButtonSetting(void) {
+static UINT8 GetCurrentDifficultyButtonSetting() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
@@ -583,7 +583,7 @@ static UINT8 GetCurrentDifficultyButtonSetting(void) {
   return 0;
 }
 
-static UINT8 GetCurrentGameStyleButtonSetting(void) {
+static UINT8 GetCurrentGameStyleButtonSetting() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
@@ -592,7 +592,7 @@ static UINT8 GetCurrentGameStyleButtonSetting(void) {
   return 0;
 }
 
-static UINT8 GetCurrentGunButtonSetting(void) {
+static UINT8 GetCurrentGunButtonSetting() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
@@ -602,7 +602,7 @@ static UINT8 GetCurrentGunButtonSetting(void) {
 }
 
 #if 0  // JA2 Gold: no timed turns
-static UINT8 GetCurrentTimedTurnsButtonSetting(void)
+static UINT8 GetCurrentTimedTurnsButtonSetting()
 {
 	UINT8	cnt;
 
@@ -614,7 +614,7 @@ static UINT8 GetCurrentTimedTurnsButtonSetting(void)
 }
 #endif
 
-static UINT8 GetCurrentGameSaveButtonSetting(void) {
+static UINT8 GetCurrentGameSaveButtonSetting() {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
@@ -623,7 +623,7 @@ static UINT8 GetCurrentGameSaveButtonSetting(void) {
   return 0;
 }
 
-static void RestoreGIOButtonBackGrounds(void) {
+static void RestoreGIOButtonBackGrounds() {
   UINT8 cnt;
   UINT16 usPosY;
 
@@ -666,7 +666,7 @@ static void RestoreGIOButtonBackGrounds(void) {
   }
 }
 
-static void DoneFadeOutForExitGameInitOptionScreen(void) {
+static void DoneFadeOutForExitGameInitOptionScreen() {
   // loop through and get the status of all the buttons
   gGameOptions.fGunNut = GetCurrentGunButtonSetting();
   gGameOptions.fSciFi = GetCurrentGameStyleButtonSetting();
@@ -692,7 +692,7 @@ static void DoGioMessageBox(const wchar_t *zString, MSGBOX_CALLBACK ReturnCallba
                ReturnCallback, NULL);
 }
 
-static void DisplayMessageToUserAboutGameDifficulty(void) {
+static void DisplayMessageToUserAboutGameDifficulty() {
   const wchar_t *text;
 
   switch (GetCurrentDifficultyButtonSetting()) {
@@ -717,7 +717,7 @@ static void ConfirmGioDifSettingMessageBoxCallBack(MessageBoxReturnValue const b
   }
 }
 
-static BOOLEAN DisplayMessageToUserAboutIronManMode(void) {
+static BOOLEAN DisplayMessageToUserAboutIronManMode() {
   UINT8 ubIronManMode = GetCurrentGameSaveButtonSetting();
 
   // if the user has selected IRON MAN mode

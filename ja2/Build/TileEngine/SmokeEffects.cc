@@ -40,7 +40,7 @@ static UINT32 guiNumSmokeEffects = 0;
 #define FOR_EACH_SMOKE_EFFECT(iter) BASE_FOR_EACH_SMOKE_EFFECT(SMOKEEFFECT, iter)
 #define CFOR_EACH_SMOKE_EFFECT(iter) BASE_FOR_EACH_SMOKE_EFFECT(const SMOKEEFFECT, iter)
 
-static SMOKEEFFECT *GetFreeSmokeEffect(void) {
+static SMOKEEFFECT *GetFreeSmokeEffect() {
   for (SMOKEEFFECT *s = gSmokeEffectData; s != gSmokeEffectData + guiNumSmokeEffects; ++s) {
     if (!s->fAllocated) return s;
   }

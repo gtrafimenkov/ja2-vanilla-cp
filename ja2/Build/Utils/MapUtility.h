@@ -3,6 +3,6 @@
 
 #include "ScreenIDs.h"
 
-ScreenID MapUtilScreenHandle(void);
+ScreenID MapUtilScreenHandle();
 
 #endif

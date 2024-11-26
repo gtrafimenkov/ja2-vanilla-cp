@@ -85,10 +85,10 @@ class SGPVObject {
 ENUM_BITSET(SGPVObject::Flags)
 
 // Creates a list to contain video objects
-void InitializeVideoObjectManager(void);
+void InitializeVideoObjectManager();
 
 // Deletes any video object placed into list
-void ShutdownVideoObjectManager(void);
+void ShutdownVideoObjectManager();
 
 // Creates and adds a video object to list
 SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *);

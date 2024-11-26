@@ -233,9 +233,9 @@ static MOUSE_REGION gTogglePastCurrentTeam[2];
 
 static MOUSE_REGION gMouseScrollPersonnelINV;
 
-static void InitPastCharactersList(void);
+static void InitPastCharactersList();
 
-void GameInitPersonnel(void) {
+void GameInitPersonnel() {
   // init past characters lists
   InitPastCharactersList();
 }
@@ -243,13 +243,13 @@ void GameInitPersonnel(void) {
 static void CreateDestroyCurrentDepartedMouseRegions(BOOLEAN create);
 static void CreateDestroyMouseRegionsForPersonnelPortraits(BOOLEAN create);
 static void CreateDestroyStartATMButton(BOOLEAN create);
-static void CreatePersonnelButtons(void);
-static void SelectFirstDisplayedMerc(void);
-static void LoadPersonnelGraphics(void);
-static void LoadPersonnelScreenBackgroundGraphics(void);
-static void SetPersonnelButtonStates(void);
+static void CreatePersonnelButtons();
+static void SelectFirstDisplayedMerc();
+static void LoadPersonnelGraphics();
+static void LoadPersonnelScreenBackgroundGraphics();
+static void SetPersonnelButtonStates();
 
-void EnterPersonnel(void) {
+void EnterPersonnel() {
   fReDrawScreenFlag = TRUE;
 
   uiCurrentInventoryIndex = 0;
@@ -280,12 +280,12 @@ void EnterPersonnel(void) {
 }
 
 static void CreateDestroyButtonsForDepartedTeamList(BOOLEAN create);
-static void CreateDestroyPersonnelInventoryScrollButtons(void);
-static void DeletePersonnelButtons(void);
-static void DeletePersonnelScreenBackgroundGraphics(void);
-static void RemovePersonnelGraphics(void);
+static void CreateDestroyPersonnelInventoryScrollButtons();
+static void DeletePersonnelButtons();
+static void DeletePersonnelScreenBackgroundGraphics();
+static void RemovePersonnelGraphics();
 
-void ExitPersonnel(void) {
+void ExitPersonnel() {
   CreateDestroyButtonsForDepartedTeamList(FALSE);
 
   // get rid of atm panel buttons
@@ -307,11 +307,11 @@ void ExitPersonnel(void) {
   CreateDestroyCurrentDepartedMouseRegions(FALSE);
 }
 
-static void EnableDisableDeparturesButtons(void);
-static void EnableDisableInventoryScrollButtons(void);
-static void HandlePersonnelKeyboard(void);
+static void EnableDisableDeparturesButtons();
+static void EnableDisableInventoryScrollButtons();
+static void HandlePersonnelKeyboard();
 
-void HandlePersonnel(void) {
+void HandlePersonnel() {
   // create / destroy buttons for scrolling departed list
   CreateDestroyButtonsForDepartedTeamList(!fCurrentTeamMode);
 
@@ -327,7 +327,7 @@ void HandlePersonnel(void) {
   HandlePersonnelKeyboard();
 }
 
-static void LoadPersonnelGraphics(void) {
+static void LoadPersonnelGraphics() {
   // load graphics needed for personnel screen
 
   // title bar
@@ -339,24 +339,24 @@ static void LoadPersonnelGraphics(void) {
   guiPersonnelInventory = AddVideoObjectFromFile(LAPTOPDIR "/personnel_inventory.sti");
 }
 
-static void RemovePersonnelGraphics(void) {
+static void RemovePersonnelGraphics() {
   // delete graphics needed for personnel screen
   DeleteVideoObject(guiSCREEN);
   DeleteVideoObject(guiTITLE);
   DeleteVideoObject(guiPersonnelInventory);
 }
 
-static void DisplayFaceOfDisplayedMerc(void);
+static void DisplayFaceOfDisplayedMerc();
 static void DisplayPastMercsPortraits();
-static void DisplayPersonnelSummary(void);
-static void DisplayPersonnelTextOnTitleBar(void);
-static void DisplayPicturesOfCurrentTeam(void);
-static void DisplayTeamStats(void);
-static void RenderAtmPanel(void);
-static void RenderPersonnelScreenBackground(void);
-static void UpDateStateOfStartButton(void);
+static void DisplayPersonnelSummary();
+static void DisplayPersonnelTextOnTitleBar();
+static void DisplayPicturesOfCurrentTeam();
+static void DisplayTeamStats();
+static void RenderAtmPanel();
+static void RenderPersonnelScreenBackground();
+static void UpDateStateOfStartButton();
 
-void RenderPersonnel(void) {
+void RenderPersonnel() {
   // re-renders personnel screen
   // render main background
 
@@ -444,10 +444,10 @@ static void RenderPersonnelFace(MERCPROFILESTRUCT const &p, BOOLEAN const alive)
 } catch (...) { /* XXX ignore */
 }
 
-static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam(void);
-static INT32 GetNumberOfPastMercsOnPlayersTeam(void);
+static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam();
+static INT32 GetNumberOfPastMercsOnPlayersTeam();
 
-static void NextPersonnelFace(void) {
+static void NextPersonnelFace() {
   if (iCurrentPersonSelectedId == -1) return;
 
   if (fCurrentTeamMode) {
@@ -473,7 +473,7 @@ static void NextPersonnelFace(void) {
   }
 }
 
-static void PrevPersonnelFace(void) {
+static void PrevPersonnelFace() {
   if (iCurrentPersonSelectedId == -1) return;
 
   if (fCurrentTeamMode) {
@@ -510,7 +510,7 @@ static GUIButtonRef MakeButton(char const *const gfx, INT32 const off_normal, IN
 static void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason);
 static void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason);
 
-static void CreatePersonnelButtons(void) {
+static void CreatePersonnelButtons() {
   // left/right buttons
   g_personnel.prev = MakeButton(LAPTOPDIR "/personnelbuttons.sti", 0, 1, PREV_MERC_FACE_X,
                                 MERC_FACE_SCROLL_Y, LeftButtonCallBack);
@@ -518,7 +518,7 @@ static void CreatePersonnelButtons(void) {
                                 MERC_FACE_SCROLL_Y, RightButtonCallBack);
 }
 
-static void DeletePersonnelButtons(void) {
+static void DeletePersonnelButtons() {
   RemoveButton(g_personnel.prev);
   RemoveButton(g_personnel.next);
 }
@@ -731,7 +731,7 @@ static void DisplayCharStats(SOLDIERTYPE const &s) {
   }
 }
 
-static void SetPersonnelButtonStates(void) {
+static void SetPersonnelButtonStates() {
   // this function will look at what page we are viewing, enable and disable
   // buttons as needed
   const INT32 merc_count = fCurrentTeamMode ? GetNumberOfMercsDeadOrAliveOnPlayersTeam()
@@ -741,13 +741,13 @@ static void SetPersonnelButtonStates(void) {
   EnableButton(g_personnel.next, enable);
 }
 
-static void RenderPersonnelScreenBackground(void) {
+static void RenderPersonnelScreenBackground() {
   // this fucntion will render the background for the personnel screen
   BltVideoObject(FRAME_BUFFER, fCurrentTeamMode ? guiCURRENTTEAM : guiDEPARTEDTEAM, 0, DEPARTED_X,
                  DEPARTED_Y);
 }
 
-static void LoadPersonnelScreenBackgroundGraphics(void) {
+static void LoadPersonnelScreenBackgroundGraphics() {
   // will load the graphics for the personeel screen background
 
   // departed bar
@@ -757,13 +757,13 @@ static void LoadPersonnelScreenBackgroundGraphics(void) {
   guiCURRENTTEAM = AddVideoObjectFromFile(LAPTOPDIR "/currentteam.sti");
 }
 
-static void DeletePersonnelScreenBackgroundGraphics(void) {
+static void DeletePersonnelScreenBackgroundGraphics() {
   // delete background V/O's
   DeleteVideoObject(guiCURRENTTEAM);
   DeleteVideoObject(guiDEPARTEDTEAM);
 }
 
-static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam(void) {
+static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam() {
   INT32 iCounter = 0;
 
   // grab number on team
@@ -802,7 +802,7 @@ static void CreateDestroyMouseRegionsForPersonnelPortraits(BOOLEAN create) {
   }
 }
 
-static void DisplayPicturesOfCurrentTeam(void) try {
+static void DisplayPicturesOfCurrentTeam() try {
   // will display the small portraits of the current team
   if (!fCurrentTeamMode) return;
 
@@ -836,7 +836,7 @@ static void DisplayPicturesOfCurrentTeam(void) try {
 } catch (...) { /* XXX ignore */
 }
 
-static SOLDIERTYPE const &GetSoldierOfCurrentSlot(void);
+static SOLDIERTYPE const &GetSoldierOfCurrentSlot();
 
 static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   INT32 iPortraitId = 0;
@@ -924,9 +924,9 @@ static void DisplayAmountOnChar(SOLDIERTYPE const &);
 static void DisplayDepartedCharName(MERCPROFILESTRUCT const &, INT32 iState);
 static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &, INT32 iState);
 static void DisplayHighLightBox(INT32 sel_id);
-static PastMercInfo GetSelectedPastMercInfo(void);
+static PastMercInfo GetSelectedPastMercInfo();
 
-static void DisplayFaceOfDisplayedMerc(void) {
+static void DisplayFaceOfDisplayedMerc() {
   // valid person?, display
   if (iCurrentPersonSelectedId == -1) return;
 
@@ -950,7 +950,7 @@ static void DisplayFaceOfDisplayedMerc(void) {
   }
 }
 
-static void RenderSliderBarForPersonnelInventory(void);
+static void RenderSliderBarForPersonnelInventory();
 
 // display the inventory for this merc
 static void DisplayCharInventory(SOLDIERTYPE const &s) {
@@ -1034,18 +1034,18 @@ static void DisplayCharInventory(SOLDIERTYPE const &s) {
   }
 }
 
-static void FindPositionOfPersInvSlider(void);
+static void FindPositionOfPersInvSlider();
 
-static void InventoryUp(void) {
+static void InventoryUp() {
   if (uiCurrentInventoryIndex == 0) return;
   uiCurrentInventoryIndex--;
   fReDrawScreenFlag = TRUE;
   FindPositionOfPersInvSlider();
 }
 
-static INT32 GetNumberOfInventoryItemsOnCurrentMerc(void);
+static INT32 GetNumberOfInventoryItemsOnCurrentMerc();
 
-static void InventoryDown(void) {
+static void InventoryDown() {
   if ((INT32)uiCurrentInventoryIndex >=
       (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
     return;
@@ -1069,7 +1069,7 @@ static void InventoryDownButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 
 // decide which buttons can and can't be accessed based on what the current item
 // is
-static void EnableDisableInventoryScrollButtons(void) {
+static void EnableDisableInventoryScrollButtons() {
   if (gubPersonnelInfoState != PRSNL_INV) {
     return;
   }
@@ -1090,7 +1090,7 @@ static void EnableDisableInventoryScrollButtons(void) {
   }
 }
 
-static INT32 GetNumberOfInventoryItemsOnCurrentMerc(void) {
+static INT32 GetNumberOfInventoryItemsOnCurrentMerc() {
   // in current team mode?..nope...move on
   if (!fCurrentTeamMode) return 0;
 
@@ -1116,7 +1116,7 @@ static MOUSE_REGION InventoryRegion;
 
 static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyPersonnelInventoryScrollButtons(void) {
+static void CreateDestroyPersonnelInventoryScrollButtons() {
   static BOOLEAN fCreated = FALSE;
 
   if (gubPersonnelInfoState == PRSNL_INV && !fCreated) {
@@ -1151,10 +1151,10 @@ static void CreateDestroyPersonnelInventoryScrollButtons(void) {
   }
 }
 
-static void DisplayCostOfCurrentTeam(void);
-static void DisplayStateOfPastTeamMembers(void);
+static void DisplayCostOfCurrentTeam();
+static void DisplayStateOfPastTeamMembers();
 
-static void DisplayPersonnelSummary(void) {
+static void DisplayPersonnelSummary() {
   // display number on team
   SetFontAttributes(FONT10ARIAL, PERS_TEXT_FONT_COLOR);
 
@@ -1181,7 +1181,7 @@ static void DisplayPersonnelSummary(void) {
   }
 }
 
-static void DisplayCostOfCurrentTeam(void) {
+static void DisplayCostOfCurrentTeam() {
   INT32 min_cost = 999999;
   INT32 max_cost = 0;
   INT32 sum_cost = 0;
@@ -1245,7 +1245,7 @@ static void DisplayCostOfCurrentTeam(void) {
   MPrint(sX, PERS_CURR_TEAM_LOWEST_Y, sString);
 }
 
-static void DisplayTeamStats(void) {
+static void DisplayTeamStats() {
   INT16 sX;
   INT16 sY;
 
@@ -1434,11 +1434,11 @@ static void DisplayTeamStats(void) {
   }
 }
 
-static INT32 GetNumberOfDeadOnPastTeam(void);
-static INT32 GetNumberOfLeftOnPastTeam(void);
-static INT32 GetNumberOfOtherOnPastTeam(void);
+static INT32 GetNumberOfDeadOnPastTeam();
+static INT32 GetNumberOfLeftOnPastTeam();
+static INT32 GetNumberOfOtherOnPastTeam();
 
-static INT32 GetNumberOfPastMercsOnPlayersTeam(void) {
+static INT32 GetNumberOfPastMercsOnPlayersTeam() {
   INT32 iPastNumberOfMercs = 0;
   // will run through the list of past mercs on the players team and return
   // their number
@@ -1450,7 +1450,7 @@ static INT32 GetNumberOfPastMercsOnPlayersTeam(void) {
   return iPastNumberOfMercs;
 }
 
-static void InitPastCharactersList(void) {
+static void InitPastCharactersList() {
   // inits the past characters list
   memset(&LaptopSaveInfo.ubDeadCharactersList, -1, sizeof(LaptopSaveInfo.ubDeadCharactersList));
   memset(&LaptopSaveInfo.ubLeftCharactersList, -1, sizeof(LaptopSaveInfo.ubLeftCharactersList));
@@ -1465,20 +1465,16 @@ static INT32 CountList(const INT16 *const list) {
   return count;
 }
 
-static INT32 GetNumberOfDeadOnPastTeam(void) {
-  return CountList(LaptopSaveInfo.ubDeadCharactersList);
-}
+static INT32 GetNumberOfDeadOnPastTeam() { return CountList(LaptopSaveInfo.ubDeadCharactersList); }
 
-static INT32 GetNumberOfLeftOnPastTeam(void) {
-  return CountList(LaptopSaveInfo.ubLeftCharactersList);
-}
+static INT32 GetNumberOfLeftOnPastTeam() { return CountList(LaptopSaveInfo.ubLeftCharactersList); }
 
-static INT32 GetNumberOfOtherOnPastTeam(void) {
+static INT32 GetNumberOfOtherOnPastTeam() {
   return CountList(LaptopSaveInfo.ubOtherCharactersList);
 }
 
 // diplays numbers fired, dead and other
-static void DisplayStateOfPastTeamMembers(void) {
+static void DisplayStateOfPastTeamMembers() {
   INT16 sX, sY;
   wchar_t sString[32];
 
@@ -1640,7 +1636,7 @@ static void DisplayPastMercsPortraits() {
 }
 
 // returns ID of Merc in this slot
-static PastMercInfo GetSelectedPastMercInfo(void) {
+static PastMercInfo GetSelectedPastMercInfo() {
   INT32 slot = giCurrentUpperLeftPortraitNumber + iCurrentPersonSelectedId;
   Assert(slot < GetNumberOfPastMercsOnPlayersTeam());
 
@@ -1723,7 +1719,7 @@ static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &p, INT32 const iSt
   PrintStat(p.usTimesWounded, pers_stat_y[25], pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
 }
 
-static void EnableDisableDeparturesButtons(void) {
+static void EnableDisableDeparturesButtons() {
   // will enable or disable departures buttons based on upperleft picutre index
   // value
   if (fCurrentTeamMode || fNewMailFlag) {
@@ -1762,7 +1758,7 @@ static void DisplayDepartedCharName(MERCPROFILESTRUCT const &p, const INT32 iSta
   MPrint(sX, CHAR_LOC_Y, state_txt);
 }
 
-static void DisplayPersonnelTextOnTitleBar(void) {
+static void DisplayPersonnelTextOnTitleBar() {
   SetFontAttributes(FONT14ARIAL, FONT_WHITE);
   MPrint(PERS_TITLE_X, PERS_TITLE_Y, pPersTitleText);
 }
@@ -1855,7 +1851,7 @@ BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile) {
 }
 
 // Select the first displayed merc, if there is any
-static void SelectFirstDisplayedMerc(void) {
+static void SelectFirstDisplayedMerc() {
   // set current soldier
   if (fCurrentTeamMode) {
     CFOR_EACH_PERSONNEL(s) {
@@ -1868,7 +1864,7 @@ static void SelectFirstDisplayedMerc(void) {
   }
 }
 
-static SOLDIERTYPE const &GetSoldierOfCurrentSlot(void) {
+static SOLDIERTYPE const &GetSoldierOfCurrentSlot() {
   Assert(fCurrentTeamMode);
 
   INT32 slot = iCurrentPersonSelectedId;
@@ -1879,7 +1875,7 @@ static SOLDIERTYPE const &GetSoldierOfCurrentSlot(void) {
   throw std::logic_error("nobody selected");
 }
 
-static void RenderAtmPanel(void) try {
+static void RenderAtmPanel() try {
   // just show basic panel
   // bounding
   AutoSGPVObject uiBox(AddVideoObjectFromFile(LAPTOPDIR "/atmbuttons.sti"));
@@ -1926,7 +1922,7 @@ static void CreateDestroyStartATMButton(const BOOLEAN create) {
   }
 }
 
-static void FindPositionOfPersInvSlider(void) {
+static void FindPositionOfPersInvSlider() {
   const INT32 item_count = GetNumberOfInventoryItemsOnCurrentMerc();
   const INT32 scroll_count = item_count - NUMBER_OF_INVENTORY_PERSONNEL;
   guiSliderPosition = (Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) *
@@ -1962,7 +1958,7 @@ static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void RenderSliderBarForPersonnelInventory(void) {
+static void RenderSliderBarForPersonnelInventory() {
   // render slider bar for personnel
   BltVideoObject(FRAME_BUFFER, guiPersonnelInventory, 5, X_OF_PERSONNEL_SCROLL_REGION,
                  guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION);
@@ -2014,7 +2010,7 @@ static INT32 GetFundsOnMerc(SOLDIERTYPE const &s) {
 }
 
 // check if current guy can have atm
-static void UpDateStateOfStartButton(void) {
+static void UpDateStateOfStartButton() {
   if (gubPersonnelInfoState == PRSNL_INV) {
     giPersonnelATMStartButton[PERSONNEL_INV_BTN]->uiFlags |= BUTTON_CLICKED_ON;
     giPersonnelATMStartButton[PERSONNEL_STAT_BTN]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -2074,7 +2070,7 @@ static void DisplayAmountOnChar(SOLDIERTYPE const &s) {
   MPrint(sX, sY, sString);
 }
 
-static void HandlePersonnelKeyboard(void) {
+static void HandlePersonnelKeyboard() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam, InputEvent.usKeyState);

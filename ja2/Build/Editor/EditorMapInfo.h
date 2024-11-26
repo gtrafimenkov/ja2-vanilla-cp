@@ -3,17 +3,17 @@
 
 #include "SGP/Types.h"
 
-void SetupTextInputForMapInfo(void);
-void UpdateMapInfo(void);
-void ExtractAndUpdateMapInfo(void);
-BOOLEAN ApplyNewExitGridValuesToTextFields(void);
-void UpdateMapInfoFields(void);
+void SetupTextInputForMapInfo();
+void UpdateMapInfo();
+void ExtractAndUpdateMapInfo();
+BOOLEAN ApplyNewExitGridValuesToTextFields();
+void UpdateMapInfoFields();
 
 extern SGPPaletteEntry gEditorLightColor;
 
 extern BOOLEAN gfEditorForceShadeTableRebuild;
 
-void LocateNextExitGrid(void);
+void LocateNextExitGrid();
 
 enum { PRIMETIME_LIGHT, NIGHTTIME_LIGHT, ALWAYSON_LIGHT };
 void ChangeLightDefault(INT8 bLightType);

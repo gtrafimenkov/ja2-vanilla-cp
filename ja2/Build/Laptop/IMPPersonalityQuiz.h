@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPPersonalityQuiz(void);
-void RenderIMPPersonalityQuiz(void);
-void ExitIMPPersonalityQuiz(void);
-void HandleIMPPersonalityQuiz(void);
+void EnterIMPPersonalityQuiz();
+void RenderIMPPersonalityQuiz();
+void ExitIMPPersonalityQuiz();
+void HandleIMPPersonalityQuiz();
 
 void BltAnswerIndents(INT32 iNumberOfIndents);
 

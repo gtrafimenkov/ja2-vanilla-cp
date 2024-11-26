@@ -56,13 +56,13 @@ static ScreenID guiMainMenuExitScreen = MAINMENU_SCREEN;
 
 extern BOOLEAN gfLoadGameUponEntry;
 
-static void ExitMainMenu(void);
-static void HandleMainMenuInput(void);
-static void HandleMainMenuScreen(void);
-static void RenderMainMenu(void);
-static void RestoreButtonBackGrounds(void);
+static void ExitMainMenu();
+static void HandleMainMenuInput();
+static void HandleMainMenuScreen();
+static void RenderMainMenu();
+static void RestoreButtonBackGrounds();
 
-ScreenID MainMenuScreenHandle(void) {
+ScreenID MainMenuScreenHandle() {
   if (guiSplashStartTime + 4000 > GetJA2Clock()) {
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     SetMusicMode(MUSIC_NONE);
@@ -127,7 +127,7 @@ ScreenID MainMenuScreenHandle(void) {
 
 static void SetMainMenuExitScreen(ScreenID uiNewScreen);
 
-static void HandleMainMenuScreen(void) {
+static void HandleMainMenuScreen() {
   if (gbHandledMainMenu == 0) return;
 
   // Exit according to handled value!
@@ -160,7 +160,7 @@ static void HandleMainMenuScreen(void) {
 
 static void CreateDestroyMainMenuButtons(BOOLEAN fCreate);
 
-void InitMainMenu(void) {
+void InitMainMenu() {
   CreateDestroyMainMenuButtons(TRUE);
 
 #define GFX_DIR LOADSCREENSDIR
@@ -182,7 +182,7 @@ void InitMainMenu(void) {
   DequeueAllKeyBoardEvents();
 }
 
-static void ExitMainMenu(void) {
+static void ExitMainMenu() {
   CreateDestroyMainMenuButtons(FALSE);
   DeleteVideoObject(guiMainMenuBackGroundImage);
   DeleteVideoObject(guiJa2LogoImage);
@@ -207,7 +207,7 @@ static void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void HandleMainMenuInput(void) {
+static void HandleMainMenuInput() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     if (InputEvent.usEvent == KEY_UP) {
@@ -234,7 +234,7 @@ static void HandleMainMenuInput(void) {
   }
 }
 
-void ClearMainMenu(void) {
+void ClearMainMenu() {
   FRAME_BUFFER->Fill(0);
   InvalidateScreen();
 }
@@ -289,7 +289,7 @@ static void CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
   }
 }
 
-static void RenderMainMenu(void) {
+static void RenderMainMenu() {
   BltVideoObject(guiSAVEBUFFER, guiMainMenuBackGroundImage, 0, 0, 0);
   BltVideoObject(guiSAVEBUFFER, guiJa2LogoImage, 0, 188, 15);
 
@@ -325,7 +325,7 @@ static void RenderMainMenu(void) {
 #endif
 }
 
-static void RestoreButtonBackGrounds(void) {
+static void RestoreButtonBackGrounds() {
 #ifndef TESTFOREIGNFONTS
   for (UINT32 cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
     GUI_BUTTON const &b = *iMenuButtons[cnt];

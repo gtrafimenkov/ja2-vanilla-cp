@@ -486,7 +486,7 @@ static bool AdjacentSectorIsImportantAndUndefended(UINT8 const sector_id) {
          si.ubTraversability[THROUGH_STRATEGIC_MOVE] == TOWN && !PlayerSectorDefended(sector_id);
 }
 
-static void ValidatePendingGroups(void) {}
+static void ValidatePendingGroups() {}
 
 static void ValidateWeights(INT32 iID) {}
 
@@ -958,7 +958,7 @@ static BOOLEAN HandleMilitiaNoticedByPatrolGroup(UINT8 ubSectorID, GROUP *pEnemy
   return FALSE;
 }
 
-static BOOLEAN AttemptToNoticeEmptySectorSucceeds(void) {
+static BOOLEAN AttemptToNoticeEmptySectorSucceeds() {
   if (gubNumAwareBattles || gfAutoAIAware) {  // The queen is in high-alert and is searching for
                                               // players.  All adjacent checks will automatically
                                               // succeed.
@@ -992,7 +992,7 @@ static BOOLEAN AttemptToNoticeEmptySectorSucceeds(void) {
 // group will notice.  If it does notice, then the alertness drops accordingly to
 // simulate a period of time where the enemy would not notice as much.  If it
 // fails, the alertness gradually increases until it succeeds.
-static BOOLEAN AttemptToNoticeAdjacentGroupSucceeds(void) {
+static BOOLEAN AttemptToNoticeAdjacentGroupSucceeds() {
   if (gubNumAwareBattles || gfAutoAIAware) {  // The queen is in high-alert and is searching for
                                               // players.  All adjacent checks will automatically
                                               // succeed.
@@ -2190,7 +2190,7 @@ void SaveStrategicAI(HWFILE const hFile) {
   FileWrite(hFile, gubGarrisonReinforcementsDenied, giGarrisonArraySize);
 }
 
-static void ReinitializeUnvisitedGarrisons(void);
+static void ReinitializeUnvisitedGarrisons();
 
 void LoadStrategicAI(HWFILE const hFile) {
   GARRISON_GROUP gTempGarrisonGroup;
@@ -3066,7 +3066,7 @@ static void RequestHighPriorityGarrisonReinforcements(INT32 iGarrisonID,
   }
 }
 
-static void MassFortifyTowns(void);
+static void MassFortifyTowns();
 
 void WakeUpQueen() {
   gfQueenAIAwake = TRUE;
@@ -3080,7 +3080,7 @@ void WakeUpQueen() {
 // the closest troops from them.  Any garrison, whom there request isn't
 // fulfilled (due to lack of troops), will recieve their reinforcements from the
 // queen (P3).
-static void MassFortifyTowns(void) {
+static void MassFortifyTowns() {
   INT32 i;
   SECTORINFO *pSector;
   GROUP *pGroup;
@@ -3754,7 +3754,7 @@ static UINT8 RedirectEnemyGroupsMovingThroughSector(UINT8 ubSectorX, UINT8 ubSec
 // when the SAI compositions change, it is necessary to call this function upon
 // version load, to reflect the changes of the compositions to the sector that
 // haven't been visited yet.
-static void ReinitializeUnvisitedGarrisons(void) {
+static void ReinitializeUnvisitedGarrisons() {
   SECTORINFO *pSector;
   ARMY_COMPOSITION *pArmyComp;
   GROUP *pGroup;

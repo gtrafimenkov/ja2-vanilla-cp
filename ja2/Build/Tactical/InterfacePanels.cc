@@ -356,7 +356,7 @@ static INT8 GetUIApsToDisplay(SOLDIERTYPE const *s) {
   return s->bActionPoints;
 }
 
-void CheckForDisabledForGiveItem(void) {
+void CheckForDisabledForGiveItem() {
   const SOLDIERTYPE *const cur = gpSMCurrentMerc;
   Assert(cur != NULL);
 
@@ -502,7 +502,7 @@ static void SetButtonState(UINT const idx, bool const clicked) {
 }
 
 static void BtnStealthModeCallback(GUI_BUTTON *btn, INT32 reason);
-static void CheckForReEvaluateDisabledINVPanelButtons(void);
+static void CheckForReEvaluateDisabledINVPanelButtons();
 
 static void UpdateSMPanel() {
   SOLDIERTYPE &s = *gpSMCurrentMerc;
@@ -763,7 +763,7 @@ static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void InitializeSMPanel(void) {
+void InitializeSMPanel() {
   guiSMPanel = AddVideoObjectFromFile(INTERFACEDIR "/inventory_bottom_panel.sti");
   guiSMObjects = AddVideoObjectFromFile(INTERFACEDIR "/inventory_gold_front.sti");
   guiSMObjects2 = AddVideoObjectFromFile(INTERFACEDIR "/inv_frn.sti");
@@ -868,7 +868,7 @@ static void BtnStanceUpCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnTalkCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnUpdownCallback(GUI_BUTTON *btn, INT32 reason);
 
-void CreateSMPanelButtons(void) {
+void CreateSMPanelButtons() {
   giSMStealthImages = NULL;
   gfUIStanceDifferent = TRUE;
   gfAllDisabled = FALSE;
@@ -939,7 +939,7 @@ void CreateSMPanelButtons(void) {
               BtnLookCallback, TacticalStr[LOOK_CURSOR_POPUPTEXT]);
 }
 
-void RemoveSMPanelButtons(void) {
+void RemoveSMPanelButtons() {
   for (UINT32 cnt = 0; cnt < NUM_SM_BUTTONS; ++cnt) {
     if (iSMPanelButtons[cnt]) RemoveButton(iSMPanelButtons[cnt]);
   }
@@ -956,7 +956,7 @@ void RemoveSMPanelButtons(void) {
   UnloadButtonImage(iBurstButtonImages[WM_ATTACHED]);
 }
 
-void ShutdownSMPanel(void) {
+void ShutdownSMPanel() {
   // All buttons and regions and video objects and video surfaces will be
   // deleted at shutddown of SGM We may want to delete them at the interm as
   // well, to free up room for other panels
@@ -1922,7 +1922,7 @@ static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
 static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void InitializeTEAMPanel(void) {
+void InitializeTEAMPanel() {
   // INit viewport region
   // Set global mouse regions
   // Define region for viewport
@@ -1974,7 +1974,7 @@ void InitializeTEAMPanel(void) {
   }
 }
 
-void ShutdownTEAMPanel(void) {
+void ShutdownTEAMPanel() {
   // All buttons and regions and video objects and video surfaces will be
   // deleted at shutddown of SGM We may want to delete them at the interm as
   // well, to free up room for other panels
@@ -2019,7 +2019,7 @@ static void RenderTeamSlotBorder(const SOLDIERTYPE *const s, const INT32 dx, con
 }
 
 static void RenderSoldierTeamInv(SOLDIERTYPE const &, INT16 x, INT16 y, DirtyLevel);
-static void UpdateTEAMPanel(void);
+static void UpdateTEAMPanel();
 
 void RenderTEAMPanel(DirtyLevel const dirty_level) {
   if (dirty_level == DIRTYLEVEL2) {
@@ -2157,7 +2157,7 @@ static void BtnEndTurnCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnRostermodeCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnSquadCallback(GUI_BUTTON *btn, INT32 reason);
 
-void CreateTEAMPanelButtons(void) {
+void CreateTEAMPanelButtons() {
   // Load button Graphics
   iTEAMPanelImages[ENDTURN_IMAGES] = LoadButtonImage(INTERFACEDIR "/bottom_bar_buttons.sti", 0, 3);
   iTEAMPanelImages[ROSTERMODE_IMAGES] =
@@ -2173,7 +2173,7 @@ void CreateTEAMPanelButtons(void) {
                  BtnSquadCallback, TacticalStr[CHANGE_SQUAD_POPUPTEXT]);
 }
 
-void RemoveTEAMPanelButtons(void) {
+void RemoveTEAMPanelButtons() {
   for (UINT32 i = 0; i < NUM_TEAM_BUTTONS; ++i) {
     RemoveButton(iTEAMPanelButtons[i]);
     UnloadButtonImage(iTEAMPanelImages[i]);
@@ -2199,12 +2199,12 @@ static void BtnSquadCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SetTEAMPanelCurrentMerc(void) {
+void SetTEAMPanelCurrentMerc() {
   fInterfacePanelDirty = DIRTYLEVEL2;
   UpdateTEAMPanel();
 }
 
-static void UpdateTEAMPanel(void) {
+static void UpdateTEAMPanel() {
   EnableButton(iTEAMPanelButtons[TEAM_DONE_BUTTON], gTacticalStatus.ubCurrentTeam == OUR_TEAM &&
                                                         !(gTacticalStatus.uiFlags & REALTIME) &&
                                                         gTacticalStatus.uiFlags & INCOMBAT);
@@ -2400,7 +2400,7 @@ void EndRadioLocator(SOLDIERTYPE *s) {
   s->fShowLocator = FALSE;
 }
 
-void FinishAnySkullPanelAnimations(void) {
+void FinishAnySkullPanelAnimations() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bLife == 0 && (s->fUIdeadMerc || s->fClosePanelToDie)) {
       HandlePlayerTeamMemberDeathAfterSkullAnimation(s);
@@ -2619,14 +2619,14 @@ static void AddPlayerToInterfaceTeamSlot(SOLDIERTYPE *const s) {
   }
 }
 
-void InitTEAMSlots(void) { FOR_EACH_TEAM_PANEL_SLOT(i) i->merc = 0; }
+void InitTEAMSlots() { FOR_EACH_TEAM_PANEL_SLOT(i) i->merc = 0; }
 
 SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(UINT8 ubPanelSlot) {
   if (ubPanelSlot >= NUM_TEAM_SLOTS) return NULL;
   return gTeamPanel[ubPanelSlot].merc;
 }
 
-void RemoveAllPlayersFromSlot(void) {
+void RemoveAllPlayersFromSlot() {
   FOR_EACH_TEAM_PANEL_SLOT(i) {
     if (!i->merc) continue;
     RemovePlayerFromInterfaceTeamSlot(*i);
@@ -2649,7 +2649,7 @@ static void RemovePlayerFromInterfaceTeamSlot(TeamPanelSlot &tp) {
   fInterfacePanelDirty = DIRTYLEVEL2;
 }
 
-void RenderTownIDString(void) {
+void RenderTownIDString() {
   wchar_t zTownIDString[80];
   INT16 sFontX, sFontY;
 
@@ -2715,7 +2715,7 @@ SOLDIERTYPE *FindNextMercInTeamPanel(SOLDIERTYPE *const prev) {
 
 void DisableTacticalTeamPanelButtons(BOOLEAN fDisable) { gfDisableTacticalPanelButtons = fDisable; }
 
-void BeginKeyPanelFromKeyShortcut(void) {
+void BeginKeyPanelFromKeyShortcut() {
   SOLDIERTYPE *pSoldier = NULL;
   INT16 sStartYPosition = 0;
   INT16 sWidth = 0, sHeight = 0;
@@ -2975,7 +2975,7 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void DisableSMPpanelButtonsWhenInShopKeeperInterface(void) {
+void DisableSMPpanelButtonsWhenInShopKeeperInterface() {
   // Go through the buttons that will be under the ShopKeepers ATM panel and
   // disable them
   DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
@@ -3084,9 +3084,9 @@ static void ConfirmationToDepositMoneyToPlayersAccount(MessageBoxReturnValue con
   }
 }
 
-void ReEvaluateDisabledINVPanelButtons(void) { gfReEvaluateDisabledINVPanelButtons = TRUE; }
+void ReEvaluateDisabledINVPanelButtons() { gfReEvaluateDisabledINVPanelButtons = TRUE; }
 
-static void CheckForReEvaluateDisabledINVPanelButtons(void) {
+static void CheckForReEvaluateDisabledINVPanelButtons() {
   // OK, if we currently have an item pointer up....
   if (gfReEvaluateDisabledINVPanelButtons) {
     if (gpItemPointer || gfInItemPickupMenu) {
@@ -3108,7 +3108,7 @@ static void AbandonBoxingCallback(MessageBoxReturnValue const ubExitValue) {
   // otherwise do nothing
 }
 
-void GoToMapScreenFromTactical(void) {
+void GoToMapScreenFromTactical() {
   if (gTacticalStatus.bBoxingState != NOT_BOXING) {
     // pop up dialogue asking whether the player wants to abandon the fight
     DoMessageBox(MSG_BOX_BASIC_STYLE, g_langRes->Message[STR_ABANDON_FIGHT], GAME_SCREEN,

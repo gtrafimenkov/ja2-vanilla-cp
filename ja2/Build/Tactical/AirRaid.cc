@@ -151,7 +151,7 @@ static void ScheduleAirRaid(AIR_RAID_DEFINITION *pAirRaidDef) {
   gfAirRaidScheduled = TRUE;
 }
 
-static INT16 PickLocationNearAnyMercInSector(void) {
+static INT16 PickLocationNearAnyMercInSector() {
   // Loop through all our guys and randomly say one from someone in our sector
   INT32 num_mercs = 0;
   const SOLDIERTYPE *mercs_in_sector[20];
@@ -195,7 +195,7 @@ static INT16 PickRandomLocationAtMinSpacesAway(INT16 sGridNo, INT16 sMinValue, I
   return (sNewGridNo);
 }
 
-static void TryToStartRaid(void) {
+static void TryToStartRaid() {
   // OK, check conditions,
 
   // Some are:
@@ -219,7 +219,7 @@ static void TryToStartRaid(void) {
   gubAirRaidMode = AIR_RAID_START;
 }
 
-static void AirRaidStart(void) {
+static void AirRaidStart() {
   // Begin ambient sound....
   guiSoundSample = PlayJA2Sample(S_RAID_AMBIENT, 0, 10000, MIDDLEPAN);
 
@@ -236,7 +236,7 @@ static void AirRaidStart(void) {
   }
 }
 
-static void AirRaidLookForDive(void) {
+static void AirRaidLookForDive() {
   BOOLEAN fDoDive = FALSE;
   BOOLEAN fDoQuote = FALSE;
 
@@ -327,12 +327,12 @@ static void AirRaidLookForDive(void) {
   }
 }
 
-static void AirRaidStartEnding(void) {
+static void AirRaidStartEnding() {
   // Fade out sound.....
   gfFadingRaidOut = TRUE;
 }
 
-static void BeginBombing(void) {
+static void BeginBombing() {
   INT16 sGridNo;
   UINT32 iSoundStartDelay;
 
@@ -436,7 +436,7 @@ static void MoveDiveAirplane(FLOAT dAngle) {
   gsDiveY = (INT16)(gsDiveY + dDeltaPos);
 }
 
-static void DoDive(void) {
+static void DoDive() {
   INT16 sRange;
   INT16 sGridNo, sOldGridNo;
 
@@ -593,7 +593,7 @@ static void DoDive(void) {
   }
 }
 
-static void DoBombing(void) {
+static void DoBombing() {
   INT16 sRange;
   INT16 sGridNo, sOldGridNo, sBombGridNo;
 

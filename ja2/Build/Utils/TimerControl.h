@@ -7,7 +7,7 @@
 #define CALLBACKTIMER
 #endif
 
-typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)(void);
+typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)();
 
 // TIMER DEFINES
 enum {
@@ -47,8 +47,8 @@ extern INT32 giTimerDiag;
 
 extern INT32 giTimerTeamTurnUpdate;
 
-void InitializeJA2Clock(void);
-void ShutdownJA2Clock(void);
+void InitializeJA2Clock();
+void ShutdownJA2Clock();
 
 #define GetJA2Clock() guiBaseJA2Clock
 
@@ -56,7 +56,7 @@ void PauseTime(BOOLEAN fPaused);
 
 void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
                                           BOOLEAN fReplace);
-void CheckCustomizableTimer(void);
+void CheckCustomizableTimer();
 
 // Don't modify this value
 extern UINT32 guiBaseJA2Clock;
@@ -104,6 +104,6 @@ extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 
 /* whenever guiBaseJA2Clock changes, we must reset all the timer variables that
  * use it as a reference */
-void ResetJA2ClockGlobalTimers(void);
+void ResetJA2ClockGlobalTimers();
 
 #endif

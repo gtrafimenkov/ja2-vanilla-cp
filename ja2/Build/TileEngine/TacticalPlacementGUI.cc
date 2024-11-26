@@ -106,7 +106,7 @@ static void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, INT32 reason);
 static void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
 static void MercClickCallback(MOUSE_REGION *reg, INT32 reason);
 static void MercMoveCallback(MOUSE_REGION *reg, INT32 reason);
-static void PlaceMercs(void);
+static void PlaceMercs();
 static void SetCursorMerc(INT8 placement);
 static void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
 
@@ -356,7 +356,7 @@ static void RenderTacticalPlacementGUI() {
   }
 }
 
-static void EnsureDoneButtonStatus(void) {
+static void EnsureDoneButtonStatus() {
   bool enable = true;
   // static BOOLEAN fInside = FALSE;
   // BOOLEAN fChanged = FALSE;
@@ -373,7 +373,7 @@ static void EnsureDoneButtonStatus(void) {
                            : gpStrategicString[STR_TP_DISABLED_DONEHELP]);
 }
 
-static void KillTacticalPlacementGUI(void);
+static void KillTacticalPlacementGUI();
 
 void TacticalPlacementHandle() {
   InputAtom InputEvent;
@@ -454,7 +454,7 @@ void TacticalPlacementHandle() {
 
 static void PickUpMercPiece(MERCPLACEMENT &);
 
-static void KillTacticalPlacementGUI(void) {
+static void KillTacticalPlacementGUI() {
   gbHilightedMercID = -1;
   gbSelectedMercID = -1;
   gubSelectedGroupID = 0;
@@ -502,7 +502,7 @@ static void KillTacticalPlacementGUI(void) {
 
 static void PutDownMercPiece(MERCPLACEMENT &);
 
-static void ChooseRandomEdgepoints(void) {
+static void ChooseRandomEdgepoints() {
   FOR_EACH_MERC_PLACEMENT(i) {
     MERCPLACEMENT &m = *i;
     if (!(m.pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
@@ -524,7 +524,7 @@ static void ChooseRandomEdgepoints(void) {
   gfEveryonePlaced = TRUE;
 }
 
-static void PlaceMercs(void) {
+static void PlaceMercs() {
   switch (gubDefaultButton) {
     case SPREAD_BUTTON:  // Place mercs randomly along their side using map
                          // edgepoints.
@@ -623,7 +623,7 @@ static void MercClickCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static void SelectNextUnplacedUnit(void) {
+static void SelectNextUnplacedUnit() {
   INT32 i;
   if (gbSelectedMercID == -1) return;
   for (i = gbSelectedMercID; i < giPlacements;

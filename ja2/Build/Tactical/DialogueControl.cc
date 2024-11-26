@@ -153,7 +153,7 @@ void ShutdownDialogueControl() {
   UnLoadCarPortraits();
 }
 
-void InitalizeStaticExternalNPCFaces(void) {
+void InitalizeStaticExternalNPCFaces() {
   INT32 iCounter = 0;
   // go and grab all external NPC faces that are needed for the game who won't
   // exist as soldiertypes
@@ -1436,7 +1436,7 @@ UINT8 GetQuoteBitNumberFromQuoteID(UINT32 const uiQuoteID) {
   return 0;
 }
 
-void HandleShutDownOfMapScreenWhileExternfaceIsTalking(void) {
+void HandleShutDownOfMapScreenWhileExternfaceIsTalking() {
   if ((fExternFaceBoxRegionCreated) && (gpCurrentTalkingFace)) {
     RemoveVideoOverlay(gpCurrentTalkingFace->video_overlay);
     gpCurrentTalkingFace->video_overlay = NULL;
@@ -1458,10 +1458,10 @@ void HandleImportantMercQuoteLocked(SOLDIERTYPE *const s, UINT16 const quote) {
 }
 
 // handle pausing of the dialogue queue
-void PauseDialogueQueue(void) { gfDialogueQueuePaused = TRUE; }
+void PauseDialogueQueue() { gfDialogueQueuePaused = TRUE; }
 
 // unpause the dialogue queue
-void UnPauseDialogueQueue(void) { gfDialogueQueuePaused = FALSE; }
+void UnPauseDialogueQueue() { gfDialogueQueuePaused = FALSE; }
 
 void SetExternMapscreenSpeechPanelXY(INT16 sXPos, INT16 sYPos) {
   gsExternPanelXPosition = sXPos;

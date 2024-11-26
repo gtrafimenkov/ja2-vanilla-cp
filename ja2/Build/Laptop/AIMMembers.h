@@ -3,23 +3,23 @@
 
 #include "JA2Types.h"
 
-void EnterAIMMembers(void);
-void ExitAIMMembers(void);
-void HandleAIMMembers(void);
-void RenderAIMMembers(void);
+void EnterAIMMembers();
+void ExitAIMMembers();
+void HandleAIMMembers();
+void RenderAIMMembers();
 
 void DrawNumeralsToScreen(INT32 iNumber, INT8 bWidth, UINT16 usLocX, UINT16 usLocY, Font,
                           UINT8 ubColor);
 
 void DisplayTextForMercFaceVideoPopUp(const wchar_t *pString);
-void EnterInitAimMembers(void);
-void RenderAIMMembersTopLevel(void);
+void EnterInitAimMembers();
+void RenderAIMMembersTopLevel();
 
 // if merc is still annoyed, reset back to 0
 void ResetMercAnnoyanceAtPlayer(ProfileID);
 
-void DisableNewMailMessage(void);
-void DisplayPopUpBoxExplainingMercArrivalLocationAndTime(void);
+void DisableNewMailMessage();
+void DisplayPopUpBoxExplainingMercArrivalLocationAndTime();
 
 // enumerated types used for the Video Conferencing Display
 enum AIMVideoMode {

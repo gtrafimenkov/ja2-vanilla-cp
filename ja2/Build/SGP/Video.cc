@@ -93,7 +93,7 @@ static SDL_Texture *ScreenTexture;
 static Uint32 g_window_flags = 0;
 
 static void RecreateBackBuffer();
-static void DeletePrimaryVideoSurfaces(void);
+static void DeletePrimaryVideoSurfaces();
 
 void VideoSetFullScreen(const BOOLEAN enable) {
   if (enable) {
@@ -103,7 +103,7 @@ void VideoSetFullScreen(const BOOLEAN enable) {
   }
 }
 
-void VideoToggleFullScreen(void) {
+void VideoToggleFullScreen() {
   if (SDL_GetWindowFlags(g_game_window) & SDL_WINDOW_FULLSCREEN) {
     SDL_SetWindowFullscreen(g_game_window, 0);
   } else {
@@ -113,7 +113,7 @@ void VideoToggleFullScreen(void) {
 
 static void GetRGBDistribution();
 
-void InitializeVideoManager(void) {
+void InitializeVideoManager() {
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 
   g_window_flags |= SDL_WINDOW_RESIZABLE;
@@ -174,7 +174,7 @@ void InitializeVideoManager(void) {
   GetRGBDistribution();
 }
 
-void ShutdownVideoManager(void) {
+void ShutdownVideoManager() {
   DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Shutting down the video manager");
 
   /* Toggle the state of the video manager to indicate to the refresh thread
@@ -188,9 +188,9 @@ void ShutdownVideoManager(void) {
   FreeMouseCursor();
 }
 
-void SuspendVideoManager(void) { guiVideoManagerState = VIDEO_SUSPENDED; }
+void SuspendVideoManager() { guiVideoManagerState = VIDEO_SUSPENDED; }
 
-BOOLEAN RestoreVideoManager(void) {
+BOOLEAN RestoreVideoManager() {
 #if 1  // XXX TODO
   UNIMPLEMENTED;
   return false;
@@ -283,7 +283,7 @@ static void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   }
 }
 
-void InvalidateScreen(void) {
+void InvalidateScreen() {
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
   // W A R N I N G ----
   //
@@ -443,7 +443,7 @@ static void WriteTGAHeader(FILE *const f) {
 }
 
 /* Create a file for a screenshot, which is guaranteed not to exist yet. */
-static FILE *CreateScreenshotFile(void) {
+static FILE *CreateScreenshotFile() {
   const char *const exec_dir = FileMan::getExeFolderPath().c_str();
   do {
     char filename[2048];
@@ -489,7 +489,7 @@ static void TakeScreenshot() {
   fclose(f);
 }
 
-static void SnapshotSmall(void);
+static void SnapshotSmall();
 
 /** @brief Join two rectangles.
  *
@@ -511,7 +511,7 @@ static void joinInRectangle(SDL_Rect &result, const SDL_Rect &newRect) {
   }
 }
 
-void RefreshScreen(void) {
+void RefreshScreen() {
   if (guiVideoManagerState != VIDEO_ON) return;
 
 #if DEBUG_PRINT_FPS
@@ -637,9 +637,9 @@ void SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHei
   gusMouseCursorHeight = usCursorHeight;
 }
 
-void EndFrameBufferRender(void) { guiFrameBufferState = BUFFER_DIRTY; }
+void EndFrameBufferRender() { guiFrameBufferState = BUFFER_DIRTY; }
 
-void PrintScreen(void) { gfPrintFrameBuffer = TRUE; }
+void PrintScreen() { gfPrintFrameBuffer = TRUE; }
 
 /*******************************************************************************
  * SnapshotSmall
@@ -651,9 +651,9 @@ void PrintScreen(void) { gfPrintFrameBuffer = TRUE; }
  *
  ******************************************************************************/
 
-static void RefreshMovieCache(void);
+static void RefreshMovieCache();
 
-static void SnapshotSmall(void) {
+static void SnapshotSmall() {
   // Get the write pointer
   const UINT16 *pVideo = (UINT16 *)ScreenBuffer->pixels;
 
@@ -670,9 +670,9 @@ static void SnapshotSmall(void) {
   if (giNumFrames == MAX_NUM_FRAMES) RefreshMovieCache();
 }
 
-void VideoCaptureToggle(void) {}
+void VideoCaptureToggle() {}
 
-static void RefreshMovieCache(void) {
+static void RefreshMovieCache() {
   static UINT32 uiPicNum = 0;
 
   PauseTime(TRUE);
@@ -719,7 +719,7 @@ static void RecreateBackBuffer() {
   g_back_buffer = newBackbuffer;
 }
 
-static void SetPrimaryVideoSurfaces(void) {
+static void SetPrimaryVideoSurfaces() {
   // Delete surfaces if they exist
   DeletePrimaryVideoSurfaces();
 
@@ -729,7 +729,7 @@ static void SetPrimaryVideoSurfaces(void) {
   g_frame_buffer = new SGPVSurfaceAuto(FrameBuffer);
 }
 
-static void DeletePrimaryVideoSurfaces(void) {
+static void DeletePrimaryVideoSurfaces() {
   delete g_back_buffer;
   g_back_buffer = NULL;
 
@@ -742,7 +742,7 @@ static void DeletePrimaryVideoSurfaces(void) {
 
 SGPVSurface *gpVSurfaceHead = 0;
 
-void InitializeVideoSurfaceManager(void) {
+void InitializeVideoSurfaceManager() {
   // Shouldn't be calling this if the video surface manager already exists.
   // Call shutdown first...
   Assert(gpVSurfaceHead == NULL);
@@ -752,7 +752,7 @@ void InitializeVideoSurfaceManager(void) {
   SetPrimaryVideoSurfaces();
 }
 
-void ShutdownVideoSurfaceManager(void) {
+void ShutdownVideoSurfaceManager() {
   DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
 
   // Delete primary viedeo surfaces

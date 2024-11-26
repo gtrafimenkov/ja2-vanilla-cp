@@ -153,7 +153,7 @@ extern GROUP *gpGroupList;
        iter = iter->next)
 
 // General utility functions
-void RemoveAllGroups(void);
+void RemoveAllGroups();
 GROUP *GetGroup(UINT8 ubGroupID);
 
 /* Remove a group from the list. This removes all of the waypoints as well as

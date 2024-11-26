@@ -147,8 +147,7 @@ void AddMonoString(PopUpBox *const box, const wchar_t *pString) {
 
   // find first free slot in list
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT && box->Text[iCounter] != NULL;
-       iCounter++)
-    ;
+       iCounter++);
 
   if (iCounter >= MAX_POPUP_BOX_STRING_COUNT) {
     // using too many text lines, or not freeing them up properly
@@ -177,8 +176,7 @@ void AddSecondColumnMonoString(PopUpBox *const box, const wchar_t *const pString
 
   // find the LAST USED text string index
   for (iCounter = 0; iCounter + 1 < MAX_POPUP_BOX_STRING_COUNT && box->Text[iCounter + 1] != NULL;
-       iCounter++)
-    ;
+       iCounter++);
 
   if (iCounter >= MAX_POPUP_BOX_STRING_COUNT) {
     // using too many text lines, or not freeing them up properly
@@ -535,11 +533,11 @@ BOOLEAN IsBoxShown(const PopUpBox *const box) {
   return box->fShowBox;
 }
 
-void MarkAllBoxesAsAltered(void) {
+void MarkAllBoxesAsAltered() {
   FOR_EACH_POPUP_BOX(i) { ForceUpDateOfBox(*i); }
 }
 
-void HideAllBoxes(void) {
+void HideAllBoxes() {
   FOR_EACH_POPUP_BOX(i) { HideBox(*i); }
 }
 

@@ -46,7 +46,7 @@
 // The InitializeGame function is responsible for setting up all data and Gaming
 // Engine tasks which will run the game
 
-ScreenID InitializeJA2(void) try {
+ScreenID InitializeJA2() try {
   gfWorldLoaded = FALSE;
 
   // Load external text
@@ -126,7 +126,7 @@ ScreenID InitializeJA2(void) try {
   return ERROR_SCREEN;
 }
 
-void ShutdownJA2(void) {
+void ShutdownJA2() {
   UINT32 uiIndex;
 
   FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -146,7 +146,7 @@ void ShutdownJA2(void) {
 
   // Shutdown Screens
   for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
-    void (*const shutdown)(void) = GameScreens[uiIndex].ShutdownScreen;
+    void (*const shutdown)() = GameScreens[uiIndex].ShutdownScreen;
     if (shutdown != NULL) shutdown();
   }
 

@@ -11,16 +11,16 @@
 extern BOOLEAN fShowMapInventoryPool;
 
 // load inventory pool graphic
-void LoadInventoryPoolGraphic(void);
+void LoadInventoryPoolGraphic();
 
 // remove inventory pool graphic
-void RemoveInventoryPoolGraphic(void);
+void RemoveInventoryPoolGraphic();
 
 // blit the inventory graphic
-void BlitInventoryPoolGraphic(void);
+void BlitInventoryPoolGraphic();
 
 // which buttons in map invneotyr panel?
-void HandleButtonStatesWhileMapInventoryActive(void);
+void HandleButtonStatesWhileMapInventoryActive();
 
 // handle creation and destruction of map inventory pool buttons
 void CreateDestroyMapInventoryPoolButtons(BOOLEAN fExitFromMapScreen);
@@ -29,7 +29,7 @@ void CreateDestroyMapInventoryPoolButtons(BOOLEAN fExitFromMapScreen);
 void CancelSectorInventoryDisplayIfOn(BOOLEAN fExitFromMapScreen);
 
 // handle flash of inventory items
-void HandleFlashForHighLightedItem(void);
+void HandleFlashForHighLightedItem();
 
 // the list for the inventory
 extern WORLDITEM *pInventoryPoolList;

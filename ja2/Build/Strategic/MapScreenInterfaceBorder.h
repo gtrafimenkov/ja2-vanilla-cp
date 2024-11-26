@@ -53,22 +53,22 @@ extern BOOLEAN fZoomFlag;
 // scroll animation
 extern INT32 giScrollButtonState;
 
-void LoadMapBorderGraphics(void);
-void DeleteMapBorderGraphics(void);
-void RenderMapBorder(void);
+void LoadMapBorderGraphics();
+void DeleteMapBorderGraphics();
+void RenderMapBorder();
 // void RenderMapBorderCorner( void );
 // void ResetAircraftButton( void );
 // void HandleMapScrollButtonStates( void );
 
-void ToggleShowTownsMode(void);
-void ToggleShowMinesMode(void);
-void ToggleShowMilitiaMode(void);
-void ToggleShowTeamsMode(void);
-void ToggleAirspaceMode(void);
-void ToggleItemsFilter(void);
+void ToggleShowTownsMode();
+void ToggleShowMinesMode();
+void ToggleShowMilitiaMode();
+void ToggleShowTeamsMode();
+void ToggleAirspaceMode();
+void ToggleItemsFilter();
 
-void TurnOnShowTeamsMode(void);
-void TurnOnAirSpaceMode(void);
+void TurnOnShowTeamsMode();
+void TurnOnAirSpaceMode();
 
 /*
 // enable disable map border
@@ -77,19 +77,19 @@ void EnableMapBorderRegion( void );
 */
 
 // create/destroy buttons for map border region
-void DeleteMapBorderButtons(void);
-void CreateButtonsForMapBorder(void);
+void DeleteMapBorderButtons();
+void CreateButtonsForMapBorder();
 
 // render the pop up for eta  in path plotting in map screen
-void RenderMapBorderEtaPopUp(void);
+void RenderMapBorderEtaPopUp();
 
 // void UpdateLevelButtonStates( void );
 
 // create mouse regions for level markers
-void CreateMouseRegionsForLevelMarkers(void);
+void CreateMouseRegionsForLevelMarkers();
 void DeleteMouseRegionsForLevelMarkers();
 
-void InitMapScreenFlags(void);
+void InitMapScreenFlags();
 
 extern GUIButtonRef giMapBorderButtons[];
 

@@ -524,16 +524,16 @@ static CursorData CursorDatabase[] = {
 #undef SUBHIDE
 #undef SUBNORM
 
-static void BltJA2CursorData(void);
+static void BltJA2CursorData();
 
-void InitCursors(void) {
+void InitCursors() {
   InitCursorDatabase(CursorFileDatabase, CursorDatabase, NUM_CURSOR_FILES);
   SetMouseBltHook(BltJA2CursorData);
 }
 
 static void UpdateFlashingCursorFrames(UINT32 uiCursorIndex);
 
-void HandleAnimatedCursors(void) {
+void HandleAnimatedCursors() {
   if (COUNTERDONE(CURSORCOUNTER)) {
     RESETCOUNTER(CURSORCOUNTER);
 
@@ -563,9 +563,9 @@ void HandleAnimatedCursors(void) {
   }
 }
 
-static void DrawMouseText(void);
+static void DrawMouseText();
 
-static void BltJA2CursorData(void) {
+static void BltJA2CursorData() {
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
     DrawMouseText();
   }
@@ -581,11 +581,11 @@ void SetIntTileLocationText(const wchar_t *Text) { gzIntTileLocation = Text; }
 
 void SetIntTileLocation2Text(const wchar_t *Text) { gzIntTileLocation2 = Text; }
 
-const wchar_t *GetIntTileLocationText(void) { return gzIntTileLocation; }
+const wchar_t *GetIntTileLocationText() { return gzIntTileLocation; }
 
-const wchar_t *GetIntTileLocation2Text(void) { return gzIntTileLocation2; }
+const wchar_t *GetIntTileLocation2Text() { return gzIntTileLocation2; }
 
-static void DrawMouseText(void) {
+static void DrawMouseText() {
   static BOOLEAN fShow = FALSE;
   static BOOLEAN fHoldInvalid = TRUE;
 

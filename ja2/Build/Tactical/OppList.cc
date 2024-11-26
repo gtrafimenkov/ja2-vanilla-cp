@@ -339,7 +339,7 @@ static void ReevaluateBestSightingPosition(SOLDIERTYPE *pSoldier, INT8 bInterrup
   }
 }
 
-static void HandleBestSightingPositionInRealtime(void) {
+static void HandleBestSightingPositionInRealtime() {
   // This function is called for handling interrupts when opening a door in
   // non-combat or just sighting in non-combat, deciding who gets the first turn
 
@@ -396,7 +396,7 @@ static void HandleBestSightingPositionInRealtime(void) {
   }
 }
 
-static void HandleBestSightingPositionInTurnbased(void) {
+static void HandleBestSightingPositionInTurnbased() {
   // This function is called for handling interrupts when opening a door in
   // turnbased
   BOOLEAN fOk = FALSE;
@@ -466,7 +466,7 @@ void AddToShouldBecomeHostileOrSayQuoteList(SOLDIERTYPE *const s) {
   gShouldBecomeHostileOrSayQuote[gubNumShouldBecomeHostileOrSayQuote++] = s;
 }
 
-static SOLDIERTYPE *SelectSpeakerFromHostileOrSayQuoteList(void) {
+static SOLDIERTYPE *SelectSpeakerFromHostileOrSayQuoteList() {
   SOLDIERTYPE *speaker_list[SHOULD_BECOME_HOSTILE_SIZE];
   UINT8 ubLoop, ubNumProfiles = 0;
 
@@ -490,7 +490,7 @@ static SOLDIERTYPE *SelectSpeakerFromHostileOrSayQuoteList(void) {
   return ubNumProfiles == 0 ? NULL : speaker_list[Random(ubNumProfiles)];
 }
 
-void CheckHostileOrSayQuoteList(void) {
+void CheckHostileOrSayQuoteList() {
   if (gubNumShouldBecomeHostileOrSayQuote == 0 || !DialogueQueueIsEmpty() || gfInTalkPanel ||
       gfWaitingForTriggerTimer) {
     return;
@@ -759,7 +759,7 @@ static INT16 DistanceSmellable(const SOLDIERTYPE *const pSubject) {
   return (sDistVisible);
 }
 
-INT16 MaxDistanceVisible(void) { return (STRAIGHT * 2); }
+INT16 MaxDistanceVisible() { return (STRAIGHT * 2); }
 
 INT16 DistanceVisible(const SOLDIERTYPE *pSoldier, INT8 bFacingDir, INT8 bSubjectDir,
                       INT16 sSubjectGridNo, INT8 bLevel) {
@@ -928,7 +928,7 @@ void EndMuzzleFlash(SOLDIERTYPE *pSoldier) {
   DecideTrueVisibility(pSoldier);
 }
 
-void TurnOffEveryonesMuzzleFlashes(void) {
+void TurnOffEveryonesMuzzleFlashes() {
   FOR_EACH_MERC(i) {
     SOLDIERTYPE *const s = *i;
     if (s->fMuzzleFlash) EndMuzzleFlash(s);
@@ -993,7 +993,7 @@ static INT8 DecideHearing(const SOLDIERTYPE *pSoldier) {
   return (bHearing);
 }
 
-void InitOpplistForDoorOpening(void) {
+void InitOpplistForDoorOpening() {
   // this is called before generating a noise for opening a door so that
   // the results of hearing the noise are lumped in with the results from
   // AllTeamsLookForAll
@@ -1369,7 +1369,7 @@ static INT16 ManLooksForMan(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8
 
 static void IncrementWatchedLoc(const SOLDIERTYPE *watcher, INT16 sGridNo, INT8 bLevel);
 static void SetWatchedLocAsUsed(UINT8 ubID, INT16 sGridNo, INT8 bLevel);
-static void MakeBloodcatsHostile(void);
+static void MakeBloodcatsHostile();
 static void AddOneOpponent(SOLDIERTYPE *pSoldier);
 static void UpdatePersonal(SOLDIERTYPE *pSoldier, UINT8 ubID, INT8 bNewOpplist, INT16 sGridno,
                            INT8 bLevel);
@@ -1991,7 +1991,7 @@ HandleSight(pSoldier,SIGHT_LOOK);
 
 */
 
-void InitOpponentKnowledgeSystem(void) {
+void InitOpponentKnowledgeSystem() {
   INT32 iTeam, cnt, cnt2;
 
   memset(gbSeenOpponents, 0, sizeof(gbSeenOpponents));
@@ -4646,7 +4646,7 @@ static void DecayWatchedLocs(INT8 bTeam) {
   }
 }
 
-static void MakeBloodcatsHostile(void) {
+static void MakeBloodcatsHostile() {
   FOR_EACH_IN_TEAM(s, CREATURE_TEAM) {
     if (s->ubBodyType == BLOODCAT && s->bInSector && s->bLife > 0) {
       SetSoldierNonNeutral(s);

@@ -4,16 +4,16 @@
 #include "JA2Types.h"
 #include "SGP/Types.h"
 
-void InitCreatureQuest(void);
-void SpreadCreatures(void);
-void ClearCreatureQuest(void);
-void DeleteCreatureDirectives(void);
+void InitCreatureQuest();
+void SpreadCreatures();
+void ClearCreatureQuest();
+void DeleteCreatureDirectives();
 
 void SaveCreatureDirectives(HWFILE);
 void LoadCreatureDirectives(HWFILE, UINT32 uiSavedGameVersion);
 
-BOOLEAN PrepareCreaturesForBattle(void);
-void CreatureNightPlanning(void);
+BOOLEAN PrepareCreaturesForBattle();
+void CreatureNightPlanning();
 void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest);
 
 void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
@@ -54,8 +54,8 @@ void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCre
                                                                 UINT8 *pubNumAdultMales,
                                                                 UINT8 *pubNumAdultFemales);
 
-BOOLEAN PlayerGroupIsInACreatureInfestedMine(void);
+BOOLEAN PlayerGroupIsInACreatureInfestedMine();
 
-void EndCreatureQuest(void);
+void EndCreatureQuest();
 
 #endif

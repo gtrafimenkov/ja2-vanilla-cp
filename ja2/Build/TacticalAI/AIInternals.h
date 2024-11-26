@@ -161,7 +161,7 @@ INT16 MostImportantNoiseHeard(SOLDIERTYPE *pSoldier, INT32 *piRetValue,
                               BOOLEAN *pfClimbingNecessary, BOOLEAN *pfReachable);
 void NPCDoesAct(SOLDIERTYPE *pSoldier);
 INT8 OKToAttack(SOLDIERTYPE *ptr, int target);
-BOOLEAN NeedToRadioAboutPanicTrigger(void);
+BOOLEAN NeedToRadioAboutPanicTrigger();
 INT8 PointPatrolAI(SOLDIERTYPE *pSoldier);
 void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier);
 INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier);
@@ -177,4 +177,4 @@ void RefreshAI(SOLDIERTYPE *pSoldier);
 BOOLEAN InLightAtNight(INT16 sGridNo, INT8 bLevel);
 INT16 FindNearbyDarkerSpot(SOLDIERTYPE *pSoldier);
 
-BOOLEAN ArmySeesOpponents(void);
+BOOLEAN ArmySeesOpponents();

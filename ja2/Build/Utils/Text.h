@@ -7,8 +7,8 @@
 extern wchar_t ShortItemNames[MAXITEMS][80];
 extern wchar_t ItemNames[MAXITEMS][80];
 
-extern void LoadAllExternalText(void);
-extern const wchar_t *GetWeightUnitString(void);
+extern void LoadAllExternalText();
+extern const wchar_t *GetWeightUnitString();
 extern FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight);
 
 #define AmmoCaliber_SIZE 17

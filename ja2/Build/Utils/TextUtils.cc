@@ -14,7 +14,7 @@ void LoadItemInfo(UINT16 const ubIndex, wchar_t Info[]) {
                             SIZE_ITEM_INFO);
 }
 
-static void LoadAllItemNames(void) {
+static void LoadAllItemNames() {
   AutoSGPFile File(FileMan::openForReadingSmart(ITEMSTRINGFILENAME, true));
   for (UINT32 i = 0; i < MAXITEMS; i++) {
     UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * i;
@@ -23,9 +23,9 @@ static void LoadAllItemNames(void) {
   }
 }
 
-void LoadAllExternalText(void) { LoadAllItemNames(); }
+void LoadAllExternalText() { LoadAllItemNames(); }
 
-const wchar_t *GetWeightUnitString(void) {
+const wchar_t *GetWeightUnitString() {
   if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM])  // metric
   {
     return (pMessageStrings[MSG_KILOGRAM_ABBREVIATION]);

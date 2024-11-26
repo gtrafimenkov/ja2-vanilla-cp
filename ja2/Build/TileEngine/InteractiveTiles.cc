@@ -320,7 +320,7 @@ static LEVELNODE *InternalGetCurInteractiveTile(const BOOLEAN fRejectItemsOnTop)
   return n;
 }
 
-LEVELNODE *GetCurInteractiveTile(void) { return InternalGetCurInteractiveTile(TRUE); }
+LEVELNODE *GetCurInteractiveTile() { return InternalGetCurInteractiveTile(TRUE); }
 
 LEVELNODE *GetCurInteractiveTileGridNo(INT16 *const psGridNo) {
   LEVELNODE *const n = GetCurInteractiveTile();
@@ -351,7 +351,7 @@ LEVELNODE *GetCurInteractiveTileGridNoAndStructure(INT16 *const psGridNo,
   return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, TRUE);
 }
 
-void BeginCurInteractiveTileCheck(void) {
+void BeginCurInteractiveTileCheck() {
   gfOverIntTile = FALSE;
 
   // OK, release our stack, stuff could be different!

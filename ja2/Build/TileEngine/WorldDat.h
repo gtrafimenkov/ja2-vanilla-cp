@@ -5,7 +5,7 @@
 #include "TileEngine/TileDat.h"
 #include "TileEngine/WorldTilesetEnums.h"
 
-typedef void (*TILESET_CALLBACK)(void);
+typedef void (*TILESET_CALLBACK)();
 
 struct TILESET {
   wchar_t zName[32];
@@ -16,9 +16,9 @@ struct TILESET {
 
 extern TILESET gTilesets[NUM_TILESETS];
 
-void InitEngineTilesets(void);
+void InitEngineTilesets();
 
 // THESE FUNCTIONS WILL SET TERRAIN VALUES - CALL ONE FOR EACH TILESET
-void SetTilesetOneTerrainValues(void);
+void SetTilesetOneTerrainValues();
 
 #endif

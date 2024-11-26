@@ -30,6 +30,6 @@ void LoadLightEffectsFromLoadGameFile(HWFILE);
 
 void SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-void ResetLightEffects(void);
+void ResetLightEffects();
 
 #endif

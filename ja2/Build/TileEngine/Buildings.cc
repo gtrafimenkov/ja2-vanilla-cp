@@ -320,7 +320,7 @@ BUILDING *FindBuilding(INT16 sGridNo) {
   return (&(gBuildings[ubBuildingID]));
 }
 
-void GenerateBuildings(void) {
+void GenerateBuildings() {
   // init building structures and variables
   memset(&gubBuildingInfo, 0, WORLD_MAX * sizeof(UINT8));
   memset(&gBuildings, 0, MAX_BUILDINGS * sizeof(BUILDING));

@@ -61,9 +61,9 @@ extern UINT32 guiNumBullets;
 BULLET *CreateBullet(SOLDIERTYPE *firer, BOOLEAN fFake, UINT16 usFlags);
 void RemoveBullet(BULLET *b);
 void StopBullet(BULLET *b);
-void UpdateBullets(void);
+void UpdateBullets();
 
-void DeleteAllBullets(void);
+void DeleteAllBullets();
 
 void LocateBullet(BULLET *b);
 

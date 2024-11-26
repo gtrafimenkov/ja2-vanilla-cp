@@ -1,7 +1,7 @@
 #ifndef IMP_TEXT_SYSTEM_H
 #define IMP_TEXT_SYSTEM_H
 
-void PrintImpText(void);
+void PrintImpText();
 
 enum {
   IMP_HOME_1,

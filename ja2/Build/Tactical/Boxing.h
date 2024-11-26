@@ -28,13 +28,13 @@ extern void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, INT8 bReason);
 bool CheckOnBoxers();
 extern void EndBoxingMatch(SOLDIERTYPE *pLoser);
 bool BoxerAvailable();
-extern BOOLEAN AnotherFightPossible(void);
+extern BOOLEAN AnotherFightPossible();
 extern void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSolier);
 extern void BoxingMovementCheck(SOLDIERTYPE *pSoldier);
-extern void ExitBoxing(void);
+extern void ExitBoxing();
 extern void SetBoxingState(INT8 bNewState);
 bool BoxerExists();
-extern UINT8 CountPeopleInBoxingRing(void);
-extern void ClearAllBoxerFlags(void);
+extern UINT8 CountPeopleInBoxingRing();
+extern void ClearAllBoxerFlags();
 
 #endif

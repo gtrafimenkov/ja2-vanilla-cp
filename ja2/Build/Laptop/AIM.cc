@@ -83,17 +83,17 @@ static LaptopMode const gCurrentAimPage[NUM_AIM_SCREENS] = {LAPTOP_MODE_AIM,
 #define AIM_COPYRIGHT_WIDTH 400
 #define AIM_COPYRIGHT_GAP 9
 
-//#define			AIM_WARNING_TIME 100
+// #define			AIM_WARNING_TIME 100
 #define AIM_WARNING_TIME 10000
 
-//#define			AIM_FLOWER_AD_DELAY
-// 15
+// #define			AIM_FLOWER_AD_DELAY
+//  15
 #define AIM_FLOWER_AD_DELAY 150
 #define AIM_FLOWER_NUM_SUBIMAGES 16
 
 #define AIM_AD_FOR_ADS_DELAY 150
-//#define			AIM_AD_FOR_ADS_DELAY
-// 15
+// #define			AIM_AD_FOR_ADS_DELAY
+//  15
 #define AIM_AD_FOR_ADS__NUM_SUBIMAGES 13
 
 #define AIM_AD_INSURANCE_AD_DELAY 150
@@ -111,7 +111,7 @@ static LaptopMode const gCurrentAimPage[NUM_AIM_SCREENS] = {LAPTOP_MODE_AIM,
 #define AIM_AD_BOBBYR_AD__NUM_SUBIMAGES 21
 #define AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES 6
 
-//#define
+// #define
 
 enum {
   AIM_AD_NOT_DONE,
@@ -167,7 +167,7 @@ static MOUSE_REGION gSelectedAimLogo;
 
 static BOOLEAN fFirstTimeIn = TRUE;
 
-static void LaptopInitAim(void);
+static void LaptopInitAim();
 
 void GameInitAIM() { LaptopInitAim(); }
 
@@ -255,7 +255,7 @@ void EnterAIM() {
   RenderAIM();
 }
 
-static void LaptopInitAim(void) { gfInitAdArea = TRUE; }
+static void LaptopInitAim() { gfInitAdArea = TRUE; }
 
 void ExitAIM() {
   RemoveAimDefaults();

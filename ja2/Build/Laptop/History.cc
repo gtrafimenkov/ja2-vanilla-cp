@@ -95,9 +95,9 @@ static INT32 iCurrentHistoryPage = 1;
 // the History record list
 static HistoryUnit *pHistoryListHead = NULL;
 
-void ClearHistoryList(void);
+void ClearHistoryList();
 
-static void AppendHistoryToEndOfFile(void);
+static void AppendHistoryToEndOfFile();
 static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage);
 static void ProcessAndEnterAHistoryRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubSecondCode,
                                           INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
@@ -117,9 +117,9 @@ void AddHistoryToPlayersLog(uint8_t ubCode, uint8_t ubSecondCode, uint32_t uiDat
 
 void GameInitHistory() { FileDelete(HISTORY_DATA_FILE); }
 
-static void CreateHistoryButtons(void);
-static void LoadHistory(void);
-static void SetHistoryButtonStates(void);
+static void CreateHistoryButtons();
+static void LoadHistory();
+static void SetHistoryButtonStates();
 
 void EnterHistory() {
   // load the graphics
@@ -150,8 +150,8 @@ void EnterHistory() {
   SetHistoryButtonStates();
 }
 
-static void DestroyHistoryButtons(void);
-static void RemoveHistory(void);
+static void DestroyHistoryButtons();
+static void RemoveHistory();
 
 void ExitHistory() {
   LaptopSaveInfo.iCurrentHistoryPage = iCurrentHistoryPage;
@@ -168,10 +168,10 @@ void ExitHistory() {
   ClearHistoryList();
 }
 
-static void DrawAPageofHistoryRecords(void);
-static void RenderHistoryBackGround(void);
+static void DrawAPageofHistoryRecords();
+static void RenderHistoryBackGround();
 
-void RenderHistory(void) {
+void RenderHistory() {
   // render the background to the display
   RenderHistoryBackGround();
 
@@ -182,7 +182,7 @@ void RenderHistory(void) {
   BlitTitleBarIcons();
 }
 
-static void LoadHistory(void) {
+static void LoadHistory() {
   // load History video objects into memory
 
   // title bar
@@ -198,7 +198,7 @@ static void LoadHistory(void) {
   guiLONGLINE = AddVideoObjectFromFile(LAPTOPDIR "/divisionline480.sti");
 }
 
-static void RemoveHistory(void) {
+static void RemoveHistory() {
   // delete history video objects from memory
   DeleteVideoObject(guiLONGLINE);
   DeleteVideoObject(guiTOP);
@@ -206,20 +206,20 @@ static void RemoveHistory(void) {
   DeleteVideoObject(guiSHADELINE);
 }
 
-static void RenderHistoryBackGround(void) {
+static void RenderHistoryBackGround() {
   // render generic background for history system
   BltVideoObject(FRAME_BUFFER, guiTITLE, 0, TOP_X, TOP_Y - 2);
   BltVideoObject(FRAME_BUFFER, guiTOP, 0, TOP_X, TOP_Y + 22);
 }
 
-static void DrawHistoryTitleText(void) {
+static void DrawHistoryTitleText() {
   // draw the pages title
   SetFontAttributes(HISTORY_HEADER_FONT, FONT_WHITE);
   MPrint(TITLE_X, TITLE_Y, pHistoryTitle);
 }
 
-static void LoadNextHistoryPage(void);
-static void LoadPreviousHistoryPage(void);
+static void LoadNextHistoryPage();
+static void LoadPreviousHistoryPage();
 
 static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
@@ -232,7 +232,7 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
 static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason);
 static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateHistoryButtons(void) {
+static void CreateHistoryButtons() {
   // the prev/next page buttons
   giHistoryButton[PREV_PAGE_BUTTON] =
       QuickCreateButtonImg(LAPTOPDIR "/arrows.sti", 0, 1, PREV_BTN_X, BTN_Y,
@@ -253,7 +253,7 @@ static void CreateHistoryButtons(void) {
                     MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
 
-static void DestroyHistoryButtons(void) {
+static void DestroyHistoryButtons() {
   // remove History buttons and images from memory
   MSYS_RemoveRegion(&g_scroll_region);
   // next page button
@@ -301,7 +301,7 @@ static void ProcessAndEnterAHistoryRecord(const UINT8 ubCode, const UINT32 uiDat
 }
 
 // open and read in data to the History list
-static void OpenAndReadHistoryFile(void) {
+static void OpenAndReadHistoryFile() {
   ClearHistoryList();
 
   AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
@@ -327,7 +327,7 @@ static void OpenAndReadHistoryFile(void) {
   }
 }
 
-void ClearHistoryList(void) {
+void ClearHistoryList() {
   for (HistoryUnit *h = pHistoryListHead; h != NULL;) {
     HistoryUnit *const next = h->Next;
     MemFree(h);
@@ -336,7 +336,7 @@ void ClearHistoryList(void) {
   pHistoryListHead = NULL;
 }
 
-static void DisplayHistoryListHeaders(void) {
+static void DisplayHistoryListHeaders() {
   // this procedure will display the headers to each column in History
   SetFontAttributes(HISTORY_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
@@ -362,7 +362,7 @@ static void DisplayHistoryListHeaders(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void DisplayHistoryListBackground(void) {
+static void DisplayHistoryListBackground() {
   // this function will display the History list display background
   INT32 iCounter = 0;
 
@@ -382,7 +382,7 @@ static void ProcessHistoryTransactionString(wchar_t *pString, size_t Length,
                                             const HistoryUnit *pHistory);
 
 // draw the text of the records
-static void DrawHistoryRecordsText(void) {
+static void DrawHistoryRecordsText() {
   wchar_t sString[512];
   INT16 sX;
   INT16 sY;
@@ -434,9 +434,9 @@ static void DrawHistoryRecordsText(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void DisplayPageNumberAndDateRange(void);
+static void DisplayPageNumberAndDateRange();
 
-static void DrawAPageofHistoryRecords(void) {
+static void DrawAPageofHistoryRecords() {
   // this procedure will draw a series of history records to the screen
 
   // (re-)render background
@@ -462,11 +462,11 @@ static void DrawAPageofHistoryRecords(void) {
   DisplayPageNumberAndDateRange();
 }
 
-static INT32 GetNumberOfHistoryPages(void);
+static INT32 GetNumberOfHistoryPages();
 
 /* go through the list of 'histories' starting at current until end or
  * NUM_RECORDS_PER_PAGE and get the date range and the page number */
-static void DisplayPageNumberAndDateRange(void) {
+static void DisplayPageNumberAndDateRange() {
   UINT current_page;
   UINT count_pages;
   UINT first_date;
@@ -609,7 +609,7 @@ static void ProcessHistoryTransactionString(wchar_t *const pString, const size_t
 }
 
 // look at what page we are viewing, enable and disable buttons as needed
-static void SetHistoryButtonStates(void) {
+static void SetHistoryButtonStates() {
   EnableButton(giHistoryButton[PREV_PAGE_BUTTON], iCurrentHistoryPage != 1);
   EnableButton(giHistoryButton[NEXT_PAGE_BUTTON], iCurrentHistoryPage < GetNumberOfHistoryPages());
 }
@@ -657,7 +657,7 @@ static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage) try {
 }
 
 // clear out old list of records, and load in next page worth of records
-static void LoadNextHistoryPage(void) {
+static void LoadNextHistoryPage() {
   // now load in previous page's records, if we can
   if (LoadInHistoryRecords(iCurrentHistoryPage + 1)) {
     iCurrentHistoryPage++;
@@ -669,14 +669,14 @@ static void LoadNextHistoryPage(void) {
 }
 
 // clear out old list of records and load in previous page worth of records
-static void LoadPreviousHistoryPage(void) {
+static void LoadPreviousHistoryPage() {
   if (iCurrentHistoryPage <= 1) return;
   LoadInHistoryRecords(--iCurrentHistoryPage);
   SetHistoryButtonStates();
   fReDrawScreenFlag = TRUE;
 }
 
-static void AppendHistoryToEndOfFile(void) {
+static void AppendHistoryToEndOfFile() {
   AutoSGPFile f(FileMan::openForAppend(HISTORY_DATA_FILE));
 
   const HistoryUnit *const h = pHistoryListHead;
@@ -725,7 +725,7 @@ static void GetQuestEndedString(const UINT8 ubQuestValue, wchar_t *const sQuestS
                             HISTORY_QUEST_TEXT_SIZE);
 }
 
-static INT32 GetNumberOfHistoryPages(void) {
+static INT32 GetNumberOfHistoryPages() {
   AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
   const UINT32 uiFileSize = FileGetSize(f);

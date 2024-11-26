@@ -11,8 +11,8 @@
 
 #include "JA2Types.h"
 
-void InitPathAI(void);
-void ShutDownPathAI(void);
+void InitPathAI();
+void ShutDownPathAI();
 INT16 PlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot,
                UINT16 usMovementMode, INT16 sAPBudget);
 INT16 UIPlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot,

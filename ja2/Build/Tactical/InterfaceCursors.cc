@@ -225,7 +225,7 @@ BOOLEAN gfTargetDropPos = FALSE;
 
 void SetUICursor(UICursorID const uiNewCursor) { guiCurUICursor = uiNewCursor; }
 
-static void DrawSnappingCursor(void);
+static void DrawSnappingCursor();
 
 void DrawUICursor() {
   LEVELNODE *pNode;
@@ -379,7 +379,7 @@ void DrawUICursor() {
   }
 }
 
-static void EraseSnappingCursor(void);
+static void EraseSnappingCursor();
 
 void HideUICursor() {
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
@@ -419,7 +419,7 @@ void HideUICursor() {
   }
 }
 
-static void DrawSnappingCursor(void) {
+static void DrawSnappingCursor() {
   LEVELNODE *pNewUIElem;
   static BOOLEAN fShowAP = TRUE;
 
@@ -553,7 +553,7 @@ static void DrawSnappingCursor(void) {
   }
 }
 
-static void EraseSnappingCursor(void) {
+static void EraseSnappingCursor() {
   RemoveAllTopmostsOfTypeRange(gusCurMousePos, MOCKFLOOR, MOCKFLOOR);
   RemoveAllTopmostsOfTypeRange(gusCurMousePos, FIRSTPOINTERS, LASTPOINTERS);
   RemoveAllObjectsOfTypeRange(gusCurMousePos, FIRSTPOINTERS, LASTPOINTERS);

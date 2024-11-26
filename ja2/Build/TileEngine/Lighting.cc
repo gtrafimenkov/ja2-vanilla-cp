@@ -188,7 +188,7 @@ static LightTemplate *LightLoad(const char *pFilename);
         Initializes the lighting system.
 
 ***************************************************************************************/
-void InitLightingSystem(void) {
+void InitLightingSystem() {
   LoadShadeTablesFromTextFile();
 
   // init all light lists
@@ -201,7 +201,7 @@ void InitLightingSystem(void) {
 }
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-void SetDefaultWorldLightingColors(void) {
+void SetDefaultWorldLightingColors() {
   static const SGPPaletteEntry pPal = {0, 0, 0};
   LightSetColor(&pPal);
 }
@@ -215,7 +215,7 @@ static BOOLEAN LightDelete(LightTemplate *);
 destroyed, and the memory attached to them freed up.
 
 ***************************************************************************************/
-void ShutdownLightingSystem(void) {
+void ShutdownLightingSystem() {
   // free up all allocated light nodes
   FOR_EACH_LIGHT_TEMPLATE(t) { LightDelete(t); }
 }
@@ -226,7 +226,7 @@ void ShutdownLightingSystem(void) {
         Removes all currently active lights, without undrawing them.
 
 ***************************************************************************************/
-void LightReset(void) {
+void LightReset() {
   // reset all light lists
   FOR_EACH_LIGHT_TEMPLATE(t) { LightDelete(t); }
 
@@ -456,7 +456,7 @@ static BOOLEAN LightDelete(LightTemplate *const t) {
 }
 
 /* Returns an available slot for a new light template. */
-static LightTemplate *LightGetFree(void) {
+static LightTemplate *LightGetFree() {
   FOR_EACH_LIGHT_TEMPLATE_SLOT(t) {
     if (!t->lights) return t;
   }
@@ -809,7 +809,7 @@ static void LightResetLevel(LEVELNODE *n) {
 }
 
 // Reset all tiles on the map to their baseline values.
-static void LightResetAllTiles(void) {
+static void LightResetAllTiles() {
   FOR_EACH_WORLD_TILE(i) {
     LightResetLevel(i->pLandHead);
     LightResetLevel(i->pObjectHead);
@@ -1805,7 +1805,7 @@ static LightTemplate *LightLoadCachedTemplate(const char *pFilename) {
   return LightLoad(pFilename);
 }
 
-const SGPPaletteEntry *LightGetColor(void) { return &gpOrigLight; }
+const SGPPaletteEntry *LightGetColor() { return &gpOrigLight; }
 
 void LightSetColor(const SGPPaletteEntry *const pPal) {
   Assert(pPal != NULL);
@@ -1837,7 +1837,7 @@ void LightSetColor(const SGPPaletteEntry *const pPal) {
 //---------------------------------------------------------------------------------------
 
 // Returns the next available sprite.
-static LIGHT_SPRITE *LightSpriteGetFree(void) {
+static LIGHT_SPRITE *LightSpriteGetFree() {
   FOR_EACH(LIGHT_SPRITE, l, LightSprites) {
     if (!(l->uiFlags & LIGHT_SPR_ACTIVE)) return l;
   }

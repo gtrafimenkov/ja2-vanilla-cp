@@ -47,7 +47,7 @@
 static SOLDIERTYPE *gOutOfTurnOrder[MAXMERCS];
 UINT8 gubOutOfTurnPersons = 0;
 
-static inline SOLDIERTYPE *LatestInterruptGuy(void) { return gOutOfTurnOrder[gubOutOfTurnPersons]; }
+static inline SOLDIERTYPE *LatestInterruptGuy() { return gOutOfTurnOrder[gubOutOfTurnPersons]; }
 
 #define REMOVE_LATEST_INTERRUPT_GUY() (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE))
 #define INTERRUPTS_OVER (gubOutOfTurnPersons == 1)
@@ -59,7 +59,7 @@ extern SightFlags gubSightFlags;
 
 #define MIN_APS_TO_INTERRUPT 4
 
-void ClearIntList(void) {
+void ClearIntList() {
   memset(gOutOfTurnOrder, 0, sizeof(gOutOfTurnOrder));
   gubOutOfTurnPersons = 0;
 }
@@ -134,7 +134,7 @@ void StartPlayerTeamTurn(BOOLEAN fDoBattleSnd, BOOLEAN fEnteringCombatMode) {
   HandleTacticalUI();
 }
 
-static void FreezeInterfaceForEnemyTurn(void) {
+static void FreezeInterfaceForEnemyTurn() {
   // Reset flags
   gfPlotNewMovement = TRUE;
 
@@ -186,7 +186,7 @@ void EndTurn(UINT8 ubNextTeam) {
   }
 }
 
-void EndAITurn(void) {
+void EndAITurn() {
   // Remove any deadlock message
   EndDeadlockMsg();
   if (INTERRUPT_QUEUED) {
@@ -204,7 +204,7 @@ void EndAITurn(void) {
   }
 }
 
-void EndAllAITurns(void) {
+void EndAllAITurns() {
   // warp turn to the player's turn
 
   // Remove any deadlock message
@@ -227,7 +227,7 @@ void EndAllAITurns(void) {
   }
 }
 
-static void EndTurnEvents(void) {
+static void EndTurnEvents() {
   // HANDLE END OF TURN EVENTS
   // handle team services like healing
   HandleTeamServices(OUR_TEAM);
@@ -383,7 +383,7 @@ void DisplayHiddenTurnbased(SOLDIERTYPE *pActingSoldier) {
   FreezeInterfaceForEnemyTurn();
 }
 
-static BOOLEAN EveryoneInInterruptListOnSameTeam(void) {
+static BOOLEAN EveryoneInInterruptListOnSameTeam() {
   UINT8 ubLoop;
   UINT8 ubTeam = 255;
 
@@ -399,7 +399,7 @@ static BOOLEAN EveryoneInInterruptListOnSameTeam(void) {
   return (TRUE);
 }
 
-void SayCloseCallQuotes(void) {
+void SayCloseCallQuotes() {
   // report any close call quotes for us here
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (OkControllableMerc(s) && s->fCloseCall && s->bNumHitsThisTurn == 0 &&
@@ -414,7 +414,7 @@ void SayCloseCallQuotes(void) {
 
 static void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate);
 
-static void StartInterrupt(void) {
+static void StartInterrupt() {
   SOLDIERTYPE *first_interrupter = LatestInterruptGuy();
   const INT8 bTeam = first_interrupter->bTeam;
   SOLDIERTYPE *Interrupter = first_interrupter;
@@ -1181,7 +1181,7 @@ void AddToIntList(SOLDIERTYPE *const s, const BOOLEAN fGainControl, const BOOLEA
   }
 }
 
-static void VerifyOutOfTurnOrderArray(void) {
+static void VerifyOutOfTurnOrderArray() {
   UINT8 ubTeamHighest[MAXTEAMS] = {0};
   UINT8 ubTeamsInList;
   UINT8 ubNextIndex;
@@ -1270,7 +1270,7 @@ static void VerifyOutOfTurnOrderArray(void) {
   }
 }
 
-void DoneAddingToIntList(void) {
+void DoneAddingToIntList() {
   VerifyOutOfTurnOrderArray();
   if (EveryoneInInterruptListOnSameTeam()) {
     EndInterrupt(TRUE);

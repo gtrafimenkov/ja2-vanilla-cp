@@ -53,12 +53,12 @@ void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
         */
 INT32 iCurrentProfileMode = 0;
 
-static void CreateIMPMainPageButtons(void);
-static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void);
-static void LoadCharacterPortraitForMainPage(void);
-static void UpDateIMPMainPageButtons(void);
+static void CreateIMPMainPageButtons();
+static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus();
+static void LoadCharacterPortraitForMainPage();
+static void UpDateIMPMainPageButtons();
 
-void EnterIMPMainPage(void) {
+void EnterIMPMainPage() {
   // turn off review mode
   fReviewStats = FALSE;
 
@@ -78,10 +78,10 @@ void EnterIMPMainPage(void) {
   RenderIMPMainPage();
 }
 
-static void DeleteIMPMainPageButtons(void);
-static void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(void);
+static void DeleteIMPMainPageButtons();
+static void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus();
 
-void ExitIMPMainPage(void) {
+void ExitIMPMainPage() {
   // exit from IMP About us page
 
   // delete Buttons
@@ -89,7 +89,7 @@ void ExitIMPMainPage(void) {
   DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus();
 }
 
-void RenderIMPMainPage(void) {
+void RenderIMPMainPage() {
   // rneders the IMP about us page
 
   // the background
@@ -101,9 +101,9 @@ void RenderIMPMainPage(void) {
   RenderMainIndentFrame(164, 74);
 }
 
-static BOOLEAN CheckIfFinishedCharacterGeneration(void);
+static BOOLEAN CheckIfFinishedCharacterGeneration();
 
-void HandleIMPMainPage(void) {
+void HandleIMPMainPage() {
   // handles the IMP about main page
 
   if (CheckIfFinishedCharacterGeneration()) {
@@ -133,7 +133,7 @@ static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPMainPageButtons(void) {
+static void CreateIMPMainPageButtons() {
   // this function will create the buttons needed for th IMP about us page
   const INT16 dx = LAPTOP_SCREEN_UL_X;
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
@@ -173,7 +173,7 @@ static void CreateIMPMainPageButtons(void) {
              BtnIMPMainPageVoiceCallback);
 }
 
-static void DeleteIMPMainPageButtons(void) {
+static void DeleteIMPMainPageButtons() {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the back  button
@@ -302,7 +302,7 @@ void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static BOOLEAN CheckIfFinishedCharacterGeneration(void) {
+static BOOLEAN CheckIfFinishedCharacterGeneration() {
   // this function checks to see if character is done character generation
 
   // are we done character generation
@@ -315,7 +315,7 @@ static BOOLEAN CheckIfFinishedCharacterGeneration(void) {
   }
 }
 
-static void UpDateIMPMainPageButtons(void) {
+static void UpDateIMPMainPageButtons() {
   // update mainpage button states
   INT32 iCount = 0;
 
@@ -379,7 +379,7 @@ static void BeginMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
 
 static void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
+static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus() {
   // this procedure will create masks for the char generation main page
   /* create masks for the personality, attrib, portrait and page buttons on the
    * character generation main page */
@@ -393,7 +393,7 @@ static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
   }
 }
 
-static void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
+static void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus() {
   // will destroy button masks for the char gen pages
   FOR_EACH(MOUSE_REGION, r, pIMPMainPageMouseRegions) { MSYS_RemoveRegion(r); }
 }
@@ -411,7 +411,7 @@ SGPVObject *LoadIMPPortait() {
   return AddVideoObjectFromFile(filename);
 }
 
-static void LoadCharacterPortraitForMainPage(void) {
+static void LoadCharacterPortraitForMainPage() {
   // this function will load the character's portrait, to be used on portrait
   // button
   if (iCurrentProfileMode >= 4) {

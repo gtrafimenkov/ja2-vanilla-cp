@@ -16,7 +16,7 @@
 // #define SOUND_DISABLE
 
 #ifdef WITH_SOUND_DEBUG
-#define SNDDBG(fmt, ...) (void)fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)
+#define SNDDBG(fmt, ...) () fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)
 #else
 #define SNDDBG(fmt, ...) (void)0
 #endif
@@ -109,10 +109,10 @@ static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
 
 void SoundEnableSound(BOOLEAN fEnable) { gfEnableStartup = fEnable; }
 
-static void SoundInitCache(void);
-static BOOLEAN SoundInitHardware(void);
+static void SoundInitCache();
+static BOOLEAN SoundInitHardware();
 
-void InitializeSoundManager(void) {
+void InitializeSoundManager() {
   if (fSoundSystemInit) ShutdownSoundManager();
 
   memset(pSoundList, 0, sizeof(pSoundList));
@@ -126,17 +126,17 @@ void InitializeSoundManager(void) {
   guiSoundMemoryUsed = 0;
 }
 
-static void SoundEmptyCache(void);
-static void SoundShutdownHardware(void);
+static void SoundEmptyCache();
+static void SoundShutdownHardware();
 
-void ShutdownSoundManager(void) {
+void ShutdownSoundManager() {
   SoundStopAll();
   SoundEmptyCache();
   SoundShutdownHardware();
   fSoundSystemInit = FALSE;
 }
 
-static SOUNDTAG *SoundGetFreeChannel(void);
+static SOUNDTAG *SoundGetFreeChannel();
 static SAMPLETAG *SoundLoadSample(const char *pFilename);
 static BOOLEAN SoundPlayStreamed(const char *pFilename);
 static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
@@ -170,9 +170,9 @@ UINT32 SoundPlay(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
   return SoundStartSample(sample, channel, volume, pan, loop, end_callback, data);
 }
 
-static SAMPLETAG *SoundGetEmptySample(void);
-static BOOLEAN SoundCleanCache(void);
-static SAMPLETAG *SoundGetEmptySample(void);
+static SAMPLETAG *SoundGetEmptySample();
+static BOOLEAN SoundCleanCache();
+static SAMPLETAG *SoundGetEmptySample();
 static size_t GetSampleSize(const SAMPLETAG *const s);
 
 UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
@@ -296,7 +296,7 @@ BOOLEAN SoundStop(UINT32 uiSoundID) {
   return TRUE;
 }
 
-void SoundStopAll(void) {
+void SoundStopAll() {
   if (!fSoundSystemInit) return;
 
   SDL_PauseAudio(1);
@@ -344,7 +344,7 @@ UINT32 SoundGetVolume(UINT32 uiSoundID) {
 static BOOLEAN SoundRandomShouldPlay(const SAMPLETAG *s);
 static UINT32 SoundStartRandom(SAMPLETAG *s);
 
-void SoundServiceRandom(void) {
+void SoundServiceRandom() {
   FOR_EACH(SAMPLETAG, i, pSampleList) {
     if (SoundRandomShouldPlay(i)) SoundStartRandom(i);
   }
@@ -376,7 +376,7 @@ static UINT32 SoundStartRandom(SAMPLETAG *s) {
   return uiSoundID;
 }
 
-void SoundStopAllRandom(void) {
+void SoundStopAllRandom() {
   // Stop all currently playing random sounds
   FOR_EACH(SOUNDTAG, i, pSoundList) {
     if (i->State == CHANNEL_PLAY && i->pSample->uiFlags & SAMPLE_RANDOM) {
@@ -393,7 +393,7 @@ void SoundStopAllRandom(void) {
   }
 }
 
-void SoundServiceStreams(void) {
+void SoundServiceStreams() {
   if (!fSoundSystemInit) return;
 
   for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
@@ -422,12 +422,12 @@ UINT32 SoundGetPosition(UINT32 uiSoundID) {
 }
 
 // Zeros out the structures of the sample list.
-static void SoundInitCache(void) { memset(pSampleList, 0, sizeof(pSampleList)); }
+static void SoundInitCache() { memset(pSampleList, 0, sizeof(pSampleList)); }
 
 static void SoundFreeSample(SAMPLETAG *s);
 
 // Frees up all samples in the cache.
-static void SoundEmptyCache(void) {
+static void SoundEmptyCache() {
   SoundStopAll();
 
   FOR_EACH(SAMPLETAG, i, pSampleList) { SoundFreeSample(i); }
@@ -721,7 +721,7 @@ static BOOLEAN SoundSampleIsPlaying(const SAMPLETAG *s);
 /* Removes the least-used sound from the cache to make room.
  *
  * Returns: TRUE if a sample was freed, FALSE if none */
-static BOOLEAN SoundCleanCache(void) {
+static BOOLEAN SoundCleanCache() {
   SAMPLETAG *candidate = NULL;
 
   FOR_EACH(SAMPLETAG, i, pSampleList) {
@@ -747,7 +747,7 @@ static BOOLEAN SoundSampleIsPlaying(const SAMPLETAG *s) { return s->uiInstances 
 /* Returns an available sample.
  *
  * Returns: A free sample or NULL if none are left. */
-static SAMPLETAG *SoundGetEmptySample(void) {
+static SAMPLETAG *SoundGetEmptySample() {
   FOR_EACH(SAMPLETAG, i, pSampleList) {
     if (!(i->uiFlags & SAMPLE_ALLOCATED)) return i;
   }
@@ -854,7 +854,7 @@ static void SoundCallback(void *userdata, Uint8 *stream, int len) {
   }
 }
 
-static BOOLEAN SoundInitHardware(void) {
+static BOOLEAN SoundInitHardware() {
   SDL_InitSubSystem(SDL_INIT_AUDIO);
 
   SDL_AudioSpec spec;
@@ -872,12 +872,12 @@ static BOOLEAN SoundInitHardware(void) {
   return TRUE;
 }
 
-static void SoundShutdownHardware(void) { SDL_QuitSubSystem(SDL_INIT_AUDIO); }
+static void SoundShutdownHardware() { SDL_QuitSubSystem(SDL_INIT_AUDIO); }
 
 /* Finds an unused sound channel in the channel list.
  *
  * Returns: Pointer to a sound channel if one was found, NULL if not. */
-static SOUNDTAG *SoundGetFreeChannel(void) {
+static SOUNDTAG *SoundGetFreeChannel() {
   FOR_EACH(SOUNDTAG, i, pSoundList) {
     if (i->State == CHANNEL_FREE) return i;
   }
@@ -885,7 +885,7 @@ static SOUNDTAG *SoundGetFreeChannel(void) {
   return NULL;
 }
 
-static UINT32 SoundGetUniqueID(void);
+static UINT32 SoundGetUniqueID();
 
 /* Starts up a sample on the specified channel. Override parameters are passed
  * in through the structure pointer pParms. Any entry with a value of 0xffffffff
@@ -965,7 +965,7 @@ static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 
 
 /* Returns a unique ID number with every call. Basically it's just a 32-bit
  * static value that is incremented each time. */
-static UINT32 SoundGetUniqueID(void) {
+static UINT32 SoundGetUniqueID() {
   static UINT32 uiNextID = 0;
 
   if (uiNextID == SOUND_ERROR) uiNextID++;

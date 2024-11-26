@@ -112,7 +112,7 @@ FLOAT getMajorMapVersion() {
   return (s_gameVersion == GV_RUSSIAN) ? 6.00 : 5.00;
 }
 
-void InitGameResources(void) {
+void InitGameResources() {
   std::vector<std::string> libraries =
       FindFilesInDir(FileMan::getDataDirPath(), ".slf", true, true);
 

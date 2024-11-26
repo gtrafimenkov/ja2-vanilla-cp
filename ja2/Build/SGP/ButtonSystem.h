@@ -182,17 +182,17 @@ class GUIButtonRef {
 /* Initializes the GUI button system for use. Must be called before using any
  * other button functions.
  */
-void InitButtonSystem(void);
+void InitButtonSystem();
 
 /* Shuts down and cleans up the GUI button system. Must be called before exiting
  * the program.  Button functions should not be used after calling this
  * function.
  */
-void ShutdownButtonSystem(void);
+void ShutdownButtonSystem();
 
 #if defined _JA2_RENDER_DIRTY
 
-void RenderButtonsFastHelp(void);
+void RenderButtonsFastHelp();
 #define RenderButtonsFastHelp() RenderFastHelp()
 
 #endif
@@ -237,7 +237,7 @@ void RemoveButton(GUIButtonRef &);
 void HideButton(GUIButtonRef);
 void ShowButton(GUIButtonRef);
 
-void RenderButtons(void);
+void RenderButtons();
 
 extern BOOLEAN gfRenderHilights;
 
@@ -287,10 +287,10 @@ GUIButtonRef CreateLabel(const wchar_t *text, Font, INT16 forecolor, INT16 shado
                          INT16 y, INT16 w, INT16 h, INT16 priority);
 
 void MarkAButtonDirty(GUIButtonRef);    // will mark only selected button dirty
-void MarkButtonsDirty(void);            // Function to mark buttons dirty ( all will redraw
+void MarkButtonsDirty();                // Function to mark buttons dirty ( all will redraw
                                         // at next RenderButtons )
 void UnMarkButtonDirty(GUIButtonRef);   // unmark button
-void UnmarkButtonsDirty(void);          // unmark ALL the buttoms on the screen dirty
+void UnmarkButtonsDirty();              // unmark ALL the buttoms on the screen dirty
 void ForceButtonUnDirty(GUIButtonRef);  // forces button undirty no matter the
                                         // reason, only lasts one frame
 
@@ -301,8 +301,8 @@ struct ButtonDimensions {
 
 const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *);
 
-UINT16 GetGenericButtonFillColor(void);
+UINT16 GetGenericButtonFillColor();
 
-void ReleaseAnchorMode(void);
+void ReleaseAnchorMode();
 
 #endif

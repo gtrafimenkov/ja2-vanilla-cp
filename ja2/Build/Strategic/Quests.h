@@ -264,7 +264,7 @@ extern void InternalEndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOL
 
 extern void CheckForQuests(UINT32 uiDay);
 
-void InitQuestEngine(void);
+void InitQuestEngine();
 
 void LoadQuestInfoFromSavedGameFile(HWFILE);
 void SaveQuestInfoToSavedGameFile(HWFILE);

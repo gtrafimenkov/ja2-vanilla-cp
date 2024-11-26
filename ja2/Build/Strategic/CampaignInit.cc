@@ -34,7 +34,7 @@ static UNDERGROUND_SECTORINFO *NewUndergroundNode(UINT8 const x, UINT8 const y, 
 }
 
 // setup which know facilities are in which cities
-static void InitKnowFacilitiesFlags(void) {
+static void InitKnowFacilitiesFlags() {
   SECTORINFO *pSector;
 
   // Cambria hospital

@@ -1,10 +1,10 @@
 #ifndef _STRATEGIC_TURNS_H
 #define _STRATEGIC_TURNS_H
 
-void StrategicTurnsNewGame(void);
-void HandleStrategicTurn(void);
+void StrategicTurnsNewGame();
+void HandleStrategicTurn();
 
-void SyncStrategicTurnTimes(void);
-void HandleStrategicTurnImplicationsOfExitingCombatMode(void);
+void SyncStrategicTurnTimes();
+void HandleStrategicTurnImplicationsOfExitingCombatMode();
 
 #endif

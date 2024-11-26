@@ -81,7 +81,7 @@ void LoadSavedGame(UINT8 save_slot_id);
 void SaveFilesToSavedGame(char const *pSrcFileName, HWFILE);
 void LoadFilesFromSavedGame(char const *pSrcFileName, HWFILE);
 
-BOOLEAN DoesUserHaveEnoughHardDriveSpace(void);
+BOOLEAN DoesUserHaveEnoughHardDriveSpace();
 
 void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ);
 

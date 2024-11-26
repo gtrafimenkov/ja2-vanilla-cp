@@ -112,8 +112,8 @@ enum KeyFrameEnums {
 ANITILE *CreateAnimationTile(const ANITILE_PARAMS *);
 
 void DeleteAniTile(ANITILE *pAniTile);
-void UpdateAniTiles(void);
-void DeleteAniTiles(void);
+void UpdateAniTiles();
+void DeleteAniTiles();
 
 void HideAniTile(ANITILE *pAniTile, BOOLEAN fHide);
 

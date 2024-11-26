@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-void CreateLoadingScreenProgressBar(void);
-void RemoveLoadingScreenProgressBar(void);
+void CreateLoadingScreenProgressBar();
+void RemoveLoadingScreenProgressBar();
 
 /* This creates a single progress bar given the coordinates without a panel
  * (containing a title and background).  A panel is automatically created if you

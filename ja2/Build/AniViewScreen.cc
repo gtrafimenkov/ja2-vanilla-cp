@@ -36,7 +36,7 @@ static UINT8 ubNumStates = 0;
 static UINT16 *pusStates = NULL;
 static INT8 ubCurLoadedState = 0;
 
-static void CycleAnimations(void) {
+static void CycleAnimations() {
   INT32 cnt;
 
   // FInd the next animation with start height the same...
@@ -52,9 +52,9 @@ static void CycleAnimations(void) {
   EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
 }
 
-static void BuildListFile(void);
+static void BuildListFile();
 
-ScreenID AniEditScreenHandle(void) {
+ScreenID AniEditScreenHandle() {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = TRUE;
   static UINT16 usOldState;
@@ -234,7 +234,7 @@ static UINT16 GetAnimStateFromName(const char *zName) {
   return (5555);
 }
 
-static void BuildListFile(void) {
+static void BuildListFile() {
   FILE *infoFile;
   char currFilename[128];
   int numEntries = 0;

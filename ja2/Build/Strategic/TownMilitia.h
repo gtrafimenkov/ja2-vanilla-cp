@@ -44,7 +44,7 @@ BOOLEAN SectorOursAndPeaceful(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void HandleInterfaceMessageForCostOfTrainingMilitia(SOLDIERTYPE *pSoldier);
 
 // call this when the sector changes...
-void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(void);
+void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap();
 
 // Is there a town with militia here or nearby?
 bool CanNearbyMilitiaScoutThisSector(INT16 x, INT16 y);
@@ -53,7 +53,7 @@ bool CanNearbyMilitiaScoutThisSector(INT16 x, INT16 y);
 BOOLEAN IsAreaFullOfMilitia(const INT16 sector_x, const INT16 sector_y, const INT8 sector_z);
 
 // now that town training is complete, handle the continue boxes
-void HandleContinueOfTownTraining(void);
+void HandleContinueOfTownTraining();
 
 // clear the list of training completed sectors
 void ClearSectorListForCompletedTrainingOfMilitia();

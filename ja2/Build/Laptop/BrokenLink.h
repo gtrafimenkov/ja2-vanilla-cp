@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-void RenderBrokenLink(void);
-void ExitBrokenLink(void);
-void EnterBrokenLink(void);
+void RenderBrokenLink();
+void ExitBrokenLink();
+void EnterBrokenLink();
 
 #endif

@@ -34,7 +34,7 @@ static UINT32 guiNumLightEffects = 0;
 #define FOR_EACH_LIGHTEFFECT(iter) BASE_FOR_EACH_LIGHTEFFECT(LIGHTEFFECT, iter)
 #define CFOR_EACH_LIGHTEFFECT(iter) BASE_FOR_EACH_LIGHTEFFECT(const LIGHTEFFECT, iter)
 
-static LIGHTEFFECT *GetFreeLightEffect(void) {
+static LIGHTEFFECT *GetFreeLightEffect() {
   for (LIGHTEFFECT *l = gLightEffectData; l != gLightEffectData + guiNumLightEffects; ++l) {
     if (!l->fAllocated) return l;
   }

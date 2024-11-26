@@ -2,10 +2,10 @@
 #define __IMP_MAINPAGE_H
 #include "SGP/Types.h"
 
-void RenderIMPMainPage(void);
-void ExitIMPMainPage(void);
-void EnterIMPMainPage(void);
-void HandleIMPMainPage(void);
+void RenderIMPMainPage();
+void ExitIMPMainPage();
+void EnterIMPMainPage();
+void HandleIMPMainPage();
 
 extern INT32 iCurrentProfileMode;
 

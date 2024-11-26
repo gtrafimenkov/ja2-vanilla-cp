@@ -8,13 +8,13 @@
 void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY);
 
 // is the autoresolve active?
-BOOLEAN IsAutoResolveActive(void);
+BOOLEAN IsAutoResolveActive();
 
 void EliminateAllEnemies(UINT8 ubSectorX, UINT8 ubSectorY);
 
-void ConvertTacticalBattleIntoStrategicAutoResolveBattle(void);
+void ConvertTacticalBattleIntoStrategicAutoResolveBattle();
 
-UINT8 GetAutoResolveSectorID(void);
+UINT8 GetAutoResolveSectorID();
 
 extern BOOLEAN gfTransferTacticalOppositionToAutoResolve;
 
@@ -28,6 +28,6 @@ UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJ
 BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(INT16 *psSectorX, INT16 *psSectorY,
                                                                INT16 *psSectorZ);
 
-ScreenID AutoResolveScreenHandle(void);
+ScreenID AutoResolveScreenHandle();
 
 #endif

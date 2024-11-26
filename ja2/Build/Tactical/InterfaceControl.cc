@@ -78,7 +78,7 @@ void HandleTacticalPanelSwitch() {
   }
 }
 
-static void RenderPanel(void) {
+static void RenderPanel() {
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
       RenderSMPanel(&fInterfacePanelDirty);
@@ -91,7 +91,7 @@ static void RenderPanel(void) {
   }
 }
 
-static void HandlePausedTacticalRender(void);
+static void HandlePausedTacticalRender();
 
 void RenderTacticalInterface() {
   // handle paused render of tactical
@@ -115,7 +115,7 @@ void RenderTacticalInterface() {
 
 /* handle paused render of tactical panel, if flag set, OR it in with tactical
  * render flags then reset */
-static void HandlePausedTacticalRender(void) {
+static void HandlePausedTacticalRender() {
   // for a one frame paused render of tactical
   if (gfPausedTacticalRenderFlags) {
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -254,7 +254,7 @@ static UINT32 const guiColors[] = {
     FROMRGB(146, 110, 0), FROMRGB(133, 96, 0),  FROMRGB(120, 83, 0),  FROMRGB(133, 96, 0),
     FROMRGB(146, 110, 0), FROMRGB(159, 123, 0), FROMRGB(172, 136, 0), FROMRGB(185, 150, 0)};
 
-static void RenderRubberBanding(void) {
+static void RenderRubberBanding() {
   static INT32 flash_colour = 0;
   static INT32 time_of_last_update = 0;
 
@@ -296,8 +296,8 @@ static void RenderRubberBanding(void) {
   }
 }
 
-static void EndViewportOverlays(void);
-static void StartViewportOverlays(void);
+static void EndViewportOverlays();
+static void StartViewportOverlays();
 
 void RenderTopmostTacticalInterface() {
   if (gfRerenderInterfaceFromHelpText) {
@@ -447,7 +447,7 @@ void RenderTopmostTacticalInterface() {
   DisplayBoxes(FRAME_BUFFER);
 }
 
-static void StartViewportOverlays(void) {
+static void StartViewportOverlays() {
   // Set Clipping Rect to be the viewscreen
   // Save old one
   gOldClippingRect = ClippingRect;
@@ -472,7 +472,7 @@ static void StartViewportOverlays(void) {
                     gsVIEWPORT_WINDOW_END_Y);
 }
 
-static void EndViewportOverlays(void) {
+static void EndViewportOverlays() {
   // Reset clipping rect
   ClippingRect = gOldClippingRect;
   gDirtyClipRect = gOldDirtyClippingRect;

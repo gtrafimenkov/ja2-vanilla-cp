@@ -14,4 +14,4 @@ void CenterScreenAtMapIndex(const INT32 iMapIndex) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void MarkWorldDirty(void) { SetRenderFlags(RENDER_FLAG_FULL); }
+void MarkWorldDirty() { SetRenderFlags(RENDER_FLAG_FULL); }

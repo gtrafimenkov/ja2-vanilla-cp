@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-void PrepareMilitiaForTactical(void);
-void ResetMilitia(void);
+void PrepareMilitiaForTactical();
+void ResetMilitia();
 void HandleMilitiaPromotions();
 
 extern BOOLEAN gfStrategicMilitiaChangesMade;

@@ -215,7 +215,7 @@ void DecideOnAssassin();
 
 extern BOOLEAN gubNumTerrorists;
 
-void MakeRemainingTerroristsTougher(void);
+void MakeRemainingTerroristsTougher();
 void MakeRemainingAssassinsTougher();
 SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *pSoldier);
 

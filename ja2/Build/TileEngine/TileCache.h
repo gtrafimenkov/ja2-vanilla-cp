@@ -17,8 +17,8 @@ struct TILE_CACHE_ELEMENT {
 
 extern TILE_CACHE_ELEMENT *gpTileCache;
 
-void InitTileCache(void);
-void DeleteTileCache(void);
+void InitTileCache();
+void DeleteTileCache();
 
 INT32 GetCachedTile(const char *cFilename);
 void RemoveCachedTile(INT32 cached_tile);

@@ -193,7 +193,7 @@ extern SoldierFindFlags guiUIFullTargetFlags;
 extern BOOLEAN gfUIConfirmExitArrows;
 extern INT16 gsJumpOverGridNo;
 
-ScreenID HandleTacticalUI(void);
+ScreenID HandleTacticalUI();
 ScreenID UIHandleEndTurn(UI_EVENT *);
 
 extern BOOLEAN gfUIShowCurIntTile;
@@ -213,10 +213,10 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent);
 void GetTBMouseButtonInput(UIEventKind *puiNewEvent);
 void GetTBMousePositionInput(UIEventKind *puiNewEvent);
 void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight);
-void HandleKeyInputOnEnemyTurn(void);
+void HandleKeyInputOnEnemyTurn();
 
-BOOLEAN SelectedMercCanAffordAttack(void);
-BOOLEAN SelectedMercCanAffordMove(void);
+BOOLEAN SelectedMercCanAffordAttack();
+BOOLEAN SelectedMercCanAffordMove();
 
 void ToggleHandCursorMode(UIEventKind *puiNewEvent);
 void ToggleTalkCursorMode(UIEventKind *puiNewEvent);
@@ -235,7 +235,7 @@ SOLDIERTYPE *GetValidTalkableNPCFromMouse(BOOLEAN fGive, BOOLEAN fAllowMercs,
 BOOLEAN IsValidTalkableNPC(const SOLDIERTYPE *s, BOOLEAN fGive, BOOLEAN fAllowMercs,
                            BOOLEAN fCheckCollapsed);
 
-BOOLEAN HandleTalkInit(void);
+BOOLEAN HandleTalkInit();
 
 BOOLEAN HandleCheckForExitArrowsInput(BOOLEAN fAdjustForConfirm);
 
@@ -253,19 +253,19 @@ BOOLEAN UIHandleOnMerc(BOOLEAN fMovementMode);
 
 void ChangeInterfaceLevel(INT16 sLevel);
 
-void EndRubberBanding(void);
-void ResetMultiSelection(void);
+void EndRubberBanding();
+void ResetMultiSelection();
 void EndMultiSoldierSelection(BOOLEAN fAcknowledge);
-void StopRubberBandedMercFromMoving(void);
+void StopRubberBandedMercFromMoving();
 
-BOOLEAN SelectedGuyInBusyAnimation(void);
+BOOLEAN SelectedGuyInBusyAnimation();
 
 void GotoLowerStance(SOLDIERTYPE *);
 void GotoHigherStance(SOLDIERTYPE *);
 
 BOOLEAN IsValidJumpLocation(const SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckForPath);
 
-void PopupAssignmentMenuInTactical(void);
+void PopupAssignmentMenuInTactical();
 
 extern GridNo gfUIOverItemPoolGridNo;
 extern INT16 gsCurrentActionPoints;
@@ -286,12 +286,12 @@ extern BOOLEAN gfUIShowExitWest;
 extern BOOLEAN gfUIShowExitNorth;
 extern BOOLEAN gfUIShowExitSouth;
 
-BOOLEAN ValidQuickExchangePosition(void);
+BOOLEAN ValidQuickExchangePosition();
 
-void CheckForDisabledRegionRemove(void);
+void CheckForDisabledRegionRemove();
 
-void HandleTacticalUILoseCursorFromOtherScreen(void);
+void HandleTacticalUILoseCursorFromOtherScreen();
 
-void SetInterfaceHeightLevel(void);
+void SetInterfaceHeightLevel();
 
 #endif

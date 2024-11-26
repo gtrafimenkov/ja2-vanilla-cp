@@ -188,7 +188,7 @@ void ExternSetFaceTalking(FACETYPE &, UINT32 sound_id);
 
 // Once this is done, this function must be called overy gameloop that you want
 // to handle the sprite:
-void HandleAutoFaces(void);
+void HandleAutoFaces();
 // This will handle all faces set to be auto mamaged by SetAutoFaceActive().
 // What is does is determines the best mouth and eye graphic to use. It then
 // renders only the rects nessessary into the display buffer.
@@ -206,11 +206,11 @@ void SetAutoFaceInActive(FACETYPE &);
 
 // To set all currently allocated faces to either active or incactive, call
 // these
-void SetAllAutoFacesInactive(void);
+void SetAllAutoFacesInactive();
 
 // FUnctions usually not needed for most uses, but give a finer control over
 // rendering if needed
-void HandleTalkingAutoFaces(void);
+void HandleTalkingAutoFaces();
 
 // Same Functions but taking soldier first to get profile
 void InitSoldierFace(SOLDIERTYPE &);

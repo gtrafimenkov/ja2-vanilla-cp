@@ -5,8 +5,8 @@
 #include "Strategic/StrategicMovement.h"
 
 void InitPreBattleInterface(GROUP *battle_group, bool persistent_pbi);
-void KillPreBattleInterface(void);
-void RenderPreBattleInterface(void);
+void KillPreBattleInterface();
+void RenderPreBattleInterface();
 
 extern BOOLEAN gfPreBattleInterfaceActive;
 extern bool gfDisplayPotentialRetreatPaths;
@@ -44,11 +44,11 @@ enum {
 extern BOOLEAN gfAutoAmbush;
 extern BOOLEAN gfHighPotentialForAmbush;
 
-void ActivatePreBattleAutoresolveAction(void);
-void ActivatePreBattleEnterSectorAction(void);
-void ActivatePreBattleRetreatAction(void);
+void ActivatePreBattleAutoresolveAction();
+void ActivatePreBattleEnterSectorAction();
+void ActivatePreBattleRetreatAction();
 
-void CalculateNonPersistantPBIInfo(void);
+void CalculateNonPersistantPBIInfo();
 
 // SAVE START
 
@@ -82,7 +82,7 @@ extern BOOLEAN gfCantRetreatInPBI;
 
 void WakeUpAllMercsInSectorUnderAttack();
 
-void RetreatAllInvolvedPlayerGroups(void);
+void RetreatAllInvolvedPlayerGroups();
 
 bool PlayerGroupInvolvedInThisCombat(GROUP const &);
 bool PlayerMercInvolvedInThisCombat(SOLDIERTYPE const &);
@@ -96,6 +96,6 @@ void LogBattleResults(UINT8 ubVictoryCode);
 extern BOOLEAN gfUsePersistantPBI;
 extern BOOLEAN gfRenderPBInterface;
 
-void HandlePreBattleInterfaceStates(void);
+void HandlePreBattleInterfaceStates();
 
 #endif

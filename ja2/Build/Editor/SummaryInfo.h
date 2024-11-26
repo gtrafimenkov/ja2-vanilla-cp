@@ -16,7 +16,7 @@ struct TEAMSUMMARY {
   UINT8 ubNumAnimals;
   UINT8 ubBadA, ubPoorA, ubAvgA, ubGoodA, ubGreatA;  // attributes
   UINT8 ubBadE, ubPoorE, ubAvgE, ubGoodE, ubGreatE;  // equipment
-};                                                   // 15 bytes
+};  // 15 bytes
 
 struct SUMMARYFILE {
   // start version 1
@@ -100,6 +100,6 @@ void WriteSectorSummaryUpdate(const char *filename, UINT8 ubLevel, SUMMARYFILE *
 
 extern BOOLEAN gfMustForceUpdateAllMaps;
 extern BOOLEAN gfMajorUpdate;
-void ApologizeOverrideAndForceUpdateEverything(void);
+void ApologizeOverrideAndForceUpdateEverything();
 
 #endif

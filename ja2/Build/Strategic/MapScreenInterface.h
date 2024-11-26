@@ -232,7 +232,7 @@ extern BOOLEAN fReBuildCharacterList;
 extern BOOLEAN fResetContractGlow;
 
 // init vehicle and characters list
-void InitalizeVehicleAndCharacterList(void);
+void InitalizeVehicleAndCharacterList();
 
 // set this entry to as selected
 void SetEntryInSelectedCharacterList(INT8 bEntry);
@@ -240,7 +240,7 @@ void SetEntryInSelectedCharacterList(INT8 bEntry);
 void ResetEntryForSelectedList(INT8 bEntry);
 
 // reset selected list
-void ResetSelectedListForMapScreen(void);
+void ResetSelectedListForMapScreen();
 
 // build a selected list from a to b, inclusive
 void BuildSelectedListFromAToB(INT8 bA, INT8 bB);
@@ -249,45 +249,45 @@ void BuildSelectedListFromAToB(INT8 bA, INT8 bB);
 BOOLEAN IsEntryInSelectedListSet(INT8 bEntry);
 
 // is there more than one person selected?
-BOOLEAN MultipleCharacterListEntriesSelected(void);
+BOOLEAN MultipleCharacterListEntriesSelected();
 
 // toggle this entry on or off
 void ToggleEntryInSelectedList(INT8 bEntry);
 
 void ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList();
 
-void RestoreBackgroundForAssignmentGlowRegionList(void);
-void RestoreBackgroundForDestinationGlowRegionList(void);
-void RestoreBackgroundForContractGlowRegionList(void);
-void RestoreBackgroundForSleepGlowRegionList(void);
+void RestoreBackgroundForAssignmentGlowRegionList();
+void RestoreBackgroundForDestinationGlowRegionList();
+void RestoreBackgroundForContractGlowRegionList();
+void RestoreBackgroundForSleepGlowRegionList();
 
 // play click when we are entering a glow region
-void PlayGlowRegionSound(void);
+void PlayGlowRegionSound();
 
 // is this character in the action of plotting a path?
 BOOLEAN CharacterIsGettingPathPlotted(INT16 sCharNumber);
 
 // disable team info panels
-void DisableTeamInfoPanels(void);
+void DisableTeamInfoPanels();
 
 // enable team info panels
-void EnableTeamInfoPanels(void);
+void EnableTeamInfoPanels();
 
 // do mapscreen message box
 void DoMapMessageBox(MessageBoxStyleID, wchar_t const *zString, ScreenID uiExitScreen,
                      MessageBoxFlags, MSGBOX_CALLBACK ReturnCallback);
 
 // hop up one leve,l int he map screen level interface
-void GoUpOneLevelInMap(void);
+void GoUpOneLevelInMap();
 
 // go down one level in the mapscreen map interface
-void GoDownOneLevelInMap(void);
+void GoDownOneLevelInMap();
 
 // jump to this level on the map
 void JumpToLevel(INT32 iLevel);
 
 // check to see if we need to update the screen
-void CheckAndUpdateBasedOnContractTimes(void);
+void CheckAndUpdateBasedOnContractTimes();
 
 // Display a red arrow by the name of each selected merc
 void HandleDisplayOfSelectedMercArrows();
@@ -310,43 +310,43 @@ void HandleEquipmentLeftInOmerta(UINT32 uiSlotIndex);
 void HandleEquipmentLeftInDrassen(UINT32 uiSlotIndex);
 
 // init/shutdown leave item lists
-void InitLeaveList(void);
-void ShutDownLeaveList(void);
+void InitLeaveList();
+void ShutDownLeaveList();
 
 // add item to leave equip index
 void AddItemToLeaveIndex(const OBJECTTYPE *o, UINT32 uiIndex);
 
 // handle a group about to arrive in a sector
-void HandleGroupAboutToArrive(void);
+void HandleGroupAboutToArrive();
 
 // create and destroy the status bars mouse region
-void CreateMapStatusBarsRegion(void);
-void RemoveMapStatusBarsRegion(void);
-void UpdateCharRegionHelpText(void);
+void CreateMapStatusBarsRegion();
+void RemoveMapStatusBarsRegion();
+void UpdateCharRegionHelpText();
 
 // find this soldier in mapscreen character list and set as contract
 void FindAndSetThisContractSoldier(SOLDIERTYPE *pSoldier);
 
 // lose the cursor, re-render
-void HandleMAPUILoseCursorFromOtherScreen(void);
+void HandleMAPUILoseCursorFromOtherScreen();
 
-void RenderMapRegionBackground(void);
+void RenderMapRegionBackground();
 
 // update mapscreen assignment positions
-void UpdateMapScreenAssignmentPositions(void);
+void UpdateMapScreenAssignmentPositions();
 
 // get the umber of valid mercs in the mapscreen character list
-INT32 GetNumberOfPeopleInCharacterList(void);
+INT32 GetNumberOfPeopleInCharacterList();
 
 // the next and previous people in the mapscreen
-void GoToPrevCharacterInList(void);
-void GoToNextCharacterInList(void);
+void GoToPrevCharacterInList();
+void GoToNextCharacterInList();
 
 // this does the whole miner giving player info speil
 void HandleMinerEvent(UINT8 bMinerNumber, INT16 sQuoteNumber, BOOLEAN fForceMapscreen);
 
 void TurnOnSectorLocator(UINT8 ubProfileID);
-void TurnOffSectorLocator(void);
+void TurnOffSectorLocator();
 
 extern INT16 gsSectorLocatorX;
 extern INT16 gsSectorLocatorY;
@@ -360,13 +360,13 @@ void HandleBlitOfSectorLocatorIcon(INT16 sSectorX, INT16 sSectorY, INT16 sSector
 // the tactical version
 
 // handle the actual showingof the list
-void HandleShowingOfTacticalInterfaceFastHelpText(void);
+void HandleShowingOfTacticalInterfaceFastHelpText();
 
 // start showing the list
-void StartShowingInterfaceFastHelpText(void);
+void StartShowingInterfaceFastHelpText();
 
 // is the list active?
-BOOLEAN IsTheInterfaceFastHelpTextActive(void);
+BOOLEAN IsTheInterfaceFastHelpTextActive();
 
 /* This will setup a fast help text region that is unrelated to mouse regions.
  * The user is to pass in the x,y position of the box, the width to wrap the
@@ -379,19 +379,19 @@ void ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(INT16 sSectorX, I
 // the sector move box
 void CreateDestroyMovementBox(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
 void SetUpMovingListsForSector(INT16 x, INT16 y, INT16 z);
-void ReBuildMoveBox(void);
+void ReBuildMoveBox();
 BOOLEAN IsCharacterSelectedForAssignment(INT16 sCharNumber);
 BOOLEAN IsCharacterSelectedForSleep(INT16 sCharNumber);
 
 // the update box
-void CreateDestroyTheUpdateBox(void);
-void DisplaySoldierUpdateBox(void);
+void CreateDestroyTheUpdateBox();
+void DisplaySoldierUpdateBox();
 
 /// set the town of Tixa as found by the player
-void SetTixaAsFound(void);
+void SetTixaAsFound();
 
 // set the town of Orta as found by the player
-void SetOrtaAsFound(void);
+void SetOrtaAsFound();
 
 // set this SAM site as being found by the player
 void SetSAMSiteAsFound(UINT8 uiSamIndex);
@@ -400,15 +400,15 @@ void SetSAMSiteAsFound(UINT8 uiSamIndex);
 void InitTimersForMoveMenuMouseRegions();
 
 // the screen mask
-void CreateScreenMaskForMoveBox(void);
-void RemoveScreenMaskForMoveBox(void);
+void CreateScreenMaskForMoveBox();
+void RemoveScreenMaskForMoveBox();
 
 // help text to show user merc has insurance
-void UpdateHelpTextForMapScreenMercIcons(void);
+void UpdateHelpTextForMapScreenMercIcons();
 void CreateDestroyInsuranceMouseRegionForMercs(BOOLEAN fCreate);
 
 // stuff to deal with player just starting the game
-BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void);
+BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo();
 
 // handle sector being taken over uncontested
 void NotifyPlayerWhenEnemyTakesControlOfImportantSector(INT16 x, INT16 y, INT8 z);
@@ -417,12 +417,12 @@ void NotifyPlayerWhenEnemyTakesControlOfImportantSector(INT16 x, INT16 y, INT8 z
 void NotifyPlayerOfInvasionByEnemyForces(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ,
                                          MSGBOX_CALLBACK ReturnCallback);
 
-void ShutDownUserDefineHelpTextRegions(void);
+void ShutDownUserDefineHelpTextRegions();
 
 // add special events
 void AddSoldierToWaitingListQueue(SOLDIERTYPE &);
 void AddReasonToWaitingListQueue(UpdateBoxReason);
-void AddDisplayBoxToWaitingQueue(void);
+void AddDisplayBoxToWaitingQueue();
 
 enum MoveError {
   ME_CUSTOM = -99,
@@ -445,13 +445,13 @@ enum MoveError {
 MoveError CanEntireMovementGroupMercIsInMove(SOLDIERTYPE &);
 void ReportMapScreenMovementError(INT8 bErrorNumber);
 
-void HandleRebuildingOfMapScreenCharacterList(void);
+void HandleRebuildingOfMapScreenCharacterList();
 
-void RequestToggleTimeCompression(void);
-void RequestIncreaseInTimeCompression(void);
-void RequestDecreaseInTimeCompression(void);
+void RequestToggleTimeCompression();
+void RequestIncreaseInTimeCompression();
+void RequestDecreaseInTimeCompression();
 
-void SelectUnselectedMercsWhoMustMoveWithThisGuy(void);
+void SelectUnselectedMercsWhoMustMoveWithThisGuy();
 
 void LoadLeaveItemList(HWFILE);
 void SaveLeaveItemList(HWFILE);

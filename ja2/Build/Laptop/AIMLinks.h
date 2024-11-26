@@ -2,7 +2,7 @@
 #define __AIMLINKS_H
 
 void EnterAimLinks();
-void ExitAimLinks(void);
-void RenderAimLinks(void);
+void ExitAimLinks();
+void RenderAimLinks();
 
 #endif

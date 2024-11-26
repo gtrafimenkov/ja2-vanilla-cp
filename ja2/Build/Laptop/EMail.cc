@@ -215,10 +215,10 @@ enum {
 BOOLEAN fReDrawNewMailFlag = FALSE;
 static INT32 iTotalHeight = 0;
 
-static void CreateNextPreviousEmailPageButtons(void);
+static void CreateNextPreviousEmailPageButtons();
 static void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void InitializeMouseRegions(void) {
+static void InitializeMouseRegions() {
   // init mouseregions
   for (INT32 i = 0; i < MAX_MESSAGES_PAGE; ++i) {
     const UINT16 x = MIDDLE_X;
@@ -255,7 +255,7 @@ void GameInitEmail() {
   giMessagePage = 0;
 }
 
-static void CreateMailScreenButtons(void);
+static void CreateMailScreenButtons();
 
 void EnterEmail() {
   // load graphics
@@ -294,8 +294,8 @@ void EnterEmail() {
 }
 
 static void AddDeleteRegionsToMessageRegion(INT32 iViewerY);
-static void ClearOutEmailMessageRecordsList(void);
-static void DestroyMailScreenButtons(void);
+static void ClearOutEmailMessageRecordsList();
+static void DestroyMailScreenButtons();
 
 void ExitEmail() {
   LaptopSaveInfo.iCurrentEmailPage = iCurrentPage;
@@ -334,14 +334,14 @@ void ExitEmail() {
 }
 
 static BOOLEAN DisplayDeleteNotice(Email *pMail);
-static void DisplayEmailList(void);
+static void DisplayEmailList();
 static INT32 DisplayEmailMessage(Email *pMail);
-static void HandleEmailViewerButtonStates(void);
-static void OpenMostRecentUnreadEmail(void);
-static void UpDateMessageRecordList(void);
-static void UpdateStatusOfNextPreviousButtons(void);
+static void HandleEmailViewerButtonStates();
+static void OpenMostRecentUnreadEmail();
+static void UpDateMessageRecordList();
+static void UpdateStatusOfNextPreviousButtons();
 
-void HandleEmail(void) {
+void HandleEmail() {
   INT32 iViewerY = 0;
   static BOOLEAN fEmailListBeenDrawAlready = FALSE;
 
@@ -401,12 +401,12 @@ void HandleEmail(void) {
   }
 }
 
-static void DisplayTextOnTitleBar(void);
-static void DisplayWhichPageOfEmailProgramIsDisplayed(void);
-static void DrawLineDividers(void);
-static void ReDisplayBoxes(void);
+static void DisplayTextOnTitleBar();
+static void DisplayWhichPageOfEmailProgramIsDisplayed();
+static void DrawLineDividers();
+static void ReDisplayBoxes();
 
-void RenderEmail(void) {
+void RenderEmail() {
   BltVideoObject(FRAME_BUFFER, guiEmailBackground, 0, LAPTOP_SCREEN_UL_X,
                  EMAIL_LIST_WINDOW_Y + LAPTOP_SCREEN_UL_Y);
   BltVideoObject(FRAME_BUFFER, guiEmailTitle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2);
@@ -514,7 +514,7 @@ static void RemoveEmailMessage(Email *Mail) {
   MemFree(Mail);
 }
 
-static void AddEmailPage(void) {
+static void AddEmailPage() {
   Page *const p = MALLOC(Page);
   FOR_EACH(Email *, i, p->Mail) *i = 0;
   p->Next = NULL;
@@ -601,7 +601,7 @@ static void SortMessages(EMailSortCriteria Criterium) {
   fReDrawScreenFlag = TRUE;
 }
 
-static void ClearPages(void) {
+static void ClearPages() {
   // run through list of message pages and set to -1
   for (Page *i = pPageList; i;) {
     Page *const next = i->Next;
@@ -613,7 +613,7 @@ static void ClearPages(void) {
   iLastPage = -1;
 }
 
-static void PlaceMessagesinPages(void) {
+static void PlaceMessagesinPages() {
   Email *pEmail = pEmailList;
   // run through the list of messages and add to pages
   ClearPages();
@@ -645,7 +645,7 @@ static void DrawEmailSummary(INT32 y, const Email *e) {
   mprintf(DATE_X, y + 4, L"%ls %d", pDayStrings, e->iDate / (24 * 60));
 }
 
-static Page *GetCurrentPage(void) {
+static Page *GetCurrentPage() {
   Page *i = pPageList;
   if (i == NULL) return i;
 
@@ -654,7 +654,7 @@ static Page *GetCurrentPage(void) {
   return i;
 }
 
-static void DisplayEmailList(void) {
+static void DisplayEmailList() {
   // look at current page, and display
 
   // if current page ever ends up negative, reset to 0
@@ -1035,7 +1035,7 @@ void CreateDestroyNewMailButton() {
   }
 }
 
-void DisplayNewMailBox(void) {
+void DisplayNewMailBox() {
   // will display a new mail box whenever new mail has arrived
 
   // check if we are video conferencing, if so, do nothing
@@ -1067,7 +1067,7 @@ void DisplayNewMailBox(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-void ReDrawNewMailBox(void) {  // check to see if the new mail region needs to be redrawn
+void ReDrawNewMailBox() {  // check to see if the new mail region needs to be redrawn
   if (!fReDrawNewMailFlag) return;
   fReDrawNewMailFlag = FALSE;
   if (!fNewMailFlag) return;
@@ -1105,7 +1105,7 @@ static void BtnDeleteNoback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DeleteEmail(void);
+static void DeleteEmail();
 
 static void BtnDeleteYesback(GUI_BUTTON *btn, INT32 reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -1191,7 +1191,7 @@ static BOOLEAN DisplayDeleteNotice(Email *pMail) {
   return (TRUE);
 }
 
-static void DeleteEmail(void) {
+static void DeleteEmail() {
   // error check, invalid mail, or not time to delete mail
   if (MailToDelete == NULL) return;
   // remove the message
@@ -1256,13 +1256,13 @@ static void ReadCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-static void DisplayTextOnTitleBar(void) {
+static void DisplayTextOnTitleBar() {
   // draw email screen title text
   SetFontAttributes(EMAIL_TITLE_FONT, FONT_WHITE);
   MPrint(EMAIL_TITLE_X, EMAIL_TITLE_Y, pEmailTitleText);
 }
 
-static void DestroyMailScreenButtons(void) {
+static void DestroyMailScreenButtons() {
   // this function will destory the buttons used in the email screen
 
   // the sort email buttons
@@ -1282,7 +1282,7 @@ static void MakeButton(UINT idx, INT16 x, GUI_CALLBACK click, const wchar_t *tex
   }
 }
 
-static void CreateMailScreenButtons(void) {
+static void CreateMailScreenButtons() {
   // create sort buttons, right now - not finished
   MakeButton(0, ENVELOPE_BOX_X, ReadCallback, NULL);
   MakeButton(1, FROM_BOX_X, FromCallback, pEmailHeaders[FROM_HEADER]);
@@ -1339,7 +1339,7 @@ static void DrawEmailMessageDisplayTitleText(INT32 iViewerY) {
   MPrint(VIEWER_X + 30, VIEWER_Y + 8 + iViewerY, pEmailTitleText);
 }
 
-static void DrawLineDividers(void) {
+static void DrawLineDividers() {
   // this function draws divider lines between lines of text
   INT32 iCounter = 0;
 
@@ -1349,7 +1349,7 @@ static void DrawLineDividers(void) {
   }
 }
 
-static void ClearOutEmailMessageRecordsList(void) {
+static void ClearOutEmailMessageRecordsList() {
   Record *pTempRecord;
   INT32 iCounter = 0;
 
@@ -1385,7 +1385,7 @@ static void AddEmailRecordToList(const wchar_t *const text) {
   *anchor = e;
 }
 
-static void UpDateMessageRecordList(void) {
+static void UpDateMessageRecordList() {
   // simply checks to see if old and new message ids are the same, if so, do
   // nothing otherwise clear list
 
@@ -1410,7 +1410,7 @@ static void HandleAnySpecialEmailMessageEvents(INT32 iMessageId) {
   }
 }
 
-static void ReDisplayBoxes(void) {
+static void ReDisplayBoxes() {
   // the email message itself
   if (fDisplayMessageFlag) {
     // this simply redraws message with button manipulation
@@ -1425,7 +1425,7 @@ static void ReDisplayBoxes(void) {
   }
 }
 
-static void HandleIMPCharProfileResultsMessage(void);
+static void HandleIMPCharProfileResultsMessage();
 static void ModifyInsuranceEmails(UINT16 usMessageId, Email *pMail, UINT8 ubNumberOfRecords);
 
 static void HandleMailSpecialMessages(UINT16 usMessageId, Email *pMail) {
@@ -1622,7 +1622,7 @@ static void AddSkillTraitText(MERCPROFILESTRUCT const &imp, SkillTrait const Ski
   if (HasSkillTrait(imp, Skill)) AddIMPResultText(Offset);
 }
 
-static void HandleIMPCharProfileResultsMessage(void) {
+static void HandleIMPCharProfileResultsMessage() {
   // special case, IMP profile return
   INT32 iOffSet;
   INT32 iEndOfSection;
@@ -1957,7 +1957,7 @@ static void HandleIMPCharProfileResultsMessage(void) {
   PreviousMail = CurrentMail;
 }
 
-static void HandleEmailViewerButtonStates(void) {
+static void HandleEmailViewerButtonStates() {
   // handle state of email viewer buttons
 
   // leave, if not displaying message
@@ -1973,20 +1973,20 @@ static void HandleEmailViewerButtonStates(void) {
   EnableButton(giMailMessageButtons[1], pEmailPageInfo[giMessagePage + 1].pFirstRecord);
 }
 
-static void CreateNextPreviousEmailPageButtons(void) {
+static void CreateNextPreviousEmailPageButtons() {
   // this function will create the buttons to advance and go back email pages
   giMailPageButtons[0] = MakeButtonNewMail(1, NEXT_PAGE_X, NEXT_PAGE_Y, NextRegionButtonCallback);
   giMailPageButtons[1] =
       MakeButtonNewMail(0, PREVIOUS_PAGE_X, NEXT_PAGE_Y, PreviousRegionButtonCallback);
 }
 
-static void UpdateStatusOfNextPreviousButtons(void) {
+static void UpdateStatusOfNextPreviousButtons() {
   // set the states of the page advance buttons
   EnableButton(giMailPageButtons[0], iCurrentPage < iLastPage);
   EnableButton(giMailPageButtons[1], iCurrentPage > 0);
 }
 
-static void DisplayWhichPageOfEmailProgramIsDisplayed(void) {
+static void DisplayWhichPageOfEmailProgramIsDisplayed() {
   // will draw the number of the email program we are viewing right now
   SetFontAttributes(MESSAGE_FONT, FONT_BLACK, NO_SHADOW);
 
@@ -2006,7 +2006,7 @@ static void DisplayWhichPageOfEmailProgramIsDisplayed(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void OpenMostRecentUnreadEmail(void) {
+static void OpenMostRecentUnreadEmail() {
   // will open the most recent email the player has recieved and not read
   Email *MostRecentMail = NULL;
   Email *pB = pEmailList;
@@ -2045,7 +2045,7 @@ static void DisplayNumberOfPagesToThisEmail(INT32 const iViewerY) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static INT32 GetNumberOfPagesToEmail(void) {
+static INT32 GetNumberOfPagesToEmail() {
   Record *pTempRecord;
   INT32 iNumberOfPagesToEmail = 0;
 

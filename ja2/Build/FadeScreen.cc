@@ -106,8 +106,8 @@ BOOLEAN HandleFadeInCallback() {
   return (FALSE);
 }
 
-static void FadeFrameBufferRealFade(void);
-static void FadeInFrameBufferRealFade(void);
+static void FadeFrameBufferRealFade();
+static void FadeInFrameBufferRealFade();
 
 static void BeginFade(ScreenID const uiExitScreen, INT8 const bFadeValue, INT8 const bType,
                       UINT32 const uiDelay) {
@@ -200,7 +200,7 @@ ScreenID FadeScreenHandle() {
   return (FADE_SCREEN);
 }
 
-static void FadeFrameBufferRealFade(void) {
+static void FadeFrameBufferRealFade() {
   if (gsFadeRealCount != gsFadeCount) {
     FRAME_BUFFER->ShadowRectUsingLowPercentTable(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -208,7 +208,7 @@ static void FadeFrameBufferRealFade(void) {
   }
 }
 
-static void FadeInFrameBufferRealFade(void) {
+static void FadeInFrameBufferRealFade() {
   INT32 cnt;
 
   if (gsFadeRealCount != gsFadeCount) {

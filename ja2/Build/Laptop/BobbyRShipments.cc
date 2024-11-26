@@ -88,7 +88,7 @@ static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text
   return btn;
 }
 
-static void CreatePreviousShipmentsMouseRegions(void);
+static void CreatePreviousShipmentsMouseRegions();
 
 void EnterBobbyRShipments() {
   InitBobbyRWoodBackground();
@@ -121,7 +121,7 @@ void EnterBobbyRShipments() {
   CreatePreviousShipmentsMouseRegions();
 }
 
-static void RemovePreviousShipmentsMouseRegions(void);
+static void RemovePreviousShipmentsMouseRegions();
 
 void ExitBobbyRShipments() {
   DeleteBobbyRWoodBackground();
@@ -145,9 +145,9 @@ void HandleBobbyRShipments() {
   }
 }
 
-static void DisplayPreviousShipments(void);
-static void DisplayShipmentGrid(void);
-static void DisplayShipmentTitles(void);
+static void DisplayPreviousShipments();
+static void DisplayShipmentGrid();
+static void DisplayShipmentTitles();
 
 void RenderBobbyRShipments() {
   //  HVOBJECT hPixHandle;
@@ -205,7 +205,7 @@ static void BtnBobbyRShipmentHomeCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DisplayShipmentGrid(void) {
+static void DisplayShipmentGrid() {
   // Shipment Order Grid
   BltVideoObject(FRAME_BUFFER, guiBobbyRShipmentGrid, 0, BOBBYR_SHIPMENT_DELIVERY_GRID_X,
                  BOBBYR_SHIPMENT_DELIVERY_GRID_Y);
@@ -215,7 +215,7 @@ static void DisplayShipmentGrid(void) {
                  BOBBYR_SHIPMENT_ORDER_GRID_Y);
 }
 
-static void DisplayShipmentTitles(void) {
+static void DisplayShipmentTitles() {
   // output the order #
   DrawTextToScreen(gzBobbyRShipmentText[BOBBYR_SHIPMENT__ORDERED_ON],
                    BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_X, BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_Y,
@@ -229,9 +229,9 @@ static void DisplayShipmentTitles(void) {
                    FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
 }
 
-static INT32 CountNumberValidShipmentForTheShipmentsPage(void);
+static INT32 CountNumberValidShipmentForTheShipmentsPage();
 
-static void DisplayPreviousShipments(void) {
+static void DisplayPreviousShipments() {
   UINT32 uiCnt;
   wchar_t zText[512];
   UINT16 usPosY = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
@@ -281,7 +281,7 @@ static void DisplayPreviousShipments(void) {
 
 static void SelectPreviousShipmentsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreatePreviousShipmentsMouseRegions(void) {
+static void CreatePreviousShipmentsMouseRegions() {
   UINT32 uiCnt;
   UINT16 usPosY = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
   UINT16 usWidth = BOBBYR_SHIPMENT_DELIVERY_GRID_WIDTH;
@@ -299,7 +299,7 @@ static void CreatePreviousShipmentsMouseRegions(void) {
   }
 }
 
-static void RemovePreviousShipmentsMouseRegions(void) {
+static void RemovePreviousShipmentsMouseRegions() {
   UINT32 uiCnt;
   UINT32 uiNumItems = CountNumberOfBobbyPurchasesThatAreInTransit();
 
@@ -334,7 +334,7 @@ static void SelectPreviousShipmentsRegionCallBack(MOUSE_REGION *pRegion, INT32 i
   }
 }
 
-static INT32 CountNumberValidShipmentForTheShipmentsPage(void) {
+static INT32 CountNumberValidShipmentForTheShipmentsPage() {
   if (giNumberOfNewBobbyRShipment > BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS)
     return (BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS);
   else

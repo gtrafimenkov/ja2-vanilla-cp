@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPPersonalityFinish(void);
-void RenderIMPPersonalityFinish(void);
-void ExitIMPPersonalityFinish(void);
-void HandleIMPPersonalityFinish(void);
+void EnterIMPPersonalityFinish();
+void RenderIMPPersonalityFinish();
+void ExitIMPPersonalityFinish();
+void HandleIMPPersonalityFinish();
 
 extern UINT8 bPersonalityEndState;
 

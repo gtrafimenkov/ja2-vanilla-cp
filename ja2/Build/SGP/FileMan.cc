@@ -445,7 +445,7 @@ FILE *GetRealFileHandleFromFileManFileHandle(const HWFILE f) {
 
 static UINT32 GetFreeSpaceOnHardDrive(const char *pzDriveLetter);
 
-UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(void) {
+UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
 #if 1  // XXX TODO
   FIXME
   return 1024 * 1024 * 1024;  // XXX TODO return an arbitrary number for now

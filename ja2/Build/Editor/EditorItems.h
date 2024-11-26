@@ -26,25 +26,25 @@ struct EditorItemsInfo {
 
 extern EditorItemsInfo eInfo;
 
-void EntryInitEditorItemsInfo(void);
+void EntryInitEditorItemsInfo();
 void InitEditorItemsInfo(ToolbarMode uiItemType);
-void RenderEditorItemsInfo(void);
-void ClearEditorItemsInfo(void);
-void DisplayItemStatistics(void);
-void DetermineItemsScrolling(void);
+void RenderEditorItemsInfo();
+void ClearEditorItemsInfo();
+void DisplayItemStatistics();
+void DetermineItemsScrolling();
 
 // User actions
 void AddSelectedItemToWorld(INT16 sGridNo);
 void HandleRightClickOnItem(INT16 sGridNo);
-void DeleteSelectedItem(void);
-void ShowSelectedItem(void);
-void HideSelectedItem(void);
-void SelectNextItemPool(void);
-void SelectNextItemInPool(void);
-void SelectPrevItemInPool(void);
+void DeleteSelectedItem();
+void ShowSelectedItem();
+void HideSelectedItem();
+void SelectNextItemPool();
+void SelectNextItemInPool();
+void SelectPrevItemInPool();
 
-void KillItemPoolList(void);
-void BuildItemPoolList(void);
+void KillItemPoolList();
+void BuildItemPoolList();
 
 void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent);
 

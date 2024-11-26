@@ -65,7 +65,7 @@
 
 UINT8 gubScreenCount = 0;
 
-static void InitNPCs(void) {
+static void InitNPCs() {
   {  // add the pilot at a random location!
     MERCPROFILESTRUCT &p = GetProfile(SKYRIDER);
     switch (Random(4)) {
@@ -253,7 +253,7 @@ void InitBloodCatSectors() {
   }
 }
 
-void InitStrategicLayer(void) {
+void InitStrategicLayer() {
   // Clear starategic layer!
   SetupNewStrategicGame();
   InitQuestEngine();
@@ -379,7 +379,7 @@ BOOLEAN AnyMercsHired() {
 static BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier);
 static void QuickSetupOfMercProfileItems(UINT32 uiCount, UINT8 ubProfileIndex);
 
-static void QuickStartGame(void) {
+static void QuickStartGame() {
   INT32 cnt;
   UINT16 usVal;
   UINT8 ub1 = 0, ub2 = 0;

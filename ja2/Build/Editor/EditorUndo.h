@@ -6,13 +6,13 @@
 BOOLEAN AddToUndoList(INT32 iMapIndex);
 void AddLightToUndoList(INT32 iMapIndex, INT32 iLightRadius);
 
-void RemoveAllFromUndoList(void);
-BOOLEAN ExecuteUndoList(void);
+void RemoveAllFromUndoList();
+BOOLEAN ExecuteUndoList();
 
-void EnableUndo(void);
-void DisableUndo(void);
+void EnableUndo();
+void DisableUndo();
 
-void DetermineUndoState(void);
+void DetermineUndoState();
 
 // Undo command flags
 #define MAX_UNDO_COMMAND_LENGTH 10

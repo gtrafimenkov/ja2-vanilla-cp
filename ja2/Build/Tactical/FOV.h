@@ -5,8 +5,8 @@
 
 void RevealRoofsAndItems(SOLDIERTYPE *pSoldier, BOOLEAN fShowLocators);
 
-void ClearSlantRoofs(void);
+void ClearSlantRoofs();
 void AddSlantRoofFOVSlot(INT16 sGridNo);
-void ExamineSlantRoofFOVSlots(void);
+void ExamineSlantRoofFOVSlots();
 
 #endif

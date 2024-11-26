@@ -115,7 +115,7 @@ UINT8 gubHelicopterHitsTaken = 0;
 BOOLEAN gfSkyriderSaidCongratsOnTakingSAM = FALSE;
 UINT8 gubPlayerProgressSkyriderLastCommentedOn = 0;
 
-void InitializeHelicopter(void) {
+void InitializeHelicopter() {
   // must be called whenever a new game starts up!
   iHelicopterVehicleId = -1;
 
@@ -175,15 +175,15 @@ BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier) {
   return (TakeSoldierOutOfVehicle(pSoldier));
 }
 
-static BOOLEAN CheckForArrivalAtRefuelPoint(void);
+static BOOLEAN CheckForArrivalAtRefuelPoint();
 static BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies);
-static BOOLEAN EndOfHelicoptersPath(void);
+static BOOLEAN EndOfHelicoptersPath();
 static INT32 GetCostOfPassageForHelicopter(INT16 sX, INT16 sY);
 static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSectorY);
 static void HeliCharacterDialogue(UINT16 usQuoteNum);
-static void PaySkyriderBill(void);
-static void ReFuelHelicopter(void);
-static void StartHoverTime(void);
+static void PaySkyriderBill();
+static void ReFuelHelicopter();
+static void StartHoverTime();
 
 BOOLEAN HandleHeliEnteringSector(INT16 sX, INT16 sY) {
   UINT8 ubNumEnemies;
@@ -321,9 +321,9 @@ static INT32 DistanceToNearestRefuelPoint(VEHICLETYPE const &heli) {
   return distance;
 }
 
-static void LandHelicopter(void);
+static void LandHelicopter();
 
-static void ReFuelHelicopter(void) {
+static void ReFuelHelicopter() {
   // land, pay the man, and refuel
   LandHelicopter();
 }
@@ -345,7 +345,7 @@ static INT32 GetCostOfPassageForHelicopter(INT16 sX, INT16 sY) {
 }
 
 // helicopter shot down, kill all on board
-static void SkyriderDestroyed(void) {
+static void SkyriderDestroyed() {
   // remove any arrival events for the helicopter's group
   VEHICLETYPE &v = GetHelicopter();
   DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, v.ubMovementGroup);
@@ -367,7 +367,7 @@ static void SkyriderDestroyed(void) {
   iHelicopterVehicleId = -1;
 }
 
-BOOLEAN CanHelicopterFly(void) {
+BOOLEAN CanHelicopterFly() {
   // check if heli is available for flight?
 
   // is the heli available
@@ -385,7 +385,7 @@ BOOLEAN CanHelicopterFly(void) {
   return (TRUE);
 }
 
-BOOLEAN IsHelicopterPilotAvailable(void) {
+BOOLEAN IsHelicopterPilotAvailable() {
   // what is state of skyrider?
   if (iHelicopterVehicleId == -1) return FALSE;
 
@@ -403,7 +403,7 @@ BOOLEAN IsHelicopterPilotAvailable(void) {
 }
 
 // land the helicopter here
-static void LandHelicopter(void) {
+static void LandHelicopter() {
   // set the helictoper down, call arrive callback for this mvt group
   fHelicopterIsAirBorne = FALSE;
 
@@ -427,7 +427,7 @@ static void LandHelicopter(void) {
   }
 }
 
-void TakeOffHelicopter(void) {
+void TakeOffHelicopter() {
   // heli in the air
   fHelicopterIsAirBorne = TRUE;
 
@@ -439,7 +439,7 @@ void TakeOffHelicopter(void) {
 }
 
 // start the heli hover time
-static void StartHoverTime(void) {
+static void StartHoverTime() {
   // start hover in this sector
   fHoveringHelicopter = TRUE;
 
@@ -452,7 +452,7 @@ static void StartHoverTime(void) {
                     0);
 }
 
-void HandleHeliHoverLong(void) {
+void HandleHeliHoverLong() {
   // post message about hovering too long
   if (fHoveringHelicopter) {
     // proper event, post next one
@@ -470,9 +470,9 @@ void HandleHeliHoverLong(void) {
   }
 }
 
-static void MakeHeliReturnToBase(void);
+static void MakeHeliReturnToBase();
 
-void HandleHeliHoverTooLong(void) {
+void HandleHeliHoverTooLong() {
   // reset hover time
   uiStartHoverTime = 0;
 
@@ -517,7 +517,7 @@ static BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies) {
 
 // if the heli is on the move, what is the distance it will move..the length of
 // the merc path, less the first node
-INT32 DistanceOfIntendedHelicopterPath(void) {
+INT32 DistanceOfIntendedHelicopterPath() {
   INT32 iLength = 0;
 
   if (!CanHelicopterFly()) {
@@ -548,7 +548,7 @@ INT32 DistanceOfIntendedHelicopterPath(void) {
   return (iLength);
 }
 
-static BOOLEAN CheckForArrivalAtRefuelPoint(void) {
+static BOOLEAN CheckForArrivalAtRefuelPoint() {
   VEHICLETYPE const &v = GetHelicopter();
   // check if this is our final destination
   if (GetLengthOfPath(v.pMercPath) > 0) return FALSE;
@@ -563,7 +563,7 @@ static BOOLEAN CheckForArrivalAtRefuelPoint(void) {
   return (TRUE);
 }
 
-void SetUpHelicopterForMovement(void) {
+void SetUpHelicopterForMovement() {
   // check if helicopter vehicle has a mvt group, if not, assign one in this
   // sector
   VEHICLETYPE &v = GetHelicopter();
@@ -621,7 +621,7 @@ static void HeliCharacterDialogue(UINT16 const usQuoteNum) {
   SkyriderDialogue(usQuoteNum);
 }
 
-INT32 GetNumberOfPassengersInHelicopter(void) { return GetNumberInVehicle(GetHelicopter()); }
+INT32 GetNumberOfPassengersInHelicopter() { return GetNumberInVehicle(GetHelicopter()); }
 
 bool IsRefuelSiteInSector(INT16 const sector) {
   FOR_EACH(RefuelSite const, i, g_refuel_site) {
@@ -630,7 +630,7 @@ bool IsRefuelSiteInSector(INT16 const sector) {
   return false;
 }
 
-void UpdateRefuelSiteAvailability(void) {
+void UpdateRefuelSiteAvailability() {
   INT32 iCounter = 0;
 
   // Generally, only Drassen is initially available for refuelling
@@ -666,7 +666,7 @@ void SetUpHelicopterForPlayer(INT16 sX, INT16 sY) {
   }
 }
 
-void MoveAllInHelicopterToFootMovementGroup(void) {
+void MoveAllInHelicopterToFootMovementGroup() {
   // take everyone out of heli and add to movement group
   INT8 bNewSquad;
   BOOLEAN fSuccess;
@@ -849,7 +849,7 @@ static void HandleSkyRiderMonologueAboutOtherSAMSites(UINT32 const uiSpecialCode
   }
 }
 
-void CheckAndHandleSkyriderMonologues(void) {
+void CheckAndHandleSkyriderMonologues() {
   // wait at least this many days between Skyrider monologues
   if ((GetWorldTotalMin() - guiTimeOfLastSkyriderMonologue) >=
       (MIN_DAYS_BETWEEN_SKYRIDER_MONOLOGUES * 24 * 60)) {
@@ -885,7 +885,7 @@ static void HandleBlitOfSectorLocatorIcon(UINT8 const sector, UINT8 const locato
   HandleBlitOfSectorLocatorIcon(SECTORX(sector), SECTORY(sector), 0, locator);
 }
 
-void HandleAnimationOfSectors(void) {
+void HandleAnimationOfSectors() {
   BOOLEAN fSkipSpeakersLocator = FALSE;
   // these don't need to be saved, they merely turn off the highlights after
   // they stop flashing
@@ -959,7 +959,7 @@ void HandleAnimationOfSectors(void) {
 static void AddHelicopterToMaps(bool add, RefuelSite const &);
 static bool IsHelicopterOnGroundAtRefuelingSite(RefuelSite const &);
 
-void HandleHelicopterOnGroundGraphic(void) {
+void HandleHelicopterOnGroundGraphic() {
   // No worries if underground
   if (gbWorldSectorZ != 0) return;
 
@@ -998,7 +998,7 @@ void HandleHelicopterOnGroundGraphic(void) {
   }
 }
 
-void HandleHelicopterOnGroundSkyriderProfile(void) {
+void HandleHelicopterOnGroundSkyriderProfile() {
   // No worries if underground
   if (gbWorldSectorZ != 0) return;
 
@@ -1196,13 +1196,13 @@ static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSe
 }
 
 // are we at the end of the path for the heli?
-static BOOLEAN EndOfHelicoptersPath(void) {
+static BOOLEAN EndOfHelicoptersPath() {
   VEHICLETYPE const &v = GetHelicopter();
   return !v.pMercPath || !v.pMercPath->pNext;
 }
 
 // check if helicopter can take off?
-BOOLEAN CanHelicopterTakeOff(void) {
+BOOLEAN CanHelicopterTakeOff() {
   // if it's already in the air
   if (fHelicopterIsAirBorne) return TRUE;
 
@@ -1323,7 +1323,7 @@ INT16 GetNumSafeSectorsInPath() {
   return n;
 }
 
-INT16 GetNumUnSafeSectorsInPath(void) {
+INT16 GetNumUnSafeSectorsInPath() {
   // get the last sector value in the helictoper's path
   UINT32 uiLocation = 0;
   UINT32 uiCount = 0;
@@ -1394,7 +1394,7 @@ INT16 GetNumUnSafeSectorsInPath(void) {
   return ((INT16)uiCount);
 }
 
-static void PaySkyriderBill(void) {
+static void PaySkyriderBill() {
   // if we owe anything for the trip
   if (iTotalAccumulatedCostByPlayer > 0) {
     // if player can afford to pay the Skyrider bill
@@ -1460,7 +1460,7 @@ void PayOffSkyriderDebtIfAny() {
   }
 }
 
-static void MakeHeliReturnToBase(void) {
+static void MakeHeliReturnToBase() {
   // if already at a refueling point
   if (CheckForArrivalAtRefuelPoint()) {
     ReFuelHelicopter();

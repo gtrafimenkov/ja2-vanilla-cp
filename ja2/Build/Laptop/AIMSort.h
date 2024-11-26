@@ -9,9 +9,9 @@ extern uint8_t gubCurrentListMode;
 #define AIM_ASCEND 6
 #define AIM_DESCEND 7
 
-void GameInitAimSort(void);
-void EnterAimSort(void);
-void ExitAimSort(void);
-void RenderAimSort(void);
+void GameInitAimSort();
+void EnterAimSort();
+void ExitAimSort();
+void RenderAimSort();
 
 #endif

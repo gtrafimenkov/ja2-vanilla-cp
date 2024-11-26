@@ -150,7 +150,7 @@ static CREATURE_DIRECTIVE *NewDirective(UINT8 ubSectorID, UINT8 ubSectorZ,
   return curr;
 }
 
-static void InitLairDrassen(void) {
+static void InitLairDrassen() {
   CREATURE_DIRECTIVE *curr;
   giLairID = 1;
   // initialize the linked list of lairs
@@ -172,7 +172,7 @@ static void InitLairDrassen(void) {
   curr->next = NewDirective(SEC_D13, 1, MINE_EXIT);
 }
 
-static void InitLairCambria(void) {
+static void InitLairCambria() {
   CREATURE_DIRECTIVE *curr;
   giLairID = 2;
   // initialize the linked list of lairs
@@ -194,7 +194,7 @@ static void InitLairCambria(void) {
   curr->next = NewDirective(SEC_H8, 1, MINE_EXIT);
 }
 
-static void InitLairAlma(void) {
+static void InitLairAlma() {
   CREATURE_DIRECTIVE *curr;
   giLairID = 3;
   // initialize the linked list of lairs
@@ -214,7 +214,7 @@ static void InitLairAlma(void) {
   curr->next = NewDirective(SEC_I14, 1, MINE_EXIT);
 }
 
-static void InitLairGrumm(void) {
+static void InitLairGrumm() {
   CREATURE_DIRECTIVE *curr;
   giLairID = 4;
   // initialize the linked list of lairs

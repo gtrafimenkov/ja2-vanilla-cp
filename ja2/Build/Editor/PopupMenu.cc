@@ -91,7 +91,7 @@ static const wchar_t *GetPopupMenuString(UINT8 ubIndex) {
   }
 }
 
-static void RenderPopupMenu(void);
+static void RenderPopupMenu();
 
 /*
 InitPopUpMenu
@@ -251,7 +251,7 @@ void InitPopupMenu(GUIButtonRef const button, PopupMenuID const ubPopupMenuID,
   RenderPopupMenu();
 }
 
-static void RenderPopupMenu(void) {
+static void RenderPopupMenu() {
   CurrentPopupMenuInformation const &p = gPopup;
 
   // Draw the menu
@@ -306,7 +306,7 @@ static void RenderPopupMenu(void) {
 // This private function of PopupMenuHandle determines which menu entry
 // is highlighted based on the mouse cursor position.  Returns 0 if the
 // mouse is out of the menu region.
-static UINT8 GetPopupIndexFromMousePosition(void) {
+static UINT8 GetPopupIndexFromMousePosition() {
   UINT8 ubNumEntriesDown;
   UINT16 usRelX;
   UINT8 ubCount;
@@ -332,9 +332,9 @@ static UINT8 GetPopupIndexFromMousePosition(void) {
   return 0;  // mouse not in valid region.
 }
 
-static void ProcessPopupMenuSelection(void);
+static void ProcessPopupMenuSelection();
 
-static void PopupMenuHandle(void) {
+static void PopupMenuHandle() {
   InputAtom InputEvent;
 
   if (gPopup.ubActiveType == POPUP_ACTIVETYPE_NOT_YET_DETERMINED) {
@@ -433,7 +433,7 @@ static void PopupMenuHandle(void) {
   }
 }
 
-static void ProcessPopupMenuSelection(void) {
+static void ProcessPopupMenuSelection() {
   switch (gPopup.ubPopupMenuID) {
     case CHANGETSET_POPUP:
       // change the tileset here.

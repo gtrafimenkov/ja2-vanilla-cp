@@ -18,7 +18,7 @@
 
 STRATEGIC_STATUS gStrategicStatus;
 
-void InitStrategicStatus(void) {
+void InitStrategicStatus() {
   memset(&gStrategicStatus, 0, sizeof(STRATEGIC_STATUS));
   // Add special non-zero start conditions here...
 
@@ -37,7 +37,7 @@ void LoadStrategicStatusFromSaveGameFile(HWFILE const hFile) {
 
 #define DEATH_RATE_SEVERITY 1.0f  // increase to make death rates higher for same # of deaths/time
 
-UINT8 CalcDeathRate(void) {
+UINT8 CalcDeathRate() {
   UINT32 uiDeathRate = 0;
 
   // give the player a grace period of 1 day
@@ -133,7 +133,7 @@ void UpdateLastDayOfPlayerActivity(UINT16 usDay) {
   }
 }
 
-static UINT8 LackOfProgressTolerance(void) {
+static UINT8 LackOfProgressTolerance() {
   if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
     // give an EXTRA day over normal
     return (7 - DIF_LEVEL_MEDIUM + gStrategicStatus.ubHighestProgress / 42);
@@ -144,7 +144,7 @@ static UINT8 LackOfProgressTolerance(void) {
 
 // called once per day in the morning, decides whether Enrico should send any
 // new E-mails to the player
-void HandleEnricoEmail(void) {
+void HandleEnricoEmail() {
   UINT8 ubCurrentProgress = CurrentPlayerProgressPercentage();
   UINT8 ubHighestProgress = HighestPlayerProgressPercentage();
 

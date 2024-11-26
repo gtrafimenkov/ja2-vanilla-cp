@@ -106,8 +106,7 @@ struct CreditFace {
 };
 
 static CreditFace gCreditFaces[] = {
-#define M(x, y, w, h, ex, ey, mx, my, f) \
-  { x, y, w, h, ex, ey, mx, my, f, 0, 0 }
+#define M(x, y, w, h, ex, ey, mx, my, f) {x, y, w, h, ex, ey, mx, my, f, 0, 0}
     M(298, 137, 37, 49, 310, 157, 304, 170, 2500),  // Camfield
     M(348, 137, 43, 47, 354, 153, 354, 153, 3700),  // Shawn
     M(407, 132, 30, 50, 408, 151, 410, 164, 3000),  // Kris
@@ -154,12 +153,12 @@ static UINT32 guiGapTillReadNextCredit;
 static UINT32 guiCurrentCreditRecord;
 static BOOLEAN gfPauseCreditScreen;
 
-static BOOLEAN EnterCreditsScreen(void);
-static void ExitCreditScreen(void);
-static void GetCreditScreenUserInput(void);
-static void HandleCreditScreen(void);
+static BOOLEAN EnterCreditsScreen();
+static void ExitCreditScreen();
+static void GetCreditScreenUserInput();
+static void HandleCreditScreen();
 
-ScreenID CreditScreenHandle(void) {
+ScreenID CreditScreenHandle() {
   if (!g_credits_active) {
     if (!EnterCreditsScreen()) return MAINMENU_SCREEN;
   }
@@ -177,11 +176,11 @@ ScreenID CreditScreenHandle(void) {
   return CREDIT_SCREEN;
 }
 
-static void InitCreditEyeBlinking(void);
-static void RenderCreditScreen(void);
+static void InitCreditEyeBlinking();
+static void RenderCreditScreen();
 static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static BOOLEAN EnterCreditsScreen(void) try {
+static BOOLEAN EnterCreditsScreen() try {
   guiCreditBackGroundImage = AddVideoObjectFromFile(INTERFACEDIR "/credits.sti");
   guiCreditFaces = AddVideoObjectFromFile(INTERFACEDIR "/credit faces.sti");
 
@@ -228,9 +227,9 @@ static BOOLEAN EnterCreditsScreen(void) try {
   return FALSE;
 }
 
-static void DeleteFirstNode(void);
+static void DeleteFirstNode();
 
-static void ExitCreditScreen(void) {
+static void ExitCreditScreen() {
   DeleteVideoObject(guiCreditBackGroundImage);
   DeleteVideoObject(guiCreditFaces);
 
@@ -241,11 +240,11 @@ static void ExitCreditScreen(void) {
   }
 }
 
-static BOOLEAN GetNextCreditFromTextFile(void);
+static BOOLEAN GetNextCreditFromTextFile();
 static void HandleCreditEyeBlinking();
-static void HandleCreditNodes(void);
+static void HandleCreditNodes();
 
-static void HandleCreditScreen(void) {
+static void HandleCreditScreen() {
   HandleCreditNodes();
   HandleCreditEyeBlinking();
 
@@ -275,12 +274,12 @@ static void HandleCreditScreen(void) {
   }
 }
 
-static void RenderCreditScreen(void) {
+static void RenderCreditScreen() {
   BltVideoObject(FRAME_BUFFER, guiCreditBackGroundImage, 0, 0, 0);
   InvalidateScreen();
 }
 
-static void GetCreditScreenUserInput(void) {
+static void GetCreditScreenUserInput() {
   InputAtom Event;
   while (DequeueEvent(&Event)) {
     if (Event.usEvent == KEY_DOWN) {
@@ -293,7 +292,7 @@ static void GetCreditScreenUserInput(void) {
   }
 }
 
-static void DeleteFirstNode(void) {
+static void DeleteFirstNode() {
   CRDT_NODE *const del = g_credits_head;
 
   g_credits_head = del->next;
@@ -350,7 +349,7 @@ static void AddCreditNode(UINT32 uiFlags, const wchar_t *pString) {
 
 static void DisplayCreditNode(const CRDT_NODE *);
 
-static void HandleCreditNodes(void) {
+static void HandleCreditNodes() {
   if (g_credits_head == NULL) return;
 
   if (gfPauseCreditScreen) return;
@@ -395,7 +394,7 @@ static UINT32 GetNumber(const wchar_t *const string) {
 
 static void HandleCreditFlags(UINT32 uiFlags);
 
-static BOOLEAN GetNextCreditFromTextFile(void) {
+static BOOLEAN GetNextCreditFromTextFile() {
   wchar_t text[CREDITS_LINESIZE];
   const UINT32 pos = CREDITS_LINESIZE * guiCurrentCreditRecord++;
   try {
@@ -500,7 +499,7 @@ static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 
   }
 }
 
-static void InitCreditEyeBlinking(void) {
+static void InitCreditEyeBlinking() {
   const UINT32 now = GetJA2Clock();
   FOR_EACH(CreditFace, f, gCreditFaces) { f->uiLastBlinkTime = now + Random(f->sBlinkFreq * 2); }
 }

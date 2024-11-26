@@ -176,7 +176,7 @@ void ExitMercsFiles() {
 
 static void DisplayMercFace(ProfileID);
 static void DisplayMercsStats(MERCPROFILESTRUCT const &);
-static void EnableDisableMercFilesNextPreviousButton(void);
+static void EnableDisableMercFilesNextPreviousButton();
 static void LoadAndDisplayMercBio(UINT8 ubMercID);
 
 void RenderMercsFiles() {
@@ -453,7 +453,7 @@ static void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void EnableDisableMercFilesNextPreviousButton(void) {
+static void EnableDisableMercFilesNextPreviousButton() {
   EnableButton(guiNextButton, gubCurMercIndex <= LaptopSaveInfo.gubLastMercIndex - 1);
   EnableButton(guiPrevButton, gubCurMercIndex > 0);
 }

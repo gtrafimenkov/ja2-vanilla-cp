@@ -102,7 +102,7 @@ void BeginContractRenewalSequence() {
   }
 }
 
-static void EndCurrentContractRenewal(void);
+static void EndCurrentContractRenewal();
 
 void HandleContractRenewalSequence() {
   if (gfContractRenewalSquenceOn) {
@@ -178,7 +178,7 @@ void HandleContractRenewalSequence() {
   }
 }
 
-static void EndCurrentContractRenewal(void) {
+static void EndCurrentContractRenewal() {
   // Are we in the requence?
   if (gfContractRenewalSquenceOn) {
     // OK stop this one and increment current one
@@ -191,7 +191,7 @@ static void EndCurrentContractRenewal(void) {
 
 static void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength,
                                                  INT32 iCost);
-static void HandleNotifyPlayerCantAffordInsurance(void);
+static void HandleNotifyPlayerCantAffordInsurance();
 
 // This is used only to EXTEND the contract of an AIM merc already on the team
 BOOLEAN MercContractHandling(SOLDIERTYPE *const s, UINT8 const ubDesiredAction) {
@@ -756,7 +756,7 @@ static void HandleExtendMercsContract(SOLDIERTYPE *pSoldier) {
 
 static BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE *pSoldier);
 
-void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void) {
+void FindOutIfAnyMercAboutToLeaveIsGonnaRenew() {
   /* Run through list of grunts whoose contract are up in the next 2 hours
    * ATE: AND - build list THEN choose one!
    * Make a list of mercs that will want to stay if offered. During that
@@ -805,7 +805,7 @@ void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void) {
   }
 }
 
-static void HandleNotifyPlayerCantAffordInsurance(void) {
+static void HandleNotifyPlayerCantAffordInsurance() {
   DoScreenIndependantMessageBox(zMarksMapScreenText[9], MSG_BOX_FLAG_OK, NULL);
 }
 

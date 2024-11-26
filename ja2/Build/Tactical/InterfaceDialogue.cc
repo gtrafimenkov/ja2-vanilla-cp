@@ -888,7 +888,7 @@ BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey) {
   return (FALSE);
 }
 
-void HandleTalkingMenuBackspace(void) {
+void HandleTalkingMenuBackspace() {
   if (!gfInTalkPanel) {
     return;
   }
@@ -1112,7 +1112,7 @@ void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
   }
 }
 
-static void HandleNPCTrigger(void);
+static void HandleNPCTrigger();
 
 void HandleNPCTriggerNPC(UINT8 const ubTargetNPC, UINT8 const ubTargetRecord,
                          BOOLEAN const fShowDialogueMenu, Approach const ubTargetApproach) {
@@ -1173,7 +1173,7 @@ void HandleNPCTriggerNPC(UINT8 const ubTargetNPC, UINT8 const ubTargetRecord,
   }
 }
 
-static void HandleNPCTrigger(void) {
+static void HandleNPCTrigger() {
   INT16 sPlayerGridNo;
 
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(gubTargetNPC);
@@ -1330,9 +1330,9 @@ static void HandleStuffForNPCEscorted(UINT8 ubNPC) {
 
 static void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType);
 static BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor);
-static void DoneFadeOutActionBasement(void);
-static void DoneFadeOutActionLeaveBasement(void);
-static void CarmenLeavesSectorCallback(void);
+static void DoneFadeOutActionBasement();
+static void DoneFadeOutActionLeaveBasement();
+static void CarmenLeavesSectorCallback();
 
 void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum) {
   // ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Handling %ls, action %d at
@@ -3878,9 +3878,9 @@ static void DialogueMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) 
   }
 }
 
-static void DoneFadeInActionBasement(void);
+static void DoneFadeInActionBasement();
 
-static void DoneFadeOutActionBasement(void) {
+static void DoneFadeOutActionBasement() {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(10, 1, 1);
 
@@ -3902,9 +3902,9 @@ static void DoneFadeOutActionBasement(void) {
   FadeInGameScreen();
 }
 
-static void DoneFadeOutActionSex(void) { SetPendingNewScreen(SEX_SCREEN); }
+static void DoneFadeOutActionSex() { SetPendingNewScreen(SEX_SCREEN); }
 
-static void DoneFadeInActionBasement(void) {
+static void DoneFadeInActionBasement() {
   // Start conversation, etc
 
   // Look for someone to talk to
@@ -3923,9 +3923,9 @@ static void DoneFadeInActionBasement(void) {
   TriggerNPCRecordImmediately(pNPCSoldier->ubProfile, 1);
 }
 
-static void DoneFadeInActionLeaveBasement(void);
+static void DoneFadeInActionLeaveBasement();
 
-static void DoneFadeOutActionLeaveBasement(void) {
+static void DoneFadeOutActionLeaveBasement() {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(10, 1, 0);
 
@@ -3938,7 +3938,7 @@ static void DoneFadeOutActionLeaveBasement(void) {
   FadeInGameScreen();
 }
 
-static void DoneFadeInActionLeaveBasement(void) {
+static void DoneFadeInActionLeaveBasement() {
   // Start conversation, etc
 }
 
@@ -4027,7 +4027,7 @@ static void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void CarmenLeavesSectorCallback(void) {
+static void CarmenLeavesSectorCallback() {
   if (gWorldSectorX == 13 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
     TriggerNPCRecord(CARMEN, 34);
   } else if (gWorldSectorX == 9 && gWorldSectorY == MAP_ROW_G && gbWorldSectorZ == 0) {

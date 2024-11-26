@@ -39,7 +39,7 @@ enum {
 
 // Selects at the start of the game the set of guns the Queen's army will use
 // during this game
-void InitArmyGunTypes(void);
+void InitArmyGunTypes();
 
 // Chooses equipment based on the equipment level (1-11) with best being 11.  It
 // allocates a range of equipment to choose from.
@@ -49,6 +49,6 @@ void AssignCreatureInventory(SOLDIERTYPE *pSoldier);
 
 void ReplaceExtendedGuns(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass);
 
-void ResetMortarsOnTeamCount(void);
+void ResetMortarsOnTeamCount();
 
 #endif

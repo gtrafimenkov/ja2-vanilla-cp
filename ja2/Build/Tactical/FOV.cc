@@ -179,7 +179,7 @@ struct SLANT_ROOF_FOV_TYPE {
 SLANT_ROOF_FOV_TYPE gSlantRoofData[NUM_SLANT_ROOF_SLOTS];
 UINT32 guiNumSlantRoofs = 0;
 
-static INT32 GetFreeSlantRoof(void) {
+static INT32 GetFreeSlantRoof() {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -191,7 +191,7 @@ static INT32 GetFreeSlantRoof(void) {
   return (-1);
 }
 
-void ClearSlantRoofs(void) {
+void ClearSlantRoofs() {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {

@@ -36,30 +36,30 @@ enum { TEAM_DONE_BUTTON = 0, TEAM_MAP_SCREEN_BUTTON, CHANGE_SQUAD_BUTTON, NUM_TE
 #define SHOW_LOCATOR_NORMAL 1
 #define SHOW_LOCATOR_FAST 2
 
-void CreateSMPanelButtons(void);
-void RemoveSMPanelButtons(void);
-void InitializeSMPanel(void);
-void ShutdownSMPanel(void);
+void CreateSMPanelButtons();
+void RemoveSMPanelButtons();
+void InitializeSMPanel();
+void ShutdownSMPanel();
 void RenderSMPanel(DirtyLevel *);
 void EnableSMPanelButtons(BOOLEAN fEnable, BOOLEAN fFromItemPickup);
 
-void CreateTEAMPanelButtons(void);
-void RemoveTEAMPanelButtons(void);
-void InitializeTEAMPanel(void);
-void ShutdownTEAMPanel(void);
+void CreateTEAMPanelButtons();
+void RemoveTEAMPanelButtons();
+void InitializeTEAMPanel();
+void ShutdownTEAMPanel();
 void RenderTEAMPanel(DirtyLevel);
 
 void SetSMPanelCurrentMerc(SOLDIERTYPE *s);
-void SetTEAMPanelCurrentMerc(void);
+void SetTEAMPanelCurrentMerc();
 
-void InitTEAMSlots(void);
+void InitTEAMSlots();
 SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(UINT8 ubPanelSlot);
-void RemoveAllPlayersFromSlot(void);
+void RemoveAllPlayersFromSlot();
 BOOLEAN RemovePlayerFromTeamSlot(const SOLDIERTYPE *s);
 void CheckForAndAddMercToTeamPanel(SOLDIERTYPE *s);
 
 void DisableTacticalTeamPanelButtons(BOOLEAN fDisable);
-void RenderTownIDString(void);
+void RenderTownIDString();
 
 void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
 void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
@@ -72,25 +72,25 @@ extern MOUSE_REGION gSMPanelRegion;
 extern BOOLEAN gfDisableTacticalPanelButtons;
 
 // Used when the shop keeper interface is active
-void DisableSMPpanelButtonsWhenInShopKeeperInterface(void);
+void DisableSMPpanelButtonsWhenInShopKeeperInterface();
 
-void ReEvaluateDisabledINVPanelButtons(void);
+void ReEvaluateDisabledINVPanelButtons();
 
-void CheckForDisabledForGiveItem(void);
+void CheckForDisabledForGiveItem();
 void ReevaluateItemHatches(SOLDIERTYPE *s, BOOLEAN fEnable);
 
 void HandlePanelFaceAnimations(SOLDIERTYPE *s);
 
-void GoToMapScreenFromTactical(void);
+void GoToMapScreenFromTactical();
 
 void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *s, UINT32 uiInvPos, UINT16 usOldItem,
                                             UINT16 usNewItem);
 
-void FinishAnySkullPanelAnimations(void);
+void FinishAnySkullPanelAnimations();
 
 SOLDIERTYPE *FindNextMercInTeamPanel(SOLDIERTYPE *prev);
 
-void BeginKeyPanelFromKeyShortcut(void);
+void BeginKeyPanelFromKeyShortcut();
 
 void UpdateForContOverPortrait(SOLDIERTYPE *s, BOOLEAN fOn);
 

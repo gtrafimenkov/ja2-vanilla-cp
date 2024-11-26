@@ -165,7 +165,7 @@ static bool GetMeanWhileFlag(UINT8 const meanwhile_id) {
   return uiMeanWhileFlags & MeanwhileIDToFlag(meanwhile_id);
 }
 
-static NPC_SAVE_INFO *GetFreeNPCSave(void) {
+static NPC_SAVE_INFO *GetFreeNPCSave() {
   for (NPC_SAVE_INFO *si = gNPCSaveData; si != gNPCSaveData + guiNumNPCSaves; ++si) {
     if (si->ubProfile == NO_PROFILE) return si;
   }
@@ -224,7 +224,7 @@ void BeginMeanwhile(UINT8 ubMeanwhileID) {
 
 static void BeginMeanwhileCallBack(MessageBoxReturnValue);
 
-static void BringupMeanwhileBox(void) {
+static void BringupMeanwhileBox() {
   wchar_t zStr[256];
 
   swprintf(zStr, lengthof(zStr), L"%ls.....", pMessageStrings[MSG_MEANWHILE]);
@@ -282,9 +282,9 @@ static void SetNPCMeanwhile(const ProfileID pid, const INT16 sector_x, const INT
   ChangeNpcToDifferentSector(p, sector_x, sector_y, 0);
 }
 
-static void DoneFadeOutMeanwhile(void);
+static void DoneFadeOutMeanwhile();
 
-static void StartMeanwhile(void) {
+static void StartMeanwhile() {
   // OK, save old position...
   if (gfWorldLoaded) {
     gsOldSectorX = gWorldSectorX;
@@ -342,10 +342,10 @@ static void StartMeanwhile(void) {
   gFadeOutDoneCallback = DoneFadeOutMeanwhile;
 }
 
-static void DoneFadeInMeanwhile(void);
-static void LocateMeanWhileGrid(void);
+static void DoneFadeInMeanwhile();
+static void LocateMeanWhileGrid();
 
-static void DoneFadeOutMeanwhile(void) {
+static void DoneFadeOutMeanwhile() {
   // OK, insertion data found, enter sector!
 
   SetCurrentWorldSector(gCurrentMeanwhileDef.sSectorX, gCurrentMeanwhileDef.sSectorY, 0);
@@ -358,7 +358,7 @@ static void DoneFadeOutMeanwhile(void) {
   FadeInNextFrame();
 }
 
-static void DoneFadeInMeanwhile(void) {
+static void DoneFadeInMeanwhile() {
   // ATE: double check that we are in meanwhile
   // this is if we cancel right away.....
   if (gfInMeanwhile) {
@@ -373,7 +373,7 @@ static void DoneFadeInMeanwhile(void) {
   }
 }
 
-static void ProcessImplicationsOfMeanwhile(void);
+static void ProcessImplicationsOfMeanwhile();
 
 static void BeginMeanwhileCallBack(MessageBoxReturnValue const bExitValue) {
   if (bExitValue == MSG_BOX_RETURN_OK || bExitValue == MSG_BOX_RETURN_YES) {
@@ -410,7 +410,7 @@ bool AreInMeanwhile() {
   return false;
 }
 
-static void ProcessImplicationsOfMeanwhile(void) {
+static void ProcessImplicationsOfMeanwhile() {
   switch (gCurrentMeanwhileDef.ubMeanwhileID) {
     case END_OF_PLAYERS_FIRST_BATTLE:
       if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_HARD) {  // Wake up the queen earlier to
@@ -484,7 +484,7 @@ static void ProcessImplicationsOfMeanwhile(void) {
   }
 }
 
-static void RestoreNPCMeanwhile(void) {
+static void RestoreNPCMeanwhile() {
   // ATE: Restore people to saved positions...
   // OK, restore NPC save info...
   for (const NPC_SAVE_INFO *si = gNPCSaveData, *const end = gNPCSaveData + guiNumNPCSaves;
@@ -503,7 +503,7 @@ static void RestoreNPCMeanwhile(void) {
   }
 }
 
-static void DoneFadeOutMeanwhileOnceDone(void);
+static void DoneFadeOutMeanwhileOnceDone();
 
 void EndMeanwhile() {
   EmptyDialogueQueue();
@@ -538,9 +538,9 @@ void EndMeanwhile() {
   }
 }
 
-static void DoneFadeInMeanwhileOnceDone(void);
+static void DoneFadeInMeanwhileOnceDone();
 
-static void DoneFadeOutMeanwhileOnceDone(void) {
+static void DoneFadeOutMeanwhileOnceDone() {
   // OK, insertion data found, enter sector!
   gfReloadingScreenFromMeanwhile = TRUE;
 
@@ -578,9 +578,9 @@ static void DoneFadeOutMeanwhileOnceDone(void) {
   FadeInNextFrame();
 }
 
-static void DoneFadeInMeanwhileOnceDone(void) {}
+static void DoneFadeInMeanwhileOnceDone() {}
 
-static void LocateMeanWhileGrid(void) {
+static void LocateMeanWhileGrid() {
   INT16 sGridNo = 0;
 
   // go to the approp. gridno
@@ -600,7 +600,7 @@ BOOLEAN AreReloadingFromMeanwhile() { return (gfReloadingScreenFromMeanwhile); }
 
 UINT8 GetMeanwhileID() { return (gCurrentMeanwhileDef.ubMeanwhileID); }
 
-void HandleCreatureRelease(void) {
+void HandleCreatureRelease() {
   UINT32 const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, CREATURES, QUEEN, uiTime);
 }
@@ -682,12 +682,12 @@ void HandleFlowersMeanwhileScene(INT8 bTimeCode) {
   ScheduleMeanwhileEvent(3, 16, 0, FLOWERS, QUEEN, uiTime);
 }
 
-void HandleOutskirtsOfMedunaMeanwhileScene(void) {
+void HandleOutskirtsOfMedunaMeanwhileScene() {
   UINT32 const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, OUTSKIRTS_MEDUNA, QUEEN, uiTime);
 }
 
-void HandleKillChopperMeanwhileScene(void) {
+void HandleKillChopperMeanwhileScene() {
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(KILL_CHOPPER)) {
     return;
@@ -697,17 +697,17 @@ void HandleKillChopperMeanwhileScene(void) {
   ScheduleMeanwhileEvent(3, 16, 0, KILL_CHOPPER, QUEEN, uiTime);
 }
 
-void HandleScientistAWOLMeanwhileScene(void) {
+void HandleScientistAWOLMeanwhileScene() {
   UINT32 const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, AWOL_SCIENTIST, QUEEN, uiTime);
 }
 
-static void HandleFirstBattleVictory(void) {
+static void HandleFirstBattleVictory() {
   UINT32 const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, END_OF_PLAYERS_FIRST_BATTLE, QUEEN, uiTime);
 }
 
-static void HandleDelayedFirstBattleVictory(void) {
+static void HandleDelayedFirstBattleVictory() {
   /*
   //It is theoretically impossible to liberate a town within 60 minutes of the
   first battle (which is supposed to
@@ -751,7 +751,7 @@ void HandleFirstBattleEndingWhileInTown(INT16 sSectorX, INT16 sSectorY, INT16 bS
   }
 }
 
-void HandleFirstMeanWhileSetUpWithTrashWorld(void) {
+void HandleFirstMeanWhileSetUpWithTrashWorld() {
   // exiting sector after first battle fought
   if (gfFirstBattleMeanwhileScenePending) {
     HandleFirstBattleVictory();

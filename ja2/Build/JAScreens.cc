@@ -56,10 +56,10 @@ BOOLEAN gfDoneWithSplashScreen = FALSE;
 
 INT8 gCurDebugPage = 0;
 
-static void DefaultDebugPage1(void);
-static void DefaultDebugPage2(void);
-static void DefaultDebugPage3(void);
-static void DefaultDebugPage4(void);
+static void DefaultDebugPage1();
+static void DefaultDebugPage2();
+static void DefaultDebugPage3();
+static void DefaultDebugPage4();
 
 RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {DefaultDebugPage1, DefaultDebugPage2,
                                                      DefaultDebugPage3, DefaultDebugPage4};
@@ -88,7 +88,7 @@ void DisplayFrameRate() {
   }
 }
 
-ScreenID ErrorScreenHandle(void) {
+ScreenID ErrorScreenHandle() {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = FALSE;
 
@@ -124,7 +124,7 @@ ScreenID ErrorScreenHandle(void) {
   return (ERROR_SCREEN);
 }
 
-ScreenID InitScreenHandle(void) {
+ScreenID InitScreenHandle() {
   static UINT32 splashDisplayedMoment = 0;
   static UINT8 ubCurrentScreen = 255;
 
@@ -192,9 +192,9 @@ ScreenID InitScreenHandle(void) {
 }
 
 static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent);
-static void PalEditRenderHook(void);
+static void PalEditRenderHook();
 
-ScreenID PalEditScreenHandle(void) {
+ScreenID PalEditScreenHandle() {
   static BOOLEAN FirstTime = TRUE;
 
   if (gfExitPalEditScreen) {
@@ -221,7 +221,7 @@ ScreenID PalEditScreenHandle(void) {
   return (PALEDIT_SCREEN);
 }
 
-static void PalEditRenderHook(void) {
+static void PalEditRenderHook() {
   const SOLDIERTYPE *const sel = GetSelectedMan();
   if (sel != NULL) {
     // Set to current
@@ -282,7 +282,7 @@ static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent) {
   return TRUE;
 }
 
-static BOOLEAN CheckForAndExitTacticalDebug(void) {
+static BOOLEAN CheckForAndExitTacticalDebug() {
   if (gfExitDebugScreen) {
     FirstTime = TRUE;
     gfExitDebugScreen = FALSE;
@@ -298,9 +298,9 @@ static BOOLEAN CheckForAndExitTacticalDebug(void) {
 }
 
 static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent);
-static void DebugRenderHook(void);
+static void DebugRenderHook();
 
-ScreenID DebugScreenHandle(void) {
+ScreenID DebugScreenHandle() {
   if (CheckForAndExitTacticalDebug()) {
     return (GAME_SCREEN);
   }
@@ -321,7 +321,7 @@ ScreenID DebugScreenHandle(void) {
   return (DEBUG_SCREEN);
 }
 
-static void DebugRenderHook(void) { gDebugRenderOverride[gCurDebugPage](); }
+static void DebugRenderHook() { gDebugRenderOverride[gCurDebugPage](); }
 
 static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
   if (pInputEvent->usEvent == KEY_UP) {
@@ -353,22 +353,22 @@ void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage) {
   gDebugRenderOverride[ubPage] = pDebugRenderOverride;
 }
 
-static void DefaultDebugPage1(void) {
+static void DefaultDebugPage1() {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE ONE");
 }
 
-static void DefaultDebugPage2(void) {
+static void DefaultDebugPage2() {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE TWO");
 }
 
-static void DefaultDebugPage3(void) {
+static void DefaultDebugPage3() {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE THREE");
 }
 
-static void DefaultDebugPage4(void) {
+static void DefaultDebugPage4() {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE FOUR");
 }
@@ -376,7 +376,7 @@ static void DefaultDebugPage4(void) {
 #define SMILY_DELAY 100
 #define SMILY_END_DELAY 1000
 
-ScreenID SexScreenHandle(void) {
+ScreenID SexScreenHandle() {
   static UINT8 ubCurrentScreen = 0;
   static SGPVObject *guiSMILY;
   static INT8 bCurFrame = 0;

@@ -31,7 +31,7 @@ static const wchar_t gzLevelString[][15] = {
 };
 
 // LEVEL NODE MANIPLULATION FUNCTIONS
-static LEVELNODE *CreateLevelNode(void) {
+static LEVELNODE *CreateLevelNode() {
   LEVELNODE *const Node = MALLOCZ(LEVELNODE);
   Node->ubShadeLevel = LightGetAmbient();
   Node->ubNaturalShadeLevel = LightGetAmbient();
@@ -42,7 +42,7 @@ static LEVELNODE *CreateLevelNode(void) {
   return Node;
 }
 
-void CountLevelNodes(void) {
+void CountLevelNodes() {
   for (UINT32 uiLoop2 = 0; uiLoop2 < 9; uiLoop2++) {
     guiLNCount[uiLoop2] = 0;
   }
@@ -59,7 +59,7 @@ void CountLevelNodes(void) {
 }
 
 #define LINE_HEIGHT 20
-void DebugLevelNodePage(void) {
+void DebugLevelNodePage() {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG LEVELNODES PAGE 1 OF 1");
 
@@ -1504,7 +1504,7 @@ LEVELNODE *FindShadow(INT16 sGridNo, UINT16 usStructIndex) {
   return pLevelNode;
 }
 
-void WorldHideTrees(void) {
+void WorldHideTrees() {
   FOR_EACH_WORLD_TILE(i) {
     for (LEVELNODE *pNode = i->pStructHead; pNode != NULL; pNode = pNode->pNext) {
       if (pNode->uiFlags & LEVELNODE_ANIMATION) continue;
@@ -1517,7 +1517,7 @@ void WorldHideTrees(void) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void WorldShowTrees(void) {
+void WorldShowTrees() {
   FOR_EACH_WORLD_TILE(i) {
     for (LEVELNODE *pNode = i->pStructHead; pNode != NULL; pNode = pNode->pNext) {
       if (pNode->uiFlags & LEVELNODE_ANIMATION) continue;
@@ -1552,7 +1552,7 @@ void RemoveWallLevelnodeFlags(UINT16 const sGridNo, LevelnodeFlags const uiFlags
   }
 }
 
-void SetTreeTopStateForMap(void) {
+void SetTreeTopStateForMap() {
   if (!gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS]) {
     WorldHideTrees();
     gTacticalStatus.uiFlags |= NOHIDE_REDUNDENCY;

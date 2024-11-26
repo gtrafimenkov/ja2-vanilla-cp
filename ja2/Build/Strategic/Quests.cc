@@ -57,7 +57,7 @@ void SetFactTrue(Fact const usFact) {
 
 void SetFactFalse(Fact const usFact) { gubFact[usFact] = FALSE; }
 
-static bool CheckForNewShipment(void) {
+static bool CheckForNewShipment() {
   if (gWorldSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X) return false;
   if (gWorldSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y) return false;
   if (gbWorldSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) return false;
@@ -223,7 +223,7 @@ static BOOLEAN PCInSameRoom(UINT8 ubProfileID) {
   return (FALSE);
 }
 
-static BOOLEAN CheckTalkerStrong(void) {
+static BOOLEAN CheckTalkerStrong() {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == OUR_TEAM) {
     return (gpSrcSoldier->bStrength >= 84);
   } else if (gpDestSoldier && gpDestSoldier->bTeam == OUR_TEAM) {
@@ -232,7 +232,7 @@ static BOOLEAN CheckTalkerStrong(void) {
   return (FALSE);
 }
 
-static BOOLEAN CheckTalkerFemale(void) {
+static BOOLEAN CheckTalkerFemale() {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == OUR_TEAM && gpSrcSoldier->ubProfile != NO_PROFILE) {
     return (gMercProfiles[gpSrcSoldier->ubProfile].bSex == FEMALE);
   } else if (gpDestSoldier && gpDestSoldier->bTeam == OUR_TEAM &&
@@ -242,7 +242,7 @@ static BOOLEAN CheckTalkerFemale(void) {
   return (FALSE);
 }
 
-static BOOLEAN CheckTalkerUnpropositionedFemale(void) {
+static BOOLEAN CheckTalkerUnpropositionedFemale() {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == OUR_TEAM && gpSrcSoldier->ubProfile != NO_PROFILE) {
     if (!(gMercProfiles[gpSrcSoldier->ubProfile].ubMiscFlags2 &
           PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
@@ -293,7 +293,7 @@ static bool FemalePresent(ProfileID const pid) {
   return false;
 }
 
-static BOOLEAN CheckPlayerHasHead(void) {
+static BOOLEAN CheckPlayerHasHead() {
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bLife > 0 && FindObjInObjRange(s, HEAD_2, HEAD_7) != NO_SLOT) {
       return TRUE;
@@ -338,7 +338,7 @@ static BOOLEAN CheckNPCCowering(UINT8 ubProfileID) {
   return (((pNPC->uiStatusFlags & SOLDIER_COWERING) != 0));
 }
 
-static UINT8 CountBartenders(void) {
+static UINT8 CountBartenders() {
   UINT8 ubLoop;
   UINT8 ubBartenders = 0;
 

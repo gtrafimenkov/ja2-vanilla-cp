@@ -115,7 +115,7 @@ void IncrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyIncrease);
 void DecrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyDecrease);
 
 // init town loyalty lists
-void InitTownLoyalty(void);
+void InitTownLoyalty();
 
 // handle the death of a civ
 void HandleMurderOfCivilian(const SOLDIERTYPE *pSoldier);
@@ -127,15 +127,15 @@ void HandleTownLoyaltyForNPCRecruitment(SOLDIERTYPE *pSoldier);
 void RemoveRandomItemsInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 ubChance);
 
 // build list of town sectors
-void BuildListOfTownSectors(void);
+void BuildListOfTownSectors();
 
 void LoadStrategicTownLoyaltyFromSavedGameFile(HWFILE);
 void SaveStrategicTownLoyaltyToSaveGameFile(HWFILE);
 
-void ReduceLoyaltyForRebelsBetrayed(void);
+void ReduceLoyaltyForRebelsBetrayed();
 
 // how many towns under player control?
-INT32 GetNumberOfWholeTownsUnderControl(void);
+INT32 GetNumberOfWholeTownsUnderControl();
 
 // is all the sectors of this town under control by the player
 INT32 IsTownUnderCompleteControlByPlayer(INT8 bTownId);
@@ -173,6 +173,6 @@ INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude);
 void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, INT16 sSectorY,
                                             INT16 sSectorZ);
 
-void MaximizeLoyaltyForDeidrannaKilled(void);
+void MaximizeLoyaltyForDeidrannaKilled();
 
 #endif

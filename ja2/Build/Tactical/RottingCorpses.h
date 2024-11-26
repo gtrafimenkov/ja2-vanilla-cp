@@ -115,7 +115,7 @@ struct ROTTING_CORPSE {
 
 ROTTING_CORPSE *AddRottingCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef);
 
-void RemoveCorpses(void);
+void RemoveCorpses();
 
 BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE &);
 
@@ -123,7 +123,7 @@ INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier);
 
 INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef, INT8 ubRadius);
 
-void HandleRottingCorpses(void);
+void HandleRottingCorpses();
 
 void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID);
 void CorpseHit(INT16 sGridNo, UINT16 usStructureID);
@@ -175,7 +175,7 @@ void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UI
 
 INT16 GetGridNoOfCorpseGivenProfileID(UINT8 ubProfileID);
 
-void DecayRottingCorpseAIWarnings(void);
+void DecayRottingCorpseAIWarnings();
 UINT8 GetNearestRottingCorpseAIWarning(INT16 sGridNo);
 
 void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE const &, OBJECTTYPE &ammo);

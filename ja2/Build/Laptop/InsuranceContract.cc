@@ -141,7 +141,7 @@ struct InsuranceInfo {
 
 static InsuranceInfo insurance_info[3];
 
-static void SetNumberOfDisplayedInsuranceMercs(void) {
+static void SetNumberOfDisplayedInsuranceMercs() {
   gubNumberofDisplayedInsuranceGrids =
       std::min((uint8_t)(g_n_insurable_mercs - gsCurrentInsuranceMercIndex), (uint8_t)3);
 }
@@ -158,7 +158,7 @@ static GUIButtonRef MakeButtonBig(BUTTON_PICS *const img, const wchar_t *const t
   return btn;
 }
 
-static void BuildInsuranceArray(void);
+static void BuildInsuranceArray();
 static void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate);
 static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
@@ -228,7 +228,7 @@ void ExitInsuranceContract() {
   CreateDestroyInsuranceContractFormButtons(FALSE);
 }
 
-static void EnableDisableInsuranceContractAcceptButtons(void);
+static void EnableDisableInsuranceContractAcceptButtons();
 
 void HandleInsuranceContract() {
   if (gfChangeInsuranceFormButtons) {
@@ -254,8 +254,8 @@ void HandleInsuranceContract() {
   EnableDisableInsuranceContractAcceptButtons();
 }
 
-static BOOLEAN AreAnyAimMercsOnTeam(void);
-static void DisableInsuranceContractNextPreviousbuttons(void);
+static BOOLEAN AreAnyAimMercsOnTeam();
+static void DisableInsuranceContractNextPreviousbuttons();
 static BOOLEAN DisplayOrderGrid(UINT8 ubGridNumber, SOLDIERTYPE *);
 static void InsContractNoMercsPopupCallBack(MessageBoxReturnValue);
 
@@ -593,7 +593,7 @@ static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 i
   }
 }
 
-static void DisableInsuranceContractNextPreviousbuttons(void) {
+static void DisableInsuranceContractNextPreviousbuttons() {
   // disable the next button if there is no more mercs to display
   EnableButton(
       guiInsContractNextBackButton,
@@ -771,7 +771,7 @@ static void InsContractNoMercsPopupCallBack(MessageBoxReturnValue const bExitVal
 
 static BOOLEAN MercIsInsurable(const SOLDIERTYPE *);
 
-static void BuildInsuranceArray(void) {
+static void BuildInsuranceArray() {
   g_n_insurable_mercs = 0;
 
   // store profile #s of all insurable mercs in an array
@@ -973,7 +973,7 @@ static BOOLEAN MercIsInsurable(const SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-static void EnableDisableInsuranceContractAcceptButtons(void) {
+static void EnableDisableInsuranceContractAcceptButtons() {
   for (UINT i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
     const InsuranceInfo *const ins = &insurance_info[i];
     const SOLDIERTYPE *const s = ins->soldier;
@@ -1149,7 +1149,7 @@ static INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier) {
   return (uiDayToStartInsurance);
 }
 
-static BOOLEAN AreAnyAimMercsOnTeam(void) {
+static BOOLEAN AreAnyAimMercsOnTeam() {
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) return TRUE;
   }

@@ -65,22 +65,22 @@ enum {
   AIM_COPYRIGHT_3
 };
 
-void GameInitAIM(void);
-void EnterAIM(void);
-void ExitAIM(void);
-void HandleAIM(void);
-void RenderAIM(void);
+void GameInitAIM();
+void EnterAIM();
+void ExitAIM();
+void HandleAIM();
+void RenderAIM();
 
 void ExitAimMenuBar();
 void InitAimMenuBar();
 
-void RemoveAimDefaults(void);
-void InitAimDefaults(void);
-void DrawAimDefaults(void);
+void RemoveAimDefaults();
+void InitAimDefaults();
+void DrawAimDefaults();
 
-void DisplayAimSlogan(void);
-void DisplayAimCopyright(void);
+void DisplayAimSlogan();
+void DisplayAimCopyright();
 
-void DisableAimButton(void);
+void DisableAimButton();
 
 #endif

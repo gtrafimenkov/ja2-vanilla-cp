@@ -17,14 +17,14 @@ static GUIButtonRef giIMPPersonalityEntranceButton[1];
 
 static void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPPersonalityEntranceButtons(void);
+static void CreateIMPPersonalityEntranceButtons();
 
-void EnterIMPPersonalityEntrance(void) {
+void EnterIMPPersonalityEntrance() {
   // create buttons needed
   CreateIMPPersonalityEntranceButtons();
 }
 
-void RenderIMPPersonalityEntrance(void) {
+void RenderIMPPersonalityEntrance() {
   // the background
   RenderProfileBackGround();
 
@@ -35,16 +35,16 @@ void RenderIMPPersonalityEntrance(void) {
   RenderAvgMercIndentFrame(90, 40);
 }
 
-static void DestroyIMPPersonalityEntranceButtons(void);
+static void DestroyIMPPersonalityEntranceButtons();
 
-void ExitIMPPersonalityEntrance(void) {
+void ExitIMPPersonalityEntrance() {
   // destroy buttons needed
   DestroyIMPPersonalityEntranceButtons();
 }
 
-void HandleIMPPersonalityEntrance(void) {}
+void HandleIMPPersonalityEntrance() {}
 
-static void CreateIMPPersonalityEntranceButtons(void) {
+static void CreateIMPPersonalityEntranceButtons() {
   // this function will create the buttons needed for the IMP personality Page
 
   // ths begin button
@@ -57,7 +57,7 @@ static void CreateIMPPersonalityEntranceButtons(void) {
   giIMPPersonalityEntranceButton[0]->SetCursor(CURSOR_WWW);
 }
 
-static void DestroyIMPPersonalityEntranceButtons(void) {
+static void DestroyIMPPersonalityEntranceButtons() {
   // this function will destroy the buttons needed for the IMP personality page
 
   // the begin button

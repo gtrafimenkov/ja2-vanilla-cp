@@ -407,7 +407,7 @@ void ShutdownNPCQuotes() {
 // GENERAL LOW LEVEL ROUTINES
 //
 
-void ReloadAllQuoteFiles(void) {
+void ReloadAllQuoteFiles() {
   UINT8 ubProfile, ubLoop;
 
   for (ubProfile = FIRST_RPC; ubProfile < NUM_PROFILES; ubProfile++) {
@@ -1080,7 +1080,7 @@ void ResetOncePerConvoRecordsForNPC(UINT8 ubNPC) {
   ResetOncePerConvoRecords(quotes);
 }
 
-void ResetOncePerConvoRecordsForAllNPCsInLoadedSector(void) {
+void ResetOncePerConvoRecordsForAllNPCsInLoadedSector() {
   UINT8 ubLoop;
 
   if (gWorldSectorX == 0 || gWorldSectorY == 0) {

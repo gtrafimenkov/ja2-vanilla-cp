@@ -53,14 +53,14 @@ static const INT16 gsFastHelpDelay = 600;  // In timer ticks
 
 static BOOLEAN gfRefreshUpdate = FALSE;
 
-static void MSYS_TrashRegList(void);
+static void MSYS_TrashRegList();
 
 //======================================================================================================
 //	MSYS_Init
 //
 //	Initialize the mouse system.
 //
-void MSYS_Init(void) {
+void MSYS_Init() {
   MSYS_TrashRegList();
 
   MSYS_CurrentMX = 0;
@@ -77,12 +77,12 @@ void MSYS_Init(void) {
 //
 //	De-inits the "mousesystem" mouse region handling code.
 //
-void MSYS_Shutdown(void) {
+void MSYS_Shutdown() {
   MSYS_SystemInitialized = FALSE;
   MSYS_TrashRegList();
 }
 
-static void MSYS_UpdateMouseRegion(void);
+static void MSYS_UpdateMouseRegion();
 
 void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
   // If the mouse system isn't initialized, get out o' here
@@ -163,7 +163,7 @@ void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
 //
 //	Deletes the entire region list.
 //
-static void MSYS_TrashRegList(void) {
+static void MSYS_TrashRegList() {
   while (MSYS_RegList) {
     if (MSYS_RegList->uiFlags & MSYS_REGION_EXISTS) {
       MSYS_RemoveRegion(MSYS_RegList);
@@ -221,7 +221,7 @@ static void MSYS_DeleteRegionFromList(MOUSE_REGION *const r) {
 
 /* Searches the list for the highest priority region and updates its info.  It
  * also dispatches the callback functions */
-static void MSYS_UpdateMouseRegion(void) {
+static void MSYS_UpdateMouseRegion() {
   MOUSE_REGION *cur;
   for (cur = MSYS_RegList; cur != NULL; cur = cur->next) {
     if (cur->uiFlags & (MSYS_REGION_ENABLED | MSYS_ALLOW_DISABLED_FASTHELP) &&

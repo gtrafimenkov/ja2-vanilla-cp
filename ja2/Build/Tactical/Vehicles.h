@@ -47,7 +47,7 @@ extern VEHICLETYPE *pVehicleList;
 // number of vehicles on the list
 extern UINT8 ubNumberOfVehicles;
 
-#define VEHICLE2ID(v) (UINT32)((&(v)-pVehicleList))
+#define VEHICLE2ID(v) (UINT32)((&(v) - pVehicleList))
 
 #define BASE_FOR_EACH_VEHICLE(type, iter)                                                 \
   for (type *iter = pVehicleList, *const end__##iter = pVehicleList + ubNumberOfVehicles; \
@@ -67,7 +67,7 @@ INT32 AddVehicleToList(INT16 sMapX, INT16 sMapY, INT16 sGridNo, UINT8 ubType);
 void RemoveVehicleFromList(VEHICLETYPE &);
 
 // clear out the vehicle list
-void ClearOutVehicleList(void);
+void ClearOutVehicleList();
 
 bool AnyAccessibleVehiclesInSoldiersSector(SOLDIERTYPE const &);
 
@@ -134,7 +134,7 @@ BOOLEAN OKUseVehicle(UINT8 ubProfile);
 
 BOOLEAN IsRobotControllerInVehicle(INT32 iId);
 
-void AddVehicleFuelToSave(void);
+void AddVehicleFuelToSave();
 
 bool SoldierMustDriveVehicle(SOLDIERTYPE const &, bool trying_to_travel);
 
@@ -154,6 +154,6 @@ UINT8 GetVehicleArmourType(UINT8 vehicle_id);
 
 UINT8 GetVehicleSeats(VEHICLETYPE const &);
 
-void InitVehicles(void);
+void InitVehicles();
 
 #endif

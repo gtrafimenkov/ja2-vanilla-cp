@@ -46,19 +46,19 @@ static SGPVObject *guiSHORT2HINDENT;
 #define CHAR_PROFILE_BACKGROUND_TILE_WIDTH 125
 #define CHAR_PROFILE_BACKGROUND_TILE_HEIGHT 100
 
-extern void DrawBonusPointsRemaining(void);
+extern void DrawBonusPointsRemaining();
 
-void LoadProfileBackGround(void) {
+void LoadProfileBackGround() {
   // this procedure will load in the graphics for the generic background
   guiBACKGROUND = AddVideoObjectFromFile(LAPTOPDIR "/metalbackground.sti");
 }
 
-void RemoveProfileBackGround(void) {
+void RemoveProfileBackGround() {
   // remove background
   DeleteVideoObject(guiBACKGROUND);
 }
 
-void RenderProfileBackGround(void) {
+void RenderProfileBackGround() {
   INT32 iCounter = 0;
 
   // this procedure will render the generic backgound to the screen
@@ -82,13 +82,13 @@ void RenderProfileBackGround(void) {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void LoadIMPSymbol(void) {
+void LoadIMPSymbol() {
   // this procedure will load the IMP main symbol into memory
   const char *const ImageFile = GetMLGFilename(MLG_IMPSYMBOL);
   guiIMPSYMBOL = AddVideoObjectFromFile(ImageFile);
 }
 
-void DeleteIMPSymbol(void) {
+void DeleteIMPSymbol() {
   // remove IMP symbol
   DeleteVideoObject(guiIMPSYMBOL);
 }
@@ -98,12 +98,12 @@ void RenderIMPSymbol(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadBeginIndent(void) {
+void LoadBeginIndent() {
   // this procedure will load the indent main symbol into memory
   guiBEGININDENT = AddVideoObjectFromFile(LAPTOPDIR "/beginscreenindent.sti");
 }
 
-void DeleteBeginIndent(void) {
+void DeleteBeginIndent() {
   // remove indent symbol
   DeleteVideoObject(guiBEGININDENT);
 }
@@ -113,12 +113,12 @@ void RenderBeginIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadActivationIndent(void) {
+void LoadActivationIndent() {
   // this procedure will load the activation indent into memory
   guiACTIVATIONINDENT = AddVideoObjectFromFile(LAPTOPDIR "/activationindent.sti");
 }
 
-void DeleteActivationIndent(void) {
+void DeleteActivationIndent() {
   // remove activation indent symbol
   DeleteVideoObject(guiACTIVATIONINDENT);
 }
@@ -128,12 +128,12 @@ void RenderActivationIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadFrontPageIndent(void) {
+void LoadFrontPageIndent() {
   // this procedure will load the activation indent into memory
   guiFRONTPAGEINDENT = AddVideoObjectFromFile(LAPTOPDIR "/frontpageindent.sti");
 }
 
-void DeleteFrontPageIndent(void) {
+void DeleteFrontPageIndent() {
   // remove activation indent symbol
   DeleteVideoObject(guiFRONTPAGEINDENT);
 }
@@ -143,32 +143,32 @@ void RenderFrontPageIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAnalyse(void) {
+void LoadAnalyse() {
   // this procedure will load the activation indent into memory
   guiANALYSE = AddVideoObjectFromFile(LAPTOPDIR "/analyze.sti");
 }
 
-void DeleteAnalyse(void) {
+void DeleteAnalyse() {
   // remove activation indent symbol
   DeleteVideoObject(guiANALYSE);
 }
 
-void LoadAttributeGraph(void) {
+void LoadAttributeGraph() {
   // this procedure will load the activation indent into memory
   guiATTRIBUTEGRAPH = AddVideoObjectFromFile(LAPTOPDIR "/attributegraph.sti");
 }
 
-void DeleteAttributeGraph(void) {
+void DeleteAttributeGraph() {
   // remove activation indent symbol
   DeleteVideoObject(guiATTRIBUTEGRAPH);
 }
 
-void LoadNickNameIndent(void) {
+void LoadNickNameIndent() {
   // this procedure will load the activation indent into memory
   guiNICKNAMEINDENT = AddVideoObjectFromFile(LAPTOPDIR "/nickname.sti");
 }
 
-void DeleteNickNameIndent(void) {
+void DeleteNickNameIndent() {
   // remove activation indent symbol
   DeleteVideoObject(guiNICKNAMEINDENT);
 }
@@ -178,12 +178,12 @@ void RenderNickNameIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadNameIndent(void) {
+void LoadNameIndent() {
   // this procedure will load the activation indent into memory
   guiNAMEINDENT = AddVideoObjectFromFile(LAPTOPDIR "/nameindent.sti");
 }
 
-void DeleteNameIndent(void) {
+void DeleteNameIndent() {
   // remove activation indent symbol
   DeleteVideoObject(guiNAMEINDENT);
 }
@@ -193,12 +193,12 @@ void RenderNameIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadGenderIndent(void) {
+void LoadGenderIndent() {
   // this procedure will load the activation indent into memory
   guiGENDERINDENT = AddVideoObjectFromFile(LAPTOPDIR "/genderindent.sti");
 }
 
-void DeleteGenderIndent(void) {
+void DeleteGenderIndent() {
   // remove activation indent symbol
   DeleteVideoObject(guiGENDERINDENT);
 }
@@ -208,22 +208,22 @@ void RenderGenderIndent(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadSmallSilhouette(void) {
+void LoadSmallSilhouette() {
   // this procedure will load the activation indent into memory
   guiSMALLSILHOUETTE = AddVideoObjectFromFile(LAPTOPDIR "/smallsilhouette.sti");
 }
 
-void DeleteSmallSilhouette(void) {
+void DeleteSmallSilhouette() {
   // remove activation indent symbol
   DeleteVideoObject(guiSMALLSILHOUETTE);
 }
 
-void LoadLargeSilhouette(void) {
+void LoadLargeSilhouette() {
   // this procedure will load the activation indent into memory
   guiLARGESILHOUETTE = AddVideoObjectFromFile(LAPTOPDIR "/largesilhouette.sti");
 }
 
-void DeleteLargeSilhouette(void) {
+void DeleteLargeSilhouette() {
   // remove activation indent symbol
   DeleteVideoObject(guiLARGESILHOUETTE);
 }
@@ -233,12 +233,12 @@ void RenderLargeSilhouette(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAttributeFrame(void) {
+void LoadAttributeFrame() {
   // this procedure will load the activation indent into memory
   guiATTRIBUTEFRAME = AddVideoObjectFromFile(LAPTOPDIR "/attributeframe.sti");
 }
 
-void DeleteAttributeFrame(void) {
+void DeleteAttributeFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiATTRIBUTEFRAME);
 }
@@ -294,12 +294,12 @@ void RenderAttributeFrameForIndex(INT16 sX, INT16 sY, INT32 iIndex) {
                    LAPTOP_SCREEN_UL_X + sX + 400, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY + 21);
 }
 
-void LoadSliderBar(void) {
+void LoadSliderBar() {
   // this procedure will load the activation indent into memory
   guiSLIDERBAR = AddVideoObjectFromFile(LAPTOPDIR "/attributeslider.sti");
 }
 
-void DeleteSliderBar(void) {
+void DeleteSliderBar() {
   // remove activation indent symbol
   DeleteVideoObject(guiSLIDERBAR);
 }
@@ -309,12 +309,12 @@ void RenderSliderBar(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadButton2Image(void) {
+void LoadButton2Image() {
   // this procedure will load the activation indent into memory
   guiBUTTON2IMAGE = AddVideoObjectFromFile(LAPTOPDIR "/button_2.sti");
 }
 
-void DeleteButton2Image(void) {
+void DeleteButton2Image() {
   // remove activation indent symbol
   DeleteVideoObject(guiBUTTON2IMAGE);
 }
@@ -324,12 +324,12 @@ void RenderButton2Image(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadButton4Image(void) {
+void LoadButton4Image() {
   // this procedure will load the activation indent into memory
   guiBUTTON4IMAGE = AddVideoObjectFromFile(LAPTOPDIR "/button_4.sti");
 }
 
-void DeleteButton4Image(void) {
+void DeleteButton4Image() {
   // remove activation indent symbol
   DeleteVideoObject(guiBUTTON4IMAGE);
 }
@@ -339,12 +339,12 @@ void RenderButton4Image(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadPortraitFrame(void) {
+void LoadPortraitFrame() {
   // this procedure will load the activation indent into memory
   guiPORTRAITFRAME = AddVideoObjectFromFile(LAPTOPDIR "/voice_portraitframe.sti");
 }
 
-void DeletePortraitFrame(void) {
+void DeletePortraitFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiPORTRAITFRAME);
 }
@@ -354,12 +354,12 @@ void RenderPortraitFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadMainIndentFrame(void) {
+void LoadMainIndentFrame() {
   // this procedure will load the activation indent into memory
   guiMAININDENT = AddVideoObjectFromFile(LAPTOPDIR "/mainprofilepageindent.sti");
 }
 
-void DeleteMainIndentFrame(void) {
+void DeleteMainIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiMAININDENT);
 }
@@ -369,12 +369,12 @@ void RenderMainIndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnLongIndentFrame(void) {
+void LoadQtnLongIndentFrame() {
   // this procedure will load the activation indent into memory
   guiLONGINDENT = AddVideoObjectFromFile(LAPTOPDIR "/longindent.sti");
 }
 
-void DeleteQtnLongIndentFrame(void) {
+void DeleteQtnLongIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiLONGINDENT);
 }
@@ -384,12 +384,12 @@ void RenderQtnLongIndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnShortIndentFrame(void) {
+void LoadQtnShortIndentFrame() {
   // this procedure will load the activation indent into memory
   guiSHORTINDENT = AddVideoObjectFromFile(LAPTOPDIR "/shortindent.sti");
 }
 
-void DeleteQtnShortIndentFrame(void) {
+void DeleteQtnShortIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiSHORTINDENT);
 }
@@ -399,12 +399,12 @@ void RenderQtnShortIndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnLongIndentHighFrame(void) {
+void LoadQtnLongIndentHighFrame() {
   // this procedure will load the activation indent into memory
   guiLONGHINDENT = AddVideoObjectFromFile(LAPTOPDIR "/longindenthigh.sti");
 }
 
-void DeleteQtnLongIndentHighFrame(void) {
+void DeleteQtnLongIndentHighFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiLONGHINDENT);
 }
@@ -414,12 +414,12 @@ void RenderQtnLongIndentHighFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnShortIndentHighFrame(void) {
+void LoadQtnShortIndentHighFrame() {
   // this procedure will load the activation indent into memory
   guiSHORTHINDENT = AddVideoObjectFromFile(LAPTOPDIR "/shortindenthigh.sti");
 }
 
-void DeleteQtnShortIndentHighFrame(void) {
+void DeleteQtnShortIndentHighFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiSHORTHINDENT);
 }
@@ -429,12 +429,12 @@ void RenderQtnShortIndentHighFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnIndentFrame(void) {
+void LoadQtnIndentFrame() {
   // this procedure will load the activation indent into memory
   guiQINDENT = AddVideoObjectFromFile(LAPTOPDIR "/questionindent.sti");
 }
 
-void DeleteQtnIndentFrame(void) {
+void DeleteQtnIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiQINDENT);
 }
@@ -443,12 +443,12 @@ void RenderQtnIndentFrame(INT16 sX, INT16 sY) {
   BltVideoObject(FRAME_BUFFER, guiQINDENT, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAttrib1IndentFrame(void) {
+void LoadAttrib1IndentFrame() {
   // this procedure will load the activation indent into memory
   guiA1INDENT = AddVideoObjectFromFile(LAPTOPDIR "/attributescreenindent_1.sti");
 }
 
-void DeleteAttrib1IndentFrame(void) {
+void DeleteAttrib1IndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiA1INDENT);
 }
@@ -458,12 +458,12 @@ void RenderAttrib1IndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAttrib2IndentFrame(void) {
+void LoadAttrib2IndentFrame() {
   // this procedure will load the activation indent into memory
   guiA2INDENT = AddVideoObjectFromFile(LAPTOPDIR "/attributescreenindent_2.sti");
 }
 
-void DeleteAttrib2IndentFrame(void) {
+void DeleteAttrib2IndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiA2INDENT);
 }
@@ -473,12 +473,12 @@ void RenderAttrib2IndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAvgMercIndentFrame(void) {
+void LoadAvgMercIndentFrame() {
   // this procedure will load the activation indent into memory
   guiAVGMERCINDENT = AddVideoObjectFromFile(LAPTOPDIR "/anaveragemercindent.sti");
 }
 
-void DeleteAvgMercIndentFrame(void) {
+void DeleteAvgMercIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiAVGMERCINDENT);
 }
@@ -488,12 +488,12 @@ void RenderAvgMercIndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadAboutUsIndentFrame(void) {
+void LoadAboutUsIndentFrame() {
   // this procedure will load the activation indent into memory
   guiABOUTUSINDENT = AddVideoObjectFromFile(LAPTOPDIR "/aboutusindent.sti");
 }
 
-void DeleteAboutUsIndentFrame(void) {
+void DeleteAboutUsIndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiABOUTUSINDENT);
 }
@@ -503,12 +503,12 @@ void RenderAboutUsIndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnShort2IndentFrame(void) {
+void LoadQtnShort2IndentFrame() {
   // this procedure will load the activation indent into memory
   guiSHORT2INDENT = AddVideoObjectFromFile(LAPTOPDIR "/shortindent2.sti");
 }
 
-void DeleteQtnShort2IndentFrame(void) {
+void DeleteQtnShort2IndentFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiSHORT2INDENT);
 }
@@ -518,12 +518,12 @@ void RenderQtnShort2IndentFrame(INT16 sX, INT16 sY) {
                  LAPTOP_SCREEN_WEB_UL_Y + sY);
 }
 
-void LoadQtnShort2IndentHighFrame(void) {
+void LoadQtnShort2IndentHighFrame() {
   // this procedure will load the activation indent into memory
   guiSHORT2HINDENT = AddVideoObjectFromFile(LAPTOPDIR "/shortindent2high.sti");
 }
 
-void DeleteQtnShort2IndentHighFrame(void) {
+void DeleteQtnShort2IndentHighFrame() {
   // remove activation indent symbol
   DeleteVideoObject(guiSHORT2HINDENT);
 }

@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPConfirm(void);
-void RenderIMPConfirm(void);
-void ExitIMPConfirm(void);
-void HandleIMPConfirm(void);
+void EnterIMPConfirm();
+void RenderIMPConfirm();
+void ExitIMPConfirm();
+void HandleIMPConfirm();
 
 void ResetIMPCharactersEyesAndMouthOffsets(UINT8 ubMercProfileID);
 

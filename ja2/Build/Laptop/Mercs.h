@@ -41,24 +41,24 @@ enum {
   MERC_CAME_FROM_HIRE_PAGE,
 };
 
-void GameInitMercs(void);
-void EnterMercs(void);
-void ExitMercs(void);
-void HandleMercs(void);
-void RenderMercs(void);
+void GameInitMercs();
+void EnterMercs();
+void ExitMercs();
+void HandleMercs();
+void RenderMercs();
 
-void InitMercBackGround(void);
-void DrawMecBackGround(void);
-void RemoveMercBackGround(void);
+void InitMercBackGround();
+void DrawMecBackGround();
+void RemoveMercBackGround();
 void DailyUpdateOfMercSite(UINT16 usDate);
 UINT8 GetMercIDFromMERCArray(UINT8 ubMercID);
 void DisplayTextForSpeckVideoPopUp(const wchar_t *pString);
 
-void EnterInitMercSite(void);
+void EnterInitMercSite();
 
-void GetMercSiteBackOnline(void);
+void GetMercSiteBackOnline();
 
-void DisableMercSiteButton(void);
+void DisableMercSiteButton();
 
 extern UINT16 gusMercVideoSpeckSpeech;
 
@@ -69,8 +69,8 @@ extern UINT8 gubCurMercIndex;
 
 extern BOOLEAN gfJustHiredAMercMerc;
 
-void NewMercsAvailableAtMercSiteCallBack(void);
+void NewMercsAvailableAtMercSiteCallBack();
 
-void CalcAproximateAmountPaidToSpeck(void);
+void CalcAproximateAmountPaidToSpeck();
 
 #endif

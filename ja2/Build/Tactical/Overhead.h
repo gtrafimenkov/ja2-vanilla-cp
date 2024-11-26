@@ -137,7 +137,7 @@ static inline SOLDIERTYPE *ID2Soldier(const SoldierID id) { return id != NOBODY 
 #define SOLDIER2ID(s) (Soldier2ID((s)))
 #define ID2SOLDIER(i) (ID2Soldier((i)))
 
-static inline SOLDIERTYPE *GetSelectedMan(void) {
+static inline SOLDIERTYPE *GetSelectedMan() {
   SOLDIERTYPE *const sel = g_selected_man;
   Assert(sel == NULL || sel->bActive);
   return sel;
@@ -193,11 +193,11 @@ static inline BOOLEAN IsTeamActive(const UINT team) {
 #define FOR_EACH_NON_PLAYER_SOLDIER(iter) BASE_FOR_EACH_NON_PLAYER_SOLDIER(SOLDIERTYPE, iter)
 #define CFOR_EACH_NON_PLAYER_SOLDIER(iter) BASE_FOR_EACH_NON_PLAYER_SOLDIER(const SOLDIERTYPE, iter)
 
-void InitTacticalEngine(void);
-void ShutdownTacticalEngine(void);
+void InitTacticalEngine();
+void ShutdownTacticalEngine();
 
 void InitOverhead();
-void ShutdownOverhead(void);
+void ShutdownOverhead();
 
 INT16 NewOKDestination(const SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, BOOLEAN fPeopleToo,
                        INT8 bLevel);
@@ -208,7 +208,7 @@ extern BOOLEAN IsLocationSittable(INT32 iMapIndex, BOOLEAN fOnRoof);
 extern BOOLEAN IsLocationSittableExcludingPeople(INT32 iMapIndex, BOOLEAN fOnRoof);
 extern BOOLEAN FlatRoofAboveGridNo(INT32 iMapIndex);
 
-void ExecuteOverhead(void);
+void ExecuteOverhead();
 
 void EndTurn(UINT8 ubNextTeam);
 void StartPlayerTeamTurn(BOOLEAN fDoBattleSnd, BOOLEAN fEnteringCombatMode);
@@ -231,7 +231,7 @@ void BeginTeamTurn(UINT8 ubTeam);
 void SlideTo(SOLDIERTYPE *tgt, BOOLEAN fSetLocator);
 void SlideToLocation(INT16 sDestGridNo);
 
-void RebuildAllSoldierShadeTables(void);
+void RebuildAllSoldierShadeTables();
 void HandlePlayerTeamMemberDeath(SOLDIERTYPE *pSoldier);
 
 SOLDIERTYPE *FindNextActiveAndAliveMerc(const SOLDIERTYPE *curr, BOOLEAN fGoodForLessOKLife,
@@ -261,35 +261,35 @@ INT32 MoveSoldierFromMercToAwaySlot(SOLDIERTYPE *pSoldier);
 void MoveSoldierFromAwayToMercSlot(SOLDIERTYPE *pSoldier);
 
 void EnterCombatMode(UINT8 ubStartingTeam);
-void ExitCombatMode(void);
+void ExitCombatMode();
 
 void HandleTeamServices(UINT8 ubTeamNum);
 void HandlePlayerServices(SOLDIERTYPE &);
 
-void SetEnemyPresence(void);
+void SetEnemyPresence();
 
-void CycleThroughKnownEnemies(void);
+void CycleThroughKnownEnemies();
 
 BOOLEAN CheckForEndOfCombatMode(BOOLEAN fIncrementTurnsNotSeen);
 
 SOLDIERTYPE *FreeUpAttacker(SOLDIERTYPE *attacker);
 
-BOOLEAN PlayerTeamFull(void);
+BOOLEAN PlayerTeamFull();
 
 void SetActionToDoOnceMercsGetToLocation(UINT8 ubActionCode, INT8 bNumMercsWaiting);
 
-void ResetAllMercSpeeds(void);
+void ResetAllMercSpeeds();
 
 BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEAN fInitialMove,
                             UINT16 usAnimState);
 
 SOLDIERTYPE *ReduceAttackBusyCount(SOLDIERTYPE *attacker, BOOLEAN fCalledByAttacker);
 
-void CommonEnterCombatModeCode(void);
+void CommonEnterCombatModeCode();
 
 void CheckForPotentialAddToBattleIncrement(SOLDIERTYPE *pSoldier);
 
-void CencelAllActionsForTimeCompression(void);
+void CencelAllActionsForTimeCompression();
 
 BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated);
 
@@ -315,21 +315,21 @@ void CivilianGroupChangesSides(UINT8 ubCivilianGroup);
 void CycleVisibleEnemies(SOLDIERTYPE *pSrcSoldier);
 UINT8 CivilianGroupMembersChangeSidesWithinProximity(SOLDIERTYPE *pAttacked);
 
-void PauseAITemporarily(void);
-void PauseAIUntilManuallyUnpaused(void);
-void UnPauseAI(void);
+void PauseAITemporarily();
+void PauseAIUntilManuallyUnpaused();
+void UnPauseAI();
 
-void DoPOWPathChecks(void);
+void DoPOWPathChecks();
 
-BOOLEAN HostileCiviliansPresent(void);
-BOOLEAN HostileBloodcatsPresent(void);
-UINT8 NumPCsInSector(void);
+BOOLEAN HostileCiviliansPresent();
+BOOLEAN HostileBloodcatsPresent();
+UINT8 NumPCsInSector();
 UINT8 NumEnemyInSector();
 
 void SetSoldierNonNeutral(SOLDIERTYPE *pSoldier);
 void SetSoldierNeutral(SOLDIERTYPE *pSoldier);
 
-void CaptureTimerCallback(void);
+void CaptureTimerCallback();
 SOLDIERTYPE *FindNextActiveSquad(SOLDIERTYPE *pSoldier);
 
 extern BOOLEAN gfSurrendered;
@@ -340,9 +340,9 @@ UINT8 NumCapableEnemyInSector();
 SOLDIERTYPE *FreeUpAttackerGivenTarget(SOLDIERTYPE *target);
 SOLDIERTYPE *ReduceAttackBusyGivenTarget(SOLDIERTYPE *target);
 
-UINT NumberOfMercsOnPlayerTeam(void);
+UINT NumberOfMercsOnPlayerTeam();
 
-void InitializeTacticalStatusAtBattleStart(void);
+void InitializeTacticalStatusAtBattleStart();
 
 void MakeCharacterDialogueEventSignalItemLocatorStart(SOLDIERTYPE &, GridNo location);
 

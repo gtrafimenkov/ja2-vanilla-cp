@@ -26,10 +26,10 @@
 
 void HandleMinuteUpdate() {}
 
-static void HourlyCheckIfSlayAloneSoHeCanLeave(void);
-static void HourlyLarryUpdate(void);
-static void HourlyQuestUpdate(void);
-static void UpdateRegenCounters(void);
+static void HourlyCheckIfSlayAloneSoHeCanLeave();
+static void HourlyLarryUpdate();
+static void HourlyQuestUpdate();
+static void UpdateRegenCounters();
 
 // This function gets called every hour, on the hour.
 // It spawns the handling of all sorts of stuff:
@@ -72,7 +72,7 @@ void HandleHourlyUpdate() {
   }
 }
 
-static void UpdateRegenCounters(void) {
+static void UpdateRegenCounters() {
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bRegenBoostersUsedToday > 0) --s->bRegenBoostersUsedToday;
   }
@@ -86,7 +86,7 @@ void HandleQuarterHourUpdate() {
   DecayTacticalMoraleModifiers();
 }
 
-static void HourlyQuestUpdate(void) {
+static void HourlyQuestUpdate() {
   UINT32 uiHour = GetWorldHour();
 
   // brothel
@@ -144,7 +144,7 @@ UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
 
 #define LARRY_FALLS_OFF_WAGON 8
 
-static void HourlyLarryUpdate(void) {
+static void HourlyLarryUpdate() {
   INT8 bSlot, bBoozeSlot;
   INT8 bLarryItemLoop;
   UINT16 usTemptation = 0;
@@ -256,7 +256,7 @@ static void HourlyLarryUpdate(void) {
   }
 }
 
-static void HourlyCheckIfSlayAloneSoHeCanLeave(void) {
+static void HourlyCheckIfSlayAloneSoHeCanLeave() {
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileIDOnPlayerTeam(SLAY);
   if (!pSoldier) {
     return;

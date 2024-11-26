@@ -8,8 +8,8 @@
 
 #include "SGP/Types.h"
 
-void InitializeMemoryManager(void);
-void ShutdownMemoryManager(void);
+void InitializeMemoryManager();
+void ShutdownMemoryManager();
 
 // Creates and adds a video object to list
 // Release build version

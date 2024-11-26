@@ -17,9 +17,9 @@ static BUTTON_PICS *giIMPAboutUsButtonImage[1];
 
 static void BtnIMPBackCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPAboutUsButtons(void);
+static void CreateIMPAboutUsButtons();
 
-void EnterIMPAboutUs(void) {
+void EnterIMPAboutUs() {
   // create buttons
   CreateIMPAboutUsButtons();
 
@@ -27,16 +27,16 @@ void EnterIMPAboutUs(void) {
   RenderIMPAboutUs();
 }
 
-static void DeleteIMPAboutUsButtons(void);
+static void DeleteIMPAboutUsButtons();
 
-void ExitIMPAboutUs(void) {
+void ExitIMPAboutUs() {
   // exit from IMP About us page
 
   // delete Buttons
   DeleteIMPAboutUsButtons();
 }
 
-void RenderIMPAboutUs(void) {
+void RenderIMPAboutUs() {
   // rneders the IMP about us page
 
   // the background
@@ -51,11 +51,11 @@ void RenderIMPAboutUs(void) {
   RenderAboutUsIndentFrame(258, 130);
 }
 
-void HandleIMPAboutUs(void) {
+void HandleIMPAboutUs() {
   // handles the IMP about us page
 }
 
-static void CreateIMPAboutUsButtons(void) {
+static void CreateIMPAboutUsButtons() {
   // this function will create the buttons needed for th IMP about us page
   // the back button button
   giIMPAboutUsButtonImage[0] = LoadButtonImage(LAPTOPDIR "/button_3.sti", 0, 1);
@@ -67,7 +67,7 @@ static void CreateIMPAboutUsButtons(void) {
   giIMPAboutUsButton[0]->SetCursor(CURSOR_WWW);
 }
 
-static void DeleteIMPAboutUsButtons(void) {
+static void DeleteIMPAboutUsButtons() {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the about back button

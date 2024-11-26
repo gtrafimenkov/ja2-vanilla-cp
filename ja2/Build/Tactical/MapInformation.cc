@@ -103,7 +103,7 @@ void LoadMapInformation(HWFILE const f) {
 // every time.  This is completely transparent to the rest of the game, but in
 // the editor, obsolete versions will be updated upon loading and won't be
 // permanently updated until the map is saved, regardless of changes.
-static void UpdateOldVersionMap(void) {
+static void UpdateOldVersionMap() {
 #if 0   // This code is no longer needed since the major version update from 1.0
         // to 4.0 However, I am keeping it in for reference.
 	INT32 i;
@@ -477,7 +477,7 @@ static void UpdateOldVersionMap(void) {
   }
 }
 
-static void AutoCalculateItemNoOverwriteStatus(void) {
+static void AutoCalculateItemNoOverwriteStatus() {
   INT32 i;
   OBJECTTYPE *pItem;
 

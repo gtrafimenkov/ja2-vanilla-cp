@@ -101,7 +101,7 @@ static BUTTON_PICS *giMapBorderButtonsImage[6];
 // BOOLEAN ScrollButtonsDisplayingHelpMessage( void );
 // void UpdateScrollButtonStatesWhileScrolling( void );
 
-extern void CancelMapUIMessage(void);
+extern void CancelMapUIMessage();
 
 // void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason);
 
@@ -114,7 +114,7 @@ void BtnLowerLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
-void LoadMapBorderGraphics(void) {
+void LoadMapBorderGraphics() {
   // this procedure will load the graphics needed for the map border
   guiLEVELMARKER = AddVideoObjectFromFile(INTERFACEDIR "/greenarr.sti");
   guiMapBorder = AddVideoObjectFromFile(MAP_BORDER_FILE);
@@ -129,7 +129,7 @@ void LoadMapBorderGraphics(void) {
   */
 }
 
-void DeleteMapBorderGraphics(void) {
+void DeleteMapBorderGraphics() {
   // procedure will delete graphics loaded for map border
   DeleteVideoObject(guiLEVELMARKER);
   DeleteVideoObject(guiMapBorder);
@@ -137,9 +137,9 @@ void DeleteMapBorderGraphics(void) {
   //	DeleteVideoObject(guiMapBorderCorner);
 }
 
-static void DisplayCurrentLevelMarker(void);
+static void DisplayCurrentLevelMarker();
 
-void RenderMapBorder(void) {
+void RenderMapBorder() {
   // renders the actual border to the guiSAVEBUFFER
   /*
           if( fDisabledMapBorder )
@@ -181,7 +181,7 @@ MAP_BORDER_CORNER_Y);
 }
 */
 
-void RenderMapBorderEtaPopUp(void) {
+void RenderMapBorderEtaPopUp() {
   // renders map border corner to the FRAME_BUFFER
   /*
           if( fDisabledMapBorder )
@@ -228,9 +228,9 @@ static void BtnMilitiaCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnMineCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnTeamCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnTownCallback(GUI_BUTTON *btn, INT32 reason);
-static void InitializeMapBorderButtonStates(void);
+static void InitializeMapBorderButtonStates();
 
-void CreateButtonsForMapBorder(void) {
+void CreateButtonsForMapBorder() {
   // will create the buttons needed for the map screen border region
 #if 0
 	MakeButtonScroll(ZOOM_MAP_SCROLL_UP,    11, 4, 602, 303, BtnScrollNorthMapScreenCallback, pMapScreenBorderButtonHelpText[6]);
@@ -280,7 +280,7 @@ void CreateButtonsForMapBorder(void) {
   InitializeMapBorderButtonStates();
 }
 
-void DeleteMapBorderButtons(void) {
+void DeleteMapBorderButtons() {
   UINT8 ubCnt;
 
   /*
@@ -361,7 +361,7 @@ void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-static void CommonBtnCallbackBtnDownChecks(void);
+static void CommonBtnCallbackBtnDownChecks();
 
 static void BtnMilitiaCallback(GUI_BUTTON *btn, INT32 reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -466,7 +466,7 @@ void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason)
 static void MapBorderButtonOff(UINT8 ubBorderButtonIndex);
 static void MapBorderButtonOn(UINT8 ubBorderButtonIndex);
 
-void ToggleShowTownsMode(void) {
+void ToggleShowTownsMode() {
   if (fShowTownFlag) {
     fShowTownFlag = FALSE;
     MapBorderButtonOff(MAP_BORDER_TOWN_BTN);
@@ -493,7 +493,7 @@ void ToggleShowTownsMode(void) {
   fMapPanelDirty = TRUE;
 }
 
-void ToggleShowMinesMode(void) {
+void ToggleShowMinesMode() {
   if (fShowMineFlag) {
     fShowMineFlag = FALSE;
     MapBorderButtonOff(MAP_BORDER_MINE_BTN);
@@ -522,7 +522,7 @@ void ToggleShowMinesMode(void) {
 
 static bool DoesPlayerHaveAnyMilitia();
 
-void ToggleShowMilitiaMode(void) {
+void ToggleShowMilitiaMode() {
   if (fShowMilitia) {
     fShowMilitia = FALSE;
     MapBorderButtonOff(MAP_BORDER_MILITIA_BTN);
@@ -573,7 +573,7 @@ void ToggleShowMilitiaMode(void) {
   fMapPanelDirty = TRUE;
 }
 
-void ToggleShowTeamsMode(void) {
+void ToggleShowTeamsMode() {
   if (fShowTeamFlag) {
     // turn show teams OFF
     fShowTeamFlag = FALSE;
@@ -588,7 +588,7 @@ void ToggleShowTeamsMode(void) {
   }
 }
 
-void ToggleAirspaceMode(void) {
+void ToggleAirspaceMode() {
   if (fShowAircraftFlag) {
     // turn airspace OFF
     fShowAircraftFlag = FALSE;
@@ -607,9 +607,9 @@ void ToggleAirspaceMode(void) {
   }
 }
 
-static void TurnOnItemFilterMode(void);
+static void TurnOnItemFilterMode();
 
-void ToggleItemsFilter(void) {
+void ToggleItemsFilter() {
   if (fShowItemsFlag) {
     // turn items OFF
     fShowItemsFlag = FALSE;
@@ -824,7 +824,7 @@ MSYS_HAS_BACKRECT)
 }
 */
 
-static void DisplayCurrentLevelMarker(void) {
+static void DisplayCurrentLevelMarker() {
   // display the current level marker on the map border
   /*
           if( fDisabledMapBorder )
@@ -840,7 +840,7 @@ static void DisplayCurrentLevelMarker(void) {
 
 static void LevelMarkerBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void CreateMouseRegionsForLevelMarkers(void) {
+void CreateMouseRegionsForLevelMarkers() {
   for (UINT sCounter = 0; sCounter < 4; ++sCounter) {
     MOUSE_REGION *const r = &LevelMouseRegions[sCounter];
     const UINT16 x = MAP_LEVEL_MARKER_X;
@@ -909,7 +909,7 @@ void EnableMapBorderRegion( void )
 }
 */
 
-void TurnOnShowTeamsMode(void) {
+void TurnOnShowTeamsMode() {
   // if mode already on, leave, else set and redraw
 
   if (!fShowTeamFlag) {
@@ -941,7 +941,7 @@ void TurnOnShowTeamsMode(void) {
   }
 }
 
-void TurnOnAirSpaceMode(void) {
+void TurnOnAirSpaceMode() {
   // if mode already on, leave, else set and redraw
 
   if (!fShowAircraftFlag) {
@@ -998,7 +998,7 @@ void TurnOnAirSpaceMode(void) {
   }
 }
 
-static void TurnOnItemFilterMode(void) {
+static void TurnOnItemFilterMode() {
   // if mode already on, leave, else set and redraw
 
   if (!fShowItemsFlag) {
@@ -1087,7 +1087,7 @@ ZOOM_MAP_SCROLL_RIGHT ] );
 */
 
 // set button states to match map flags
-static void InitializeMapBorderButtonStates(void) {
+static void InitializeMapBorderButtonStates() {
   if (fShowItemsFlag) {
     MapBorderButtonOn(MAP_BORDER_ITEM_BTN);
   } else {
@@ -1133,14 +1133,14 @@ static bool DoesPlayerHaveAnyMilitia() {
   return false;
 }
 
-static void CommonBtnCallbackBtnDownChecks(void) {
+static void CommonBtnCallbackBtnDownChecks() {
   // any click cancels MAP UI messages, unless we're in confirm map move mode
   if (g_ui_message_overlay != NULL && !gfInConfirmMapMoveMode) {
     CancelMapUIMessage();
   }
 }
 
-void InitMapScreenFlags(void) {
+void InitMapScreenFlags() {
   fShowTownFlag = TRUE;
   fShowMineFlag = FALSE;
 

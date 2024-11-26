@@ -6,9 +6,9 @@
 #define FLOR_CARD_TEXT_FILE BINARYDATADIR "/flowercard.edt"
 #define FLOR_CARD_TEXT_TITLE_SIZE 5 * 80
 
-void EnterFloristCards(void);
-void ExitFloristCards(void);
-void RenderFloristCards(void);
+void EnterFloristCards();
+void ExitFloristCards();
+void RenderFloristCards();
 
 extern INT8 gbCurrentlySelectedCard;
 

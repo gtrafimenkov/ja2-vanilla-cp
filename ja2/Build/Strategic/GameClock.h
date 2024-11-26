@@ -49,26 +49,26 @@ enum LockPauseReason {
 // PAUSE FEATURES
 // Pauses and unpauses the game.  It sets and clears a flag which preserves the
 // time rate.
-void PauseGame(void);
-void UnPauseGame(void);
-BOOLEAN GamePaused(void);
+void PauseGame();
+void UnPauseGame();
+BOOLEAN GamePaused();
 void LockPauseState(LockPauseReason);
-void UnLockPauseState(void);
-BOOLEAN PauseStateLocked(void);
+void UnLockPauseState();
+BOOLEAN PauseStateLocked();
 
 // USING HIGH RESOLUTION TIME RATE MANIPULATION/ACCESS
 // Allows external code to change the time rate.
 void SetGameHoursPerSecond(UINT32 uiGameHoursPerSecond);
 void SetGameMinutesPerSecond(UINT32 uiGameMinutesPerSecond);
 // Allows access to the current time rate.
-UINT32 GetGameSecondsPerFrame(void);
-void RenderPausedGameBox(void);
+UINT32 GetGameSecondsPerFrame();
+void RenderPausedGameBox();
 
-void StopTimeCompression(void);
-void StartTimeCompression(void);
+void StopTimeCompression();
+void StartTimeCompression();
 BOOLEAN
-IsTimeBeingCompressed(void);  // returns FALSE if time isn't currently being
-                              // compressed for ANY reason (various pauses, etc.)
+IsTimeBeingCompressed();  // returns FALSE if time isn't currently being
+                          // compressed for ANY reason (various pauses, etc.)
 BOOLEAN IsTimeCompressionOn(
     void);  // returns TRUE if the player currently wants time to be compressing
 
@@ -80,8 +80,8 @@ BOOLEAN IsTimeCompressionOn(
 // will also be between TIME_COMPRESS_X1 to TIME_COMPRESS_X8 based in the laptop
 // time compression.
 void SetGameTimeCompressionLevel(UINT32 uiCompressionRate);
-void DecreaseGameTimeCompressionRate(void);
-void IncreaseGameTimeCompressionRate(void);
+void DecreaseGameTimeCompressionRate();
+void IncreaseGameTimeCompressionRate();
 
 // time compression defines
 enum {
@@ -114,11 +114,11 @@ enum {
 };
 void WarpGameTime(UINT32 uiAdjustment, UINT8 ubWarpCode);
 
-void AdvanceToNextDay(void);
+void AdvanceToNextDay();
 
 // This function is called once per cycle in the game loop.  This determine how
 // often the clock should be as well as how much to update the clock by.
-void UpdateClock(void);
+void UpdateClock();
 
 extern wchar_t gswzWorldTimeStr[20];  // Day 99, 23:55
 
@@ -148,32 +148,32 @@ extern BOOLEAN gfResetAllPlayerKnowsEnemiesFlags;
 
 extern UINT32 guiLockPauseStateLastReasonId;
 
-UINT32 GetWorldTotalMin(void);
-UINT32 GetWorldTotalSeconds(void);
-UINT32 GetWorldHour(void);
-UINT32 GetWorldDay(void);
-UINT32 GetWorldMinutesInDay(void);
-UINT32 GetWorldDayInSeconds(void);
-UINT32 GetWorldDayInMinutes(void);
+UINT32 GetWorldTotalMin();
+UINT32 GetWorldTotalSeconds();
+UINT32 GetWorldHour();
+UINT32 GetWorldDay();
+UINT32 GetWorldMinutesInDay();
+UINT32 GetWorldDayInSeconds();
+UINT32 GetWorldDayInMinutes();
 UINT32 GetFutureDayInMinutes(UINT32 uiDay);
 UINT32 GetMidnightOfFutureDayInMinutes(UINT32 uiDay);
 
-BOOLEAN DayTime(void);
-BOOLEAN NightTime(void);
+BOOLEAN DayTime();
+BOOLEAN NightTime();
 
-void InitNewGameClock(void);
+void InitNewGameClock();
 
 void GotoNextTimeOfDay(UINT32 uiTOD);
 
-void RenderClock(void);
+void RenderClock();
 
 // IMPORTANT FUNCTION:  Used whenever an event or situation is deemed important
 // enough to cancel the further processing of time in this current time slice!
 // This can only be used inside of event callback functions -- otherwise, it'll
 // be ignored and automatically reset.  An example of this would be when arriving
 // in a new sector and being prompted to attack or retreat.
-void InterruptTime(void);
-void PauseTimeForInterupt(void);
+void InterruptTime();
+void PauseTimeForInterupt();
 
 extern BOOLEAN gfTimeInterrupt;
 
@@ -183,20 +183,20 @@ void SaveGameClock(HWFILE, BOOLEAN fGamePaused, BOOLEAN fLockPauseState);
 void LoadGameClock(HWFILE);
 
 // time compress flag stuff
-BOOLEAN HasTimeCompressOccured(void);
-void ResetTimeCompressHasOccured(void);
-void SetFactTimeCompressHasOccured(void);
+BOOLEAN HasTimeCompressOccured();
+void ResetTimeCompressHasOccured();
+void SetFactTimeCompressHasOccured();
 
 // create mouse region to pause game
-void CreateMouseRegionForPauseOfClock(void);
+void CreateMouseRegionForPauseOfClock();
 
 // remove mouse region for pause game
-void RemoveMouseRegionForPauseOfClock(void);
+void RemoveMouseRegionForPauseOfClock();
 
 // handle pausing and unpausing of game
-void HandlePlayerPauseUnPauseOfGame(void);
+void HandlePlayerPauseUnPauseOfGame();
 
-void ClearTacticalStuffDueToTimeCompression(void);
+void ClearTacticalStuffDueToTimeCompression();
 
 extern BOOLEAN gfGamePaused;
 extern BOOLEAN gfLockPauseState;

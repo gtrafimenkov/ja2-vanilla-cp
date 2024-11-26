@@ -43,10 +43,10 @@ extern INT32 iCurrentVoices;
 extern void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
 extern void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPFinishButtons(void);
-static void LoadCharacterPortrait(void);
+static void CreateIMPFinishButtons();
+static void LoadCharacterPortrait();
 
-void EnterIMPFinish(void) {
+void EnterIMPFinish() {
   // load graphic for portrait
   LoadCharacterPortrait();
 
@@ -61,9 +61,9 @@ void EnterIMPFinish(void) {
   fFinishedCharGeneration = TRUE;
 }
 
-static void RenderCharFullName(void);
+static void RenderCharFullName();
 
-void RenderIMPFinish(void) {
+void RenderIMPFinish() {
   // the background
   RenderProfileBackGround();
 
@@ -74,10 +74,10 @@ void RenderIMPFinish(void) {
   RenderBeginIndent(110, 50);
 }
 
-static void DeleteIMPFinishButtons(void);
-static void DestroyCharacterPortrait(void);
+static void DeleteIMPFinishButtons();
+static void DestroyCharacterPortrait();
 
-void ExitIMPFinish(void) {
+void ExitIMPFinish() {
   // remove buttons for IMP finish screen
   DeleteIMPFinishButtons();
 
@@ -85,7 +85,7 @@ void ExitIMPFinish(void) {
   DestroyCharacterPortrait();
 }
 
-void HandleIMPFinish(void) {}
+void HandleIMPFinish() {}
 
 static void MakeButton(UINT idx, const char *img_file, const wchar_t *text, INT16 x, INT16 y,
                        GUI_CALLBACK click) {
@@ -105,7 +105,7 @@ static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPFinishButtons(void) {
+static void CreateIMPFinishButtons() {
   // this function will create the buttons needed for th IMP about us page
   const INT16 dx = LAPTOP_SCREEN_UL_X;
   const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
@@ -141,7 +141,7 @@ static void CreateIMPFinishButtons(void) {
   giIMPFinishButton[5]->SpecifyIcon(guiSMALLSILHOUETTE, 0, 33, 23, FALSE);
 }
 
-static void DeleteIMPFinishButtons(void) {
+static void DeleteIMPFinishButtons() {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the back  button
@@ -237,7 +237,7 @@ static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void RenderCharFullName(void) {
+static void RenderCharFullName() {
   wchar_t sString[64];
   INT16 sX, sY;
 
@@ -249,13 +249,13 @@ static void RenderCharFullName(void) {
   MPrint(sX, LAPTOP_SCREEN_WEB_DELTA_Y + 33, sString);
 }
 
-static void LoadCharacterPortrait(void) {
+static void LoadCharacterPortrait() {
   // this function will load the character's portrait, to be used on portrait
   // button load it
   guiCHARACTERPORTRAIT = LoadIMPPortait();
 }
 
-static void DestroyCharacterPortrait(void) {
+static void DestroyCharacterPortrait() {
   // remove the portrait that was loaded by loadcharacterportrait
   DeleteVideoObject(guiCHARACTERPORTRAIT);
 }

@@ -34,7 +34,7 @@ struct MAPCREATE_STRUCT {
   INT16 sCenterGridNo;
   INT16 sIsolatedGridNo;
   INT8 bPadding[83];  // I'm sure lots of map info will be added // XXX HACK000B
-};                    // 99 bytes
+};  // 99 bytes
 
 extern MAPCREATE_STRUCT gMapInformation;
 
@@ -44,7 +44,7 @@ struct SUMMARYFILE;
 void UpdateSummaryInfo(SUMMARYFILE *);
 
 void LoadMapInformation(HWFILE);
-void ValidateAndUpdateMapVersionIfNecessary(void);
+void ValidateAndUpdateMapVersionIfNecessary();
 BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo);
 
 extern BOOLEAN gfWorldLoaded;

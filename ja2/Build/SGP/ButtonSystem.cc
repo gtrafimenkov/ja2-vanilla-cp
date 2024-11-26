@@ -116,7 +116,7 @@ static BOOLEAN gfPendingButtonDeletion = FALSE;
 extern MOUSE_REGION *MSYS_PrevRegion;
 
 // Finds an available slot for loading button pictures
-static BUTTON_PICS *FindFreeButtonSlot(void) {
+static BUTTON_PICS *FindFreeButtonSlot() {
   // Search for a slot
   FOR_EACH(BUTTON_PICS, i, ButtonPictures) {
     if (i->vobj == NULL) return i;
@@ -253,7 +253,7 @@ void EnableButton(GUIButtonRef const b, bool const enable) {
 /* Initializes the button image sub-system. This function is called by
  * InitButtonSystem.
  */
-static void InitializeButtonImageManager(void) {
+static void InitializeButtonImageManager() {
   // Blank out all QuickButton images
   for (int x = 0; x < MAX_BUTTON_PICS; ++x) {
     BUTTON_PICS *const pics = &ButtonPictures[x];
@@ -298,7 +298,7 @@ static void InitializeButtonImageManager(void) {
 }
 
 // Finds the next available slot for button icon images.
-static INT16 FindFreeIconSlot(void) {
+static INT16 FindFreeIconSlot() {
   for (INT16 x = 0; x < MAX_BUTTON_ICONS; ++x) {
     if (GenericButtonIcons[x] == NULL) return x;
   }
@@ -334,7 +334,7 @@ void UnloadGenericButtonIcon(INT16 GenImg) {
 }
 
 // Cleans up, and shuts down the button image manager sub-system.
-static void ShutdownButtonImageManager(void) {
+static void ShutdownButtonImageManager() {
   // Remove all QuickButton images
   FOR_EACH(BUTTON_PICS, i, ButtonPictures) {
     if (i->vobj != NULL) UnloadButtonImage(i);
@@ -369,20 +369,20 @@ static void ShutdownButtonImageManager(void) {
   }
 }
 
-void InitButtonSystem(void) {
+void InitButtonSystem() {
   ButtonDestBuffer = FRAME_BUFFER;
 
   // Initialize the button image manager sub-system
   InitializeButtonImageManager();
 }
 
-void ShutdownButtonSystem(void) {
+void ShutdownButtonSystem() {
   // Kill off all buttons in the system
   FOR_EACH_BUTTON(i) { delete *i; }
   ShutdownButtonImageManager();
 }
 
-static void RemoveButtonsMarkedForDeletion(void) {
+static void RemoveButtonsMarkedForDeletion() {
   FOR_EACH_BUTTON(i) {
     if ((*i)->uiFlags & BUTTON_DELETION_PENDING) delete *i;
   }
@@ -412,7 +412,7 @@ void RemoveButton(GUIButtonRef &btn) {
 }
 
 // Finds the next available button slot.
-static INT32 GetNextButtonNumber(void) {
+static INT32 GetNextButtonNumber() {
   /* Never hand out ID 0.  Slot 0 is always a null pointer */
   for (INT32 x = 1; x < MAX_BUTTONS; x++) {
     if (ButtonList[x] == NULL) return x;
@@ -824,7 +824,7 @@ static void QuickButtonCallbackMButn(MOUSE_REGION *reg, INT32 reason) {
 
 static void DrawButtonFromPtr(GUI_BUTTON *b);
 
-void RenderButtons(void) {
+void RenderButtons() {
   SaveFontSettings();
   FOR_EACH_BUTTON(i) {
     // If the button exists, and it's not owned by another object, draw it
@@ -865,7 +865,7 @@ void MarkAButtonDirty(GUIButtonRef const b) {
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void MarkButtonsDirty(void) {
+void MarkButtonsDirty() {
   FOR_EACH_BUTTON(i) { (*i)->uiFlags |= BUTTON_DIRTY; }
 }
 
@@ -874,7 +874,7 @@ void UnMarkButtonDirty(GUIButtonRef const b) {
   b->uiFlags &= ~BUTTON_DIRTY;
 }
 
-void UnmarkButtonsDirty(void) {
+void UnmarkButtonsDirty() {
   FOR_EACH_BUTTON(i) { UnMarkButtonDirty(*i); }
 }
 
@@ -1423,7 +1423,7 @@ static void DefaultMoveCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ReleaseAnchorMode(void) {
+void ReleaseAnchorMode() {
   GUI_BUTTON *const b = gpAnchoredButton;
   if (!b) return;
 
@@ -1463,4 +1463,4 @@ void ShowButton(GUIButtonRef const b) {
   b->Show();
 }
 
-UINT16 GetGenericButtonFillColor(void) { return GenericButtonFillColors; }
+UINT16 GetGenericButtonFillColor() { return GenericButtonFillColors; }

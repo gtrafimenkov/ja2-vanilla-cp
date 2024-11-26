@@ -29,7 +29,7 @@ static INT32 giDefaultStructIndex = -1;
 TILE_CACHE_ELEMENT *gpTileCache;
 static std::vector<TILE_CACHE_STRUCT> gpTileCacheStructInfo;
 
-void InitTileCache(void) {
+void InitTileCache() {
   gpTileCache = MALLOCN(TILE_CACHE_ELEMENT, guiMaxTileCacheSize);
   guiCurTileCacheSize = 0;
 

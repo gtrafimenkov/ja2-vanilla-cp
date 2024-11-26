@@ -43,22 +43,22 @@ extern SGPRect gDirtyClipRect;
 
 // DIRTY QUEUE
 void AddBaseDirtyRect(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom);
-void ExecuteBaseDirtyRectQueue(void);
+void ExecuteBaseDirtyRectQueue();
 
 // BACKGROUND RECT BUFFERING STUFF
-void InitializeBackgroundRects(void);
-void ShutdownBackgroundRects(void);
+void InitializeBackgroundRects();
+void ShutdownBackgroundRects();
 BACKGROUND_SAVE *RegisterBackgroundRect(BackgroundFlags, INT16 x, INT16 y, INT16 w, INT16 h);
 void FreeBackgroundRect(BACKGROUND_SAVE *);
 void FreeBackgroundRectPending(BACKGROUND_SAVE *);
 void FreeBackgroundRectType(BackgroundFlags);
-void RestoreBackgroundRects(void);
-void SaveBackgroundRects(void);
-void InvalidateBackgroundRects(void);
-void UpdateSaveBuffer(void);
+void RestoreBackgroundRects();
+void SaveBackgroundRects();
+void InvalidateBackgroundRects();
+void UpdateSaveBuffer();
 void RestoreExternBackgroundRect(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight);
 void RegisterBackgroundRectSingleFilled(INT16 x, INT16 y, INT16 w, INT16 h);
-void EmptyBackgroundRects(void);
+void EmptyBackgroundRects();
 void RestoreExternBackgroundRectGivenID(const BACKGROUND_SAVE *);
 
 void GDirtyPrint(INT16 x, INT16 y, wchar_t const *str);
@@ -74,13 +74,13 @@ void GPrintInvalidateF(INT16 x, INT16 y, wchar_t const *fmt, ...);
 VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK callback, INT16 x, INT16 y, INT16 w, INT16 h);
 VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK callback, INT16 x, INT16 y, Font font,
                                     UINT8 foreground, UINT8 background, wchar_t const *text);
-void ExecuteVideoOverlays(void);
+void ExecuteVideoOverlays();
 void SaveVideoOverlaysArea(SGPVSurface *src);
 
 // Delete Topmost blitters saved areas
-void DeleteVideoOverlaysArea(void);
+void DeleteVideoOverlaysArea();
 
-void AllocateVideoOverlaysArea(void);
+void AllocateVideoOverlaysArea();
 void ExecuteVideoOverlaysToAlternateBuffer(SGPVSurface *buffer);
 void RemoveVideoOverlay(VIDEO_OVERLAY *);
 void RestoreShiftedVideoOverlays(INT16 sShiftX, INT16 sShiftY);

@@ -53,7 +53,7 @@ extern SOLDIERTYPE *Squad[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
 extern INT32 iCurrentTacticalSquad;
 
 // will initialize the squad lists for game initalization
-void InitSquads(void);
+void InitSquads();
 
 // add character to squad
 BOOLEAN AddCharacterToSquad(SOLDIERTYPE *pCharacter, INT8 bSquadValue);
@@ -78,13 +78,13 @@ INT8 NumberOfPlayerControllableMercsInSquad(INT8 bSquadValue);
 BOOLEAN SectorSquadIsIn(INT8 bSquadValue, INT16 *sMapX, INT16 *sMapY, INT8 *sMapZ);
 
 // rebuild current squad list
-void RebuildCurrentSquad(void);
+void RebuildCurrentSquad();
 
 // copy path from character back to squad
 void CopyPathOfCharacterToSquad(SOLDIERTYPE *pCharacter, INT8 bSquadValue);
 
 // what is the id of the current squad?
-INT32 CurrentSquad(void);
+INT32 CurrentSquad();
 
 // add character to unique squad, returns the squad #
 INT8 AddCharacterToUniqueSquad(SOLDIERTYPE *pCharacter);
@@ -102,9 +102,9 @@ BOOLEAN SetCurrentSquad(INT32 iCurrentSquad, BOOLEAN fForce);
 void SetDefaultSquadOnSectorEntry(BOOLEAN fForce);
 
 // get last squad that has active mercs
-INT32 GetLastSquadActive(void);
+INT32 GetLastSquadActive();
 
-void ExamineCurrentSquadLights(void);
+void ExamineCurrentSquadLights();
 
 // Save the squad information to the saved game file
 void SaveSquadInfoToSavedGameFile(HWFILE);
@@ -113,7 +113,7 @@ void SaveSquadInfoToSavedGameFile(HWFILE);
 void LoadSquadInfoFromSavedGameFile(HWFILE);
 
 // get squad id of first free squad
-INT8 GetFirstEmptySquad(void);
+INT8 GetFirstEmptySquad();
 
 // dead soldier was on squad
 BOOLEAN SoldierIsDeadAndWasOnSquad(SOLDIERTYPE *pSoldier, INT8 bSquadValue);
@@ -134,6 +134,6 @@ BOOLEAN IsThisSquadOnTheMove(INT8 bSquadValue);
 BOOLEAN DoesVehicleExistInSquad(INT8 bSquadValue);
 
 // re-create any trashed squad movement groups
-void CheckSquadMovementGroups(void);
+void CheckSquadMovementGroups();
 
 #endif

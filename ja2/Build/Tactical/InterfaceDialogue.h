@@ -52,11 +52,11 @@ BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier
 void TalkingMenuDialogue(UINT16 usQuoteNum);
 
 // Removes memory allocated for structure, removes face...
-void DeleteTalkingMenu(void);
+void DeleteTalkingMenu();
 
-BOOLEAN HandleTalkingMenu(void);
+BOOLEAN HandleTalkingMenu();
 
-void RenderTalkingMenu(void);
+void RenderTalkingMenu();
 
 BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey);
 
@@ -65,7 +65,7 @@ void NPCGotoGridNo(ProfileID ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum);
 // NPC Do action
 void NPCDoAction(ProfileID ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum);
 
-void HandleWaitTimerForNPCTrigger(void);
+void HandleWaitTimerForNPCTrigger();
 
 void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos);
 void HandleNPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, BOOLEAN fShowDialogueMenu,
@@ -348,9 +348,9 @@ extern UINT32 CalcMedicalCost(UINT8 ubId);
 
 extern BOOLEAN gfInTalkPanel;
 
-void HandleTalkingMenuBackspace(void);
+void HandleTalkingMenuBackspace();
 
-void HandlePendingInitConv(void);
+void HandlePendingInitConv();
 
 extern BOOLEAN gfWaitingForTriggerTimer;
 extern MercPopUpBox *g_interface_dialogue_box;

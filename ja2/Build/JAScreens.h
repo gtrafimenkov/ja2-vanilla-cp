@@ -4,25 +4,25 @@
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
 
-ScreenID ErrorScreenHandle(void);
+ScreenID ErrorScreenHandle();
 
-ScreenID InitScreenHandle(void);
+ScreenID InitScreenHandle();
 
-ScreenID PalEditScreenHandle(void);
+ScreenID PalEditScreenHandle();
 
-ScreenID DebugScreenHandle(void);
+ScreenID DebugScreenHandle();
 
-ScreenID SexScreenHandle(void);
+ScreenID SexScreenHandle();
 
 // External functions
-void DisplayFrameRate(void);
+void DisplayFrameRate();
 
-void HandleTitleScreenAnimation(void);
+void HandleTitleScreenAnimation();
 
 // External Globals
 extern ScreenID guiCurrentScreen;
 
-typedef void (*RENDER_HOOK)(void);
+typedef void (*RENDER_HOOK)();
 
 void SetRenderHook(RENDER_HOOK pRenderOverride);
 void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage);

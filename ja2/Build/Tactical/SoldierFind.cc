@@ -56,7 +56,7 @@ struct SOLDIER_STACK_TYPE {
 static SOLDIER_STACK_TYPE gSoldierStack;
 static BOOLEAN gfHandleStack = FALSE;
 
-SOLDIERTYPE *FindSoldierFromMouse(void) {
+SOLDIERTYPE *FindSoldierFromMouse() {
   const GridNo pos = GetMouseMapPos();
   if (pos == NOWHERE) return NULL;
   return FindSoldier(pos, FINDSOLDIERSAMELEVEL(gsInterfaceLevel));

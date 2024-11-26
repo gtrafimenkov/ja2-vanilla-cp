@@ -36,7 +36,7 @@ UINT32 guiNumWorldItems = 0;
 WORLDBOMB *gWorldBombs = NULL;
 UINT32 guiNumWorldBombs = 0;
 
-static INT32 GetFreeWorldBombIndex(void) {
+static INT32 GetFreeWorldBombIndex() {
   UINT32 uiCount;
   WORLDBOMB *newWorldBombs;
   UINT32 uiOldNumWorldBombs;
@@ -92,7 +92,7 @@ INT32 FindWorldItemForBombInGridNo(const INT16 sGridNo, const INT8 bLevel) {
   throw std::logic_error("Cannot find bomb item");
 }
 
-void FindPanicBombsAndTriggers(void) {
+void FindPanicBombsAndTriggers() {
   // This function searches the bomb table to find panic-trigger-tuned bombs and
   // triggers
   CFOR_EACH_WORLD_BOMB(wb) {
@@ -146,7 +146,7 @@ void FindPanicBombsAndTriggers(void) {
   }
 }
 
-static INT32 GetFreeWorldItemIndex(void) {
+static INT32 GetFreeWorldItemIndex() {
   UINT32 uiCount;
   WORLDITEM *newWorldItems;
   UINT32 uiOldNumWorldItems;
@@ -169,7 +169,7 @@ static INT32 GetFreeWorldItemIndex(void) {
   return (uiCount);
 }
 
-static UINT32 GetNumUsedWorldItems(void) {
+static UINT32 GetNumUsedWorldItems() {
   UINT32 count = 0;
   CFOR_EACH_WORLD_ITEM(wi)++ count;
   return count;
@@ -235,8 +235,8 @@ void SaveWorldItemsToMap(HWFILE const f) {
   CFOR_EACH_WORLD_ITEM(wi) FileWrite(f, wi, sizeof(WORLDITEM));
 }
 
-static void DeleteWorldItemsBelongingToQueenIfThere(void);
-static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void);
+static void DeleteWorldItemsBelongingToQueenIfThere();
+static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere();
 
 void LoadWorldItemsFromMap(HWFILE const f) {
   // If any world items exist, we must delete them now
@@ -339,7 +339,7 @@ void LoadWorldItemsFromMap(HWFILE const f) {
   }
 }
 
-static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void) {
+static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere() {
   // only do this after Carmen has talked to player and terrorists have been
   // placed
   // if ( CheckFact( FACT_CARMEN_EXPLAINED_DEAL, 0 ) == TRUE )
@@ -369,7 +369,7 @@ static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void) {
   // else the terrorists haven't been placed yet!
 }
 
-static void DeleteWorldItemsBelongingToQueenIfThere(void) {
+static void DeleteWorldItemsBelongingToQueenIfThere() {
   MERCPROFILESTRUCT &q = GetProfile(QUEEN);
 
   if (q.sSectorX != gWorldSectorX || q.sSectorY != gWorldSectorY || q.bSectorZ != gbWorldSectorZ) {

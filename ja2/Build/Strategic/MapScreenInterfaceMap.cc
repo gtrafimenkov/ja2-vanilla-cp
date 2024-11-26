@@ -556,7 +556,7 @@ MAP_HORT_HEIGHT); SetFontDestBuffer(FRAME_BUFFER);
 static void HandleShowingOfEnemyForcesInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ,
                                                UINT8 ubIconPosition);
 
-static void HandleShowingOfEnemiesWithMilitiaOn(void) {
+static void HandleShowingOfEnemiesWithMilitiaOn() {
   for (INT16 sX = 1; sX < MAP_WORLD_X - 1; ++sX) {
     for (INT16 sY = 1; sY < MAP_WORLD_Y - 1; ++sY) {
       HandleShowingOfEnemyForcesInSector(sX, sY, iCurrentMapSectorZ,
@@ -565,23 +565,23 @@ static void HandleShowingOfEnemiesWithMilitiaOn(void) {
   }
 }
 
-static void BlitMineGridMarkers(void);
+static void BlitMineGridMarkers();
 static void BlitMineIcon(INT16 sMapX, INT16 sMapY);
 static void BlitMineText(UINT8 mine_idx, INT16 sMapX, INT16 sMapY);
-static void BlitTownGridMarkers(void);
-static void DisplayLevelString(void);
-static void DrawBullseye(void);
-static void DrawOrta(void);
-static void DrawTixa(void);
+static void BlitTownGridMarkers();
+static void DisplayLevelString();
+static void DrawBullseye();
+static void DrawOrta();
+static void DrawTixa();
 static void DrawTownMilitiaForcesOnMap();
-static void HandleLowerLevelMapBlit(void);
+static void HandleLowerLevelMapBlit();
 static void ShadeMapElem(INT16 sMapX, INT16 sMapY, INT32 iColor);
-static void ShowItemsOnMap(void);
+static void ShowItemsOnMap();
 static void ShowSAMSitesOnStrategicMap();
 static void ShowTeamAndVehicles();
-static void ShowTownText(void);
+static void ShowTownText();
 
-void DrawMap(void) {
+void DrawMap() {
   if (!iCurrentMapSectorZ) {
     if (fZoomFlag) {
       if (iZoomX < WEST_ZOOM_BOUND) iZoomX = WEST_ZOOM_BOUND;
@@ -709,7 +709,7 @@ static void GetScreenXYFromMapXYStationary(INT16 sMapX, INT16 sMapY, INT16 *psX,
 }
 
 // display the town names and loyalty on the screen
-static void ShowTownText(void) {
+static void ShowTownText() {
   SetFont(MAP_FONT);
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop,
@@ -1021,7 +1021,7 @@ static void ShadeMapElemZoomIn(const INT16 sMapX, const INT16 sMapY, INT32 iColo
   }
 }
 
-void InitializePalettesForMap(void) {
+void InitializePalettesForMap() {
   SGP::AutoPtr<SGPVSurfaceAuto> uiTempMap(AddVideoSurfaceFromFile(INTERFACEDIR "/b_map.pcx"));
 
   SGPPaletteEntry const *const pal = uiTempMap->GetPalette();
@@ -1032,7 +1032,7 @@ void InitializePalettesForMap(void) {
   pMapDKGreenPalette = Create16BPPPaletteShaded(pal, 0, 200, 0, TRUE);
 }
 
-void ShutDownPalettesForMap(void) {
+void ShutDownPalettesForMap() {
   MemFree(pMapLTRedPalette);
   MemFree(pMapDKRedPalette);
   MemFree(pMapLTGreenPalette);
@@ -1231,12 +1231,12 @@ void DisplaySoldierPath(SOLDIERTYPE *pCharacter) {
   AnimateRoute(pPath);
 }
 
-void DisplaySoldierTempPath(void) {
+void DisplaySoldierTempPath() {
   // now render temp route
   TracePathRoute(pTempCharacterPath);
 }
 
-void DisplayHelicopterPath(void) {
+void DisplayHelicopterPath() {
   // clip to map
   ClipBlitsToMapViewRegion();
 
@@ -1250,7 +1250,7 @@ void DisplayHelicopterPath(void) {
   RestoreClipRegionToFullScreen();
 }
 
-void DisplayHelicopterTempPath(void) {
+void DisplayHelicopterTempPath() {
   // should we draw temp path?
   if (fDrawTempHeliPath) TracePathRoute(pTempHelicopterPath);
 }
@@ -1335,7 +1335,7 @@ UINT32 ClearPathAfterThisSectorForHelicopter(INT16 sX, INT16 sY) {
   }
 }
 
-INT16 GetLastSectorOfHelicoptersPath(void) {
+INT16 GetLastSectorOfHelicoptersPath() {
   VEHICLETYPE const &v = GetHelicopter();
   // will return the last sector of the helicopter's current path
   INT16 sLastSector = v.sSectorX + v.sSectorY * MAP_WORLD_X;
@@ -2373,7 +2373,7 @@ void RestoreBackgroundForMapGrid(INT16 sMapX, INT16 sMapY) {
   }
 }
 
-void ClipBlitsToMapViewRegion(void) {
+void ClipBlitsToMapViewRegion() {
   // the standard mapscreen rectangle doesn't work for clipping while zoomed...
   SGPRect ZoomedMapScreenClipRect = {MAP_VIEW_START_X + MAP_GRID_X,
                                      MAP_VIEW_START_Y + MAP_GRID_Y - 1,
@@ -2391,7 +2391,7 @@ void ClipBlitsToMapViewRegion(void) {
   gDirtyClipRect = *pRectToUse;
 }
 
-void RestoreClipRegionToFullScreen(void) {
+void RestoreClipRegionToFullScreen() {
   SetClippingRect(&FullScreenRect);
   gDirtyClipRect = gOldClipRect;
 }
@@ -2698,10 +2698,10 @@ void DisplayDistancesForHelicopter() {
                    sOldYPosition + MAP_HELICOPTER_ETA_POPUP_HEIGHT);
 }
 
-static void DisplayDestinationOfHelicopter(void);
+static void DisplayDestinationOfHelicopter();
 
 // grab position of helicopter and blt to screen
-void DisplayPositionOfHelicopter(void) {
+void DisplayPositionOfHelicopter() {
   static INT16 sOldMapX = 0, sOldMapY = 0;
   //	INT16 sX =0, sY = 0;
   FLOAT flRatio = 0.0;
@@ -2836,7 +2836,7 @@ void DisplayPositionOfHelicopter(void) {
   }
 }
 
-static void DisplayDestinationOfHelicopter(void) {
+static void DisplayDestinationOfHelicopter() {
   static INT16 sOldMapX = 0, sOldMapY = 0;
   INT16 sMapX, sMapY;
   UINT32 x, y;
@@ -3048,7 +3048,7 @@ static void BlitMineText(UINT8 const mine_idx, INT16 const sMapX, INT16 const sM
                     MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7);
 }
 
-static void BlitTownGridMarkers(void) {
+static void BlitTownGridMarkers() {
   SGPVSurface::Lock l(guiSAVEBUFFER);
   UINT16 *const buf = l.Buffer<UINT16>();
   UINT32 const pitch = l.Pitch();
@@ -3107,7 +3107,7 @@ static void BlitTownGridMarkers(void) {
   RestoreClipRegionToFullScreenForRectangle(pitch);
 }
 
-static void BlitMineGridMarkers(void) {
+static void BlitMineGridMarkers() {
   SGPVSurface::Lock l(guiSAVEBUFFER);
   UINT32 const pitch = l.Pitch();
 
@@ -3140,7 +3140,7 @@ static void BlitMineGridMarkers(void) {
   RestoreClipRegionToFullScreenForRectangle(pitch);
 }
 
-static void DisplayLevelString(void) {
+static void DisplayLevelString() {
   // given the current level being displayed on the map, show a sub level
   // message
 
@@ -3257,12 +3257,12 @@ void DeleteMapScreenInterfaceMapGraphics() {
 }
 
 static void CheckAndUpdateStatesOfSelectedMilitiaSectorButtons();
-static void DisplayUnallocatedMilitia(void);
+static void DisplayUnallocatedMilitia();
 static void DrawTownMilitiaName();
-static void RenderIconsPerSectorForSelectedTown(void);
-static void RenderShadingForUnControlledSectors(void);
-static void SetMilitiaMapButtonsText(void);
-static void ShowHighLightedSectorOnMilitiaMap(void);
+static void RenderIconsPerSectorForSelectedTown();
+static void RenderShadingForUnControlledSectors();
+static void SetMilitiaMapButtonsText();
+static void ShowHighLightedSectorOnMilitiaMap();
 
 void DrawMilitiaPopUpBox() {
   if (!fShowMilitia) {
@@ -3314,13 +3314,13 @@ void DrawMilitiaPopUpBox() {
   MarkButtonsDirty();
 }
 
-static void CreateMilitiaPanelBottomButton(void);
-static void DeleteMilitiaPanelBottomButton(void);
+static void CreateMilitiaPanelBottomButton();
+static void DeleteMilitiaPanelBottomButton();
 static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(INT16 sTownValue);
 static void MilitiaRegionClickCallback(MOUSE_REGION *, INT32 reason);
 static void MilitiaRegionMoveCallback(MOUSE_REGION *, INT32 reason);
 
-void CreateDestroyMilitiaPopUPRegions(void) {
+void CreateDestroyMilitiaPopUPRegions() {
   static INT16 sOldTown = 0;
 
   // create destroy militia pop up regions for mapscreen militia pop up box
@@ -3357,9 +3357,9 @@ void CreateDestroyMilitiaPopUPRegions(void) {
   }
 }
 
-static INT16 GetBaseSectorForCurrentTown(void);
+static INT16 GetBaseSectorForCurrentTown();
 
-static void RenderIconsPerSectorForSelectedTown(void) {
+static void RenderIconsPerSectorForSelectedTown() {
   // render icons for map
   INT16 const sBaseSectorValue = GetBaseSectorForCurrentTown();
   for (INT32 iCounter = 0; iCounter != 9; ++iCounter) {
@@ -3418,7 +3418,7 @@ static void RenderIconsPerSectorForSelectedTown(void) {
 }
 
 // Get the sector value for the upper left corner
-static INT16 GetBaseSectorForCurrentTown(void) {
+static INT16 GetBaseSectorForCurrentTown() {
   INT16 sBaseSector = 0;
 
   // is the current town
@@ -3430,7 +3430,7 @@ static INT16 GetBaseSectorForCurrentTown(void) {
   return (sBaseSector);
 }
 
-static void ShowHighLightedSectorOnMilitiaMap(void) {
+static void ShowHighLightedSectorOnMilitiaMap() {
   // show the highlighted sector on the militia map
   INT16 sX = 0, sY = 0;
 
@@ -3563,7 +3563,7 @@ static void MilitiaButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DisplayUnallocatedMilitia(void) {
+static void DisplayUnallocatedMilitia() {
   // show the nunber on the cursor
   INT32 iTotalNumberOfTroops = 0, iNumberOfGreens = 0, iNumberOfRegulars = 0, iNumberOfElites = 0,
         iCurrentTroopIcon = 0;
@@ -3767,7 +3767,7 @@ static bool CanMilitiaAutoDistribute();
 static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, INT32 reason);
 static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateMilitiaPanelBottomButton(void) {
+static void CreateMilitiaPanelBottomButton() {
   MakeButton(3, MAP_MILITIA_BOX_POS_X + MAP_MILITIA_BOX_AUTO_BOX_X, MilitiaAutoButtonCallback,
              pMilitiaButtonString[0]);
   MakeButton(4, MAP_MILITIA_BOX_POS_X + MAP_MILITIA_BOX_DONE_BOX_X, MilitiaDoneButtonCallback,
@@ -3783,7 +3783,7 @@ static void CreateMilitiaPanelBottomButton(void) {
   }
 }
 
-static void DeleteMilitiaPanelBottomButton(void) {
+static void DeleteMilitiaPanelBottomButton() {
   // delete militia panel bottom
   RemoveButton(giMapMilitiaButton[3]);
   RemoveButton(giMapMilitiaButton[4]);
@@ -3812,7 +3812,7 @@ static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void RenderShadingForUnControlledSectors(void) {
+static void RenderShadingForUnControlledSectors() {
   // now render shading over any uncontrolled sectors
   INT16 const sBaseSectorValue = GetBaseSectorForCurrentTown();
   for (INT32 dy = 0; dy != 3; ++dy) {
@@ -3887,7 +3887,7 @@ static void CheckAndUpdateStatesOfSelectedMilitiaSectorButtons() {
 
 static void HideExistenceOfUndergroundMapSector(UINT8 ubSectorX, UINT8 ubSectorY);
 
-static void ShadeSubLevelsNotVisited(void) {
+static void ShadeSubLevelsNotVisited() {
   // Obtain the 16-bit version of the same color used in the mine STIs
   gusUndergroundNearBlack = Get16BPPColor(FROMRGB(2, 2, 0));
 
@@ -3901,7 +3901,7 @@ static void ShadeSubLevelsNotVisited(void) {
   }
 }
 
-static void HandleLowerLevelMapBlit(void) {
+static void HandleLowerLevelMapBlit() {
   // blits the sub level maps
   const SGPVObject *vo;  // XXX HACK000E
   switch (iCurrentMapSectorZ) {
@@ -4171,7 +4171,7 @@ static bool CanMilitiaAutoDistribute() {
   return false;
 }
 
-static void ShowItemsOnMap(void) {
+static void ShowItemsOnMap() {
   ClipBlitsToMapViewRegion();
   SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop,
                     MapScreenRect.iRight, MapScreenRect.iBottom);
@@ -4233,11 +4233,11 @@ static void DrawMapBoxIcon(HVOBJECT const vo, UINT16 const icon, INT16 const sec
 #endif
 }
 
-static void DrawOrta(void) { DrawSite(ORTA_SECTOR_X, ORTA_SECTOR_Y, guiORTAICON); }
+static void DrawOrta() { DrawSite(ORTA_SECTOR_X, ORTA_SECTOR_Y, guiORTAICON); }
 
-static void DrawTixa(void) { DrawSite(TIXA_SECTOR_X, TIXA_SECTOR_Y, guiTIXAICON); }
+static void DrawTixa() { DrawSite(TIXA_SECTOR_X, TIXA_SECTOR_Y, guiTIXAICON); }
 
-static void DrawBullseye(void) {
+static void DrawBullseye() {
   INT16 sX, sY;
 
   GetScreenXYFromMapXY(SECTORX(g_merc_arrive_sector), SECTORY(g_merc_arrive_sector), &sX, &sY);

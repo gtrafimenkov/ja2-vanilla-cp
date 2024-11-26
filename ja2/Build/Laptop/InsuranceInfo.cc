@@ -145,12 +145,12 @@ void ExitInsuranceInfo() {
   DeleteVideoObject(guiBulletImage);
 }
 
-static void DisableArrowButtonsIfOnLastOrFirstPage(void);
-static void DisplayCancelationPagePage(void);
-static void DisplayInfoTocPage(void);
-static void DisplayPremiumPage(void);
-static void DisplayRenewingPremiumPage(void);
-static void DisplaySubmitClaimPage(void);
+static void DisableArrowButtonsIfOnLastOrFirstPage();
+static void DisplayCancelationPagePage();
+static void DisplayInfoTocPage();
+static void DisplayPremiumPage();
+static void DisplayRenewingPremiumPage();
+static void DisplaySubmitClaimPage();
 
 void RenderInsuranceInfo() {
   wchar_t sText[800];
@@ -246,7 +246,7 @@ static void SelectInsuranceInfoHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT
   }
 }
 
-static void DisplaySubmitClaimPage(void) {
+static void DisplaySubmitClaimPage() {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   UINT16 usPosX;
@@ -296,7 +296,7 @@ static void DisplaySubmitClaimPage(void) {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-static void DisplayPremiumPage(void) {
+static void DisplayPremiumPage() {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
 
@@ -341,7 +341,7 @@ static void DisplayPremiumPage(void) {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-static void DisplayRenewingPremiumPage(void) {
+static void DisplayRenewingPremiumPage() {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
 
@@ -372,7 +372,7 @@ static void DisplayRenewingPremiumPage(void) {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS + 2;
 }
 
-static void DisplayCancelationPagePage(void) {
+static void DisplayCancelationPagePage() {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
 
@@ -402,7 +402,7 @@ static void DisplayCancelationPagePage(void) {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-static void DisableArrowButtonsIfOnLastOrFirstPage(void) {
+static void DisableArrowButtonsIfOnLastOrFirstPage() {
   EnableButton(guiInsPrevBackButton, gubCurrentInsInfoSubPage != INS_INFO_INFO_TOC);
   EnableButton(guiInsNextBackButton, gubCurrentInsInfoSubPage != INS_INFO_LAST_PAGE - 1);
 }
@@ -421,7 +421,7 @@ static void ChangingInsuranceInfoSubPage(UINT8 ubSubPageNumber) {
   }
 }
 
-static void DisplayInfoTocPage(void) {
+static void DisplayInfoTocPage() {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   UINT16 usPosY;

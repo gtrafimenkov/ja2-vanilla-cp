@@ -307,7 +307,7 @@ void SetCurrentTacticalPanelCurrentMerc(SOLDIERTYPE *s) {
   }
 }
 
-void CreateCurrentTacticalPanelButtons(void) {
+void CreateCurrentTacticalPanelButtons() {
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
       CreateSMPanelButtons();
@@ -331,7 +331,7 @@ void SetCurrentInterfacePanel(InterfacePanelKind const ubNewPanel) {
 
 void ToggleTacticalPanels() { SetNewPanel(gsCurInterfacePanel == SM_PANEL ? 0 : GetSelectedMan()); }
 
-void RemoveCurrentTacticalPanelButtons(void) {
+void RemoveCurrentTacticalPanelButtons() {
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
       RemoveSMPanelButtons();
@@ -355,7 +355,7 @@ BOOLEAN IsMercPortraitVisible(const SOLDIERTYPE *s) {
   }
 }
 
-static void HandleUpDownArrowBackgrounds(void);
+static void HandleUpDownArrowBackgrounds();
 
 void HandleInterfaceBackgrounds() { HandleUpDownArrowBackgrounds(); }
 
@@ -569,9 +569,9 @@ static void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void GetArrowsBackground(void);
+static void GetArrowsBackground();
 
-static void HandleUpDownArrowBackgrounds(void) {
+static void HandleUpDownArrowBackgrounds() {
   static UINT32 uiOldShowUpDownArrows = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 
   // Check for change in mode
@@ -719,7 +719,7 @@ void EraseRenderArrows() {
   giDownArrowRect = NO_BGND_RECT;
 }
 
-static void GetArrowsBackground(void) {
+static void GetArrowsBackground() {
   INT16 sMercScreenX, sMercScreenY;
   UINT16 sArrowHeight = ARROWS_HEIGHT, sArrowWidth = ARROWS_WIDTH;
 
@@ -1503,7 +1503,7 @@ void EndUIMessage() {
 #define PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS (500)
 #define PLAYER_TEAM_TIMER_TICKS_PER_ENEMY (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS)
 
-static void CreateTopMessage(void);
+static void CreateTopMessage();
 
 void AddTopMessage(const MESSAGE_TYPES ubType) {
   gTopMessage.fCreated = TRUE;
@@ -1514,7 +1514,7 @@ void AddTopMessage(const MESSAGE_TYPES ubType) {
   CreateTopMessage();
 }
 
-static void CreateTopMessage(void) {
+static void CreateTopMessage() {
   const TacticalStatusType *const ts = &gTacticalStatus;
   SGPVSurface *const dst = gTopMessage.uiSurface;
 
@@ -1623,7 +1623,7 @@ static void CreateTopMessage(void) {
   gfTopMessageDirty = TRUE;
 }
 
-void HandleTopMessages(void) {
+void HandleTopMessages() {
   TacticalStatusType *const ts = &gTacticalStatus;
 
   if (!ts->fInTopMessage) {
@@ -1720,7 +1720,7 @@ void HandleTopMessages(void) {
   }
 }
 
-void EndTopMessage(void) {
+void EndTopMessage() {
   if (!gTacticalStatus.fInTopMessage) return;
 
   gsVIEWPORT_WINDOW_START_Y = 0;

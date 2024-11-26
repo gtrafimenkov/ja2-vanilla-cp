@@ -11,6 +11,6 @@
 // Record the previous screen the user was in.
 extern ScreenID guiPreviousOptionScreen;
 
-ScreenID OptionsScreenHandle(void);
+ScreenID OptionsScreenHandle();
 
 #endif

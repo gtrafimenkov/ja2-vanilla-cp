@@ -1,8 +1,8 @@
 #ifndef __FUNERAL_H
 #define __FUNERAL_H
 
-void EnterFuneral(void);
+void EnterFuneral();
 void ExitFuneral();
-void RenderFuneral(void);
+void RenderFuneral();
 
 #endif

@@ -20,13 +20,13 @@
 #define INS_INFO_RIGHT_ARROW_BUTTON_X (LAPTOP_SCREEN_UL_X + 409)
 #define INS_INFO_ARROW_BUTTON_Y (LAPTOP_SCREEN_WEB_UL_Y + 354)
 
-void EnterInsurance(void);
+void EnterInsurance();
 void ExitInsurance();
-void RenderInsurance(void);
+void RenderInsurance();
 
-void InitInsuranceDefaults(void);
-void DisplayInsuranceDefaults(void);
-void RemoveInsuranceDefaults(void);
+void InitInsuranceDefaults();
+void DisplayInsuranceDefaults();
+void RemoveInsuranceDefaults();
 void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY);
 void GetInsuranceText(UINT8 ubNumber, wchar_t *pString);
 

@@ -60,12 +60,12 @@ static SLIDER *gpCurrentSlider = NULL;
 
 static SGPVObject *guiSliderBoxImage;
 
-void InitSlider(void) {
+void InitSlider() {
   // load Slider Box Graphic graphic and add it
   guiSliderBoxImage = AddVideoObjectFromFile(INTERFACEDIR "/sliderbox.sti");
 }
 
-void ShutDownSlider(void) {
+void ShutDownSlider() {
   AssertMsg(guiSliderBoxImage != NULL,
             "Trying to ShutDown the Slider System when it was never inited");
 
@@ -157,7 +157,7 @@ SLIDER *AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, 
 static void CalculateNewSliderIncrement(SLIDER *s, UINT16 usPos);
 static void RenderSelectedSliderBar(SLIDER *s);
 
-void RenderAllSliderBars(void) {
+void RenderAllSliderBars() {
   // set the currently selectd slider bar
   if (gfLeftButtonState && gpCurrentSlider != NULL) {
     SLIDER *const s = gpCurrentSlider;

@@ -104,7 +104,7 @@ static void DeleteTreeNode(MapIndexBinaryTree **node) {
 }
 
 // Recursively delete all nodes (from the top down).
-static void ClearUndoMapIndexTree(void) {
+static void ClearUndoMapIndexTree() {
   if (top) DeleteTreeNode(&top);
 }
 
@@ -182,7 +182,7 @@ static undo_stack *DeleteStackNode(undo_stack *const del) {
   return succ;
 }
 
-static void DeleteTopStackNode(void) { gpTileUndoStack = DeleteStackNode(gpTileUndoStack); }
+static void DeleteTopStackNode() { gpTileUndoStack = DeleteStackNode(gpTileUndoStack); }
 
 static void CropStackToMaxLength(INT32 iMaxCmds) {
   INT32 iCmdCount;
@@ -317,7 +317,7 @@ static void AddToUndoListCmd(INT32 const iMapIndex, INT32 const iCmdCount) {
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
 }
 
-void RemoveAllFromUndoList(void) {
+void RemoveAllFromUndoList() {
   ClearUndoMapIndexTree();
 
   while (gpTileUndoStack != NULL) DeleteTopStackNode();
@@ -325,7 +325,7 @@ void RemoveAllFromUndoList(void) {
 
 static void SwapMapElementWithWorld(INT32 iMapIndex, MAP_ELEMENT *pUndoMapElement);
 
-BOOLEAN ExecuteUndoList(void) {
+BOOLEAN ExecuteUndoList() {
   INT32 iCmdCount, iCurCount;
   INT32 iUndoMapIndex;
 

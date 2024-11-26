@@ -3,10 +3,10 @@
 
 #include "SGP/Types.h"
 
-void EnterIMPPortraits(void);
-void RenderIMPPortraits(void);
-void ExitIMPPortraits(void);
-void HandleIMPPortraits(void);
+void EnterIMPPortraits();
+void RenderIMPPortraits();
+void ExitIMPPortraits();
+void HandleIMPPortraits();
 
 extern INT32 iPortraitNumber;
 

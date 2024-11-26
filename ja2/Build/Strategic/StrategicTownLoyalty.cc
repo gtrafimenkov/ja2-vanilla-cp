@@ -133,7 +133,7 @@ BOOLEAN gfTownUsesLoyalty[NUM_TOWNS] = {
 // location of first enocunter with enemy
 INT16 sWorldSectorLocationOfFirstBattle = 0;
 
-void InitTownLoyalty(void) {
+void InitTownLoyalty() {
   UINT8 ubTown = 0;
 
   // set up town loyalty table
@@ -714,7 +714,7 @@ void LoadStrategicTownLoyaltyFromSavedGameFile(HWFILE const f) {
   }
 }
 
-void ReduceLoyaltyForRebelsBetrayed(void) {
+void ReduceLoyaltyForRebelsBetrayed() {
   INT8 bTownId;
 
   // reduce loyalty to player all across Arulco
@@ -736,7 +736,7 @@ void ReduceLoyaltyForRebelsBetrayed(void) {
   }
 }
 
-INT32 GetNumberOfWholeTownsUnderControl(void) {
+INT32 GetNumberOfWholeTownsUnderControl() {
   INT32 iNumber = 0;
   INT8 bTownId = 0;
 
@@ -1090,7 +1090,7 @@ bool DidFirstBattleTakePlaceInThisTown(INT8 const town) {
          town;
 }
 
-static UINT32 PlayerStrength(void) {
+static UINT32 PlayerStrength() {
   UINT32 uiStrength, uiTotal = 0;
 
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -1106,7 +1106,7 @@ static UINT32 PlayerStrength(void) {
   return (uiTotal);
 }
 
-static UINT32 EnemyStrength(void) {
+static UINT32 EnemyStrength() {
   UINT32 strength = 0;
   CFOR_EACH_NON_PLAYER_SOLDIER(s) {
     if (!s->bInSector || s->bNeutral) continue;
@@ -1138,7 +1138,7 @@ void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, I
   }
 }
 
-void MaximizeLoyaltyForDeidrannaKilled(void) {
+void MaximizeLoyaltyForDeidrannaKilled() {
   INT8 bTownId;
 
   // max out loyalty to player all across Arulco

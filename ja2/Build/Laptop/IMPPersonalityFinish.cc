@@ -36,9 +36,9 @@ static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateIMPPersonalityFinishButtons(void);
+static void CreateIMPPersonalityFinishButtons();
 
-void EnterIMPPersonalityFinish(void) {
+void EnterIMPPersonalityFinish() {
   // reset states
   fCreateFinishOkButton = FALSE;
   bPersonalityEndState = 0;
@@ -48,7 +48,7 @@ void EnterIMPPersonalityFinish(void) {
   CreateIMPPersonalityFinishButtons();
 }
 
-void RenderIMPPersonalityFinish(void) {
+void RenderIMPPersonalityFinish() {
   // the background
   RenderProfileBackGround();
 
@@ -69,10 +69,10 @@ void RenderIMPPersonalityFinish(void) {
   }
 }
 
-static void DestroyIMPersonalityFinishButtons(void);
-static void DestroyPersonalityFinishOkButton(void);
+static void DestroyIMPersonalityFinishButtons();
+static void DestroyPersonalityFinishOkButton();
 
-void ExitIMPPersonalityFinish(void) {
+void ExitIMPPersonalityFinish() {
   // exit at IMP Ok button
   if (fExitIMPPerFinAtOk) {
     // destroy the finish ok buttons
@@ -89,16 +89,16 @@ void ExitIMPPersonalityFinish(void) {
   fConfirmHasBeenSelectedFlag = FALSE;
 }
 
-static void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(void);
+static void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed();
 
-void HandleIMPPersonalityFinish(void) {
+void HandleIMPPersonalityFinish() {
   // check if confirm and delay
   CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed();
 }
 
-static void CreatePersonalityFinishOkButton(void);
+static void CreatePersonalityFinishOkButton();
 
-static void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(void) {
+static void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed() {
   // this function will check to see if player has in fact confirmed selection
   // and delay to read text has occurred
 
@@ -130,7 +130,7 @@ static void MakeButton(UINT idx, const wchar_t *text, INT16 x, GUI_CALLBACK clic
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void CreateIMPPersonalityFinishButtons(void) {
+static void CreateIMPPersonalityFinishButtons() {
   // this function will create the buttons needed for the IMP personality Finish
   // Page
   MakeButton(0, pImpButtonText[9], LAPTOP_SCREEN_UL_X + 90,
@@ -139,7 +139,7 @@ static void CreateIMPPersonalityFinishButtons(void) {
              BtnIMPPersonalityFinishNoCallback);  // No button
 }
 
-static void DestroyIMPersonalityFinishButtons(void) {
+static void DestroyIMPersonalityFinishButtons() {
   // this function will destroy the buttons needed for the IMP personality
   // Finish page
 
@@ -199,12 +199,12 @@ static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void CreatePersonalityFinishOkButton(void) {
+static void CreatePersonalityFinishOkButton() {
   // create personality button finish button
   MakeButton(0, pImpButtonText[24], LAPTOP_SCREEN_UL_X + 186, BtnIMPPersonalityFinishOkCallback);
 }
 
-static void DestroyPersonalityFinishOkButton(void) {
+static void DestroyPersonalityFinishOkButton() {
   // the ok button
   RemoveButton(giIMPPersonalityFinishButton[0]);
   UnloadButtonImage(giIMPPersonalityFinishButtonImage[0]);

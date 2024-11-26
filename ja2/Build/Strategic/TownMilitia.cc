@@ -493,8 +493,8 @@ static void HandleInterfaceMessageForContinuingTrainingMilitia(SOLDIERTYPE *cons
                   PayMilitiaTrainingYesNoBoxCallback);
 }
 
-static void ContinueTrainingInThisSector(void);
-static void MilitiaTrainingRejected(void);
+static void ContinueTrainingInThisSector();
+static void MilitiaTrainingRejected();
 static void StartTrainingInAllUnpaidTrainableSectors();
 
 // IMPORTANT: This same callback is used both for initial training and for
@@ -535,7 +535,7 @@ static void CantTrainMilitiaOkBoxCallback(MessageBoxReturnValue const bExitValue
 // IMPORTANT: This same callback is used both for initial training and for
 // continue training prompt use 'gfYesNoPromptIsForContinue' flag to tell them
 // apart
-static void MilitiaTrainingRejected(void) {
+static void MilitiaTrainingRejected() {
   if (gfYesNoPromptIsForContinue) {
     // take all mercs in that sector off militia training
     ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier->sSectorX,
@@ -549,7 +549,7 @@ static void MilitiaTrainingRejected(void) {
   pMilitiaTrainerSoldier = NULL;
 }
 
-void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(void) {
+void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap() {
   if (gTacticalStatus.Team[MILITIA_TEAM].bSide != 0) {
     // handle militia defections and reset team to friendly
     HandleMilitiaDefections(gWorldSectorX, gWorldSectorY);
@@ -663,7 +663,7 @@ void ClearSectorListForCompletedTrainingOfMilitia() {
   FOR_EACH(SOLDIERTYPE *, i, g_list_of_merc_in_sectors_completed_militia_training) *i = 0;
 }
 
-void HandleContinueOfTownTraining(void) {
+void HandleContinueOfTownTraining() {
   INT32 iCounter = 0;
   BOOLEAN fContinueEventPosted = FALSE;
 
@@ -759,7 +759,7 @@ static void StartTrainingInAllUnpaidTrainableSectors() {
   }
 }
 
-static void ContinueTrainingInThisSector(void) {
+static void ContinueTrainingInThisSector() {
   UINT8 ubSector;
 
   Assert(pMilitiaTrainerSoldier);

@@ -212,15 +212,15 @@ void AdvanceToNextDay() {
 }
 
 // set the flag that time compress has occured
-void SetFactTimeCompressHasOccured(void) { fTimeCompressHasOccured = TRUE; }
+void SetFactTimeCompressHasOccured() { fTimeCompressHasOccured = TRUE; }
 
 // reset fact the time compress has occured
-void ResetTimeCompressHasOccured(void) { fTimeCompressHasOccured = FALSE; }
+void ResetTimeCompressHasOccured() { fTimeCompressHasOccured = FALSE; }
 
 // has time compress occured?
-BOOLEAN HasTimeCompressOccured(void) { return (fTimeCompressHasOccured); }
+BOOLEAN HasTimeCompressOccured() { return (fTimeCompressHasOccured); }
 
-void RenderClock(void) {
+void RenderClock() {
   // Are we in combat?
   UINT8 const foreground = gTacticalStatus.uiFlags & INCOMBAT ? FONT_FCOLOR_NICERED : FONT_LTGREEN;
   SetFontAttributes(CLOCK_FONT, foreground);
@@ -235,7 +235,7 @@ void RenderClock(void) {
   MPrint(x, y, str);
 }
 
-static void ToggleSuperCompression(void) {
+static void ToggleSuperCompression() {
   static UINT32 uiOldTimeCompressMode = 0;
 
   // Display message
@@ -267,7 +267,7 @@ bool DidGameJustStart() { return gTacticalStatus.fDidGameJustStart; }
 
 static void SetClockResolutionToCompressMode(INT32 iCompressMode);
 
-void StopTimeCompression(void) {
+void StopTimeCompression() {
   if (gfTimeCompressionOn) {
     // change the clock resolution to no time passage, but don't actually change
     // the compress mode (remember it)
@@ -275,7 +275,7 @@ void StopTimeCompression(void) {
   }
 }
 
-void StartTimeCompression(void) {
+void StartTimeCompression() {
   if (!gfTimeCompressionOn) {
     if (GamePaused()) {
       // first have to be allowed to unpause the game
@@ -315,7 +315,7 @@ void StartTimeCompression(void) {
 
 // returns FALSE if time isn't currently being compressed for ANY reason
 // (various pauses, etc.)
-BOOLEAN IsTimeBeingCompressed(void) {
+BOOLEAN IsTimeBeingCompressed() {
   if (!gfTimeCompressionOn || (giTimeCompressMode == TIME_COMPRESS_X0) || gfGamePaused)
     return (FALSE);
   else
@@ -323,7 +323,7 @@ BOOLEAN IsTimeBeingCompressed(void) {
 }
 
 // returns TRUE if the player currently doesn't want time to be compressing
-BOOLEAN IsTimeCompressionOn(void) { return (gfTimeCompressionOn); }
+BOOLEAN IsTimeCompressionOn() { return (gfTimeCompressionOn); }
 
 void IncreaseGameTimeCompressionRate() {
   // if not already at maximum time compression rate
@@ -462,7 +462,7 @@ void UnLockPauseState() { gfLockPauseState = FALSE; }
 // time compression state
 BOOLEAN PauseStateLocked() { return gfLockPauseState; }
 
-void PauseGame(void) {
+void PauseGame() {
   // always allow pausing, even if "locked".  Locking applies only to trying to
   // compress time, not to pausing it
   if (!gfGamePaused) {
@@ -471,7 +471,7 @@ void PauseGame(void) {
   }
 }
 
-void UnPauseGame(void) {
+void UnPauseGame() {
   // if we're paused
   if (gfGamePaused) {
     // ignore request if locked
@@ -499,7 +499,7 @@ void PauseTimeForInterupt() { gfTimeInterruptPause = TRUE; }
 // updated.  This rate will break up the actual time slices per second into
 // smaller chunks.  This is useful for animating strategic movement under fast
 // time compression, so objects don't warp around.
-static void SetClockResolutionToDefault(void) { gubClockResolution = 1; }
+static void SetClockResolutionToDefault() { gubClockResolution = 1; }
 
 // Valid range is 0 - 60 times per second.
 static void SetClockResolutionPerSecond(UINT8 ubNumTimesPerSecond) {
@@ -507,7 +507,7 @@ static void SetClockResolutionPerSecond(UINT8 ubNumTimesPerSecond) {
   gubClockResolution = ubNumTimesPerSecond;
 }
 
-static void CreateDestroyScreenMaskForPauseGame(void);
+static void CreateDestroyScreenMaskForPauseGame();
 
 // There are two factors that influence the flow of time in the game.
 //-Speed:  The speed is the amount of game time passes per real second of time.
@@ -682,7 +682,7 @@ void LoadGameClock(HWFILE const hFile) {
 
 static void PauseOfClockBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
-void CreateMouseRegionForPauseOfClock(void) {
+void CreateMouseRegionForPauseOfClock() {
   if (!fClockMouseRegionCreated) {
     // create a mouse region for pausing of game clock
     MSYS_DefineRegion(&gClockMouseRegion, CLOCK_X, CLOCK_Y, CLOCK_X + CLOCK_WIDTH,
@@ -696,7 +696,7 @@ void CreateMouseRegionForPauseOfClock(void) {
   }
 }
 
-void RemoveMouseRegionForPauseOfClock(void) {
+void RemoveMouseRegionForPauseOfClock() {
   // remove pause region
   if (fClockMouseRegionCreated) {
     MSYS_RemoveRegion(&gClockMouseRegion);
@@ -710,7 +710,7 @@ static void PauseOfClockBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void HandlePlayerPauseUnPauseOfGame(void) {
+void HandlePlayerPauseUnPauseOfGame() {
   if (gTacticalStatus.uiFlags & ENGAGED_IN_CONV) {
     return;
   }
@@ -742,7 +742,7 @@ void HandlePlayerPauseUnPauseOfGame(void) {
 
 static void ScreenMaskForGamePauseBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void CreateDestroyScreenMaskForPauseGame(void) {
+static void CreateDestroyScreenMaskForPauseGame() {
   static BOOLEAN fCreated = FALSE;
 
   if ((!fClockMouseRegionCreated || !gfGamePaused || !gfPauseDueToPlayerGamePause) && fCreated) {
@@ -788,7 +788,7 @@ static void ScreenMaskForGamePauseBtnCallBack(MOUSE_REGION *pRegion, INT32 iReas
   }
 }
 
-void RenderPausedGameBox(void) {
+void RenderPausedGameBox() {
   if (gfPauseDueToPlayerGamePause && gfGamePaused && g_paused_popup_box) {
     const INT32 x = (SCREEN_WIDTH - usPausedActualWidth) / 2;
     const INT32 y = 200 - usPausedActualHeight / 2;
@@ -808,7 +808,7 @@ BOOLEAN NightTime() {  // before 7AM or after 9PM
   return (guiHour < 7 || guiHour >= 21);
 }
 
-void ClearTacticalStuffDueToTimeCompression(void) {
+void ClearTacticalStuffDueToTimeCompression() {
   // is this test the right thing?  ARM
   if (!fInMapMode) return;  // XXX necessary?
 

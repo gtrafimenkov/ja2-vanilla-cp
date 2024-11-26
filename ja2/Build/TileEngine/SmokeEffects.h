@@ -49,8 +49,8 @@ void LoadSmokeEffectsFromLoadGameFile(HWFILE, UINT32 savegame_version);
 void SaveSmokeEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void LoadSmokeEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 
-void ResetSmokeEffects(void);
+void ResetSmokeEffects();
 
-void UpdateSmokeEffectGraphics(void);
+void UpdateSmokeEffectGraphics();
 
 #endif

@@ -14,8 +14,8 @@
 #define AIM_FI_HELP_TITLE_FONT FONT12ARIAL
 #define AIM_FI_HELP_COLOR FONT_MCOLOR_WHITE
 
-void EnterAimFacialIndex(void);
+void EnterAimFacialIndex();
 void ExitAimFacialIndex();
-void RenderAimFacialIndex(void);
+void RenderAimFacialIndex();
 
 #endif

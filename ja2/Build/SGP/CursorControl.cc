@@ -28,7 +28,7 @@ static UINT32 guiDelayTimer = 0;
 
 static MOUSEBLT_HOOK gMouseBltOverride = NULL;
 
-static void EraseMouseCursor(void) { MOUSE_BUFFER->Fill(0); }
+static void EraseMouseCursor() { MOUSE_BUFFER->Fill(0); }
 
 static void BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
                                         UINT16 usXPos, UINT16 usYPos) {
@@ -167,7 +167,7 @@ static void UnLoadCursorData(UINT32 uiCursorIndex) {
   }
 }
 
-void CursorDatabaseClear(void) {
+void CursorDatabaseClear() {
   for (UINT32 uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
     CursorFileData *CFData = &gpCursorFileDatabase[uiIndex];
     if (CFData->hVObject != NULL && CFData->Filename != NULL) {

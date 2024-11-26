@@ -113,9 +113,7 @@ void ChangeO3SectorStatue(BOOLEAN fFromExplosion) {
 
 static void HandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
 
-static void DeidrannaTimerCallback(void) {
-  HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel);
-}
+static void DeidrannaTimerCallback() { HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel); }
 
 void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
   gpKillerSoldier = pKillerSoldier;
@@ -176,7 +174,7 @@ static void HandleDeidrannaDeath(SOLDIERTYPE *const pKillerSoldier, const INT16 
   DialogueEvent::Add(new DialogueEventDoneKillingDeidranna());
 }
 
-static void DoneFadeInKilledQueen(void) {
+static void DoneFadeInKilledQueen() {
   // Run NPC script
   const SOLDIERTYPE *const pNPCSoldier = FindSoldierByProfileID(DEREK);
   if (!pNPCSoldier) {
@@ -263,7 +261,7 @@ static void DoneFadeOutKilledQueen() {
   FadeInGameScreen();
 }
 
-static void DoneFadeOutEndCinematic(void);
+static void DoneFadeOutEndCinematic();
 
 void EndQueenDeathEndgameBeginEndCimenatic() {
   // Start end cimimatic....
@@ -299,7 +297,7 @@ void EndQueenDeathEndgame() {
   gTacticalStatus.uiFlags &= (~IN_DEIDRANNA_ENDGAME);
 }
 
-static void DoneFadeOutEndCinematic(void) {
+static void DoneFadeOutEndCinematic() {
   // DAVE PUT SMAKER STUFF HERE!!!!!!!!!!!!
   // :)
   gTacticalStatus.uiFlags &= (~IN_ENDGAME_SEQUENCE);
@@ -315,9 +313,7 @@ static void DoneFadeOutEndCinematic(void) {
 
 static void HandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
 
-static void QueenBitchTimerCallback(void) {
-  HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel);
-}
+static void QueenBitchTimerCallback() { HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel); }
 
 void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
   gpKillerSoldier = pKillerSoldier;

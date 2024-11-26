@@ -3,7 +3,7 @@
 
 #include "ScreenIDs.h"
 
-ScreenID InitializeJA2(void);
-void ShutdownJA2(void);
+ScreenID InitializeJA2();
+void ShutdownJA2();
 
 #endif

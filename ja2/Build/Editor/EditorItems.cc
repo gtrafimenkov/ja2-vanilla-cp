@@ -58,7 +58,7 @@ ITEM_POOL *gpItemPool = NULL;
 
 static void ShowItemCursor(INT32 iMapIndex);
 
-void BuildItemPoolList(void) {
+void BuildItemPoolList() {
   KillItemPoolList();
 
   IPListNode **anchor = &pIPHead;
@@ -541,7 +541,7 @@ void ClearEditorItemsInfo() {
   }
 }
 
-static void FindNextItemOfSelectedType(void);
+static void FindNextItemOfSelectedType();
 
 void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent) {
   INT16 sIndex;
@@ -886,12 +886,12 @@ void SelectPrevItemInPool() {
 
 static void SelectNextItemOfType(UINT16 usItem);
 static void SelectNextKeyOfType(UINT8 ubKeyID);
-static void SelectNextPressureAction(void);
+static void SelectNextPressureAction();
 static void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency);
 
 /* Finds and selects the next item when right clicking on an item type.
  * Only works if the item actually exists in the world. */
-static void FindNextItemOfSelectedType(void) {
+static void FindNextItemOfSelectedType() {
   UINT16 usItem;
   usItem = eInfo.pusItemIndex[eInfo.sSelItemIndex];
   if (usItem == ACTION_ITEM || usItem == SWITCH) {
@@ -1073,7 +1073,7 @@ static void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency) {
   }
 }
 
-static void SelectNextPressureAction(void) {
+static void SelectNextPressureAction() {
   IPListNode *curr;
   if (gpItemPool) {
     curr = pIPHead;
@@ -1166,7 +1166,7 @@ static UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency) {
   return num;
 }
 
-static UINT16 CountNumberOfPressureActionsInWorld(void) {
+static UINT16 CountNumberOfPressureActionsInWorld() {
   IPListNode *pIPCurr;
   UINT16 num = 0;
   pIPCurr = pIPHead;

@@ -10,7 +10,7 @@
 
 BOOLEAN gfStrategicMilitiaChangesMade = FALSE;
 
-static void RemoveMilitiaFromTactical(void);
+static void RemoveMilitiaFromTactical();
 
 void ResetMilitia() {
   if (gfStrategicMilitiaChangesMade || gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -20,7 +20,7 @@ void ResetMilitia() {
   }
 }
 
-static void RemoveMilitiaFromTactical(void) {
+static void RemoveMilitiaFromTactical() {
   FOR_EACH_IN_TEAM(i, MILITIA_TEAM) TacticalRemoveSoldier(*i);
   FOR_EACH_SOLDIERINITNODE(curr) {
     if (curr->pBasicPlacement->bTeam == MILITIA_TEAM) {

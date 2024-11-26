@@ -77,11 +77,11 @@ static void AddSectorToBox(PopUpBox *);
 static void AddTextToBlankSectorBox(PopUpBox *);
 static void AddTextToMineBox(PopUpBox *, INT8 mine);
 static void AddTextToTownBox(PopUpBox *);
-static void MinWidthOfTownMineInfoBox(void);
+static void MinWidthOfTownMineInfoBox();
 static void PositionTownMineInfoBox(PopUpBox *);
-static void RemoveInventoryButtonForMapPopUpBox(void);
+static void RemoveInventoryButtonForMapPopUpBox();
 
-void CreateDestroyTownInfoBox(void) {
+void CreateDestroyTownInfoBox() {
   PopUpBox *box = ghTownMineBox;
   if (box == NO_POPUP_BOX && fShowTownInfo) {
     box = CreatePopUpBox(TownMinePosition, 0, FRAME_BUFFER, guiPOPUPBORDERS, guiPOPUPTEX, 6, 6,
@@ -539,7 +539,7 @@ static void AddInventoryButtonForMapPopUpBox(const PopUpBox *const box) {
   */
 }
 
-static void RemoveInventoryButtonForMapPopUpBox(void) {
+static void RemoveInventoryButtonForMapPopUpBox() {
   // get rid of button
   RemoveButton(guiMapButtonInventory[0]);
   UnloadButtonImage(guiMapButtonInventoryImage[0]);
@@ -574,7 +574,7 @@ static void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // get the min width of the town mine info pop up box
-static void MinWidthOfTownMineInfoBox(void) {
+static void MinWidthOfTownMineInfoBox() {
   AutoSGPVObject uiObject(AddVideoObjectFromFile(INTERFACEDIR "/mapinvbtns.sti"));
 
   // Calculate smily face positions...

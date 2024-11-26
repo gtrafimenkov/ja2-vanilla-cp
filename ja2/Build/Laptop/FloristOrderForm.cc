@@ -236,7 +236,7 @@ static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, INT16 y, GUI_CALLBA
   return btn;
 }
 
-static void InitFlowerOrderTextInputBoxes(void);
+static void InitFlowerOrderTextInputBoxes();
 static void SelectFloristCardGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void SelectFloristDisableDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 static void SelectFloristDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
@@ -336,7 +336,7 @@ void InitFloristOrderFormVariables() {
   gubCurrentlySelectedFlowerLocation = 0;
 }
 
-static void DestroyFlowerOrderTextInputBoxes(void);
+static void DestroyFlowerOrderTextInputBoxes();
 
 void ExitFloristOrderForm() {
   UINT8 i;
@@ -380,7 +380,7 @@ void ExitFloristOrderForm() {
 }
 
 static BOOLEAN CreateDestroyFlowerOrderDestDropDown(UINT8 ubDropDownMode);
-static void HandleFloristOrderKeyBoardInput(void);
+static void HandleFloristOrderKeyBoardInput();
 
 void HandleFloristOrderForm() {
   if (gubFlowerDestDropDownMode != FLOWER_ORDER_DROP_DOWN_NO_ACTION) {
@@ -391,9 +391,9 @@ void HandleFloristOrderForm() {
   RenderAllTextFields();
 }
 
-static void DisplayFloristCheckBox(void);
-static void DisplayFlowerDynamicItems(void);
-static void FlowerOrderDisplayShippingLocationCity(void);
+static void DisplayFloristCheckBox();
+static void DisplayFlowerDynamicItems();
+static void FlowerOrderDisplayShippingLocationCity();
 
 void RenderFloristOrderForm() {
   UINT16 usPosX;
@@ -631,7 +631,7 @@ static void SelectFlorsitCheckBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iRe
   }
 }
 
-static void DisplayFloristCheckBox(void) {
+static void DisplayFloristCheckBox() {
   BltVideoObject(FRAME_BUFFER, guiFlowerOrderCheckBoxButtonImage, gfFLoristCheckBox0Down ? 1 : 0,
                  FLOWER_ORDER_CHECK_BOX_0_X, FLOWER_ORDER_CHECK_BOX_0_Y);
   BltVideoObject(FRAME_BUFFER, guiFlowerOrderCheckBoxButtonImage, gfFLoristCheckBox1Down ? 1 : 0,
@@ -656,7 +656,7 @@ static void SelectFloristCardGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, IN
 }
 
 // display the things that change on the screen
-static void DisplayFlowerDynamicItems(void) {
+static void DisplayFlowerDynamicItems() {
   UINT32 uiStartLoc = 0;
   UINT16 usPosX;
   wchar_t sTemp[640];
@@ -933,7 +933,7 @@ static void FlowerOrderDrawSelectedCity(UINT8 ubNumber) {
   FlowerOrderDisplayShippingLocationCity();
 }
 
-static void FlowerOrderDisplayShippingLocationCity(void) {
+static void FlowerOrderDisplayShippingLocationCity() {
   // display the name on the title bar
   ColorFillVideoSurfaceArea(
       FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3,
@@ -946,7 +946,7 @@ static void FlowerOrderDisplayShippingLocationCity(void) {
                    LEFT_JUSTIFIED);
 }
 
-static void InitFlowerOrderTextInputBoxes(void) {
+static void InitFlowerOrderTextInputBoxes() {
   InitTextInputMode();
   SetTextInputFont(FONT12ARIAL);
   Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(255, 255, 255)));
@@ -985,9 +985,9 @@ static void InitFlowerOrderTextInputBoxes(void) {
                     INPUTTYPE_FULL_TEXT);
 }
 
-static void DestroyFlowerOrderTextInputBoxes(void) { KillTextInputMode(); }
+static void DestroyFlowerOrderTextInputBoxes() { KillTextInputMode(); }
 
-static void HandleFloristOrderKeyBoardInput(void) {
+static void HandleFloristOrderKeyBoardInput() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     if (!HandleTextInput(&InputEvent) && InputEvent.usEvent == KEY_DOWN) {

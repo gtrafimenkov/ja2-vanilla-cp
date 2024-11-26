@@ -145,7 +145,7 @@ extern void RemoveDoorInfoFromTable(INT32 iMapIndex);
 // This is the link to see if a door exists at a gridno.
 DOOR *FindDoorInfoAtGridNo(INT32 iMapIndex);
 // Upon world deallocation, the door table needs to be deallocated.
-void TrashDoorTable(void);
+void TrashDoorTable();
 
 wchar_t const *GetTrapName(DOOR const &);
 
@@ -166,7 +166,7 @@ void UpdateDoorPerceivedValue(DOOR *pDoor);
 void SaveDoorTableToDoorTableTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 // Load the door table from the temp file
-void LoadDoorTableFromDoorTableTempFile(void);
+void LoadDoorTableFromDoorTableTempFile();
 
 /* Add a door to the door status array. As the user comes across the door, they
  * are added. If the door already exists, nothing happens.
@@ -175,7 +175,7 @@ void LoadDoorTableFromDoorTableTempFile(void);
 bool ModifyDoorStatus(GridNo, BOOLEAN is_open, BOOLEAN perceived_open);
 
 // Deletes the door status array
-void TrashDoorStatusArray(void);
+void TrashDoorStatusArray();
 
 // Saves the Door Status array to the MapTempfile
 void SaveDoorStatusArrayToDoorStatusTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
@@ -200,7 +200,7 @@ void UpdateDoorGraphicsFromStatus();
 
 BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor);
 
-void LoadLockTable(void);
+void LoadLockTable();
 
 void ExamineDoorsOnEnteringSector();
 

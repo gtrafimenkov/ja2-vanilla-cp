@@ -34,7 +34,7 @@ UINT8 gubBoxingMatchesWon = 0;
 UINT8 gubBoxersRests = 0;
 BOOLEAN gfBoxersResting = FALSE;
 
-void ExitBoxing(void) {
+void ExitBoxing() {
   // find boxers and turn them neutral again
 
   // first time through loop, look for AI guy, then for PC guy.... for stupid
@@ -131,7 +131,7 @@ void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSoldier) {
   SetBoxingState(NOT_BOXING);
 }
 
-UINT8 CountPeopleInBoxingRing(void) {
+UINT8 CountPeopleInBoxingRing() {
   UINT8 ubTotalInRing = 0;
 
   FOR_EACH_MERC(i) {
@@ -145,7 +145,7 @@ UINT8 CountPeopleInBoxingRing(void) {
 
 static void PickABoxer();
 
-static void CountPeopleInBoxingRingAndDoActions(void) {
+static void CountPeopleInBoxingRingAndDoActions() {
   UINT8 ubTotalInRing = 0;
   UINT8 ubPlayersInRing = 0;
   SOLDIERTYPE *pInRing[2] = {NULL, NULL};
@@ -281,7 +281,7 @@ bool BoxerAvailable() {
 
 // NOTE THIS IS NOW BROKEN BECAUSE NPC.C ASSUMES THAT BOXERSAVAILABLE < 3 IS A
 // SEQUEL FIGHT.   Maybe we could check Kingpin's location instead!
-static UINT8 BoxersAvailable(void) {
+static UINT8 BoxersAvailable() {
   UINT8 ubLoop;
   UINT8 ubCount = 0;
 
@@ -292,7 +292,7 @@ static UINT8 BoxersAvailable(void) {
   return (ubCount);
 }
 
-BOOLEAN AnotherFightPossible(void) {
+BOOLEAN AnotherFightPossible() {
   // Check that and a boxer is still available and
   // a player has at least OKLIFE + 5 life
 
@@ -353,4 +353,4 @@ void SetBoxingState(INT8 bNewState) {
   gTacticalStatus.bBoxingState = bNewState;
 }
 
-void ClearAllBoxerFlags(void) { FOR_EACH_MERC(i)(*i)->uiStatusFlags &= ~SOLDIER_BOXER; }
+void ClearAllBoxerFlags() { FOR_EACH_MERC(i)(*i)->uiStatusFlags &= ~SOLDIER_BOXER; }

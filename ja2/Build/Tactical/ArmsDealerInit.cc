@@ -124,7 +124,7 @@ const ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS] = {
 ARMS_DEALER_STATUS gArmsDealerStatus[NUM_ARMS_DEALERS];
 DEALER_ITEM_HEADER gArmsDealersInventory[NUM_ARMS_DEALERS][MAXITEMS];
 
-static void AdjustCertainDealersInventory(void);
+static void AdjustCertainDealersInventory();
 static void InitializeOneArmsDealer(ArmsDealerID);
 
 void InitAllArmsDealers() {
@@ -280,9 +280,9 @@ void LoadArmsDealerInventoryFromSavedGameFile(HWFILE const f, UINT32 const saveg
   }
 }
 
-static void ConvertCreatureBloodToElixir(void);
-static void DailyCheckOnItemQuantities(void);
-static void SimulateArmsDealerCustomer(void);
+static void ConvertCreatureBloodToElixir();
+static void DailyCheckOnItemQuantities();
+static void SimulateArmsDealerCustomer();
 
 void DailyUpdateOfArmsDealersInventory() {
   // if Gabby has creature blood, start turning it into extra elixir
@@ -299,7 +299,7 @@ void DailyUpdateOfArmsDealersInventory() {
 }
 
 // Once a day, loop through each dealer's inventory items and possibly sell some
-static void SimulateArmsDealerCustomer(void) {
+static void SimulateArmsDealerCustomer() {
   UINT16 usItemIndex;
   UINT8 ubItemsSold = 0;
   UINT8 ubElement;
@@ -361,7 +361,7 @@ static void SimulateArmsDealerCustomer(void) {
   }
 }
 
-static void DailyCheckOnItemQuantities(void) {
+static void DailyCheckOnItemQuantities() {
   UINT16 usItemIndex;
   UINT8 ubMaxSupply;
   UINT8 ubNumItems;
@@ -446,7 +446,7 @@ static void DailyCheckOnItemQuantities(void) {
   }
 }
 
-static void ConvertCreatureBloodToElixir(void) {
+static void ConvertCreatureBloodToElixir() {
   UINT8 ubBloodAvailable;
   UINT8 ubAmountToConvert;
   SPECIAL_ITEM_INFO SpclItemInfo;
@@ -475,7 +475,7 @@ static void GuaranteeMinimumAlcohol(ArmsDealerID);
 static void LimitArmsDealersInventory(ArmsDealerID, UINT32 uiDealerItemType,
                                       UINT8 ubMaxNumberOfItemType);
 
-static void AdjustCertainDealersInventory(void) {
+static void AdjustCertainDealersInventory() {
   // Adjust Tony's items (this restocks *instantly* 1/day, doesn't use the
   // reorder system)
   GuaranteeAtLeastOneItemOfType(ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS);

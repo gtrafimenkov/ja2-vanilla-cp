@@ -13,23 +13,23 @@ BOOLEAN StandardInterruptConditionsMet(const SOLDIERTYPE *pSoldier, const SOLDIE
                                        INT8 bOldOppList);
 INT8 CalcInterruptDuelPts(const SOLDIERTYPE *pSoldier, const SOLDIERTYPE *opponent,
                           BOOLEAN fUseWatchSpots);
-extern void EndAITurn(void);
+extern void EndAITurn();
 extern void DisplayHiddenInterrupt(SOLDIERTYPE *pSoldier);
 extern BOOLEAN InterruptDuel(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent);
 void AddToIntList(SOLDIERTYPE *s, BOOLEAN fGainControl, BOOLEAN fCommunicate);
-void DoneAddingToIntList(void);
+void DoneAddingToIntList();
 
-void ClearIntList(void);
+void ClearIntList();
 
 void SaveTeamTurnsToTheSaveGameFile(HWFILE);
 
 void LoadTeamTurnsFromTheSavedGameFile(HWFILE);
 
-void EndAllAITurns(void);
+void EndAllAITurns();
 
 BOOLEAN NPCFirstDraw(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier);
 
-void SayCloseCallQuotes(void);
+void SayCloseCallQuotes();
 
 void DisplayHiddenTurnbased(SOLDIERTYPE *pActingSoldier);
 

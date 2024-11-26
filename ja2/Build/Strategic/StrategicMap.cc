@@ -323,9 +323,9 @@ void BeginLoadScreen() {
   }
 }
 
-static void EndLoadScreen(void) {}
+static void EndLoadScreen() {}
 
-static void InitializeMapStructure(void);
+static void InitializeMapStructure();
 
 void InitStrategicEngine() {
   // this runs every time we start the application, so don't put anything in
@@ -361,9 +361,9 @@ UINT8 GetTownSectorsUnderControl(INT8 const town_id) {
   return n;
 }
 
-static void InitializeStrategicMapSectorTownNames(void);
+static void InitializeStrategicMapSectorTownNames();
 
-static void InitializeMapStructure(void) {
+static void InitializeMapStructure() {
   memset(StrategicMap, 0, sizeof(StrategicMap));
 
   InitializeStrategicMapSectorTownNames();
@@ -851,7 +851,7 @@ static void HandleQuestCodeOnSectorExit(INT16 sOldSectorX, INT16 sOldSectorY, IN
   SetFactFalse(FACT_MUSEUM_ALARM_WENT_OFF);
 }
 
-static void SetupProfileInsertionDataForCivilians(void) {
+static void SetupProfileInsertionDataForCivilians() {
   FOR_EACH_IN_TEAM(s, CIV_TEAM) {
     if (s->bInSector) SetupProfileInsertionDataForSoldier(s);
   }
@@ -1173,7 +1173,7 @@ MAPEDGEPOINT_SEARCH_FAILED:
   AddSoldierToSector(&s);
 }
 
-static void InitializeStrategicMapSectorTownNames(void) {
+static void InitializeStrategicMapSectorTownNames() {
   StrategicMap[2 + 2 * MAP_WORLD_X].bNameId = StrategicMap[2 + 1 * MAP_WORLD_X].bNameId = CHITZENA;
   StrategicMap[5 + 3 * MAP_WORLD_X].bNameId = StrategicMap[6 + 3 * MAP_WORLD_X].bNameId =
       StrategicMap[5 + 4 * MAP_WORLD_X].bNameId = StrategicMap[4 + 4 * MAP_WORLD_X].bNameId =
@@ -1620,7 +1620,7 @@ void HandleSoldierLeavingSectorByThemSelf(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static void DoneFadeOutExitGridSector(void);
+static void DoneFadeOutExitGridSector();
 static void HandlePotentialMoraleHitForSkimmingSectors(GROUP *pGroup);
 
 void AllMercsWalkedToExitGrid() {
@@ -1689,7 +1689,7 @@ void AllMercsWalkedToExitGrid() {
   }
 }
 
-static void SetupTacticalTraversalInformation(void) {
+static void SetupTacticalTraversalInformation() {
   INT16 sScreenX, sScreenY;
 
   Assert(gpAdjacentGroup);
@@ -1746,7 +1746,7 @@ static void SetupTacticalTraversalInformation(void) {
   }
 }
 
-static void DoneFadeOutAdjacentSector(void);
+static void DoneFadeOutAdjacentSector();
 
 void AllMercsHaveWalkedOffSector() {
   BOOLEAN fEnemiesInLoadedSector = FALSE;
@@ -1838,7 +1838,7 @@ void AllMercsHaveWalkedOffSector() {
   }
 }
 
-static void DoneFadeOutExitGridSector(void) {
+static void DoneFadeOutExitGridSector() {
   SetCurrentWorldSector(gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ);
   if (gfTacticalTraversal && gpTacticalTraversalGroup && gpTacticalTraversalChosenSoldier) {
     if (gTacticalStatus.fEnemyInSector) {
@@ -1854,7 +1854,7 @@ static void DoneFadeOutExitGridSector(void) {
 static INT16 PickGridNoToWalkIn(SOLDIERTYPE *pSoldier, UINT8 ubInsertionDirection,
                                 UINT32 *puiNumAttempts);
 
-static void DoneFadeOutAdjacentSector(void) {
+static void DoneFadeOutAdjacentSector() {
   UINT8 ubDirection;
   SetCurrentWorldSector(gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ);
 
@@ -2270,7 +2270,7 @@ INT32 GetNumberOfSAMSitesUnderPlayerControl() {
   return n;
 }
 
-void UpdateAirspaceControl(void) {
+void UpdateAirspaceControl() {
   INT32 iCounterA = 0, iCounterB = 0;
   UINT8 ubControllingSAM;
   StrategicMapElement *pSAMStrategicMap = NULL;
@@ -2988,7 +2988,7 @@ static void GetLoadedSectorString(wchar_t *const pString, const size_t Length) {
   }
 }
 
-void HandleSlayDailyEvent(void) {
+void HandleSlayDailyEvent() {
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileIDOnPlayerTeam(SLAY);
   if (pSoldier == NULL) {
     return;

@@ -108,7 +108,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT &h) {
       o.ubNumberOfObjects = 1;
       o.bStatus[0] = 100;
       const BOOLEAN fReturn = AutoPlaceObject(s, &o, FALSE);
-      (void)fReturn;
+      (void) fReturn;
       Assert(fReturn);
     }
 
@@ -215,7 +215,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT &h) {
   return MERC_HIRE_OK;
 }
 
-static void CheckForValidArrivalSector(void);
+static void CheckForValidArrivalSector();
 
 void MercArrivesCallback(SOLDIERTYPE &s) {
   UINT32 uiTimeOfPost;
@@ -428,7 +428,7 @@ static INT16 StrategicPythSpacesAway(INT16 sOrigin, INT16 sDest) {
 // is valid
 // if there are enemies present, it's invalid
 // if so, search around for nearest non-occupied sector.
-static void CheckForValidArrivalSector(void) {
+static void CheckForValidArrivalSector() {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;

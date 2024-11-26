@@ -3,10 +3,10 @@
 
 #include <cstdint>
 
-void GameInitFinances(void);
-void EnterFinances(void);
-void ExitFinances(void);
-void RenderFinances(void);
+void GameInitFinances();
+void EnterFinances();
+void ExitFinances();
+void RenderFinances();
 
 #define FINANCES_DATA_FILE TEMPDIR "/finances.dat"
 
@@ -44,10 +44,10 @@ enum {
 
 void AddTransactionToPlayersBook(uint8_t ubCode, uint8_t ubSecondCode, uint32_t uiDate,
                                  int32_t iAmount);
-int32_t GetProjectedTotalDailyIncome(void);
+int32_t GetProjectedTotalDailyIncome();
 
 void SPrintMoney(wchar_t *Str, int32_t Amount);
 
-int32_t GetCurrentBalance(void);
+int32_t GetCurrentBalance();
 
 #endif

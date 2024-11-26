@@ -7,12 +7,12 @@
 void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow);
 // void DrawMapIndexSmallMap( BOOLEAN fSelectedCursorIsYellow );
 
-void DrawMap(void);
+void DrawMap();
 
 void GetScreenXYFromMapXY(INT16 sMapX, INT16 sMapY, INT16 *psX, INT16 *psY);
 
-void InitializePalettesForMap(void);
-void ShutDownPalettesForMap(void);
+void InitializePalettesForMap();
+void ShutDownPalettesForMap();
 
 // plot path for helicopter
 void PlotPathForHelicopter(INT16 sX, INT16 sY);
@@ -31,9 +31,9 @@ void PlotATemporaryPathForCharacter(const SOLDIERTYPE *s, INT16 sX, INT16 sY);
 
 // display current/temp paths
 void DisplaySoldierPath(SOLDIERTYPE *pCharacter);
-void DisplaySoldierTempPath(void);
-void DisplayHelicopterPath(void);
-void DisplayHelicopterTempPath(void);
+void DisplaySoldierTempPath();
+void DisplayHelicopterPath();
+void DisplayHelicopterTempPath();
 
 // clear path after this sector
 UINT32 ClearPathAfterThisSectorForCharacter(SOLDIERTYPE *pCharacter, INT16 sX, INT16 sY);
@@ -56,21 +56,21 @@ bool IsTheCursorAllowedToHighLightThisSector(INT16 x, INT16 y);
 void RestoreBackgroundForMapGrid(INT16 sMapX, INT16 sMapY);
 
 // clip blits to map view region
-void ClipBlitsToMapViewRegion(void);
+void ClipBlitsToMapViewRegion();
 void ClipBlitsToMapViewRegionForRectangleAndABit(UINT32 uiDestPitchBYTES);
 
 // clip blits to full screen....restore after use of ClipBlitsToMapViewRegion( )
-void RestoreClipRegionToFullScreen(void);
+void RestoreClipRegionToFullScreen();
 void RestoreClipRegionToFullScreenForRectangle(UINT32 uiDestPitchBYTES);
 
 // last sector in helicopter's path
-INT16 GetLastSectorOfHelicoptersPath(void);
+INT16 GetLastSectorOfHelicoptersPath();
 
 // display info about helicopter path
-void DisplayDistancesForHelicopter(void);
+void DisplayDistancesForHelicopter();
 
 // display where hei is
-void DisplayPositionOfHelicopter(void);
+void DisplayPositionOfHelicopter();
 
 // check for click
 BOOLEAN CheckForClickOverHelicopterIcon(INT16 sX, INT16 sY);
@@ -82,7 +82,7 @@ void DeleteMapScreenInterfaceMapGraphics();
 INT32 GetNumberOfMilitiaInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 // create destroy
-void CreateDestroyMilitiaPopUPRegions(void);
+void CreateDestroyMilitiaPopUPRegions();
 
 // draw the militia box
 void DrawMilitiaPopUpBox();
@@ -96,7 +96,7 @@ UINT32 WhatPlayerKnowsAboutEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
 // compressed.  When time is compressed, the flag is cleared, and a question mark
 // is displayed to reflect that the player no longer knows.  This is the function
 // that clears that flag.
-void ClearAnySectorsFlashingNumberOfEnemies(void);
+void ClearAnySectorsFlashingNumberOfEnemies();
 
 void InitMapSecrets();
 
@@ -192,7 +192,7 @@ extern UINT16 sSelMapY;
 
 extern BOOLEAN fFoundTixa;
 
-void CreateDestroyMilitiaSectorButtons(void);
+void CreateDestroyMilitiaSectorButtons();
 BOOLEAN CanRedistributeMilitiaInSector(INT16 sClickedSectorX, INT16 sClickedSectorY,
                                        INT8 bClickedTownId);
 

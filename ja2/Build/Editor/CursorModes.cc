@@ -110,7 +110,7 @@ void RemoveCursors() {
   gfUsingOffset = FALSE;
 }
 
-static void RemoveBadMarker(void) {
+static void RemoveBadMarker() {
   LEVELNODE *pNode;
   if (sBadMarker < 0) return;
   pNode = gpWorldLevelData[sBadMarker].pTopmostHead;
@@ -125,10 +125,10 @@ static void RemoveBadMarker(void) {
 }
 
 static void DrawBuildingLayout(INT32 iMapIndex);
-static void EnsureSelectionType(void);
+static void EnsureSelectionType();
 static void ForceAreaSelectionWidth(INT16 sGridX, INT16 sGridY);
 static BOOLEAN HandleAreaSelection(INT16 sGridX, INT16 sGridY);
-static void ValidateSelectionRegionBoundaries(void);
+static void ValidateSelectionRegionBoundaries();
 
 void UpdateCursorAreas() {
   INT32 x, y, iMapIndex;
@@ -295,14 +295,14 @@ static BOOLEAN HandleAreaSelection(const INT16 sGridX, const INT16 sGridY) {
   return TRUE;
 }
 
-static void ValidateSelectionRegionBoundaries(void) {
+static void ValidateSelectionRegionBoundaries() {
   gSelectRegion.iLeft = std::max(std::min(159, gSelectRegion.iLeft), 0);
   gSelectRegion.iRight = std::max(std::min(159, gSelectRegion.iRight), 0);
   gSelectRegion.iTop = std::max(std::min(159, gSelectRegion.iTop), 0);
   gSelectRegion.iBottom = std::max(std::min(159, gSelectRegion.iBottom), 0);
 }
 
-static void EnsureSelectionType(void) {
+static void EnsureSelectionType() {
   BOOLEAN fPrevBrushEnabledState = gfBrushEnabled;
 
   // At time of writing, the only drawing mode supporting right mouse button

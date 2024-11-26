@@ -203,13 +203,13 @@ void HandleAimPolicies() {
   }
 }
 
-static void DisableAimPolicyButton(void);
+static void DisableAimPolicyButton();
 static UINT16 DisplayAimPolicyParagraph(UINT16 usPosY, UINT8 ubPageNum, FLOAT fNumber);
-static void DisplayAimPolicyStatement(void);
+static void DisplayAimPolicyStatement();
 static UINT16 DisplayAimPolicySubParagraph(UINT16 usPosY, UINT8 ubPageNum, FLOAT fNumber);
 static void DisplayAimPolicyTitle(UINT16 usPosY, UINT8 ubPageNum);
-static void DisplayAimPolicyTitleText(void);
-static void DrawAimPolicyMenu(void);
+static void DisplayAimPolicyTitleText();
+static void DrawAimPolicyMenu();
 static void InitAgreementRegion();
 static void InitAimPolicyTocMenu();
 
@@ -411,7 +411,7 @@ static void LoadAIMPolicyText(wchar_t *Text, UINT32 Offset) {
                             AIM_POLICY_LINE_SIZE);
 }
 
-static void DrawAimPolicyMenu(void) {
+static void DrawAimPolicyMenu() {
   UINT16 i, usPosY;
   UINT8 ubLocInFile[] = {
       DEFINITIONS,      LENGTH_OF_ENGAGEMENT, LOCATION_0F_ENGAGEMENT, CONTRACT_EXTENSIONS,
@@ -475,7 +475,7 @@ static void SelectPolicyTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReas
   }
 }
 
-static void DisplayAimPolicyTitleText(void) {
+static void DisplayAimPolicyTitleText() {
   wchar_t sText[AIM_POLICY_LINE_SIZE];
   LoadAIMPolicyText(sText, AIM_STATEMENT_OF_POLICY);
 
@@ -484,7 +484,7 @@ static void DisplayAimPolicyTitleText(void) {
                    AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
 }
 
-static void DisplayAimPolicyStatement(void) {
+static void DisplayAimPolicyStatement() {
   wchar_t sText[AIM_POLICY_LINE_SIZE];
   UINT16 usNumPixels;
 
@@ -648,7 +648,7 @@ static void ResetAimPolicyButtons() {
   FOR_EACH(GUIButtonRef, i, guiPoliciesMenuButton) { (*i)->uiFlags &= ~BUTTON_CLICKED_ON; }
 }
 
-static void DisableAimPolicyButton(void) {
+static void DisableAimPolicyButton() {
   if (gfExitingAimPolicy || !gfAimPolicyMenuBarLoaded) return;
 
   if (gubCurPageNum == AIM_POLICY_TOC_PAGE) {

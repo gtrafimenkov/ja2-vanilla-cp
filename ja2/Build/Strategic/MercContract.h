@@ -44,10 +44,10 @@ void MakeCharacterDialogueEventContractEndingNoAskEquip(SOLDIERTYPE &);
 
 BOOLEAN WillMercRenew(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote);
 void CheckIfMercGetsAnotherContract(SOLDIERTYPE &);
-void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void);
+void FindOutIfAnyMercAboutToLeaveIsGonnaRenew();
 
-void BeginContractRenewalSequence(void);
-void HandleContractRenewalSequence(void);
+void BeginContractRenewalSequence();
+void HandleContractRenewalSequence();
 
 UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier);
 

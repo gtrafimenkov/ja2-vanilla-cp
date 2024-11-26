@@ -6,12 +6,12 @@
 #define FLORIST_BUTTON_TEXT_DOWN_COLOR 2
 #define FLORIST_BUTTON_TEXT_SHADOW_COLOR 128
 
-void EnterFlorist(void);
-void ExitFlorist(void);
-void RenderFlorist(void);
+void EnterFlorist();
+void ExitFlorist();
+void RenderFlorist();
 
-void RemoveFloristDefaults(void);
-void DisplayFloristDefaults(void);
-void InitFloristDefaults(void);
+void RemoveFloristDefaults();
+void DisplayFloristDefaults();
+void InitFloristDefaults();
 
 #endif

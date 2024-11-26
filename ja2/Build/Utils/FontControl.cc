@@ -31,7 +31,7 @@ Font gpHugeFont;
 
 static void CreateFontPaletteTables(Font);
 
-void InitializeFonts(void) {
+void InitializeFonts() {
 #define M(var, file) (CreateFontPaletteTables((var) = LoadFontFile((file))))
   M(gp10PointArial, FONTSDIR "/font10arial.sti");
   M(gp10PointArialBold, FONTSDIR "/font10arialbold.sti");
@@ -59,7 +59,7 @@ void InitializeFonts(void) {
   SetFontDestBuffer(FRAME_BUFFER);
 }
 
-void ShutdownFonts(void) {
+void ShutdownFonts() {
   UnloadFont(gp10PointArial);
   UnloadFont(gp10PointArialBold);
   UnloadFont(gp12PointArial);

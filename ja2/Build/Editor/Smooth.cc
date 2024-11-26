@@ -153,7 +153,7 @@ void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSm
   *piNewTile = GetTileIndexFromTypeSubIndex(origType, land);
 }
 
-void SmoothAllTerrainWorld(void) {
+void SmoothAllTerrainWorld() {
   int cnt;
   UINT16 NewTile;
   UINT32 uiCheckType;

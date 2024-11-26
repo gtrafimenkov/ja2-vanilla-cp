@@ -1,9 +1,9 @@
 #ifndef __CAMPAIGN_INIT_H
 #define __CAMPAIGN_INIT_H
 
-void InitNewCampaign(void);
+void InitNewCampaign();
 
-void BuildUndergroundSectorInfoList(void);
-void TrashUndergroundSectorInfo(void);
+void BuildUndergroundSectorInfoList();
+void TrashUndergroundSectorInfo();
 
 #endif

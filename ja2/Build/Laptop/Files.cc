@@ -137,9 +137,9 @@ enum {
 // mouse regions
 static MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
 
-static void CheckForUnreadFiles(void);
-static void OpenAndReadFilesFile(void);
-static void OpenAndWriteFilesFile(void);
+static void CheckForUnreadFiles();
+static void OpenAndReadFilesFile();
+static void OpenAndWriteFilesFile();
 static void ProcessAndEnterAFilesRecord(UINT8 ubCode, BOOLEAN fRead);
 
 static void AddFilesToPlayersLog(UINT8 ubCode) {
@@ -160,9 +160,9 @@ static void AddFilesToPlayersLog(UINT8 ubCode) {
   if (!fInFilesMode) OpenAndWriteFilesFile();
 }
 
-static void ClearFilesList(void);
+static void ClearFilesList();
 
-void GameInitFiles(void) {
+void GameInitFiles() {
   FileDelete(FILES_DAT_FILE);
   ClearFilesList();
 
@@ -170,13 +170,13 @@ void GameInitFiles(void) {
   AddFilesToPlayersLog(ENRICO_BACKGROUND);
 }
 
-static void CreateButtonsForFilesPage(void);
-static void HandleFileViewerButtonStates(void);
-static void InitializeFilesMouseRegions(void);
-static void LoadFiles(void);
-static void OpenFirstUnreadFile(void);
+static void CreateButtonsForFilesPage();
+static void HandleFileViewerButtonStates();
+static void InitializeFilesMouseRegions();
+static void LoadFiles();
+static void OpenFirstUnreadFile();
 
-void EnterFiles(void) {
+void EnterFiles() {
   // load grpahics for files system
   LoadFiles();
 
@@ -205,11 +205,11 @@ void EnterFiles(void) {
   }
 }
 
-static void DeleteButtonsForFilesPage(void);
-static void RemoveFiles(void);
+static void DeleteButtonsForFilesPage();
+static void RemoveFiles();
 static void RemoveFilesMouseRegions();
 
-void ExitFiles(void) {
+void ExitFiles() {
   // write files list out to disk
   OpenAndWriteFilesFile();
 
@@ -225,14 +225,14 @@ void ExitFiles(void) {
   RemoveFiles();
 }
 
-void HandleFiles(void) { CheckForUnreadFiles(); }
+void HandleFiles() { CheckForUnreadFiles(); }
 
-static void DisplayFileMessage(void);
-static void DisplayFilesList(void);
-static void DrawFilesTitleText(void);
-static void RenderFilesBackGround(void);
+static void DisplayFileMessage();
+static void DisplayFilesList();
+static void DrawFilesTitleText();
+static void RenderFilesBackGround();
 
-void RenderFiles(void) {
+void RenderFiles() {
   // render the background
   RenderFilesBackGround();
 
@@ -251,19 +251,19 @@ void RenderFiles(void) {
   BltVideoObject(FRAME_BUFFER, guiLaptopBACKGROUND, 0, 108, 23);
 }
 
-static void RenderFilesBackGround(void) {
+static void RenderFilesBackGround() {
   // render generic background for file system
   BltVideoObject(FRAME_BUFFER, guiTITLE, 0, TOP_X, TOP_Y - 2);
   BltVideoObject(FRAME_BUFFER, guiTOP, 0, TOP_X, TOP_Y + 22);
 }
 
-static void DrawFilesTitleText(void) {
+static void DrawFilesTitleText() {
   // draw the pages title
   SetFontAttributes(FILES_TITLE_FONT, FONT_WHITE);
   MPrint(TITLE_X, TITLE_Y, pFilesTitle);
 }
 
-static void LoadFiles(void) {
+static void LoadFiles() {
   // load files video objects into memory
 
   // title bar
@@ -273,7 +273,7 @@ static void LoadFiles(void) {
   guiTOP = AddVideoObjectFromFile(LAPTOPDIR "/fileviewer.sti");
 }
 
-static void RemoveFiles(void) {
+static void RemoveFiles() {
   // delete files video objects from memory
   DeleteVideoObject(guiTOP);
   DeleteVideoObject(guiTITLE);
@@ -297,7 +297,7 @@ static void ProcessAndEnterAFilesRecord(const UINT8 ubCode, const BOOLEAN fRead)
 
 #define FILE_ENTRY_SIZE 263
 
-static void OpenAndReadFilesFile(void) {
+static void OpenAndReadFilesFile() {
   ClearFilesList();
 
   AutoSGPFile f;
@@ -325,7 +325,7 @@ static void OpenAndReadFilesFile(void) {
   }
 }
 
-static void OpenAndWriteFilesFile(void) {
+static void OpenAndWriteFilesFile() {
   AutoSGPFile f(FileMan::openForWriting(FILES_DAT_FILE));
 
   for (const FilesUnit *i = pFilesListHead; i; i = i->Next) {
@@ -342,7 +342,7 @@ static void OpenAndWriteFilesFile(void) {
   ClearFilesList();
 }
 
-static void ClearFilesList(void) {
+static void ClearFilesList() {
   FilesUnit *i = pFilesListHead;
   pFilesListHead = NULL;
   while (i) {
@@ -352,7 +352,7 @@ static void ClearFilesList(void) {
   }
 }
 
-static void DisplayFilesList(void) {
+static void DisplayFilesList() {
   // this function will run through the list of files of files and display the
   // 'sender'
   SetFontAttributes(FILES_TEXT_FONT, FONT_BLACK, NO_SHADOW);
@@ -374,9 +374,9 @@ static void DisplayFilesList(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void DisplayFormattedText(void);
+static void DisplayFormattedText();
 
-static void DisplayFileMessage(void) {
+static void DisplayFileMessage() {
   if (iHighLightFileLine != -1) {
     DisplayFormattedText();
   } else {
@@ -386,7 +386,7 @@ static void DisplayFileMessage(void) {
 
 static void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-static void InitializeFilesMouseRegions(void) {
+static void InitializeFilesMouseRegions() {
   UINT16 const x = FILES_LIST_X;
   UINT16 y = FILES_LIST_Y;
   UINT16 const w = FILES_LIST_W;
@@ -429,10 +429,10 @@ static void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void HandleSpecialFiles(void);
+static void HandleSpecialFiles();
 static void HandleSpecialTerroristFile(INT32 file_idx);
 
-static void DisplayFormattedText(void) {
+static void DisplayFormattedText() {
   fWaitAFrame = FALSE;
 
   UINT16 const white = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -573,9 +573,9 @@ typedef SGP::AutoObj<FileString, ClearFileStringList> AutoStringList;
 }  // namespace
 
 static void ClearOutWidthRecordsList(FileRecordWidth *pFileRecordWidthList);
-static FileRecordWidth *CreateWidthRecordsForAruloIntelFile(void);
+static FileRecordWidth *CreateWidthRecordsForAruloIntelFile();
 
-static void HandleSpecialFiles(void) {
+static void HandleSpecialFiles() {
   FileRecordWidth *const width_list = CreateWidthRecordsForAruloIntelFile();
   AutoStringList const head(
       LoadStringsIntoFileList(BINARYDATADIR "/ris.edt", 0, LENGTH_OF_ENRICO_FILE));
@@ -666,7 +666,7 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
 static void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason);
 static void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void CreateButtonsForFilesPage(void) {
+static void CreateButtonsForFilesPage() {
   // will create buttons for the files page
   giFilesPageButtons[0] = QuickCreateButtonImg(
       LAPTOPDIR "/arrows.sti", 0, 1, PREVIOUS_FILE_PAGE_BUTTON_X, PREVIOUS_FILE_PAGE_BUTTON_Y,
@@ -684,7 +684,7 @@ static void CreateButtonsForFilesPage(void) {
                     MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
 
-static void DeleteButtonsForFilesPage(void) {
+static void DeleteButtonsForFilesPage() {
   // destroy buttons for the files page
   MSYS_RemoveRegion(&g_scroll_region);
   RemoveButton(giFilesPageButtons[0]);
@@ -703,7 +703,7 @@ static void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void HandleFileViewerButtonStates(void) {
+static void HandleFileViewerButtonStates() {
   if (iHighLightFileLine == -1) {
     // not displaying message, leave
     DisableButton(giFilesPageButtons[0]);
@@ -733,7 +733,7 @@ static FileRecordWidth *CreateRecordWidth(INT32 iRecordNumber, INT32 iRecordWidt
   return (pTempRecord);
 }
 
-static FileRecordWidth *CreateWidthRecordsForAruloIntelFile(void) {
+static FileRecordWidth *CreateWidthRecordsForAruloIntelFile() {
   // this fucntion will create the width list for the Arulco intelligence file
   FileRecordWidth *pTempRecord = NULL;
   FileRecordWidth *pRecordListHead = NULL;
@@ -758,7 +758,7 @@ static FileRecordWidth *CreateWidthRecordsForAruloIntelFile(void) {
   return (pRecordListHead);
 }
 
-static FileRecordWidth *CreateWidthRecordsForTerroristFile(void) {
+static FileRecordWidth *CreateWidthRecordsForTerroristFile() {
   // this fucntion will create the width list for the Arulco intelligence file
   FileRecordWidth *pTempRecord = NULL;
   FileRecordWidth *pRecordListHead = NULL;
@@ -788,7 +788,7 @@ static void ClearOutWidthRecordsList(FileRecordWidth *i) {
 }
 
 // open new files for viewing
-static void OpenFirstUnreadFile(void) {
+static void OpenFirstUnreadFile() {
   // open the first unread file in the list
   INT32 i = 0;
   for (FilesUnit *fu = pFilesListHead; fu; ++i, fu = fu->Next) {
@@ -797,7 +797,7 @@ static void OpenFirstUnreadFile(void) {
   }
 }
 
-static void CheckForUnreadFiles(void) {
+static void CheckForUnreadFiles() {
   // will check for any unread files and set flag if any
   BOOLEAN any_unread = FALSE;
   for (FilesUnit const *i = pFilesListHead; i; i = i->Next) {

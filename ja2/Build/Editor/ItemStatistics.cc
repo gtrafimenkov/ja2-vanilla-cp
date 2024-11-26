@@ -190,16 +190,16 @@ void HideItemStatsPanel() {
   gfShowItemStatsPanel = FALSE;
 }
 
-static void ExtractAndUpdateActionItemsGUI(void);
-static void ExtractAndUpdateAmmoGUI(void);
-static void ExtractAndUpdateArmourGUI(void);
-static void ExtractAndUpdateEquipGUI(void);
-static void ExtractAndUpdateExplosivesGUI(void);
-static void ExtractAndUpdateGunGUI(void);
-static void ExtractAndUpdateKeysGUI(void);
-static void ExtractAndUpdateMoneyGUI(void);
-static void ExtractAndUpdateOwnershipGUI(void);
-static void ExtractAndUpdateTriggersGUI(void);
+static void ExtractAndUpdateActionItemsGUI();
+static void ExtractAndUpdateAmmoGUI();
+static void ExtractAndUpdateArmourGUI();
+static void ExtractAndUpdateEquipGUI();
+static void ExtractAndUpdateExplosivesGUI();
+static void ExtractAndUpdateGunGUI();
+static void ExtractAndUpdateKeysGUI();
+static void ExtractAndUpdateMoneyGUI();
+static void ExtractAndUpdateOwnershipGUI();
+static void ExtractAndUpdateTriggersGUI();
 
 void ExecuteItemStatsCmd(UINT8 ubAction) {
   switch (ubAction) {
@@ -255,19 +255,19 @@ void ExecuteItemStatsCmd(UINT8 ubAction) {
   }
 }
 
-static void RemoveActionItemsGUI(void);
-static void RemoveAmmoGUI(void);
-static void RemoveArmourGUI(void);
-static void RemoveEquipGUI(void);
-static void RemoveExplosivesGUI(void);
-static void RemoveGameTypeFlags(void);
-static void RemoveGunGUI(void);
-static void RemoveKeysGUI(void);
-static void RemoveMoneyGUI(void);
-static void RemoveOwnershipGUI(void);
-static void RemoveTriggersGUI(void);
+static void RemoveActionItemsGUI();
+static void RemoveAmmoGUI();
+static void RemoveArmourGUI();
+static void RemoveEquipGUI();
+static void RemoveExplosivesGUI();
+static void RemoveGameTypeFlags();
+static void RemoveGunGUI();
+static void RemoveKeysGUI();
+static void RemoveMoneyGUI();
+static void RemoveOwnershipGUI();
+static void RemoveTriggersGUI();
 
-static void RemoveItemGUI(void) {
+static void RemoveItemGUI() {
   if (!gpItem) return;
   if (TextInputMode()) KillTextInputMode();
   HideEditorButton(ITEMSTATS_HIDDEN_BTN);
@@ -304,17 +304,17 @@ static void RemoveItemGUI(void) {
     }
 }
 
-static void SetupActionItemsGUI(void);
-static void SetupAmmoGUI(void);
-static void SetupArmourGUI(void);
-static void SetupEquipGUI(void);
-static void SetupExplosivesGUI(void);
-static void SetupGameTypeFlags(void);
+static void SetupActionItemsGUI();
+static void SetupAmmoGUI();
+static void SetupArmourGUI();
+static void SetupEquipGUI();
+static void SetupExplosivesGUI();
+static void SetupGameTypeFlags();
 static void SetupGunGUI();
-static void SetupKeysGUI(void);
-static void SetupMoneyGUI(void);
-static void SetupOwnershipGUI(void);
-static void SetupTriggersGUI(void);
+static void SetupKeysGUI();
+static void SetupMoneyGUI();
+static void SetupOwnershipGUI();
+static void SetupTriggersGUI();
 
 void SpecifyItemToEdit(OBJECTTYPE *pItem, INT32 iMapIndex) {
   // Set the global item pointer to point to the new item
@@ -554,7 +554,7 @@ static GUIButtonRef MakeRadioButton(INT16 const x, GUI_CALLBACK const click,
   return b;
 }
 
-static void SetupGameTypeFlags(void) {
+static void SetupGameTypeFlags() {
   if (gpEditingItemPool) {
     giBothCheckboxButton = MakeRadioButton(
         573, BothModesCheckboxCallback, L"Item appears in both Sci-Fi and Realistic modes. (|B)");
@@ -580,7 +580,7 @@ static void SetupGameTypeFlags(void) {
   }
 }
 
-static void RemoveGameTypeFlags(void) {
+static void RemoveGameTypeFlags() {
   if (giBothCheckboxButton) RemoveButton(giBothCheckboxButton);
   if (giRealisticCheckboxButton) RemoveButton(giRealisticCheckboxButton);
   if (giSciFiCheckboxButton) RemoveButton(giSciFiCheckboxButton);
@@ -599,7 +599,7 @@ static bool MakeAttachmentButton(AttachmentInfo &a, INT16 const x, INT16 const y
   return true;
 }
 
-static void ReEvaluateAttachmentStatii(void);
+static void ReEvaluateAttachmentStatii();
 static void ToggleWeaponAttachment(GUI_BUTTON *btn, INT32 reason);
 
 static void SetupGunGUI() {
@@ -627,14 +627,14 @@ static void SetupGunGUI() {
   ReEvaluateAttachmentStatii();
 }
 
-static void RemoveGunGUI(void) {
+static void RemoveGunGUI() {
   FOR_EACH(AttachmentInfo, i, g_weapon_attachment) {
     GUIButtonRef &b = i->button;
     if (b) RemoveButton(b);
   }
 }
 
-static void ExtractAndUpdateGunGUI(void) {
+static void ExtractAndUpdateGunGUI() {
   INT32 i;
   // Update the gun status
   i = GetNumericStrictValueFromField(1);
@@ -666,7 +666,7 @@ static void ExtractAndUpdateGunGUI(void) {
   }
 }
 
-static void SetupAmmoGUI(void) {
+static void SetupAmmoGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
@@ -679,11 +679,11 @@ static void SetupAmmoGUI(void) {
   }
 }
 
-static void RemoveAmmoGUI(void) {
+static void RemoveAmmoGUI() {
   // nothing to remove
 }
 
-static void ExtractAndUpdateAmmoGUI(void) {
+static void ExtractAndUpdateAmmoGUI() {
   INT32 i;
   // Update the number of clips
   i = GetNumericStrictValueFromField(1);
@@ -729,7 +729,7 @@ static void ToggleItemAttachment(GUI_BUTTON *const btn, INT32 const reason) {
   }
 }
 
-static void SetupArmourGUI(void) {
+static void SetupArmourGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -744,11 +744,11 @@ static void SetupArmourGUI(void) {
   MakeAttachmentButton(g_ceramic_attachment, 558, 375, 72, ToggleItemAttachment);
 }
 
-static void RemoveArmourGUI(void) {
+static void RemoveArmourGUI() {
   if (g_ceramic_attachment.button) RemoveButton(g_ceramic_attachment.button);
 }
 
-static void ExtractAndUpdateArmourGUI(void) {
+static void ExtractAndUpdateArmourGUI() {
   INT32 i;
   // Update the armour status
   i = GetNumericStrictValueFromField(1);
@@ -772,7 +772,7 @@ static void ExtractAndUpdateArmourGUI(void) {
   }
 }
 
-static void SetupEquipGUI(void) {
+static void SetupEquipGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -785,11 +785,11 @@ static void SetupEquipGUI(void) {
   }
 }
 
-static void RemoveEquipGUI(void) {
+static void RemoveEquipGUI() {
   // nothing to remove
 }
 
-static void ExtractAndUpdateEquipGUI(void) {
+static void ExtractAndUpdateEquipGUI() {
   INT32 i;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
@@ -813,7 +813,7 @@ static void ExtractAndUpdateEquipGUI(void) {
   }
 }
 
-static void SetupExplosivesGUI(void) {
+static void SetupExplosivesGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -833,11 +833,11 @@ static void SetupExplosivesGUI(void) {
   MakeAttachmentButton(g_detonator_attachment, 570, 375, 60, ToggleItemAttachment);
 }
 
-static void RemoveExplosivesGUI(void) {
+static void RemoveExplosivesGUI() {
   if (g_detonator_attachment.button) RemoveButton(g_detonator_attachment.button);
 }
 
-static void ExtractAndUpdateExplosivesGUI(void) {
+static void ExtractAndUpdateExplosivesGUI() {
   INT32 i;
   // Update the explosives status
   i = GetNumericStrictValueFromField(1);
@@ -872,7 +872,7 @@ static void ExtractAndUpdateExplosivesGUI(void) {
   }
 }
 
-static void SetupMoneyGUI(void) {
+static void SetupMoneyGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
@@ -883,7 +883,7 @@ static void SetupMoneyGUI(void) {
   }
 }
 
-static void ExtractAndUpdateMoneyGUI(void) {
+static void ExtractAndUpdateMoneyGUI() {
   INT32 i;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
@@ -903,11 +903,11 @@ static void ExtractAndUpdateMoneyGUI(void) {
   }
 }
 
-static void RemoveMoneyGUI(void) {}
+static void RemoveMoneyGUI() {}
 
 static void OwnershipGroupButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
-static void SetupOwnershipGUI(void) {
+static void SetupOwnershipGUI() {
   wchar_t str[20];
   swprintf(str, lengthof(str), L"%d", gpItem->ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -927,7 +927,7 @@ void SetOwnershipGroup(UINT8 ubNewGroup) {
   giOwnershipGroupButton->SpecifyText(gszCivGroupNames[ubNewGroup]);
 }
 
-static void ExtractAndUpdateOwnershipGUI(void) {
+static void ExtractAndUpdateOwnershipGUI() {
   INT32 i;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
@@ -939,11 +939,11 @@ static void ExtractAndUpdateOwnershipGUI(void) {
   SetInputFieldStringWithNumericStrictValue(1, i);
 }
 
-static void RemoveOwnershipGUI(void) {
+static void RemoveOwnershipGUI() {
   if (giOwnershipGroupButton) RemoveButton(giOwnershipGroupButton);
 }
 
-static void SetupKeysGUI(void) {
+static void SetupKeysGUI() {
   wchar_t str[20];
   if (gpEditingItemPool) {
     swprintf(str, lengthof(str), L"%d",
@@ -952,7 +952,7 @@ static void SetupKeysGUI(void) {
   }
 }
 
-static void ExtractAndUpdateKeysGUI(void) {
+static void ExtractAndUpdateKeysGUI() {
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(1);
     giDefaultExistChance =
@@ -962,9 +962,9 @@ static void ExtractAndUpdateKeysGUI(void) {
   }
 }
 
-static void RemoveKeysGUI(void) {}
+static void RemoveKeysGUI() {}
 
-static void SetupActionItemsGUI(void) {
+static void SetupActionItemsGUI() {
   wchar_t str[4];
   const wchar_t *pStr;
   swprintf(str, lengthof(str), L"%d", gpItem->bStatus[0]);
@@ -981,7 +981,7 @@ static void SetupActionItemsGUI(void) {
                                          20, MSYS_PRIORITY_NORMAL, ActionItemCallback);
 }
 
-static void ExtractAndUpdateActionItemsGUI(void) {
+static void ExtractAndUpdateActionItemsGUI() {
   INT32 i;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
@@ -1007,7 +1007,7 @@ static void ExtractAndUpdateActionItemsGUI(void) {
   }
 }
 
-static void RemoveActionItemsGUI(void) {
+static void RemoveActionItemsGUI() {
   if (guiActionItemButton) RemoveButton(guiActionItemButton);
 }
 
@@ -1020,7 +1020,7 @@ static void AlarmTriggerCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SetupTriggersGUI(void) {
+static void SetupTriggersGUI() {
   wchar_t str[4];
   swprintf(str, lengthof(str), L"%d", gpItem->bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -1042,7 +1042,7 @@ static void SetupTriggersGUI(void) {
   }
 }
 
-static void ExtractAndUpdateTriggersGUI(void) {
+static void ExtractAndUpdateTriggersGUI() {
   INT32 i;
   // Update the trap level
   i = GetNumericStrictValueFromField(1);
@@ -1064,7 +1064,7 @@ static void ExtractAndUpdateTriggersGUI(void) {
   }
 }
 
-static void RemoveTriggersGUI(void) {
+static void RemoveTriggersGUI() {
   if (gpEditingItemPool && gpItem->bFrequency >= PANIC_FREQUENCY_3) {
     if (giAlarmTriggerButton) RemoveButton(giAlarmTriggerButton);
   }
@@ -1250,7 +1250,7 @@ void UpdateActionItem(INT8 bActionItemIndex) {
   }
 }
 
-static void ReEvaluateAttachmentStatii(void) {
+static void ReEvaluateAttachmentStatii() {
   FOR_EACH(AttachmentInfo, i, g_weapon_attachment) {
     AttachmentInfo const &a = *i;
     if (!a.button) continue;

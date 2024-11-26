@@ -215,21 +215,21 @@ extern INT16 gsRecompileAreaLeft;
 extern INT16 gsRecompileAreaRight;
 extern INT16 gsRecompileAreaBottom;
 
-void InitializeWorld(void);
-void DeinitializeWorld(void);
+void InitializeWorld();
+void DeinitializeWorld();
 
-void BuildTileShadeTables(void);
-void DestroyTileShadeTables(void);
+void BuildTileShadeTables();
+void DestroyTileShadeTables();
 
-void TrashWorld(void);
+void TrashWorld();
 
 /* Deletes everything then re-creates the world with simple ground tiles */
-void NewWorld(void);
+void NewWorld();
 
 BOOLEAN SaveWorld(const char *puiFilename);
 
 void LoadWorld(char const *filename);
-void CompileWorldMovementCosts(void);
+void CompileWorldMovementCosts();
 void RecompileLocalMovementCosts(INT16 sCentreGridNo);
 void RecompileLocalMovementCostsFromRadius(INT16 sCentreGridNo, INT8 bRadius);
 
@@ -245,10 +245,10 @@ BOOLEAN GridNoIndoors(UINT32 iMapIndex);
 
 BOOLEAN OpenableAtGridNo(UINT32 iMapIndex);
 
-void RecompileLocalMovementCostsInAreaWithFlags(void);
+void RecompileLocalMovementCostsInAreaWithFlags();
 void AddTileToRecompileArea(INT16 sGridNo);
 
-void InitLoadedWorld(void);
+void InitLoadedWorld();
 
 BOOLEAN IsSoldierLight(const LIGHT_SPRITE *l);
 

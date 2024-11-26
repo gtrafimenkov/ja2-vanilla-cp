@@ -12,12 +12,12 @@ struct MAPEDGEPOINTINFO {
 UINT16 ChooseMapEdgepoint(UINT8 ubStrategicInsertionCode);
 void ChooseMapEdgepoints(MAPEDGEPOINTINFO *pMapEdgepointInfo, UINT8 ubStrategicInsertionCode,
                          UINT8 ubNumDesiredPoints);
-void GenerateMapEdgepoints(void);
+void GenerateMapEdgepoints();
 
 void SaveMapEdgepoints(HWFILE);
 
 bool LoadMapEdgepoints(HWFILE);
-void TrashMapEdgepoints(void);
+void TrashMapEdgepoints();
 
 // dynamic arrays that contain the valid gridno's for each edge
 extern INT16 *gps1stNorthEdgepointArray;
@@ -65,8 +65,8 @@ extern UINT16 gus2ndWestEdgepointMiddleIndex;
 // that particular side, or all spots are reserved.  There are only 20 spots that
 // can be reserved (one for each player soldier).  This code shouldn't be used
 // for enemies or anybody else.
-void BeginMapEdgepointSearch(void);
-void EndMapEdgepointSearch(void);
+void BeginMapEdgepointSearch();
+void EndMapEdgepointSearch();
 INT16 SearchForClosestPrimaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode);
 INT16 SearchForClosestSecondaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode);
 
@@ -79,7 +79,7 @@ INT16 SearchForClosestSecondaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode
 //
 UINT8 CalcMapEdgepointClassInsertionCode(INT16 sGridNo);
 
-void ShowMapEdgepoints(void);
-void HideMapEdgepoints(void);
+void ShowMapEdgepoints();
+void HideMapEdgepoints();
 
 #endif

@@ -17,7 +17,7 @@
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
 
-//#define
+// #define
 
 #define AIM_SORT_FONT_TITLE FONT14ARIAL
 #define AIM_SORT_FONT_SORT_TEXT FONT10ARIAL
@@ -190,7 +190,7 @@ void EnterAimSort() {
   RenderAimSort();
 }
 
-static void SortMercArray(void);
+static void SortMercArray();
 
 void ExitAimSort() {
   // Sort the merc array
@@ -339,7 +339,7 @@ static void DrawSelectLight(const uint8_t ubMode, const uint8_t ubImage) {
 
 static INT32 QsortCompare(const void *pNum1, const void *pNum2);
 
-static void SortMercArray(void) {
+static void SortMercArray() {
   qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(uint8_t), QsortCompare);
 }
 

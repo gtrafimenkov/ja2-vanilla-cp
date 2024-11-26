@@ -46,11 +46,11 @@ void SetMusicMode(UINT8 ubMusicMode);
 void MusicPlay(UINT32 uiNum);
 
 void MusicSetVolume(UINT32 uiVolume);
-UINT32 MusicGetVolume(void);
+UINT32 MusicGetVolume();
 
 /* Handles any maintenance the music system needs done. Should be polled from
  * the main loop, or somewhere with a high frequency of calls. */
-void MusicPoll(void);
+void MusicPoll();
 
 void SetMusicFadeSpeed(INT8 bFadeSpeed);
 
