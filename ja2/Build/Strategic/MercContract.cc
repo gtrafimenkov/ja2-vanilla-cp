@@ -40,8 +40,8 @@
 #include "Utils/Text.h"
 
 struct CONTRACT_NEWAL_LIST_NODE {
-  UINT8 ubProfileID;
-  UINT8 ubFiller[3];  // XXX HACK000B
+  uint8_t ubProfileID;
+  uint8_t ubFiller[3];  // XXX HACK000B
 };
 
 static SOLDIERTYPE *pLeaveSoldier = NULL;
@@ -50,15 +50,15 @@ BOOLEAN fEnterMapDueToContract = FALSE;
 
 SOLDIERTYPE *pContractReHireSoldier = NULL;
 
-static UINT8 gubContractLength = 0;  // Used when extending a mercs insurance contract
+static uint8_t gubContractLength = 0;  // Used when extending a mercs insurance contract
 static SOLDIERTYPE *gpInsuranceSoldier = 0;
 
 // The values need to be saved!
 static CONTRACT_NEWAL_LIST_NODE ContractRenewalList[20];
-static UINT8 ubNumContractRenewals = 0;
+static uint8_t ubNumContractRenewals = 0;
 // end
-static UINT8 ubCurrentContractRenewal = 0;
-static UINT8 ubCurrentContractRenewalInProgress = FALSE;
+static uint8_t ubCurrentContractRenewal = 0;
+static uint8_t ubCurrentContractRenewalInProgress = FALSE;
 BOOLEAN gfContractRenewalSquenceOn = FALSE;
 BOOLEAN gfInContractMenuFromRenewSequence = FALSE;
 
@@ -189,21 +189,21 @@ static void EndCurrentContractRenewal() {
   }
 }
 
-static void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength,
-                                                 INT32 iCost);
+static void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, uint8_t ubLength,
+                                                 int32_t iCost);
 static void HandleNotifyPlayerCantAffordInsurance();
 
 // This is used only to EXTEND the contract of an AIM merc already on the team
-BOOLEAN MercContractHandling(SOLDIERTYPE *const s, UINT8 const ubDesiredAction) {
+BOOLEAN MercContractHandling(SOLDIERTYPE *const s, uint8_t const ubDesiredAction) {
   /* Determine what kind of merc the contract is being extended for (only AIM
    * mercs can extend contract) */
   if (s->ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) return FALSE;
 
   // Set the contract length and the charge
-  INT32 contract_charge;
-  INT32 contract_length;
-  UINT8 history_contract_type;
-  UINT8 finances_contract_type;
+  int32_t contract_charge;
+  int32_t contract_length;
+  uint8_t history_contract_type;
+  uint8_t finances_contract_type;
   MERCPROFILESTRUCT const &p = GetProfile(s->ubProfile);
   switch (ubDesiredAction) {
     case CONTRACT_EXTEND_1_DAY:
@@ -255,7 +255,7 @@ BOOLEAN MercContractHandling(SOLDIERTYPE *const s, UINT8 const ubDesiredAction) 
 
   if (s->usLifeInsurance && s->bAssignment != ASSIGNMENT_POW) {
     // Check if player can afford insurance, if not, tell them
-    INT32 const iCostOfInsurance = CalculateInsuranceContractCost(contract_length, s->ubProfile);
+    int32_t const iCostOfInsurance = CalculateInsuranceContractCost(contract_length, s->ubProfile);
 
     HandleImportantMercQuote(s, QUOTE_ACCEPT_CONTRACT_RENEWAL);
 
@@ -288,21 +288,21 @@ BOOLEAN MercContractHandling(SOLDIERTYPE *const s, UINT8 const ubDesiredAction) 
 
   /* Add entries in the finacial and history pages for the extending of the
    * merc's contract */
-  UINT32 const now = GetWorldTotalMin();
+  uint32_t const now = GetWorldTotalMin();
   AddTransactionToPlayersBook(finances_contract_type, s->ubProfile, now, -contract_charge);
   AddHistoryToPlayersLog(history_contract_type, s->ubProfile, now, s->sSectorX, s->sSectorY);
 
   return TRUE;
 }
 
-static UINT16 FindRefusalReason(SOLDIERTYPE const *const s) {
+static uint16_t FindRefusalReason(SOLDIERTYPE const *const s) {
   /* Check for sources of unhappiness in order of importance, which is:
    * 1) Hated Mercs (Highest), 2) Death Rate, 3) Morale (lowest) */
   MERCPROFILESTRUCT const &p = GetProfile(s->ubProfile);
 
   // see if someone the merc hates is on the team
-  for (UINT8 i = 0; i < 2; ++i) {
-    INT8 const bMercID = p.bHated[i];
+  for (uint8_t i = 0; i < 2; ++i) {
+    int8_t const bMercID = p.bHated[i];
     if (bMercID < 0) continue;
 
     if (!IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) continue;
@@ -321,7 +321,7 @@ static UINT16 FindRefusalReason(SOLDIERTYPE const *const s) {
   }
 
   // now check for learn to hate
-  INT8 const bMercID = p.bLearnToHate;
+  int8_t const bMercID = p.bLearnToHate;
   if (bMercID >= 0 && IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) {
     if (p.bLearnToHateCount == 0) {
       // our tolerance has run out!
@@ -353,13 +353,13 @@ BOOLEAN WillMercRenew(SOLDIERTYPE *const s, BOOLEAN const say_quote) {
     return FALSE;
   }
 
-  UINT16 const reason_quote = FindRefusalReason(s);
+  uint16_t const reason_quote = FindRefusalReason(s);
   // happy? no problem
   if (reason_quote == QUOTE_NONE) return TRUE;
   MERCPROFILESTRUCT &p = GetProfile(s->ubProfile);
 
   // find out if the merc has a buddy working for the player
-  UINT16 buddy_quote;
+  uint16_t buddy_quote;
   switch (GetFirstBuddyOnTeam(p)) {
     case 0:
       buddy_quote = QUOTE_RENEWING_CAUSE_BUDDY_1_ON_TEAM;
@@ -377,14 +377,14 @@ BOOLEAN WillMercRenew(SOLDIERTYPE *const s, BOOLEAN const say_quote) {
 
   if (say_quote) {
     // If a buddy is around, agree to renew, but tell us why we're doing it.
-    UINT16 const quote = buddy_quote != QUOTE_NONE ? buddy_quote :
+    uint16_t const quote = buddy_quote != QUOTE_NONE ? buddy_quote :
 #if 0  // ARM: Delay quote too vague, no longer to be used
 			SoldierWantsToDelayRenewalOfContract(s) ? QUOTE_DELAY_CONTRACT_RENEWAL :
 #endif
-                                                   reason_quote;
+                                                     reason_quote;
 
     // check if we say the precedent for merc
-    UINT8 const quote_bit = GetQuoteBitNumberFromQuoteID(quote);
+    uint8_t const quote_bit = GetQuoteBitNumberFromQuoteID(quote);
     if (GetMercPrecedentQuoteBitStatus(&p, quote_bit)) {
       HandleImportantMercQuoteLocked(s, QUOTE_PRECEDENT_TO_REPEATING_ONESELF_RENEW);
     } else {
@@ -401,7 +401,7 @@ static void HandleSoldierLeavingWithLowMorale(SOLDIERTYPE *pSoldier) {
   if (MercThinksHisMoraleIsTooLow(pSoldier)) {
     // this will cause him give us lame excuses for a while until he gets over
     // it 3-6 days (but the first 1-2 days of that are spent "returning" home)
-    gMercProfiles[pSoldier->ubProfile].ubDaysOfMoraleHangover = (UINT8)(3 + Random(4));
+    gMercProfiles[pSoldier->ubProfile].ubDaysOfMoraleHangover = (uint8_t)(3 + Random(4));
   }
 }
 
@@ -417,9 +417,9 @@ static void HandleSoldierLeavingForAnotherContract(SOLDIERTYPE &s) {
 BOOLEAN SoldierWantsToDelayRenewalOfContract( SOLDIERTYPE *pSoldier )
 {
 
-        INT8 bTypeOfCurrentContract = 0; // what kind of contract the merc
-has..1 day, week or 2 week INT32 iLeftTimeOnContract = 0; // how much time til
-contract expires..in minutes INT32 iToleranceLevelForContract = 0; // how much
+        int8_t bTypeOfCurrentContract = 0; // what kind of contract the merc
+has..1 day, week or 2 week int32_t iLeftTimeOnContract = 0; // how much time til
+contract expires..in minutes int32_t iToleranceLevelForContract = 0; // how much
 time before contract ends before merc actually speaks thier mind
 
         // does the soldier want to delay renew of contract, possibly due to
@@ -465,19 +465,19 @@ void CheckIfMercGetsAnotherContract(SOLDIERTYPE &s) {
   // AIM merc?
   if (s.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) return;
 
-  UINT32 const now = GetWorldTotalMin();
+  uint32_t const now = GetWorldTotalMin();
   // ATE: Check time we have and see if we can accept new contracts
-  if (now <= (UINT32)s.iTimeCanSignElsewhere) return;
+  if (now <= (uint32_t)s.iTimeCanSignElsewhere) return;
 
   if (s.fSignedAnotherContract) return;
   // He doesn't already have another contract
 
   /* Chance depends on how much time he has left in his contract and his
    * experience level (determines demand) */
-  UINT32 const full_days_remaining = (s.iEndofContractTime - now) / (24 * 60);
+  uint32_t const full_days_remaining = (s.iEndofContractTime - now) / (24 * 60);
   if (full_days_remaining >= 3) return;
 
-  UINT32 const chance = (3 - full_days_remaining) * s.bExpLevel;
+  uint32_t const chance = (3 - full_days_remaining) * s.bExpLevel;
   if (Chance(chance)) s.fSignedAnotherContract = TRUE;
 }
 
@@ -548,7 +548,7 @@ void StrategicRemoveMerc(SOLDIERTYPE &s) {
     s.ubLeaveHistoryCode = HISTORY_MERC_CONTRACT_EXPIRED;
   }
 
-  UINT8 const ubHistoryCode = s.ubLeaveHistoryCode;
+  uint8_t const ubHistoryCode = s.ubLeaveHistoryCode;
 
   if (s.bLife <= 0) {  // The soldier is dead
     AddCharacterToDeadList(&s);
@@ -626,12 +626,12 @@ static void CalculateMedicalDepositRefund(SOLDIERTYPE const &s) {
   // If the merc didnt have any medical deposit, exit
   if (!GetProfile(pid).bMedicalDeposit) return;
 
-  UINT32 const now = GetWorldTotalMin();
+  uint32_t const now = GetWorldTotalMin();
   // Use the medical deposit in soldier, not in profile, which goes up with
   // leveling
-  INT32 refund = s.usMedicalDeposit;
-  INT32 msg_offset;
-  INT32 msg_length;
+  int32_t refund = s.usMedicalDeposit;
+  int32_t msg_offset;
+  int32_t msg_length;
   if (s.bLife == s.bLifeMax) {  // The merc is at full health, refund the full
                                 // medical deposit
     AddTransactionToPlayersBook(FULL_MEDICAL_REFUND, pid, now, refund);
@@ -662,18 +662,18 @@ static void NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(SOLDIERTYPE &
     add_rehire_button = false;
   }
 
-  INT16 const x = s.sSectorX;
-  INT16 const y = s.sSectorY;
-  INT8 const z = s.bSectorZ;
+  int16_t const x = s.sSectorX;
+  int16_t const y = s.sSectorY;
+  int8_t const z = s.bSectorZ;
 
   wchar_t town_sector[16];
   GetShortSectorString(x, y, town_sector, lengthof(town_sector));
 
   wchar_t msg[1024];
   MessageBoxFlags flags;
-  INT8 const sex = GetProfile(s.ubProfile).bSex;
+  int8_t const sex = GetProfile(s.ubProfile).bSex;
   if (s.ubProfile < FIRST_RPC || FIRST_NPC <= s.ubProfile) {  // The character is not an RPC
-    INT16 const elsewhere =
+    int16_t const elsewhere =
         !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(AIRPORT_SECTOR)].fEnemyControlled
             ? AIRPORT_SECTOR
             : START_SECTOR;
@@ -763,7 +763,7 @@ void FindOutIfAnyMercAboutToLeaveIsGonnaRenew() {
    * process, also check if there is any merc that does not want to stay and
    * only display that quote if they are the only one here */
   SOLDIERTYPE *soldier_who_will_quit = 0;
-  UINT8 n_mercs = 0;
+  uint8_t n_mercs = 0;
   SOLDIERTYPE *potential_mercs[20];
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     if (s->bLife == 0) continue;
@@ -811,8 +811,8 @@ static void HandleNotifyPlayerCantAffordInsurance() {
 
 static void ExtendMercInsuranceContractCallBack(MessageBoxReturnValue);
 
-static void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength,
-                                                 INT32 iCost) {
+static void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, uint8_t ubLength,
+                                                 int32_t iCost) {
   wchar_t sString[128];
   wchar_t sStringA[32];
 
@@ -858,8 +858,8 @@ static void HandleUniqueEventWhenPlayerLeavesTeam(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier) {
-  UINT32 uiArriveHour;
+uint32_t GetHourWhenContractDone(SOLDIERTYPE *pSoldier) {
+  uint32_t uiArriveHour;
 
   // Get the arrival hour - that will give us when they arrived....
   uiArriveHour = ((pSoldier->uiTimeSoldierWillArrive) -
@@ -870,10 +870,10 @@ UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier) {
 }
 
 static BOOLEAN ContractIsExpiring(SOLDIERTYPE *pSoldier) {
-  UINT32 uiCheckHour;
+  uint32_t uiCheckHour;
 
   // First at least make sure same day....
-  if ((pSoldier->iEndofContractTime / 1440) <= (INT32)GetWorldDay()) {
+  if ((pSoldier->iEndofContractTime / 1440) <= (int32_t)GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // See if the hour we are on is the same....
@@ -888,10 +888,10 @@ static BOOLEAN ContractIsExpiring(SOLDIERTYPE *pSoldier) {
 
 static BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE *pSoldier) {
   // get hour contract is going to expire....
-  UINT32 uiCheckHour;
+  uint32_t uiCheckHour;
 
   // First at least make sure same day....
-  if ((pSoldier->iEndofContractTime / 1440) <= (INT32)GetWorldDay()) {
+  if ((pSoldier->iEndofContractTime / 1440) <= (int32_t)GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // If we are <= 2 hours from expiry.

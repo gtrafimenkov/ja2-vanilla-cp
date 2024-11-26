@@ -9,7 +9,7 @@
 #include "TileEngine/WorldDef.h"
 
 // Load the Map modifications from the saved game file
-void LoadMapTempFilesFromSavedGameFile(HWFILE, UINT32 savegame_version);
+void LoadMapTempFilesFromSavedGameFile(HWFILE, uint32_t savegame_version);
 
 // Save the Map Temp files to the saved game file
 void SaveMapTempFilesToSavedGameFile(HWFILE);
@@ -23,28 +23,29 @@ void SaveCurrentSectorsInformationToTempItemFile();
 void LoadCurrentSectorsInformationFromTempItemsFile();
 
 // Loads a World Item array from that sectors temp item file
-void LoadWorldItemsFromTempItemFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 *item_count,
-                                    WORLDITEM **items);
+void LoadWorldItemsFromTempItemFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
+                                    uint32_t *item_count, WORLDITEM **items);
 
 //  Adds an array of Item Objects to the specified location on a unloaded map.
 //  If you want to overwrite all the items in the array set fReplaceEntireFile
 //  to TRUE.
-void AddItemsToUnLoadedSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ, INT16 sGridNo,
-                              UINT32 uiNumberOfItems, OBJECTTYPE const *pObject, UINT8 ubLevel,
-                              UINT16 usFlags, INT8 bRenderZHeightAboveLevel, Visibility);
+void AddItemsToUnLoadedSector(int16_t sMapX, int16_t sMapY, int8_t bMapZ, int16_t sGridNo,
+                              uint32_t uiNumberOfItems, OBJECTTYPE const *pObject, uint8_t ubLevel,
+                              uint16_t usFlags, int8_t bRenderZHeightAboveLevel, Visibility);
 
-void AddWorldItemsToUnLoadedSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems,
-                                   const WORLDITEM *pWorldItem);
+void AddWorldItemsToUnLoadedSector(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
+                                   uint32_t uiNumberOfItems, const WORLDITEM *pWorldItem);
 
 // Delete all the files in the temp directory.
 void InitTacticalSave();
 
 // Call this function to set the new sector a NPC will travel to
-void ChangeNpcToDifferentSector(MERCPROFILESTRUCT &, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void ChangeNpcToDifferentSector(MERCPROFILESTRUCT &, int16_t sSectorX, int16_t sSectorY,
+                                int8_t bSectorZ);
 
 // Adds a rotting corpse definition to the end of a sectors rotting corpse temp
 // file
-void AddRottingCorpseToUnloadedSectorsRottingCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ,
+void AddRottingCorpseToUnloadedSectorsRottingCorpseFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
                                                         ROTTING_CORPSE_DEFINITION const *);
 
 // Flags used for the AddDeadSoldierToUnLoadedSector() function
@@ -60,12 +61,12 @@ void AddRottingCorpseToUnloadedSectorsRottingCorpseFile(INT16 sMapX, INT16 sMapY
 //
 // This function DOES NOT remove the soldier from the soldier struct.  YOU must
 // do it.
-void AddDeadSoldierToUnLoadedSector(INT16 sMapX, INT16 sMapY, UINT8 bMapZ, SOLDIERTYPE *pSoldier,
-                                    INT16 sGridNo, UINT32 uiFlags);
+void AddDeadSoldierToUnLoadedSector(int16_t sMapX, int16_t sMapY, uint8_t bMapZ,
+                                    SOLDIERTYPE *pSoldier, int16_t sGridNo, uint32_t uiFlags);
 
-BOOLEAN GetSectorFlagStatus(INT16 sMapX, INT16 sMapY, UINT8 bMapZ, SectorFlags);
-void SetSectorFlag(INT16 sMapX, INT16 sMapY, UINT8 bMapZ, SectorFlags);
-void ReSetSectorFlag(INT16 sMapX, INT16 sMapY, UINT8 bMapZ, SectorFlags);
+BOOLEAN GetSectorFlagStatus(int16_t sMapX, int16_t sMapY, uint8_t bMapZ, SectorFlags);
+void SetSectorFlag(int16_t sMapX, int16_t sMapY, uint8_t bMapZ, SectorFlags);
+void ReSetSectorFlag(int16_t sMapX, int16_t sMapY, uint8_t bMapZ, SectorFlags);
 
 // Saves the NPC temp Quote file to the saved game file
 void LoadTempNpcQuoteArrayToSaveGameFile(HWFILE);
@@ -73,28 +74,29 @@ void LoadTempNpcQuoteArrayToSaveGameFile(HWFILE);
 // Loads the NPC temp Quote file from the saved game file
 void SaveTempNpcQuoteArrayToSaveGameFile(HWFILE);
 
-void JA2EncryptedFileRead(HWFILE, BYTE *data, UINT32 uiBytesToRead);
-void JA2EncryptedFileWrite(HWFILE, BYTE const *data, UINT32 uiBytesToWrite);
+void JA2EncryptedFileRead(HWFILE, uint8_t *data, uint32_t uiBytesToRead);
+void JA2EncryptedFileWrite(HWFILE, uint8_t const *data, uint32_t uiBytesToWrite);
 
-void NewJA2EncryptedFileRead(HWFILE, BYTE *data, UINT32 uiBytesToRead);
-void NewJA2EncryptedFileWrite(HWFILE, BYTE const *data, UINT32 uiBytesToWrite);
+void NewJA2EncryptedFileRead(HWFILE, uint8_t *data, uint32_t uiBytesToRead);
+void NewJA2EncryptedFileWrite(HWFILE, uint8_t const *data, uint32_t uiBytesToWrite);
 
 // If hacker's mess with our save/temp files, this is our final line of defence.
 void InitExitGameDialogBecauseFileHackDetected();
 
-void HandleAllReachAbleItemsInTheSector(INT16 x, INT16 y, INT8 z);
+void HandleAllReachAbleItemsInTheSector(int16_t x, int16_t y, int8_t z);
 
-void GetMapTempFileName(SectorFlags uiType, char *pMapName, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
+void GetMapTempFileName(SectorFlags uiType, char *pMapName, int16_t sMapX, int16_t sMapY,
+                        int8_t bMapZ);
 
-UINT32 GetNumberOfVisibleWorldItemsFromSectorStructureForSector(INT16 sMapX, INT16 sMapY,
-                                                                INT8 bMapZ);
-void SetNumberOfVisibleWorldItemsInSectorStructureForSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ,
-                                                            UINT32 uiNumberOfItems);
+uint32_t GetNumberOfVisibleWorldItemsFromSectorStructureForSector(int16_t sMapX, int16_t sMapY,
+                                                                  int8_t bMapZ);
+void SetNumberOfVisibleWorldItemsInSectorStructureForSector(int16_t sMapX, int16_t sMapY,
+                                                            int8_t bMapZ, uint32_t uiNumberOfItems);
 
 #define NEW_ROTATION_ARRAY_SIZE 49
 #define BASE_NUMBER_OF_ROTATION_ARRAYS 19
 
-void SaveWorldItemsToTempItemFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems,
-                                  WORLDITEM const *pData);
+void SaveWorldItemsToTempItemFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
+                                  uint32_t uiNumberOfItems, WORLDITEM const *pData);
 
 #endif

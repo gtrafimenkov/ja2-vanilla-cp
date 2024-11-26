@@ -8,11 +8,11 @@
 #include "Tactical/Vehicles.h"
 
 void ExtractVehicleTypeFromFile(HWFILE const file, VEHICLETYPE *const v,
-                                UINT32 const savegame_version) {
-  BYTE data[128];
+                                uint32_t const savegame_version) {
+  uint8_t data[128];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_PTR(d, v->pMercPath)
   EXTR_U8(d, v->ubMovementGroup)
   EXTR_U8(d, v->ubVehicleType)
@@ -41,9 +41,9 @@ void ExtractVehicleTypeFromFile(HWFILE const file, VEHICLETYPE *const v,
 }
 
 void InjectVehicleTypeIntoFile(HWFILE const file, VEHICLETYPE const *const v) {
-  BYTE data[128];
+  uint8_t data[128];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_PTR(d, v->pMercPath)
   INJ_U8(d, v->ubMovementGroup)
   INJ_U8(d, v->ubVehicleType)

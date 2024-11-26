@@ -92,7 +92,7 @@ static BOOLEAN guiTacticalLeaveScreen = FALSE;
 static void BlitMFont(VIDEO_OVERLAY *const ovr) {
   SetFontAttributes(ovr->uiFontID, ovr->ubFontFore, DEFAULT_SHADOW, ovr->ubFontBack);
   SGPVSurface::Lock l(ovr->uiDestBuff);
-  MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), ovr->sX, ovr->sY, ovr->zText);
+  MPrintBuffer(l.Buffer<uint16_t>(), l.Pitch(), ovr->sX, ovr->sY, ovr->zText);
 }
 
 void MainGameScreenInit() {
@@ -578,7 +578,7 @@ void UpdateTeamPanelAssignments() {
   }
 }
 
-void EnterModalTactical(INT8 bMode) {
+void EnterModalTactical(int8_t bMode) {
   gfTacticalIsModal = TRUE;
 
   if (bMode == TACTICAL_MODAL_NOMOUSE) {

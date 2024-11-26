@@ -22,12 +22,12 @@
 #define EMPTY_INDEX 999
 
 struct ANIMSUBTYPE {
-  UINT16 usAnimState;
-  UINT16 usAnimationSurfaces[4];
+  uint16_t usAnimState;
+  uint16_t usAnimationSurfaces[4];
 };
 
 // Block for anim file
-UINT16 gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];
+uint16_t gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];
 
 // OK, this array contains definitions for random animations based on bodytype,
 // total # allowed, and what is in their hand....
@@ -1146,17 +1146,17 @@ static const ANI_SPEED_DEF
         {-10, 0.8f}  // REGFEMALE
 };
 
-UINT16 gusNothingBreath[] = {
+uint16_t gusNothingBreath[] = {
     RGMNOTHING_STD,
     BGMNOTHING_STD,
     RGMNOTHING_STD,
     RGFNOTHING_STD,
 };
 
-static UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
-UINT16 gubAnimSurfaceMidWaterSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES][2];
-UINT16 gubAnimSurfaceItemSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
-UINT16 gubAnimSurfaceCorpseID[TOTALBODYTYPES][NUMANIMATIONSTATES];
+static uint16_t gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
+uint16_t gubAnimSurfaceMidWaterSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES][2];
+uint16_t gubAnimSurfaceItemSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
+uint16_t gubAnimSurfaceCorpseID[TOTALBODYTYPES][NUMANIMATIONSTATES];
 
 static const ANIMSUBTYPE gRifleInjuredSub = {
     WALKING, {RGMHURTWALKINGR, BGMHURTWALKINGR, RGMHURTWALKINGR, RGFHURTWALKINGR}};
@@ -1166,7 +1166,7 @@ static const ANIMSUBTYPE gDoubleHandledSub = {
     STANDING, {RGMDBLBREATH, BGMDBLBREATH, RGMDBLBREATH, RGFDBLBREATH}};
 
 void InitAnimationSurfacesPerBodytype() {
-  INT32 cnt1, cnt2;
+  int32_t cnt1, cnt2;
 
   // Should be set to a non-init values
   for (cnt1 = 0; cnt1 < TOTALBODYTYPES; cnt1++) {
@@ -3077,11 +3077,11 @@ void LoadAnimationStateInstructions() {
   FileRead(hFile, gusAnimInst, sizeof(gusAnimInst));
 }
 
-bool IsAnimationValidForBodyType(SOLDIERTYPE const &s, UINT16 const new_state) {
+bool IsAnimationValidForBodyType(SOLDIERTYPE const &s, uint16_t const new_state) {
   return DetermineSoldierAnimationSurface(&s, new_state) != INVALID_ANIMATION_SURFACE;
 }
 
-UINT16 SubstituteBodyTypeAnimation(const SOLDIERTYPE *const s, const UINT16 anim_state) {
+uint16_t SubstituteBodyTypeAnimation(const SOLDIERTYPE *const s, const uint16_t anim_state) {
   switch (s->ubBodyType) {
     case QUEENMONSTER:
       switch (anim_state) {
@@ -3160,7 +3160,7 @@ UINT16 SubstituteBodyTypeAnimation(const SOLDIERTYPE *const s, const UINT16 anim
   return anim_state;
 }
 
-char const *GetBodyTypePaletteSubstitution(SOLDIERTYPE const *const s, UINT8 const ubBodyType) {
+char const *GetBodyTypePaletteSubstitution(SOLDIERTYPE const *const s, uint8_t const ubBodyType) {
   switch (ubBodyType) {
     case REGMALE:
     case BIGMALE:
@@ -3203,14 +3203,14 @@ char const *GetBodyTypePaletteSubstitution(SOLDIERTYPE const *const s, UINT8 con
   }
 }
 
-BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, uint16_t usAnimState) {
   // Delete any structure info!
   if (pSoldier->pLevelNode != NULL) {
     DeleteStructureFromWorld(pSoldier->pLevelNode->pStructureData);
     pSoldier->pLevelNode->pStructureData = NULL;
   }
 
-  UINT16 const usAnimSurface = LoadSoldierAnimationSurface(*pSoldier, usAnimState);
+  uint16_t const usAnimSurface = LoadSoldierAnimationSurface(*pSoldier, usAnimState);
 
   // Add structure info!
   if (pSoldier->pLevelNode != NULL && !(pSoldier->uiStatusFlags & SOLDIER_PAUSEANIMOVE)) {
@@ -3227,8 +3227,8 @@ BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
   return (TRUE);
 }
 
-UINT16 LoadSoldierAnimationSurface(SOLDIERTYPE &s, UINT16 const anim_state) {
-  UINT16 const anim_surface = DetermineSoldierAnimationSurface(&s, anim_state);
+uint16_t LoadSoldierAnimationSurface(SOLDIERTYPE &s, uint16_t const anim_state) {
+  uint16_t const anim_surface = DetermineSoldierAnimationSurface(&s, anim_state);
   if (anim_surface == INVALID_ANIMATION_SURFACE) return anim_surface;
   try {  // Ensure that it's been loaded
     GetCachedAnimationSurface(s.ubID, &s.AnimCache, anim_surface, s.usAnimState);
@@ -3238,7 +3238,7 @@ UINT16 LoadSoldierAnimationSurface(SOLDIERTYPE &s, UINT16 const anim_state) {
   }
 }
 
-UINT16 gusQueenMonsterSpitAnimPerDir[] = {
+uint16_t gusQueenMonsterSpitAnimPerDir[] = {
     QUEENMONSTERSPIT_NE,  // NORTH
     QUEENMONSTERSPIT_E,
     QUEENMONSTERSPIT_SE,  // EAST
@@ -3249,11 +3249,11 @@ UINT16 gusQueenMonsterSpitAnimPerDir[] = {
     QUEENMONSTERSPIT_NE,
 };
 
-UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
-  UINT16 usAnimSurface;
-  UINT16 usAltAnimSurface;
-  UINT16 usItem;
-  UINT8 ubWaterHandIndex = 1;
+uint16_t DetermineSoldierAnimationSurface(const SOLDIERTYPE *pSoldier, uint16_t usAnimState) {
+  uint16_t usAnimSurface;
+  uint16_t usAltAnimSurface;
+  uint16_t usItem;
+  uint8_t ubWaterHandIndex = 1;
   BOOLEAN fAdjustedForItem = FALSE;
 
   usAnimState = SubstituteBodyTypeAnimation(pSoldier, usAnimState);
@@ -3278,12 +3278,12 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE *pSoldier, UINT16 usAn
 
   // If we are a queen, pick the 'real' anim surface....
   if (usAnimSurface == QUEENMONSTERSPIT_SW) {
-    INT8 bDir;
+    int8_t bDir;
 
     // Assume a target gridno is here.... get direction...
     // ATE: use +2 in gridno because here head is far from body
-    bDir = (INT8)GetDirectionToGridNoFromGridNo((INT16)(pSoldier->sGridNo + 2),
-                                                pSoldier->sTargetGridNo);
+    bDir = (int8_t)GetDirectionToGridNoFromGridNo((int16_t)(pSoldier->sGridNo + 2),
+                                                  pSoldier->sTargetGridNo);
 
     return (gusQueenMonsterSpitAnimPerDir[bDir]);
   }
@@ -3420,8 +3420,8 @@ UINT16 DetermineSoldierAnimationSurface(const SOLDIERTYPE *pSoldier, UINT16 usAn
   return (usAnimSurface);
 }
 
-UINT16 GetSoldierAnimationSurface(SOLDIERTYPE const *const pSoldier) {
-  UINT16 usAnimSurface;
+uint16_t GetSoldierAnimationSurface(SOLDIERTYPE const *const pSoldier) {
+  uint16_t usAnimSurface;
 
   usAnimSurface = pSoldier->usAnimSurface;
 

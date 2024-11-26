@@ -3,9 +3,9 @@
 
 #include "SGP/Types.h"
 
-typedef INT16 GridNo;
-typedef UINT8 ProfileID;
-typedef INT32 TIMECOUNTER;
+typedef int16_t GridNo;
+typedef uint8_t ProfileID;
+typedef int32_t TIMECOUNTER;
 
 struct ANIM_PROF;
 struct ANITILE;

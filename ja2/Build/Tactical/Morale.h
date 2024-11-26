@@ -47,14 +47,14 @@ enum MoraleEventNames {
 enum MoraleEventType { TACTICAL_MORALE_EVENT = 0, STRATEGIC_MORALE_EVENT };
 
 struct MoraleEvent {
-  UINT8 ubType;
-  INT8 bChange;
+  uint8_t ubType;
+  int8_t bChange;
 };
 
-extern void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, INT16 sMapY,
-                              INT8 bMapZ);
+extern void HandleMoraleEvent(SOLDIERTYPE *pSoldier, int8_t bMoraleEvent, int16_t sMapX,
+                              int16_t sMapY, int8_t bMapZ);
 extern void RefreshSoldierMorale(SOLDIERTYPE *pSoldier);
-extern INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier);
+extern int8_t GetMoraleModifier(SOLDIERTYPE *pSoldier);
 
 void HourlyMoraleUpdate();
 void DailyMoraleUpdate(SOLDIERTYPE *pSoldier);

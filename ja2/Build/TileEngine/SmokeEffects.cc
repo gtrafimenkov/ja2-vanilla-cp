@@ -29,7 +29,7 @@
 
 // GLOBAL FOR SMOKE LISTING
 static SMOKEEFFECT gSmokeEffectData[NUM_SMOKE_EFFECT_SLOTS];
-static UINT32 guiNumSmokeEffects = 0;
+static uint32_t guiNumSmokeEffects = 0;
 
 #define BASE_FOR_EACH_SMOKE_EFFECT(type, iter)                                              \
   for (type *iter = gSmokeEffectData, *iter##__end = gSmokeEffectData + guiNumSmokeEffects; \
@@ -50,11 +50,11 @@ static SMOKEEFFECT *GetFreeSmokeEffect() {
   return NULL;
 }
 
-static SmokeEffectKind FromWorldFlagsToSmokeType(UINT8 ubWorldFlags);
+static SmokeEffectKind FromWorldFlagsToSmokeType(uint8_t ubWorldFlags);
 
 // Returns NO_SMOKE_EFFECT if none there...
-SmokeEffectKind GetSmokeEffectOnTile(INT16 const sGridNo, INT8 const bLevel) {
-  UINT8 ubExtFlags;
+SmokeEffectKind GetSmokeEffectOnTile(int16_t const sGridNo, int8_t const bLevel) {
+  uint8_t ubExtFlags;
 
   ubExtFlags = gpWorldLevelData[sGridNo].ubExtFlags[bLevel];
 
@@ -67,7 +67,7 @@ SmokeEffectKind GetSmokeEffectOnTile(INT16 const sGridNo, INT8 const bLevel) {
   return (NO_SMOKE_EFFECT);
 }
 
-static SmokeEffectKind FromWorldFlagsToSmokeType(UINT8 ubWorldFlags) {
+static SmokeEffectKind FromWorldFlagsToSmokeType(uint8_t ubWorldFlags) {
   if (ubWorldFlags & MAPELEMENT_EXT_SMOKE) {
     return (NORMAL_SMOKE_EFFECT);
   } else if (ubWorldFlags & MAPELEMENT_EXT_TEARGAS) {
@@ -81,7 +81,7 @@ static SmokeEffectKind FromWorldFlagsToSmokeType(UINT8 ubWorldFlags) {
   }
 }
 
-static UINT8 FromSmokeTypeToWorldFlags(SmokeEffectKind const bType) {
+static uint8_t FromSmokeTypeToWorldFlags(SmokeEffectKind const bType) {
   switch (bType) {
     case NORMAL_SMOKE_EFFECT:
       return MAPELEMENT_EXT_SMOKE;
@@ -96,11 +96,11 @@ static UINT8 FromSmokeTypeToWorldFlags(SmokeEffectKind const bType) {
   }
 }
 
-void NewSmokeEffect(const INT16 sGridNo, const UINT16 usItem, const INT8 bLevel,
+void NewSmokeEffect(const int16_t sGridNo, const uint16_t usItem, const int8_t bLevel,
                     SOLDIERTYPE *const owner) {
-  INT8 bSmokeEffectType = 0;
-  UINT8 ubDuration = 0;
-  UINT8 ubStartRadius = 0;
+  int8_t bSmokeEffectType = 0;
+  uint8_t ubDuration = 0;
+  uint8_t ubStartRadius = 0;
 
   SMOKEEFFECT *const pSmoke = GetFreeSmokeEffect();
   if (pSmoke == NULL) return;
@@ -189,7 +189,7 @@ void NewSmokeEffect(const INT16 sGridNo, const UINT16 usItem, const INT8 bLevel,
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
 void AddSmokeEffectToTile(SMOKEEFFECT const *const smoke, SmokeEffectKind const bType,
-                          INT16 const sGridNo, INT8 const bLevel) {
+                          int16_t const sGridNo, int8_t const bLevel) {
   BOOLEAN dissipating = FALSE;
   if (smoke->ubDuration - smoke->bAge < 2) {
     dissipating = TRUE;
@@ -203,7 +203,7 @@ void AddSmokeEffectToTile(SMOKEEFFECT const *const smoke, SmokeEffectKind const 
   // Use the right graphic based on type..
   AnimationFlags ani_flags = ANITILE_FORWARD | ANITILE_SMOKE_EFFECT | ANITILE_LOOPING;
   char const *cached_file;
-  INT16 start_frame;
+  int16_t start_frame;
   if (gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE]) {
     if (dissipating) {
       switch (bType) {
@@ -280,9 +280,9 @@ void AddSmokeEffectToTile(SMOKEEFFECT const *const smoke, SmokeEffectKind const 
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void RemoveSmokeEffectFromTile(INT16 sGridNo, INT8 bLevel) {
+void RemoveSmokeEffectFromTile(int16_t sGridNo, int8_t bLevel) {
   ANITILE *pAniTile;
-  UINT8 ubLevelID;
+  uint8_t ubLevelID;
 
   // Get ANI tile...
   if (bLevel == 0) {
@@ -306,11 +306,11 @@ void RemoveSmokeEffectFromTile(INT16 sGridNo, INT8 bLevel) {
   }
 }
 
-void DecaySmokeEffects(UINT32 uiTime) {
+void DecaySmokeEffects(uint32_t uiTime) {
   BOOLEAN fUpdate = FALSE;
   BOOLEAN fSpreadEffect;
-  INT8 bLevel;
-  UINT16 usNumUpdates = 1;
+  int8_t bLevel;
+  uint16_t usNumUpdates = 1;
 
   // reset 'hit by gas' flags
   FOR_EACH_MERC(i)(*i)->fHitByGasFlags = 0;
@@ -337,14 +337,14 @@ void DecaySmokeEffects(UINT32 uiTime) {
       if ((uiTime - pSmoke->uiTimeOfLastUpdate) > 10) {
         fUpdate = TRUE;
 
-        usNumUpdates = (UINT16)((uiTime - pSmoke->uiTimeOfLastUpdate) / 10);
+        usNumUpdates = (uint16_t)((uiTime - pSmoke->uiTimeOfLastUpdate) / 10);
       }
     }
 
     if (fUpdate) {
       pSmoke->uiTimeOfLastUpdate = uiTime;
 
-      for (UINT32 cnt2 = 0; cnt2 < usNumUpdates; ++cnt2) {
+      for (uint32_t cnt2 = 0; cnt2 < usNumUpdates; ++cnt2) {
         pSmoke->bAge++;
 
         if (pSmoke->bAge == 1) {
@@ -403,14 +403,14 @@ void DecaySmokeEffects(UINT32 uiTime) {
   AllTeamsLookForAll(TRUE);
 }
 
-void LoadSmokeEffectsFromLoadGameFile(HWFILE const hFile, UINT32 const savegame_version) {
-  UINT32 uiCnt = 0;
+void LoadSmokeEffectsFromLoadGameFile(HWFILE const hFile, uint32_t const savegame_version) {
+  uint32_t uiCnt = 0;
 
   // Clear out the old list
   memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
 
   // Load the Number of Smoke Effects
-  FileRead(hFile, &guiNumSmokeEffects, sizeof(UINT32));
+  FileRead(hFile, &guiNumSmokeEffects, sizeof(uint32_t));
 
   // This is a TEMP hack to allow us to use the saves
   if (savegame_version < 37 && guiNumSmokeEffects == 0) {
@@ -426,14 +426,14 @@ void LoadSmokeEffectsFromLoadGameFile(HWFILE const hFile, UINT32 const savegame_
 
   // loop through and apply the smoke effects to the map
   FOR_EACH_SMOKE_EFFECT(s) {
-    const INT8 bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
+    const int8_t bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
     SpreadEffectSmoke(s, TRUE, bLevel);
   }
 }
 
-void SaveSmokeEffectsToMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 const bMapZ) {
-  UINT32 uiNumSmokeEffects = 0;
-  CHAR8 zMapName[128];
+void SaveSmokeEffectsToMapTempFile(int16_t const sMapX, int16_t const sMapY, int8_t const bMapZ) {
+  uint32_t uiNumSmokeEffects = 0;
+  char zMapName[128];
 
   // get the name of the map
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -454,16 +454,16 @@ void SaveSmokeEffectsToMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 co
   AutoSGPFile hFile(FileMan::openForWriting(zMapName));
 
   // Save the Number of Smoke Effects
-  FileWrite(hFile, &uiNumSmokeEffects, sizeof(UINT32));
+  FileWrite(hFile, &uiNumSmokeEffects, sizeof(uint32_t));
 
   CFOR_EACH_SMOKE_EFFECT(s) { InjectSmokeEffectIntoFile(hFile, s); }
 
   SetSectorFlag(sMapX, sMapY, bMapZ, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS);
 }
 
-void LoadSmokeEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 const bMapZ) {
-  UINT32 uiCnt = 0;
-  CHAR8 zMapName[128];
+void LoadSmokeEffectsFromMapTempFile(int16_t const sMapX, int16_t const sMapY, int8_t const bMapZ) {
+  uint32_t uiCnt = 0;
+  char zMapName[128];
 
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -473,7 +473,7 @@ void LoadSmokeEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 
   ResetSmokeEffects();
 
   // Load the Number of Smoke Effects
-  FileRead(hFile, &guiNumSmokeEffects, sizeof(UINT32));
+  FileRead(hFile, &guiNumSmokeEffects, sizeof(uint32_t));
 
   // loop through and load the list
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
@@ -482,7 +482,7 @@ void LoadSmokeEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 
 
   // loop through and apply the smoke effects to the map
   FOR_EACH_SMOKE_EFFECT(s) {
-    const INT8 bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
+    const int8_t bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
     SpreadEffectSmoke(s, TRUE, bLevel);
   }
 }
@@ -495,7 +495,7 @@ void ResetSmokeEffects() {
 
 void UpdateSmokeEffectGraphics() {
   FOR_EACH_SMOKE_EFFECT(s) {
-    const INT8 bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
+    const int8_t bLevel = (s->bFlags & SMOKE_EFFECT_ON_ROOF ? 1 : 0);
     SpreadEffectSmoke(s, ERASE_SPREAD_EFFECT, bLevel);
     SpreadEffectSmoke(s, TRUE, bLevel);
   }

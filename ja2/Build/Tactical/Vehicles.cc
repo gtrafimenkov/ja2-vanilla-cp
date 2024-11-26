@@ -41,13 +41,13 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 
-INT8 gubVehicleMovementGroups[MAX_VEHICLES];
+int8_t gubVehicleMovementGroups[MAX_VEHICLES];
 
 // the list of vehicles
 VEHICLETYPE *pVehicleList = NULL;
 
 // number of vehicle slots on the list
-UINT8 ubNumberOfVehicles = 0;
+uint8_t ubNumberOfVehicles = 0;
 
 // ATE: These arrays below should all be in a large LUT which contains
 // static info for each vehicle....
@@ -56,9 +56,9 @@ struct VehicleTypeInfo {
   SoundID enter_sound;
   SoundID move_sound;
   ProfileID profile;
-  UINT8 movement_type;
-  UINT16 armour_type;
-  UINT8 seats;
+  uint8_t movement_type;
+  uint16_t armour_type;
+  uint8_t seats;
 };
 
 static const VehicleTypeInfo g_vehicle_type_info[] = {
@@ -72,7 +72,7 @@ static const VehicleTypeInfo g_vehicle_type_info[] = {
 
 // Loop through and create a few soldier squad ID's for vehicles ( max # 3 )
 void InitVehicles() {
-  INT32 cnt;
+  int32_t cnt;
   for (cnt = 0; cnt < MAX_VEHICLES; cnt++) {
     // create mvt groups
     GROUP *const g = CreateNewVehicleGroupDepartingFromSector(1, 1);
@@ -90,9 +90,9 @@ void SetVehicleValuesIntoSoldierType(SOLDIERTYPE *const vs) {
   vs->ubWhatKindOfMercAmI = MERC_TYPE__VEHICLE;
 }
 
-INT32 AddVehicleToList(const INT16 sMapX, const INT16 sMapY, const INT16 sGridNo,
-                       const UINT8 ubType) {
-  INT32 vid;
+int32_t AddVehicleToList(const int16_t sMapX, const int16_t sMapY, const int16_t sGridNo,
+                         const uint8_t ubType) {
+  int32_t vid;
   for (vid = 0;; ++vid) {
     if (vid == ubNumberOfVehicles) {
       pVehicleList = REALLOC(pVehicleList, VEHICLETYPE, ++ubNumberOfVehicles);
@@ -204,8 +204,8 @@ static bool AddSoldierToVehicle(SOLDIERTYPE &s, VEHICLETYPE &v) {
                           1);
   }
 
-  INT32 const seats = GetVehicleSeats(v);
-  for (INT32 i = 0; i < seats; ++i) {
+  int32_t const seats = GetVehicleSeats(v);
+  for (int32_t i = 0; i < seats; ++i) {
     if (v.pPassengers[i]) continue;
     v.pPassengers[i] = &s;
 
@@ -279,15 +279,15 @@ void SetSoldierExitHelicopterInsertionData(SOLDIERTYPE *const s) {
   }
 }
 
-static void TeleportVehicleToItsClosestSector(UINT8 ubGroupID);
+static void TeleportVehicleToItsClosestSector(uint8_t ubGroupID);
 
 // remove soldier from vehicle
 static bool RemoveSoldierFromVehicle(SOLDIERTYPE &s) {
   VEHICLETYPE &v = GetVehicle(s.iVehicleId);
 
   // now look for the grunt
-  INT32 const seats = GetVehicleSeats(v);
-  for (INT32 i = 0;; ++i) {
+  int32_t const seats = GetVehicleSeats(v);
+  for (int32_t i = 0;; ++i) {
     if (i == seats) return false;
     if (v.pPassengers[i] != &s) continue;
     v.pPassengers[i] = 0;
@@ -349,7 +349,7 @@ BOOLEAN MoveCharactersPathToVehicle(SOLDIERTYPE *const s) {
   if (!s) return FALSE;
 
   // check if character is in fact in a vehicle
-  INT32 vid;
+  int32_t vid;
   if (s->uiStatusFlags & SOLDIER_VEHICLE) {
     vid = s->bVehicleID;
   } else if (s->bAssignment == VEHICLE) {
@@ -369,7 +369,7 @@ BOOLEAN MoveCharactersPathToVehicle(SOLDIERTYPE *const s) {
 }
 
 void SetUpMvtGroupForVehicle(SOLDIERTYPE *const s) {
-  INT32 vid;
+  int32_t vid;
   // Check if character is in fact in a vehicle
   if (s->uiStatusFlags & SOLDIER_VEHICLE)
     vid = s->bVehicleID;
@@ -383,7 +383,7 @@ void SetUpMvtGroupForVehicle(SOLDIERTYPE *const s) {
   s->ubGroupID = v.ubMovementGroup;
 }
 
-VEHICLETYPE &GetVehicle(INT32 const vehicle_id) {
+VEHICLETYPE &GetVehicle(int32_t const vehicle_id) {
   if (0 <= vehicle_id && vehicle_id < ubNumberOfVehicles) {
     VEHICLETYPE &v = pVehicleList[vehicle_id];
     if (v.fValid) return v;
@@ -416,18 +416,18 @@ BOOLEAN KillAllInVehicle(VEHICLETYPE const &v) {
   return TRUE;
 }
 
-INT32 GetNumberInVehicle(VEHICLETYPE const &v) {
+int32_t GetNumberInVehicle(VEHICLETYPE const &v) {
   // go through list of occupants in vehicles and count them
-  INT32 count = 0;
+  int32_t count = 0;
   CFOR_EACH_PASSENGER(v, i)++ count;
   return count;
 }
 
-INT32 GetNumberOfNonEPCsInVehicle(INT32 iId) {
+int32_t GetNumberOfNonEPCsInVehicle(int32_t iId) {
   // go through list of occupants in vehicles and count them
   VEHICLETYPE const &v = GetVehicle(iId);
 
-  INT32 count = 0;
+  int32_t count = 0;
   CFOR_EACH_PASSENGER(v, i) {
     const SOLDIERTYPE *const s = *i;
     if (!AM_AN_EPC(s)) ++count;
@@ -435,7 +435,7 @@ INT32 GetNumberOfNonEPCsInVehicle(INT32 iId) {
   return count;
 }
 
-BOOLEAN IsRobotControllerInVehicle(INT32 iId) {
+BOOLEAN IsRobotControllerInVehicle(int32_t iId) {
   VEHICLETYPE const &v = GetVehicle(iId);
   CFOR_EACH_PASSENGER(v, i) {
     if (ControllingRobot(*i)) return TRUE;
@@ -481,7 +481,7 @@ bool PutSoldierInVehicle(SOLDIERTYPE &s, VEHICLETYPE &v) {
 BOOLEAN ExitVehicle(SOLDIERTYPE *const s) {
   SOLDIERTYPE &vs = GetSoldierStructureForVehicle(GetVehicle(s->iVehicleId));
 
-  INT16 sGridNo =
+  int16_t sGridNo =
       FindGridNoFromSweetSpotWithStructDataFromSoldier(s, s->usUIMovementMode, 5, 3, &vs);
   if (sGridNo == NOWHERE) {
     // ATE: BUT we need a place, widen the search
@@ -519,11 +519,11 @@ BOOLEAN ExitVehicle(SOLDIERTYPE *const s) {
   return TRUE;
 }
 
-static void HandleCriticalHitForVehicleInLocation(UINT8 ubID, INT16 sDmg, INT16 sGridNo,
+static void HandleCriticalHitForVehicleInLocation(uint8_t ubID, int16_t sDmg, int16_t sGridNo,
                                                   SOLDIERTYPE *att);
 
-void VehicleTakeDamage(const UINT8 ubID, const UINT8 ubReason, const INT16 sDamage,
-                       const INT16 sGridNo, SOLDIERTYPE *const att) {
+void VehicleTakeDamage(const uint8_t ubID, const uint8_t ubReason, const int16_t sDamage,
+                       const int16_t sGridNo, SOLDIERTYPE *const att) {
   if (ubReason != TAKE_DAMAGE_GAS) {
     PlayLocationJA2Sample(sGridNo, S_METAL_IMPACT3, MIDVOLUME, 1);
   }
@@ -547,8 +547,8 @@ void VehicleTakeDamage(const UINT8 ubID, const UINT8 ubReason, const INT16 sDama
 }
 
 // handle crit hit to vehicle in this location
-static void HandleCriticalHitForVehicleInLocation(const UINT8 ubID, const INT16 sDmg,
-                                                  const INT16 sGridNo, SOLDIERTYPE *const att) {
+static void HandleCriticalHitForVehicleInLocation(const uint8_t ubID, const int16_t sDmg,
+                                                  const int16_t sGridNo, SOLDIERTYPE *const att) {
   // check state the armor was s'posed to be in vs. the current state..the
   // difference / orig state is % chance that a critical hit will occur
   BOOLEAN fMadeCorpse = FALSE;
@@ -603,10 +603,10 @@ bool DoesVehicleNeedAnyRepairs(VEHICLETYPE const &v) {
   return vs.bLife != vs.bLifeMax;
 }
 
-INT8 RepairVehicle(VEHICLETYPE const &v, INT8 const bRepairPtsLeft,
-                   BOOLEAN *const pfNothingToRepair) {
-  INT8 bRepairPtsUsed = 0;
-  INT8 bOldLife;
+int8_t RepairVehicle(VEHICLETYPE const &v, int8_t const bRepairPtsLeft,
+                     BOOLEAN *const pfNothingToRepair) {
+  int8_t bRepairPtsUsed = 0;
+  int8_t bOldLife;
 
   if (!DoesVehicleNeedAnyRepairs(v)) return bRepairPtsUsed;
 
@@ -642,10 +642,10 @@ SOLDIERTYPE &GetSoldierStructureForVehicle(VEHICLETYPE const &v) {
 
 void SaveVehicleInformationToSaveGameFile(HWFILE const f) {
   // Save the number of elements
-  FileWrite(f, &ubNumberOfVehicles, sizeof(UINT8));
+  FileWrite(f, &ubNumberOfVehicles, sizeof(uint8_t));
 
   // loop through all the vehicles and save each one
-  for (UINT8 i = 0; i < ubNumberOfVehicles; ++i) {
+  for (uint8_t i = 0; i < ubNumberOfVehicles; ++i) {
     const VEHICLETYPE *const v = &pVehicleList[i];
     // save if the vehicle spot is valid
     FileWrite(f, &v->fValid, sizeof(BOOLEAN));
@@ -656,11 +656,12 @@ void SaveVehicleInformationToSaveGameFile(HWFILE const f) {
   }
 }
 
-void LoadVehicleInformationFromSavedGameFile(HWFILE const hFile, UINT32 const uiSavedGameVersion) {
+void LoadVehicleInformationFromSavedGameFile(HWFILE const hFile,
+                                             uint32_t const uiSavedGameVersion) {
   ClearOutVehicleList();
 
   // Load the number of elements
-  FileRead(hFile, &ubNumberOfVehicles, sizeof(UINT8));
+  FileRead(hFile, &ubNumberOfVehicles, sizeof(uint8_t));
   if (ubNumberOfVehicles == 0) return;
 
   // allocate memory to hold the vehicle list
@@ -668,7 +669,7 @@ void LoadVehicleInformationFromSavedGameFile(HWFILE const hFile, UINT32 const ui
   pVehicleList = vl;
 
   // loop through all the vehicles and load each one
-  for (UINT8 cnt = 0; cnt < ubNumberOfVehicles; ++cnt) {
+  for (uint8_t cnt = 0; cnt < ubNumberOfVehicles; ++cnt) {
     VEHICLETYPE *const v = &vl[cnt];
     // Load if the vehicle spot is valid
     FileRead(hFile, &v->fValid, sizeof(BOOLEAN));
@@ -679,7 +680,7 @@ void LoadVehicleInformationFromSavedGameFile(HWFILE const hFile, UINT32 const ui
   }
 }
 
-void SetVehicleSectorValues(VEHICLETYPE &v, UINT8 const x, UINT8 const y) {
+void SetVehicleSectorValues(VEHICLETYPE &v, uint8_t const x, uint8_t const y) {
   v.sSectorX = x;
   v.sSectorY = y;
 
@@ -706,10 +707,10 @@ void UpdateAllVehiclePassengersGridNo(SOLDIERTYPE *const vs) {
 }
 
 void LoadVehicleMovementInfoFromSavedGameFile(HWFILE const hFile) {
-  INT32 cnt;
+  int32_t cnt;
 
   // Load in the Squad movement id's
-  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * 5);
+  FileRead(hFile, gubVehicleMovementGroups, sizeof(int8_t) * 5);
 
   for (cnt = 5; cnt < MAX_VEHICLES; cnt++) {
     // create mvt groups
@@ -721,15 +722,15 @@ void LoadVehicleMovementInfoFromSavedGameFile(HWFILE const hFile) {
 
 void NewSaveVehicleMovementInfoToSavedGameFile(HWFILE const hFile) {
   // Save all the vehicle movement id's
-  FileWrite(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES);
+  FileWrite(hFile, gubVehicleMovementGroups, sizeof(int8_t) * MAX_VEHICLES);
 }
 
 void NewLoadVehicleMovementInfoFromSavedGameFile(HWFILE const hFile) {
   // Load in the Squad movement id's
-  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES);
+  FileRead(hFile, gubVehicleMovementGroups, sizeof(int8_t) * MAX_VEHICLES);
 }
 
-BOOLEAN OKUseVehicle(UINT8 ubProfile) {
+BOOLEAN OKUseVehicle(uint8_t ubProfile) {
   if (ubProfile == PROF_HUMMER) {
     return (CheckFact(FACT_OK_USE_HUMMER, NO_PROFILE));
   } else if (ubProfile == PROF_ICECREAM) {
@@ -743,11 +744,11 @@ BOOLEAN OKUseVehicle(UINT8 ubProfile) {
   }
 }
 
-static void TeleportVehicleToItsClosestSector(const UINT8 ubGroupID) {
+static void TeleportVehicleToItsClosestSector(const uint8_t ubGroupID) {
   GROUP *pGroup = NULL;
-  UINT32 uiTimeToNextSector;
-  UINT32 uiTimeToLastSector;
-  INT16 sPrevX, sPrevY, sNextX, sNextY;
+  uint32_t uiTimeToNextSector;
+  uint32_t uiTimeToLastSector;
+  int16_t sPrevX, sPrevY, sNextX, sNextY;
 
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
@@ -796,7 +797,7 @@ void AddVehicleFuelToSave() {
   }
 }
 
-static bool CanSoldierDriveVehicle(SOLDIERTYPE const &s, INT32 const vehicle_id,
+static bool CanSoldierDriveVehicle(SOLDIERTYPE const &s, int32_t const vehicle_id,
                                    bool const ignore_asleep) {
   return s.bAssignment == VEHICLE &&            // In a vehicle?
          vehicle_id == s.iVehicleId &&          // In this vehicle?
@@ -807,7 +808,7 @@ static bool CanSoldierDriveVehicle(SOLDIERTYPE const &s, INT32 const vehicle_id,
          s.bBreathMax > BREATHMAX_ABSOLUTE_MINIMUM;  // Too tired to drive?
 }
 
-static bool OnlyThisSoldierCanDriveVehicle(SOLDIERTYPE const &s, INT32 const vehicle_id) {
+static bool OnlyThisSoldierCanDriveVehicle(SOLDIERTYPE const &s, int32_t const vehicle_id) {
   CFOR_EACH_IN_TEAM(i, OUR_TEAM) {
     SOLDIERTYPE const &other = *i;
     // Skip checking this soldier, we want to know about everyone else
@@ -821,7 +822,7 @@ static bool OnlyThisSoldierCanDriveVehicle(SOLDIERTYPE const &s, INT32 const veh
 }
 
 bool SoldierMustDriveVehicle(SOLDIERTYPE const &s, bool const trying_to_travel) {
-  INT32 const vehicle_id = s.iVehicleId;
+  int32_t const vehicle_id = s.iVehicleId;
   VEHICLETYPE const &v = GetVehicle(vehicle_id);
 
   /* If vehicle is not going anywhere, then nobody has to be driving it. Need
@@ -837,7 +838,7 @@ bool SoldierMustDriveVehicle(SOLDIERTYPE const &s, bool const trying_to_travel) 
   return true;
 }
 
-BOOLEAN IsSoldierInThisVehicleSquad(const SOLDIERTYPE *const pSoldier, const INT8 bSquadNumber) {
+BOOLEAN IsSoldierInThisVehicleSquad(const SOLDIERTYPE *const pSoldier, const int8_t bSquadNumber) {
   Assert(pSoldier);
   Assert((bSquadNumber >= 0) && (bSquadNumber < NUMBER_OF_SQUADS));
 
@@ -865,7 +866,7 @@ SOLDIERTYPE *PickRandomPassengerFromVehicle(SOLDIERTYPE *const pSoldier) {
 
   VEHICLETYPE const &v = pVehicleList[pSoldier->bVehicleID];
 
-  INT32 n_mercs = 0;
+  int32_t n_mercs = 0;
   SOLDIERTYPE *mercs_in_vehicle[20];
   CFOR_EACH_PASSENGER(v, i) mercs_in_vehicle[n_mercs++] = *i;
 
@@ -891,8 +892,8 @@ void HandleVehicleMovementSound(const SOLDIERTYPE *const s, const BOOLEAN fOn) {
   }
 }
 
-UINT8 GetVehicleArmourType(const UINT8 vehicle_id) {
+uint8_t GetVehicleArmourType(const uint8_t vehicle_id) {
   return Item[g_vehicle_type_info[pVehicleList[vehicle_id].ubVehicleType].armour_type].ubClassIndex;
 }
 
-UINT8 GetVehicleSeats(VEHICLETYPE const &v) { return g_vehicle_type_info[v.ubVehicleType].seats; }
+uint8_t GetVehicleSeats(VEHICLETYPE const &v) { return g_vehicle_type_info[v.ubVehicleType].seats; }

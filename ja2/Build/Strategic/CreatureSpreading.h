@@ -10,31 +10,31 @@ void ClearCreatureQuest();
 void DeleteCreatureDirectives();
 
 void SaveCreatureDirectives(HWFILE);
-void LoadCreatureDirectives(HWFILE, UINT32 uiSavedGameVersion);
+void LoadCreatureDirectives(HWFILE, uint32_t uiSavedGameVersion);
 
 BOOLEAN PrepareCreaturesForBattle();
 void CreatureNightPlanning();
-void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest);
+void CreatureAttackTown(uint8_t ubSectorID, BOOLEAN fOverrideTest);
 
-void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void CheckConditionsForTriggeringCreatureQuest(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 extern BOOLEAN gfUseCreatureMusic;
 
-BOOLEAN MineClearOfMonsters(UINT8 ubMineIndex);
+BOOLEAN MineClearOfMonsters(uint8_t ubMineIndex);
 
 // Returns true if valid and creature quest over, false if creature quest active
 // or not yet started
-bool GetWarpOutOfMineCodes(INT16 *sector_x, INT16 *sector_y, INT8 *sector_z,
+bool GetWarpOutOfMineCodes(int16_t *sector_x, int16_t *sector_y, int8_t *sector_z,
                            GridNo *insertion_grid_no);
 
-extern INT16 gsCreatureInsertionCode;
-extern INT16 gsCreatureInsertionGridNo;
-extern UINT8 gubNumCreaturesAttackingTown;
-extern UINT8 gubYoungMalesAttackingTown;
-extern UINT8 gubYoungFemalesAttackingTown;
-extern UINT8 gubAdultMalesAttackingTown;
-extern UINT8 gubAdultFemalesAttackingTown;
-extern UINT8 gubSectorIDOfCreatureAttack;
+extern int16_t gsCreatureInsertionCode;
+extern int16_t gsCreatureInsertionGridNo;
+extern uint8_t gubNumCreaturesAttackingTown;
+extern uint8_t gubYoungMalesAttackingTown;
+extern uint8_t gubYoungFemalesAttackingTown;
+extern uint8_t gubAdultMalesAttackingTown;
+extern uint8_t gubAdultFemalesAttackingTown;
+extern uint8_t gubSectorIDOfCreatureAttack;
 enum {
   CREATURE_BATTLE_CODE_NONE,
   CREATURE_BATTLE_CODE_TACTICALLYADD,
@@ -42,17 +42,17 @@ enum {
   CREATURE_BATTLE_CODE_PREBATTLEINTERFACE,
   CREATURE_BATTLE_CODE_AUTORESOLVE,
 };
-extern UINT8 gubCreatureBattleCode;
+extern uint8_t gubCreatureBattleCode;
 
-void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMales,
-                                      UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales,
-                                      UINT8 *pubNumAdultFemales);
+void DetermineCreatureTownComposition(uint8_t ubNumCreatures, uint8_t *pubNumYoungMales,
+                                      uint8_t *pubNumYoungFemales, uint8_t *pubNumAdultMales,
+                                      uint8_t *pubNumAdultFemales);
 
-void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCreatures,
-                                                                UINT8 *pubNumYoungMales,
-                                                                UINT8 *pubNumYoungFemales,
-                                                                UINT8 *pubNumAdultMales,
-                                                                UINT8 *pubNumAdultFemales);
+void DetermineCreatureTownCompositionBasedOnTacticalInformation(uint8_t *pubNumCreatures,
+                                                                uint8_t *pubNumYoungMales,
+                                                                uint8_t *pubNumYoungFemales,
+                                                                uint8_t *pubNumAdultMales,
+                                                                uint8_t *pubNumAdultFemales);
 
 BOOLEAN PlayerGroupIsInACreatureInfestedMine();
 

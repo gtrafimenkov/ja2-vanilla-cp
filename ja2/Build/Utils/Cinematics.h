@@ -7,7 +7,7 @@ struct SMKFLIC;
 
 void SmkInitialize();
 void SmkShutdown();
-SMKFLIC *SmkPlayFlic(const char *filename, UINT32 left, UINT32 top, BOOLEAN auto_close);
+SMKFLIC *SmkPlayFlic(const char *filename, uint32_t left, uint32_t top, BOOLEAN auto_close);
 BOOLEAN SmkPollFlics();
 void SmkCloseFlic(SMKFLIC *);
 

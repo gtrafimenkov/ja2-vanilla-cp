@@ -14,9 +14,10 @@ void InitializeVideoManager();
 void ShutdownVideoManager();
 void SuspendVideoManager();
 BOOLEAN RestoreVideoManager();
-void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom);
+void InvalidateRegion(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom);
 void InvalidateScreen();
-void GetPrimaryRGBDistributionMasks(UINT32 *RedBitMask, UINT32 *GreenBitMask, UINT32 *BlueBitMask);
+void GetPrimaryRGBDistributionMasks(uint32_t *RedBitMask, uint32_t *GreenBitMask,
+                                    uint32_t *BlueBitMask);
 void EndFrameBufferRender();
 void PrintScreen();
 
@@ -24,12 +25,12 @@ void PrintScreen();
  * manager */
 void VideoToggleFullScreen();
 
-void SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHeight,
-                              UINT16 usCursorWidth);
+void SetMouseCursorProperties(int16_t sOffsetX, int16_t sOffsetY, uint16_t usCursorHeight,
+                              uint16_t usCursorWidth);
 
 void VideoCaptureToggle();
 
-void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom);
+void InvalidateRegionEx(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom);
 
 void RefreshScreen();
 

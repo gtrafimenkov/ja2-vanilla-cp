@@ -42,32 +42,32 @@
 #define HIGH_TOWN_LOYALTY 80
 #define CIV_QUOTE_HINT 99
 
-static UINT8 const gubNumEntries[NUM_CIV_QUOTES] = {15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+static uint8_t const gubNumEntries[NUM_CIV_QUOTES] = {15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 
-                                                    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+                                                      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 
-                                                    5,  5,  15, 15, 15, 15, 15, 15, 15, 15,
+                                                      5,  5,  15, 15, 15, 15, 15, 15, 15, 15,
 
-                                                    15, 15, 2,  15, 15, 10, 10, 5,  3,  10,
+                                                      15, 15, 2,  15, 15, 10, 10, 5,  3,  10,
 
-                                                    3,  3,  3,  3,  3,  3,  3,  3,  3,  3};
+                                                      3,  3,  3,  3,  3,  3,  3,  3,  3,  3};
 
 struct QUOTE_SYSTEM_STRUCT {
   BOOLEAN bActive;
   MOUSE_REGION MouseRegion;
   VIDEO_OVERLAY *video_overlay;
   MercPopUpBox *dialogue_box;
-  UINT32 uiTimeOfCreation;
-  UINT32 uiDelayTime;
+  uint32_t uiTimeOfCreation;
+  uint32_t uiDelayTime;
   SOLDIERTYPE *pCiv;
 };
 
 static QUOTE_SYSTEM_STRUCT gCivQuoteData;
 
-static UINT16 gusCivQuoteBoxWidth;
-static UINT16 gusCivQuoteBoxHeight;
+static uint16_t gusCivQuoteBoxWidth;
+static uint16_t gusCivQuoteBoxHeight;
 
-static BOOLEAN GetCivQuoteText(UINT8 ubCivQuoteID, UINT8 ubEntryID, wchar_t *zQuote) try {
+static BOOLEAN GetCivQuoteText(uint8_t ubCivQuoteID, uint8_t ubEntryID, wchar_t *zQuote) try {
   char zFileName[164];
 
   // Build filename....
@@ -147,7 +147,7 @@ BOOLEAN ShutDownQuoteBoxIfActive() {
   return (FALSE);
 }
 
-INT8 GetCivType(const SOLDIERTYPE *pCiv) {
+int8_t GetCivType(const SOLDIERTYPE *pCiv) {
   if (pCiv->ubProfile != NO_PROFILE) {
     return (CIV_TYPE_NA);
   }
@@ -211,7 +211,7 @@ static void RenderCivQuoteBoxOverlay(VIDEO_OVERLAY *pBlitter) {
                    pBlitter->sY + gusCivQuoteBoxHeight);
 }
 
-static void QuoteOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void QuoteOverlayClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -226,7 +226,8 @@ static void QuoteOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 sX, INT16 sY) {
+void BeginCivQuote(SOLDIERTYPE *pCiv, uint8_t ubCivQuoteID, uint8_t ubEntryID, int16_t sX,
+                   int16_t sY) {
   // OK, do we have another on?
   if (gCivQuoteData.bActive) {
     // Delete?
@@ -275,8 +276,8 @@ void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16
     sY = std::min(sY, (int16_t)(gsVIEWPORT_WINDOW_END_Y - gusCivQuoteBoxHeight));
   }
 
-  UINT16 const w = gusCivQuoteBoxWidth;
-  UINT16 const h = gusCivQuoteBoxHeight;
+  uint16_t const w = gusCivQuoteBoxWidth;
+  uint16_t const h = gusCivQuoteBoxHeight;
 
   gCivQuoteData.video_overlay = RegisterVideoOverlay(RenderCivQuoteBoxOverlay, sX, sY, w, h);
 
@@ -293,13 +294,13 @@ void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16
   gCivQuoteData.pCiv = pCiv;
 }
 
-static UINT8 DetermineCivQuoteEntry(SOLDIERTYPE *pCiv, UINT8 *pubCivHintToUse,
-                                    BOOLEAN fCanUseHints) {
-  UINT8 ubCivType;
+static uint8_t DetermineCivQuoteEntry(SOLDIERTYPE *pCiv, uint8_t *pubCivHintToUse,
+                                      BOOLEAN fCanUseHints) {
+  uint8_t ubCivType;
   BOOLEAN bCivLowLoyalty = FALSE;
   BOOLEAN bCivHighLoyalty = FALSE;
-  INT8 bCivHint;
-  INT8 bMineId;
+  int8_t bCivHint;
+  int8_t bMineId;
   BOOLEAN bMiners = FALSE;
 
   (*pubCivHintToUse) = 0;
@@ -329,7 +330,7 @@ static UINT8 DetermineCivQuoteEntry(SOLDIERTYPE *pCiv, UINT8 *pubCivHintToUse,
   }
 
   // Are we in a town sector?
-  UINT8 const bTownId = GetTownIdForSector(SECTOR(gWorldSectorX, gWorldSectorY));
+  uint8_t const bTownId = GetTownIdForSector(SECTOR(gWorldSectorX, gWorldSectorY));
 
   // If a married PC...
   if (ubCivType == CIV_TYPE_MARRIED_PC) {
@@ -527,11 +528,11 @@ void HandleCivQuote() {
 }
 
 void StartCivQuote(SOLDIERTYPE *pCiv) {
-  UINT8 ubCivQuoteID;
-  INT16 sX, sY;
-  UINT8 ubEntryID = 0;
-  INT16 sScreenX, sScreenY;
-  UINT8 ubCivHintToUse;
+  uint8_t ubCivQuoteID;
+  int16_t sX, sY;
+  uint8_t ubEntryID = 0;
+  int16_t sScreenX, sScreenY;
+  uint8_t ubCivHintToUse;
 
   // ATE: Check for old quote.....
   // This could have been stored on last attempt...
@@ -551,7 +552,7 @@ void StartCivQuote(SOLDIERTYPE *pCiv) {
   if (ubCivQuoteID != CIV_QUOTE_HINT) {
     if (pCiv->bCurrentCivQuote == -1) {
       // Pick random one
-      pCiv->bCurrentCivQuote = (INT8)Random(gubNumEntries[ubCivQuoteID] - 2);
+      pCiv->bCurrentCivQuote = (int8_t)Random(gubNumEntries[ubCivQuoteID] - 2);
       pCiv->bCurrentCivQuoteDelta = 0;
     }
 

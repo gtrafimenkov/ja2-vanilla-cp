@@ -108,24 +108,24 @@ static SGPVObject *guiBioBox;
 //
 
 // The Prev button
-static void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMercPrevButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiButtonImage;
 GUIButtonRef guiPrevButton;
 
 // The Next button
-static void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMercNextButtonCallback(GUI_BUTTON *btn, int32_t reason);
 GUIButtonRef guiNextButton;
 
 // The Hire button
-static void BtnMercHireButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMercHireButtonCallback(GUI_BUTTON *btn, int32_t reason);
 GUIButtonRef guiHireButton;
 
 // The Back button
-static void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, int32_t reason);
 GUIButtonRef guiMercBackButton;
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click) {
-  const INT16 shadow_col = DEFAULT_SHADOW;
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t x, GUI_CALLBACK click) {
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn = CreateIconAndTextButton(
       guiButtonImage, text, FONT12ARIAL, MERC_BUTTON_UP_COLOR, shadow_col, MERC_BUTTON_DOWN_COLOR,
       shadow_col, x, MERC_FILES_BUTTON_Y, MSYS_PRIORITY_HIGH, click);
@@ -177,7 +177,7 @@ void ExitMercsFiles() {
 static void DisplayMercFace(ProfileID);
 static void DisplayMercsStats(MERCPROFILESTRUCT const &);
 static void EnableDisableMercFilesNextPreviousButton();
-static void LoadAndDisplayMercBio(UINT8 ubMercID);
+static void LoadAndDisplayMercBio(uint8_t ubMercID);
 
 void RenderMercsFiles() {
   DrawMecBackGround();
@@ -198,7 +198,7 @@ void RenderMercsFiles() {
                    FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 
   // Load and display the mercs bio
-  LoadAndDisplayMercBio((UINT8)(pid - BIFF));
+  LoadAndDisplayMercBio((uint8_t)(pid - BIFF));
 
   // Display the mercs statistic
   DisplayMercsStats(p);
@@ -219,7 +219,7 @@ void RenderMercsFiles() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercPrevButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurMercIndex > 0) gubCurMercIndex--;
     // Since there are 2 larry roachburns
@@ -229,7 +229,7 @@ static void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercNextButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurMercIndex <= LaptopSaveInfo.gubLastMercIndex - 1) gubCurMercIndex++;
     // Since there are 2 larry roachburns
@@ -239,9 +239,9 @@ static void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static BOOLEAN MercFilesHireMerc(UINT8 ubMercID);
+static BOOLEAN MercFilesHireMerc(uint8_t ubMercID);
 
-static void BtnMercHireButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercHireButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if the players accont is suspended, go back to the main screen and have
     // Speck inform the players
@@ -317,8 +317,8 @@ static void DisplayMercFace(const ProfileID pid) try {
 } catch (...) { /* XXX ignore */
 }
 
-static void LoadAndDisplayMercBio(UINT8 ubMercID) {
-  UINT32 uiStartLoc;
+static void LoadAndDisplayMercBio(uint8_t ubMercID) {
+  uint32_t uiStartLoc;
 
   {
     // load and display the merc bio
@@ -344,18 +344,18 @@ static void LoadAndDisplayMercBio(UINT8 ubMercID) {
   }
 }
 
-static void DrawStat(const UINT16 x, const UINT16 y, const wchar_t *const stat, const UINT16 x_val,
-                     const INT32 val) {
+static void DrawStat(const uint16_t x, const uint16_t y, const wchar_t *const stat,
+                     const uint16_t x_val, const int32_t val) {
   DrawTextToScreen(stat, x, y, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK,
                    LEFT_JUSTIFIED);
   DrawNumeralsToScreen(val, 3, x_val, y, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
 }
 
 static void DisplayMercsStats(MERCPROFILESTRUCT const &p) {
-  const UINT16 x1 = MERC_STATS_FIRST_COL_X;
-  const UINT16 x1_val = MERC_STATS_FIRST_NUM_COL_X;
-  UINT16 y1 = MERC_HEALTH_Y;
-  const UINT16 dy = MERC_SPACE_BN_LINES;
+  const uint16_t x1 = MERC_STATS_FIRST_COL_X;
+  const uint16_t x1_val = MERC_STATS_FIRST_NUM_COL_X;
+  uint16_t y1 = MERC_HEALTH_Y;
+  const uint16_t dy = MERC_SPACE_BN_LINES;
   DrawStat(x1, y1, str_stat_health, x1_val, p.bLife);
   DrawStat(x1, y1 += dy, str_stat_agility, x1_val, p.bAgility);
   DrawStat(x1, y1 += dy, str_stat_dexterity, x1_val, p.bDexterity);
@@ -363,9 +363,9 @@ static void DisplayMercsStats(MERCPROFILESTRUCT const &p) {
   DrawStat(x1, y1 += dy, str_stat_leadership, x1_val, p.bLeadership);
   DrawStat(x1, y1 += dy, str_stat_wisdom, x1_val, p.bWisdom);
 
-  const UINT16 x2 = MERC_STATS_SECOND_COL_X;
-  const UINT16 x2_val = MERC_STATS_SECOND_NUM_COL_X;
-  UINT16 y2 = MERC_HEALTH_Y;
+  const uint16_t x2 = MERC_STATS_SECOND_COL_X;
+  const uint16_t x2_val = MERC_STATS_SECOND_NUM_COL_X;
+  uint16_t y2 = MERC_HEALTH_Y;
   DrawStat(x2, y2, str_stat_exp_level, x2_val, p.bExpLevel);
   DrawStat(x2, y2 += dy, str_stat_marksmanship, x2_val, p.bMarksmanship);
   DrawStat(x2, y2 += dy, str_stat_mechanical, x2_val, p.bMechanical);
@@ -378,16 +378,16 @@ static void DisplayMercsStats(MERCPROFILESTRUCT const &p) {
   DrawTextToScreen(salary, MERC_STATS_SECOND_COL_X, y2, 0, MERC_NAME_FONT, MERC_STATIC_STATS_COLOR,
                    FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 
-  const UINT16 x = MERC_STATS_SECOND_COL_X + StringPixLength(salary, MERC_NAME_FONT) + 1;
+  const uint16_t x = MERC_STATS_SECOND_COL_X + StringPixLength(salary, MERC_NAME_FONT) + 1;
   wchar_t sString[128];
   swprintf(sString, lengthof(sString), L"%d %ls", p.sSalary, MercInfo[MERC_FILES_PER_DAY]);
   DrawTextToScreen(sString, x, y2, 95, MERC_NAME_FONT, MERC_DYNAMIC_STATS_COLOR, FONT_MCOLOR_BLACK,
                    RIGHT_JUSTIFIED);
 }
 
-static BOOLEAN MercFilesHireMerc(UINT8 ubMercID) {
+static BOOLEAN MercFilesHireMerc(uint8_t ubMercID) {
   MERC_HIRE_STRUCT HireMercStruct;
-  INT8 bReturnCode;
+  int8_t bReturnCode;
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
   MERCPROFILESTRUCT &p = GetProfile(ubMercID);
@@ -446,7 +446,7 @@ static BOOLEAN MercFilesHireMerc(UINT8 ubMercID) {
   }
 }
 
-static void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_MERC;
     gubArrivedFromMercSubSite = MERC_CAME_FROM_HIRE_PAGE;

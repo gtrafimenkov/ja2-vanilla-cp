@@ -5,24 +5,24 @@
 #include "SGP/MouseSystem.h"
 #include "TacticalAI/NPC.h"
 
-extern UINT8 gubSrcSoldierProfile;
+extern uint8_t gubSrcSoldierProfile;
 
 // Structure used in Tactical display of NPC dialogue
 struct NPC_DIALOGUE_TYPE {
   FACETYPE *face;
-  INT16 sX;
-  INT16 sY;
-  INT16 sPopupX;
-  INT16 sPopupY;
-  UINT8 ubPopupOrientation;
-  UINT8 ubCharNum;
+  int16_t sX;
+  int16_t sY;
+  int16_t sPopupX;
+  int16_t sPopupY;
+  uint8_t ubPopupOrientation;
+  uint8_t ubCharNum;
   SGPVObject *uiPanelVO;
   BUTTON_PICS *iButtonImages;
   GUIButtonRef uiCancelButton;
-  INT8 bCurSelect;
-  INT8 bOldCurSelect;
-  UINT16 usWidth;
-  UINT16 usHeight;
+  int8_t bCurSelect;
+  int8_t bOldCurSelect;
+  uint16_t usWidth;
+  uint16_t usHeight;
   MOUSE_REGION Regions[6];
   MOUSE_REGION BackRegion;
   MOUSE_REGION NameRegion;
@@ -44,12 +44,12 @@ struct NPC_DIALOGUE_TYPE {
 extern NPC_DIALOGUE_TYPE gTalkPanel;
 
 BOOLEAN InitiateConversationFull(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier,
-                                 Approach bApproach, UINT8 approach_record,
+                                 Approach bApproach, uint8_t approach_record,
                                  OBJECTTYPE *approach_object);
 BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, Approach);
 
 // Begins quote of NPC Dialogue
-void TalkingMenuDialogue(UINT16 usQuoteNum);
+void TalkingMenuDialogue(uint16_t usQuoteNum);
 
 // Removes memory allocated for structure, removes face...
 void DeleteTalkingMenu();
@@ -61,20 +61,20 @@ void RenderTalkingMenu();
 BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey);
 
 // NPC goto gridno
-void NPCGotoGridNo(ProfileID ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum);
+void NPCGotoGridNo(ProfileID ubTargetNPC, uint16_t usGridNo, uint8_t ubQuoteNum);
 // NPC Do action
-void NPCDoAction(ProfileID ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum);
+void NPCDoAction(ProfileID ubTargetNPC, uint16_t usActionCode, uint8_t ubQuoteNum);
 
 void HandleWaitTimerForNPCTrigger();
 
-void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos);
-void HandleNPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, BOOLEAN fShowDialogueMenu,
+void HandleNPCItemGiven(uint8_t ubNPC, OBJECTTYPE *pObject, int8_t bInvPos);
+void HandleNPCTriggerNPC(uint8_t ubTargetNPC, uint8_t ubTargetRecord, BOOLEAN fShowDialogueMenu,
                          Approach ubTargetApproach);
-void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum);
+void HandleNPCDoAction(uint8_t ubTargetNPC, uint16_t usActionCode, uint8_t ubQuoteNum);
 
-bool ProfileCurrentlyTalkingInDialoguePanel(UINT8 ubProfile);
+bool ProfileCurrentlyTalkingInDialoguePanel(uint8_t ubProfile);
 
-void InternalInitTalkingMenu(UINT8 ubCharacterNum, INT16 sX, INT16 sY);
+void InternalInitTalkingMenu(uint8_t ubCharacterNum, int16_t sX, int16_t sY);
 
 enum {
   NPC_ACTION_NONE = 0,
@@ -339,12 +339,12 @@ enum {
 
 #define HOSPITAL_PATIENT_DISTANCE 9
 
-extern INT32 giHospitalTempBalance;
-extern INT32 giHospitalRefund;
-extern INT8 gbHospitalPriceModifier;
+extern int32_t giHospitalTempBalance;
+extern int32_t giHospitalRefund;
+extern int8_t gbHospitalPriceModifier;
 
-UINT32 CalcPatientMedicalCost(const SOLDIERTYPE *s);
-extern UINT32 CalcMedicalCost(UINT8 ubId);
+uint32_t CalcPatientMedicalCost(const SOLDIERTYPE *s);
+extern uint32_t CalcMedicalCost(uint8_t ubId);
 
 extern BOOLEAN gfInTalkPanel;
 

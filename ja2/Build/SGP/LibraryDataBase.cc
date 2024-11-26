@@ -25,27 +25,27 @@
 struct LIBHEADER {
   char sLibName[FILENAME_SIZE];
   char sPathToLibrary[FILENAME_SIZE];
-  INT32 iEntries;
-  INT32 iUsed;
-  UINT16 iSort;
-  UINT16 iVersion;
+  int32_t iEntries;
+  int32_t iUsed;
+  uint16_t iSort;
+  uint16_t iVersion;
   BOOLEAN fContainsSubDirectories;
-  INT32 iReserved;
+  int32_t iReserved;
 };
 
 struct DIRENTRY {
   char sFileName[FILENAME_SIZE];
-  UINT32 uiOffset;
-  UINT32 uiLength;
-  UINT8 ubState;
-  UINT8 ubReserved;
+  uint32_t uiOffset;
+  uint32_t uiLength;
+  uint8_t ubState;
+  uint8_t ubReserved;
   SGP_FILETIME sFileTime;
-  UINT16 usReserved2;
+  uint16_t usReserved2;
 };
 
 struct DatabaseManagerHeaderStruct {
   LibraryHeaderStruct *pLibraries;
-  UINT16 usNumberOfLibraries;
+  uint16_t usNumberOfLibraries;
 };
 
 static DatabaseManagerHeaderStruct gFileDataBase;
@@ -77,10 +77,10 @@ void InitializeFileDatabase(const std::vector<std::string> &libraries) {
   }
 }
 
-static BOOLEAN CloseLibrary(INT16 sLibraryID);
+static BOOLEAN CloseLibrary(int16_t sLibraryID);
 
 void ShutDownFileDatabase() {
-  UINT16 sLoop1;
+  uint16_t sLoop1;
 
   // Free up the memory used for each library
   for (sLoop1 = 0; sLoop1 < gFileDataBase.usNumberOfLibraries; sLoop1++) CloseLibrary(sLoop1);
@@ -119,7 +119,7 @@ static BOOLEAN InitializeLibrary(const char *const lib_name, LibraryHeaderStruct
   LIBHEADER LibFileHeader;
   if (fread(&LibFileHeader, sizeof(LibFileHeader), 1, hFile) != 1) return FALSE;
 
-  const UINT32 count_entries = LibFileHeader.iEntries;
+  const uint32_t count_entries = LibFileHeader.iEntries;
 
   FileHeaderStruct *fhs = MALLOCN(FileHeaderStruct, count_entries);
 #ifdef JA2TESTVERSION
@@ -130,8 +130,8 @@ static BOOLEAN InitializeLibrary(const char *const lib_name, LibraryHeaderStruct
    * end of the file) */
   fseek(hFile, -(int)(count_entries * sizeof(DIRENTRY)), SEEK_END);
 
-  UINT32 used_entries = 0;
-  for (UINT32 uiLoop = 0; uiLoop < count_entries; ++uiLoop) {
+  uint32_t used_entries = 0;
+  for (uint32_t uiLoop = 0; uiLoop < count_entries; ++uiLoop) {
     DIRENTRY DirEntry;
     if (fread(&DirEntry, sizeof(DirEntry), 1, hFile) != 1) return FALSE;
 
@@ -177,13 +177,13 @@ static BOOLEAN InitializeLibrary(const char *const lib_name, LibraryHeaderStruct
   return 0;
 }
 
-BOOLEAN LoadDataFromLibrary(LibraryFile *const f, void *const pData, const UINT32 uiBytesToRead) {
+BOOLEAN LoadDataFromLibrary(LibraryFile *const f, void *const pData, const uint32_t uiBytesToRead) {
   if (f->pFileHeader == NULL) return FALSE;
 
-  UINT32 const uiOffsetInLibrary = f->pFileHeader->uiFileOffset;
-  UINT32 const uiLength = f->pFileHeader->uiFileLength;
+  uint32_t const uiOffsetInLibrary = f->pFileHeader->uiFileOffset;
+  uint32_t const uiLength = f->pFileHeader->uiFileLength;
   FILE *const hLibraryFile = f->lib->hLibraryHandle;
-  UINT32 const uiCurPos = f->uiFilePosInFile;
+  uint32_t const uiCurPos = f->uiFilePosInFile;
 
   fseek(hLibraryFile, uiOffsetInLibrary + uiCurPos, SEEK_SET);
 
@@ -206,7 +206,7 @@ bool CheckIfFileExistInLibrary(char const *const filename) {
   return lib && GetFileHeaderFromLibrary(lib, filename);
 }
 
-static BOOLEAN IsLibraryOpened(INT16 sLibraryID);
+static BOOLEAN IsLibraryOpened(int16_t sLibraryID);
 
 /* Find out if the file CAN be in a library.  It determines if the library that
  * the file MAY be in is open.  E.g. file is  Laptop/Test.sti, if the Laptop/
@@ -214,7 +214,7 @@ static BOOLEAN IsLibraryOpened(INT16 sLibraryID);
 static LibraryHeaderStruct *GetLibraryFromFileName(char const *const filename) {
   // Loop through all the libraries to check which library the file is in
   LibraryHeaderStruct *best_match = 0;
-  for (INT16 i = 0; i != gFileDataBase.usNumberOfLibraries; ++i) {
+  for (int16_t i = 0; i != gFileDataBase.usNumberOfLibraries; ++i) {
     if (!IsLibraryOpened(i)) continue;
 
     LibraryHeaderStruct *const lib = &gFileDataBase.pLibraries[i];
@@ -282,8 +282,8 @@ BOOLEAN OpenFileFromLibrary(const char *const pName, LibraryFile *const f) {
 
 void CloseLibraryFile(LibraryFile *const f) { --f->lib->iNumFilesOpen; }
 
-BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode how) {
-  UINT32 pos;
+BOOLEAN LibraryFileSeek(LibraryFile *const f, int32_t distance, const FileSeekMode how) {
+  uint32_t pos;
   switch (how) {
     case FILE_SEEK_FROM_START:
       pos = 0;
@@ -301,8 +301,8 @@ BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode
   return TRUE;
 }
 
-static BOOLEAN CloseLibrary(INT16 sLibraryID) {
-  UINT32 uiLoop1;
+static BOOLEAN CloseLibrary(int16_t sLibraryID) {
+  uint32_t uiLoop1;
 
   // if the library isnt loaded, dont close it
   if (!IsLibraryOpened(sLibraryID)) return (FALSE);
@@ -347,7 +347,7 @@ static BOOLEAN CloseLibrary(INT16 sLibraryID) {
   return (TRUE);
 }
 
-static BOOLEAN IsLibraryOpened(INT16 const sLibraryID) {
+static BOOLEAN IsLibraryOpened(int16_t const sLibraryID) {
   return sLibraryID < gFileDataBase.usNumberOfLibraries &&
          gFileDataBase.pLibraries[sLibraryID].hLibraryHandle != NULL;
 }
@@ -363,12 +363,12 @@ BOOLEAN GetLibraryFileTime(LibraryFile const *const f, SGP_FILETIME *const pLast
   LibFileHeader const *const file = lib->pFileHeader;
   if (!file) return FALSE;
 
-  UINT16 usNumEntries = 0;
-  UINT32 uiNumBytesRead;
+  uint16_t usNumEntries = 0;
+  uint32_t uiNumBytesRead;
   LIBHEADER LibFileHeader;
   BOOLEAN fDone = FALSE;
-  //	UINT32	cnt;
-  INT32 iFilePos = 0;
+  //	uint32_t	cnt;
+  int32_t iFilePos = 0;
 
   memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
 
@@ -385,7 +385,7 @@ BOOLEAN GetLibraryFileTime(LibraryFile const *const f, SGP_FILETIME *const pLast
   DIRENTRY *const pAllEntries = MALLOCN(DIRENTRY, LibFileHeader.iEntries);
   memset(pAllEntries, 0, sizeof(DIRENTRY));
 
-  iFilePos = -(LibFileHeader.iEntries * (INT32)sizeof(DIRENTRY));
+  iFilePos = -(LibFileHeader.iEntries * (int32_t)sizeof(DIRENTRY));
 
   // set the file pointer to the right location
   SetFilePointer(lib->hLibraryHandle, iFilePos, NULL, FILE_END);

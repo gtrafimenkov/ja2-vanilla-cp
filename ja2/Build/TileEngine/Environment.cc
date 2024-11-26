@@ -47,11 +47,11 @@ BOOLEAN gfCaves = FALSE;
 #define DUSK_TO_NIGHT (NIGHT_START - DUSK_START)
 #define NIGHT_TO_DAWN (24 * 60 - NIGHT_START + DAWN_START)
 
-UINT32 guiEnvWeather = 0;
-UINT32 guiRainLoop = NO_SAMPLE;
+uint32_t guiEnvWeather = 0;
+uint32_t guiRainLoop = NO_SAMPLE;
 
 // frame cues for lightning
-UINT8 ubLightningTable[3][10][2] = {
+uint8_t ubLightningTable[3][10][2] = {
     {{0, 15}, {1, 0}, {2, 0}, {3, 6}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}, {9, 0}},
 
     {{0, 15}, {1, 0}, {2, 0}, {3, 6}, {4, 0}, {5, 15}, {6, 0}, {7, 6}, {8, 0}, {9, 0}},
@@ -82,20 +82,20 @@ enum TemperatureEvents {
 #define HOT_DAY_LIGHTLEVEL 2
 
 BOOLEAN fTimeOfDayControls = TRUE;
-UINT32 guiEnvTime = 0;
-UINT32 guiEnvDay = 0;
-UINT8 gubEnvLightValue = 0;
+uint32_t guiEnvTime = 0;
+uint32_t guiEnvDay = 0;
+uint8_t gubEnvLightValue = 0;
 BOOLEAN gfDoLighting = FALSE;
 
-UINT8 gubDesertTemperature = 0;
-UINT8 gubGlobalTemperature = 0;
+uint8_t gubDesertTemperature = 0;
+uint8_t gubGlobalTemperature = 0;
 
 static void EnvDoLightning();
 
 // polled by the game to handle time/atmosphere changes from gamescreen
 void EnvironmentController(BOOLEAN fCheckForLights) {
-  UINT32 uiOldWorldHour;
-  UINT8 ubLightAdjustFromWeather = 0;
+  uint32_t uiOldWorldHour;
+  uint8_t ubLightAdjustFromWeather = 0;
 
   // do none of this stuff in the basement or caves
   if (gfBasement || gfCaves) {
@@ -119,7 +119,7 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
       guiEnvTime = uiOldWorldHour;
     }
 
-    // ExecuteStrategicEventsUntilTimeStamp( (UINT16)GetWorldTotalMin( ) );
+    // ExecuteStrategicEventsUntilTimeStamp( (uint16_t)GetWorldTotalMin( ) );
 
     // Polled weather stuff...
     // ONly do indooors
@@ -163,11 +163,11 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
 					// Thunder showers.. make darker
 					if ( guiEnvWeather & ( WEATHER_FORECAST_THUNDERSHOWERS ) )
 					{
-						ubLightAdjustFromWeather = (UINT8)(std::min( gubEnvLightValue+2, NORMAL_LIGHTLEVEL_NIGHT ));
+						ubLightAdjustFromWeather = (uint8_t)(std::min( gubEnvLightValue+2, NORMAL_LIGHTLEVEL_NIGHT ));
 					}
 					else
 					{
-						ubLightAdjustFromWeather = (UINT8)(std::min( gubEnvLightValue+1, NORMAL_LIGHTLEVEL_NIGHT ));
+						ubLightAdjustFromWeather = (uint8_t)(std::min( gubEnvLightValue+1, NORMAL_LIGHTLEVEL_NIGHT ));
 					}
 				}
 #endif
@@ -189,7 +189,7 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
 }
 
 void BuildDayLightLevels() {
-  UINT32 uiLoop, uiHour;
+  uint32_t uiLoop, uiHour;
 
   /*
   // Dawn; light 12
@@ -253,7 +253,7 @@ void BuildDayLightLevels() {
 }
 
 void BuildDayAmbientSounds() {
-  INT32 cnt;
+  int32_t cnt;
 
   // Add events!
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
@@ -277,10 +277,10 @@ void BuildDayAmbientSounds() {
 }
 
 void ForecastDayEvents() {
-  UINT32 uiOldDay;
-  UINT32 uiStartTime, uiEndTime;
-  UINT8 ubStormIntensity;
-  //	UINT32 cnt;
+  uint32_t uiOldDay;
+  uint32_t uiStartTime, uiEndTime;
+  uint8_t ubStormIntensity;
+  //	uint32_t cnt;
 
   // Get current day and see if different
   if ((uiOldDay = GetWorldDay()) != guiEnvDay) {
@@ -301,7 +301,7 @@ void ForecastDayEvents() {
       if (Random(100) < 20) {
         // Add rain!
         // Between 6:00 and 10:00
-        uiStartTime = (UINT32)(360 + Random(1080));
+        uiStartTime = (uint32_t)(360 + Random(1080));
         // Between 5 - 15 miniutes
         uiEndTime = uiStartTime + (5 + Random(10));
 
@@ -329,8 +329,8 @@ static void EnvEnableTOD() { fTimeOfDayControls = TRUE; }
 static void EnvDisableTOD() { fTimeOfDayControls = FALSE; }
 
 static void EnvDoLightning() {
-  static UINT32 uiCount = 0, uiIndex = 0, uiStrike = 0, uiFrameNext = 1000;
-  static UINT8 ubLevel = 0, ubLastLevel = 0;
+  static uint32_t uiCount = 0, uiIndex = 0, uiStrike = 0, uiFrameNext = 1000;
+  static uint8_t ubLevel = 0, ubLastLevel = 0;
 
   if (gfPauseDueToPlayerGamePause) {
     return;
@@ -351,7 +351,7 @@ static void EnvDoLightning() {
       PlayJA2Ambient(Random(2) == 0 ? LIGHTNING_1 : LIGHTNING_2, HIGHVOLUME, 1);
     }
 
-    while (uiCount > ((UINT32)ubLightningTable[uiStrike][uiIndex][0] + uiFrameNext)) uiIndex++;
+    while (uiCount > ((uint32_t)ubLightningTable[uiStrike][uiIndex][0] + uiFrameNext)) uiIndex++;
 
     ubLastLevel = ubLevel;
     ubLevel = ubLightningTable[uiStrike][uiIndex][1];
@@ -372,7 +372,7 @@ static void EnvDoLightning() {
   }
 }
 
-UINT8 GetTimeOfDayAmbientLightLevel() {
+uint8_t GetTimeOfDayAmbientLightLevel() {
   if (SectorTemperature(GetWorldMinutesInDay(), gWorldSectorX, gWorldSectorY, gbWorldSectorZ) ==
       HOT) {
     return (HOT_DAY_LIGHTLEVEL);
@@ -381,7 +381,7 @@ UINT8 GetTimeOfDayAmbientLightLevel() {
   }
 }
 
-void EnvBeginRainStorm(UINT8 ubIntensity) {
+void EnvBeginRainStorm(uint8_t ubIntensity) {
   if (!gfBasement && !gfCaves) {
     gfDoLighting = TRUE;
 
@@ -432,7 +432,7 @@ void TurnOffPrimeLights() {
   }
 }
 
-void UpdateTemperature(UINT8 ubTemperatureCode) {
+void UpdateTemperature(uint8_t ubTemperatureCode) {
   switch (ubTemperatureCode) {
     case TEMPERATURE_DESERT_COOL:
       gubDesertTemperature = 0;
@@ -456,7 +456,7 @@ void UpdateTemperature(UINT8 ubTemperatureCode) {
   gfDoLighting = TRUE;
 }
 
-INT8 SectorTemperature(UINT32 uiTime, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+int8_t SectorTemperature(uint32_t uiTime, int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ) {
   if (bSectorZ > 0) {
     // cool underground
     return (0);

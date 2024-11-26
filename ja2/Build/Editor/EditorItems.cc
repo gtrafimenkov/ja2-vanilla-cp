@@ -44,10 +44,10 @@
 
 extern ITEM_POOL *gpEditingItemPool;
 
-INT32 giDefaultExistChance = 100;
+int32_t giDefaultExistChance = 100;
 
 struct IPListNode {
-  INT16 sGridNo;
+  int16_t sGridNo;
   IPListNode *next;
 };
 
@@ -56,13 +56,13 @@ static IPListNode *pIPHead = NULL;
 static IPListNode *gpCurrItemPoolNode = NULL;
 ITEM_POOL *gpItemPool = NULL;
 
-static void ShowItemCursor(INT32 iMapIndex);
+static void ShowItemCursor(int32_t iMapIndex);
 
 void BuildItemPoolList() {
   KillItemPoolList();
 
   IPListNode **anchor = &pIPHead;
-  for (UINT16 i = 0; i < WORLD_MAX; ++i) {
+  for (uint16_t i = 0; i < WORLD_MAX; ++i) {
     if (GetItemPool(i, 0) == NULL) continue;
 
     ShowItemCursor(i);
@@ -78,7 +78,7 @@ void BuildItemPoolList() {
   SpecifyItemToEdit(NULL, -1);
 }
 
-static void HideItemCursor(INT32 iMapIndex);
+static void HideItemCursor(int32_t iMapIndex);
 
 void KillItemPoolList() {
   IPListNode *pIPCurr;
@@ -99,7 +99,7 @@ EditorItemsInfo eInfo;
 // Does some precalculations regarding the number of each item type, so that it
 // isn't calculated every time a player changes categories.
 void EntryInitEditorItemsInfo() {
-  INT32 i;
+  int32_t i;
   eInfo.uiBuffer = 0;
   eInfo.fActive = 0;
   eInfo.sScrollIndex = 0;
@@ -162,11 +162,11 @@ void EntryInitEditorItemsInfo() {
   }
 }
 
-static void DrawItemCentered(INVTYPE const &item, SGPVSurface *const vs, INT32 x, INT32 const y,
-                             INT16 const outline) {
+static void DrawItemCentered(INVTYPE const &item, SGPVSurface *const vs, int32_t x, int32_t const y,
+                             int16_t const outline) {
   // Calculate the center position of the graphic in a 60 pixel wide area.
   SGPVObject const &vo = GetInterfaceGraphicForItem(item);
-  UINT const gfx = item.ubGraphicNum;
+  uint32_t const gfx = item.ubGraphicNum;
   ETRLEObject const &e = vo.SubregionProperties(gfx);
   x += (60 - e.usWidth) / 2 - e.sOffsetX;
   BltVideoObjectOutline(vs, &vo, gfx, x, y, outline);
@@ -174,11 +174,11 @@ static void DrawItemCentered(INVTYPE const &item, SGPVSurface *const vs, INT32 x
 
 void InitEditorItemsInfo(ToolbarMode const uiItemType) {
   SGPRect SaveRect, NewRect;
-  INT16 i, x, y;
-  UINT16 usCounter;
+  int16_t i, x, y;
+  uint16_t usCounter;
   wchar_t pStr[100];  //, pStr2[ 100 ];
   BOOLEAN fTypeMatch;
-  INT32 iEquipCount = 0;
+  int32_t iEquipCount = 0;
 
   // Check to make sure that there isn't already a valid eInfo
   if (eInfo.fActive) {
@@ -249,7 +249,7 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType) {
       return;
   }
   // Allocate memory to store all the item pointers.
-  eInfo.pusItemIndex = MALLOCN(UINT16, eInfo.sNumItems);
+  eInfo.pusItemIndex = MALLOCN(uint16_t, eInfo.sNumItems);
 
   // Disable the appropriate scroll buttons based on the saved scroll index if
   // applicable Left most scroll position
@@ -257,8 +257,8 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType) {
   // calculate the width of the buffer based on the number of items.
   // every pair of items (odd rounded up) requires 60 pixels for width.
   // the minimum buffer size is 420.  Height is always 80 pixels.
-  const INT16 w = (eInfo.sNumItems > 12 ? (eInfo.sNumItems + 1) / 2 * 60 : 360);
-  const INT16 h = 80;
+  const int16_t w = (eInfo.sNumItems > 12 ? (eInfo.sNumItems + 1) / 2 * 60 : 360);
+  const int16_t h = 80;
   // Create item buffer
 
   //!!!Memory check.  Create the item buffer
@@ -282,7 +282,7 @@ void InitEditorItemsInfo(ToolbarMode const uiItemType) {
   if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {  // Keys use a totally different
                                                   // method for determining
     for (i = 0; i < eInfo.sNumItems; i++) {
-      UINT16 const item_id = KEY_1 + LockTable[i].usKeyItem;
+      uint16_t const item_id = KEY_1 + LockTable[i].usKeyItem;
 
       // Store these item pointers for later when rendering selected items.
       eInfo.pusItemIndex[i] = item_id;
@@ -430,13 +430,13 @@ void DetermineItemsScrolling() {
     EnableEditorButton(ITEMS_RIGHTSCROLL);
 }
 
-static UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *pusQuantity);
+static uint16_t CountNumberOfEditorPlacementsInWorld(uint16_t usEInfoIndex, uint16_t *pusQuantity);
 
-static void drawItemWithOutline(INT16 min_idx, INT16 end_idx, INT16 scroll_idx, INT16 itemIndex,
-                                INT16 const outline) {
+static void drawItemWithOutline(int16_t min_idx, int16_t end_idx, int16_t scroll_idx,
+                                int16_t itemIndex, int16_t const outline) {
   if (min_idx <= itemIndex && itemIndex < end_idx) {
-    INT16 const x = (itemIndex / 2 - scroll_idx) * 60 + 110;
-    INT16 const y = 360 + (itemIndex % 2) * 40;
+    int16_t const x = (itemIndex / 2 - scroll_idx) * 60 + 110;
+    int16_t const y = 360 + (itemIndex % 2) * 40;
     INVTYPE const &item = Item[eInfo.pusItemIndex[itemIndex]];
     DrawItemCentered(item, FRAME_BUFFER, x, y + 2, outline);
   }
@@ -451,7 +451,7 @@ void RenderEditorItemsInfo() {
     eInfo.sHilitedItemIndex = -1;
   }
 
-  INT16 const scroll_idx = eInfo.sScrollIndex;
+  int16_t const scroll_idx = eInfo.sScrollIndex;
 
   SGPBox const r = {60 * scroll_idx, 0, 360, 80};
   BltVideoSurface(FRAME_BUFFER, eInfo.uiBuffer, 110, 360, &r);
@@ -459,7 +459,7 @@ void RenderEditorItemsInfo() {
   /* Calculate the min and max index that is currently shown.  This determines
    * if the highlighted and/or selected items are drawn with the outlines. */
   int16_t const min_idx = scroll_idx * 2;
-  INT16 const end_idx = std::min((int16_t)(min_idx + 12), eInfo.sNumItems);
+  int16_t const end_idx = std::min((int16_t)(min_idx + 12), eInfo.sNumItems);
 
   // Draw the hilighted and selected items if applicable.
   if (eInfo.pusItemIndex) {
@@ -470,13 +470,13 @@ void RenderEditorItemsInfo() {
   }
 
   // Draw the numbers of each visible item that currently resides in the world.
-  for (INT16 i = min_idx; i < end_idx; ++i) {
-    UINT16 quantity;
-    UINT16 const n_items = CountNumberOfEditorPlacementsInWorld(i, &quantity);
+  for (int16_t i = min_idx; i < end_idx; ++i) {
+    uint16_t quantity;
+    uint16_t const n_items = CountNumberOfEditorPlacementsInWorld(i, &quantity);
     if (n_items == 0) continue;
 
-    INT16 const x = (i / 2 - scroll_idx) * 60 + 110;
-    INT16 const y = 360 + (i % 2) * 40;
+    int16_t const x = (i / 2 - scroll_idx) * 60 + 110;
+    int16_t const y = 360 + (i % 2) * 40;
     SetFontAttributes(FONT10ARIAL, FONT_YELLOW);
     if (n_items == quantity) {
       mprintf(x + 12, y + 4, L"%d", n_items);
@@ -543,9 +543,9 @@ void ClearEditorItemsInfo() {
 
 static void FindNextItemOfSelectedType();
 
-void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent) {
-  INT16 sIndex;
-  UINT16 usQuantity;
+void HandleItemsPanel(uint16_t usScreenX, uint16_t usScreenY, int8_t bEvent) {
+  int16_t sIndex;
+  uint16_t usQuantity;
   // Calc base index from scrolling index
   sIndex = eInfo.sScrollIndex * 2;
   // Determine if the index is in the first row or second row from mouse YPos.
@@ -591,39 +591,39 @@ void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent) {
   }
 }
 
-static void ShowItemCursor(INT32 const iMapIndex) {
+static void ShowItemCursor(int32_t const iMapIndex) {
   for (LEVELNODE const *n = gpWorldLevelData[iMapIndex].pTopmostHead; n; n = n->pNext) {
     if (n->usIndex == SELRING) return;
   }
   AddTopmostToTail(iMapIndex, SELRING1);
 }
 
-static void HideItemCursor(INT32 iMapIndex) { RemoveTopmost(iMapIndex, SELRING1); }
+static void HideItemCursor(int32_t iMapIndex) { RemoveTopmost(iMapIndex, SELRING1); }
 
-static BOOLEAN TriggerAtGridNo(INT16 sGridNo) {
+static BOOLEAN TriggerAtGridNo(int16_t sGridNo) {
   return ItemTypeExistsAtLocation(sGridNo, SWITCH, 0, 0);
 }
 
-static INT8 CalcItemFrequency(UINT16 const item_idx) {
+static int8_t CalcItemFrequency(uint16_t const item_idx) {
   return item_idx < 2   ? PANIC_FREQUENCY
          : item_idx < 4 ? PANIC_FREQUENCY_2
          : item_idx < 6 ? PANIC_FREQUENCY_3
                         : FIRST_MAP_PLACED_FREQUENCY + (item_idx - 4) / 2;
 }
 
-void AddSelectedItemToWorld(INT16 sGridNo) {
+void AddSelectedItemToWorld(int16_t sGridNo) {
   // Extract the currently selected item.
   SpecifyItemToEdit(NULL, -1);
 
   OBJECTTYPE tempObject;
   if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
-    CreateKeyObject(&tempObject, 1, (UINT8)eInfo.sSelItemIndex);
+    CreateKeyObject(&tempObject, 1, (uint8_t)eInfo.sSelItemIndex);
   } else {
     CreateItem(eInfo.pusItemIndex[eInfo.sSelItemIndex], 100, &tempObject);
   }
 
   Visibility bVisibility = INVISIBLE;
-  UINT16 usFlags = 0;
+  uint16_t usFlags = 0;
   switch (tempObject.usItem) {
     case MINE:
       if (bVisibility == BURIED) usFlags |= WORLD_ITEM_ARMED_BOMB;
@@ -677,14 +677,15 @@ void AddSelectedItemToWorld(INT16 sGridNo) {
       break;
   }
 
-  INT32 const iItemIndex = InternalAddItemToPool(&sGridNo, &tempObject, bVisibility, 0, usFlags, 0);
+  int32_t const iItemIndex =
+      InternalAddItemToPool(&sGridNo, &tempObject, bVisibility, 0, usFlags, 0);
   WORLDITEM &wi = GetWorldItem(iItemIndex);
   wi.ubNonExistChance = (tempObject.usItem == OWNERSHIP ? 0 : 100 - giDefaultExistChance);
 
   OBJECTTYPE &obj = wi.o;
   INVTYPE const *const item = &Item[obj.usItem];
   if (item->usItemClass == IC_AMMO) {
-    UINT8 const mag_size = Magazine[item->ubClassIndex].ubMagSize;
+    uint8_t const mag_size = Magazine[item->ubClassIndex].ubMagSize;
     obj.ubShotsLeft[0] = Random(2) ? mag_size : Random(mag_size);
   } else {
     obj.bStatus[0] = 70 + Random(26);
@@ -722,7 +723,7 @@ void AddSelectedItemToWorld(INT16 sGridNo) {
   gpCurrItemPoolNode = n;
 }
 
-void HandleRightClickOnItem(INT16 sGridNo) {
+void HandleRightClickOnItem(int16_t sGridNo) {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
 
@@ -774,7 +775,7 @@ void DeleteSelectedItem() {
     }
     // remove the item
     WORLDITEM &wi = GetWorldItem(gpItemPool->iItemIndex);
-    INT16 const sGridNo = wi.sGridNo;
+    int16_t const sGridNo = wi.sGridNo;
     if (wi.o.usItem == ACTION_ITEM) {
       switch (wi.o.bActionValue) {
         case ACTION_ITEM_SMALL_PIT:
@@ -884,31 +885,31 @@ void SelectPrevItemInPool() {
   }
 }
 
-static void SelectNextItemOfType(UINT16 usItem);
-static void SelectNextKeyOfType(UINT8 ubKeyID);
+static void SelectNextItemOfType(uint16_t usItem);
+static void SelectNextKeyOfType(uint8_t ubKeyID);
 static void SelectNextPressureAction();
-static void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency);
+static void SelectNextTriggerWithFrequency(uint16_t usItem, int8_t bFrequency);
 
 /* Finds and selects the next item when right clicking on an item type.
  * Only works if the item actually exists in the world. */
 static void FindNextItemOfSelectedType() {
-  UINT16 usItem;
+  uint16_t usItem;
   usItem = eInfo.pusItemIndex[eInfo.sSelItemIndex];
   if (usItem == ACTION_ITEM || usItem == SWITCH) {
     if (eInfo.sSelItemIndex < PRESSURE_ACTION_ID) {
-      INT8 const bFrequency = CalcItemFrequency(eInfo.sSelItemIndex);
+      int8_t const bFrequency = CalcItemFrequency(eInfo.sSelItemIndex);
       SelectNextTriggerWithFrequency(usItem, bFrequency);
     } else {
       SelectNextPressureAction();
     }
   } else if (Item[usItem].usItemClass == IC_KEY) {
-    SelectNextKeyOfType((UINT8)eInfo.sSelItemIndex);
+    SelectNextKeyOfType((uint8_t)eInfo.sSelItemIndex);
   } else {
     SelectNextItemOfType(usItem);
   }
 }
 
-static void SelectNextItemOfType(UINT16 usItem) {
+static void SelectNextItemOfType(uint16_t usItem) {
   IPListNode *curr;
   if (gpItemPool) {
     curr = pIPHead;
@@ -963,7 +964,7 @@ static void SelectNextItemOfType(UINT16 usItem) {
   }
 }
 
-static void SelectNextKeyOfType(UINT8 ubKeyID) {
+static void SelectNextKeyOfType(uint8_t ubKeyID) {
   IPListNode *curr;
   if (gpItemPool) {
     curr = pIPHead;
@@ -1018,7 +1019,7 @@ static void SelectNextKeyOfType(UINT8 ubKeyID) {
   }
 }
 
-static void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency) {
+static void SelectNextTriggerWithFrequency(uint16_t usItem, int8_t bFrequency) {
   IPListNode *curr;
   if (gpItemPool) {
     curr = pIPHead;
@@ -1128,9 +1129,9 @@ static void SelectNextPressureAction() {
   }
 }
 
-static UINT16 CountNumberOfItemPlacementsInWorld(UINT16 usItem, UINT16 *pusQuantity) {
+static uint16_t CountNumberOfItemPlacementsInWorld(uint16_t usItem, uint16_t *pusQuantity) {
   IPListNode *pIPCurr;
-  INT16 num = 0;
+  int16_t num = 0;
   *pusQuantity = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
@@ -1148,9 +1149,9 @@ static UINT16 CountNumberOfItemPlacementsInWorld(UINT16 usItem, UINT16 *pusQuant
   return num;
 }
 
-static UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency) {
+static uint16_t CountNumberOfItemsWithFrequency(uint16_t usItem, int8_t bFrequency) {
   IPListNode *pIPCurr;
-  UINT16 num = 0;
+  uint16_t num = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     const ITEM_POOL *pItemPool = GetItemPool(pIPCurr->sGridNo, 0);
@@ -1166,9 +1167,9 @@ static UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency) {
   return num;
 }
 
-static UINT16 CountNumberOfPressureActionsInWorld() {
+static uint16_t CountNumberOfPressureActionsInWorld() {
   IPListNode *pIPCurr;
-  UINT16 num = 0;
+  uint16_t num = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     const ITEM_POOL *pItemPool = GetItemPool(pIPCurr->sGridNo, 0);
@@ -1184,15 +1185,15 @@ static UINT16 CountNumberOfPressureActionsInWorld() {
   return num;
 }
 
-static UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID);
+static uint16_t CountNumberOfKeysOfTypeInWorld(uint8_t ubKeyID);
 
 // Simply counts the number of items in the world.  This is used for display
 // purposes.
-static UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *pusQuantity) {
-  UINT16 usNumPlacements;
+static uint16_t CountNumberOfEditorPlacementsInWorld(uint16_t usEInfoIndex, uint16_t *pusQuantity) {
+  uint16_t usNumPlacements;
   if (eInfo.uiItemType == TBAR_MODE_ITEM_TRIGGERS) {  // find identical items with same frequency
     if (usEInfoIndex < PRESSURE_ACTION_ID) {
-      INT8 bFrequency = CalcItemFrequency(usEInfoIndex);
+      int8_t bFrequency = CalcItemFrequency(usEInfoIndex);
       usNumPlacements =
           CountNumberOfItemsWithFrequency(eInfo.pusItemIndex[usEInfoIndex], bFrequency);
       *pusQuantity = usNumPlacements;
@@ -1201,7 +1202,7 @@ static UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *
       *pusQuantity = usNumPlacements;
     }
   } else if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
-    usNumPlacements = CountNumberOfKeysOfTypeInWorld((UINT8)usEInfoIndex);
+    usNumPlacements = CountNumberOfKeysOfTypeInWorld((uint8_t)usEInfoIndex);
     *pusQuantity = usNumPlacements;
   } else {
     usNumPlacements =
@@ -1210,9 +1211,9 @@ static UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *
   return usNumPlacements;
 }
 
-static UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID) {
+static uint16_t CountNumberOfKeysOfTypeInWorld(uint8_t ubKeyID) {
   IPListNode *pIPCurr;
-  INT16 num = 0;
+  int16_t num = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     const ITEM_POOL *pItemPool = GetItemPool(pIPCurr->sGridNo, 0);
@@ -1234,9 +1235,9 @@ void DisplayItemStatistics() {
 
   // If there is nothing else currently highlited by the mouse, use the selected
   // item.
-  INT16 const highlited = eInfo.sHilitedItemIndex;
-  INT16 const idx = highlited != -1 ? highlited : eInfo.sSelItemIndex;
-  UINT8 const foreground = idx == highlited ? FONT_LTRED : FONT_YELLOW;
+  int16_t const highlited = eInfo.sHilitedItemIndex;
+  int16_t const idx = highlited != -1 ? highlited : eInfo.sSelItemIndex;
+  uint8_t const foreground = idx == highlited ? FONT_LTRED : FONT_YELLOW;
   wchar_t const *const item_name = ItemNames[eInfo.pusItemIndex[idx]];
   DisplayWrappedString(2, 401, 97, 2, SMALLCOMPFONT, foreground, item_name, FONT_BLACK,
                        CENTER_JUSTIFIED);

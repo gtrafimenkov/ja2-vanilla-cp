@@ -40,8 +40,8 @@ enum AnimationLevel {
 
 union AniUserData {
   struct {
-    UINT32 uiData;
-    UINT32 uiData3;
+    uint32_t uiData;
+    uint32_t uiData3;
   } user;
   EXPLOSIONTYPE *explosion;
   BULLET *bullet;
@@ -51,52 +51,52 @@ union AniUserData {
 
 struct ANITILE {
   ANITILE *pNext;
-  AnimationFlags uiFlags;   // flags struct
-  UINT32 uiTimeLastUpdate;  // Stuff for animated tiles
+  AnimationFlags uiFlags;     // flags struct
+  uint32_t uiTimeLastUpdate;  // Stuff for animated tiles
 
   LEVELNODE *pLevelNode;
-  UINT8 ubLevelID;
-  INT16 sCurrentFrame;
-  INT16 sStartFrame;
-  INT16 sDelay;
-  UINT16 usNumFrames;
+  uint8_t ubLevelID;
+  int16_t sCurrentFrame;
+  int16_t sStartFrame;
+  int16_t sDelay;
+  uint16_t usNumFrames;
 
-  INT16 sRelativeX;
-  INT16 sRelativeY;
-  INT16 sRelativeZ;
-  INT16 sGridNo;
-  UINT16 usTileIndex;
+  int16_t sRelativeX;
+  int16_t sRelativeY;
+  int16_t sRelativeZ;
+  int16_t sGridNo;
+  uint16_t usTileIndex;
 
-  INT16 sCachedTileID;  // Index into cached tile ID
+  int16_t sCachedTileID;  // Index into cached tile ID
 
-  UINT8 ubKeyFrame1;
-  UINT32 uiKeyFrame1Code;
-  UINT8 ubKeyFrame2;
-  UINT32 uiKeyFrame2Code;
+  uint8_t ubKeyFrame1;
+  uint32_t uiKeyFrame1Code;
+  uint8_t ubKeyFrame2;
+  uint32_t uiKeyFrame2Code;
 
   AniUserData v;
 
-  INT8 bFrameCountAfterStart;
+  int8_t bFrameCountAfterStart;
 };
 
 struct ANITILE_PARAMS {
   AnimationFlags uiFlags;    // flags struct
   AnimationLevel ubLevelID;  // Level ID for rendering layer
-  INT16 sStartFrame;         // Start frame
-  INT16 sDelay;              // Delay time
-  UINT16 usTileIndex;        // Tile database index ( optional )
-  INT16 sX;                  // World X ( optional )
-  INT16 sY;                  // World Y ( optional )
-  INT16 sZ;                  // World Z ( optional )
-  INT16 sGridNo;             // World GridNo
+  int16_t sStartFrame;       // Start frame
+  int16_t sDelay;            // Delay time
+  uint16_t usTileIndex;      // Tile database index ( optional )
+  int16_t sX;                // World X ( optional )
+  int16_t sY;                // World Y ( optional )
+  int16_t sZ;                // World Z ( optional )
+  int16_t sGridNo;           // World GridNo
 
   LEVELNODE *pGivenLevelNode;  // Levelnode for existing tile ( optional )
   const char *zCachedFile;     // Filename for cached tile name ( optional )
 
-  UINT8 ubKeyFrame1;       // Key frame 1
-  UINT32 uiKeyFrame1Code;  // Key frame code
-  UINT8 ubKeyFrame2;       // Key frame 2
-  UINT32 uiKeyFrame2Code;  // Key frame code
+  uint8_t ubKeyFrame1;       // Key frame 1
+  uint32_t uiKeyFrame1Code;  // Key frame code
+  uint8_t ubKeyFrame2;       // Key frame 2
+  uint32_t uiKeyFrame2Code;  // Key frame code
 
   AniUserData v;
 };
@@ -117,6 +117,6 @@ void DeleteAniTiles();
 
 void HideAniTile(ANITILE *pAniTile, BOOLEAN fHide);
 
-ANITILE *GetCachedAniTileOfType(INT16 sGridNo, UINT8 ubLevelID, AnimationFlags);
+ANITILE *GetCachedAniTileOfType(int16_t sGridNo, uint8_t ubLevelID, AnimationFlags);
 
 #endif

@@ -8,9 +8,9 @@ void RenderIMPPersonalityQuiz();
 void ExitIMPPersonalityQuiz();
 void HandleIMPPersonalityQuiz();
 
-void BltAnswerIndents(INT32 iNumberOfIndents);
+void BltAnswerIndents(int32_t iNumberOfIndents);
 
-extern INT32 giCurrentPersonalityQuizQuestion;
-extern INT32 iCurrentAnswer;
+extern int32_t giCurrentPersonalityQuizQuestion;
+extern int32_t iCurrentAnswer;
 
 #endif

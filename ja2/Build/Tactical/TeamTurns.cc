@@ -45,11 +45,11 @@
 #include "Utils/TimerControl.h"
 
 static SOLDIERTYPE *gOutOfTurnOrder[MAXMERCS];
-UINT8 gubOutOfTurnPersons = 0;
+uint8_t gubOutOfTurnPersons = 0;
 
 static inline SOLDIERTYPE *LatestInterruptGuy() { return gOutOfTurnOrder[gubOutOfTurnPersons]; }
 
-#define REMOVE_LATEST_INTERRUPT_GUY() (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE))
+#define REMOVE_LATEST_INTERRUPT_GUY() (DeleteFromIntList((uint8_t)(gubOutOfTurnPersons), TRUE))
 #define INTERRUPTS_OVER (gubOutOfTurnPersons == 1)
 
 BOOLEAN gfHiddenInterrupt = FALSE;
@@ -152,7 +152,7 @@ static void FreezeInterfaceForEnemyTurn() {
 
 static void EndInterrupt(BOOLEAN fMarkInterruptOccurred);
 
-void EndTurn(UINT8 ubNextTeam) {
+void EndTurn(uint8_t ubNextTeam) {
   // Check for enemy pooling (add enemies if there happens to be more than the
   // max in the current battle.  If one or more slots have freed up, we can add
   // them now.
@@ -243,7 +243,7 @@ static void EndTurnEvents() {
   DecayRottingCorpseAIWarnings();
 }
 
-void BeginTeamTurn(UINT8 ubTeam) {
+void BeginTeamTurn(uint8_t ubTeam) {
   while (1) {
     if (ubTeam > LAST_TEAM) {
       if (HandleAirRaidEndTurn(ubTeam)) {
@@ -384,8 +384,8 @@ void DisplayHiddenTurnbased(SOLDIERTYPE *pActingSoldier) {
 }
 
 static BOOLEAN EveryoneInInterruptListOnSameTeam() {
-  UINT8 ubLoop;
-  UINT8 ubTeam = 255;
+  uint8_t ubLoop;
+  uint8_t ubTeam = 255;
 
   for (ubLoop = 1; ubLoop <= gubOutOfTurnPersons; ubLoop++) {
     if (ubTeam == 255) {
@@ -412,15 +412,15 @@ void SayCloseCallQuotes() {
   }
 }
 
-static void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate);
+static void DeleteFromIntList(uint8_t ubIndex, BOOLEAN fCommunicate);
 
 static void StartInterrupt() {
   SOLDIERTYPE *first_interrupter = LatestInterruptGuy();
-  const INT8 bTeam = first_interrupter->bTeam;
+  const int8_t bTeam = first_interrupter->bTeam;
   SOLDIERTYPE *Interrupter = first_interrupter;
 
   // display everyone on int queue!
-  for (INT32 cnt = gubOutOfTurnPersons; cnt > 0; --cnt) {
+  for (int32_t cnt = gubOutOfTurnPersons; cnt > 0; --cnt) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3,
              String("STARTINT:  Q position %d: %d", cnt, gOutOfTurnOrder[cnt]->ubID));
   }
@@ -435,7 +435,7 @@ static void StartInterrupt() {
   if (first_interrupter->bTeam == OUR_TEAM) {
     // start interrupts for everyone on our side at once
     wchar_t sTemp[255];
-    UINT8 ubInterrupters = 0;
+    uint8_t ubInterrupters = 0;
 
     // build string for display of who gets interrupt
     while (1) {
@@ -458,7 +458,7 @@ static void StartInterrupt() {
     wcscpy(sTemp, g_langRes->Message[STR_INTERRUPT_FOR]);
 
     // build string in separate loop here, want to linearly process squads...
-    for (INT32 iSquad = 0; iSquad < NUMBER_OF_SQUADS; ++iSquad) {
+    for (int32_t iSquad = 0; iSquad < NUMBER_OF_SQUADS; ++iSquad) {
       FOR_EACH_IN_SQUAD(i, iSquad) {
         SOLDIERTYPE const *const s = *i;
         if (!s->bActive) continue;
@@ -574,9 +574,9 @@ static void StartInterrupt() {
 
 static void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
   BOOLEAN fFound;
-  UINT8 ubMinAPsToAttack;
+  uint8_t ubMinAPsToAttack;
 
-  for (INT32 cnt = gubOutOfTurnPersons; cnt > 0; --cnt) {
+  for (int32_t cnt = gubOutOfTurnPersons; cnt > 0; --cnt) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3,
              String("ENDINT:  Q position %d: %d", cnt, gOutOfTurnOrder[cnt]->ubID));
   }
@@ -711,7 +711,7 @@ static void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
       fFound = FALSE;
 
       // rebuild list for this team if anyone on the team is still available
-      INT32 cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
+      int32_t cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
       for (SOLDIERTYPE *pTempSoldier = &GetMan(cnt);
            cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID;
            cnt++, pTempSoldier++) {
@@ -728,7 +728,7 @@ static void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
         if (BuildAIListForTeam(gTacticalStatus.ubCurrentTeam)) {
           // now bubble up everyone left in the interrupt queue, starting
           // at the front of the array
-          for (INT32 cnt = 1; cnt <= gubOutOfTurnPersons; ++cnt) {
+          for (int32_t cnt = 1; cnt <= gubOutOfTurnPersons; ++cnt) {
             MoveToFrontOfAIList(gOutOfTurnOrder[cnt]);
           }
 
@@ -756,10 +756,11 @@ static void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
 }
 
 BOOLEAN StandardInterruptConditionsMet(const SOLDIERTYPE *const pSoldier,
-                                       const SOLDIERTYPE *const pOpponent, const INT8 bOldOppList) {
-  //	UINT8 ubAniType;
-  UINT8 ubMinPtsNeeded;
-  INT8 bDir;
+                                       const SOLDIERTYPE *const pOpponent,
+                                       const int8_t bOldOppList) {
+  //	uint8_t ubAniType;
+  uint8_t ubMinPtsNeeded;
+  int8_t bDir;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) &&
       !(gubSightFlags & SIGHT_INTERRUPT)) {
@@ -944,10 +945,10 @@ BOOLEAN StandardInterruptConditionsMet(const SOLDIERTYPE *const pSoldier,
   return (TRUE);
 }
 
-INT8 CalcInterruptDuelPts(const SOLDIERTYPE *const pSoldier, const SOLDIERTYPE *const opponent,
-                          BOOLEAN fUseWatchSpots) {
-  INT8 bPoints;
-  INT8 bLightLevel;
+int8_t CalcInterruptDuelPts(const SOLDIERTYPE *const pSoldier, const SOLDIERTYPE *const opponent,
+                            BOOLEAN fUseWatchSpots) {
+  int8_t bPoints;
+  int8_t bLightLevel;
 
   // extra check to make sure neutral folks never get interrupts
   if (pSoldier->bNeutral) {
@@ -995,7 +996,7 @@ INT8 CalcInterruptDuelPts(const SOLDIERTYPE *const pSoldier, const SOLDIERTYPE *
   // if soldier is still in shock from recent injuries, that penalizes him
   bPoints -= pSoldier->bShock;
 
-  const UINT8 ubDistance = PythSpacesAway(pSoldier->sGridNo, opponent->sGridNo);
+  const uint8_t ubDistance = PythSpacesAway(pSoldier->sGridNo, opponent->sGridNo);
 
   // if we are in combat mode - thus doing an interrupt rather than determine
   // who gets first turn - then give bonus
@@ -1114,8 +1115,8 @@ BOOLEAN InterruptDuel(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent) {
   return (fResult);
 }
 
-static void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate) {
-  UINT8 ubLoop;
+static void DeleteFromIntList(uint8_t ubIndex, BOOLEAN fCommunicate) {
+  uint8_t ubLoop;
 
   if (ubIndex > gubOutOfTurnPersons) {
     return;
@@ -1139,7 +1140,7 @@ static void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate) {
 }
 
 void AddToIntList(SOLDIERTYPE *const s, const BOOLEAN fGainControl, const BOOLEAN fCommunicate) {
-  UINT8 ubLoop;
+  uint8_t ubLoop;
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3,
            String("INTERRUPT: adding ID %d who %s", s->ubID,
@@ -1182,11 +1183,11 @@ void AddToIntList(SOLDIERTYPE *const s, const BOOLEAN fGainControl, const BOOLEA
 }
 
 static void VerifyOutOfTurnOrderArray() {
-  UINT8 ubTeamHighest[MAXTEAMS] = {0};
-  UINT8 ubTeamsInList;
-  UINT8 ubNextIndex;
-  UINT8 ubTeam;
-  UINT8 ubLoop, ubLoop2;
+  uint8_t ubTeamHighest[MAXTEAMS] = {0};
+  uint8_t ubTeamsInList;
+  uint8_t ubNextIndex;
+  uint8_t ubTeam;
+  uint8_t ubLoop, ubLoop2;
   BOOLEAN fFoundLoop = FALSE;
 
   for (ubLoop = 1; ubLoop <= gubOutOfTurnPersons; ubLoop++) {
@@ -1247,7 +1248,7 @@ static void VerifyOutOfTurnOrderArray() {
     }
   }
   if (ubTeamsInList >= 3) {
-    // This is bad.  Loop through everyone but the first person in the INT list
+    // This is bad.  Loop through everyone but the first person in the int32_t list
     // and remove 'em
     for (ubLoop = 2; ubLoop <= gubOutOfTurnPersons;) {
       if (gOutOfTurnOrder[ubLoop]->bTeam != gOutOfTurnOrder[1]->bTeam) {
@@ -1279,18 +1280,18 @@ void DoneAddingToIntList() {
   }
 }
 
-void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
-  UINT8 ubIntCnt;
+void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, uint8_t ubInterruptType) {
+  uint8_t ubIntCnt;
   SOLDIERTYPE *IntList[MAXMERCS];
-  UINT8 ubIntDiff[MAXMERCS];
-  UINT8 ubSmallestDiff;
-  UINT8 ubSlot, ubSmallestSlot;
+  uint8_t ubIntDiff[MAXMERCS];
+  uint8_t ubSmallestDiff;
+  uint8_t ubSlot, ubSmallestSlot;
   BOOLEAN fIntOccurs;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
     ubIntCnt = 0;
 
-    for (UINT8 ubTeam = 0; ubTeam < MAXTEAMS; ++ubTeam) {
+    for (uint8_t ubTeam = 0; ubTeam < MAXTEAMS; ++ubTeam) {
       if (IsTeamActive(ubTeam) && gTacticalStatus.Team[ubTeam].bSide != pSoldier->bSide &&
           ubTeam != CIV_TEAM) {
         FOR_EACH_IN_TEAM(pOpponent, ubTeam) {
@@ -1423,7 +1424,7 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
       }
 
       // loop once for each opponent who interrupted
-      for (UINT8 ubLoop = 0; ubLoop < ubIntCnt; ++ubLoop) {
+      for (uint8_t ubLoop = 0; ubLoop < ubIntCnt; ++ubLoop) {
         // find the smallest intDiff still remaining in the list
         ubSmallestDiff = NO_INTERRUPT;
         ubSmallestSlot = NOBODY;
@@ -1458,8 +1459,8 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
 }
 
 void SaveTeamTurnsToTheSaveGameFile(HWFILE const f) {
-  BYTE data[174];
-  BYTE *d = data;
+  uint8_t data[174];
+  uint8_t *d = data;
   for (size_t i = 0; i != lengthof(gOutOfTurnOrder); ++i) {
     INJ_SOLDIER(d, gOutOfTurnOrder[i])
   }
@@ -1476,10 +1477,10 @@ void SaveTeamTurnsToTheSaveGameFile(HWFILE const f) {
 }
 
 void LoadTeamTurnsFromTheSavedGameFile(HWFILE const f) {
-  BYTE data[174];
+  uint8_t data[174];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_SKIP(d, 1)
   for (size_t i = 1; i != lengthof(gOutOfTurnOrder); ++i) {
     EXTR_SOLDIER(d, gOutOfTurnOrder[i])
@@ -1500,7 +1501,7 @@ BOOLEAN NPCFirstDraw(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier) {
   if (pTargetSoldier->ubProfile != NO_PROFILE && pTargetSoldier->ubProfile != SLAY &&
       pTargetSoldier->bNeutral && pTargetSoldier->bOppList[pSoldier->ubID] == SEEN_CURRENTLY &&
       (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
-    UINT8 ubLargerHalf, ubSmallerHalf, ubTargetLargerHalf, ubTargetSmallerHalf;
+    uint8_t ubLargerHalf, ubSmallerHalf, ubTargetLargerHalf, ubTargetSmallerHalf;
 
     // roll the dice!
     // e.g. if level 5, roll Random( 3 + 1 ) + 2 for result from 2 to 5

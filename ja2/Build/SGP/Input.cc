@@ -22,24 +22,24 @@ static SGPRect gCursorClipRect;
 
 // These data structure are used to track the mouse while polling
 
-static UINT32 guiSingleClickTimer;
+static uint32_t guiSingleClickTimer;
 
-static UINT32 guiLeftButtonRepeatTimer;
-static UINT32 guiRightButtonRepeatTimer;
+static uint32_t guiLeftButtonRepeatTimer;
+static uint32_t guiRightButtonRepeatTimer;
 
 BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
 BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
-UINT16 gusMouseXPos;         // X position of the mouse on screen
-UINT16 gusMouseYPos;         // y position of the mouse on screen
+uint16_t gusMouseXPos;       // X position of the mouse on screen
+uint16_t gusMouseYPos;       // y position of the mouse on screen
 
 // The queue structures are used to track input events using queued events
 
 static InputAtom gEventQueue[256];
-static UINT16 gusQueueCount;
-static UINT16 gusHeadIndex;
-static UINT16 gusTailIndex;
+static uint16_t gusQueueCount;
+static uint16_t gusHeadIndex;
+static uint16_t gusTailIndex;
 
-static void QueueMouseEvent(UINT16 ubInputEvent) {
+static void QueueMouseEvent(uint16_t ubInputEvent) {
   // Can we queue up one more event, if not, the event is lost forever
   if (gusQueueCount == lengthof(gEventQueue)) return;
 
@@ -50,11 +50,11 @@ static void QueueMouseEvent(UINT16 ubInputEvent) {
   gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
 }
 
-static void QueueKeyEvent(UINT16 ubInputEvent, SDL_Keycode Key, SDL_Keymod Mod, wchar_t Char) {
+static void QueueKeyEvent(uint16_t ubInputEvent, SDL_Keycode Key, SDL_Keymod Mod, wchar_t Char) {
   // Can we queue up one more event, if not, the event is lost forever
   if (gusQueueCount == lengthof(gEventQueue)) return;
 
-  UINT16 ModifierState = 0;
+  uint16_t ModifierState = 0;
   if (Mod & KMOD_SHIFT) ModifierState |= SHIFT_DOWN;
   if (Mod & KMOD_CTRL) ModifierState |= CTRL_DOWN;
   if (Mod & KMOD_ALT) ModifierState |= ALT_DOWN;
@@ -78,7 +78,7 @@ void SetSafeMousePosition(int x, int y) {
   gusMouseYPos = y;
 }
 
-BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
+BOOLEAN DequeueSpecificEvent(InputAtom *Event, uint32_t uiMaskFlags) {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     // Check if it has the masks!
@@ -154,7 +154,7 @@ void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
       guiLeftButtonRepeatTimer = 0;
       gfLeftButtonState = FALSE;
       QueueMouseEvent(LEFT_BUTTON_UP);
-      UINT32 uiTimer = GetClock();
+      uint32_t uiTimer = GetClock();
       if (uiTimer - guiSingleClickTimer < DBL_CLK_TIME) {
         QueueMouseEvent(LEFT_BUTTON_DBL_CLK);
       } else {
@@ -248,7 +248,7 @@ static void KeyChange(SDL_Keysym const *const key_sym, bool const pressed) {
       break;
   }
 
-  UINT event_type;
+  uint32_t event_type;
   BOOLEAN &key_state = gfKeyState[key];
   if (pressed) {
     event_type = key_state ? KEY_REPEAT : KEY_DOWN;
@@ -340,7 +340,7 @@ void GetMousePos(SGPPoint *Point) {
   Point->iY = gusMouseYPos;
 }
 
-void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2) {
+void RestrictMouseToXYXY(uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t usY2) {
   SGPRect TempRect;
   TempRect.iLeft = usX1;
   TempRect.iTop = usY1;
@@ -391,7 +391,7 @@ void GetRestrictedClipCursor(SGPRect *pRectangle) {
 
 BOOLEAN IsCursorRestricted() { return fCursorWasClipped; }
 
-void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos) {
+void SimulateMouseMovement(uint32_t uiNewXPos, uint32_t uiNewYPos) {
   int windowWidth, windowHeight;
   SDL_GetWindowSize(GAME_WINDOW, &windowWidth, &windowHeight);
 
@@ -432,7 +432,7 @@ void DequeueAllKeyBoardEvents() {
 }
 
 static void HandleSingleClicksAndButtonRepeats() {
-  UINT32 uiTimer = GetClock();
+  uint32_t uiTimer = GetClock();
 
   // Is there a LEFT mouse button repeat
   if (gfLeftButtonState) {

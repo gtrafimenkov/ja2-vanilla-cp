@@ -7,7 +7,7 @@ void ExitIMPMainPage();
 void EnterIMPMainPage();
 void HandleIMPMainPage();
 
-extern INT32 iCurrentProfileMode;
+extern int32_t iCurrentProfileMode;
 
 SGPVObject *LoadIMPPortait();
 

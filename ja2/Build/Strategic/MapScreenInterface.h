@@ -190,11 +190,11 @@ extern MapScreenCharacterSt gCharactersList[];
   BASE_FOR_EACH_SELECTED_IN_CHAR_LIST(const MapScreenCharacterSt, iter)
 
 // highlighted lines
-extern INT32 giHighLine;
-extern INT32 giAssignHighLine;
-extern INT32 giDestHighLine;
-extern INT32 giContractHighLine;
-extern INT32 giSleepHighLine;
+extern int32_t giHighLine;
+extern int32_t giAssignHighLine;
+extern int32_t giDestHighLine;
+extern int32_t giContractHighLine;
+extern int32_t giSleepHighLine;
 
 extern SGPVObject *guiUpdatePanelTactical;
 extern BOOLEAN fShowUpdateBox;
@@ -214,10 +214,10 @@ extern BOOLEAN fDisableDueToBattleRoster;
 extern BOOLEAN gfAtLeastOneMercWasHired;
 
 // curtrent map sector z that is being displayed in the mapscreen
-extern INT32 iCurrentMapSectorZ;
+extern int32_t iCurrentMapSectorZ;
 
 // y position of the pop up box
-extern INT32 giBoxY;
+extern int32_t giBoxY;
 
 // pop up box textures
 extern SGPVSurface *guiPOPUPTEX;
@@ -235,24 +235,24 @@ extern BOOLEAN fResetContractGlow;
 void InitalizeVehicleAndCharacterList();
 
 // set this entry to as selected
-void SetEntryInSelectedCharacterList(INT8 bEntry);
+void SetEntryInSelectedCharacterList(int8_t bEntry);
 // set this entry to as unselected
-void ResetEntryForSelectedList(INT8 bEntry);
+void ResetEntryForSelectedList(int8_t bEntry);
 
 // reset selected list
 void ResetSelectedListForMapScreen();
 
 // build a selected list from a to b, inclusive
-void BuildSelectedListFromAToB(INT8 bA, INT8 bB);
+void BuildSelectedListFromAToB(int8_t bA, int8_t bB);
 
 // isa this entry int he selected character list set?
-BOOLEAN IsEntryInSelectedListSet(INT8 bEntry);
+BOOLEAN IsEntryInSelectedListSet(int8_t bEntry);
 
 // is there more than one person selected?
 BOOLEAN MultipleCharacterListEntriesSelected();
 
 // toggle this entry on or off
-void ToggleEntryInSelectedList(INT8 bEntry);
+void ToggleEntryInSelectedList(int8_t bEntry);
 
 void ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList();
 
@@ -265,7 +265,7 @@ void RestoreBackgroundForSleepGlowRegionList();
 void PlayGlowRegionSound();
 
 // is this character in the action of plotting a path?
-BOOLEAN CharacterIsGettingPathPlotted(INT16 sCharNumber);
+BOOLEAN CharacterIsGettingPathPlotted(int16_t sCharNumber);
 
 // disable team info panels
 void DisableTeamInfoPanels();
@@ -284,7 +284,7 @@ void GoUpOneLevelInMap();
 void GoDownOneLevelInMap();
 
 // jump to this level on the map
-void JumpToLevel(INT32 iLevel);
+void JumpToLevel(int32_t iLevel);
 
 // check to see if we need to update the screen
 void CheckAndUpdateBasedOnContractTimes();
@@ -306,15 +306,15 @@ void HandleLeavingOfEquipmentInCurrentSector(SOLDIERTYPE &);
 void HandleMercLeavingEquipment(SOLDIERTYPE &, bool in_drassen);
 
 // actually drop the stored list of items
-void HandleEquipmentLeftInOmerta(UINT32 uiSlotIndex);
-void HandleEquipmentLeftInDrassen(UINT32 uiSlotIndex);
+void HandleEquipmentLeftInOmerta(uint32_t uiSlotIndex);
+void HandleEquipmentLeftInDrassen(uint32_t uiSlotIndex);
 
 // init/shutdown leave item lists
 void InitLeaveList();
 void ShutDownLeaveList();
 
 // add item to leave equip index
-void AddItemToLeaveIndex(const OBJECTTYPE *o, UINT32 uiIndex);
+void AddItemToLeaveIndex(const OBJECTTYPE *o, uint32_t uiIndex);
 
 // handle a group about to arrive in a sector
 void HandleGroupAboutToArrive();
@@ -336,26 +336,26 @@ void RenderMapRegionBackground();
 void UpdateMapScreenAssignmentPositions();
 
 // get the umber of valid mercs in the mapscreen character list
-INT32 GetNumberOfPeopleInCharacterList();
+int32_t GetNumberOfPeopleInCharacterList();
 
 // the next and previous people in the mapscreen
 void GoToPrevCharacterInList();
 void GoToNextCharacterInList();
 
 // this does the whole miner giving player info speil
-void HandleMinerEvent(UINT8 bMinerNumber, INT16 sQuoteNumber, BOOLEAN fForceMapscreen);
+void HandleMinerEvent(uint8_t bMinerNumber, int16_t sQuoteNumber, BOOLEAN fForceMapscreen);
 
-void TurnOnSectorLocator(UINT8 ubProfileID);
+void TurnOnSectorLocator(uint8_t ubProfileID);
 void TurnOffSectorLocator();
 
-extern INT16 gsSectorLocatorX;
-extern INT16 gsSectorLocatorY;
-extern UINT8 gubBlitSectorLocatorCode;
+extern int16_t gsSectorLocatorX;
+extern int16_t gsSectorLocatorY;
+extern uint8_t gubBlitSectorLocatorCode;
 
 enum { LOCATOR_COLOR_NONE, LOCATOR_COLOR_RED, LOCATOR_COLOR_YELLOW };
 
-void HandleBlitOfSectorLocatorIcon(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ,
-                                   UINT8 ubLocatorID);
+void HandleBlitOfSectorLocatorIcon(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ,
+                                   uint8_t ubLocatorID);
 
 // the tactical version
 
@@ -371,17 +371,17 @@ BOOLEAN IsTheInterfaceFastHelpTextActive();
 /* This will setup a fast help text region that is unrelated to mouse regions.
  * The user is to pass in the x,y position of the box, the width to wrap the
  * string and the string itself */
-void SetUpFastHelpRegion(INT32 x, INT32 y, INT32 width, const wchar_t *text);
+void SetUpFastHelpRegion(int32_t x, int32_t y, int32_t width, const wchar_t *text);
 
 // reset assignment for mercs trainign militia in this sector
-void ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(INT16 sSectorX, INT16 sSectorY);
+void ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(int16_t sSectorX, int16_t sSectorY);
 
 // the sector move box
-void CreateDestroyMovementBox(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
-void SetUpMovingListsForSector(INT16 x, INT16 y, INT16 z);
+void CreateDestroyMovementBox(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ);
+void SetUpMovingListsForSector(int16_t x, int16_t y, int16_t z);
 void ReBuildMoveBox();
-BOOLEAN IsCharacterSelectedForAssignment(INT16 sCharNumber);
-BOOLEAN IsCharacterSelectedForSleep(INT16 sCharNumber);
+BOOLEAN IsCharacterSelectedForAssignment(int16_t sCharNumber);
+BOOLEAN IsCharacterSelectedForSleep(int16_t sCharNumber);
 
 // the update box
 void CreateDestroyTheUpdateBox();
@@ -394,7 +394,7 @@ void SetTixaAsFound();
 void SetOrtaAsFound();
 
 // set this SAM site as being found by the player
-void SetSAMSiteAsFound(UINT8 uiSamIndex);
+void SetSAMSiteAsFound(uint8_t uiSamIndex);
 
 // Set up the timers for the move menu in mapscreen for double click detection.
 void InitTimersForMoveMenuMouseRegions();
@@ -411,10 +411,10 @@ void CreateDestroyInsuranceMouseRegionForMercs(BOOLEAN fCreate);
 BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo();
 
 // handle sector being taken over uncontested
-void NotifyPlayerWhenEnemyTakesControlOfImportantSector(INT16 x, INT16 y, INT8 z);
+void NotifyPlayerWhenEnemyTakesControlOfImportantSector(int16_t x, int16_t y, int8_t z);
 
 // handle notifying player of invasion by enemy
-void NotifyPlayerOfInvasionByEnemyForces(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ,
+void NotifyPlayerOfInvasionByEnemyForces(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ,
                                          MSGBOX_CALLBACK ReturnCallback);
 
 void ShutDownUserDefineHelpTextRegions();
@@ -443,7 +443,7 @@ enum MoveError {
 
 // can this group move it out
 MoveError CanEntireMovementGroupMercIsInMove(SOLDIERTYPE &);
-void ReportMapScreenMovementError(INT8 bErrorNumber);
+void ReportMapScreenMovementError(int8_t bErrorNumber);
 
 void HandleRebuildingOfMapScreenCharacterList();
 
@@ -462,11 +462,11 @@ void EndUpdateBox(BOOLEAN fContinueTimeCompression);
 
 BOOLEAN MapscreenCanPassItemToChar(const SOLDIERTYPE *);
 
-INT32 GetNumberOfMercsInUpdateList();
+int32_t GetNumberOfMercsInUpdateList();
 
 extern MOUSE_REGION gMapStatusBarsRegion;
 
-void RandomMercInGroupSaysQuote(GROUP const &, UINT16 quote_num);
+void RandomMercInGroupSaysQuote(GROUP const &, uint16_t quote_num);
 
 void MakeDialogueEventShowContractMenu(SOLDIERTYPE &);
 

@@ -54,65 +54,65 @@ enum DetonatorType { BOMB_TIMED = 1, BOMB_REMOTE, BOMB_PRESSURE, BOMB_SWITCH };
 #define OBJECT_NO_OVERWRITE 0x80
 
 struct OBJECTTYPE {
-  UINT16 usItem;
-  UINT8 ubNumberOfObjects;
+  uint16_t usItem;
+  uint8_t ubNumberOfObjects;
   union {
     struct {
-      INT8 bGunStatus;       // status % of gun
-      UINT8 ubGunAmmoType;   // ammo type, as per weapons.h
-      UINT8 ubGunShotsLeft;  // duh, amount of ammo left
-      UINT16 usGunAmmoItem;  // the item # for the item table
-      INT8 bGunAmmoStatus;   // only for "attached ammo" - grenades, mortar shells
-      UINT8 ubGunUnused[MAX_OBJECTS_PER_SLOT - 6];  // XXX HACK000B
+      int8_t bGunStatus;       // status % of gun
+      uint8_t ubGunAmmoType;   // ammo type, as per weapons.h
+      uint8_t ubGunShotsLeft;  // duh, amount of ammo left
+      uint16_t usGunAmmoItem;  // the item # for the item table
+      int8_t bGunAmmoStatus;   // only for "attached ammo" - grenades, mortar shells
+      uint8_t ubGunUnused[MAX_OBJECTS_PER_SLOT - 6];  // XXX HACK000B
     };
     struct {
-      UINT8 ubShotsLeft[MAX_OBJECTS_PER_SLOT];
+      uint8_t ubShotsLeft[MAX_OBJECTS_PER_SLOT];
     };
     struct {
-      INT8 bStatus[MAX_OBJECTS_PER_SLOT];
+      int8_t bStatus[MAX_OBJECTS_PER_SLOT];
     };
     struct {
-      INT8 bMoneyStatus;
-      UINT32 uiMoneyAmount;
-      UINT8 ubMoneyUnused[MAX_OBJECTS_PER_SLOT - 5];  // XXX HACK000B
+      int8_t bMoneyStatus;
+      uint32_t uiMoneyAmount;
+      uint8_t ubMoneyUnused[MAX_OBJECTS_PER_SLOT - 5];  // XXX HACK000B
     };
-    struct {                // this is used by placed bombs, switches, and the action item
-      INT8 bBombStatus;     // % status
-      INT8 bDetonatorType;  // timed, remote, or pressure-activated
-      UINT16 usBombItem;    // the usItem of the bomb.
+    struct {                  // this is used by placed bombs, switches, and the action item
+      int8_t bBombStatus;     // % status
+      int8_t bDetonatorType;  // timed, remote, or pressure-activated
+      uint16_t usBombItem;    // the usItem of the bomb.
       union {
         struct {
-          INT8 bDelay;  // >=0 values used only
+          int8_t bDelay;  // >=0 values used only
         };
         struct {
-          INT8 bFrequency;  // >=0 values used only
+          int8_t bFrequency;  // >=0 values used only
         };
       };
-      UINT8 ubBombOwner;   // side which placed the bomb
-      UINT8 bActionValue;  // this is used by the ACTION_ITEM fake item
-      UINT8 ubTolerance;   // tolerance value for panic triggers
+      uint8_t ubBombOwner;   // side which placed the bomb
+      uint8_t bActionValue;  // this is used by the ACTION_ITEM fake item
+      uint8_t ubTolerance;   // tolerance value for panic triggers
     };
     struct {
-      INT8 bKeyStatus[6];
-      UINT8 ubKeyID;
-      UINT8 ubKeyUnused[1];  // XXX HACK000B
+      int8_t bKeyStatus[6];
+      uint8_t ubKeyID;
+      uint8_t ubKeyUnused[1];  // XXX HACK000B
     };
     struct {
-      UINT8 ubOwnerProfile;
-      UINT8 ubOwnerCivGroup;
-      UINT8 ubOwnershipUnused[6];  // XXX HACK000B
+      uint8_t ubOwnerProfile;
+      uint8_t ubOwnerCivGroup;
+      uint8_t ubOwnershipUnused[6];  // XXX HACK000B
     };
   };
   // attached objects
-  UINT16 usAttachItem[MAX_ATTACHMENTS];
-  INT8 bAttachStatus[MAX_ATTACHMENTS];
+  uint16_t usAttachItem[MAX_ATTACHMENTS];
+  int8_t bAttachStatus[MAX_ATTACHMENTS];
 
-  INT8 fFlags;
-  UINT8 ubMission;
-  INT8 bTrap;         // 1-10 exp_lvl to detect
-  UINT8 ubImprintID;  // ID of merc that item is imprinted on
-  UINT8 ubWeight;
-  UINT8 fUsed;  // flags for whether the item is used or not
+  int8_t fFlags;
+  uint8_t ubMission;
+  int8_t bTrap;         // 1-10 exp_lvl to detect
+  uint8_t ubImprintID;  // ID of merc that item is imprinted on
+  uint8_t ubWeight;
+  uint8_t fUsed;  // flags for whether the item is used or not
 };
 
 // SUBTYPES
@@ -201,18 +201,18 @@ struct OBJECTTYPE {
 #define EXPLOSIVE_GUN(x) (x == ROCKET_LAUNCHER || x == TANK_CANNON)
 
 struct INVTYPE {
-  UINT32 usItemClass;
-  UINT8 ubClassIndex;
+  uint32_t usItemClass;
+  uint8_t ubClassIndex;
   ItemCursor ubCursor;
-  UINT8 ubGraphicType;
-  UINT8 ubGraphicNum;
-  UINT8 ubWeight;  // 2 units per kilogram; roughly 1 unit per pound
-  UINT8 ubPerPocket;
-  UINT16 usPrice;
-  UINT8 ubCoolness;
-  INT8 bReliability;
-  INT8 bRepairEase;
-  UINT16 fFlags;
+  uint8_t ubGraphicType;
+  uint8_t ubGraphicNum;
+  uint8_t ubWeight;  // 2 units per kilogram; roughly 1 unit per pound
+  uint8_t ubPerPocket;
+  uint16_t usPrice;
+  uint8_t ubCoolness;
+  int8_t bReliability;
+  int8_t bRepairEase;
+  uint16_t fFlags;
 };
 
 #define FIRST_WEAPON 1

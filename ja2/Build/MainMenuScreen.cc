@@ -46,7 +46,7 @@ static GUIButtonRef iMenuButtons[NUM_MENU_ITEMS];
 static SGPVObject *guiMainMenuBackGroundImage;
 static SGPVObject *guiJa2LogoImage;
 
-static INT8 gbHandledMainMenu = 0;
+static int8_t gbHandledMainMenu = 0;
 static BOOLEAN fInitialRender = FALSE;
 
 static BOOLEAN gfMainMenuScreenEntry = FALSE;
@@ -103,7 +103,7 @@ ScreenID MainMenuScreenHandle() {
   RestoreButtonBackGrounds();
 
   // Render buttons
-  for (UINT32 cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
+  for (uint32_t cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
     MarkAButtonDirty(iMenuButtons[cnt]);
   }
 
@@ -189,9 +189,9 @@ static void ExitMainMenu() {
   gMsgBox.uiExitScreen = MAINMENU_SCREEN;
 }
 
-static void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void MenuButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT8 const bID = btn->GetUserData();
+    int8_t const bID = btn->GetUserData();
 
     gbHandledMainMenu = bID;
     RenderMainMenu();
@@ -257,7 +257,7 @@ static void CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
     // Load button images
     const char *const filename = GetMLGFilename(MLG_TITLETEXT);
 
-    INT32 Slot;
+    int32_t Slot;
     Slot = 0;
     iMenuImages[NEW_GAME] = LoadButtonImage(filename, Slot, Slot, Slot + 1, Slot + 2, -1);
     iMenuImages[LOAD_GAME] = UseLoadedButtonImage(iMenuImages[NEW_GAME], 6, 3, 4, 5, -1);
@@ -265,11 +265,11 @@ static void CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
     iMenuImages[CREDITS] = UseLoadedButtonImage(iMenuImages[NEW_GAME], 13, 10, 11, 12, -1);
     iMenuImages[QUIT] = UseLoadedButtonImage(iMenuImages[NEW_GAME], 14, 14, 15, 16, -1);
 
-    for (UINT32 cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
+    for (uint32_t cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
       BUTTON_PICS *const img = iMenuImages[cnt];
-      const UINT16 w = GetDimensionsOfButtonPic(img)->w;
-      const INT16 x = (SCREEN_WIDTH - w) / 2;
-      const INT16 y = MAINMENU_Y + cnt * MAINMENU_Y_SPACE;
+      const uint16_t w = GetDimensionsOfButtonPic(img)->w;
+      const int16_t x = (SCREEN_WIDTH - w) / 2;
+      const int16_t y = MAINMENU_Y + cnt * MAINMENU_Y_SPACE;
       GUIButtonRef const b =
           QuickCreateButton(img, x, y, MSYS_PRIORITY_HIGHEST, MenuButtonCallback);
       iMenuButtons[cnt] = b;
@@ -281,7 +281,7 @@ static void CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
     if (!fButtonsCreated) return;
 
     // Delete images/buttons
-    for (UINT32 cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
+    for (uint32_t cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
       RemoveButton(iMenuButtons[cnt]);
       UnloadButtonImage(iMenuImages[cnt]);
     }
@@ -296,7 +296,7 @@ static void RenderMainMenu() {
   RestoreExternBackgroundRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 #if defined TESTFOREIGNFONTS
-  UINT16 y = 105;
+  uint16_t y = 105;
 #define TEST_FONT(font)                                                                \
   DrawTextToScreen(#font L": ÄÀÁÂÇËÈÉÊÏÖÒÓÔÜÙÚÛäàáâçëèéêïöòóôüùúûÌì", 0, y, 640, font, \
                    FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);              \
@@ -327,7 +327,7 @@ static void RenderMainMenu() {
 
 static void RestoreButtonBackGrounds() {
 #ifndef TESTFOREIGNFONTS
-  for (UINT32 cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
+  for (uint32_t cnt = 0; cnt < NUM_MENU_ITEMS; ++cnt) {
     GUI_BUTTON const &b = *iMenuButtons[cnt];
     RestoreExternBackgroundRect(b.X(), b.Y(), b.W() + 1, b.H() + 1);
   }

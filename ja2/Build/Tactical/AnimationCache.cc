@@ -9,17 +9,17 @@
 
 #define EMPTY_CACHE_ENTRY 65000
 
-static const UINT32 guiCacheSize = MIN_CACHE_SIZE;
+static const uint32_t guiCacheSize = MIN_CACHE_SIZE;
 
-void InitAnimationCache(UINT16 const usSoldierID, AnimationSurfaceCacheType *const pAnimCache) {
-  UINT32 cnt;
+void InitAnimationCache(uint16_t const usSoldierID, AnimationSurfaceCacheType *const pAnimCache) {
+  uint32_t cnt;
 
   // Allocate entries
   AnimDebugMsg(String("*** Initializing anim cache surface for soldier %d", usSoldierID));
-  pAnimCache->usCachedSurfaces = MALLOCN(UINT16, guiCacheSize);
+  pAnimCache->usCachedSurfaces = MALLOCN(uint16_t, guiCacheSize);
 
   AnimDebugMsg(String("*** Initializing anim cache hit counter for soldier %d", usSoldierID));
-  pAnimCache->sCacheHits = MALLOCN(INT16, guiCacheSize);
+  pAnimCache->sCacheHits = MALLOCN(int16_t, guiCacheSize);
 
   // Zero entries
   for (cnt = 0; cnt < guiCacheSize; cnt++) {
@@ -32,7 +32,7 @@ void InitAnimationCache(UINT16 const usSoldierID, AnimationSurfaceCacheType *con
   ClearAnimationSurfacesUsageHistory(usSoldierID);
 }
 
-void DeleteAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
+void DeleteAnimationCache(uint16_t usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
   // Allocate entries
   if (pAnimCache->usCachedSurfaces != NULL) {
     AnimDebugMsg(String("*** Removing Anim Cache surface for soldier %d", usSoldierID));
@@ -45,13 +45,13 @@ void DeleteAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCa
   }
 }
 
-void GetCachedAnimationSurface(UINT16 const usSoldierID,
+void GetCachedAnimationSurface(uint16_t const usSoldierID,
                                AnimationSurfaceCacheType *const pAnimCache,
-                               UINT16 const usSurfaceIndex, UINT16 const usCurrentAnimation) {
-  UINT8 cnt;
-  UINT8 ubLowestIndex = 0;
-  INT16 sMostHits = (INT16)32000;
-  UINT16 usCurrentAnimSurface;
+                               uint16_t const usSurfaceIndex, uint16_t const usCurrentAnimation) {
+  uint8_t cnt;
+  uint8_t ubLowestIndex = 0;
+  int16_t sMostHits = (int16_t)32000;
+  uint16_t usCurrentAnimSurface;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {
@@ -120,8 +120,8 @@ void GetCachedAnimationSurface(UINT16 const usSoldierID,
   }
 }
 
-void UnLoadCachedAnimationSurfaces(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
-  UINT8 cnt;
+void UnLoadCachedAnimationSurfaces(uint16_t usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
+  uint8_t cnt;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {

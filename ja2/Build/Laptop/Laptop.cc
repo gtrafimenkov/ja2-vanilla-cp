@@ -171,9 +171,9 @@ static BOOLEAN gfTitleBarSurfaceAlreadyActive = FALSE;
 LaptopMode guiCurrentLaptopMode;
 LaptopMode guiPreviousLaptopMode;
 static LaptopMode guiCurrentWWWMode = LAPTOP_MODE_NONE;
-INT32 giCurrentSubPage;
+int32_t giCurrentSubPage;
 
-static INT32 iHighLightBookLine = -1;
+static int32_t iHighLightBookLine = -1;
 BOOLEAN fFastLoadFlag = FALSE;
 static BOOLEAN gfEnterLapTop = TRUE;
 BOOLEAN gfShowBookmarks = FALSE;
@@ -223,9 +223,9 @@ static SGPVObject *guiLAPTOP;
 static BOOLEAN fNewWWW = TRUE;
 
 // Used to store the site to go to after the 'rain delay' message
-extern UINT32 guiRainLoop;
+extern uint32_t guiRainLoop;
 
-static INT32 giRainDelayInternetSite = -1;
+static int32_t giRainDelayInternetSite = -1;
 
 // the laptop icons
 static SGPVObject *guiBOOKHIGH;
@@ -255,19 +255,19 @@ static GUIButtonRef gLaptopButton[7];
 // minimize button
 static GUIButtonRef gLaptopMinButton;
 
-static INT32 gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY + 1];
+static int32_t gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY + 1];
 
 // process of mazimizing
 static BOOLEAN fMaximizingProgram = FALSE;
 
 // program we are maximizing
-static INT8 bProgramBeingMaximized = -1;
+static int8_t bProgramBeingMaximized = -1;
 
 // are we minimizing
 static BOOLEAN fMinizingProgram = FALSE;
 
 // process openned queue
-static INT32 gLaptopProgramQueueList[6];
+static int32_t gLaptopProgramQueueList[6];
 
 // state of createion of minimize button
 static BOOLEAN fCreateMinimizeButton = FALSE;
@@ -519,7 +519,7 @@ static void DeleteDesktopBackground();
 static void DeleteLapTopButtons();
 static void DeleteLapTopMouseRegions();
 static void DeleteLoadPending();
-static void ExitLaptopMode(UINT32 uiMode);
+static void ExitLaptopMode(uint32_t uiMode);
 
 void ExitLaptop() {
   // exit is called due to message box, leave
@@ -767,7 +767,7 @@ static void RenderLaptop() {
 
 static void InitTitleBarMaximizeGraphics(const SGPVObject *uiBackgroundGraphic,
                                          const wchar_t *pTitle, const SGPVObject *uiIconGraphic,
-                                         UINT16 usIconGraphicIndex);
+                                         uint16_t usIconGraphicIndex);
 static void SetSubSiteAsVisted();
 
 static void EnterNewLaptopMode() {
@@ -778,9 +778,9 @@ static void EnterNewLaptopMode() {
   fFlickerHD = TRUE;
 
   // handle maximizing of programs
-  UINT prog;
+  uint32_t prog;
   const wchar_t *title;
-  UINT16 gfx_idx;
+  uint16_t gfx_idx;
   switch (guiCurrentLaptopMode) {
     case LAPTOP_MODE_EMAIL:
       prog = LAPTOP_PROGRAM_MAILER;
@@ -1116,15 +1116,15 @@ ScreenID LaptopScreenHandle() {
     // SAVEBUFFER
     //         Start transitioning the screen.
     SGPBox const DstRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-    const UINT32 uiTimeRange = 1000;
-    INT32 iPercentage = 0;
-    INT32 iRealPercentage = 0;
-    const UINT32 uiStartTime = GetClock();
+    const uint32_t uiTimeRange = 1000;
+    int32_t iPercentage = 0;
+    int32_t iRealPercentage = 0;
+    const uint32_t uiStartTime = GetClock();
     BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
     BltVideoSurface(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, NULL);
     PlayJA2SampleFromFile(SOUNDSDIR "/laptop power up (8-11).wav", HIGHVOLUME, 1, MIDDLEPAN);
     while (iRealPercentage < 100) {
-      const UINT32 uiCurrTime = GetClock();
+      const uint32_t uiCurrTime = GetClock();
       iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
       iPercentage = std::min(iPercentage, 100);
 
@@ -1132,7 +1132,7 @@ ScreenID LaptopScreenHandle() {
 
       // Factor the percentage so that it is modified by a gravity falling
       // acceleration effect.
-      const INT32 iFactor = (iPercentage - 50) * 2;
+      const int32_t iFactor = (iPercentage - 50) * 2;
       if (iPercentage < 50) {
         iPercentage += iPercentage * iFactor * 0.01 + 0.5;
       } else {
@@ -1146,16 +1146,16 @@ ScreenID LaptopScreenHandle() {
       SrcRect1.iTop = 417 * iPercentage / 100;
       SrcRect1.iBottom = SCREEN_HEIGHT - 55 * iPercentage / 100;
       // Laptop source rect
-      INT32 iScalePercentage;
+      int32_t iScalePercentage;
       if (iPercentage < 99) {
         iScalePercentage = 10000 / (100 - iPercentage);
       } else {
         iScalePercentage = 5333;
       }
-      const INT32 iWidth = 12 * iScalePercentage / 100;
-      const INT32 iHeight = 9 * iScalePercentage / 100;
-      const INT32 iX = 472 - (472 - 320) * iScalePercentage / 5333;
-      const INT32 iY = 424 - (424 - 240) * iScalePercentage / 5333;
+      const int32_t iWidth = 12 * iScalePercentage / 100;
+      const int32_t iHeight = 9 * iScalePercentage / 100;
+      const int32_t iX = 472 - (472 - 320) * iScalePercentage / 5333;
+      const int32_t iY = 424 - (424 - 240) * iScalePercentage / 5333;
 
       SGPBox const SrcRect2 = {iX - iWidth / 2, iY - iHeight / 2, iWidth, iHeight};
       // SrcRect2.iLeft = 464 - 464 * iScalePercentage / 100;
@@ -1170,7 +1170,7 @@ ScreenID LaptopScreenHandle() {
       // mprintf( 10, 10, L"%d -> %d", iRealPercentage, iPercentage );
       //{ SGPVSurface::Lock(FRAME_BUFFER);
       //	SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH,
-      // SCREEN_HEIGHT); 	UINT16* const pDestBuf = l.Buffer<UINT16>();
+      // SCREEN_HEIGHT); 	uint16_t* const pDestBuf = l.Buffer<uint16_t>();
       //	RectangleDraw(TRUE, SrcRect1.iLeft, SrcRect1.iTop,
       // SrcRect1.iRight, SrcRect1.iBottom, Get16BPPColor(FROMRGB(255, 100, 0)),
       // pDestBuf); 	RectangleDraw(TRUE, SrcRect2.iLeft, SrcRect2.iTop,
@@ -1338,7 +1338,7 @@ ScreenID LaptopScreenHandle() {
   return (LAPTOP_SCREEN);
 }
 
-static void ExitLaptopMode(UINT32 uiMode) {
+static void ExitLaptopMode(uint32_t uiMode) {
   // Deallocate the previous mode that you were in.
   switch (uiMode) {
     case LAPTOP_MODE_AIM:
@@ -1463,8 +1463,8 @@ static void ExitLaptopMode(UINT32 uiMode) {
   }
 }
 
-static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, INT8 off_x, const wchar_t *text,
-                       const wchar_t *help_text) {
+static void MakeButton(uint32_t idx, int16_t y, GUI_CALLBACK click, int8_t off_x,
+                       const wchar_t *text, const wchar_t *help_text) {
   GUIButtonRef const btn = QuickCreateButtonImg(LAPTOPDIR "/buttonsforlaptop.sti", idx, idx + 8, 29,
                                                 y, MSYS_PRIORITY_HIGH, click);
   gLaptopButton[idx] = btn;
@@ -1474,13 +1474,13 @@ static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, INT8 off_x, const 
   btn->SetCursor(CURSOR_LAPTOP_SCREEN);
 }
 
-static void BtnOnCallback(GUI_BUTTON *btn, INT32 reason);
-static void EmailRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void FilesRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void FinancialRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void HistoryRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void PersonnelRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void WWWRegionButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnOnCallback(GUI_BUTTON *btn, int32_t reason);
+static void EmailRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void FilesRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void FinancialRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void HistoryRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void PersonnelRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void WWWRegionButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateLaptopButtons() {
   MakeButton(0, 66, EmailRegionButtonCallback, 30, pLaptopIcons[0],
@@ -1500,12 +1500,12 @@ static void CreateLaptopButtons() {
 }
 
 static void DeleteLapTopButtons() {
-  for (UINT32 i = 0; i < 7; ++i) RemoveButton(gLaptopButton[i]);
+  for (uint32_t i = 0; i < 7; ++i) RemoveButton(gLaptopButton[i]);
 }
 
 static BOOLEAN HandleExit();
 
-static void BtnOnCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOnCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (HandleExit()) fExitingLaptopFlag = TRUE;
   }
@@ -1548,16 +1548,16 @@ static void LeaveLapTopScreen() {
       // the SAVEBUFFER
       //         Start transitioning the screen.
       SGPBox const DstRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-      const UINT32 uiTimeRange = 1000;
-      INT32 iPercentage = 100;
-      INT32 iRealPercentage = 100;
-      const UINT32 uiStartTime = GetClock();
+      const uint32_t uiTimeRange = 1000;
+      int32_t iPercentage = 100;
+      int32_t iRealPercentage = 100;
+      const uint32_t uiStartTime = GetClock();
       BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
       PlayJA2SampleFromFile(SOUNDSDIR "/laptop power down (8-11).wav", HIGHVOLUME, 1, MIDDLEPAN);
       while (iRealPercentage > 0) {
         BltVideoSurface(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, NULL);
 
-        const UINT32 uiCurrTime = GetClock();
+        const uint32_t uiCurrTime = GetClock();
         iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
         iPercentage = std::min(iPercentage, 100);
         iPercentage = 100 - iPercentage;
@@ -1566,7 +1566,7 @@ static void LeaveLapTopScreen() {
 
         // Factor the percentage so that it is modified by a gravity falling
         // acceleration effect.
-        const INT32 iFactor = (iPercentage - 50) * 2;
+        const int32_t iFactor = (iPercentage - 50) * 2;
         if (iPercentage < 50) {
           iPercentage += iPercentage * iFactor * 0.01 + 0.5;
         } else {
@@ -1580,16 +1580,16 @@ static void LeaveLapTopScreen() {
         SrcRect1.iTop = 417 * iPercentage / 100;
         SrcRect1.iBottom = SCREEN_HEIGHT - 55 * iPercentage / 100;
         // Laptop source rect
-        INT32 iScalePercentage;
+        int32_t iScalePercentage;
         if (iPercentage < 99) {
           iScalePercentage = 10000 / (100 - iPercentage);
         } else {
           iScalePercentage = 5333;
         }
-        const INT32 iWidth = 12 * iScalePercentage / 100;
-        const INT32 iHeight = 9 * iScalePercentage / 100;
-        const INT32 iX = 472 - (472 - 320) * iScalePercentage / 5333;
-        const INT32 iY = 424 - (424 - 240) * iScalePercentage / 5333;
+        const int32_t iWidth = 12 * iScalePercentage / 100;
+        const int32_t iHeight = 9 * iScalePercentage / 100;
+        const int32_t iX = 472 - (472 - 320) * iScalePercentage / 5333;
+        const int32_t iY = 424 - (424 - 240) * iScalePercentage / 5333;
 
         SGPBox const SrcRect2 = {iX - iWidth / 2, iY - iHeight / 2, iWidth, iHeight};
         // SrcRect2.iLeft = 464 - 464 * iScalePercentage / 100;
@@ -1604,7 +1604,7 @@ static void LeaveLapTopScreen() {
         // mprintf( 10, 10, L"%d -> %d", iRealPercentage, iPercentage );
         //{ SGPVSurface::Lock(FRAME_BUFFER);
         //	SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH,
-        // SCREEN_HEIGHT); 	UINT16* const pDestBuf = l.Buffer<UINT16>();
+        // SCREEN_HEIGHT); 	uint16_t* const pDestBuf = l.Buffer<uint16_t>();
         //	RectangleDraw(TRUE, SrcRect1.iLeft, SrcRect1.iTop,
         // SrcRect1.iRight, SrcRect1.iBottom, Get16BPPColor(FROMRGB(255, 100,
         // 0)), pDestBuf); 	RectangleDraw(TRUE, SrcRect2.iLeft, SrcRect2.iTop,
@@ -1651,9 +1651,9 @@ static void CreateLapTopMouseRegions() {
 
 static void DeleteLapTopMouseRegions() { MSYS_RemoveRegion(&gLapTopScreenRegion); }
 
-static void UpdateListToReflectNewProgramOpened(INT32 iOpenedProgram);
+static void UpdateListToReflectNewProgramOpened(int32_t iOpenedProgram);
 
-static void FinancialRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void FinancialRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfShowBookmarks) {
       gfShowBookmarks = FALSE;
@@ -1665,7 +1665,7 @@ static void FinancialRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void PersonnelRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void PersonnelRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_PERSONNEL;
     if (gfShowBookmarks) {
@@ -1678,7 +1678,7 @@ static void PersonnelRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void EmailRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void EmailRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
     gfShowBookmarks = FALSE;
@@ -1687,7 +1687,7 @@ static void EmailRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void WWWRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void WWWRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // reset show bookmarks
     if (guiCurrentLaptopMode < LAPTOP_MODE_WWW) {
@@ -1720,7 +1720,7 @@ static void WWWRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void HistoryRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void HistoryRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfShowBookmarks) {
       gfShowBookmarks = FALSE;
@@ -1732,7 +1732,7 @@ static void HistoryRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void FilesRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void FilesRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfShowBookmarks) {
       gfShowBookmarks = FALSE;
@@ -1748,9 +1748,9 @@ static void InitBookMarkList() {
   memset(LaptopSaveInfo.iBookMarkList, -1, sizeof(LaptopSaveInfo.iBookMarkList));
 }
 
-void SetBookMark(INT32 iBookId) {
+void SetBookMark(int32_t iBookId) {
   // find first empty spot, set to iBookId
-  INT32 i;
+  int32_t i;
   for (i = 0; LaptopSaveInfo.iBookMarkList[i] != -1; ++i) {
     // move through list until empty
     if (LaptopSaveInfo.iBookMarkList[i] == iBookId) {
@@ -1781,19 +1781,19 @@ static void DisplayBookMarks() {
   SetFontDestBuffer(FRAME_BUFFER, BOOK_X, BOOK_TOP_Y, BOOK_X + BOOK_WIDTH - 10, SCREEN_HEIGHT);
 
   // blt in book mark background
-  INT32 const h = BOOK_HEIGHT + 6;
-  INT32 const sy = BOOK_TOP_Y + 6 + h;
-  INT32 y = sy;
-  for (INT32 i = 0;; ++i) {
+  int32_t const h = BOOK_HEIGHT + 6;
+  int32_t const sy = BOOK_TOP_Y + 6 + h;
+  int32_t y = sy;
+  for (int32_t i = 0;; ++i) {
     bool const highlighted = iHighLightBookLine == i;
     SGPVObject const *const vo = highlighted ? guiBOOKHIGH : guiBOOKMARK;
     BltVideoObject(FRAME_BUFFER, vo, 0, BOOK_X, y);
 
     SetFontForeground(highlighted ? FONT_WHITE : FONT_BLACK);
-    INT32 const idx = LaptopSaveInfo.iBookMarkList[i];
+    int32_t const idx = LaptopSaveInfo.iBookMarkList[i];
     wchar_t const *const txt = pBookMarkStrings[idx != -1 ? idx : CANCEL_STRING];
-    INT16 sX;
-    INT16 sY;
+    int16_t sX;
+    int16_t sY;
     FindFontCenterCoordinates(BOOK_X + 3, y + 2, BOOK_WIDTH - 3, h, txt, BOOK_FONT, &sX, &sY);
     MPrint(sX, sY, txt);
     y += h;
@@ -1814,19 +1814,19 @@ static void DeleteBookmark() {
   DeleteVideoObject(guiDOWNLOADBOT);
 }
 
-static void BookmarkCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void BookmarkMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void BookmarkCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void BookmarkMvtCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateBookMarkMouseRegions() {
   // creates regions based on number of entries
-  for (INT32 i = 0;; ++i) {
-    UINT16 const y = BOOK_TOP_Y + (i + 1) * (BOOK_HEIGHT + 6) + 6;
+  for (int32_t i = 0;; ++i) {
+    uint16_t const y = BOOK_TOP_Y + (i + 1) * (BOOK_HEIGHT + 6) + 6;
     MOUSE_REGION *const r = &gBookmarkMouseRegions[i];
     MSYS_DefineRegion(r, BOOK_X, y, BOOK_X + BOOK_WIDTH, y + BOOK_HEIGHT + 6,
                       MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack,
                       BookmarkCallBack);
     MSYS_SetRegionUserData(r, 0, i);
-    INT32 const idx = LaptopSaveInfo.iBookMarkList[i];
+    int32_t const idx = LaptopSaveInfo.iBookMarkList[i];
     if (idx == -1) break;  // just added region for cancel
     r->SetFastHelpText(
         gzLaptopHelpText[BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + idx]);
@@ -1834,7 +1834,7 @@ static void CreateBookMarkMouseRegions() {
 }
 
 static void DeleteBookmarkRegions() {
-  INT32 i;
+  int32_t i;
   // deletes bookmark regions
   for (i = 0; LaptopSaveInfo.iBookMarkList[i] != -1; ++i) {
     MSYS_RemoveRegion(&gBookmarkMouseRegions[i]);
@@ -1857,13 +1857,13 @@ static void CreateDestoryBookMarkRegions() {
   }
 }
 
-static void BookmarkCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void BookmarkCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   // we are in process of loading
   if (fLoadPendingFlag) return;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT32 const i = MSYS_GetRegionUserData(pRegion, 0);
-    INT32 const idx = LaptopSaveInfo.iBookMarkList[i];
+    int32_t const i = MSYS_GetRegionUserData(pRegion, 0);
+    int32_t const idx = LaptopSaveInfo.iBookMarkList[i];
     if (idx != -1) {
       GoToWebPage(idx);
     } else {
@@ -1875,7 +1875,7 @@ static void BookmarkCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
 
 static void InternetRainDelayMessageBoxCallBack(MessageBoxReturnValue);
 
-void GoToWebPage(INT32 iPageId) {
+void GoToWebPage(int32_t iPageId) {
   // if it is raining, popup a warning first saying connection time may be slow
   if (IsItRaining()) {
     if (giRainDelayInternetSite == -1) {
@@ -1945,7 +1945,7 @@ void GoToWebPage(INT32 iPageId) {
   fLoadPendingFlag = TRUE;
 }
 
-static void BookmarkMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void BookmarkMvtCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
     iHighLightBookLine = MSYS_GetRegionUserData(pRegion, 0);
   }
@@ -1962,17 +1962,17 @@ static void LoadLoadPending() {
   guiGRAPHBAR = AddVideoObjectFromFile(LAPTOPDIR "/graphsegment.sti");
 }
 
-static INT32 WWaitDelayIncreasedIfRaining(INT32 iUnitTime);
+static int32_t WWaitDelayIncreasedIfRaining(int32_t iUnitTime);
 
 static void DisplayLoadPending() {
   // this function will display the load pending and return if the load is done
-  static INT32 iBaseTime = 0;
-  static INT32 iTotalTime = 0;
+  static int32_t iBaseTime = 0;
+  static int32_t iTotalTime = 0;
 
   // if merc webpage, make it longer
   // TEMP disables the loadpending
-  INT32 iLoadTime;
-  INT32 iUnitTime;
+  int32_t iLoadTime;
+  int32_t iUnitTime;
   if (gfTemporaryDisablingOfLoadPendingFlag) {
     iLoadTime = 1;
     iUnitTime = 1;
@@ -2018,7 +2018,7 @@ static void DisplayLoadPending() {
     return;
   }
 
-  const INT32 iDifference = GetJA2Clock() - iBaseTime;
+  const int32_t iDifference = GetJA2Clock() - iBaseTime;
 
   // difference has been long enough or we are redrawing the screen
   if (iDifference > iUnitTime) {
@@ -2042,8 +2042,8 @@ static void DisplayLoadPending() {
 
   // reload or download?
   const wchar_t *const str = (fFastLoadFlag ? pDownloadString[1] : pDownloadString[0]);
-  INT16 sXPosition = 0;
-  INT16 sYPosition = 0;
+  int16_t sXPosition = 0;
+  int16_t sYPosition = 0;
   FindFontCenterCoordinates(328, 0, 446 - 328, 0, str, DOWNLOAD_FONT, &sXPosition, &sYPosition);
   MPrint(sXPosition, DOWN_STRING_Y, str);
 
@@ -2054,7 +2054,8 @@ static void DisplayLoadPending() {
 
   // decide how many time units are to be displayed, based on amount of time
   // passed
-  for (INT32 i = 0, iTempTime = iTotalTime; i <= 30 && iTempTime > 0; ++i, iTempTime -= iUnitTime) {
+  for (int32_t i = 0, iTempTime = iTotalTime; i <= 30 && iTempTime > 0;
+       ++i, iTempTime -= iUnitTime) {
     BltVideoObject(FRAME_BUFFER, guiGRAPHBAR, 0, LAPTOP_BAR_X + UNIT_WIDTH * i, LAPTOP_BAR_Y);
   }
 
@@ -2195,7 +2196,7 @@ static void HandleLeftButtonUpEvent() {
   }
 }
 
-void LapTopScreenCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+void LapTopScreenCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandleLeftButtonUpEvent();
   }
@@ -2232,12 +2233,12 @@ void DoLapTopSystemMessageBox(wchar_t const *const zString, ScreenID const uiExi
 }
 
 // places a tileable pattern down
-void WebPageTileBackground(const UINT8 ubNumX, const UINT8 ubNumY, const UINT16 usWidth,
-                           const UINT16 usHeight, const SGPVObject *const background) {
-  UINT16 uiPosY = LAPTOP_SCREEN_WEB_UL_Y;
-  for (UINT16 y = 0; y < ubNumY; ++y) {
-    UINT16 uiPosX = LAPTOP_SCREEN_UL_X;
-    for (UINT16 x = 0; x < ubNumX; ++x) {
+void WebPageTileBackground(const uint8_t ubNumX, const uint8_t ubNumY, const uint16_t usWidth,
+                           const uint16_t usHeight, const SGPVObject *const background) {
+  uint16_t uiPosY = LAPTOP_SCREEN_WEB_UL_Y;
+  for (uint16_t y = 0; y < ubNumY; ++y) {
+    uint16_t uiPosX = LAPTOP_SCREEN_UL_X;
+    for (uint16_t x = 0; x < ubNumX; ++x) {
       BltVideoObject(FRAME_BUFFER, background, 0, uiPosX, uiPosY);
       uiPosX += usWidth;
     }
@@ -2248,7 +2249,7 @@ void WebPageTileBackground(const UINT8 ubNumX, const UINT8 ubNumY, const UINT16 
 static void InitTitleBarMaximizeGraphics(const SGPVObject *const uiBackgroundGraphic,
                                          const wchar_t *const pTitle,
                                          const SGPVObject *const uiIconGraphic,
-                                         const UINT16 usIconGraphicIndex) {
+                                         const uint16_t usIconGraphicIndex) {
   Assert(uiBackgroundGraphic);
 
   // Create a background video surface to blt the title bar onto
@@ -2265,9 +2266,9 @@ static void InitTitleBarMaximizeGraphics(const SGPVObject *const uiBackgroundGra
   SetFontDestBuffer(FRAME_BUFFER);
 }
 
-static BOOLEAN DisplayTitleBarMaximizeGraphic(BOOLEAN fForward, BOOLEAN fInit, UINT16 usTopLeftX,
-                                              UINT16 usTopLeftY, UINT16 usTopRightX) {
-  static INT8 ubCount;
+static BOOLEAN DisplayTitleBarMaximizeGraphic(BOOLEAN fForward, BOOLEAN fInit, uint16_t usTopLeftX,
+                                              uint16_t usTopLeftY, uint16_t usTopRightX) {
+  static int8_t ubCount;
   static SGPBox LastRect;
 
   if (fInit) {
@@ -2280,18 +2281,18 @@ static BOOLEAN DisplayTitleBarMaximizeGraphic(BOOLEAN fForward, BOOLEAN fInit, U
     }
   }
 
-  FLOAT dTemp;
-  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  const INT16 sPosX = usTopLeftX + dTemp * ubCount;
+  float dTemp;
+  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / (float)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  const int16_t sPosX = usTopLeftX + dTemp * ubCount;
 
   dTemp =
-      (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  const INT16 sPosRightX = usTopRightX + dTemp * ubCount;
+      (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / (float)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  const int16_t sPosRightX = usTopRightX + dTemp * ubCount;
 
-  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  const INT16 sPosY = usTopLeftY + dTemp * ubCount;
+  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / (float)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  const int16_t sPosY = usTopLeftY + dTemp * ubCount;
 
-  const INT16 sPosBottomY = LAPTOP_TITLE_BAR_HEIGHT;
+  const int16_t sPosBottomY = LAPTOP_TITLE_BAR_HEIGHT;
 
   SGPBox const SrcRect = {0, 0, LAPTOP_TITLE_BAR_WIDTH, LAPTOP_TITLE_BAR_HEIGHT};
 
@@ -2367,7 +2368,7 @@ static void HandleSlidingTitleBar() {
   if (fExitingLaptopFlag) return;
 
   if (fMaximizingProgram) {
-    UINT16 y;
+    uint16_t y;
     switch (bProgramBeingMaximized) {
       case LAPTOP_PROGRAM_MAILER:
         y = 66;
@@ -2404,7 +2405,7 @@ static void HandleSlidingTitleBar() {
     MarkButtonsDirty();
   } else if (fMinizingProgram) {
     // minimizing
-    UINT16 y;
+    uint16_t y;
     switch (bProgramBeingMaximized) {
       case LAPTOP_PROGRAM_MAILER:
         y = 66;
@@ -2452,15 +2453,15 @@ static void ShowLights() {
 }
 
 static void FlickerHDLight() {
-  static INT32 iBaseTime = 0;
-  static INT32 iTotalDifference = 0;
+  static int32_t iBaseTime = 0;
+  static int32_t iTotalDifference = 0;
 
   if (fLoadPendingFlag) fFlickerHD = TRUE;
   if (!fFlickerHD) return;
 
   if (iBaseTime == 0) iBaseTime = GetJA2Clock();
 
-  const INT32 iDifference = GetJA2Clock() - iBaseTime;
+  const int32_t iDifference = GetJA2Clock() - iBaseTime;
 
   if (iTotalDifference > HD_FLICKER_TIME && !fLoadPendingFlag) {
     iBaseTime = GetJA2Clock();
@@ -2485,7 +2486,7 @@ static void FlickerHDLight() {
 static BOOLEAN ExitLaptopDone() {
   // check if this is the first time, to reset counter
   static BOOLEAN fOldLeaveLaptopState = FALSE;
-  static INT32 iBaseTime = 0;
+  static int32_t iBaseTime = 0;
 
   if (!fOldLeaveLaptopState) {
     fOldLeaveLaptopState = TRUE;
@@ -2496,7 +2497,7 @@ static BOOLEAN ExitLaptopDone() {
 
   InvalidateRegion(44, 466, 58, 477);
   // get the current difference
-  const INT32 iDifference = GetJA2Clock() - iBaseTime;
+  const int32_t iDifference = GetJA2Clock() - iBaseTime;
 
   // did we wait long enough?
   if (iDifference > EXIT_LAPTOP_DELAY_TIME) {
@@ -2545,7 +2546,7 @@ static void CreateDestroyMinimizeButtonForCurrentMode() {
   }
 }
 
-static void LaptopMinimizeProgramButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void LaptopMinimizeProgramButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateMinimizeButtonForCurrentMode() {
   // create minimize button
@@ -2561,11 +2562,11 @@ static void DestroyMinimizeButtonForCurrentMode() {
 
 static void SetCurrentToLastProgramOpened();
 
-static void LaptopMinimizeProgramButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void LaptopMinimizeProgramButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT prog;
+    uint32_t prog;
     const wchar_t *title;
-    UINT16 gfx_idx;
+    uint16_t gfx_idx;
     switch (guiCurrentLaptopMode) {
       case LAPTOP_MODE_EMAIL:
         prog = LAPTOP_PROGRAM_MAILER;
@@ -2615,12 +2616,12 @@ static void LaptopMinimizeProgramButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static INT32 FindLastProgramStillOpen() {
-  INT32 iLowestValue = 6;
-  INT32 iLowestValueProgram = 6;
+static int32_t FindLastProgramStillOpen() {
+  int32_t iLowestValue = 6;
+  int32_t iLowestValueProgram = 6;
 
   // returns ID of last program open and not minimized
-  for (INT32 i = 0; i < 6; ++i) {
+  for (int32_t i = 0; i < 6; ++i) {
     if (gLaptopProgramStates[i] != LAPTOP_PROGRAM_MINIMIZED) {
       if (gLaptopProgramQueueList[i] < iLowestValue) {
         iLowestValue = gLaptopProgramQueueList[i];
@@ -2632,12 +2633,12 @@ static INT32 FindLastProgramStillOpen() {
   return iLowestValueProgram;
 }
 
-static void UpdateListToReflectNewProgramOpened(INT32 iOpenedProgram) {
+static void UpdateListToReflectNewProgramOpened(int32_t iOpenedProgram) {
   // will update queue of opened programs to show thier states
   // set iOpenedProgram to 1, and update others
 
   // increment everyone
-  for (INT32 i = 0; i < 6; ++i) {
+  for (int32_t i = 0; i < 6; ++i) {
     gLaptopProgramQueueList[i]++;
   }
 
@@ -2646,7 +2647,7 @@ static void UpdateListToReflectNewProgramOpened(INT32 iOpenedProgram) {
 
 static void InitLaptopOpenQueue() {
   // set evereyone to 1
-  for (INT32 i = 0; i < 6; ++i) {
+  for (int32_t i = 0; i < 6; ++i) {
     gLaptopProgramQueueList[i] = 1;
   }
 }
@@ -2681,7 +2682,7 @@ static void SetCurrentToLastProgramOpened() {
 
 void BlitTitleBarIcons() {
   // will blit the icons for the title bar of the program we are in
-  UINT32 Index;
+  uint32_t Index;
   switch (guiCurrentLaptopMode) {
     case LAPTOP_MODE_HISTORY:
       Index = 4;
@@ -2724,8 +2725,8 @@ void PrintBalance() {
   wchar_t pString[32];
   SPrintMoney(pString, LaptopSaveInfo.iCurrentBalance);
 
-  INT32 x = 47;
-  INT32 y = 257 + 15;
+  int32_t x = 47;
+  int32_t y = 257 + 15;
   if (gLaptopButton[5]->Clicked()) {
     ++x;
     ++y;
@@ -2738,10 +2739,10 @@ void PrintBalance() {
 void PrintNumberOnTeam() {
   SetFontAttributes(FONT10ARIAL, FONT_BLACK, NO_SHADOW);
 
-  const INT32 iCounter = NumberOfMercsOnPlayerTeam();
+  const int32_t iCounter = NumberOfMercsOnPlayerTeam();
 
-  UINT16 usPosX = 47;
-  UINT16 usPosY = 194 + 30;
+  uint16_t usPosX = 47;
+  uint16_t usPosY = 194 + 30;
   if (gLaptopButton[3]->Clicked()) {
     ++usPosX;
     ++usPosY;
@@ -2774,7 +2775,7 @@ static void DisplayTaskBarIcons() {
 static void HandleAltTabKeyInLaptop();
 static void HandleShiftAltTabKeyInLaptop();
 
-void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usKeyState) {
+void HandleKeyBoardShortCutsForLapTop(uint16_t usEvent, uint32_t usParam, uint16_t usKeyState) {
   // will handle keyboard shortcuts for the laptop ... to be added to later
   if (fExitingLaptopFlag || fTabHandled) return;
 
@@ -2847,7 +2848,7 @@ void RenderWWWProgramTitleBar() {
   if (guiCurrentLaptopMode == LAPTOP_MODE_WWW) {
     MPrint(140, 33, pWebTitle);
   } else {
-    const INT32 iIndex = guiCurrentLaptopMode - LAPTOP_MODE_WWW - 1;
+    const int32_t iIndex = guiCurrentLaptopMode - LAPTOP_MODE_WWW - 1;
     mprintf(140, 33, L"%ls  -  %ls", pWebTitle, pWebPagesTitles[iIndex]);
   }
 
@@ -2855,15 +2856,15 @@ void RenderWWWProgramTitleBar() {
   DisplayProgramBoundingBox(FALSE);
 }
 
-static void LaptopProgramIconMinimizeCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void LaptopProgramIconMinimizeCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateMinimizeRegionsForLaptopProgramIcons() {
   // will create the minizing region to lie over the icon for this particular
   // laptop program
-  const UINT16 x = LAPTOP_PROGRAM_ICON_X;
-  const UINT16 y = LAPTOP_PROGRAM_ICON_Y;
-  const UINT16 w = LAPTOP_PROGRAM_ICON_WIDTH;
-  const UINT16 h = LAPTOP_PROGRAM_ICON_HEIGHT;
+  const uint16_t x = LAPTOP_PROGRAM_ICON_X;
+  const uint16_t y = LAPTOP_PROGRAM_ICON_Y;
+  const uint16_t w = LAPTOP_PROGRAM_ICON_WIDTH;
+  const uint16_t h = LAPTOP_PROGRAM_ICON_HEIGHT;
   MSYS_DefineRegion(&gLapTopProgramMinIcon, x, y, x + w, y + h, MSYS_PRIORITY_NORMAL + 1,
                     CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LaptopProgramIconMinimizeCallback);
 }
@@ -2874,7 +2875,7 @@ static void DestroyMinimizeRegionsForLaptopProgramIcons() {
   MSYS_RemoveRegion(&gLapTopProgramMinIcon);
 }
 
-static void LaptopProgramIconMinimizeCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void LaptopProgramIconMinimizeCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   // callback handler for the minize region that is attatched to the laptop
   // program icon
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2945,8 +2946,8 @@ void DisplayProgramBoundingBox(BOOLEAN fMarkButtons) {
   DisplayTaskBarIcons();
 }
 
-static void NewEmailIconCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void NewFileIconCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void NewEmailIconCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void NewFileIconCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateDestroyMouseRegionForNewMailIcon() {
   static BOOLEAN fCreated = FALSE;
@@ -2956,8 +2957,8 @@ static void CreateDestroyMouseRegionForNewMailIcon() {
   if (!fCreated) {
     fCreated = TRUE;
     {
-      const UINT16 x = LAPTOP__NEW_EMAIL_ICON_X;
-      const UINT16 y = LAPTOP__NEW_EMAIL_ICON_Y;
+      const uint16_t x = LAPTOP__NEW_EMAIL_ICON_X;
+      const uint16_t y = LAPTOP__NEW_EMAIL_ICON_Y;
       MSYS_DefineRegion(&gNewMailIconRegion, x, y + 5, x + 16, y + 16, MSYS_PRIORITY_HIGHEST - 3,
                         CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
       CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL,
@@ -2965,8 +2966,8 @@ static void CreateDestroyMouseRegionForNewMailIcon() {
     }
 
     {
-      const UINT16 x = LAPTOP__NEW_FILE_ICON_X;
-      const UINT16 y = LAPTOP__NEW_FILE_ICON_Y;
+      const uint16_t x = LAPTOP__NEW_FILE_ICON_X;
+      const uint16_t y = LAPTOP__NEW_FILE_ICON_Y;
       MSYS_DefineRegion(&gNewFileIconRegion, x, y + 5, x + 16, y + 16, MSYS_PRIORITY_HIGHEST - 3,
                         CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
       CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE,
@@ -2979,7 +2980,7 @@ static void CreateDestroyMouseRegionForNewMailIcon() {
   }
 }
 
-static void NewEmailIconCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void NewEmailIconCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fUnReadMailFlag) {
       fOpenMostRecentUnReadFlag = TRUE;
@@ -2988,7 +2989,7 @@ static void NewEmailIconCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void NewFileIconCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void NewFileIconCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fNewFilesInFileViewer) {
       fEnteredFileViewerFromNewFileIcon = TRUE;
@@ -3159,7 +3160,7 @@ static void DisplayWebBookMarkNotify() {
 
 // handle timer for bookmark notify
 static void HandleWebBookMarkNotifyTimer() {
-  static INT32 iBaseTime = 0;
+  static int32_t iBaseTime = 0;
   static BOOLEAN fOldShowBookMarkInfo = FALSE;
 
   // check if maxing or mining?
@@ -3195,7 +3196,7 @@ static void HandleWebBookMarkNotifyTimer() {
     return;
   }
 
-  const INT32 iDifference = GetJA2Clock() - iBaseTime;
+  const int32_t iDifference = GetJA2Clock() - iBaseTime;
 
   fReDrawBookMarkInfo = TRUE;
 
@@ -3214,8 +3215,8 @@ void ClearOutTempLaptopFiles() {
   FileDelete("history.dat");
 }
 
-static BYTE *InjectStoreInvetory(BYTE *const data, STORE_INVENTORY const &i) {
-  BYTE *d = data;
+static uint8_t *InjectStoreInvetory(uint8_t *const data, STORE_INVENTORY const &i) {
+  uint8_t *d = data;
   INJ_U16(d, i.usItemIndex)
   INJ_U8(d, i.ubQtyOnHand)
   INJ_U8(d, i.ubQtyOnOrder)
@@ -3226,8 +3227,8 @@ static BYTE *InjectStoreInvetory(BYTE *const data, STORE_INVENTORY const &i) {
   return d;
 }
 
-static BYTE const *ExtractStoreInvetory(BYTE const *const data, STORE_INVENTORY &i) {
-  BYTE const *d = data;
+static uint8_t const *ExtractStoreInvetory(uint8_t const *const data, STORE_INVENTORY &i) {
+  uint8_t const *d = data;
   EXTR_U16(d, i.usItemIndex)
   EXTR_U8(d, i.ubQtyOnHand)
   EXTR_U8(d, i.ubQtyOnOrder)
@@ -3241,8 +3242,8 @@ static BYTE const *ExtractStoreInvetory(BYTE const *const data, STORE_INVENTORY 
 void SaveLaptopInfoToSavedGame(HWFILE const f) {
   LaptopSaveInfoStruct const &l = LaptopSaveInfo;
 
-  BYTE data[7440];
-  BYTE *d = data;
+  uint8_t data[7440];
+  uint8_t *d = data;
   INJ_BOOL(d, l.gfNewGameLaptop)
   INJ_BOOLA(d, l.fVisitedBookmarkAlready, lengthof(l.fVisitedBookmarkAlready))
   INJ_SKIP(d, 3)
@@ -3298,12 +3299,12 @@ void SaveLaptopInfoToSavedGame(HWFILE const f) {
 
   if (l.usNumberOfBobbyRayOrderUsed !=
       0) {  // There is anything in the Bobby Ray Orders on delivery
-    UINT32 const size = sizeof(*l.BobbyRayOrdersOnDeliveryArray) * l.usNumberOfBobbyRayOrderItems;
+    uint32_t const size = sizeof(*l.BobbyRayOrdersOnDeliveryArray) * l.usNumberOfBobbyRayOrderItems;
     FileWrite(f, l.BobbyRayOrdersOnDeliveryArray, size);
   }
 
   if (l.ubNumberLifeInsurancePayoutUsed != 0) {  // There are any insurance payouts in progress
-    UINT32 const size = sizeof(*l.pLifeInsurancePayouts) * l.ubNumberLifeInsurancePayouts;
+    uint32_t const size = sizeof(*l.pLifeInsurancePayouts) * l.ubNumberLifeInsurancePayouts;
     FileWrite(f, l.pLifeInsurancePayouts, size);
   }
 }
@@ -3322,10 +3323,10 @@ void LoadLaptopInfoFromSavedGame(HWFILE const f) {
     FreeNull(l.pLifeInsurancePayouts);
   }
 
-  BYTE data[7440];
+  uint8_t data[7440];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_BOOL(d, l.gfNewGameLaptop)
   EXTR_BOOLA(d, l.fVisitedBookmarkAlready, lengthof(l.fVisitedBookmarkAlready))
   EXTR_SKIP(d, 3)
@@ -3379,7 +3380,7 @@ void LoadLaptopInfoFromSavedGame(HWFILE const f) {
 
   if (l.usNumberOfBobbyRayOrderUsed !=
       0) {  // There is anything in the Bobby Ray Orders on Delivery
-    UINT32 const size = sizeof(*l.BobbyRayOrdersOnDeliveryArray) * l.usNumberOfBobbyRayOrderItems;
+    uint32_t const size = sizeof(*l.BobbyRayOrdersOnDeliveryArray) * l.usNumberOfBobbyRayOrderItems;
     l.BobbyRayOrdersOnDeliveryArray = MALLOCN(BobbyRayOrderStruct, l.usNumberOfBobbyRayOrderItems);
     FileRead(f, l.BobbyRayOrdersOnDeliveryArray, size);
   } else {
@@ -3388,7 +3389,7 @@ void LoadLaptopInfoFromSavedGame(HWFILE const f) {
   }
 
   if (l.ubNumberLifeInsurancePayoutUsed != 0) {  // There are any Insurance Payouts in progress
-    UINT32 const size = sizeof(*l.pLifeInsurancePayouts) * l.ubNumberLifeInsurancePayouts;
+    uint32_t const size = sizeof(*l.pLifeInsurancePayouts) * l.ubNumberLifeInsurancePayouts;
     l.pLifeInsurancePayouts = MALLOCN(LIFE_INSURANCE_PAYOUT, l.ubNumberLifeInsurancePayouts);
     FileRead(f, l.pLifeInsurancePayouts, size);
   } else {
@@ -3397,8 +3398,8 @@ void LoadLaptopInfoFromSavedGame(HWFILE const f) {
   }
 }
 
-static INT32 WWaitDelayIncreasedIfRaining(INT32 iUnitTime) {
-  INT32 iRetVal = 0;
+static int32_t WWaitDelayIncreasedIfRaining(int32_t iUnitTime) {
+  int32_t iRetVal = 0;
   if (guiEnvWeather & WEATHER_FORECAST_THUNDERSHOWERS) {
     iRetVal = iUnitTime * 0.8f;
   } else if (guiEnvWeather & WEATHER_FORECAST_SHOWERS) {
@@ -3420,7 +3421,7 @@ static void InternetRainDelayMessageBoxCallBack(MessageBoxReturnValue const bExi
   giRainDelayInternetSite = -2;
 }
 
-void CreateFileAndNewEmailIconFastHelpText(UINT32 uiHelpTextID, BOOLEAN fClearHelpText) {
+void CreateFileAndNewEmailIconFastHelpText(uint32_t uiHelpTextID, BOOLEAN fClearHelpText) {
   MOUSE_REGION *pRegion;
   switch (uiHelpTextID) {
     case LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL:

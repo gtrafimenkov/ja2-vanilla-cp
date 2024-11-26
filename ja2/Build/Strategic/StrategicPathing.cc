@@ -23,17 +23,17 @@
 #include "Tactical/Vehicles.h"
 #include "TileEngine/WorldDef.h"
 
-static UINT16 gusMapPathingData[256];
+static uint16_t gusMapPathingData[256];
 static BOOLEAN gfPlotToAvoidPlayerInfuencedSectors = FALSE;
 
 // Globals
 struct path_t {
-  INT16 nextLink;   // 2
-  INT16 prevLink;   // 2
-  INT16 location;   // 2
-  INT16 pathNdx;    // 2
-  INT32 costSoFar;  // 4
-  INT32 costToGo;   // 4
+  int16_t nextLink;   // 2
+  int16_t prevLink;   // 2
+  int16_t location;   // 2
+  int16_t pathNdx;    // 2
+  int32_t costSoFar;  // 4
+  int32_t costToGo;   // 4
 };
 
 struct trail_t {
@@ -50,7 +50,7 @@ struct trail_t {
 // #define ISWATER(t)	(((t)==TRAVELCOST_KNEEDEEP) ||
 //((t)==TRAVELCOST_DEEPWATER)) #define NOPASS (TRAVELCOST_OBSTACLE) #define
 //  VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
-#define TRAILCELLTYPE UINT32
+#define TRAILCELLTYPE uint32_t
 
 static path_t pathQB[MAXpathQ];
 static TRAILCELLTYPE trailCostB[MAP_LENGTH];
@@ -126,7 +126,7 @@ static short trailStratTreedxB = 0;
 
 #define QUESEARCH(ndx, NDX)                                     \
   do {                                                          \
-    INT32 k = TOTALCOST(ndx);                                   \
+    int32_t k = TOTALCOST(ndx);                                 \
     NDX = pathQB[QHEADNDX].nextLink;                            \
     while (NDX && (k > TOTALCOST(NDX))) {                       \
       NDX = pathQB[NDX].nextLink;                               \
@@ -136,9 +136,9 @@ static short trailStratTreedxB = 0;
     }                                                           \
   } while (0)
 
-static INT32 queRequests;
+static int32_t queRequests;
 
-static INT16 const diStratDelta[] = {
+static int16_t const diStratDelta[] = {
     -MAP_WIDTH,     // N
     1 - MAP_WIDTH,  // NE
     1,              // E
@@ -151,14 +151,14 @@ static INT16 const diStratDelta[] = {
 
 // this will find if a shortest strategic path
 
-INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g,
-                    BOOLEAN const fTacticalTraversal) {
-  INT32 iCnt, ndx, insertNdx, qNewNdx;
-  INT32 iDestX, iDestY, locX, locY, dx, dy;
-  INT16 sSectorX, sSectorY;
-  UINT16 newLoc, curLoc;
+int32_t FindStratPath(int16_t const sStart, int16_t const sDestination, GROUP const &g,
+                      BOOLEAN const fTacticalTraversal) {
+  int32_t iCnt, ndx, insertNdx, qNewNdx;
+  int32_t iDestX, iDestY, locX, locY, dx, dy;
+  int16_t sSectorX, sSectorY;
+  uint16_t newLoc, curLoc;
   TRAILCELLTYPE curCost, newTotCost, nextCost;
-  INT16 sOrigination;
+  int16_t sOrigination;
   BOOLEAN fPlotDirectPath = FALSE;
   static BOOLEAN fPreviousPlotDirectPath = FALSE;  // don't save
 
@@ -189,7 +189,7 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
   memset(pathQB, 0, sizeof(pathQB));
 
   // FOLLOWING LINE COMMENTED OUT ON MARCH 7/97 BY IC
-  memset(gusMapPathingData, ((UINT16)sStart), sizeof(gusMapPathingData));
+  memset(gusMapPathingData, ((uint16_t)sStart), sizeof(gusMapPathingData));
   trailStratTreedxB = 0;
 
   // set up common info
@@ -232,7 +232,7 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
     ndx = pathQB[QHEADNDX].nextLink;
     curLoc = pathQB[ndx].location;
     curCost = pathQB[ndx].costSoFar;
-    DELQUENODE((INT16)ndx);
+    DELQUENODE((int16_t)ndx);
 
     if (trailCostB[curLoc] < curCost) continue;
 
@@ -248,8 +248,8 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
       }
 
       if (gfPlotToAvoidPlayerInfuencedSectors && newLoc != sDestination) {
-        sSectorX = (INT16)(newLoc % MAP_WORLD_X);
-        sSectorY = (INT16)(newLoc / MAP_WORLD_X);
+        sSectorX = (int16_t)(newLoc % MAP_WORLD_X);
+        sSectorY = (int16_t)(newLoc / MAP_WORLD_X);
 
         if (IsThereASoldierInThisSector(sSectorX, sSectorY, 0)) {
           continue;
@@ -257,7 +257,7 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
         if (GetNumberOfMilitiaInSector(sSectorX, sSectorY, 0)) {
           continue;
         }
-        if (!OkayForEnemyToMoveThroughSector((UINT8)SECTOR(sSectorX, sSectorY))) {
+        if (!OkayForEnemyToMoveThroughSector((uint8_t)SECTOR(sSectorX, sSectorY))) {
           continue;
         }
       }
@@ -286,8 +286,8 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
       if (fTacticalTraversal) {
         // if it's the first sector only (no cost yet)
         if (curCost == 0 && (newLoc == sDestination)) {
-          if (GetTraversability((INT16)(SECTOR(curLoc % 18, curLoc / 18)),
-                                (INT16)(SECTOR(newLoc % 18, newLoc / 18))) != GROUNDBARRIER) {
+          if (GetTraversability((int16_t)(SECTOR(curLoc % 18, curLoc / 18)),
+                                (int16_t)(SECTOR(newLoc % 18, newLoc / 18))) != GROUNDBARRIER) {
             nextCost = 0;
           }
         }
@@ -304,8 +304,8 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
       //make the destination look very attractive
       if( ( newLoc == sDestination ) )
       {
-              if( GetTraversability( ( INT16 )( SECTOR( curLoc % 18, curLoc / 18
-      ) ), ( INT16 ) ( SECTOR( newLoc %18,  newLoc / 18 ) ) ) != GROUNDBARRIER )
+              if( GetTraversability( ( int16_t )( SECTOR( curLoc % 18, curLoc / 18
+      ) ), ( int16_t ) ( SECTOR( newLoc %18,  newLoc / 18 ) ) ) != GROUNDBARRIER )
               {
                       nextCost = 0;
               }
@@ -325,7 +325,7 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
 
         // make new path to current location
         trailStratTreeB[trailStratTreedxB].nextLink = pathQB[ndx].pathNdx;
-        trailStratTreeB[trailStratTreedxB].diStratDelta = (INT16)iCnt;
+        trailStratTreeB[trailStratTreedxB].diStratDelta = (int16_t)iCnt;
         pathQB[qNewNdx].pathNdx = trailStratTreedxB;
         trailStratTreedxB++;
 
@@ -333,19 +333,19 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
           return (0);
         }
 
-        pathQB[qNewNdx].location = (INT16)newLoc;
+        pathQB[qNewNdx].location = (int16_t)newLoc;
         pathQB[qNewNdx].costSoFar = newTotCost;
         pathQB[qNewNdx].costToGo = REMAININGCOST(qNewNdx);
         trailCostB[newLoc] = newTotCost;
         // do a sorted que insert of the new path
         QUESEARCH(qNewNdx, insertNdx);
-        INSQUENODEPREV((INT16)qNewNdx, (INT16)insertNdx);
+        INSQUENODEPREV((int16_t)qNewNdx, (int16_t)insertNdx);
       }
     }
   } while (pathQNotEmpty && pathNotYetFound);
   // work finished. Did we find a path?
   if (pathFound) {
-    INT16 z, _z, _nextLink;  //,tempgrid;
+    int16_t z, _z, _nextLink;  //,tempgrid;
 
     _z = 0;
     z = pathQB[pathQB[QHEADNDX].nextLink].pathNdx;
@@ -377,11 +377,11 @@ INT32 FindStratPath(INT16 const sStart, INT16 const sDestination, GROUP const &g
   return (0);
 }
 
-PathSt *BuildAStrategicPath(INT16 const start_sector, INT16 const end_sector, GROUP const &g,
+PathSt *BuildAStrategicPath(int16_t const start_sector, int16_t const end_sector, GROUP const &g,
                             BOOLEAN const fTacticalTraversal) {
   if (end_sector < MAP_WORLD_X - 1) return NULL;
 
-  const INT32 path_len = FindStratPath(start_sector, end_sector, g, fTacticalTraversal);
+  const int32_t path_len = FindStratPath(start_sector, end_sector, g, fTacticalTraversal);
   if (path_len == 0) return NULL;
 
   // start new path list
@@ -390,10 +390,10 @@ PathSt *BuildAStrategicPath(INT16 const start_sector, INT16 const end_sector, GR
   head->pNext = NULL;
   head->pPrev = NULL;
 
-  INT32 cur_sector = start_sector;
-  INT32 delta = 0;
+  int32_t cur_sector = start_sector;
+  int32_t delta = 0;
   PathSt *path = head;
-  for (INT32 i = 0; i < path_len; ++i) {
+  for (int32_t i = 0; i < path_len; ++i) {
     switch (gusMapPathingData[i]) {
       case NORTH:
         delta = NORTH_MOVE;
@@ -466,7 +466,7 @@ PathSt *AppendStrategicPath(PathSt *pNewSection, PathSt *pHeadOfPathList) {
   return (pHeadOfPathList);
 }
 
-PathSt *ClearStrategicPathList(PathSt *const pHeadOfPath, const INT16 sMvtGroup) {
+PathSt *ClearStrategicPathList(PathSt *const pHeadOfPath, const int16_t sMvtGroup) {
   // will clear out a strategic path and return head of list as NULL
 
   // is there in fact a path?
@@ -487,13 +487,13 @@ PathSt *ClearStrategicPathList(PathSt *const pHeadOfPath, const INT16 sMvtGroup)
 
 static PathSt *MoveToEndOfPathList(PathSt *pList);
 
-PathSt *ClearStrategicPathListAfterThisSector(PathSt *pHeadOfPath, INT16 sX, INT16 sY,
-                                              INT16 sMvtGroup) {
+PathSt *ClearStrategicPathListAfterThisSector(PathSt *pHeadOfPath, int16_t sX, int16_t sY,
+                                              int16_t sMvtGroup) {
   // will clear out a strategic path and return head of list as NULL
   PathSt *pNode = pHeadOfPath;
   PathSt *pDeleteNode = pHeadOfPath;
-  INT16 sSector = 0;
-  INT16 sCurrentSector = -1;
+  int16_t sSector = 0;
+  int16_t sCurrentSector = -1;
 
   // is there in fact a path?
   if (pNode == NULL) {
@@ -508,7 +508,7 @@ PathSt *ClearStrategicPathListAfterThisSector(PathSt *pHeadOfPath, INT16 sX, INT
   pNode = MoveToEndOfPathList(pNode);
 
   // get current sector value
-  sCurrentSector = (INT16)pNode->uiSectorId;
+  sCurrentSector = (int16_t)pNode->uiSectorId;
 
   // move through list
   while ((pNode) && (sSector != sCurrentSector)) {
@@ -517,7 +517,7 @@ PathSt *ClearStrategicPathListAfterThisSector(PathSt *pHeadOfPath, INT16 sX, INT
 
     // get current sector value
     if (pNode != NULL) {
-      sCurrentSector = (INT16)pNode->uiSectorId;
+      sCurrentSector = (int16_t)pNode->uiSectorId;
     }
   }
 
@@ -649,16 +649,16 @@ PathSt *RemoveHeadFromStrategicPath(PathSt *pList) {
   return (pNewHead);
 }
 
-INT16 GetLastSectorIdInCharactersPath(const SOLDIERTYPE *pCharacter) {
+int16_t GetLastSectorIdInCharactersPath(const SOLDIERTYPE *pCharacter) {
   // will return the last sector of the current path, or the current sector if
   // there's no path
-  INT16 sLastSector = (pCharacter->sSectorX) + (pCharacter->sSectorY) * (MAP_WORLD_X);
+  int16_t sLastSector = (pCharacter->sSectorX) + (pCharacter->sSectorY) * (MAP_WORLD_X);
   PathSt *pNode = NULL;
 
   pNode = GetSoldierMercPathPtr(pCharacter);
 
   while (pNode) {
-    sLastSector = (INT16)(pNode->uiSectorId);
+    sLastSector = (int16_t)(pNode->uiSectorId);
     pNode = pNode->pNext;
   }
 
@@ -693,7 +693,7 @@ PathSt *CopyPaths(PathSt *src) {
 #ifdef BETA_VERSION
 static void VerifyAllMercsInGroupAreOnSameSquad(GROUP const &g) {
   SOLDIERTYPE *pSoldier;
-  INT8 bSquad = -1;
+  int8_t bSquad = -1;
 
   // Let's choose somebody in group.....
   CFOR_EACH_PLAYER_IN_GROUP(pPlayer, &g) {
@@ -713,8 +713,8 @@ static void VerifyAllMercsInGroupAreOnSameSquad(GROUP const &g) {
 #endif
 
 void RebuildWayPointsForGroupPath(PathSt *const pHeadOfPath, GROUP &g) {
-  INT32 iDelta = 0;
-  INT32 iOldDelta = 0;
+  int32_t iDelta = 0;
+  int32_t iOldDelta = 0;
   BOOLEAN fFirstNode = TRUE;
   PathSt *pNode = pHeadOfPath;
   WAYPOINT *wp = NULL;
@@ -800,7 +800,7 @@ void RebuildWayPointsForGroupPath(PathSt *const pHeadOfPath, GROUP &g) {
   // group's last waypoint
   wp = GetFinalWaypoint(&g);
   AssertMsg(wp, "Path exists, but no waypoints were added!  AM-0");
-  AssertMsg(pNode->uiSectorId == (UINT32)CALCULATE_STRATEGIC_INDEX(wp->x, wp->y),
+  AssertMsg(pNode->uiSectorId == (uint32_t)CALCULATE_STRATEGIC_INDEX(wp->x, wp->y),
             "Last waypoint differs from final path sector!  AM-0");
 
   // see if we've already reached the first sector in the path (we never
@@ -827,10 +827,10 @@ void ClearMvtForThisSoldierAndGang(SOLDIERTYPE *pSoldier) {
   ClearMercPathsAndWaypointsForAllInGroup(*pGroup);
 }
 
-BOOLEAN MoveGroupFromSectorToSector(GROUP &g, INT16 const sStartX, INT16 const sStartY,
-                                    INT16 const sDestX, INT16 const sDestY) {
-  PathSt *pNode = BuildAStrategicPath((INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
-                                      (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
+BOOLEAN MoveGroupFromSectorToSector(GROUP &g, int16_t const sStartX, int16_t const sStartY,
+                                    int16_t const sDestX, int16_t const sDestY) {
+  PathSt *pNode = BuildAStrategicPath((int16_t)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
+                                      (int16_t)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
 
   if (pNode == NULL) {
     return (FALSE);
@@ -845,12 +845,12 @@ BOOLEAN MoveGroupFromSectorToSector(GROUP &g, INT16 const sStartX, INT16 const s
   return (TRUE);
 }
 
-static BOOLEAN MoveGroupFromSectorToSectorButAvoidLastSector(GROUP &g, INT16 const sStartX,
-                                                             INT16 const sStartY,
-                                                             INT16 const sDestX,
-                                                             INT16 const sDestY) {
-  PathSt *pNode = BuildAStrategicPath((INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
-                                      (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
+static BOOLEAN MoveGroupFromSectorToSectorButAvoidLastSector(GROUP &g, int16_t const sStartX,
+                                                             int16_t const sStartY,
+                                                             int16_t const sDestX,
+                                                             int16_t const sDestY) {
+  PathSt *pNode = BuildAStrategicPath((int16_t)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
+                                      (int16_t)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
 
   if (pNode == NULL) {
     return (FALSE);
@@ -868,10 +868,10 @@ static BOOLEAN MoveGroupFromSectorToSectorButAvoidLastSector(GROUP &g, INT16 con
   return (TRUE);
 }
 
-BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(GROUP &g, INT16 const sStartX,
-                                                                   INT16 const sStartY,
-                                                                   INT16 const sDestX,
-                                                                   INT16 const sDestY) {
+BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(GROUP &g, int16_t const sStartX,
+                                                                   int16_t const sStartY,
+                                                                   int16_t const sDestX,
+                                                                   int16_t const sDestY) {
   // init sectors with soldiers in them
   InitSectorsWithSoldiersList();
 
@@ -881,8 +881,8 @@ BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(GROUP &g, INT
   // turn on the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = TRUE;
 
-  PathSt *pNode = BuildAStrategicPath((INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
-                                      (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
+  PathSt *pNode = BuildAStrategicPath((int16_t)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
+                                      (int16_t)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
 
   // turn off the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = FALSE;
@@ -902,7 +902,8 @@ BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(GROUP &g, INT
 
 BOOLEAN
 MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(
-    GROUP &g, INT16 const sStartX, INT16 const sStartY, INT16 const sDestX, INT16 const sDestY) {
+    GROUP &g, int16_t const sStartX, int16_t const sStartY, int16_t const sDestX,
+    int16_t const sDestY) {
   // init sectors with soldiers in them
   InitSectorsWithSoldiersList();
 
@@ -912,8 +913,8 @@ MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBefore
   // turn on the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = TRUE;
 
-  PathSt *pNode = BuildAStrategicPath((INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
-                                      (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
+  PathSt *pNode = BuildAStrategicPath((int16_t)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY),
+                                      (int16_t)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), g, FALSE);
 
   // turn off the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = FALSE;
@@ -934,8 +935,8 @@ MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBefore
   return (TRUE);
 }
 
-INT32 GetLengthOfPath(PathSt *pHeadPath) {
-  INT32 iLength = 0;
+int32_t GetLengthOfPath(PathSt *pHeadPath) {
+  int32_t iLength = 0;
   PathSt *pNode = pHeadPath;
 
   while (pNode) {
@@ -946,9 +947,9 @@ INT32 GetLengthOfPath(PathSt *pHeadPath) {
   return (iLength);
 }
 
-INT32 GetLengthOfMercPath(const SOLDIERTYPE *pSoldier) {
+int32_t GetLengthOfMercPath(const SOLDIERTYPE *pSoldier) {
   PathSt *pNode = NULL;
-  INT32 iLength = 0;
+  int32_t iLength = 0;
 
   pNode = GetSoldierMercPathPtr(pSoldier);
   iLength = GetLengthOfPath(pNode);
@@ -983,7 +984,7 @@ PathSt *GetGroupMercPathPtr(GROUP const &g) {
 }
 
 GROUP *GetSoldierGroup(SOLDIERTYPE const &s) {
-  UINT8 const group_id =
+  uint8_t const group_id =
       /* In a vehicle? */
       s.bAssignment == VEHICLE ? pVehicleList[s.iVehicleId].ubMovementGroup :
                                /* Is a vehicle? */
@@ -1044,10 +1045,10 @@ static void ClearPathForSoldier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static void AddSectorToFrontOfMercPath(PathSt **ppMercPath, UINT8 ubSectorX, UINT8 ubSectorY);
+static void AddSectorToFrontOfMercPath(PathSt **ppMercPath, uint8_t ubSectorX, uint8_t ubSectorY);
 
-void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, UINT8 ubSectorX,
-                                                     UINT8 ubSectorY) {
+void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, uint8_t ubSectorX,
+                                                     uint8_t ubSectorY) {
   SOLDIERTYPE *pSoldier = NULL;
 
   CFOR_EACH_PLAYER_IN_GROUP(pPlayer, pGroup) {
@@ -1066,7 +1067,7 @@ void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, UINT8 ubSect
   }
 }
 
-static void AddSectorToFrontOfMercPath(PathSt **ppMercPath, UINT8 ubSectorX, UINT8 ubSectorY) {
+static void AddSectorToFrontOfMercPath(PathSt **ppMercPath, uint8_t ubSectorX, uint8_t ubSectorY) {
   // allocate and hang a new node at the front of the path list
   PathSt *const pNode = MALLOC(PathSt);
   pNode->uiSectorId = CALCULATE_STRATEGIC_INDEX(ubSectorX, ubSectorY);

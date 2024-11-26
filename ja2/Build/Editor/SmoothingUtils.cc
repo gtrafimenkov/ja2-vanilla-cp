@@ -17,12 +17,12 @@
 // could result in multiple wall types for each building.  When processing the
 // region, it is necessary to calculate the roof type by searching for the
 // nearest roof tile.
-UINT16 SearchForWallType(UINT32 iMapIndex) {
+uint16_t SearchForWallType(uint32_t iMapIndex) {
   LEVELNODE *pWall;
-  INT16 sOffset;
-  INT16 x, y, sRadius = 0;
+  int16_t sOffset;
+  int16_t x, y, sRadius = 0;
   if (gfBasement) {
-    UINT16 usWallType;
+    uint16_t usWallType;
     usWallType = GetRandomIndexByRange(FIRSTWALL, LASTWALL);
     if (usWallType == 0xffff) usWallType = FIRSTWALL;
     return usWallType;
@@ -36,19 +36,19 @@ UINT16 SearchForWallType(UINT32 iMapIndex) {
       for (x = -sRadius; x <= sRadius; x++) {
         if (abs(x) == sRadius || abs(y) == sRadius) {
           sOffset = y * WORLD_COLS + x;
-          if (!GridNoOnVisibleWorldTile((INT16)(iMapIndex + sOffset))) {
+          if (!GridNoOnVisibleWorldTile((int16_t)(iMapIndex + sOffset))) {
             continue;
           }
           pWall = gpWorldLevelData[iMapIndex + sOffset].pStructHead;
           while (pWall) {
-            const UINT32 uiTileType = GetTileType(pWall->usIndex);
+            const uint32_t uiTileType = GetTileType(pWall->usIndex);
             if (uiTileType >= FIRSTWALL &&
                 uiTileType <= LASTWALL) {  // found a roof, so return its type.
-              return (UINT16)uiTileType;
+              return (uint16_t)uiTileType;
             }
             // if( uiTileType >= FIRSTWINDOW && uiTileType <= LASTWINDOW )
             //{	//Window types can be converted to a wall type.
-            //	return (UINT16)(FIRSTWALL + uiTileType - FIRSTWINDOW );
+            //	return (uint16_t)(FIRSTWALL + uiTileType - FIRSTWINDOW );
             //}
             pWall = pWall->pNext;
           }
@@ -63,17 +63,17 @@ UINT16 SearchForWallType(UINT32 iMapIndex) {
  * result in multiple roof types for each building. When processing the region,
  * it is necessary to calculate the roof type by searching for the nearest roof
  * tile. */
-UINT16 SearchForRoofType(UINT32 const map_idx) {
-  for (INT16 radius = 0; radius != 32; ++radius) {
-    for (INT16 y = -radius; y <= radius; ++y) {
-      for (INT16 x = -radius; x <= radius; ++x) {
+uint16_t SearchForRoofType(uint32_t const map_idx) {
+  for (int16_t radius = 0; radius != 32; ++radius) {
+    for (int16_t y = -radius; y <= radius; ++y) {
+      for (int16_t x = -radius; x <= radius; ++x) {
         if (abs(x) != radius && abs(y) != radius) continue;
 
         GridNo const grid_no = map_idx + y * WORLD_COLS + x;
         if (!GridNoOnVisibleWorldTile(grid_no)) continue;
 
         for (LEVELNODE const *i = gpWorldLevelData[grid_no].pRoofHead; i; i = i->pNext) {
-          UINT32 const tile_type = GetTileType(i->usIndex);
+          uint32_t const tile_type = GetTileType(i->usIndex);
           if (tile_type < FIRSTROOF && LASTROOF < tile_type) continue;
           // found a roof, so return its type.
           return tile_type;
@@ -84,11 +84,11 @@ UINT16 SearchForRoofType(UINT32 const map_idx) {
   return 0xFFFF;
 }
 
-static bool RoofAtGridNo(UINT32 const map_idx) {
+static bool RoofAtGridNo(uint32_t const map_idx) {
   for (LEVELNODE const *i = gpWorldLevelData[map_idx].pRoofHead; i;) {
     if (i->usIndex == NO_TILE) continue;
 
-    UINT32 const tile_type = GetTileType(i->usIndex);
+    uint32_t const tile_type = GetTileType(i->usIndex);
     if (FIRSTROOF <= tile_type && tile_type <= SECONDSLANTROOF) return true;
     i = i->pNext;  // XXX TODO0009 if i->usIndex == NO_TILE this is an endless
                    // loop
@@ -96,26 +96,26 @@ static bool RoofAtGridNo(UINT32 const map_idx) {
   return false;
 }
 
-bool BuildingAtGridNo(UINT32 const map_idx) {
+bool BuildingAtGridNo(uint32_t const map_idx) {
   return RoofAtGridNo(map_idx) || FloorAtGridNo(map_idx);
 }
 
-static LEVELNODE *GetHorizontalFence(UINT32 map_idx);
-static LEVELNODE *GetVerticalFence(UINT32 map_idx);
+static LEVELNODE *GetHorizontalFence(uint32_t map_idx);
+static LEVELNODE *GetVerticalFence(uint32_t map_idx);
 
-bool ValidDecalPlacement(UINT32 const map_idx) {
+bool ValidDecalPlacement(uint32_t const map_idx) {
   return GetVerticalWall(map_idx) || GetHorizontalWall(map_idx) || GetVerticalFence(map_idx) ||
          GetHorizontalFence(map_idx);
 }
 
-LEVELNODE *GetVerticalWall(UINT32 const map_idx) {
+LEVELNODE *GetVerticalWall(uint32_t const map_idx) {
   for (LEVELNODE *i = gpWorldLevelData[map_idx].pStructHead; i; i = i->pNext) {
     if (i->usIndex == NO_TILE) continue;
 
-    UINT32 const tile_type = GetTileType(i->usIndex);
+    uint32_t const tile_type = GetTileType(i->usIndex);
     if ((FIRSTWALL <= tile_type && tile_type <= LASTWALL) ||
         (FIRSTDOOR <= tile_type && tile_type <= LASTDOOR)) {
-      UINT16 const wall_orientation = GetWallOrientation(i->usIndex);
+      uint16_t const wall_orientation = GetWallOrientation(i->usIndex);
       if (wall_orientation != INSIDE_TOP_RIGHT && wall_orientation != OUTSIDE_TOP_RIGHT) continue;
       return i;
     }
@@ -123,14 +123,14 @@ LEVELNODE *GetVerticalWall(UINT32 const map_idx) {
   return 0;
 }
 
-LEVELNODE *GetHorizontalWall(UINT32 const map_idx) {
+LEVELNODE *GetHorizontalWall(uint32_t const map_idx) {
   for (LEVELNODE *i = gpWorldLevelData[map_idx].pStructHead; i; i = i->pNext) {
     if (i->usIndex == NO_TILE) continue;
 
-    UINT32 const tile_type = GetTileType(i->usIndex);
+    uint32_t const tile_type = GetTileType(i->usIndex);
     if ((FIRSTWALL <= tile_type && tile_type <= LASTWALL) ||
         (FIRSTDOOR <= tile_type && tile_type <= LASTDOOR)) {
-      UINT16 const wall_orientation = GetWallOrientation(i->usIndex);
+      uint16_t const wall_orientation = GetWallOrientation(i->usIndex);
       if (wall_orientation != INSIDE_TOP_LEFT && wall_orientation != OUTSIDE_TOP_LEFT) continue;
       return i;
     }
@@ -138,41 +138,41 @@ LEVELNODE *GetHorizontalWall(UINT32 const map_idx) {
   return 0;
 }
 
-UINT16 GetVerticalWallType(UINT32 const map_idx) {
+uint16_t GetVerticalWallType(uint32_t const map_idx) {
   LEVELNODE const *const wall = GetVerticalWall(map_idx);
   return wall ? GetWallType(wall, map_idx) : 0;
 }
 
-UINT16 GetHorizontalWallType(UINT32 const map_idx) {
+uint16_t GetHorizontalWallType(uint32_t const map_idx) {
   LEVELNODE const *const wall = GetHorizontalWall(map_idx);
   return wall ? GetWallType(wall, map_idx) : 0;
 }
 
-static LEVELNODE *GetVerticalFence(UINT32 const map_idx) {
+static LEVELNODE *GetVerticalFence(uint32_t const map_idx) {
   for (LEVELNODE *i = gpWorldLevelData[map_idx].pStructHead; i; i = i->pNext) {
     if (i->usIndex == NO_TILE) continue;
     if (GetTileType(i->usIndex) != FENCESTRUCT) continue;
 
-    UINT16 const wall_orientation = GetWallOrientation(i->usIndex);
+    uint16_t const wall_orientation = GetWallOrientation(i->usIndex);
     if (wall_orientation != INSIDE_TOP_RIGHT && wall_orientation != OUTSIDE_TOP_RIGHT) continue;
     return i;
   }
   return 0;
 }
 
-static LEVELNODE *GetHorizontalFence(UINT32 const map_idx) {
+static LEVELNODE *GetHorizontalFence(uint32_t const map_idx) {
   for (LEVELNODE *i = gpWorldLevelData[map_idx].pStructHead; i; i = i->pNext) {
     if (i->usIndex == NO_TILE) continue;
     if (GetTileType(i->usIndex) != FENCESTRUCT) continue;
 
-    UINT16 const wall_orientation = GetWallOrientation(i->usIndex);
+    uint16_t const wall_orientation = GetWallOrientation(i->usIndex);
     if (wall_orientation != INSIDE_TOP_LEFT && wall_orientation != OUTSIDE_TOP_LEFT) continue;
     return i;
   }
   return 0;
 }
 
-void EraseHorizontalWall(UINT32 iMapIndex) {
+void EraseHorizontalWall(uint32_t iMapIndex) {
   LEVELNODE *pWall;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -182,7 +182,7 @@ void EraseHorizontalWall(UINT32 iMapIndex) {
   }
 }
 
-void EraseVerticalWall(UINT32 iMapIndex) {
+void EraseVerticalWall(uint32_t iMapIndex) {
   LEVELNODE *pWall;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -192,41 +192,42 @@ void EraseVerticalWall(UINT32 iMapIndex) {
   }
 }
 
-static void ChangeWall(LEVELNODE const *const wall, UINT32 const map_idx, UINT16 const new_piece) {
+static void ChangeWall(LEVELNODE const *const wall, uint32_t const map_idx,
+                       uint16_t const new_piece) {
   if (!wall) return;
 
-  UINT32 const tile_type = GetTileType(wall->usIndex);
+  uint32_t const tile_type = GetTileType(wall->usIndex);
   if (tile_type < FIRSTWALL || LASTWALL < tile_type) return;
 
   // We have the wall, now change its type
-  INT16 const idx = PickAWallPiece(new_piece);
+  int16_t const idx = PickAWallPiece(new_piece);
   AddToUndoList(map_idx);
-  UINT16 const tile_idx = GetTileIndexFromTypeSubIndex(tile_type, idx);
+  uint16_t const tile_idx = GetTileIndexFromTypeSubIndex(tile_type, idx);
   ReplaceStructIndex(map_idx, wall->usIndex, tile_idx);
 }
 
-static void ChangeHorizontalWall(UINT32 const map_idx, UINT16 const new_piece) {
+static void ChangeHorizontalWall(uint32_t const map_idx, uint16_t const new_piece) {
   ChangeWall(GetHorizontalWall(map_idx), map_idx, new_piece);
 }
 
-void ChangeVerticalWall(UINT32 const map_idx, UINT16 const new_piece) {
+void ChangeVerticalWall(uint32_t const map_idx, uint16_t const new_piece) {
   ChangeWall(GetVerticalWall(map_idx), map_idx, new_piece);
 }
 
-UINT16 GetWallType(LEVELNODE const *const wall, UINT32 const map_idx) {
-  UINT32 const tile_type = GetTileType(wall->usIndex);
+uint16_t GetWallType(LEVELNODE const *const wall, uint32_t const map_idx) {
+  uint32_t const tile_type = GetTileType(wall->usIndex);
   /* Doors do not contain the wall type, so search for the nearest wall to
    * extract it */
   return FIRSTDOOR <= tile_type && tile_type <= LASTDOOR ? SearchForWallType(map_idx)
-                                                         : (UINT16)tile_type;
+                                                         : (uint16_t)tile_type;
 }
 
-void RestoreWalls(UINT32 const map_idx) {
+void RestoreWalls(uint32_t const map_idx) {
   bool done = false;
 
   if (LEVELNODE const *const wall = GetHorizontalWall(map_idx)) {
-    UINT16 const wall_type = GetWallType(wall, map_idx);
-    UINT16 const wall_orientation = GetWallOrientation(wall->usIndex);
+    uint16_t const wall_type = GetWallType(wall, map_idx);
+    uint16_t const wall_orientation = GetWallOrientation(wall->usIndex);
     AddToUndoList(map_idx);
     RemoveStruct(map_idx, wall->usIndex);
     RemoveAllShadowsOfTypeRange(map_idx, FIRSTWALL, LASTWALL);
@@ -242,8 +243,8 @@ void RestoreWalls(UINT32 const map_idx) {
   }
 
   if (LEVELNODE const *const wall = GetVerticalWall(map_idx)) {
-    UINT16 const wall_type = GetWallType(wall, map_idx);
-    UINT16 const wall_orientation = GetWallOrientation(wall->usIndex);
+    uint16_t const wall_type = GetWallType(wall, map_idx);
+    uint16_t const wall_orientation = GetWallOrientation(wall->usIndex);
     AddToUndoList(map_idx);
     RemoveStruct(map_idx, wall->usIndex);
     RemoveAllShadowsOfTypeRange(map_idx, FIRSTWALL, LASTWALL);
@@ -271,11 +272,11 @@ void RestoreWalls(UINT32 const map_idx) {
 
   /* Found a wall.  Let's back up the current wall value, and restore it after
    * pasting a smart wall. */
-  UINT16 const wall_type = GetWallType(wall, map_idx);
+  uint16_t const wall_type = GetWallType(wall, map_idx);
   if (wall_type == 0xFFFF) return;
 
-  UINT8 const save_wall_ui_value = gubWallUIValue;  // Save the wall UI value
-  gubWallUIValue = (UINT8)wall_type;                // Trick the UI value
-  PasteSmartWall(map_idx);                          // Paste smart wall with fake UI value
-  gubWallUIValue = save_wall_ui_value;              // Restore the real UI value
+  uint8_t const save_wall_ui_value = gubWallUIValue;  // Save the wall UI value
+  gubWallUIValue = (uint8_t)wall_type;                // Trick the UI value
+  PasteSmartWall(map_idx);                            // Paste smart wall with fake UI value
+  gubWallUIValue = save_wall_ui_value;                // Restore the real UI value
 }

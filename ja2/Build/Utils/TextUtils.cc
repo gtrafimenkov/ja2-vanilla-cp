@@ -8,16 +8,16 @@
 
 #define ITEMSTRINGFILENAME BINARYDATADIR "/itemdesc.edt"
 
-void LoadItemInfo(UINT16 const ubIndex, wchar_t Info[]) {
-  UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex;
+void LoadItemInfo(uint16_t const ubIndex, wchar_t Info[]) {
+  uint32_t Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex;
   LoadEncryptedDataFromFile(ITEMSTRINGFILENAME, Info, Seek + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME,
                             SIZE_ITEM_INFO);
 }
 
 static void LoadAllItemNames() {
   AutoSGPFile File(FileMan::openForReadingSmart(ITEMSTRINGFILENAME, true));
-  for (UINT32 i = 0; i < MAXITEMS; i++) {
-    UINT32 Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * i;
+  for (uint32_t i = 0; i < MAXITEMS; i++) {
+    uint32_t Seek = (SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * i;
     LoadEncryptedData(File, ShortItemNames[i], Seek, SIZE_SHORT_ITEM_NAME);
     LoadEncryptedData(File, ItemNames[i], Seek + SIZE_SHORT_ITEM_NAME, SIZE_ITEM_NAME);
   }
@@ -34,13 +34,13 @@ const wchar_t *GetWeightUnitString() {
   }
 }
 
-FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight) {
-  FLOAT fWeight = 0.0f;
+float GetWeightBasedOnMetricOption(uint32_t uiObjectWeight) {
+  float fWeight = 0.0f;
 
   // if the user is smart and wants things displayed in 'metric'
   if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM])  // metric
   {
-    fWeight = (FLOAT)uiObjectWeight;
+    fWeight = (float)uiObjectWeight;
   }
 
   // else the user is a caveman and display it in pounds

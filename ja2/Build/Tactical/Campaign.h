@@ -44,7 +44,7 @@ static inline StatKind operator++(StatKind &s) { return s = s + 1; }
 #define TRAINIMPROVERATE 2  // increase to make training mercs improve more
 
 #define SALARY_CHANGE_PER_LEVEL 1.25  // Mercs salary is multiplied by this
-#define MAX_DAILY_SALARY 30000        // must fit into an INT16 (32k)
+#define MAX_DAILY_SALARY 30000        // must fit into an int16_t (32k)
 #define MAX_LARGE_SALARY 500000       // no limit, really
 
 // training cap: you can't train any stat/skill beyond this value
@@ -63,23 +63,23 @@ enum {
   NUM_EXP_BONUS_TYPES,
 };
 
-void StatChange(SOLDIERTYPE &, StatKind, UINT16 n_chances, StatChangeCause);
+void StatChange(SOLDIERTYPE &, StatKind, uint16_t n_chances, StatChangeCause);
 
 void HandleUnhiredMercImprovement(MERCPROFILESTRUCT &);
-void HandleUnhiredMercDeaths(INT32 iProfileID);
+void HandleUnhiredMercDeaths(int32_t iProfileID);
 
-UINT8 CurrentPlayerProgressPercentage();
-UINT8 HighestPlayerProgressPercentage();
+uint8_t CurrentPlayerProgressPercentage();
+uint8_t HighestPlayerProgressPercentage();
 
 void HourlyProgressUpdate();
 
 void HandleAnyStatChangesAfterAttack();
 
-void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType);
+void AwardExperienceBonusToActiveSquad(uint8_t ubExpBonusType);
 
 void BuildStatChangeString(wchar_t *wString, size_t Length, wchar_t const *wName, BOOLEAN fIncrease,
-                           INT16 sPtsChanged, StatKind);
+                           int16_t sPtsChanged, StatKind);
 
-void MERCMercWentUpALevelSendEmail(UINT8 ubMercMercIdValue);
+void MERCMercWentUpALevelSendEmail(uint8_t ubMercMercIdValue);
 
 #endif

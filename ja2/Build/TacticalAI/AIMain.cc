@@ -56,7 +56,7 @@
 
 BOOLEAN gfTurnBasedAI;
 
-INT8 gbDiff[MAX_DIFF_PARMS][5] = {
+int8_t gbDiff[MAX_DIFF_PARMS][5] = {
     //       AI DIFFICULTY SETTING
     // WIMPY  EASY  NORMAL  TOUGH  ELITE
     {-20, -10, 0, 10, 20},  // DIFF_ENEMY_EQUIP_MOD
@@ -794,7 +794,7 @@ void ActionDone(SOLDIERTYPE *pSoldier) {
 
 // GLOBALS:
 
-UINT8 SkipCoverCheck = FALSE;
+uint8_t SkipCoverCheck = FALSE;
 THREATTYPE Threat[MAXMERCS];
 
 // threat percentage is based on the certainty of opponent knowledge:
@@ -859,7 +859,7 @@ void CancelAIAction(SOLDIERTYPE *const pSoldier) {
   ActionDone(pSoldier);
 }
 
-INT16 ActionInProgress(SOLDIERTYPE *pSoldier) {
+int16_t ActionInProgress(SOLDIERTYPE *pSoldier) {
   // if NPC has a desired destination, but isn't currently going there
   if ((pSoldier->sFinalDestination != NOWHERE) &&
       (pSoldier->sDestination != pSoldier->sFinalDestination)) {
@@ -876,7 +876,7 @@ INT16 ActionInProgress(SOLDIERTYPE *pSoldier) {
 
     // don't try to pay any more APs for this, it was paid for once already!
     pSoldier->bDesiredDirection =
-        (INT8)pSoldier->usActionData;  // turn to face direction in actionData
+        (int8_t)pSoldier->usActionData;  // turn to face direction in actionData
     return (TRUE);
   }
 
@@ -1218,7 +1218,7 @@ static void AIDecideRadioAnimation(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
+int8_t ExecuteAction(SOLDIERTYPE *pSoldier) {
   // NumMessage("ExecuteAction - Guy#",pSoldier->ubID);
 
   // in most cases, merc will change location, or may cause damage to opponents,
@@ -1267,7 +1267,8 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
       DebugAI("ExecuteAction: SkipCoverCheck ON\n");
 #endif
 
-      //			pSoldier->bDesiredDirection = (UINT8) ;   // turn to face direction
+      //			pSoldier->bDesiredDirection = (uint8_t) ;   // turn to face
+      // direction
       // in actionData
       SendSoldierSetDesiredDirectionEvent(pSoldier, pSoldier->usActionData);
       // now we'll have to wait for the turning to finish; no need to call
@@ -1402,7 +1403,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
               ReplaceLocationInNPCDataFromProfileID(
                   pSoldier->ubProfile, pSoldier->sAbsoluteFinalDestination, pSoldier->sGridNo);
               NPCGotoGridNo(pSoldier->ubProfile, pSoldier->sGridNo,
-                            (UINT8)(pSoldier->ubQuoteRecord - 1));
+                            (uint8_t)(pSoldier->ubQuoteRecord - 1));
             } else {
               // This is important, so try taking a path through people (and
               // bumping them aside)
@@ -1413,7 +1414,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
               } else {
                 // Have buddy wait a while...
                 pSoldier->bNextAction = AI_ACTION_WAIT;
-                pSoldier->usNextActionData = (UINT16)REALTIME_AI_DELAY;
+                pSoldier->usNextActionData = (uint16_t)REALTIME_AI_DELAY;
               }
             }
 
@@ -1471,7 +1472,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
         SaveGame(ERROR_SAVE);
 #endif
         // temporarily black list this gridno to stop enemy from going there
-        pSoldier->sBlackList = (INT16)pSoldier->usActionData;
+        pSoldier->sBlackList = (int16_t)pSoldier->usActionData;
 
         DebugAI(String("Setting blacklist for %d to %d", pSoldier->ubID, pSoldier->sBlackList));
 
@@ -1559,7 +1560,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
     case AI_ACTION_PULL_TRIGGER:  // activate an adjacent panic trigger
 
       // turn to face trigger first
-      if (FindStructure((INT16)(pSoldier->sGridNo + DirectionInc(NORTH)), STRUCTURE_SWITCH)) {
+      if (FindStructure((int16_t)(pSoldier->sGridNo + DirectionInc(NORTH)), STRUCTURE_SWITCH)) {
         SendSoldierSetDesiredDirectionEvent(pSoldier, NORTH);
       } else {
         SendSoldierSetDesiredDirectionEvent(pSoldier, WEST);
@@ -1679,10 +1680,10 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
     case AI_ACTION_UNLOCK_DOOR:
     case AI_ACTION_LOCK_DOOR: {
       STRUCTURE *pStructure;
-      INT8 bDirection;
-      INT16 sDoorGridNo;
+      int8_t bDirection;
+      int16_t sDoorGridNo;
 
-      bDirection = (INT8)GetDirectionFromGridNo(pSoldier->usActionData, pSoldier);
+      bDirection = (int8_t)GetDirectionFromGridNo(pSoldier->usActionData, pSoldier);
       if (bDirection == EAST || bDirection == SOUTH) {
         sDoorGridNo = pSoldier->sGridNo;
       } else {
@@ -1807,7 +1808,7 @@ void InitAttackType(ATTACKTYPE *pAttack) {
   pAttack->ubAPCost = 0;
 }
 
-void HandleInitialRedAlert(INT8 bTeam) {
+void HandleInitialRedAlert(int8_t bTeam) {
   if (!gTacticalStatus.Team[bTeam].bAwareOfOpposition) {
   }
 
@@ -1838,7 +1839,7 @@ void HandleInitialRedAlert(INT8 bTeam) {
 }
 
 static void ManChecksOnFriends(SOLDIERTYPE *pSoldier) {
-  INT16 sDistVisible;
+  int16_t sDistVisible;
 
   // THIS ROUTINE SHOULD ONLY BE CALLED FOR SOLDIERS ON STATUS GREEN or YELLOW
 
@@ -1859,7 +1860,7 @@ static void ManChecksOnFriends(SOLDIERTYPE *pSoldier) {
       // and can trace a line of sight to his x,y coordinates
       // if (1) //***
       // SoldierToSoldierLineOfSightTest(pSoldier,pFriend,STRAIGHT,TRUE))
-      if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, (UINT8)sDistVisible, TRUE)) {
+      if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, (uint8_t)sDistVisible, TRUE)) {
         // if my friend is in battle or something is clearly happening there
         if ((pFriend->bAlertStatus >= STATUS_RED) || pFriend->bUnderFire ||
             (pFriend->bLife < OKLIFE)) {

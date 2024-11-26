@@ -10,10 +10,10 @@
   (((x) >= r->iLeft) && ((x) <= r->iRight) && ((y) >= r->iTop) && ((y) <= r->iBottom))
 
 void SmoothAllTerrainWorld();
-void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSmooth);
+void SmoothTerrain(int gridno, int origType, uint16_t *piNewTile, BOOLEAN fForceSmooth);
 
-void SmoothTerrainRadius(UINT32 iMapIndex, UINT32 uiCheckType, UINT8 ubRadius,
+void SmoothTerrainRadius(uint32_t iMapIndex, uint32_t uiCheckType, uint8_t ubRadius,
                          BOOLEAN fForceSmooth);
-void SmoothAllTerrainTypeRadius(UINT32 iMapIndex, UINT8 ubRadius, BOOLEAN fForceSmooth);
+void SmoothAllTerrainTypeRadius(uint32_t iMapIndex, uint8_t ubRadius, BOOLEAN fForceSmooth);
 
 #endif

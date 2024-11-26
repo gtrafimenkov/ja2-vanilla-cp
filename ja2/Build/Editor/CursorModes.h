@@ -13,15 +13,15 @@ enum {
   NUMSELECTIONTYPES
 };
 
-extern UINT16 gusSelectionType;
-extern UINT16 gusSelectionWidth;
-extern UINT16 gusPreserveSelectionWidth;
-extern UINT16 gusSelectionDensity;
-extern UINT16 gusSavedSelectionType;
-extern UINT16 gusSavedBuildingSelectionType;
+extern uint16_t gusSelectionType;
+extern uint16_t gusSelectionWidth;
+extern uint16_t gusPreserveSelectionWidth;
+extern uint16_t gusSelectionDensity;
+extern uint16_t gusSavedSelectionType;
+extern uint16_t gusSavedBuildingSelectionType;
 
 BOOLEAN PerformDensityTest();
-void SetDrawingMode(INT32 iMode);
+void SetDrawingMode(int32_t iMode);
 void UpdateCursorAreas();
 void IncreaseSelectionDensity();
 void DecreaseSelectionDensity();

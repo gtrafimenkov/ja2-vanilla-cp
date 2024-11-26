@@ -33,9 +33,9 @@ struct SDL_TextInputEvent;
 #define BUTTON_REPEAT_TIME 50
 
 struct InputAtom {
-  UINT16 usKeyState;
-  UINT16 usEvent;
-  UINT32 usParam;
+  uint16_t usKeyState;
+  uint16_t usEvent;
+  uint32_t usParam;
   wchar_t Char;
 };
 
@@ -51,9 +51,9 @@ void TextInput(const SDL_TextInputEvent *);
 
 extern void GetMousePos(SGPPoint *Point);
 
-extern BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags);
+extern BOOLEAN DequeueSpecificEvent(InputAtom *Event, uint32_t uiMaskFlags);
 
-extern void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2);
+extern void RestrictMouseToXYXY(uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t usY2);
 void RestrictMouseCursor(const SGPRect *pRectangle);
 extern void SetSafeMousePosition(int x, int y);
 extern void FreeMouseCursor();
@@ -61,12 +61,12 @@ extern BOOLEAN IsCursorRestricted();
 extern void GetRestrictedClipCursor(SGPRect *pRectangle);
 extern void RestoreCursorClipRect();
 
-void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos);
+void SimulateMouseMovement(uint32_t uiNewXPos, uint32_t uiNewYPos);
 
 void DequeueAllKeyBoardEvents();
 
-extern UINT16 gusMouseXPos;         // X position of the mouse on screen
-extern UINT16 gusMouseYPos;         // y position of the mouse on screen
+extern uint16_t gusMouseXPos;       // X position of the mouse on screen
+extern uint16_t gusMouseYPos;       // y position of the mouse on screen
 extern BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
 extern BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
 

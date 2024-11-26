@@ -16,38 +16,38 @@
 #define DRAW_CLIFFS 1
 #define DRAW_CLIFF_LAND 2
 
-extern UINT16 CurrentPaste;
+extern uint16_t CurrentPaste;
 
-void EraseMapTile(UINT32 iMapIndex);
-void QuickEraseMapTile(UINT32 iMapIndex);
-void DeleteStuffFromMapTile(UINT32 iMapIndex);
+void EraseMapTile(uint32_t iMapIndex);
+void QuickEraseMapTile(uint32_t iMapIndex);
+void DeleteStuffFromMapTile(uint32_t iMapIndex);
 
-void PasteDebris(UINT32 iMapIndex);
+void PasteDebris(uint32_t iMapIndex);
 
-void PasteStructure(UINT32 iMapIndex);
-void PasteStructure1(UINT32 iMapIndex);
-void PasteStructure2(UINT32 iMapIndex);
+void PasteStructure(uint32_t iMapIndex);
+void PasteStructure1(uint32_t iMapIndex);
+void PasteStructure2(uint32_t iMapIndex);
 
-void PasteSingleWall(UINT32 iMapIndex);
-void PasteSingleDoor(UINT32 iMapIndex);
-void PasteSingleWindow(UINT32 iMapIndex);
-void PasteSingleRoof(UINT32 iMapIndex);
-void PasteSingleBrokenWall(UINT32 iMapIndex);
-void PasteSingleDecoration(UINT32 iMapIndex);
-void PasteSingleDecal(UINT32 iMapIndex);
-void PasteSingleFloor(UINT32 iMapIndex);
-void PasteSingleToilet(UINT32 iMapIndex);
-void PasteRoomNumber(UINT32 iMapIndex, UINT8 ubRoomNumber);
+void PasteSingleWall(uint32_t iMapIndex);
+void PasteSingleDoor(uint32_t iMapIndex);
+void PasteSingleWindow(uint32_t iMapIndex);
+void PasteSingleRoof(uint32_t iMapIndex);
+void PasteSingleBrokenWall(uint32_t iMapIndex);
+void PasteSingleDecoration(uint32_t iMapIndex);
+void PasteSingleDecal(uint32_t iMapIndex);
+void PasteSingleFloor(uint32_t iMapIndex);
+void PasteSingleToilet(uint32_t iMapIndex);
+void PasteRoomNumber(uint32_t iMapIndex, uint8_t ubRoomNumber);
 
-UINT16 GetRandomIndexByRange(UINT16 usRangeStart, UINT16 usRangeEnd);
+uint16_t GetRandomIndexByRange(uint16_t usRangeStart, uint16_t usRangeEnd);
 
-void PasteFloor(UINT32 iMapIndex, UINT16 usFloorIndex, BOOLEAN fReplace);
+void PasteFloor(uint32_t iMapIndex, uint16_t usFloorIndex, BOOLEAN fReplace);
 
-void PasteBanks(UINT32 iMapIndex, BOOLEAN fReplace);
-void PasteRoads(UINT32 iMapIndex);
+void PasteBanks(uint32_t iMapIndex, BOOLEAN fReplace);
+void PasteRoads(uint32_t iMapIndex);
 
-void PasteTexture(UINT32 iMapIndex);
-void PasteTextureCommon(UINT32 iMapIndex);
+void PasteTexture(uint32_t iMapIndex);
+void PasteTextureCommon(uint32_t iMapIndex);
 
 void RaiseWorldLand();
 

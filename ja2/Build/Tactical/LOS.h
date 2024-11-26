@@ -3,11 +3,11 @@
 
 #include "JA2Types.h"
 
-//#define LOS_DEBUG
+// #define LOS_DEBUG
 
 // fixed-point arithmetic definitions start here
 
-typedef INT32 FIXEDPT;
+typedef int32_t FIXEDPT;
 // rem 1 signed bit at the top
 #define FIXEDPT_WHOLE_BITS 11
 #define FIXEDPT_FRACTIONAL_BITS 20
@@ -43,55 +43,58 @@ enum CollisionEnums {
   COLLISION_WATER
 };
 
-INT32 CheckForCollision(FLOAT dX, FLOAT dY, FLOAT dZ, FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ,
-                        UINT16 *pusStructureID, FLOAT *pdNormalX, FLOAT *pdNormalY,
-                        FLOAT *pdNormalZ);
+int32_t CheckForCollision(float dX, float dY, float dZ, float dDeltaX, float dDeltaY, float dDeltaZ,
+                          uint16_t *pusStructureID, float *pdNormalX, float *pdNormalY,
+                          float *pdNormalZ);
 
-INT8 FireBulletGivenTarget(SOLDIERTYPE *pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ,
-                           UINT16 usHandItem, INT16 sHitBy, BOOLEAN fBuckshot, BOOLEAN fFake);
+int8_t FireBulletGivenTarget(SOLDIERTYPE *pFirer, float dEndX, float dEndY, float dEndZ,
+                             uint16_t usHandItem, int16_t sHitBy, BOOLEAN fBuckshot, BOOLEAN fFake);
 
-INT32 SoldierToSoldierLineOfSightTest(const SOLDIERTYPE *pStartSoldier,
-                                      const SOLDIERTYPE *pEndSoldier, UINT8 ubTileSightLimit,
-                                      INT8 bAware);
-INT32 SoldierToLocationLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo,
-                                       UINT8 ubSightLimit, INT8 bAware);
-INT32 SoldierTo3DLocationLineOfSightTest(const SOLDIERTYPE *pStartSoldier, INT16 sGridNo,
-                                         INT8 bLevel, INT8 bCubeLevel, UINT8 ubTileSightLimit,
-                                         INT8 bAware);
-INT32 SoldierToBodyPartLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel,
-                                       UINT8 ubAimLocation, UINT8 ubTileSightLimit, INT8 bAware);
-INT32 SoldierToVirtualSoldierLineOfSightTest(const SOLDIERTYPE *pStartSoldier, INT16 sGridNo,
-                                             INT8 bLevel, INT8 bStance, UINT8 ubTileSightLimit,
-                                             INT8 bAware);
-UINT8 SoldierToSoldierBodyPartChanceToGetThrough(SOLDIERTYPE *pStartSoldier,
-                                                 const SOLDIERTYPE *pEndSoldier,
-                                                 UINT8 ubAimLocation);
-UINT8 AISoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier,
-                                           const SOLDIERTYPE *pEndSoldier);
-UINT8 AISoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel,
-                                            INT8 bCubeLevel);
-UINT8 SoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel,
-                                          INT8 bCubeLevel, const SOLDIERTYPE *target);
-INT16 SoldierToLocationWindowTest(const SOLDIERTYPE *pStartSoldier, INT16 sEndGridNo);
-INT32 LocationToLocationLineOfSightTest(INT16 sStartGridNo, INT8 bStartLevel, INT16 sEndGridNo,
-                                        INT8 bEndLevel, UINT8 ubTileSightLimit, INT8 bAware);
+int32_t SoldierToSoldierLineOfSightTest(const SOLDIERTYPE *pStartSoldier,
+                                        const SOLDIERTYPE *pEndSoldier, uint8_t ubTileSightLimit,
+                                        int8_t bAware);
+int32_t SoldierToLocationLineOfSightTest(SOLDIERTYPE *pStartSoldier, int16_t sGridNo,
+                                         uint8_t ubSightLimit, int8_t bAware);
+int32_t SoldierTo3DLocationLineOfSightTest(const SOLDIERTYPE *pStartSoldier, int16_t sGridNo,
+                                           int8_t bLevel, int8_t bCubeLevel,
+                                           uint8_t ubTileSightLimit, int8_t bAware);
+int32_t SoldierToBodyPartLineOfSightTest(SOLDIERTYPE *pStartSoldier, int16_t sGridNo, int8_t bLevel,
+                                         uint8_t ubAimLocation, uint8_t ubTileSightLimit,
+                                         int8_t bAware);
+int32_t SoldierToVirtualSoldierLineOfSightTest(const SOLDIERTYPE *pStartSoldier, int16_t sGridNo,
+                                               int8_t bLevel, int8_t bStance,
+                                               uint8_t ubTileSightLimit, int8_t bAware);
+uint8_t SoldierToSoldierBodyPartChanceToGetThrough(SOLDIERTYPE *pStartSoldier,
+                                                   const SOLDIERTYPE *pEndSoldier,
+                                                   uint8_t ubAimLocation);
+uint8_t AISoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier,
+                                             const SOLDIERTYPE *pEndSoldier);
+uint8_t AISoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, int16_t sGridNo,
+                                              int8_t bLevel, int8_t bCubeLevel);
+uint8_t SoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, int16_t sGridNo,
+                                            int8_t bLevel, int8_t bCubeLevel,
+                                            const SOLDIERTYPE *target);
+int16_t SoldierToLocationWindowTest(const SOLDIERTYPE *pStartSoldier, int16_t sEndGridNo);
+int32_t LocationToLocationLineOfSightTest(int16_t sStartGridNo, int8_t bStartLevel,
+                                          int16_t sEndGridNo, int8_t bEndLevel,
+                                          uint8_t ubTileSightLimit, int8_t bAware);
 
-BOOLEAN CalculateSoldierZPos(const SOLDIERTYPE *pSoldier, UINT8 ubPosType, FLOAT *pdZPos);
+BOOLEAN CalculateSoldierZPos(const SOLDIERTYPE *pSoldier, uint8_t ubPosType, float *pdZPos);
 
 #define HEIGHT_UNITS 256
 #define HEIGHT_UNITS_PER_INDEX (HEIGHT_UNITS / PROFILE_Z_SIZE)
 #define MAX_STRUCTURE_HEIGHT 50
 // 5.12 == HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT
-#define CONVERT_PIXELS_TO_HEIGHTUNITS(n) ((n)*HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT)
+#define CONVERT_PIXELS_TO_HEIGHTUNITS(n) ((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT)
 #define CONVERT_PIXELS_TO_INDEX(n) \
-  ((n)*HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS_PER_INDEX)
+  ((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS_PER_INDEX)
 #define CONVERT_HEIGHTUNITS_TO_INDEX(n) ((n) / HEIGHT_UNITS_PER_INDEX)
 #define CONVERT_HEIGHTUNITS_TO_DISTANCE(n) ((n) / (HEIGHT_UNITS / CELL_X_SIZE))
-#define CONVERT_HEIGHTUNITS_TO_PIXELS(n) ((n)*MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS)
+#define CONVERT_HEIGHTUNITS_TO_PIXELS(n) ((n) * MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS)
 #define CONVERT_WITHINTILE_TO_INDEX(n) ((n) >> 1)
 #define CONVERT_INDEX_TO_WITHINTILE(n) ((n) << 1)
 #define CONVERT_INDEX_TO_PIXELS(n) \
-  ((n)*MAX_STRUCTURE_HEIGHT * HEIGHT_UNITS_PER_INDEX / HEIGHT_UNITS)
+  ((n) * MAX_STRUCTURE_HEIGHT * HEIGHT_UNITS_PER_INDEX / HEIGHT_UNITS)
 
 enum {
   LOS_POS,
@@ -148,20 +151,20 @@ struct LOSResults {
   BOOLEAN fLOSTestPerformed;
   BOOLEAN fLOSClear;
   BOOLEAN fOutOfRange;
-  INT32 iDistance;
-  INT32 iMaxDistance;
-  UINT8 ubTreeSpotsHit;
-  INT32 iStartX;
-  INT32 iStartY;
-  INT32 iStartZ;
-  INT32 iEndX;
-  INT32 iEndY;
-  INT32 iEndZ;
-  INT32 iStoppedX;
-  INT32 iStoppedY;
-  INT32 iStoppedZ;
-  INT32 iCurrCubesZ;
-  UINT8 ubChanceToGetThrough;
+  int32_t iDistance;
+  int32_t iMaxDistance;
+  uint8_t ubTreeSpotsHit;
+  int32_t iStartX;
+  int32_t iStartY;
+  int32_t iStartZ;
+  int32_t iEndX;
+  int32_t iEndY;
+  int32_t iEndZ;
+  int32_t iStoppedX;
+  int32_t iStoppedY;
+  int32_t iStoppedZ;
+  int32_t iCurrCubesZ;
+  uint8_t ubChanceToGetThrough;
 };
 
 extern LOSResults gLOSTestResults;

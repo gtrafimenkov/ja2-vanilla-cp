@@ -31,7 +31,7 @@
                                    zero-sized array in struct/union */
 #pragma warning(disable : 4244) /* example: conversion from 'int' to 'real', \
                                    possible loss of data */
-#pragma warning(disable : 4800) /* example: 'const UINT32' : forcing value to bool 'true' \
+#pragma warning(disable : 4800) /* example: 'const uint32_t' : forcing value to bool 'true' \
                                    or 'false' (performance warning) */
 #pragma warning(disable : 4996) /* example: 'wcscpy': This function or variable may be  \
                                    unsafe. Consider using wcscpy_s instead. To disable  \

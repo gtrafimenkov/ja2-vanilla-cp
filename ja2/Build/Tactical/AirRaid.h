@@ -7,19 +7,19 @@
 #define AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES 0x00000002
 
 struct AIR_RAID_DEFINITION {
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT16 sSectorZ;
-  INT8 bIntensity;
-  UINT32 uiFlags;
-  UINT8 ubNumMinsFromCurrentTime;
-  UINT8 ubFiller[8];  // XXX HACK000B
+  int16_t sSectorX;
+  int16_t sSectorY;
+  int16_t sSectorZ;
+  int8_t bIntensity;
+  uint32_t uiFlags;
+  uint8_t ubNumMinsFromCurrentTime;
+  uint8_t ubFiller[8];  // XXX HACK000B
 };
 
 extern BOOLEAN gfInAirRaid;
 
 // what ari raid mode are we in?
-extern UINT8 gubAirRaidMode;
+extern uint8_t gubAirRaidMode;
 
 enum AIR_RAID_STATES {
   AIR_RAID_TRYING_TO_START,
@@ -39,7 +39,7 @@ void HandleAirRaid();
 
 BOOLEAN InAirRaid();
 
-BOOLEAN HandleAirRaidEndTurn(UINT8 ubTeam);
+BOOLEAN HandleAirRaidEndTurn(uint8_t ubTeam);
 
 // Save the air raid info to the saved game
 void SaveAirRaidInfoToSaveGameFile(HWFILE);

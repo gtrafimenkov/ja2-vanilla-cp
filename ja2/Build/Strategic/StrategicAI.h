@@ -17,9 +17,9 @@ enum {
 
 };
 
-void ExecuteStrategicAIAction(UINT16 usActionCode, INT16 sSectorX, INT16 sSectorY);
+void ExecuteStrategicAIAction(uint16_t usActionCode, int16_t sSectorX, int16_t sSectorY);
 
-void CheckEnemyControlledSector(UINT8 ubSectorID);
+void CheckEnemyControlledSector(uint8_t ubSectorID);
 void EvaluateQueenSituation();
 
 extern BOOLEAN gfUseAlternateQueenPosition;
@@ -27,29 +27,30 @@ extern BOOLEAN gfUseAlternateQueenPosition;
 // returns TRUE if the group was deleted.
 BOOLEAN StrategicAILookForAdjacentGroups(GROUP *pGroup);
 void RemoveGroupFromStrategicAILists(GROUP const &);
-void RecalculateSectorWeight(UINT8 ubSectorID);
+void RecalculateSectorWeight(uint8_t ubSectorID);
 void RecalculateGroupWeight(GROUP const &);
 
-BOOLEAN OkayForEnemyToMoveThroughSector(UINT8 ubSectorID);
+BOOLEAN OkayForEnemyToMoveThroughSector(uint8_t ubSectorID);
 
-void StrategicHandleQueenLosingControlOfSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
+void StrategicHandleQueenLosingControlOfSector(int16_t sSectorX, int16_t sSectorY,
+                                               int16_t sSectorZ);
 
 void WakeUpQueen();
 
-void StrategicHandleMineThatRanOut(UINT8 ubSectorID);
+void StrategicHandleMineThatRanOut(uint8_t ubSectorID);
 
-INT16 FindPatrolGroupIndexForGroupID(UINT8 ubGroupID);
-INT16 FindPatrolGroupIndexForGroupIDPending(UINT8 ubGroupID);
-INT16 FindGarrisonIndexForGroupIDPending(UINT8 ubGroupID);
+int16_t FindPatrolGroupIndexForGroupID(uint8_t ubGroupID);
+int16_t FindPatrolGroupIndexForGroupIDPending(uint8_t ubGroupID);
+int16_t FindGarrisonIndexForGroupIDPending(uint8_t ubGroupID);
 
-GROUP *FindPendingGroupInSector(UINT8 ubSectorID);
+GROUP *FindPendingGroupInSector(uint8_t ubSectorID);
 
 void RepollSAIGroup(GROUP *pGroup);
 
 extern BOOLEAN gfDisplayStrategicAILogs;
 extern BOOLEAN gfFirstBattleMeanwhileScenePending;
 
-extern UINT8 gubSAIVersion;
+extern uint8_t gubSAIVersion;
 
 // These enumerations define all of the various types of stationary garrison
 // groups, and index their compositions for forces, etc.
@@ -88,36 +89,36 @@ enum {
 };
 
 struct ARMY_COMPOSITION {
-  INT32 iReadability;  // contains the enumeration which is useless, but helps
-                       // readability.
-  INT8 bPriority;
-  INT8 bElitePercentage;
-  INT8 bTroopPercentage;
-  INT8 bAdminPercentage;
-  INT8 bDesiredPopulation;
-  INT8 bStartPopulation;
-  INT8 bPadding[10];  // XXX HACK000B
+  int32_t iReadability;  // contains the enumeration which is useless, but helps
+                         // readability.
+  int8_t bPriority;
+  int8_t bElitePercentage;
+  int8_t bTroopPercentage;
+  int8_t bAdminPercentage;
+  int8_t bDesiredPopulation;
+  int8_t bStartPopulation;
+  int8_t bPadding[10];  // XXX HACK000B
 };
 
 // Defines the patrol groups -- movement groups.
 struct PATROL_GROUP {
-  INT8 bSize;
-  INT8 bPriority;
-  UINT8 ubSectorID[4];
-  INT8 bFillPermittedAfterDayMod100;
-  UINT8 ubGroupID;
-  INT8 bWeight;
-  UINT8 ubPendingGroupID;
-  INT8 bPadding[10];  // XXX HACK000B
+  int8_t bSize;
+  int8_t bPriority;
+  uint8_t ubSectorID[4];
+  int8_t bFillPermittedAfterDayMod100;
+  uint8_t ubGroupID;
+  int8_t bWeight;
+  uint8_t ubPendingGroupID;
+  int8_t bPadding[10];  // XXX HACK000B
 };
 
 // Defines all stationary defence forces.
 struct GARRISON_GROUP {
-  UINT8 ubSectorID;
-  UINT8 ubComposition;
-  INT8 bWeight;
-  UINT8 ubPendingGroupID;
-  INT8 bPadding[10];  // XXX HACK000B
+  uint8_t ubSectorID;
+  uint8_t ubComposition;
+  int8_t bWeight;
+  uint8_t ubPendingGroupID;
+  int8_t bPadding[10];  // XXX HACK000B
 };
 
 #endif

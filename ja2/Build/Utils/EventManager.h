@@ -4,12 +4,12 @@
 #include "SGP/Types.h"
 
 struct EVENT {
-  UINT32 TimeStamp;
-  UINT32 uiFlags;
-  UINT16 usDelay;
-  UINT32 uiEvent;
-  UINT32 uiDataSize;
-  BYTE Data[];
+  uint32_t TimeStamp;
+  uint32_t uiFlags;
+  uint16_t usDelay;
+  uint32_t uiEvent;
+  uint32_t uiDataSize;
+  uint8_t Data[];
 };
 
 enum EventQueueID { PRIMARY_EVENT_QUEUE, SECONDARY_EVENT_QUEUE, DEMAND_EVENT_QUEUE };
@@ -19,10 +19,11 @@ enum EventQueueID { PRIMARY_EVENT_QUEUE, SECONDARY_EVENT_QUEUE, DEMAND_EVENT_QUE
 void InitializeEventManager();
 void ShutdownEventManager();
 
-void AddEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSize, EventQueueID);
-EVENT *RemoveEvent(UINT32 uiIndex, EventQueueID);
-EVENT *PeekEvent(UINT32 uiIndex, EventQueueID);
+void AddEvent(uint32_t uiEvent, uint16_t usDelay, void *pEventData, uint32_t uiDataSize,
+              EventQueueID);
+EVENT *RemoveEvent(uint32_t uiIndex, EventQueueID);
+EVENT *PeekEvent(uint32_t uiIndex, EventQueueID);
 BOOLEAN FreeEvent(EVENT *pEvent);
-UINT32 EventQueueSize(EventQueueID);
+uint32_t EventQueueSize(EventQueueID);
 
 #endif

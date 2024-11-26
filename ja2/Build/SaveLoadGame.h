@@ -21,46 +21,46 @@
   (688) /** Size of SAVED_GAME_HEADER on disk in Stracciatella Linux */
 
 struct SAVED_GAME_HEADER {
-  UINT32 uiSavedGameVersion;
+  uint32_t uiSavedGameVersion;
   char zGameVersionNumber[GAME_VERSION_LENGTH];
 
   wchar_t sSavedGameDesc[SIZE_OF_SAVE_GAME_DESC];
 
-  /* (vanilla) UINT32	uiFlags; */
+  /* (vanilla) uint32_t	uiFlags; */
 
   // The following will be used to quickly access info to display in the
   // save/load screen
-  UINT32 uiDay;
-  UINT8 ubHour;
-  UINT8 ubMin;
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bSectorZ;
-  UINT8 ubNumOfMercsOnPlayersTeam;
-  INT32 iCurrentBalance;
+  uint32_t uiDay;
+  uint8_t ubHour;
+  uint8_t ubMin;
+  int16_t sSectorX;
+  int16_t sSectorY;
+  int8_t bSectorZ;
+  uint8_t ubNumOfMercsOnPlayersTeam;
+  int32_t iCurrentBalance;
 
-  UINT32 uiCurrentScreen;
+  uint32_t uiCurrentScreen;
 
   BOOLEAN fAlternateSector;
 
   BOOLEAN fWorldLoaded;
 
-  UINT8 ubLoadScreenID;  // The load screen that should be used when loading the
-                         // saved game
+  uint8_t ubLoadScreenID;  // The load screen that should be used when loading the
+                           // saved game
 
   GAME_OPTIONS sInitialGameOptions;  // need these in the header so we can get
                                      // the info from it on the save load screen.
 
-  UINT32 uiRandom;
+  uint32_t uiRandom;
 
-  /* (vanilla) UINT8		ubFiller[110]; */
+  /* (vanilla) uint8_t		ubFiller[110]; */
 };
 
 /** Parse binary data and fill SAVED_GAME_HEADER structure.
  * @param data Data to be parsed.
  * @param h Header structure to be filled.
  * @param stracLinuxFormat Flag, telling to use "Stracciatella Linux" format. */
-extern void ParseSavedGameHeader(const BYTE *data, SAVED_GAME_HEADER &h, bool stracLinuxFormat);
+extern void ParseSavedGameHeader(const uint8_t *data, SAVED_GAME_HEADER &h, bool stracLinuxFormat);
 
 /** @brief Check if SAVED_GAME_HEADER structure contains valid data.
  * This function does the basic check. */
@@ -73,25 +73,25 @@ void ExtractSavedGameHeaderFromFile(HWFILE, SAVED_GAME_HEADER &, bool *stracLinu
 
 extern ScreenID guiScreenToGotoAfterLoadingSavedGame;
 
-void CreateSavedGameFileNameFromNumber(UINT8 ubSaveGameID, char *pzNewFileName);
+void CreateSavedGameFileNameFromNumber(uint8_t ubSaveGameID, char *pzNewFileName);
 
-BOOLEAN SaveGame(UINT8 ubSaveGameID, const wchar_t *pGameDesc);
-void LoadSavedGame(UINT8 save_slot_id);
+BOOLEAN SaveGame(uint8_t ubSaveGameID, const wchar_t *pGameDesc);
+void LoadSavedGame(uint8_t save_slot_id);
 
 void SaveFilesToSavedGame(char const *pSrcFileName, HWFILE);
 void LoadFilesFromSavedGame(char const *pSrcFileName, HWFILE);
 
 BOOLEAN DoesUserHaveEnoughHardDriveSpace();
 
-void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ);
+void GetBestPossibleSectorXYZValues(int16_t *psSectorX, int16_t *psSectorY, int8_t *pbSectorZ);
 
 void SaveMercPath(HWFILE, PathSt const *head);
 void LoadMercPath(HWFILE, PathSt **head);
 
-extern UINT32 guiLastSaveGameNum;
-INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave);
+extern uint32_t guiLastSaveGameNum;
+int8_t GetNumberForAutoSave(BOOLEAN fLatestAutoSave);
 
-extern UINT32 guiJA2EncryptionSet;
+extern uint32_t guiJA2EncryptionSet;
 
 extern BOOLEAN gfUseConsecutiveQuickSaveSlots;
 

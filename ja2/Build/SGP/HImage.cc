@@ -20,14 +20,14 @@
 
 #define BLACK_SUBSTITUTE 0x0001
 
-UINT16 gusRedMask = 0;
-UINT16 gusGreenMask = 0;
-UINT16 gusBlueMask = 0;
-INT16 gusRedShift = 0;
-INT16 gusBlueShift = 0;
-INT16 gusGreenShift = 0;
+uint16_t gusRedMask = 0;
+uint16_t gusGreenMask = 0;
+uint16_t gusBlueMask = 0;
+int16_t gusRedShift = 0;
+int16_t gusBlueShift = 0;
+int16_t gusGreenShift = 0;
 
-SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
+SGPImage *CreateImage(const char *const filename, const uint16_t fContents) {
   // depending on extension of filename, use different image readers
   const char *const dot = strstr(filename, ".");
   if (!dot) throw std::logic_error("Tried to load image with no extension");
@@ -40,9 +40,9 @@ SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
              : throw std::logic_error("Tried to load image with unknown extension");
 }
 
-static BOOLEAN Copy8BPPImageTo8BPPBuffer(SGPImage const *const img, BYTE *const pDestBuf,
-                                         UINT16 const usDestWidth, UINT16 const usDestHeight,
-                                         UINT16 const usX, UINT16 const usY,
+static BOOLEAN Copy8BPPImageTo8BPPBuffer(SGPImage const *const img, uint8_t *const pDestBuf,
+                                         uint16_t const usDestWidth, uint16_t const usDestHeight,
+                                         uint16_t const usX, uint16_t const usY,
                                          SGPBox const *const src_box) {
   CHECKF(usX < usDestWidth);
   CHECKF(usY < usDestHeight);
@@ -50,18 +50,18 @@ static BOOLEAN Copy8BPPImageTo8BPPBuffer(SGPImage const *const img, BYTE *const 
   CHECKF(src_box->h > 0);
 
   // Determine memcopy coordinates
-  UINT32 const uiSrcStart = src_box->y * img->usWidth + src_box->x;
-  UINT32 const uiDestStart = usY * usDestWidth + usX;
-  UINT32 const uiLineSize = src_box->w;
-  UINT32 const uiNumLines = src_box->h;
+  uint32_t const uiSrcStart = src_box->y * img->usWidth + src_box->x;
+  uint32_t const uiDestStart = usY * usDestWidth + usX;
+  uint32_t const uiLineSize = src_box->w;
+  uint32_t const uiNumLines = src_box->h;
 
   Assert(usDestWidth >= uiLineSize);
   Assert(usDestHeight >= uiNumLines);
 
   // Copy line by line
-  UINT8 *dst = static_cast<UINT8 *>(pDestBuf) + uiDestStart;
-  UINT8 const *src = static_cast<UINT8 const *>(img->pImageData) + uiSrcStart;
-  for (UINT32 n = uiNumLines; n != 0; --n) {
+  uint8_t *dst = static_cast<uint8_t *>(pDestBuf) + uiDestStart;
+  uint8_t const *src = static_cast<uint8_t const *>(img->pImageData) + uiSrcStart;
+  for (uint32_t n = uiNumLines; n != 0; --n) {
     memcpy(dst, src, uiLineSize);
     dst += usDestWidth;
     src += img->usWidth;
@@ -70,9 +70,9 @@ static BOOLEAN Copy8BPPImageTo8BPPBuffer(SGPImage const *const img, BYTE *const 
   return TRUE;
 }
 
-static BOOLEAN Copy16BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *const pDestBuf,
-                                           UINT16 const usDestWidth, UINT16 const usDestHeight,
-                                           UINT16 const usX, UINT16 const usY,
+static BOOLEAN Copy16BPPImageTo16BPPBuffer(SGPImage const *const img, uint8_t *const pDestBuf,
+                                           uint16_t const usDestWidth, uint16_t const usDestHeight,
+                                           uint16_t const usX, uint16_t const usY,
                                            SGPBox const *const src_box) {
   CHECKF(usX < img->usWidth);
   CHECKF(usY < img->usHeight);
@@ -80,19 +80,19 @@ static BOOLEAN Copy16BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *cons
   CHECKF(src_box->h > 0);
 
   // Determine memcopy coordinates
-  UINT32 const uiSrcStart = src_box->y * img->usWidth + src_box->x;
-  UINT32 const uiDestStart = usY * usDestWidth + usX;
-  UINT32 const uiLineSize = src_box->w;
-  UINT32 const uiNumLines = src_box->h;
+  uint32_t const uiSrcStart = src_box->y * img->usWidth + src_box->x;
+  uint32_t const uiDestStart = usY * usDestWidth + usX;
+  uint32_t const uiLineSize = src_box->w;
+  uint32_t const uiNumLines = src_box->h;
 
   CHECKF(usDestWidth >= uiLineSize);
   CHECKF(usDestHeight >= uiNumLines);
 
   // Copy line by line
-  UINT16 *dst = static_cast<UINT16 *>(static_cast<void *>(pDestBuf)) + uiDestStart;
-  UINT16 const *src =
-      static_cast<UINT16 const *>(static_cast<void const *>(img->pImageData)) + uiSrcStart;
-  for (UINT32 n = uiNumLines; n != 0; --n) {
+  uint16_t *dst = static_cast<uint16_t *>(static_cast<void *>(pDestBuf)) + uiDestStart;
+  uint16_t const *src =
+      static_cast<uint16_t const *>(static_cast<void const *>(img->pImageData)) + uiSrcStart;
+  for (uint32_t n = uiNumLines; n != 0; --n) {
     memcpy(dst, src, uiLineSize * 2);
     dst += usDestWidth;
     src += img->usWidth;
@@ -101,9 +101,9 @@ static BOOLEAN Copy16BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *cons
   return TRUE;
 }
 
-static BOOLEAN Copy8BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *const pDestBuf,
-                                          UINT16 const usDestWidth, UINT16 const usDestHeight,
-                                          UINT16 const usX, UINT16 const usY,
+static BOOLEAN Copy8BPPImageTo16BPPBuffer(SGPImage const *const img, uint8_t *const pDestBuf,
+                                          uint16_t const usDestWidth, uint16_t const usDestHeight,
+                                          uint16_t const usX, uint16_t const usY,
                                           SGPBox const *const src_box) {
   CHECKF(img->pImageData);
   CHECKF(usX < usDestWidth);
@@ -112,22 +112,22 @@ static BOOLEAN Copy8BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *const
   CHECKF(src_box->h > 0);
 
   // Determine memcopy coordinates
-  UINT32 const uiSrcStart = src_box->y * img->usWidth + src_box->x;
-  UINT32 const uiDestStart = usY * usDestWidth + usX;
-  UINT32 const uiLineSize = src_box->w;
-  UINT32 const uiNumLines = src_box->h;
+  uint32_t const uiSrcStart = src_box->y * img->usWidth + src_box->x;
+  uint32_t const uiDestStart = usY * usDestWidth + usX;
+  uint32_t const uiLineSize = src_box->w;
+  uint32_t const uiNumLines = src_box->h;
 
   CHECKF(usDestWidth >= uiLineSize);
   CHECKF(usDestHeight >= uiNumLines);
 
   // Convert to Pixel specification
-  UINT16 *dst = static_cast<UINT16 *>(static_cast<void *>(pDestBuf)) + uiDestStart;
-  UINT8 const *src = static_cast<UINT8 const *>(img->pImageData) + uiSrcStart;
-  UINT16 const *const pal = img->pui16BPPPalette;
-  for (UINT32 rows = uiNumLines; rows != 0; --rows) {
-    UINT16 *dst_tmp = dst;
-    UINT8 const *src_tmp = src;
-    for (UINT32 cols = uiLineSize; cols != 0; --cols) {
+  uint16_t *dst = static_cast<uint16_t *>(static_cast<void *>(pDestBuf)) + uiDestStart;
+  uint8_t const *src = static_cast<uint8_t const *>(img->pImageData) + uiSrcStart;
+  uint16_t const *const pal = img->pui16BPPPalette;
+  for (uint32_t rows = uiNumLines; rows != 0; --rows) {
+    uint16_t *dst_tmp = dst;
+    uint8_t const *src_tmp = src;
+    for (uint32_t cols = uiLineSize; cols != 0; --cols) {
       *dst_tmp++ = pal[*src_tmp++];
     }
     dst += usDestWidth;
@@ -137,9 +137,10 @@ static BOOLEAN Copy8BPPImageTo16BPPBuffer(SGPImage const *const img, BYTE *const
   return TRUE;
 }
 
-BOOLEAN CopyImageToBuffer(SGPImage const *const img, UINT32 const fBufferType, BYTE *const pDestBuf,
-                          UINT16 const usDestWidth, UINT16 const usDestHeight, UINT16 const usX,
-                          UINT16 const usY, SGPBox const *const src_box) {
+BOOLEAN CopyImageToBuffer(SGPImage const *const img, uint32_t const fBufferType,
+                          uint8_t *const pDestBuf, uint16_t const usDestWidth,
+                          uint16_t const usDestHeight, uint16_t const usX, uint16_t const usY,
+                          SGPBox const *const src_box) {
   // Use blitter based on type of image
   if (img->ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
     // Default do here
@@ -156,15 +157,15 @@ BOOLEAN CopyImageToBuffer(SGPImage const *const img, UINT32 const fBufferType, B
   return FALSE;
 }
 
-UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
+uint16_t *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
   Assert(pPalette != NULL);
 
-  UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
+  uint16_t *const p16BPPPalette = MALLOCN(uint16_t, 256);
 
-  for (UINT32 cnt = 0; cnt < 256; cnt++) {
-    UINT8 const r = pPalette[cnt].r;
-    UINT8 const g = pPalette[cnt].g;
-    UINT8 const b = pPalette[cnt].b;
+  for (uint32_t cnt = 0; cnt < 256; cnt++) {
+    uint8_t const r = pPalette[cnt].r;
+    uint8_t const g = pPalette[cnt].g;
+    uint8_t const b = pPalette[cnt].b;
     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
   }
 
@@ -198,18 +199,19 @@ the RGB parameters.
         4) For gamma correction, pass in weighted values for each color.
 
 **********************************************************************************************/
-UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
-                                 UINT32 bscale, BOOLEAN mono) {
+uint16_t *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, uint32_t rscale,
+                                   uint32_t gscale, uint32_t bscale, BOOLEAN mono) {
   Assert(pPalette != NULL);
 
-  UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
+  uint16_t *const p16BPPPalette = MALLOCN(uint16_t, 256);
 
-  for (UINT32 cnt = 0; cnt < 256; cnt++) {
-    UINT32 rmod;
-    UINT32 gmod;
-    UINT32 bmod;
+  for (uint32_t cnt = 0; cnt < 256; cnt++) {
+    uint32_t rmod;
+    uint32_t gmod;
+    uint32_t bmod;
     if (mono) {
-      UINT32 lumin = (pPalette[cnt].r * 299 + pPalette[cnt].g * 587 + pPalette[cnt].b * 114) / 1000;
+      uint32_t lumin =
+          (pPalette[cnt].r * 299 + pPalette[cnt].g * 587 + pPalette[cnt].b * 114) / 1000;
       rmod = rscale * lumin / 256;
       gmod = gscale * lumin / 256;
       bmod = bscale * lumin / 256;
@@ -219,25 +221,25 @@ UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale,
       bmod = bscale * pPalette[cnt].b / 256;
     }
 
-    UINT8 r = std::min((uint8_t)rmod, (uint8_t)255);
-    UINT8 g = std::min((uint8_t)gmod, (uint8_t)255);
-    UINT8 b = std::min((uint8_t)bmod, (uint8_t)255);
+    uint8_t r = std::min((uint8_t)rmod, (uint8_t)255);
+    uint8_t g = std::min((uint8_t)gmod, (uint8_t)255);
+    uint8_t b = std::min((uint8_t)bmod, (uint8_t)255);
     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
   }
   return p16BPPPalette;
 }
 
 // Convert from RGB to 16 bit value
-UINT16 Get16BPPColor(UINT32 RGBValue) {
-  UINT8 r = SGPGetRValue(RGBValue);
-  UINT8 g = SGPGetGValue(RGBValue);
-  UINT8 b = SGPGetBValue(RGBValue);
+uint16_t Get16BPPColor(uint32_t RGBValue) {
+  uint8_t r = SGPGetRValue(RGBValue);
+  uint8_t g = SGPGetGValue(RGBValue);
+  uint8_t b = SGPGetBValue(RGBValue);
 
-  UINT16 r16 = (gusRedShift < 0 ? r >> -gusRedShift : r << gusRedShift);
-  UINT16 g16 = (gusGreenShift < 0 ? g >> -gusGreenShift : g << gusGreenShift);
-  UINT16 b16 = (gusBlueShift < 0 ? b >> -gusBlueShift : b << gusBlueShift);
+  uint16_t r16 = (gusRedShift < 0 ? r >> -gusRedShift : r << gusRedShift);
+  uint16_t g16 = (gusGreenShift < 0 ? g >> -gusGreenShift : g << gusGreenShift);
+  uint16_t b16 = (gusBlueShift < 0 ? b >> -gusBlueShift : b << gusBlueShift);
 
-  UINT16 usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
+  uint16_t usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
 
   // if our color worked out to absolute black, and the original wasn't
   // absolute black, convert it to a VERY dark grey to avoid transparency
@@ -248,20 +250,20 @@ UINT16 Get16BPPColor(UINT32 RGBValue) {
 }
 
 // Convert from 16 BPP to RGBvalue
-UINT32 GetRGBColor(UINT16 Value16BPP) {
-  UINT32 r16 = Value16BPP & gusRedMask;
-  UINT32 g16 = Value16BPP & gusGreenMask;
-  UINT32 b16 = Value16BPP & gusBlueMask;
+uint32_t GetRGBColor(uint16_t Value16BPP) {
+  uint32_t r16 = Value16BPP & gusRedMask;
+  uint32_t g16 = Value16BPP & gusGreenMask;
+  uint32_t b16 = Value16BPP & gusBlueMask;
 
-  UINT32 r = (gusRedShift < 0 ? r16 << -gusRedShift : r16 >> gusRedShift);
-  UINT32 g = (gusGreenShift < 0 ? g16 << -gusGreenShift : g16 >> gusGreenShift);
-  UINT32 b = (gusBlueShift < 0 ? b16 << -gusBlueShift : b16 >> gusBlueShift);
+  uint32_t r = (gusRedShift < 0 ? r16 << -gusRedShift : r16 >> gusRedShift);
+  uint32_t g = (gusGreenShift < 0 ? g16 << -gusGreenShift : g16 >> gusGreenShift);
+  uint32_t b = (gusBlueShift < 0 ? b16 << -gusBlueShift : b16 >> gusBlueShift);
 
   r &= 0x000000ff;
   g &= 0x000000ff;
   b &= 0x000000ff;
 
-  UINT32 val = FROMRGB(r, g, b);
+  uint32_t val = FROMRGB(r, g, b);
   return val;
 }
 
@@ -272,7 +274,7 @@ void GetETRLEImageData(SGPImage const *const img, ETRLEData *const buf) {
   SGP::Buffer<ETRLEObject> etrle_objs(img->usNumberOfObjects);
   memcpy(etrle_objs, img->pETRLEObject, sizeof(*etrle_objs) * img->usNumberOfObjects);
 
-  SGP::Buffer<UINT8> pix_data(img->uiSizePixData);
+  SGP::Buffer<uint8_t> pix_data(img->uiSizePixData);
   memcpy(pix_data, img->pImageData, sizeof(*pix_data) * img->uiSizePixData);
 
   buf->pPixData = pix_data.Release();
@@ -281,32 +283,32 @@ void GetETRLEImageData(SGPImage const *const img, ETRLEData *const buf) {
   buf->usNumberOfObjects = img->usNumberOfObjects;
 }
 
-void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+void ConvertRGBDistribution565To555(uint16_t *p16BPPData, uint32_t uiNumberOfPixels) {
+  for (uint16_t *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
     *Px = ((*Px >> 1) & ~0x001F) | (*Px & 0x001F);
   }
 }
 
-void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+void ConvertRGBDistribution565To655(uint16_t *p16BPPData, uint32_t uiNumberOfPixels) {
+  for (uint16_t *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
     *Px = ((*Px >> 1) & 0x03E0) | (*Px & ~0x07E0);
   }
 }
 
-void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+void ConvertRGBDistribution565To556(uint16_t *p16BPPData, uint32_t uiNumberOfPixels) {
+  for (uint16_t *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
     *Px = (*Px & ~0x003F) | ((*Px << 1) & 0x003F);
   }
 }
 
-void ConvertRGBDistribution565ToAny(UINT16 *const p16BPPData, UINT32 const uiNumberOfPixels) {
-  UINT16 *px = p16BPPData;
+void ConvertRGBDistribution565ToAny(uint16_t *const p16BPPData, uint32_t const uiNumberOfPixels) {
+  uint16_t *px = p16BPPData;
   for (size_t n = uiNumberOfPixels; n != 0; --n) {
     // put the 565 RGB 16-bit value into a 32-bit RGB value
-    UINT32 const r = (*px) >> 11;
-    UINT32 const g = (*px & 0x07E0) >> 5;
-    UINT32 const b = (*px & 0x001F);
-    UINT32 const rgb = FROMRGB(r, g, b);
+    uint32_t const r = (*px) >> 11;
+    uint32_t const g = (*px & 0x07E0) >> 5;
+    uint32_t const b = (*px & 0x001F);
+    uint32_t const rgb = FROMRGB(r, g, b);
     // then convert the 32-bit RGB value to whatever 16 bit format is used
     *px++ = Get16BPPColor(rgb);
   }

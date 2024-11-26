@@ -60,7 +60,7 @@ enum {
 };
 
 // helicopter vehicle id value
-extern INT32 iHelicopterVehicleId;
+extern int32_t iHelicopterVehicleId;
 
 static inline VEHICLETYPE &GetHelicopter() {
   Assert(0 <= iHelicopterVehicleId && iHelicopterVehicleId < ubNumberOfVehicles);
@@ -90,13 +90,13 @@ extern BOOLEAN fHeliReturnStraightToBase;
 extern BOOLEAN fHelicopterIsAirBorne;
 
 // total owed to player
-// extern INT32 iTotalAccumlatedCostByPlayer;
+// extern int32_t iTotalAccumlatedCostByPlayer;
 
 // time started hovering
-extern UINT32 uiStartHoverTime;
+extern uint32_t uiStartHoverTime;
 
 // what state is skyrider's dialogue in in?
-extern UINT32 guiHelicopterSkyriderTalkState;
+extern uint32_t guiHelicopterSkyriderTalkState;
 
 // plot for helicopter
 extern BOOLEAN fPlotForHelicopter;
@@ -107,19 +107,19 @@ extern BOOLEAN fShowOtherSAMHighLight;
 extern BOOLEAN fShowDrassenSAMHighLight;
 extern BOOLEAN fShowCambriaHospitalHighLight;
 
-extern INT32 iTotalAccumulatedCostByPlayer;
-extern UINT32 guiTimeOfLastSkyriderMonologue;
+extern int32_t iTotalAccumulatedCostByPlayer;
+extern uint32_t guiTimeOfLastSkyriderMonologue;
 extern BOOLEAN fSkyRiderSetUp;
 extern BOOLEAN fRefuelingSiteAvailable[NUMBER_OF_REFUEL_SITES];
 
-extern UINT8 gubHelicopterHitsTaken;
+extern uint8_t gubHelicopterHitsTaken;
 extern BOOLEAN gfSkyriderSaidCongratsOnTakingSAM;
-extern UINT8 gubPlayerProgressSkyriderLastCommentedOn;
+extern uint8_t gubPlayerProgressSkyriderLastCommentedOn;
 
 BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier);
 
 // have pilot say different stuff
-void HelicopterDialogue(UINT8 ubDialogueCondition);
+void HelicopterDialogue(uint8_t ubDialogueCondition);
 
 // is the helicopter available for flight?
 BOOLEAN CanHelicopterFly();
@@ -131,16 +131,16 @@ BOOLEAN IsHelicopterPilotAvailable();
 void TakeOffHelicopter();
 
 // test whether or not a sector contains a fuel site
-bool IsRefuelSiteInSector(INT16 sector);
+bool IsRefuelSiteInSector(int16_t sector);
 
 // update which refueling sites are controlled by player & therefore available
 void UpdateRefuelSiteAvailability();
 
 // setup helicopter for player
-void SetUpHelicopterForPlayer(INT16 sX, INT16 sY);
+void SetUpHelicopterForPlayer(int16_t sX, int16_t sY);
 
 // the intended path of the helicopter
-INT32 DistanceOfIntendedHelicopterPath();
+int32_t DistanceOfIntendedHelicopterPath();
 
 // handle a little wait for hover
 void HandleHeliHoverLong();
@@ -152,16 +152,16 @@ void HandleHeliHoverTooLong();
 void DropOffEveryOneInHelicopter();
 
 // handle heli entering this sector
-BOOLEAN HandleHeliEnteringSector(INT16 sX, INT16 sY);
+BOOLEAN HandleHeliEnteringSector(int16_t sX, int16_t sY);
 
 // set up helic, if it doesn't have a mvt group
 void SetUpHelicopterForMovement();
 
 // number of passengers in helicopter
-INT32 GetNumberOfPassengersInHelicopter();
+int32_t GetNumberOfPassengersInHelicopter();
 
 // skyrider talking to player
-void SkyRiderTalk(UINT16 usQuoteNum);
+void SkyRiderTalk(uint16_t usQuoteNum);
 
 // handle animation of sectors for mapscreen
 void HandleAnimationOfSectors();
@@ -174,20 +174,20 @@ void HandleHelicopterOnGroundGraphic();
 void HandleHelicopterOnGroundSkyriderProfile();
 
 // will a sam site under the players control shoot down an airraid?
-// BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY );
+// BOOLEAN WillAirRaidBeStopped( int16_t sSectorX, int16_t sSectorY );
 
 // is the helicopter capable of taking off for the player?
 BOOLEAN CanHelicopterTakeOff();
 
 void InitializeHelicopter();
 
-bool IsSkyriderIsFlyingInSector(INT16 x, INT16 y);
+bool IsSkyriderIsFlyingInSector(int16_t x, int16_t y);
 
 bool IsGroupTheHelicopterGroup(GROUP const &);
 
-INT16 GetNumSafeSectorsInPath();
+int16_t GetNumSafeSectorsInPath();
 
-INT16 GetNumUnSafeSectorsInPath();
+int16_t GetNumUnSafeSectorsInPath();
 
 bool SoldierAboardAirborneHeli(SOLDIERTYPE const &);
 

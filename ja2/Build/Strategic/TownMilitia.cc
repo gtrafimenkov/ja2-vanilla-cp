@@ -35,13 +35,13 @@
 #define SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST 50
 
 // temporary local global variables
-UINT8 gubTownSectorServerTownId = BLANK_SECTOR;
-INT16 gsTownSectorServerSkipX = -1;
-INT16 gsTownSectorServerSkipY = -1;
-UINT8 gubTownSectorServerIndex = 0;
+uint8_t gubTownSectorServerTownId = BLANK_SECTOR;
+int16_t gsTownSectorServerSkipX = -1;
+int16_t gsTownSectorServerSkipY = -1;
+uint8_t gubTownSectorServerIndex = 0;
 BOOLEAN gfYesNoPromptIsForContinue = FALSE;  // this flag remembers whether we're starting new
                                              // training, or continuing
-INT32 giTotalCostOfTraining = 0;
+int32_t giTotalCostOfTraining = 0;
 
 // the completed list of sector soldiers for training militia
 static SOLDIERTYPE
@@ -49,19 +49,21 @@ static SOLDIERTYPE
 SOLDIERTYPE *pMilitiaTrainerSoldier = NULL;
 
 // note that these sector values are STRATEGIC INDEXES, not 0-255!
-static INT16 gsUnpaidStrategicSector[MAX_CHARACTER_COUNT];
+static int16_t gsUnpaidStrategicSector[MAX_CHARACTER_COUNT];
 
 static void HandleCompletionOfTownTrainingByGroupWithTrainer(SOLDIERTYPE *pTrainer);
-static void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT16 sSkipSectorY);
-static bool ServeNextFriendlySectorInTown(INT16 *neighbour_x, INT16 *neighbour_y);
-static void StrategicAddMilitiaToSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 ubHowMany);
-static void StrategicPromoteMilitiaInSector(INT16 x, INT16 y, UINT8 current_rank, UINT8 n);
+static void InitFriendlyTownSectorServer(uint8_t ubTownId, int16_t sSkipSectorX,
+                                         int16_t sSkipSectorY);
+static bool ServeNextFriendlySectorInTown(int16_t *neighbour_x, int16_t *neighbour_y);
+static void StrategicAddMilitiaToSector(int16_t sMapX, int16_t sMapY, uint8_t ubRank,
+                                        uint8_t ubHowMany);
+static void StrategicPromoteMilitiaInSector(int16_t x, int16_t y, uint8_t current_rank, uint8_t n);
 
-void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMapY) {
-  UINT8 ubMilitiaTrained = 0;
+void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, int16_t sMapX, int16_t sMapY) {
+  uint8_t ubMilitiaTrained = 0;
   BOOLEAN fFoundOne;
-  INT16 sNeighbourX, sNeighbourY;
-  UINT8 ubTownId;
+  int16_t sNeighbourX, sNeighbourY;
+  uint8_t ubTownId;
 
   // get town index
   ubTownId = StrategicMap[sMapX + sMapY * MAP_WORLD_X].bNameId;
@@ -172,7 +174,7 @@ void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMap
   HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer);
 }
 
-INT8 SoldierClassToMilitiaRank(UINT8 const soldier_class) {
+int8_t SoldierClassToMilitiaRank(uint8_t const soldier_class) {
   switch (soldier_class) {
     case SOLDIER_CLASS_GREEN_MILITIA:
       return GREEN_MILITIA;
@@ -186,7 +188,8 @@ INT8 SoldierClassToMilitiaRank(UINT8 const soldier_class) {
 }
 
 // add militias of a certain rank
-static void StrategicAddMilitiaToSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 ubHowMany) {
+static void StrategicAddMilitiaToSector(int16_t sMapX, int16_t sMapY, uint8_t ubRank,
+                                        uint8_t ubHowMany) {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   pSectorInfo->ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
@@ -196,8 +199,8 @@ static void StrategicAddMilitiaToSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, 
 }
 
 // Promote militias of a certain rank
-static void StrategicPromoteMilitiaInSector(INT16 const x, INT16 const y, UINT8 const current_rank,
-                                            UINT8 const n) {
+static void StrategicPromoteMilitiaInSector(int16_t const x, int16_t const y,
+                                            uint8_t const current_rank, uint8_t const n) {
   SECTORINFO &si = SectorInfo[SECTOR(x, y)];
 
   Assert(si.ubNumberOfCivsAtLevel[current_rank] >= n);
@@ -210,7 +213,8 @@ static void StrategicPromoteMilitiaInSector(INT16 const x, INT16 const y, UINT8 
   fMapPanelDirty = TRUE;
 }
 
-void StrategicRemoveMilitiaFromSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 ubHowMany) {
+void StrategicRemoveMilitiaFromSector(int16_t sMapX, int16_t sMapY, uint8_t ubRank,
+                                      uint8_t ubHowMany) {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   // damn well better have that many around to remove!
@@ -228,9 +232,9 @@ void StrategicRemoveMilitiaFromSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UI
 }
 
 // kill pts are (2 * kills) + assists
-UINT8 CheckOneMilitiaForPromotion(INT16 const x, INT16 const y, UINT8 const current_rank,
-                                  UINT8 kill_points) {
-  UINT8 n_promotions = 0;
+uint8_t CheckOneMilitiaForPromotion(int16_t const x, int16_t const y, uint8_t const current_rank,
+                                    uint8_t kill_points) {
+  uint8_t n_promotions = 0;
   switch (current_rank) {
     case GREEN_MILITIA:
       // 2 kill points minimum, 25% chance per kill point
@@ -253,11 +257,11 @@ UINT8 CheckOneMilitiaForPromotion(INT16 const x, INT16 const y, UINT8 const curr
 }
 
 // call this if the player attacks his own militia
-static void HandleMilitiaDefections(INT16 sMapX, INT16 sMapY) {
-  UINT8 ubRank;
-  UINT8 ubMilitiaCnt;
-  UINT8 ubCount;
-  UINT32 uiChanceToDefect;
+static void HandleMilitiaDefections(int16_t sMapX, int16_t sMapY) {
+  uint8_t ubRank;
+  uint8_t ubMilitiaCnt;
+  uint8_t ubCount;
+  uint32_t uiChanceToDefect;
 
   for (ubRank = 0; ubRank < MAX_MILITIA_LEVELS; ubRank++) {
     ubMilitiaCnt = MilitiaInSectorOfRank(sMapX, sMapY, ubRank);
@@ -289,9 +293,9 @@ static void HandleMilitiaDefections(INT16 sMapX, INT16 sMapY) {
   }
 }
 
-UINT8 CountAllMilitiaInSector(INT16 sMapX, INT16 sMapY) {
-  UINT8 ubMilitiaTotal = 0;
-  UINT8 ubRank;
+uint8_t CountAllMilitiaInSector(int16_t sMapX, int16_t sMapY) {
+  uint8_t ubMilitiaTotal = 0;
+  uint8_t ubRank;
 
   // find out if there are any town militia in this SECTOR (don't care about
   // other sectors in same town)
@@ -302,11 +306,11 @@ UINT8 CountAllMilitiaInSector(INT16 sMapX, INT16 sMapY) {
   return (ubMilitiaTotal);
 }
 
-UINT8 MilitiaInSectorOfRank(INT16 sMapX, INT16 sMapY, UINT8 ubRank) {
+uint8_t MilitiaInSectorOfRank(int16_t sMapX, int16_t sMapY, uint8_t ubRank) {
   return (SectorInfo[SECTOR(sMapX, sMapY)].ubNumberOfCivsAtLevel[ubRank]);
 }
 
-BOOLEAN SectorOursAndPeaceful(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+BOOLEAN SectorOursAndPeaceful(int16_t sMapX, int16_t sMapY, int8_t bMapZ) {
   // if this sector is currently loaded
   if ((sMapX == gWorldSectorX) && (sMapY == gWorldSectorY) && (bMapZ == gbWorldSectorZ)) {
     // and either there are enemies prowling this sector, or combat is in
@@ -329,7 +333,8 @@ BOOLEAN SectorOursAndPeaceful(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return (TRUE);
 }
 
-static void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT16 sSkipSectorY) {
+static void InitFriendlyTownSectorServer(uint8_t ubTownId, int16_t sSkipSectorX,
+                                         int16_t sSkipSectorY) {
   // reset globals
   gubTownSectorServerTownId = ubTownId;
   gsTownSectorServerSkipX = sSkipSectorX;
@@ -342,16 +347,16 @@ static void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT
  * at initialization. It will skip an entry that matches the skip X/Y value, if
  * one was specified at initialization.
  * MUST CALL InitFriendlyTownSectorServer() before using! */
-static bool ServeNextFriendlySectorInTown(INT16 *const neighbour_x, INT16 *const neighbour_y) {
+static bool ServeNextFriendlySectorInTown(int16_t *const neighbour_x, int16_t *const neighbour_y) {
   while (g_town_sectors[gubTownSectorServerIndex].town != BLANK_SECTOR) {
-    INT32 const sector = g_town_sectors[gubTownSectorServerIndex++].sector;
+    int32_t const sector = g_town_sectors[gubTownSectorServerIndex++].sector;
 
     // if this sector is in the town we're looking for
     if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sector)].bNameId != gubTownSectorServerTownId)
       continue;
 
-    INT16 const x = SECTORX(sector);
-    INT16 const y = SECTORY(sector);
+    int16_t const x = SECTORX(sector);
+    int16_t const y = SECTORY(sector);
 
     // Make sure we're not supposed to skip it
     if (x == gsTownSectorServerSkipX && y == gsTownSectorServerSkipY) continue;
@@ -368,12 +373,12 @@ static bool ServeNextFriendlySectorInTown(INT16 *const neighbour_x, INT16 *const
 }
 
 static void CantTrainMilitiaOkBoxCallback(MessageBoxReturnValue);
-static INT32 GetNumberOfUnpaidTrainableSectors();
+static int32_t GetNumberOfUnpaidTrainableSectors();
 static void PayMilitiaTrainingYesNoBoxCallback(MessageBoxReturnValue);
 
 void HandleInterfaceMessageForCostOfTrainingMilitia(SOLDIERTYPE *pSoldier) {
   wchar_t sString[128];
-  INT32 iNumberOfSectors = 0;
+  int32_t iNumberOfSectors = 0;
 
   pMilitiaTrainerSoldier = pSoldier;
 
@@ -414,7 +419,7 @@ void HandleInterfaceMessageForCostOfTrainingMilitia(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static void DoContinueMilitiaTrainingMessageBox(INT16 const sSectorX, INT16 const sSectorY,
+static void DoContinueMilitiaTrainingMessageBox(int16_t const sSectorX, int16_t const sSectorY,
                                                 wchar_t const *const str,
                                                 MessageBoxFlags const usFlags,
                                                 MSGBOX_CALLBACK const ReturnCallback) {
@@ -428,12 +433,12 @@ static void DoContinueMilitiaTrainingMessageBox(INT16 const sSectorX, INT16 cons
 // continue training?
 static void HandleInterfaceMessageForContinuingTrainingMilitia(SOLDIERTYPE *const pSoldier) {
   wchar_t sString[128];
-  INT16 sSectorX = 0, sSectorY = 0;
+  int16_t sSectorX = 0, sSectorY = 0;
   wchar_t sStringB[128];
 
   sSectorX = pSoldier->sSectorX;
   sSectorY = pSoldier->sSectorY;
-  UINT8 const sector = SECTOR(sSectorX, sSectorY);
+  uint8_t const sector = SECTOR(sSectorX, sSectorY);
 
   Assert(!SectorInfo[sector].fMilitiaTrainingPaid);
 
@@ -453,7 +458,7 @@ static void HandleInterfaceMessageForContinuingTrainingMilitia(SOLDIERTYPE *cons
 
   if (IsAreaFullOfMilitia(sSectorX, sSectorY, pSoldier->bSectorZ)) {
     // we're full!!! go home!
-    UINT8 const bTownId = GetTownIdForSector(sector);
+    uint8_t const bTownId = GetTownIdForSector(sector);
     if (bTownId == BLANK_SECTOR) {
       // wilderness SAM site
       GetSectorIDString(sSectorX, sSectorY, 0, sStringB, lengthof(sStringB), TRUE);
@@ -562,16 +567,15 @@ void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap() {
   }
 }
 
-bool CanNearbyMilitiaScoutThisSector(INT16 const sec_x, INT16 const sec_y) {
-  INT16 const scout_range = 1;
-  INT16 const xstart = sec_x > scout_range ? sec_x - scout_range : 1;
-  INT16 const ystart = sec_y > scout_range ? sec_y - scout_range : 1;
-  INT16 const xend = sec_x < 16 - scout_range ? sec_x + scout_range : 16;
-  INT16 const yend = sec_y < 16 - scout_range ? sec_y + scout_range : 16;
-  for (INT16 y = ystart; y <= yend; ++y) {
-    for (INT16 x = xstart; x <= xend; ++x) {
-      UINT8(&n_milita)
-      [MAX_MILITIA_LEVELS] = SectorInfo[SECTOR(x, y)].ubNumberOfCivsAtLevel;
+bool CanNearbyMilitiaScoutThisSector(int16_t const sec_x, int16_t const sec_y) {
+  int16_t const scout_range = 1;
+  int16_t const xstart = sec_x > scout_range ? sec_x - scout_range : 1;
+  int16_t const ystart = sec_y > scout_range ? sec_y - scout_range : 1;
+  int16_t const xend = sec_x < 16 - scout_range ? sec_x + scout_range : 16;
+  int16_t const yend = sec_y < 16 - scout_range ? sec_y + scout_range : 16;
+  for (int16_t y = ystart; y <= yend; ++y) {
+    for (int16_t x = xstart; x <= xend; ++x) {
+      uint8_t(&n_milita)[MAX_MILITIA_LEVELS] = SectorInfo[SECTOR(x, y)].ubNumberOfCivsAtLevel;
       if (n_milita[GREEN_MILITIA] + n_milita[REGULAR_MILITIA] + n_milita[ELITE_MILITIA] != 0)
         return true;
     }
@@ -579,17 +583,17 @@ bool CanNearbyMilitiaScoutThisSector(INT16 const sec_x, INT16 const sec_y) {
   return false;
 }
 
-BOOLEAN IsAreaFullOfMilitia(const INT16 sector_x, const INT16 sector_y, const INT8 sector_z) {
+BOOLEAN IsAreaFullOfMilitia(const int16_t sector_x, const int16_t sector_y, const int8_t sector_z) {
   if (sector_z != 0) return TRUE;
 
-  UINT32 count_milita = 0;
-  UINT32 max_milita = 0;
+  uint32_t count_milita = 0;
+  uint32_t max_milita = 0;
 
-  INT8 const town_id = GetTownIdForSector(SECTOR(sector_x, sector_y));
+  int8_t const town_id = GetTownIdForSector(SECTOR(sector_x, sector_y));
   if (town_id != BLANK_SECTOR) {
     FOR_EACH_SECTOR_IN_TOWN(i, town_id) {
-      INT16 const town_x = SECTORX(i->sector);
-      INT16 const town_y = SECTORY(i->sector);
+      int16_t const town_x = SECTORX(i->sector);
+      int16_t const town_y = SECTORY(i->sector);
       if (SectorOursAndPeaceful(town_x, town_y, 0)) {
         // don't count GREEN militia, they can be trained into regulars first
         count_milita += MilitiaInSectorOfRank(town_x, town_y, REGULAR_MILITIA);
@@ -609,8 +613,8 @@ BOOLEAN IsAreaFullOfMilitia(const INT16 sector_x, const INT16 sector_y, const IN
 
 // handle completion of assignment by this soldier too and inform the player
 static void HandleCompletionOfTownTrainingByGroupWithTrainer(SOLDIERTYPE *pTrainer) {
-  INT16 sSectorX = 0, sSectorY = 0;
-  INT8 bSectorZ = 0;
+  int16_t sSectorX = 0, sSectorY = 0;
+  int8_t bSectorZ = 0;
 
   // get the sector values
   sSectorX = pTrainer->sSectorX;
@@ -628,8 +632,8 @@ static void HandleCompletionOfTownTrainingByGroupWithTrainer(SOLDIERTYPE *pTrain
 }
 
 void AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(SOLDIERTYPE *pSoldier) {
-  INT32 iCounter = 0;
-  INT16 sSector = 0, sCurrentSector = 0;
+  int32_t iCounter = 0;
+  int16_t sSector = 0, sCurrentSector = 0;
 
   // get the sector value
   sSector = pSoldier->sSectorX + pSoldier->sSectorY * MAP_WORLD_X;
@@ -664,7 +668,7 @@ void ClearSectorListForCompletedTrainingOfMilitia() {
 }
 
 void HandleContinueOfTownTraining() {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
   BOOLEAN fContinueEventPosted = FALSE;
 
   while (g_list_of_merc_in_sectors_completed_militia_training[iCounter] != NULL) {
@@ -713,8 +717,8 @@ static void AddIfTrainingUnpaidSector(SOLDIERTYPE const &s) {
   if (!CanCharacterTrainMilitia(&s)) return;
   // Check if this sector is a town and needs equipment.
   if (SectorInfo[SECTOR(s.sSectorX, s.sSectorY)].fMilitiaTrainingPaid) return;
-  INT16 const sector = CALCULATE_STRATEGIC_INDEX(s.sSectorX, s.sSectorY);
-  for (INT16 *i = gsUnpaidStrategicSector;; ++i) {
+  int16_t const sector = CALCULATE_STRATEGIC_INDEX(s.sSectorX, s.sSectorY);
+  for (int16_t *i = gsUnpaidStrategicSector;; ++i) {
     if (*i == 0) {
       *i = sector;
       break;
@@ -727,7 +731,7 @@ static void BuildListOfUnpaidTrainableSectors() {
   memset(gsUnpaidStrategicSector, 0, sizeof(gsUnpaidStrategicSector));
 
   if (fInMapMode) {
-    for (INT32 i = 0; i != MAX_CHARACTER_COUNT; ++i) {
+    for (int32_t i = 0; i != MAX_CHARACTER_COUNT; ++i) {
       MapScreenCharacterSt const &c = gCharactersList[i];
       if (!c.merc) continue;
       if (!c.selected && i != bSelectedAssignChar) continue;
@@ -738,29 +742,29 @@ static void BuildListOfUnpaidTrainableSectors() {
   }
 }
 
-static INT32 GetNumberOfUnpaidTrainableSectors() {
+static int32_t GetNumberOfUnpaidTrainableSectors() {
   BuildListOfUnpaidTrainableSectors();
-  INT32 n = 0;
-  FOR_EACH(INT16 const, i, gsUnpaidStrategicSector) {
+  int32_t n = 0;
+  FOR_EACH(int16_t const, i, gsUnpaidStrategicSector) {
     if (*i != 0) ++n;
   }
   return n;
 }
 
-static void PayForTrainingInSector(UINT8 ubSector);
+static void PayForTrainingInSector(uint8_t ubSector);
 
 static void StartTrainingInAllUnpaidTrainableSectors() {
   SetAssignmentForList(TRAIN_TOWN, 0);
   // Pay up in each sector
   BuildListOfUnpaidTrainableSectors();
-  FOR_EACH(INT16 const, i, gsUnpaidStrategicSector) {
+  FOR_EACH(int16_t const, i, gsUnpaidStrategicSector) {
     if (*i == 0) continue;
     PayForTrainingInSector(STRATEGIC_INDEX_TO_SECTOR_INFO(*i));
   }
 }
 
 static void ContinueTrainingInThisSector() {
-  UINT8 ubSector;
+  uint8_t ubSector;
 
   Assert(pMilitiaTrainerSoldier);
 
@@ -769,9 +773,9 @@ static void ContinueTrainingInThisSector() {
   PayForTrainingInSector(ubSector);
 }
 
-static void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector);
+static void ResetDoneFlagForAllMilitiaTrainersInSector(uint8_t ubSector);
 
-static void PayForTrainingInSector(UINT8 ubSector) {
+static void PayForTrainingInSector(uint8_t ubSector) {
   Assert(!SectorInfo[ubSector].fMilitiaTrainingPaid);
 
   // spend the money
@@ -785,7 +789,7 @@ static void PayForTrainingInSector(UINT8 ubSector) {
   ResetDoneFlagForAllMilitiaTrainersInSector(ubSector);
 }
 
-static void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector) {
+static void ResetDoneFlagForAllMilitiaTrainersInSector(uint8_t ubSector) {
   FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM) {
     if (pSoldier->bAssignment == TRAIN_TOWN &&
         SECTOR(pSoldier->sSectorX, pSoldier->sSectorY) == ubSector && pSoldier->bSectorZ == 0) {
@@ -795,7 +799,7 @@ static void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector) {
   }
 }
 
-BOOLEAN MilitiaTrainingAllowedInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+BOOLEAN MilitiaTrainingAllowedInSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ) {
   BOOLEAN fSamSitePresent = FALSE;
 
   if (bSectorZ != 0) {
@@ -809,11 +813,11 @@ BOOLEAN MilitiaTrainingAllowedInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSec
     return (TRUE);
   }
 
-  UINT8 const bTownId = GetTownIdForSector(SECTOR(sSectorX, sSectorY));
+  uint8_t const bTownId = GetTownIdForSector(SECTOR(sSectorX, sSectorY));
   return (MilitiaTrainingAllowedInTown(bTownId));
 }
 
-BOOLEAN MilitiaTrainingAllowedInTown(INT8 bTownId) {
+BOOLEAN MilitiaTrainingAllowedInTown(int8_t bTownId) {
   switch (bTownId) {
     case DRASSEN:
     case ALMA:
@@ -839,7 +843,7 @@ BOOLEAN MilitiaTrainingAllowedInTown(INT8 bTownId) {
   }
 }
 
-static size_t PromoteMilitia(wchar_t *const str, size_t const length, size_t n, INT8 const count,
+static size_t PromoteMilitia(wchar_t *const str, size_t const length, size_t n, int8_t const count,
                              wchar_t const *const singular, wchar_t const *const plural) {
   if (count > 0) {
     if (n != 0) n += swprintf(str + n, length - n, L" ");

@@ -127,7 +127,7 @@ ScreenID InitializeJA2() try {
 }
 
 void ShutdownJA2() {
-  UINT32 uiIndex;
+  uint32_t uiIndex;
 
   FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
   InvalidateScreen();

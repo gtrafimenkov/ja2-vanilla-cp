@@ -17,14 +17,14 @@
 
 #define ATTITUDE_LIST_SIZE 20
 
-static INT32 AttitudeList[ATTITUDE_LIST_SIZE];
-static INT32 iLastElementInAttitudeList = 0;
+static int32_t AttitudeList[ATTITUDE_LIST_SIZE];
+static int32_t iLastElementInAttitudeList = 0;
 
-static INT32 SkillsList[ATTITUDE_LIST_SIZE];
-static INT32 iLastElementInSkillsList = 0;
+static int32_t SkillsList[ATTITUDE_LIST_SIZE];
+static int32_t iLastElementInSkillsList = 0;
 
-static INT32 PersonalityList[ATTITUDE_LIST_SIZE];
-static INT32 iLastElementInPersonalityList = 0;
+static int32_t PersonalityList[ATTITUDE_LIST_SIZE];
+static int32_t iLastElementInPersonalityList = 0;
 
 extern BOOLEAN fLoadingCharacterForPreviousImpProfile;
 
@@ -99,7 +99,7 @@ if( iPersonality != NO_PERSONALITYTRAIT )
 
 static void CreatePlayerAttitude() {
   // this function will 'roll a die' and decide if any attitude does exists
-  INT32 iAttitudeHits[NUM_ATTITUDES] = {0};
+  int32_t iAttitudeHits[NUM_ATTITUDES] = {0};
 
   iAttitude = ATT_NORMAL;
 
@@ -108,14 +108,14 @@ static void CreatePlayerAttitude() {
   }
 
   // count # of hits for each attitude
-  for (INT32 i = 0; i < iLastElementInAttitudeList; i++) {
+  for (int32_t i = 0; i < iLastElementInAttitudeList; i++) {
     iAttitudeHits[AttitudeList[i]]++;
   }
 
   // find highest # of hits for any attitude
-  INT32 iHighestHits = 0;
-  INT32 iNumAttitudesWithHighestHits = 0;
-  for (INT32 i = 0; i < NUM_ATTITUDES; i++) {
+  int32_t iHighestHits = 0;
+  int32_t iNumAttitudesWithHighestHits = 0;
+  for (int32_t i = 0; i < NUM_ATTITUDES; i++) {
     if (iAttitudeHits[i]) {
       if (iAttitudeHits[i] > iHighestHits) {
         iHighestHits = iAttitudeHits[i];
@@ -126,11 +126,11 @@ static void CreatePlayerAttitude() {
     }
   }
 
-  INT32 iDiceValue = Random(iNumAttitudesWithHighestHits + 1);  // XXX TODO0008
+  int32_t iDiceValue = Random(iNumAttitudesWithHighestHits + 1);  // XXX TODO0008
 
   // find attitude
-  INT32 iCounter2 = 0;
-  for (INT32 i = 0; i < NUM_ATTITUDES; i++) {
+  int32_t iCounter2 = 0;
+  for (int32_t i = 0; i < NUM_ATTITUDES; i++) {
     if (iAttitudeHits[i] == iHighestHits) {
       if (iCounter2 == iDiceValue) {
         // this is it!
@@ -144,21 +144,21 @@ static void CreatePlayerAttitude() {
   }
 }
 
-void AddAnAttitudeToAttitudeList(INT8 bAttitude) {
+void AddAnAttitudeToAttitudeList(int8_t bAttitude) {
   // adds an attitude to attitude list
   if (iLastElementInAttitudeList < ATTITUDE_LIST_SIZE) {
     AttitudeList[iLastElementInAttitudeList++] = bAttitude;
   }
 }
 
-void AddSkillToSkillList(INT8 bSkill) {
+void AddSkillToSkillList(int8_t bSkill) {
   // adds a skill to skills list
   if (iLastElementInSkillsList < ATTITUDE_LIST_SIZE) {
     SkillsList[iLastElementInSkillsList++] = bSkill;
   }
 }
 
-static void RemoveSkillFromSkillsList(INT32 const Skill) {
+static void RemoveSkillFromSkillsList(int32_t const Skill) {
   for (size_t i = 0; i != iLastElementInSkillsList;) {
     if (SkillsList[i] == Skill) {
       SkillsList[i] = SkillsList[--iLastElementInSkillsList];
@@ -179,7 +179,7 @@ static void ValidateSkillsList() {
   }
 
   // special check for lockpicking
-  INT32 iValue = p.bMechanical;
+  int32_t iValue = p.bMechanical;
   iValue = iValue * p.bWisdom / 100;
   iValue = iValue * p.bDexterity / 100;
   if (iValue + gbSkillTraitBonus[LOCKPICKING] < 50) {
@@ -209,7 +209,7 @@ static void CreatePlayerSkills() {
   }
 }
 
-void AddAPersonalityToPersonalityList(INT8 bPersonality) {
+void AddAPersonalityToPersonalityList(int8_t bPersonality) {
   // CJC, Oct 26 98: prevent personality list from being generated
   // because no dialogue was written to support PC personality quotes
 
@@ -233,9 +233,9 @@ static void CreatePlayerPersonality() {
 
   /*
     // this function will 'roll a die' and decide if any Personality does exists
-    INT32 iDiceValue = 0;
-    INT32 iCounter = 0;
-          INT32 iSecondAttempt = -1;
+    int32_t iDiceValue = 0;
+    int32_t iCounter = 0;
+          int32_t iSecondAttempt = -1;
 
           // roll dice
           iDiceValue = Random( iLastElementInPersonalityList + 1 );

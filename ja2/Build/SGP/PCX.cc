@@ -10,27 +10,27 @@
 #include "SDL_pixels.h"
 
 struct PcxHeader {
-  UINT8 ubManufacturer;
-  UINT8 ubVersion;
-  UINT8 ubEncoding;
-  UINT8 ubBitsPerPixel;
-  UINT16 usLeft;
-  UINT16 usTop;
-  UINT16 usRight;
-  UINT16 usBottom;
-  UINT16 usHorRez;
-  UINT16 usVerRez;
-  UINT8 ubEgaPalette[48];
-  UINT8 ubReserved;
-  UINT8 ubColorPlanes;
-  UINT16 usBytesPerLine;
-  UINT16 usPaletteType;
-  UINT8 ubFiller[58];
+  uint8_t ubManufacturer;
+  uint8_t ubVersion;
+  uint8_t ubEncoding;
+  uint8_t ubBitsPerPixel;
+  uint16_t usLeft;
+  uint16_t usTop;
+  uint16_t usRight;
+  uint16_t usBottom;
+  uint16_t usHorRez;
+  uint16_t usVerRez;
+  uint8_t ubEgaPalette[48];
+  uint8_t ubReserved;
+  uint8_t ubColorPlanes;
+  uint16_t usBytesPerLine;
+  uint16_t usPaletteType;
+  uint8_t ubFiller[58];
 };
 
-static void BlitPcxToBuffer(UINT8 const *src, UINT8 *dst, UINT16 w, UINT16 h);
+static void BlitPcxToBuffer(uint8_t const *src, uint8_t *dst, uint16_t w, uint16_t h);
 
-SGPImage *LoadPCXFileToImage(char const *const filename, UINT16 const contents) {
+SGPImage *LoadPCXFileToImage(char const *const filename, uint16_t const contents) {
   AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
   PcxHeader header;
@@ -39,17 +39,17 @@ SGPImage *LoadPCXFileToImage(char const *const filename, UINT16 const contents) 
     throw std::runtime_error("PCX file has invalid header");
   }
 
-  UINT32 const file_size = FileGetSize(f);
-  UINT32 const buffer_size = file_size - sizeof(PcxHeader) - 768;
+  uint32_t const file_size = FileGetSize(f);
+  uint32_t const buffer_size = file_size - sizeof(PcxHeader) - 768;
 
-  SGP::Buffer<UINT8> pcx_buffer(buffer_size);
+  SGP::Buffer<uint8_t> pcx_buffer(buffer_size);
   FileRead(f, pcx_buffer, buffer_size);
 
-  UINT8 palette[768];
+  uint8_t palette[768];
   FileRead(f, palette, sizeof(palette));
 
-  UINT16 const w = header.usRight - header.usLeft + 1;
-  UINT16 const h = header.usBottom - header.usTop + 1;
+  uint16_t const w = header.usRight - header.usLeft + 1;
+  uint16_t const h = header.usBottom - header.usTop + 1;
 
   AutoSGPImage img(new SGPImage(w, h, 8));
   // Set some header information
@@ -57,7 +57,7 @@ SGPImage *LoadPCXFileToImage(char const *const filename, UINT16 const contents) 
 
   // Read and allocate bitmap block if requested
   if (contents & IMAGE_BITMAPDATA) {
-    UINT8 *const img_data = img->pImageData.Allocate(w * h);
+    uint8_t *const img_data = img->pImageData.Allocate(w * h);
     BlitPcxToBuffer(pcx_buffer, img_data, w, h);
   }
 
@@ -75,11 +75,11 @@ SGPImage *LoadPCXFileToImage(char const *const filename, UINT16 const contents) 
   return img.Release();
 }
 
-static void BlitPcxToBuffer(UINT8 const *src, UINT8 *dst, UINT16 const w, UINT16 const h) {
+static void BlitPcxToBuffer(uint8_t const *src, uint8_t *dst, uint16_t const w, uint16_t const h) {
   for (size_t n = w * h; n != 0;) {
     if (*src >= 0xC0) {
       size_t n_px = *src++ & 0x3F;
-      UINT8 const colour = *src++;
+      uint8_t const colour = *src++;
       if (n_px > n) n_px = n;
       n -= n_px;
       for (; n_px != 0; --n_px) *dst++ = colour;

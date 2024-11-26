@@ -8,6 +8,6 @@ void RenderIMPConfirm();
 void ExitIMPConfirm();
 void HandleIMPConfirm();
 
-void ResetIMPCharactersEyesAndMouthOffsets(UINT8 ubMercProfileID);
+void ResetIMPCharactersEyesAndMouthOffsets(uint8_t ubMercProfileID);
 
 #endif

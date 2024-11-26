@@ -5,8 +5,8 @@
 
 extern const SOLDIERTYPE *gUITargetSoldier;
 
-BOOLEAN ConfirmActionCancel(UINT16 usMapPos, UINT16 usOldMapPos);
-INT8 HandleMoveModeInteractiveClick(UINT16 usMapPos);
+BOOLEAN ConfirmActionCancel(uint16_t usMapPos, uint16_t usOldMapPos);
+int8_t HandleMoveModeInteractiveClick(uint16_t usMapPos);
 BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier);
 
 #endif

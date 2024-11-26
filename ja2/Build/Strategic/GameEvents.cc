@@ -16,14 +16,14 @@
 
 STRATEGICEVENT *gpEventList = NULL;
 
-extern UINT32 guiGameClock;
+extern uint32_t guiGameClock;
 BOOLEAN gfPreventDeletionOfAnyEvent = FALSE;
 static BOOLEAN gfEventDeletionPending = FALSE;
 
 static BOOLEAN gfProcessingGameEvents = FALSE;
-UINT32 guiTimeStampOfCurrentlyExecutingEvent = 0;
+uint32_t guiTimeStampOfCurrentlyExecutingEvent = 0;
 
-bool GameEventsPending(UINT32 const adjustment) {
+bool GameEventsPending(uint32_t const adjustment) {
   STRATEGICEVENT *const e = gpEventList;
   return e && e->uiTimeStamp <= GetWorldTotalSeconds() + adjustment;
 }
@@ -43,8 +43,8 @@ static void DeleteEventsWithDeletionPending() {
   }
 }
 
-static void AdjustClockToEventStamp(STRATEGICEVENT *pEvent, UINT32 *puiAdjustment) {
-  UINT32 uiDiff;
+static void AdjustClockToEventStamp(STRATEGICEVENT *pEvent, uint32_t *puiAdjustment) {
+  uint32_t uiDiff;
 
   uiDiff = pEvent->uiTimeStamp - guiGameClock;
   guiGameClock += uiDiff;
@@ -60,7 +60,7 @@ static void AdjustClockToEventStamp(STRATEGICEVENT *pEvent, UINT32 *puiAdjustmen
            guiHour, guiMin);
 }
 
-void ProcessPendingGameEvents(UINT32 uiAdjustment, const UINT8 ubWarpCode) {
+void ProcessPendingGameEvents(uint32_t uiAdjustment, const uint8_t ubWarpCode) {
   STRATEGICEVENT *curr, *pEvent, *prev, *temp;
   BOOLEAN fDeleteEvent = FALSE, fDeleteQueuedEvent = FALSE;
 
@@ -156,31 +156,31 @@ void ProcessPendingGameEvents(UINT32 uiAdjustment, const UINT8 ubWarpCode) {
   if (uiAdjustment && !gfTimeInterrupt) guiGameClock += uiAdjustment;
 }
 
-BOOLEAN AddSameDayStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 const uiMinStamp,
-                                 UINT32 const uiParam) {
+BOOLEAN AddSameDayStrategicEvent(StrategicEventKind const ubCallbackID, uint32_t const uiMinStamp,
+                                 uint32_t const uiParam) {
   return (AddStrategicEvent(ubCallbackID, uiMinStamp + GetWorldDayInMinutes(), uiParam));
 }
 
 static BOOLEAN AddSameDayStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                    UINT32 const uiSecondStamp,
-                                                    UINT32 const uiParam) {
+                                                    uint32_t const uiSecondStamp,
+                                                    uint32_t const uiParam) {
   return (
       AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetWorldDayInSeconds(), uiParam));
 }
 
-BOOLEAN AddFutureDayStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 const uiMinStamp,
-                                   UINT32 const uiParam, UINT32 const uiNumDaysFromPresent) {
-  UINT32 uiDay;
+BOOLEAN AddFutureDayStrategicEvent(StrategicEventKind const ubCallbackID, uint32_t const uiMinStamp,
+                                   uint32_t const uiParam, uint32_t const uiNumDaysFromPresent) {
+  uint32_t uiDay;
   uiDay = GetWorldDay();
   return (AddStrategicEvent(
       ubCallbackID, uiMinStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent), uiParam));
 }
 
 static BOOLEAN AddFutureDayStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                      UINT32 const uiSecondStamp,
-                                                      UINT32 const uiParam,
-                                                      UINT32 const uiNumDaysFromPresent) {
-  UINT32 uiDay;
+                                                      uint32_t const uiSecondStamp,
+                                                      uint32_t const uiParam,
+                                                      uint32_t const uiNumDaysFromPresent) {
+  uint32_t uiDay;
   uiDay = GetWorldDay();
   return (AddStrategicEventUsingSeconds(
       ubCallbackID, uiSecondStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent) * 60,
@@ -189,7 +189,7 @@ static BOOLEAN AddFutureDayStrategicEventUsingSeconds(StrategicEventKind const u
 
 STRATEGICEVENT *AddAdvancedStrategicEvent(StrategicEventFrequency const event_type,
                                           StrategicEventKind const callback_id,
-                                          UINT32 const timestamp, UINT32 const param) {
+                                          uint32_t const timestamp, uint32_t const param) {
   if (gfProcessingGameEvents &&
       timestamp <= guiTimeStampOfCurrentlyExecutingEvent) { /* Prevent infinite loops of
                                                              * posting events that are
@@ -217,21 +217,21 @@ STRATEGICEVENT *AddAdvancedStrategicEvent(StrategicEventFrequency const event_ty
   return n;
 }
 
-BOOLEAN AddStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 const uiMinStamp,
-                          UINT32 const uiParam) {
+BOOLEAN AddStrategicEvent(StrategicEventKind const ubCallbackID, uint32_t const uiMinStamp,
+                          uint32_t const uiParam) {
   if (AddAdvancedStrategicEvent(ONETIME_EVENT, ubCallbackID, uiMinStamp * 60, uiParam)) return TRUE;
   return FALSE;
 }
 
 BOOLEAN AddStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                      UINT32 const uiSecondStamp, UINT32 const uiParam) {
+                                      uint32_t const uiSecondStamp, uint32_t const uiParam) {
   if (AddAdvancedStrategicEvent(ONETIME_EVENT, ubCallbackID, uiSecondStamp, uiParam)) return TRUE;
   return FALSE;
 }
 
 static BOOLEAN AddRangedStrategicEvent(StrategicEventKind const ubCallbackID,
-                                       UINT32 const uiStartMin, UINT32 const uiLengthMin,
-                                       UINT32 const uiParam) {
+                                       uint32_t const uiStartMin, uint32_t const uiLengthMin,
+                                       uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
   if (pEvent) {
@@ -242,25 +242,25 @@ static BOOLEAN AddRangedStrategicEvent(StrategicEventKind const ubCallbackID,
 }
 
 BOOLEAN AddSameDayRangedStrategicEvent(StrategicEventKind const ubCallbackID,
-                                       UINT32 const uiStartMin, UINT32 const uiLengthMin,
-                                       UINT32 const uiParam) {
+                                       uint32_t const uiStartMin, uint32_t const uiLengthMin,
+                                       uint32_t const uiParam) {
   return AddRangedStrategicEvent(ubCallbackID, uiStartMin + GetWorldDayInMinutes(), uiLengthMin,
                                  uiParam);
 }
 
 static BOOLEAN AddFutureDayRangedStrategicEvent(StrategicEventKind const ubCallbackID,
-                                                UINT32 const uiStartMin, UINT32 const uiLengthMin,
-                                                UINT32 const uiParam,
-                                                UINT32 const uiNumDaysFromPresent) {
+                                                uint32_t const uiStartMin,
+                                                uint32_t const uiLengthMin, uint32_t const uiParam,
+                                                uint32_t const uiNumDaysFromPresent) {
   return AddRangedStrategicEvent(
       ubCallbackID, uiStartMin + GetFutureDayInMinutes(GetWorldDay() + uiNumDaysFromPresent),
       uiLengthMin, uiParam);
 }
 
 static BOOLEAN AddRangedStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                   UINT32 const uiStartSeconds,
-                                                   UINT32 const uiLengthSeconds,
-                                                   UINT32 const uiParam) {
+                                                   uint32_t const uiStartSeconds,
+                                                   uint32_t const uiLengthSeconds,
+                                                   uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
   if (pEvent) {
@@ -271,26 +271,26 @@ static BOOLEAN AddRangedStrategicEventUsingSeconds(StrategicEventKind const ubCa
 }
 
 static BOOLEAN AddSameDayRangedStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                          UINT32 const uiStartSeconds,
-                                                          UINT32 const uiLengthSeconds,
-                                                          UINT32 const uiParam) {
+                                                          uint32_t const uiStartSeconds,
+                                                          uint32_t const uiLengthSeconds,
+                                                          uint32_t const uiParam) {
   return AddRangedStrategicEventUsingSeconds(ubCallbackID, uiStartSeconds + GetWorldDayInSeconds(),
                                              uiLengthSeconds, uiParam);
 }
 
 static BOOLEAN AddFutureDayRangedStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                            UINT32 const uiStartSeconds,
-                                                            UINT32 const uiLengthSeconds,
-                                                            UINT32 const uiParam,
-                                                            UINT32 const uiNumDaysFromPresent) {
+                                                            uint32_t const uiStartSeconds,
+                                                            uint32_t const uiLengthSeconds,
+                                                            uint32_t const uiParam,
+                                                            uint32_t const uiNumDaysFromPresent) {
   return AddRangedStrategicEventUsingSeconds(
       ubCallbackID,
       uiStartSeconds + GetFutureDayInMinutes(GetWorldDay() + uiNumDaysFromPresent) * 60,
       uiLengthSeconds, uiParam);
 }
 
-BOOLEAN AddEveryDayStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 const uiStartMin,
-                                  UINT32 const uiParam) {
+BOOLEAN AddEveryDayStrategicEvent(StrategicEventKind const ubCallbackID, uint32_t const uiStartMin,
+                                  uint32_t const uiParam) {
   if (AddAdvancedStrategicEvent(EVERYDAY_EVENT, ubCallbackID,
                                 GetWorldDayInSeconds() + uiStartMin * 60, uiParam))
     return TRUE;
@@ -298,8 +298,8 @@ BOOLEAN AddEveryDayStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 
 }
 
 static BOOLEAN AddEveryDayStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                     UINT32 const uiStartSeconds,
-                                                     UINT32 const uiParam) {
+                                                     uint32_t const uiStartSeconds,
+                                                     uint32_t const uiParam) {
   if (AddAdvancedStrategicEvent(EVERYDAY_EVENT, ubCallbackID,
                                 GetWorldDayInSeconds() + uiStartSeconds, uiParam))
     return TRUE;
@@ -309,7 +309,7 @@ static BOOLEAN AddEveryDayStrategicEventUsingSeconds(StrategicEventKind const ub
 // NEW:  Period Events
 // Event will get processed automatically once every X minutes.
 BOOLEAN AddPeriodStrategicEvent(StrategicEventKind const ubCallbackID,
-                                UINT32 const uiOnceEveryXMinutes, UINT32 const uiParam) {
+                                uint32_t const uiOnceEveryXMinutes, uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID,
                                      GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
@@ -321,8 +321,8 @@ BOOLEAN AddPeriodStrategicEvent(StrategicEventKind const ubCallbackID,
 }
 
 static BOOLEAN AddPeriodStrategicEventUsingSeconds(StrategicEventKind const ubCallbackID,
-                                                   UINT32 const uiOnceEveryXSeconds,
-                                                   UINT32 const uiParam) {
+                                                   uint32_t const uiOnceEveryXSeconds,
+                                                   uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID,
                                      GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
@@ -334,8 +334,9 @@ static BOOLEAN AddPeriodStrategicEventUsingSeconds(StrategicEventKind const ubCa
 }
 
 BOOLEAN AddPeriodStrategicEventWithOffset(StrategicEventKind const ubCallbackID,
-                                          UINT32 const uiOnceEveryXMinutes,
-                                          UINT32 const uiOffsetFromCurrent, UINT32 const uiParam) {
+                                          uint32_t const uiOnceEveryXMinutes,
+                                          uint32_t const uiOffsetFromCurrent,
+                                          uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID,
                                      GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
@@ -347,9 +348,9 @@ BOOLEAN AddPeriodStrategicEventWithOffset(StrategicEventKind const ubCallbackID,
 }
 
 static BOOLEAN AddPeriodStrategicEventUsingSecondsWithOffset(StrategicEventKind const ubCallbackID,
-                                                             UINT32 const uiOnceEveryXSeconds,
-                                                             UINT32 const uiOffsetFromCurrent,
-                                                             UINT32 const uiParam) {
+                                                             uint32_t const uiOnceEveryXSeconds,
+                                                             uint32_t const uiOffsetFromCurrent,
+                                                             uint32_t const uiParam) {
   STRATEGICEVENT *pEvent;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID,
                                      GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
@@ -386,7 +387,7 @@ void DeleteAllStrategicEvents() {
   gpEventList = 0;
 }
 
-void DeleteStrategicEvent(StrategicEventKind const callback_id, UINT32 const param) {
+void DeleteStrategicEvent(StrategicEventKind const callback_id, uint32_t const param) {
   for (STRATEGICEVENT **anchor = &gpEventList; *anchor; anchor = &(*anchor)->next) {
     STRATEGICEVENT *const e = *anchor;
     if (e->ubCallbackID != callback_id) continue;
@@ -407,15 +408,15 @@ void DeleteStrategicEvent(StrategicEventKind const callback_id, UINT32 const par
 // part of the game.sav files (not map files)
 void SaveStrategicEventsToSavedGame(HWFILE const f) {
   // Determine the number of events
-  UINT32 n_game_events = 0;
+  uint32_t n_game_events = 0;
   for (STRATEGICEVENT *i = gpEventList; i; i = i->next) {
     ++n_game_events;
   }
-  FileWrite(f, &n_game_events, sizeof(UINT32));
+  FileWrite(f, &n_game_events, sizeof(uint32_t));
 
   for (STRATEGICEVENT *i = gpEventList; i; i = i->next) {
-    BYTE data[28];
-    BYTE *d = data;
+    uint8_t data[28];
+    uint8_t *d = data;
     INJ_SKIP(d, 4)
     INJ_U32(d, i->uiTimeStamp)
     INJ_U32(d, i->uiParam)
@@ -435,16 +436,16 @@ void LoadStrategicEventsFromSavedGame(HWFILE const f) {
   DeleteAllStrategicEvents();
 
   // Read the number of strategic events
-  UINT32 n_game_events;
-  FileRead(f, &n_game_events, sizeof(UINT32));
+  uint32_t n_game_events;
+  FileRead(f, &n_game_events, sizeof(uint32_t));
 
   STRATEGICEVENT **anchor = &gpEventList;
   for (size_t n = n_game_events; n != 0; --n) {
-    BYTE data[28];
+    uint8_t data[28];
     FileRead(f, data, sizeof(data));
 
     STRATEGICEVENT *const sev = MALLOCZ(STRATEGICEVENT);
-    BYTE const *d = data;
+    uint8_t const *d = data;
     EXTR_SKIP(d, 4)
     EXTR_U32(d, sev->uiTimeStamp)
     EXTR_U32(d, sev->uiParam)

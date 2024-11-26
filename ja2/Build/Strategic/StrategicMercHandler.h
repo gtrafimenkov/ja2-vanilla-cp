@@ -8,7 +8,7 @@ void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE &);
 void MercDailyUpdate();
 void MercsContractIsFinished(SOLDIERTYPE *s);
 void RPCWhineAboutNoPay(SOLDIERTYPE &);
-void MercComplainAboutEquipment(UINT8 ubProfileID);
+void MercComplainAboutEquipment(uint8_t ubProfileID);
 BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier);
 void UpdateBuddyAndHatedCounters();
 void HourlyCamouflageUpdate();

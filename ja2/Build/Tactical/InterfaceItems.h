@@ -22,13 +22,13 @@
 
 // USED TO SETUP REGION POSITIONS, ETC
 struct INV_REGION_DESC {
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 };
 
 // Itempickup stuff
-void InitializeItemPickupMenu(SOLDIERTYPE *pSoldier, INT16 sGridNo, ITEM_POOL *pItemPool,
-                              INT8 bZLevel);
+void InitializeItemPickupMenu(SOLDIERTYPE *pSoldier, int16_t sGridNo, ITEM_POOL *pItemPool,
+                              int8_t bZLevel);
 void RenderItemPickupMenu();
 void RemoveItemPickupMenu();
 void SetItemPickupMenuDirty(BOOLEAN fDirtyLevel);
@@ -41,13 +41,13 @@ void InitInvSlotInterface(INV_REGION_DESC const *pRegionDesc, INV_REGION_DESC co
 void ShutdownInvSlotInterface();
 void HandleRenderInvSlots(SOLDIERTYPE const &, DirtyLevel);
 void HandleNewlyAddedItems(SOLDIERTYPE &, DirtyLevel *);
-void RenderInvBodyPanel(const SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY);
+void RenderInvBodyPanel(const SOLDIERTYPE *pSoldier, int16_t sX, int16_t sY);
 void DisableInvRegions(BOOLEAN fDisable);
 
 void DegradeNewlyAddedItems();
 void CheckForAnyNewlyAddedItems(SOLDIERTYPE *pSoldier);
 
-BOOLEAN HandleCompatibleAmmoUI(const SOLDIERTYPE *pSoldier, INT8 bInvPos, BOOLEAN fOn);
+BOOLEAN HandleCompatibleAmmoUI(const SOLDIERTYPE *pSoldier, int8_t bInvPos, BOOLEAN fOn);
 
 // THIS FUNCTION IS CALLED TO RENDER AN ITEM.
 // uiBuffer - The Dest Video Surface - can only be FRAME_BUFFER or guiSAVEBUFFER
@@ -59,30 +59,30 @@ BOOLEAN HandleCompatibleAmmoUI(const SOLDIERTYPE *pSoldier, INT8 bInvPos, BOOLEA
 // bullets and status only
 //
 //  Last parameter used mainly for when mouse is over item
-void INVRenderItem(SGPVSurface *uiBuffer, SOLDIERTYPE const *pSoldier, OBJECTTYPE const &, INT16 sX,
-                   INT16 sY, INT16 sWidth, INT16 sHeight, DirtyLevel, UINT8 ubStatusIndex,
-                   INT16 sOutlineColor);
+void INVRenderItem(SGPVSurface *uiBuffer, SOLDIERTYPE const *pSoldier, OBJECTTYPE const &,
+                   int16_t sX, int16_t sY, int16_t sWidth, int16_t sHeight, DirtyLevel,
+                   uint8_t ubStatusIndex, int16_t sOutlineColor);
 
 extern BOOLEAN gfInItemDescBox;
 
 BOOLEAN InItemDescriptionBox();
-void InitItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sX, INT16 sY,
-                            UINT8 ubStatusIndex);
-void InternalInitItemDescriptionBox(OBJECTTYPE *pObject, INT16 sX, INT16 sY, UINT8 ubStatusIndex,
-                                    SOLDIERTYPE *pSoldier);
-void InitKeyItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sX, INT16 sY);
+void InitItemDescriptionBox(SOLDIERTYPE *pSoldier, uint8_t ubPosition, int16_t sX, int16_t sY,
+                            uint8_t ubStatusIndex);
+void InternalInitItemDescriptionBox(OBJECTTYPE *pObject, int16_t sX, int16_t sY,
+                                    uint8_t ubStatusIndex, SOLDIERTYPE *pSoldier);
+void InitKeyItemDescriptionBox(SOLDIERTYPE *pSoldier, uint8_t ubPosition, int16_t sX, int16_t sY);
 void RenderItemDescriptionBox();
 void HandleItemDescriptionBox(DirtyLevel *);
 void DeleteItemDescriptionBox();
 
 BOOLEAN InItemStackPopup();
-void InitItemStackPopup(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sInvX, INT16 sInvY,
-                        INT16 sInvWidth, INT16 sInvHeight);
+void InitItemStackPopup(SOLDIERTYPE *pSoldier, uint8_t ubPosition, int16_t sInvX, int16_t sInvY,
+                        int16_t sInvWidth, int16_t sInvHeight);
 void RenderItemStackPopup(BOOLEAN fFullRender);
 
 // keyring handlers
-void InitKeyRingPopup(SOLDIERTYPE *pSoldier, INT16 sInvX, INT16 sInvY, INT16 sInvWidth,
-                      INT16 sInvHeight);
+void InitKeyRingPopup(SOLDIERTYPE *pSoldier, int16_t sInvX, int16_t sInvY, int16_t sInvWidth,
+                      int16_t sInvHeight);
 void RenderKeyRingPopup(BOOLEAN fFullRender);
 void InitKeyRingInterface(MOUSE_CALLBACK KeyRingClickCallback);
 void InitMapKeyRingInterface(MOUSE_CALLBACK KeyRingClickCallback);
@@ -90,21 +90,21 @@ void DeleteKeyRingPopup();
 
 void ShutdownKeyRingInterface();
 BOOLEAN InKeyRingPopup();
-void BeginKeyRingItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubKeyRingPosition);
+void BeginKeyRingItemPointer(SOLDIERTYPE *pSoldier, uint8_t ubKeyRingPosition);
 
 extern OBJECTTYPE *gpItemPointer;
 extern OBJECTTYPE gItemPointer;
 extern SOLDIERTYPE *gpItemPointerSoldier;
 extern BOOLEAN gfItemPointerDifferentThanDefault;
 
-void BeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos);
-void InternalBeginItemPointer(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, INT8 bHandPos);
+void BeginItemPointer(SOLDIERTYPE *pSoldier, uint8_t ubHandPos);
+void InternalBeginItemPointer(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, int8_t bHandPos);
 void EndItemPointer();
 void DrawItemFreeCursor();
 void DrawItemTileCursor();
-BOOLEAN HandleItemPointerClick(UINT16 usMapPos);
+BOOLEAN HandleItemPointerClick(uint16_t usMapPos);
 SGPVObject const &GetInterfaceGraphicForItem(INVTYPE const &);
-UINT16 GetTileGraphicForItem(INVTYPE const &);
+uint16_t GetTileGraphicForItem(INVTYPE const &);
 SGPVObject *LoadTileGraphicForItem(INVTYPE const &);
 
 void GetHelpTextForItem(wchar_t *buf, size_t length, OBJECTTYPE const &);
@@ -115,10 +115,10 @@ void LoadItemCursorFromSavedGame(HWFILE);
 void SaveItemCursorToSavedGame(HWFILE);
 
 // handle compatable items for merc and map inventory
-BOOLEAN HandleCompatibleAmmoUIForMapScreen(const SOLDIERTYPE *pSoldier, INT32 bInvPos, BOOLEAN fOn,
-                                           BOOLEAN fFromMerc);
-BOOLEAN HandleCompatibleAmmoUIForMapInventory(SOLDIERTYPE *pSoldier, INT32 bInvPos,
-                                              INT32 iStartSlotNumber, BOOLEAN fOn,
+BOOLEAN HandleCompatibleAmmoUIForMapScreen(const SOLDIERTYPE *pSoldier, int32_t bInvPos,
+                                           BOOLEAN fOn, BOOLEAN fFromMerc);
+BOOLEAN HandleCompatibleAmmoUIForMapInventory(SOLDIERTYPE *pSoldier, int32_t bInvPos,
+                                              int32_t iStartSlotNumber, BOOLEAN fOn,
                                               BOOLEAN fFromMerc);
 void ResetCompatibleItemArray();
 
@@ -129,12 +129,12 @@ void UpdateItemHatches();
 extern BOOLEAN gfInKeyRingPopup;
 extern BOOLEAN gfInItemPickupMenu;
 extern SOLDIERTYPE *gpItemPopupSoldier;
-extern INT8 gbCompatibleApplyItem;
-extern INT8 gbInvalidPlacementSlot[NUM_INV_SLOTS];
+extern int8_t gbCompatibleApplyItem;
+extern int8_t gbInvalidPlacementSlot[NUM_INV_SLOTS];
 extern MOUSE_REGION gInvDesc;
 extern BOOLEAN gfAddingMoneyToMercFromPlayersAccount;
 extern MOUSE_REGION gItemDescAttachmentRegions[MAX_ATTACHMENTS];
-extern INT8 gbItemPointerSrcSlot;
+extern int8_t gbItemPointerSrcSlot;
 extern BOOLEAN gfDontChargeAPsToPickup;
 extern GUIButtonRef giMapInvDescButton;
 
@@ -142,7 +142,7 @@ void HandleAnyMercInSquadHasCompatibleStuff(const OBJECTTYPE *pObject);
 BOOLEAN InternalHandleCompatibleAmmoUI(const SOLDIERTYPE *pSoldier, const OBJECTTYPE *pTestObject,
                                        BOOLEAN fOn);
 
-void SetMouseCursorFromItem(UINT16 item_idx);
+void SetMouseCursorFromItem(uint16_t item_idx);
 void SetMouseCursorFromCurrentItem();
 
 void SetItemPointer(OBJECTTYPE *, SOLDIERTYPE *);

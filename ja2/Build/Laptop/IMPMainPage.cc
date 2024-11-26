@@ -32,15 +32,15 @@
 static BUTTON_PICS *giIMPMainPageButtonImage[6];
 GUIButtonRef giIMPMainPageButton[6];
 
-extern INT32 iCurrentVoices;
+extern int32_t iCurrentVoices;
 
 // mouse regions for not entablable warning
 static MOUSE_REGION pIMPMainPageMouseRegions[4];
 
 static SGPVObject *guiCHARACTERPORTRAITFORMAINPAGE;
 
-void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
+void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, int32_t reason);
+void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, int32_t reason);
 
 // this is the current state of profiling the player is in.
 /*
@@ -51,7 +51,7 @@ void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
         4 - Voice
         5 - Done
         */
-INT32 iCurrentProfileMode = 0;
+int32_t iCurrentProfileMode = 0;
 
 static void CreateIMPMainPageButtons();
 static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus();
@@ -111,12 +111,12 @@ void HandleIMPMainPage() {
   }
 }
 
-static void MakeButton(UINT idx, const char *img_file, const wchar_t *text, INT16 x, INT16 y,
-                       GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const char *img_file, const wchar_t *text, int16_t x,
+                       int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(img_file, 0, 1);
   giIMPMainPageButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -128,15 +128,15 @@ static void MakeButton(UINT idx, const char *img_file, const wchar_t *text, INT1
   }
 }
 
-static void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPMainPageButtons() {
   // this function will create the buttons needed for th IMP about us page
-  const INT16 dx = LAPTOP_SCREEN_UL_X;
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dx = LAPTOP_SCREEN_UL_X;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
 
   // the back button button
   MakeButton(0, LAPTOPDIR "/button_3.sti", pImpButtonText[19], dx + 15, dy + 360,
@@ -201,7 +201,7 @@ static void DeleteIMPMainPageButtons() {
   UnloadButtonImage(giIMPMainPageButtonImage[5]);
 }
 
-static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for IMP Homepage About US button
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -215,7 +215,7 @@ static void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason) {
 
 static void BeginMessageBoxCallBack(MessageBoxReturnValue);
 
-static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // too far along to change gender
@@ -242,7 +242,7 @@ static void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // if not this far in char generation, don't alot ANY action
@@ -257,7 +257,7 @@ static void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // if not this far in char generation, don't alot ANY action
@@ -272,7 +272,7 @@ static void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason) {
+void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // if not this far in char generation, don't alot ANY action
@@ -287,7 +287,7 @@ void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
+void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // if not this far in char generation, don't alot ANY action
@@ -317,7 +317,7 @@ static BOOLEAN CheckIfFinishedCharacterGeneration() {
 
 static void UpDateIMPMainPageButtons() {
   // update mainpage button states
-  INT32 iCount = 0;
+  int32_t iCount = 0;
 
   // disable all
   for (iCount = 2; iCount < 6; iCount++) {
@@ -377,16 +377,16 @@ static void BeginMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
   }
 }
 
-static void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus() {
   // this procedure will create masks for the char generation main page
   /* create masks for the personality, attrib, portrait and page buttons on the
    * character generation main page */
-  UINT16 x = LAPTOP_SCREEN_UL_X + 13;
-  UINT16 const y = LAPTOP_SCREEN_WEB_UL_Y + 245;
-  UINT16 const w = 115;
-  UINT16 const h = 93;
+  uint16_t x = LAPTOP_SCREEN_UL_X + 13;
+  uint16_t const y = LAPTOP_SCREEN_WEB_UL_Y + 245;
+  uint16_t const w = 115;
+  uint16_t const h = 93;
   FOR_EACHX(MOUSE_REGION, r, pIMPMainPageMouseRegions, x += 120) {
     MSYS_DefineRegion(r, x, y, x + w, y + h, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK,
                       IMPMainPageNotSelectableBtnCallback);
@@ -398,7 +398,7 @@ static void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus() {
   FOR_EACH(MOUSE_REGION, r, pIMPMainPageMouseRegions) { MSYS_RemoveRegion(r); }
 }
 
-static void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[4], LAPTOP_SCREEN, MSG_BOX_FLAG_OK,
                        BeginMessageBoxCallBack);

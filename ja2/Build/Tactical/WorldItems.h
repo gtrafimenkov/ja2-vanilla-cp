@@ -16,13 +16,13 @@
 
 struct WORLDITEM {
   BOOLEAN fExists;
-  INT16 sGridNo;
-  UINT8 ubLevel;
+  int16_t sGridNo;
+  uint8_t ubLevel;
   OBJECTTYPE o;
-  UINT16 usFlags;
-  INT8 bRenderZHeightAboveLevel;
+  uint16_t usFlags;
+  int8_t bRenderZHeightAboveLevel;
 
-  INT8 bVisible;
+  int8_t bVisible;
 
   // This is the chance associated with an item or a trap not-existing in the
   // world.  The reason why this is reversed (10 meaning item has 90% chance of
@@ -31,13 +31,13 @@ struct WORLDITEM {
   // this value is zero in the saved maps, we can't change it to 100, hence the
   // reversal method. This check is only performed the first time a map is
   // loaded.  Later, it is entirely skipped.
-  UINT8 ubNonExistChance;
+  uint8_t ubNonExistChance;
 };
 
 extern WORLDITEM *gWorldItems;
 
 // number of items in currently loaded sector
-extern UINT32 guiNumWorldItems;
+extern uint32_t guiNumWorldItems;
 
 static inline WORLDITEM &GetWorldItem(size_t const idx) {
   Assert(idx < guiNumWorldItems);
@@ -53,10 +53,10 @@ static inline WORLDITEM &GetWorldItem(size_t const idx) {
 #define FOR_EACH_WORLD_ITEM(iter) BASE_FOR_EACH_WORLD_ITEM(WORLDITEM, iter)
 #define CFOR_EACH_WORLD_ITEM(iter) BASE_FOR_EACH_WORLD_ITEM(const WORLDITEM, iter)
 
-INT32 AddItemToWorld(INT16 sGridNo, const OBJECTTYPE *pObject, UINT8 ubLevel, UINT16 usFlags,
-                     INT8 bRenderZHeightAboveLevel, INT8 bVisible);
-void RemoveItemFromWorld(INT32 iItemIndex);
-INT32 FindWorldItem(UINT16 usItem);
+int32_t AddItemToWorld(int16_t sGridNo, const OBJECTTYPE *pObject, uint8_t ubLevel,
+                       uint16_t usFlags, int8_t bRenderZHeightAboveLevel, int8_t bVisible);
+void RemoveItemFromWorld(int32_t iItemIndex);
+int32_t FindWorldItem(uint16_t usItem);
 
 void LoadWorldItemsFromMap(HWFILE);
 
@@ -66,11 +66,11 @@ void TrashWorldItems();
 
 struct WORLDBOMB {
   BOOLEAN fExists;
-  INT32 iItemIndex;
+  int32_t iItemIndex;
 };
 
 extern WORLDBOMB *gWorldBombs;
-extern UINT32 guiNumWorldBombs;
+extern uint32_t guiNumWorldBombs;
 
 #define BASE_FOR_EACH_WORLD_BOMB(type, iter)                                          \
   for (type *iter = gWorldBombs, *const end__##iter = gWorldBombs + guiNumWorldBombs; \
@@ -82,8 +82,8 @@ extern UINT32 guiNumWorldBombs;
 #define CFOR_EACH_WORLD_BOMB(iter) BASE_FOR_EACH_WORLD_BOMB(const WORLDBOMB, iter)
 
 extern void FindPanicBombsAndTriggers();
-extern INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel);
+extern int32_t FindWorldItemForBombInGridNo(int16_t sGridNo, int8_t bLevel);
 
-void RefreshWorldItemsIntoItemPools(const WORLDITEM *pItemList, INT32 iNumberOfItems);
+void RefreshWorldItemsIntoItemPools(const WORLDITEM *pItemList, int32_t iNumberOfItems);
 
 #endif

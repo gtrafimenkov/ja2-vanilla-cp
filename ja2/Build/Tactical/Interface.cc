@@ -67,21 +67,21 @@
 #define BUTTON_PANEL_HEIGHT 76
 
 BOOLEAN gfInMovementMenu = FALSE;
-static INT32 giMenuAnchorX;
-static INT32 giMenuAnchorY;
+static int32_t giMenuAnchorX;
+static int32_t giMenuAnchorY;
 
 static const SGPBox g_progress_bar_box = {5, 2, 630, 12};
 
 static BOOLEAN gfProgBarActive = FALSE;
-static UINT8 gubProgNumEnemies = 0;
-static UINT8 gubProgCurEnemy = 0;
+static uint8_t gubProgNumEnemies = 0;
+static uint8_t gubProgCurEnemy = 0;
 
 struct TOP_MESSAGE {
   SGPVSurface *uiSurface;
-  UINT32 uiTimeSinceLastBeep;
+  uint32_t uiTimeSinceLastBeep;
   BOOLEAN fCreated;
-  INT16 sWorldRenderX;
-  INT16 sWorldRenderY;
+  int16_t sWorldRenderX;
+  int16_t sWorldRenderY;
 };
 
 static TOP_MESSAGE gTopMessage;
@@ -90,11 +90,11 @@ BOOLEAN gfTopMessageDirty = FALSE;
 static MOUSE_REGION gMenuOverlayRegion;
 
 VIDEO_OVERLAY *g_ui_message_overlay = NULL;
-static UINT16 gusUIMessageWidth;
-static UINT16 gusUIMessageHeight;
-UINT32 guiUIMessageTime = 0;
+static uint16_t gusUIMessageWidth;
+static uint16_t gusUIMessageHeight;
+uint32_t guiUIMessageTime = 0;
 static MercPopUpBox *g_ui_message_box;
-UINT32 guiUIMessageTimeDelay = 0;
+uint32_t guiUIMessageTimeDelay = 0;
 static BOOLEAN gfUseSkullIconMessage = FALSE;
 
 static BOOLEAN gfPanelAllocated = FALSE;
@@ -169,16 +169,16 @@ static SGPVObject *guiRADIO2;
 MOUSE_REGION gViewportRegion;
 MOUSE_REGION gRadarRegion;
 
-static UINT16 gsUpArrowX;
-static UINT16 gsUpArrowY;
-static UINT16 gsDownArrowX;
-static UINT16 gsDownArrowY;
+static uint16_t gsUpArrowX;
+static uint16_t gsUpArrowY;
+static uint16_t gsDownArrowX;
+static uint16_t gsDownArrowY;
 
 static BACKGROUND_SAVE *giUpArrowRect = NO_BGND_RECT;
 static BACKGROUND_SAVE *giDownArrowRect = NO_BGND_RECT;
 
 DirtyLevel fInterfacePanelDirty = DIRTYLEVEL2;
-INT16 gsInterfaceLevel = I_GROUND_LEVEL;
+int16_t gsInterfaceLevel = I_GROUND_LEVEL;
 InterfacePanelKind gsCurInterfacePanel = TEAM_PANEL;
 
 void InitializeTacticalInterface() {
@@ -359,9 +359,9 @@ static void HandleUpDownArrowBackgrounds();
 
 void HandleInterfaceBackgrounds() { HandleUpDownArrowBackgrounds(); }
 
-static void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMovementCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void MakeButtonMove(UINT const idx, UINT const gfx, INT16 const x, INT16 const y,
+static void MakeButtonMove(uint32_t const idx, uint32_t const gfx, int16_t const x, int16_t const y,
                            UI_EVENT *const event, wchar_t const *const help, bool const disabled) {
   GUIButtonRef const btn =
       QuickCreateButton(iIconImages[gfx], x, y, MSYS_PRIORITY_HIGHEST - 1, BtnMovementCallback);
@@ -371,7 +371,7 @@ static void MakeButtonMove(UINT const idx, UINT const gfx, INT16 const x, INT16 
   if (disabled) DisableButton(btn);
 }
 
-static void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 void PopupMovementMenu(UI_EVENT *const ev) {
   EraseInterfaceMenus(TRUE);
@@ -396,8 +396,8 @@ void PopupMovementMenu(UI_EVENT *const ev) {
     giMenuAnchorY = gsVIEWPORT_WINDOW_END_Y - BUTTON_PANEL_HEIGHT;
   }
 
-  INT32 const x = giMenuAnchorX + 9;
-  INT32 const y = giMenuAnchorY + 8;
+  int32_t const x = giMenuAnchorX + 9;
+  int32_t const y = giMenuAnchorY + 8;
   SOLDIERTYPE const *const s = GetSelectedMan();
   bool const is_epc = AM_AN_EPC(s);
   bool const is_vehicle = s->uiStatusFlags & SOLDIER_VEHICLE;
@@ -412,7 +412,7 @@ void PopupMovementMenu(UI_EVENT *const ev) {
       is_vehicle ? TacticalStr[DRIVE_POPUPTEXT] : pTacticalPopupButtonStrings[WALK_ICON];
   MakeButtonMove(WALK_ICON, WALK_IMAGES, x + 40, y, ev, help, is_uncontrolled_robot);
 
-  UINT32 action_image;
+  uint32_t action_image;
   wchar_t const *action_text;
   bool disable_action = false;
   if (is_vehicle) {
@@ -421,7 +421,7 @@ void PopupMovementMenu(UI_EVENT *const ev) {
     action_text = TacticalStr[NOT_APPLICABLE_POPUPTEXT];
     disable_action = true;
   } else {  // Create button based on what is in our hands at the moment!
-    UINT16 const item = s->inv[HANDPOS].usItem;
+    uint16_t const item = s->inv[HANDPOS].usItem;
     if (item == TOOLKIT) {
       action_image = TOOLKITACTIONC_IMAGES;
       action_text = TacticalStr[NOT_APPLICABLE_POPUPTEXT];
@@ -532,7 +532,7 @@ void CancelMovementMenu() {
   guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
 }
 
-static void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMovementCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -572,7 +572,7 @@ static void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason) {
 static void GetArrowsBackground();
 
 static void HandleUpDownArrowBackgrounds() {
-  static UINT32 uiOldShowUpDownArrows = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
+  static uint32_t uiOldShowUpDownArrows = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 
   // Check for change in mode
   if (guiShowUPDownArrows != uiOldShowUpDownArrows || gfUIRefreshArrows) {
@@ -720,8 +720,8 @@ void EraseRenderArrows() {
 }
 
 static void GetArrowsBackground() {
-  INT16 sMercScreenX, sMercScreenY;
-  UINT16 sArrowHeight = ARROWS_HEIGHT, sArrowWidth = ARROWS_WIDTH;
+  int16_t sMercScreenX, sMercScreenY;
+  uint16_t sArrowHeight = ARROWS_HEIGHT, sArrowWidth = ARROWS_WIDTH;
 
   if (guiShowUPDownArrows & ARROWS_HIDE_UP && guiShowUPDownArrows & ARROWS_HIDE_DOWN) {
     return;
@@ -817,11 +817,11 @@ static void GetArrowsBackground() {
                                          sArrowHeight);
 }
 
-void GetSoldierAboveGuyPositions(SOLDIERTYPE const *const s, INT16 *const psX, INT16 *const psY,
+void GetSoldierAboveGuyPositions(SOLDIERTYPE const *const s, int16_t *const psX, int16_t *const psY,
                                  BOOLEAN const fRadio) {
-  INT16 const sTextBodyTypeYOffset = 62;
+  int16_t const sTextBodyTypeYOffset = 62;
 
-  INT16 sStanceOffset;
+  int16_t sStanceOffset;
   // Adjust based on body type
   switch (s->ubBodyType) {
     case CROW:
@@ -834,7 +834,8 @@ void GetSoldierAboveGuyPositions(SOLDIERTYPE const *const s, INT16 *const psX, I
     default: {
       // Adjust based on stance
       ANIMCONTROLTYPE const &ac = gAnimControl[s->usAnimState];
-      UINT8 const ubAnimUseHeight = ac.uiFlags & ANIM_NOMOVE_MARKER ? ac.ubHeight : ac.ubEndHeight;
+      uint8_t const ubAnimUseHeight =
+          ac.uiFlags & ANIM_NOMOVE_MARKER ? ac.ubHeight : ac.ubEndHeight;
       switch (ubAnimUseHeight) {
         case ANIM_PRONE:
           sStanceOffset = 25;
@@ -850,8 +851,8 @@ void GetSoldierAboveGuyPositions(SOLDIERTYPE const *const s, INT16 *const psX, I
     }
   }
 
-  INT16 sMercScreenX;
-  INT16 sMercScreenY;
+  int16_t sMercScreenX;
+  int16_t sMercScreenY;
   GetSoldierTRUEScreenPos(s, &sMercScreenX, &sMercScreenY);
 
   *psX = sMercScreenX - 80 / 2;
@@ -865,15 +866,15 @@ void GetSoldierAboveGuyPositions(SOLDIERTYPE const *const s, INT16 *const psX, I
   }
 }
 
-static void PrintAboveGuy(INT16 const x, INT16 const y, wchar_t const *const text) {
-  INT16 cx;
-  INT16 cy;
+static void PrintAboveGuy(int16_t const x, int16_t const y, wchar_t const *const text) {
+  int16_t cx;
+  int16_t cy;
   FindFontCenterCoordinates(x, y, 80, 1, text, TINYFONT1, &cx, &cy);
   GDirtyPrint(cx, cy, text);
 }
 
-static void DrawBarsInUIBox(const SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth,
-                            INT16 sHeight);
+static void DrawBarsInUIBox(const SOLDIERTYPE *pSoldier, int16_t sXPos, int16_t sYPos,
+                            int16_t sWidth, int16_t sHeight);
 
 void DrawSelectedUIAboveGuy(SOLDIERTYPE &s) {
   if (s.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) return;
@@ -900,8 +901,8 @@ void DrawSelectedUIAboveGuy(SOLDIERTYPE &s) {
       }
 
       // Render the beastie
-      INT16 sXPos;
-      INT16 sYPos;
+      int16_t sXPos;
+      int16_t sYPos;
       GetSoldierAboveGuyPositions(&s, &sXPos, &sYPos, TRUE);
 
       // Adjust for bars
@@ -922,7 +923,7 @@ void DrawSelectedUIAboveGuy(SOLDIERTYPE &s) {
   // Do not show if we are dead
   if (s.uiStatusFlags & SOLDIER_DEAD) return;
 
-  UINT16 usGraphicToUse;
+  uint16_t usGraphicToUse;
   SOLDIERTYPE const *const sel = GetSelectedMan();
   if (&s == sel && !gRubberBandActive) {
     usGraphicToUse = THIRDPOINTERS2;
@@ -933,8 +934,8 @@ void DrawSelectedUIAboveGuy(SOLDIERTYPE &s) {
     return;
   }
 
-  INT16 sXPos;
-  INT16 sYPos;
+  int16_t sXPos;
+  int16_t sYPos;
   GetSoldierAboveGuyPositions(&s, &sXPos, &sYPos, FALSE);
 
   // Display name
@@ -1017,19 +1018,19 @@ void DrawSelectedUIAboveGuy(SOLDIERTYPE &s) {
   PrintAboveGuy(sXPos, sYPos, GetSoldierHealthString(&s));
 }
 
-static void DrawBarsInUIBox(const SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth,
-                            INT16 sHeight) {
-  FLOAT dWidth, dPercentage;
-  // UINT16
+static void DrawBarsInUIBox(const SOLDIERTYPE *pSoldier, int16_t sXPos, int16_t sYPos,
+                            int16_t sWidth, int16_t sHeight) {
+  float dWidth, dPercentage;
+  // uint16_t
   // usLineColor;
-  UINT16 usLineColor;
-  INT8 bBandage;
+  uint16_t usLineColor;
+  int8_t bBandage;
 
   // Draw breath points
 
   // Draw new size
   SGPVSurface::Lock l(FRAME_BUFFER);
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
   SetClippingRegionAndImageWidth(l.Pitch(), 0, gsVIEWPORT_WINDOW_START_Y, SCREEN_WIDTH,
                                  gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y);
 
@@ -1038,45 +1039,45 @@ static void DrawBarsInUIBox(const SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPo
 
   // NOW DO BLEEDING
   if (pSoldier->bBleeding) {
-    dPercentage = (FLOAT)(pSoldier->bBleeding + pSoldier->bLife + bBandage) / (FLOAT)100;
+    dPercentage = (float)(pSoldier->bBleeding + pSoldier->bLife + bBandage) / (float)100;
     dWidth = dPercentage * sWidth;
     usLineColor = Get16BPPColor(FROMRGB(240, 240, 20));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
+    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (int32_t)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
                   pDestBuf);
   }
 
   if (bBandage) {
-    dPercentage = (FLOAT)(pSoldier->bLife + bBandage) / (FLOAT)100;
+    dPercentage = (float)(pSoldier->bLife + bBandage) / (float)100;
     dWidth = dPercentage * sWidth;
     usLineColor = Get16BPPColor(FROMRGB(222, 132, 132));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
+    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (int32_t)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
                   pDestBuf);
   }
 
-  dPercentage = (FLOAT)pSoldier->bLife / (FLOAT)100;
+  dPercentage = (float)pSoldier->bLife / (float)100;
   dWidth = dPercentage * sWidth;
   usLineColor = Get16BPPColor(FROMRGB(200, 0, 0));
-  RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
+  RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (int32_t)(sXPos + dWidth + 3), sYPos + 1, usLineColor,
                 pDestBuf);
 
-  dPercentage = (FLOAT)(pSoldier->bBreathMax) / (FLOAT)100;
+  dPercentage = (float)(pSoldier->bBreathMax) / (float)100;
   dWidth = dPercentage * sWidth;
   usLineColor = Get16BPPColor(FROMRGB(20, 20, 150));
-  RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor,
+  RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (int32_t)(sXPos + dWidth + 3), sYPos + 4, usLineColor,
                 pDestBuf);
 
-  dPercentage = (FLOAT)(pSoldier->bBreath) / (FLOAT)100;
+  dPercentage = (float)(pSoldier->bBreath) / (float)100;
   dWidth = dPercentage * sWidth;
   usLineColor = Get16BPPColor(FROMRGB(100, 100, 220));
-  RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor,
+  RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (int32_t)(sXPos + dWidth + 3), sYPos + 4, usLineColor,
                 pDestBuf);
 
   /*
   // morale
-  dPercentage = (FLOAT)pSoldier->bMorale / (FLOAT)100;
+  dPercentage = (float)pSoldier->bMorale / (float)100;
   dWidth			=	dPercentage * sWidth;
   usLineColor = Get16BPPColor(FROMRGB(0, 250, 0));
-  RectangleDraw(TRUE, sXPos + 1, sYPos + 7, (INT32)(sXPos + dWidth + 1), sYPos +
+  RectangleDraw(TRUE, sXPos + 1, sYPos + 7, (int32_t)(sXPos + dWidth + 1), sYPos +
   7, usLineColor, pDestBuf);
   */
 }
@@ -1156,8 +1157,8 @@ void DirtyMercPanelInterface(SOLDIERTYPE const *const pSoldier, DirtyLevel const
 
 struct OPENDOOR_MENU {
   SOLDIERTYPE *pSoldier;
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
   BOOLEAN fMenuHandled;
   BOOLEAN fClosingDoor;
 };
@@ -1168,7 +1169,7 @@ BOOLEAN gfInOpenDoorMenu = FALSE;
 static void PopupDoorOpenMenu(BOOLEAN fClosingDoor);
 
 void InitDoorOpenMenu(SOLDIERTYPE *const pSoldier, BOOLEAN const fClosingDoor) {
-  INT16 sScreenX, sScreenY;
+  int16_t sScreenX, sScreenY;
 
   // Erase other menus....
   EraseInterfaceMenus(TRUE);
@@ -1215,9 +1216,9 @@ void InitDoorOpenMenu(SOLDIERTYPE *const pSoldier, BOOLEAN const fClosingDoor) {
   PopupDoorOpenMenu(fClosingDoor);
 }
 
-static void BtnDoorMenuCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnDoorMenuCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void MakeButtonDoor(UINT idx, UINT gfx, INT16 x, INT16 y, INT16 ap, INT16 bp,
+static void MakeButtonDoor(uint32_t idx, uint32_t gfx, int16_t x, int16_t y, int16_t ap, int16_t bp,
                            BOOLEAN disable, const wchar_t *help) {
   GUIButtonRef const btn =
       QuickCreateButton(iIconImages[gfx], x, y, MSYS_PRIORITY_HIGHEST - 1, BtnDoorMenuCallback);
@@ -1234,11 +1235,11 @@ static void MakeButtonDoor(UINT idx, UINT gfx, INT16 x, INT16 y, INT16 ap, INT16
   }
 }
 
-static void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void PopupDoorOpenMenu(BOOLEAN fClosingDoor) {
-  INT32 dx = gOpenDoorMenu.sX;
-  INT32 dy = gOpenDoorMenu.sY;
+  int32_t dx = gOpenDoorMenu.sX;
+  int32_t dy = gOpenDoorMenu.sY;
 
   dx += 9;
   dy += 8;
@@ -1348,7 +1349,7 @@ void CancelOpenDoorMenu() {
   gOpenDoorMenu.fMenuHandled = 2;
 }
 
-static void DoorAction(INT16 const ap, INT16 const bp, HandleDoor const action) {
+static void DoorAction(int16_t const ap, int16_t const bp, HandleDoor const action) {
   SOLDIERTYPE *const s = gOpenDoorMenu.pSoldier;
   if (EnoughPoints(s, ap, bp, FALSE)) {
     SetUIBusy(s);
@@ -1359,7 +1360,7 @@ static void DoorAction(INT16 const ap, INT16 const bp, HandleDoor const action) 
   }
 }
 
-static void BtnDoorMenuCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnDoorMenuCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1427,7 +1428,7 @@ static void RenderUIMessage(VIDEO_OVERLAY *pBlitter) {
                    pBlitter->sY + gusUIMessageHeight);
 }
 
-static UINT32 CalcUIMessageDuration(const wchar_t *wString);
+static uint32_t CalcUIMessageDuration(const wchar_t *wString);
 
 void BeginUIMessage(BOOLEAN fUseSkullIcon, const wchar_t *text) {
   guiUIMessageTime = GetJA2Clock();
@@ -1447,7 +1448,7 @@ void BeginUIMessage(BOOLEAN fUseSkullIcon, const wchar_t *text) {
   }
 
   if (g_ui_message_overlay == NULL) {
-    INT16 const x = (SCREEN_WIDTH - gusUIMessageWidth) / 2;
+    int16_t const x = (SCREEN_WIDTH - gusUIMessageWidth) / 2;
     g_ui_message_overlay =
         RegisterVideoOverlay(RenderUIMessage, x, 150, gusUIMessageWidth, gusUIMessageHeight);
   }
@@ -1455,7 +1456,7 @@ void BeginUIMessage(BOOLEAN fUseSkullIcon, const wchar_t *text) {
   gfUseSkullIconMessage = fUseSkullIcon;
 }
 
-void BeginMapUIMessage(INT16 delta_y, const wchar_t *text) {
+void BeginMapUIMessage(int16_t delta_y, const wchar_t *text) {
   guiUIMessageTime = GetJA2Clock();
   guiUIMessageTimeDelay = CalcUIMessageDuration(text);
 
@@ -1464,15 +1465,15 @@ void BeginMapUIMessage(INT16 delta_y, const wchar_t *text) {
       &gusUIMessageWidth, &gusUIMessageHeight, MERC_POPUP_PREPARE_FLAGS_TRANS_BACK);
 
   if (g_ui_message_overlay == NULL) {
-    INT16 const x = MAP_VIEW_START_X + (MAP_VIEW_WIDTH - gusUIMessageWidth) / 2 + 20;
-    INT16 const y = MAP_VIEW_START_Y + (MAP_VIEW_HEIGHT - gusUIMessageHeight) / 2 + delta_y;
+    int16_t const x = MAP_VIEW_START_X + (MAP_VIEW_WIDTH - gusUIMessageWidth) / 2 + 20;
+    int16_t const y = MAP_VIEW_START_Y + (MAP_VIEW_HEIGHT - gusUIMessageHeight) / 2 + delta_y;
     g_ui_message_overlay =
         RegisterVideoOverlay(RenderUIMessage, x, y, gusUIMessageWidth, gusUIMessageHeight);
   }
 }
 
 void EndUIMessage() {
-  UINT32 uiClock = GetJA2Clock();
+  uint32_t uiClock = GetJA2Clock();
 
   if (g_ui_message_overlay != NULL) {
     if (gfUseSkullIconMessage) {
@@ -1521,10 +1522,10 @@ static void CreateTopMessage() {
   SetFontDestBuffer(dst);
 
   const char *bar_file;
-  UINT16 bar_gfx = 0;
+  uint16_t bar_gfx = 0;
   BOOLEAN fDoLimitBar = FALSE;
-  UINT8 foreground;
-  UINT8 shadow;
+  uint8_t foreground;
+  uint8_t shadow;
   switch (ts->ubTopMessageType) {
     case COMPUTER_TURN_MESSAGE:
     case COMPUTER_INTERRUPT_MESSAGE:
@@ -1566,13 +1567,13 @@ static void CreateTopMessage() {
     BltVideoObject(dst, bar_vo, bar_gfx, 0, 0);
 
     if (fDoLimitBar) {
-      INT32 bar_x = bar->x;
+      int32_t bar_x = bar->x;
       // Render end piece
       BltVideoObject(dst, bar_vo, 1, bar_x, bar->y);
 
-      INT32 gfx = 2;
+      int32_t gfx = 2;
       // -3 for the end pieces
-      UINT32 length = (bar->w - 3) * ts->usTactialTurnLimitCounter / ts->usTactialTurnLimitMax;
+      uint32_t length = (bar->w - 3) * ts->usTactialTurnLimitCounter / ts->usTactialTurnLimitMax;
       while (length-- != 0) {
         BltVideoObject(dst, bar_vo, gfx, ++bar_x, bar->y);
         if (++gfx == 12) gfx = 2;
@@ -1589,7 +1590,7 @@ static void CreateTopMessage() {
   const wchar_t *msg;
   switch (ts->ubTopMessageType) {
     case COMPUTER_TURN_MESSAGE: {
-      const UINT8 team = ts->ubCurrentTeam;
+      const uint8_t team = ts->ubCurrentTeam;
       msg = team == CREATURE_TEAM && HostileBloodcatsPresent()
                 ? g_langRes->Message[STR_BLOODCATS_TURN]
                 : TeamTurnString[team];
@@ -1612,8 +1613,8 @@ static void CreateTopMessage() {
       abort();
   }
 
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
   FindFontCenterCoordinates(bar->x, bar->y, bar->w, bar->h, msg, TINYFONT1, &sX, &sY);
   MPrint(sX, sY, msg);
 
@@ -1729,7 +1730,7 @@ void EndTopMessage() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies) {
+void InitEnemyUIBar(uint8_t ubNumEnemies, uint8_t ubDoneEnemies) {
   // OK, set value
   gubProgNumEnemies = ubNumEnemies + ubDoneEnemies;
   gubProgCurEnemy = ubDoneEnemies;
@@ -1758,7 +1759,7 @@ void UpdateEnemyUIBar() {
 }
 
 void InitPlayerUIBar(BOOLEAN fInterrupt) {
-  INT8 bNumOK = 0, bNumNotOK = 0;
+  int8_t bNumOK = 0, bNumNotOK = 0;
 
   if (!gGameOptions.fTurnTimeLimit) {
     AddTopMessage(fInterrupt == TRUE ? PLAYER_INTERRUPT_MESSAGE : PLAYER_TURN_MESSAGE);
@@ -1797,21 +1798,21 @@ void InitPlayerUIBar(BOOLEAN fInterrupt) {
   AddTopMessage(fInterrupt != TRUE ? PLAYER_TURN_MESSAGE : PLAYER_INTERRUPT_MESSAGE);
 }
 
-static void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelMovementMenu();
   }
 }
 
-static void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelOpenDoorMenu();
   }
 }
 
 const wchar_t *GetSoldierHealthString(const SOLDIERTYPE *const s) {
-  INT32 i;
-  const INT32 start = (s->bLife == s->bLifeMax ? 4 : 0);
+  int32_t i;
+  const int32_t start = (s->bLife == s->bLifeMax ? 4 : 0);
   for (i = start; i < 6; ++i) {
     if (s->bLife < bHealthStrRanges[i]) break;
   }
@@ -1819,11 +1820,11 @@ const wchar_t *GetSoldierHealthString(const SOLDIERTYPE *const s) {
 }
 
 static BOOLEAN gfDisplayPhysicsUI = FALSE;
-static INT16 gsPhysicsImpactPointGridNo;
-static INT8 gbPhysicsImpactPointLevel;
+static int16_t gsPhysicsImpactPointGridNo;
+static int8_t gbPhysicsImpactPointLevel;
 static BOOLEAN gfBadPhysicsCTGT = FALSE;
 
-void BeginPhysicsTrajectoryUI(INT16 sGridNo, INT8 bLevel, BOOLEAN fBadCTGT) {
+void BeginPhysicsTrajectoryUI(int16_t sGridNo, int8_t bLevel, BOOLEAN fBadCTGT) {
   gfDisplayPhysicsUI = TRUE;
   gsPhysicsImpactPointGridNo = sGridNo;
   gbPhysicsImpactPointLevel = bLevel;
@@ -1834,7 +1835,7 @@ void EndPhysicsTrajectoryUI() { gfDisplayPhysicsUI = FALSE; }
 
 void SetupPhysicsTrajectoryUI() {
   if (gfDisplayPhysicsUI && gfUIHandlePhysicsTrajectory) {
-    const UINT16 idx = (gfBadPhysicsCTGT ? FIRSTPOINTERS12 : FIRSTPOINTERS8);
+    const uint16_t idx = (gfBadPhysicsCTGT ? FIRSTPOINTERS12 : FIRSTPOINTERS8);
     LEVELNODE *n;
     if (gbPhysicsImpactPointLevel == 0) {
       n = AddTopmostToHead(gsPhysicsImpactPointGridNo, idx);
@@ -1857,19 +1858,19 @@ void ResetPhysicsTrajectoryUI() {
 
 void DirtyTopMessage() { gTopMessage.fCreated = FALSE; }
 
-static UINT32 CalcUIMessageDuration(const wchar_t *wString) {
+static uint32_t CalcUIMessageDuration(const wchar_t *wString) {
   // base + X per letter
-  return (1000 + 50 * (UINT32)wcslen(wString));
+  return (1000 + 50 * (uint32_t)wcslen(wString));
 }
 
 static BOOLEAN gfMultipurposeLocatorOn = FALSE;
-static UINT32 guiMultiPurposeLocatorLastUpdate;
-static INT8 gbMultiPurposeLocatorFrame;
-static INT16 gsMultiPurposeLocatorGridNo;
-static INT8 gbMultiPurposeLocatorLevel;
-static INT8 gbMultiPurposeLocatorCycles;
+static uint32_t guiMultiPurposeLocatorLastUpdate;
+static int8_t gbMultiPurposeLocatorFrame;
+static int16_t gsMultiPurposeLocatorGridNo;
+static int8_t gbMultiPurposeLocatorLevel;
+static int8_t gbMultiPurposeLocatorCycles;
 
-void BeginMultiPurposeLocator(const INT16 sGridNo, const INT8 bLevel) {
+void BeginMultiPurposeLocator(const int16_t sGridNo, const int8_t bLevel) {
   guiMultiPurposeLocatorLastUpdate = 0;
   gbMultiPurposeLocatorCycles = 0;
   gbMultiPurposeLocatorFrame = 0;
@@ -1880,7 +1881,7 @@ void BeginMultiPurposeLocator(const INT16 sGridNo, const INT8 bLevel) {
 }
 
 void HandleMultiPurposeLocator() {
-  UINT32 uiClock;
+  uint32_t uiClock;
 
   if (!gfMultipurposeLocatorOn) {
     return;
@@ -1908,9 +1909,9 @@ void HandleMultiPurposeLocator() {
 }
 
 void RenderTopmostMultiPurposeLocator() {
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
-  INT16 sX, sY, sXPos, sYPos;
+  float dOffsetX, dOffsetY;
+  float dTempX_S, dTempY_S;
+  int16_t sX, sY, sXPos, sYPos;
 
   if (!gfMultipurposeLocatorOn) {
     return;
@@ -1918,14 +1919,14 @@ void RenderTopmostMultiPurposeLocator() {
 
   ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo, &sX, &sY);
 
-  dOffsetX = (FLOAT)(sX - gsRenderCenterX);
-  dOffsetY = (FLOAT)(sY - gsRenderCenterY);
+  dOffsetX = (float)(sX - gsRenderCenterX);
+  dOffsetY = (float)(sY - gsRenderCenterY);
 
   // Calculate guy's position
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S -
+  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (int16_t)dTempX_S;
+  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (int16_t)dTempY_S -
           gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;
 
   // Adjust for offset position on screen

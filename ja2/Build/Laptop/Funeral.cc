@@ -97,12 +97,12 @@ static MOUSE_REGION gSelectedFuneralLinkRegion[FUNERAL_NUMBER_OF_LINKS];
 // Clicking on rip sign to make it disappear
 static MOUSE_REGION gSelectedRipSignRegion;
 
-static void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterFuneral() {
   const char *ImageFile;
-  UINT16 usPosX, i;
+  uint16_t usPosX, i;
 
   // load the Closed graphic and add it
   ImageFile = GetMLGFilename(MLG_CLOSED);
@@ -133,8 +133,8 @@ void EnterFuneral() {
     // Mouse region for the bottom links
 
     MSYS_DefineRegion(&gSelectedFuneralLinkRegion[i], usPosX, FUNERAL_LINK_1_Y,
-                      (UINT16)(usPosX + FUNERAL_LINK_1_WIDTH),
-                      (UINT16)(FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH,
+                      (uint16_t)(usPosX + FUNERAL_LINK_1_WIDTH),
+                      (uint16_t)(FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH,
                       CURSOR_WWW, MSYS_NO_CALLBACK, SelectFuneralLinkRegionCallBack);
     MSYS_SetRegionUserData(&gSelectedFuneralLinkRegion[i], 0, i);
 
@@ -142,8 +142,8 @@ void EnterFuneral() {
   }
 
   MSYS_DefineRegion(&gSelectedRipSignRegion, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y,
-                    (UINT16)(FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH),
-                    (UINT16)(FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT),
+                    (uint16_t)(FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH),
+                    (uint16_t)(FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT),
                     MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK,
                     SelectRipSignRegionCallBack);
   gSelectedRipSignRegion.Disable();
@@ -165,7 +165,7 @@ void ExitFuneral() {
 }
 
 void RenderFuneral() {
-  UINT16 i, usPosX, usStringHeight;
+  uint16_t i, usPosX, usStringHeight;
 
   WebPageTileBackground(4, 4, FUNERAL_MARBLE_WIDTH, FUNERAL_MARBLE_HEIGHT, guiMarbleBackground);
 
@@ -260,9 +260,9 @@ static void DisplayFuneralRipTombStone() {
   gSelectedRipSignRegion.Enable();
 }
 
-static void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiUserData;
+    uint32_t uiUserData;
 
     uiUserData = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -275,7 +275,7 @@ static void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-static void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gSelectedRipSignRegion.Disable();
     fPausedReDrawScreenFlag = TRUE;

@@ -13,31 +13,32 @@
 
 #define NO_POPUP_BOX NULL
 
-PopUpBox *CreatePopUpBox(SGPPoint Position, UINT32 uiFlags, SGPVSurface *, const SGPVObject *border,
-                         SGPVSurface *background, UINT32 margin_l, UINT32 margin_t, UINT32 margin_b,
-                         UINT32 margin_r, UINT32 line_space);
+PopUpBox *CreatePopUpBox(SGPPoint Position, uint32_t uiFlags, SGPVSurface *,
+                         const SGPVObject *border, SGPVSurface *background, uint32_t margin_l,
+                         uint32_t margin_t, uint32_t margin_b, uint32_t margin_r,
+                         uint32_t line_space);
 
-UINT32 GetTopMarginSize(const PopUpBox *);
-UINT32 GetLineSpace(const PopUpBox *);
-void SetBoxXY(PopUpBox *, INT16 x, INT16 y);
-void SetBoxX(PopUpBox *, INT16 x);
-void SetBoxY(PopUpBox *, INT16 y);
-UINT32 GetNumberOfLinesOfTextInBox(const PopUpBox *);
+uint32_t GetTopMarginSize(const PopUpBox *);
+uint32_t GetLineSpace(const PopUpBox *);
+void SetBoxXY(PopUpBox *, int16_t x, int16_t y);
+void SetBoxX(PopUpBox *, int16_t x);
+void SetBoxY(PopUpBox *, int16_t y);
+uint32_t GetNumberOfLinesOfTextInBox(const PopUpBox *);
 SGPBox const &GetBoxArea(PopUpBox const *);
 void AddMonoString(PopUpBox *, const wchar_t *pString);
 void SetBoxFont(PopUpBox *, Font);
 Font GetBoxFont(const PopUpBox *);
-void SetBoxForeground(PopUpBox *, UINT8 colour);
-void SetBoxBackground(PopUpBox *, UINT8 colour);
-void SetBoxHighLight(PopUpBox *, UINT8 colour);
-void SetBoxShade(PopUpBox *, UINT8 colour);
+void SetBoxForeground(PopUpBox *, uint8_t colour);
+void SetBoxBackground(PopUpBox *, uint8_t colour);
+void SetBoxHighLight(PopUpBox *, uint8_t colour);
+void SetBoxShade(PopUpBox *, uint8_t colour);
 
-void ShadeStringInBox(PopUpBox *, INT32 line, bool shade);
+void ShadeStringInBox(PopUpBox *, int32_t line, bool shade);
 
 enum PopUpShade { POPUP_SHADE_NONE, POPUP_SHADE, POPUP_SHADE_SECONDARY };
-void ShadeStringInBox(PopUpBox *, INT32 line, PopUpShade);
+void ShadeStringInBox(PopUpBox *, int32_t line, PopUpShade);
 
-void HighLightBoxLine(PopUpBox *, INT32 iLineNumber);
+void HighLightBoxLine(PopUpBox *, int32_t iLineNumber);
 void UnHighLightBox(PopUpBox *);
 void RemoveAllBoxStrings(PopUpBox *);
 void RemoveBox(PopUpBox *);
@@ -59,10 +60,10 @@ void MarkAllBoxesAsAltered();
 BOOLEAN IsBoxShown(const PopUpBox *);
 
 // is this line in the current box set to a shaded state ?
-BOOLEAN GetBoxShadeFlag(const PopUpBox *, INT32 iLineNumber);
+BOOLEAN GetBoxShadeFlag(const PopUpBox *, int32_t iLineNumber);
 
 // set boxes foreground color
-void SetBoxLineForeground(PopUpBox *, INT32 iStringValue, UINT8 ubColor);
+void SetBoxLineForeground(PopUpBox *, int32_t iStringValue, uint8_t ubColor);
 
 // hide all visible boxes
 void HideAllBoxes();
@@ -71,19 +72,19 @@ void HideAllBoxes();
 void AddSecondColumnMonoString(PopUpBox *, const wchar_t *pString);
 
 // set the minimum offset
-void SetBoxSecondColumnMinimumOffset(PopUpBox *, UINT32 uiWidth);
+void SetBoxSecondColumnMinimumOffset(PopUpBox *, uint32_t uiWidth);
 
 // now on a box wide basis, one if recomened to use this function after adding
 // all the strings..rather than on an individual basis
-void SetBoxSecondColumnForeground(PopUpBox *, UINT8 colour);
-void SetBoxSecondColumnBackground(PopUpBox *, UINT8 colour);
-void SetBoxSecondColumnHighLight(PopUpBox *, UINT8 colour);
-void SetBoxSecondColumnShade(PopUpBox *, UINT8 colour);
+void SetBoxSecondColumnForeground(PopUpBox *, uint8_t colour);
+void SetBoxSecondColumnBackground(PopUpBox *, uint8_t colour);
+void SetBoxSecondColumnHighLight(PopUpBox *, uint8_t colour);
+void SetBoxSecondColumnShade(PopUpBox *, uint8_t colour);
 
 // secondary shades for boxes
-void SetBoxSecondaryShade(PopUpBox *, UINT8 colour);
+void SetBoxSecondaryShade(PopUpBox *, uint8_t colour);
 
 // min width for box
-void SpecifyBoxMinWidth(PopUpBox *, INT32 iMinWidth);
+void SpecifyBoxMinWidth(PopUpBox *, int32_t iMinWidth);
 
 #endif

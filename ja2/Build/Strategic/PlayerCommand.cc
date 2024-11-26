@@ -27,10 +27,10 @@
 #include "Tactical/TacticalSave.h"
 #include "Utils/Text.h"
 
-void GetSectorFacilitiesFlags(INT16 const x, INT16 const y, wchar_t *const buf,
+void GetSectorFacilitiesFlags(int16_t const x, int16_t const y, wchar_t *const buf,
                               size_t const length) {
   // Build a string stating current facilities present in sector
-  UINT32 const facilities = SectorInfo[SECTOR(x, y)].uiFacilitiesFlags;
+  uint32_t const facilities = SectorInfo[SECTOR(x, y)].uiFacilitiesFlags;
   if (facilities == 0) {
     wcsncpy(buf, sFacilitiesStrings[0], length);
     return;
@@ -39,7 +39,7 @@ void GetSectorFacilitiesFlags(INT16 const x, INT16 const y, wchar_t *const buf,
   wchar_t const *fmt = L"%ls";
   size_t n = 0;
   for (size_t i = 0;; ++i) {
-    UINT32 const bit = 1 << i;
+    uint32_t const bit = 1 << i;
     if (!(facilities & bit)) continue;
     n += swprintf(buf + n, length - n, fmt, sFacilitiesStrings[i + 1]);
     fmt = L",%ls";
@@ -48,18 +48,19 @@ void GetSectorFacilitiesFlags(INT16 const x, INT16 const y, wchar_t *const buf,
 }
 
 // ALL changes of control to player must be funneled through here!
-BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOOLEAN fContested) {
+BOOLEAN SetThisSectorAsPlayerControlled(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
+                                        BOOLEAN fContested) {
   // NOTE: MapSector must be 16-bit, cause MAX_WORLD_X is actually 18, so the
   // sector numbers exceed 256 although we use only 16x16
-  UINT16 usMapSector = 0;
+  uint16_t usMapSector = 0;
   BOOLEAN fWasEnemyControlled = FALSE;
-  INT8 bTownId = 0;
+  int8_t bTownId = 0;
 
   if (AreInMeanwhile()) {
     return FALSE;
   }
 
-  UINT8 const sector = SECTOR(sMapX, sMapY);
+  uint8_t const sector = SECTOR(sMapX, sMapY);
   if (bMapZ == 0) {
     usMapSector = sMapX + (sMapY * MAP_WORLD_X);
 
@@ -125,14 +126,14 @@ BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BO
       }
 
       // if it's a mine that's still worth something
-      INT8 const mine_id = GetMineIndexForSector(sector);
+      int8_t const mine_id = GetMineIndexForSector(sector);
       if (mine_id != -1 && GetTotalLeftInMine(mine_id) > 0) {
         HandleMoraleEvent(NULL, MORALE_MINE_LIBERATED, sMapX, sMapY, bMapZ);
         HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_GAIN_MINE, sMapX, sMapY, bMapZ);
       }
 
       // if it's a SAM site sector
-      INT8 const sam_id = GetSAMIdFromSector(sMapX, sMapY, bMapZ);
+      int8_t const sam_id = GetSAMIdFromSector(sMapX, sMapY, bMapZ);
       if (sam_id != -1) {
         if (1 /*!GetSectorFlagStatus( sMapX, sMapY, bMapZ, SF_SECTOR_HAS_BEEN_LIBERATED_ONCE ) */) {
           // SAM site liberated for first time, schedule meanwhile
@@ -153,9 +154,9 @@ BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BO
         if (!SectorInfo[sector].fSurfaceWasEverPlayerControlled) {
           // grant grace period
           if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
-            UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 2));
+            UpdateLastDayOfPlayerActivity((uint16_t)(GetWorldDay() + 2));
           } else {
-            UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 1));
+            UpdateLastDayOfPlayerActivity((uint16_t)(GetWorldDay() + 1));
           }
         }
       }
@@ -174,7 +175,7 @@ BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BO
     }
 
     if (fContested) {
-      StrategicHandleQueenLosingControlOfSector((UINT8)sMapX, (UINT8)sMapY, (UINT8)bMapZ);
+      StrategicHandleQueenLosingControlOfSector((uint8_t)sMapX, (uint8_t)sMapY, (uint8_t)bMapZ);
     }
   } else {
     if (sector == SEC_P3 && bMapZ == 1) {  // Basement sector (P3_b1)
@@ -200,11 +201,12 @@ BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BO
 }
 
 // ALL changes of control to enemy must be funneled through here!
-BOOLEAN SetThisSectorAsEnemyControlled(INT16 const sMapX, INT16 const sMapY, INT8 const bMapZ) {
-  UINT16 usMapSector = 0;
+BOOLEAN SetThisSectorAsEnemyControlled(int16_t const sMapX, int16_t const sMapY,
+                                       int8_t const bMapZ) {
+  uint16_t usMapSector = 0;
   BOOLEAN fWasPlayerControlled = FALSE;
-  INT8 bTownId = 0;
-  UINT8 ubTheftChance;
+  int8_t bTownId = 0;
+  uint8_t ubTheftChance;
 
   // KM : August 6, 1999 Patch fix
   //     This check was added because this function gets called when player
@@ -223,12 +225,12 @@ BOOLEAN SetThisSectorAsEnemyControlled(INT16 const sMapX, INT16 const sMapY, INT
 
     // if player lost control to the enemy
     if (fWasPlayerControlled) {
-      if (PlayerMercsInSector((UINT8)sMapX, (UINT8)sMapY,
-                              (UINT8)bMapZ)) {  // too premature:  Player mercs still in sector.
+      if (PlayerMercsInSector((uint8_t)sMapX, (uint8_t)sMapY,
+                              (uint8_t)bMapZ)) {  // too premature:  Player mercs still in sector.
         return FALSE;
       }
 
-      UINT8 const sector = SECTOR(sMapX, sMapY);
+      uint8_t const sector = SECTOR(sMapX, sMapY);
       // check if there's a town in the sector
       bTownId = StrategicMap[usMapSector].bNameId;
 
@@ -243,7 +245,7 @@ BOOLEAN SetThisSectorAsEnemyControlled(INT16 const sMapX, INT16 const sMapY, INT
       }
 
       // if the sector has a mine which is still worth something
-      INT8 const mine_id = GetMineIndexForSector(sector);
+      int8_t const mine_id = GetMineIndexForSector(sector);
       if (mine_id != -1 && GetTotalLeftInMine(mine_id) > 0) {
         QueenHasRegainedMineSector(mine_id);
         HandleMoraleEvent(NULL, MORALE_MINE_LOST, sMapX, sMapY, bMapZ);

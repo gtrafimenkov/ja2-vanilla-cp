@@ -9,8 +9,8 @@
 #include "Tactical/TacticalSave.h"
 
 /** Calculates soldier profile checksum. */
-UINT32 SoldierProfileChecksum(MERCPROFILESTRUCT const &p) {
-  UINT32 sum = 1;
+uint32_t SoldierProfileChecksum(MERCPROFILESTRUCT const &p) {
+  uint32_t sum = 1;
 
   sum += 1 + p.bLife;
   sum *= 1 + p.bLifeMax;
@@ -23,8 +23,8 @@ UINT32 SoldierProfileChecksum(MERCPROFILESTRUCT const &p) {
   sum += 1 + p.bExplosive;
   sum *= 1 + p.bExpLevel;
 
-  FOR_EACH(UINT16 const, i, p.inv) sum += *i;
-  FOR_EACH(UINT8 const, i, p.bInvNumber) sum += *i;
+  FOR_EACH(uint16_t const, i, p.inv) sum += *i;
+  FOR_EACH(uint8_t const, i, p.bInvNumber) sum += *i;
 
   return sum;
 }
@@ -33,9 +33,9 @@ UINT32 SoldierProfileChecksum(MERCPROFILESTRUCT const &p) {
  * Extract merc profile from the binary data.
  * @param encodingCorrection Perform encoding correction - it is necessary for
  * loading strings from the game data files. */
-void ExtractMercProfile(BYTE const *const Src, MERCPROFILESTRUCT &p, bool stracLinuxFormat,
-                        UINT32 *checksum, const IEncodingCorrector *fixer) {
-  const BYTE *S = Src;
+void ExtractMercProfile(uint8_t const *const Src, MERCPROFILESTRUCT &p, bool stracLinuxFormat,
+                        uint32_t *checksum, const IEncodingCorrector *fixer) {
+  const uint8_t *S = Src;
 
   if (stracLinuxFormat) {
     DataReader reader(S);
@@ -214,33 +214,33 @@ void ExtractMercProfile(BYTE const *const Src, MERCPROFILESTRUCT &p, bool stracL
 
 /** Extract IMP merc profile from file.
  * If saved checksum is not correct, exception will be thrown. */
-void ExtractImpProfileFromFile(const char *fileName, INT32 *iProfileId, INT32 *iPortraitNumber,
+void ExtractImpProfileFromFile(const char *fileName, int32_t *iProfileId, int32_t *iPortraitNumber,
                                MERCPROFILESTRUCT &p) {
   AutoSGPFile hFile(FileMan::openForReadingSmart(fileName, true));
-  UINT32 fileSize = FileGetSize(hFile);
+  uint32_t fileSize = FileGetSize(hFile);
 
   // read in the profile
-  FileRead(hFile, iProfileId, sizeof(INT32));
+  FileRead(hFile, iProfileId, sizeof(int32_t));
 
   // read in the portrait
-  FileRead(hFile, iPortraitNumber, sizeof(INT32));
+  FileRead(hFile, iPortraitNumber, sizeof(int32_t));
 
   // read in the profile
   // not checking the checksum
-  UINT32 checksum;
+  uint32_t checksum;
   if (fileSize >= MERC_PROFILE_SIZE_STRAC_LINUX) {
-    std::vector<BYTE> data(MERC_PROFILE_SIZE_STRAC_LINUX);
+    std::vector<uint8_t> data(MERC_PROFILE_SIZE_STRAC_LINUX);
     FileRead(hFile, data.data(), MERC_PROFILE_SIZE_STRAC_LINUX);
     ExtractMercProfile(data.data(), p, true, &checksum, NULL);
   } else {
-    std::vector<BYTE> data(MERC_PROFILE_SIZE);
+    std::vector<uint8_t> data(MERC_PROFILE_SIZE);
     FileRead(hFile, data.data(), MERC_PROFILE_SIZE);
     ExtractMercProfile(data.data(), p, false, &checksum, NULL);
   }
 }
 
-void InjectMercProfile(BYTE *const Dst, MERCPROFILESTRUCT const &p) {
-  BYTE *D = Dst;
+void InjectMercProfile(uint8_t *const Dst, MERCPROFILESTRUCT const &p) {
+  uint8_t *D = Dst;
 
   {
     DataWriter writer(D);
@@ -397,7 +397,7 @@ void InjectMercProfile(BYTE *const Dst, MERCPROFILESTRUCT const &p) {
   INJ_U8(D, p.ubDaysOfMoraleHangover)
   INJ_U8(D, p.ubNumTimesDrugUseInLifetime)
   INJ_U32(D, p.uiPrecedentQuoteSaid)
-  UINT32 const checksum = SoldierProfileChecksum(p);
+  uint32_t const checksum = SoldierProfileChecksum(p);
   INJ_U32(D, checksum)
   INJ_I16(D, p.sPreCombatGridNo)
   INJ_U8(D, p.ubTimeTillNextHatedComplaint)
@@ -409,7 +409,7 @@ void InjectMercProfile(BYTE *const Dst, MERCPROFILESTRUCT const &p) {
 }
 
 void InjectMercProfileIntoFile(HWFILE const f, MERCPROFILESTRUCT const &p) {
-  BYTE Data[716];
+  uint8_t Data[716];
   InjectMercProfile(Data, p);
   FileWrite(f, Data, sizeof(Data));
 }
@@ -420,10 +420,10 @@ void InjectMercProfileIntoFile(HWFILE const f, MERCPROFILESTRUCT const &p) {
  * @param profiles Array for storing profile data */
 void LoadRawMercProfiles(HWFILE const f, int numProfiles, MERCPROFILESTRUCT *profiles,
                          const IEncodingCorrector *fixer) {
-  for (UINT32 i = 0; i != numProfiles; ++i) {
-    BYTE data[MERC_PROFILE_SIZE];
+  for (uint32_t i = 0; i != numProfiles; ++i) {
+    uint8_t data[MERC_PROFILE_SIZE];
     JA2EncryptedFileRead(f, data, sizeof(data));
-    UINT32 checksum;
+    uint32_t checksum;
     ExtractMercProfile(data, profiles[i], false, &checksum, fixer);
     // not checking the checksum
   }

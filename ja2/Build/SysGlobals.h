@@ -10,10 +10,10 @@ extern char gubErrorText[200];
 extern BOOLEAN gfAniEditMode;
 extern BOOLEAN gfEditMode;
 extern BOOLEAN fFirstTimeInGameScreen;
-extern INT8 gbFPSDisplay;
+extern int8_t gbFPSDisplay;
 extern BOOLEAN gfGlobalError;
 
-extern UINT32 guiGameCycleCounter;
+extern uint32_t guiGameCycleCounter;
 
 void SET_ERROR(char const *const String, ...);
 

@@ -189,24 +189,24 @@ void InitalizeDialogueControl();
 void ShutdownDialogueControl();
 void EmptyDialogueQueue();
 void HandleDialogue();
-void HandleImportantMercQuote(SOLDIERTYPE *pSoldier, UINT16 usQuoteNumber);
-void HandleImportantMercQuoteLocked(SOLDIERTYPE *, UINT16 quote);
+void HandleImportantMercQuote(SOLDIERTYPE *pSoldier, uint16_t usQuoteNumber);
+void HandleImportantMercQuoteLocked(SOLDIERTYPE *, uint16_t quote);
 
-const char *GetDialogueDataFilename(UINT8 ubCharacterNum, UINT16 usQuoteNum, BOOLEAN fWavFile);
-
-// A higher level function used for tactical quotes
-BOOLEAN TacticalCharacterDialogue(const SOLDIERTYPE *pSoldier, UINT16 usQuoteNum);
+const char *GetDialogueDataFilename(uint8_t ubCharacterNum, uint16_t usQuoteNum, BOOLEAN fWavFile);
 
 // A higher level function used for tactical quotes
-BOOLEAN DelayedTacticalCharacterDialogue(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum);
+BOOLEAN TacticalCharacterDialogue(const SOLDIERTYPE *pSoldier, uint16_t usQuoteNum);
+
+// A higher level function used for tactical quotes
+BOOLEAN DelayedTacticalCharacterDialogue(SOLDIERTYPE *pSoldier, uint16_t usQuoteNum);
 
 // A more general purpose function for processing quotes
-void CharacterDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, FACETYPE *face, DialogueHandler,
+void CharacterDialogue(uint8_t ubCharacterNum, uint16_t usQuoteNum, FACETYPE *face, DialogueHandler,
                        BOOLEAN fFromSoldier, bool delayed = false);
 
-void CharacterDialogueUsingAlternateFile(SOLDIERTYPE &, UINT16 quote, DialogueHandler);
+void CharacterDialogueUsingAlternateFile(SOLDIERTYPE &, uint16_t quote, DialogueHandler);
 
-BOOLEAN ExecuteCharacterDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, FACETYPE *face,
+BOOLEAN ExecuteCharacterDialogue(uint8_t ubCharacterNum, uint16_t usQuoteNum, FACETYPE *face,
                                  DialogueHandler, BOOLEAN fFromSoldier);
 
 // Called when a face stops talking...
@@ -223,11 +223,11 @@ BOOLEAN DialogueQueueIsEmptyOrSomebodyTalkingNow();
 void InitalizeStaticExternalNPCFaces();
 void ShutdownStaticExternalNPCFaces();
 
-void SayQuoteFromAnyBodyInSector(UINT16 quote_id);
-void SayQuoteFromAnyBodyInThisSector(INT16 x, INT16 y, INT8 z, UINT16 quote_id);
-void SayQuoteFromNearbyMercInSector(GridNo, INT8 distance, UINT16 quote_id);
-void SayQuote58FromNearbyMercInSector(GridNo, INT8 distance, UINT16 quote_id, INT8 sex);
-UINT32 FindDelayForString(const wchar_t *sString);
+void SayQuoteFromAnyBodyInSector(uint16_t quote_id);
+void SayQuoteFromAnyBodyInThisSector(int16_t x, int16_t y, int8_t z, uint16_t quote_id);
+void SayQuoteFromNearbyMercInSector(GridNo, int8_t distance, uint16_t quote_id);
+void SayQuote58FromNearbyMercInSector(GridNo, int8_t distance, uint16_t quote_id, int8_t sex);
+uint32_t FindDelayForString(const wchar_t *sString);
 void BeginLoggingForBleedMeToos(BOOLEAN fStart);
 
 void UnSetEngagedInConvFromPCAction(SOLDIERTYPE *pSoldier);
@@ -237,11 +237,11 @@ void SetStopTimeQuoteCallback(MODAL_HOOK pCallBack);
 
 BOOLEAN DialogueActive();
 
-extern INT32 giNPCReferenceCount;
+extern int32_t giNPCReferenceCount;
 
-BOOLEAN GetMercPrecedentQuoteBitStatus(const MERCPROFILESTRUCT *, UINT8 ubQuoteBit);
-void SetMercPrecedentQuoteBitStatus(MERCPROFILESTRUCT *, UINT8 ubBitToSet);
-UINT8 GetQuoteBitNumberFromQuoteID(UINT32 uiQuoteID);
+BOOLEAN GetMercPrecedentQuoteBitStatus(const MERCPROFILESTRUCT *, uint8_t ubQuoteBit);
+void SetMercPrecedentQuoteBitStatus(MERCPROFILESTRUCT *, uint8_t ubBitToSet);
+uint8_t GetQuoteBitNumberFromQuoteID(uint32_t uiQuoteID);
 void HandleShutDownOfMapScreenWhileExternfaceIsTalking();
 
 void StopAnyCurrentlyTalkingSpeech();
@@ -252,7 +252,7 @@ void PauseDialogueQueue();
 // unpause the dialogue queue
 void UnPauseDialogueQueue();
 
-void SetExternMapscreenSpeechPanelXY(INT16 sXPos, INT16 sYPos);
+void SetExternMapscreenSpeechPanelXY(int16_t sXPos, int16_t sYPos);
 
 bool IsMercSayingDialogue(ProfileID);
 

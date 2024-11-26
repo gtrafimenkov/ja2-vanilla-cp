@@ -8,5 +8,5 @@ void RenderIMPVoices();
 void ExitIMPVoices();
 void HandleIMPVoices();
 
-extern INT32 iVoiceId;
+extern int32_t iVoiceId;
 #endif

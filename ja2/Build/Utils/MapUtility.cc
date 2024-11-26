@@ -46,22 +46,22 @@ static SGPVSurface *gi8BitMiniMap;
 
 ScreenID MapUtilScreenHandle() {
   static SGPPaletteEntry *p24BitValues = NULL;
-  static INT16 fNewMap = TRUE;
+  static int16_t fNewMap = TRUE;
   InputAtom InputEvent;
   static FDLG_LIST *FListNode;
-  static INT16 sFiles = 0, sCurFile = 0;
+  static int16_t sFiles = 0, sCurFile = 0;
   static FDLG_LIST *FileList = NULL;
 
-  UINT32 uiRGBColor;
+  uint32_t uiRGBColor;
 
-  UINT32 bR, bG, bB, bAvR, bAvG, bAvB;
-  INT16 s16BPPSrc, sDest16BPPColor;
-  INT32 cnt;
+  uint32_t bR, bG, bB, bAvR, bAvG, bAvB;
+  int16_t s16BPPSrc, sDest16BPPColor;
+  int32_t cnt;
 
-  INT16 sX1, sX2, sY1, sY2, sTop, sBottom, sLeft, sRight;
+  int16_t sX1, sX2, sY1, sY2, sTop, sBottom, sLeft, sRight;
 
-  FLOAT dX, dY, dStartX, dStartY;
-  INT32 iX, iY, iSubX1, iSubY1, iSubX2, iSubY2, iWindowX, iWindowY, iCount;
+  float dX, dY, dStartX, dStartY;
+  int32_t iX, iY, iSubX1, iSubY1, iSubX2, iSubY2, iWindowX, iWindowY, iCount;
   SGPPaletteEntry pPalette[256];
 
   sDest16BPPColor = -1;
@@ -146,23 +146,23 @@ ScreenID MapUtilScreenHandle() {
   {
     SGPVSurface::Lock lsrc(FRAME_BUFFER);
     SGPVSurface::Lock ldst(giMiniMap);
-    UINT16 *const pSrcBuf = lsrc.Buffer<UINT16>();
-    UINT32 const uiSrcPitchBYTES = lsrc.Pitch();
-    UINT16 *const pDestBuf = ldst.Buffer<UINT16>();
-    UINT32 const uiDestPitchBYTES = ldst.Pitch();
+    uint16_t *const pSrcBuf = lsrc.Buffer<uint16_t>();
+    uint32_t const uiSrcPitchBYTES = lsrc.Pitch();
+    uint16_t *const pDestBuf = ldst.Buffer<uint16_t>();
+    uint32_t const uiDestPitchBYTES = ldst.Pitch();
 
     for (iX = 0; iX < 88; iX++) {
       dY = dStartY;
 
       for (iY = 0; iY < 44; iY++) {
         // OK, AVERAGE PIXELS
-        iSubX1 = (INT32)dX - WINDOW_SIZE;
+        iSubX1 = (int32_t)dX - WINDOW_SIZE;
 
-        iSubX2 = (INT32)dX + WINDOW_SIZE;
+        iSubX2 = (int32_t)dX + WINDOW_SIZE;
 
-        iSubY1 = (INT32)dY - WINDOW_SIZE;
+        iSubY1 = (int32_t)dY - WINDOW_SIZE;
 
-        iSubY2 = (INT32)dY + WINDOW_SIZE;
+        iSubY2 = (int32_t)dY + WINDOW_SIZE;
 
         iCount = 0;
         bR = bG = bB = 0;
@@ -185,9 +185,9 @@ ScreenID MapUtilScreenHandle() {
         }
 
         if (iCount > 0) {
-          bAvR = bR / (UINT8)iCount;
-          bAvG = bG / (UINT8)iCount;
-          bAvB = bB / (UINT8)iCount;
+          bAvR = bR / (uint8_t)iCount;
+          bAvG = bG / (uint8_t)iCount;
+          bAvB = bB / (uint8_t)iCount;
 
           sDest16BPPColor = Get16BPPColor(FROMRGB(bAvR, bAvG, bAvB));
         }
@@ -216,11 +216,11 @@ ScreenID MapUtilScreenHandle() {
   // QUantize!
   {
     SGPVSurface::Lock lsrc(gi8BitMiniMap);
-    UINT8 *const pDataPtr = lsrc.Buffer<UINT8>();
+    uint8_t *const pDataPtr = lsrc.Buffer<uint8_t>();
     {
       SGPVSurface::Lock ldst(FRAME_BUFFER);
-      UINT16 *const pDestBuf = ldst.Buffer<UINT16>();
-      UINT32 const uiDestPitchBYTES = ldst.Pitch();
+      uint16_t *const pDestBuf = ldst.Buffer<uint16_t>();
+      uint32_t const uiDestPitchBYTES = ldst.Pitch();
       QuantizeImage(pDataPtr, p24BitValues, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
       gi8BitMiniMap->SetPalette(pPalette);
       // Blit!
@@ -228,9 +228,9 @@ ScreenID MapUtilScreenHandle() {
 
       // Write palette!
       {
-        INT32 cnt;
-        INT32 sX = 0, sY = 420;
-        UINT16 usLineColor;
+        int32_t cnt;
+        int32_t sX = 0, sY = 420;
+        uint16_t usLineColor;
 
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -245,7 +245,7 @@ ScreenID MapUtilScreenHandle() {
     }
 
     // Remove extension
-    for (cnt = (INT32)strlen(zFilename) - 1; cnt >= 0; cnt--) {
+    for (cnt = (int32_t)strlen(zFilename) - 1; cnt >= 0; cnt--) {
       if (zFilename[cnt] == '.') {
         zFilename[cnt] = '\0';
       }

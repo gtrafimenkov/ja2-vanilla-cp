@@ -34,12 +34,12 @@ static BUTTON_PICS *giPreviousQuestionButtonImage;
 static BUTTON_PICS *giNextQuestionButtonImage;
 
 // this the currently highlighted answer
-INT32 iCurrentAnswer = -1;
+int32_t iCurrentAnswer = -1;
 
 // the current quiz question
-INT32 giCurrentPersonalityQuizQuestion = 0;
-static INT32 giPreviousPersonalityQuizQuestion = -1;
-INT32 giMaxPersonalityQuizQuestion = 0;
+int32_t giCurrentPersonalityQuizQuestion = 0;
+static int32_t giPreviousPersonalityQuizQuestion = -1;
+int32_t giMaxPersonalityQuizQuestion = 0;
 
 // start over flag
 BOOLEAN fStartOverFlag = FALSE;
@@ -53,9 +53,9 @@ BOOLEAN fStartOverFlag = FALSE;
 #define MAX_NUMBER_OF_IMP_QUESTIONS 16
 
 // answer list
-INT32 iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];
+int32_t iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];
 // current number of buttons being shown
-INT32 iNumberOfPersonaButtons = 0;
+int32_t iNumberOfPersonaButtons = 0;
 
 static void CreateIMPPersonalityQuizAnswerButtons();
 static void CreateIMPPersonalityQuizButtons();
@@ -64,7 +64,7 @@ static void ResetQuizAnswerButtons();
 
 void EnterIMPPersonalityQuiz() {
   // void answers out the quiz
-  memset(&iQuizAnswerList, -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
+  memset(&iQuizAnswerList, -1, sizeof(int32_t) * MAX_NUMBER_OF_IMP_QUESTIONS);
 
   // if we are entering for first time, reset
   if (giCurrentPersonalityQuizQuestion == MAX_NUMBER_OF_IMP_QUESTIONS) {
@@ -133,10 +133,10 @@ void HandleIMPPersonalityQuiz() {
   }
 }
 
-static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
-                               const INT16 y, const GUI_CALLBACK click) {
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const int16_t x,
+                               const int16_t y, const GUI_CALLBACK click) {
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -144,16 +144,16 @@ static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text
   return btn;
 }
 
-static void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason);
-static void PreviousQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason);
-static void NextQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason);
+static void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, int32_t reason);
+static void PreviousQuestionButtonCallback(GUI_BUTTON *btn, int32_t iReason);
+static void NextQuestionButtonCallback(GUI_BUTTON *btn, int32_t iReason);
 
 static void CreateIMPPersonalityQuizButtons() {
   // this function will create the buttons needed for the IMP personality quiz
   // Page
-  const INT16 dx = LAPTOP_SCREEN_UL_X;
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dx = LAPTOP_SCREEN_UL_X;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
 
   // ths Done button
   giIMPPersonalityQuizButtonImage[0] = LoadButtonImage(LAPTOPDIR "/button_7.sti", 0, 1);
@@ -203,8 +203,8 @@ static void DestroyIMPersonalityQuizButtons() {
   UnloadButtonImage(giNextQuestionButtonImage);
 }
 
-static void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons);
-static void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber);
+static void AddIMPPersonalityQuizAnswerButtons(int32_t iNumberOfButtons);
+static void ToggleQuestionNumberButtonOn(int32_t iAnswerNumber);
 
 static void CreateIMPPersonalityQuizAnswerButtons() {
   // this function will create the buttons for the personality quiz answer
@@ -263,13 +263,13 @@ static void CreateIMPPersonalityQuizAnswerButtons() {
   RenderWWWProgramTitleBar();
 }
 
-static void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons);
+static void DestroyIMPPersonalityQuizAnswerButtons(int32_t iNumberOfButtons);
 
 static void DestroyPersonalityQuizButtons() {
   // this function will destroy the buttons used in the previous personality
   // question
   // destroy old buttons
-  UINT32 ButtonCount;
+  uint32_t ButtonCount;
   switch (giPreviousPersonalityQuizQuestion) {
     case -1:
       return;  // do nothing
@@ -295,13 +295,13 @@ static void DestroyPersonalityQuizButtons() {
   DestroyIMPPersonalityQuizAnswerButtons(ButtonCount);
 }
 
-static void BtnQuizAnswerCallback(GUI_BUTTON *, INT32 reason);
+static void BtnQuizAnswerCallback(GUI_BUTTON *, int32_t reason);
 
-static void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
+static void AddIMPPersonalityQuizAnswerButtons(int32_t iNumberOfButtons) {
   // will add iNumberofbuttons to the answer button list
-  for (UINT32 i = 0; i < iNumberOfButtons; i++) {
-    INT32 XLoc = LAPTOP_SCREEN_UL_X + (i < 4 ? BTN_FIRST_COLUMN_X : BTN_SECOND_COLUMN_X);
-    INT32 YLoc = LAPTOP_SCREEN_WEB_UL_Y + 97 + i % 4 * 50;
+  for (uint32_t i = 0; i < iNumberOfButtons; i++) {
+    int32_t XLoc = LAPTOP_SCREEN_UL_X + (i < 4 ? BTN_FIRST_COLUMN_X : BTN_SECOND_COLUMN_X);
+    int32_t YLoc = LAPTOP_SCREEN_WEB_UL_Y + 97 + i % 4 * 50;
     BUTTON_PICS *const Image = LoadButtonImage(LAPTOPDIR "/button_6.sti", 0, 1);
     giIMPPersonalityQuizAnswerButtonImage[i] = Image;
     GUIButtonRef const Button = QuickCreateButtonNoMove(
@@ -319,8 +319,8 @@ static void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
   giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
 }
 
-static void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
-  INT32 iCounter = 0;
+static void DestroyIMPPersonalityQuizAnswerButtons(int32_t iNumberOfButtons) {
+  int32_t iCounter = 0;
   for (iCounter = 0; iCounter < iNumberOfButtons; iCounter++) {
     RemoveButton(giIMPPersonalityQuizAnswerButton[iCounter]);
     UnloadButtonImage(giIMPPersonalityQuizAnswerButtonImage[iCounter]);
@@ -329,7 +329,7 @@ static void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
 
 static void CheckStateOfTheConfirmButton();
 
-static void BtnQuizAnswerCallback(GUI_BUTTON *const btn, INT32 const reason) {
+static void BtnQuizAnswerCallback(GUI_BUTTON *const btn, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     ResetQuizAnswerButtons();
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -344,7 +344,7 @@ static void BtnQuizAnswerCallback(GUI_BUTTON *const btn, INT32 const reason) {
 static void CheckAndUpdateNextPreviousIMPQuestionButtonStates();
 static void CompileQuestionsInStatsAndWhatNot();
 
-static void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (iCurrentAnswer != -1) {
       ResetQuizAnswerButtons();
@@ -368,7 +368,7 @@ static void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 re
   }
 }
 
-static void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
     giMaxPersonalityQuizQuestion = 0;
@@ -382,7 +382,7 @@ static void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason
 
 static void ResetQuizAnswerButtons() {
   // how many buttons to reset?
-  INT32 iCounter;
+  int32_t iCounter;
   switch (giCurrentPersonalityQuizQuestion) {
     case -1:
       return;  // do nothing
@@ -407,7 +407,7 @@ static void ResetQuizAnswerButtons() {
   }
 
   // now run through and reset the buttons
-  for (INT32 i = 0; i < iCounter; i++) {
+  for (int32_t i = 0; i < iCounter; i++) {
     giIMPPersonalityQuizAnswerButton[i]->uiFlags &= ~BUTTON_CLICKED_ON;
   }
 }
@@ -665,8 +665,8 @@ static void CompileQuestionsInStatsAndWhatNot() {
   }
 }
 
-void BltAnswerIndents(INT32 iNumberOfIndents) {
-  INT32 iCounter = 0;
+void BltAnswerIndents(int32_t iNumberOfIndents) {
+  int32_t iCounter = 0;
 
   // the question indent
   RenderQtnIndentFrame(15, 20);
@@ -851,7 +851,7 @@ static void HandleIMPQuizKeyBoard() {
       if( (InputEvent.usEvent == KEY_DOWN ) && ( InputEvent.usParam >= '1' ) &&
       ( InputEvent.usParam <= '9') )
       {
-              if( ( UINT16 )( iNumberOfPersonaButtons ) >= InputEvent.usParam -
+              if( ( uint16_t )( iNumberOfPersonaButtons ) >= InputEvent.usParam -
       '0' )
               {
                       // reset buttons
@@ -961,7 +961,7 @@ static void MoveBackAQuestion() {
   CheckAndUpdateNextPreviousIMPQuestionButtonStates();
 }
 
-static void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber) {
+static void ToggleQuestionNumberButtonOn(int32_t iAnswerNumber) {
   if ((giCurrentPersonalityQuizQuestion <= giMaxPersonalityQuizQuestion) && (iAnswerNumber != -1)) {
     // reset buttons
     ResetQuizAnswerButtons();
@@ -972,13 +972,13 @@ static void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber) {
   }
 }
 
-static void PreviousQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void PreviousQuestionButtonCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     MoveBackAQuestion();
   }
 }
 
-static void NextQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void NextQuestionButtonCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     MoveAheadAQuestion();
   }

@@ -38,9 +38,9 @@
 extern SOLDIERTYPE *gpSrcSoldier;
 extern SOLDIERTYPE *gpDestSoldier;
 
-UINT8 gubQuest[MAX_QUESTS];
-UINT8 gubFact[NUM_FACTS];  // this has to be updated when we figure out how many
-                           // facts we have
+uint8_t gubQuest[MAX_QUESTS];
+uint8_t gubFact[NUM_FACTS];  // this has to be updated when we figure out how many
+                             // facts we have
 
 void SetFactTrue(Fact const usFact) {
   // This function is here just for control flow purposes (debug breakpoints)
@@ -49,7 +49,7 @@ void SetFactTrue(Fact const usFact) {
   // must intercept when Jake is first trigered to start selling fuel
   if (usFact == FACT_ESTONI_REFUELLING_POSSIBLE && !CheckFact(usFact, 0)) {
     // give him some gas...
-    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_JAKE, GAS_CAN, (UINT8)(4 + Random(3)));
+    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_JAKE, GAS_CAN, (uint8_t)(4 + Random(3)));
   }
 
   gubFact[usFact] = TRUE;
@@ -66,14 +66,14 @@ static bool CheckForNewShipment() {
   return ip && !IsItemPoolVisible(ip);
 }
 
-static BOOLEAN CheckNPCWounded(UINT8 const ubProfileID, BOOLEAN const fByPlayerOnly) {
+static BOOLEAN CheckNPCWounded(uint8_t const ubProfileID, BOOLEAN const fByPlayerOnly) {
   SOLDIERTYPE const *const s = FindSoldierByProfileID(ubProfileID);
   return s && s->bLife < s->bLifeMax &&  // is the NPC is wounded at all?
          (!fByPlayerOnly ||
           GetProfile(ubProfileID).ubMiscFlags & PROFILE_MISC_FLAG_WOUNDEDBYPLAYER);
 }
 
-static BOOLEAN CheckNPCInOkayHealth(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCInOkayHealth(uint8_t ubProfileID) {
   // is the NPC at better than half health?
   const SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubProfileID);
   if (pSoldier && pSoldier->bLife > (pSoldier->bLifeMax / 2) && pSoldier->bLife > 30) {
@@ -83,7 +83,7 @@ static BOOLEAN CheckNPCInOkayHealth(UINT8 ubProfileID) {
   }
 }
 
-static BOOLEAN CheckNPCBleeding(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCBleeding(uint8_t ubProfileID) {
   // the NPC is wounded...
   const SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubProfileID);
   if (pSoldier && pSoldier->bLife > 0 && pSoldier->bBleeding > 0) {
@@ -93,7 +93,7 @@ static BOOLEAN CheckNPCBleeding(UINT8 ubProfileID) {
   }
 }
 
-static BOOLEAN CheckNPCWithin(UINT8 ubFirstNPC, UINT8 ubSecondNPC, UINT8 ubMaxDistance) {
+static BOOLEAN CheckNPCWithin(uint8_t ubFirstNPC, uint8_t ubSecondNPC, uint8_t ubMaxDistance) {
   const SOLDIERTYPE *const pFirstNPC = FindSoldierByProfileID(ubFirstNPC);
   const SOLDIERTYPE *const pSecondNPC = FindSoldierByProfileID(ubSecondNPC);
   if (!pFirstNPC || !pSecondNPC) {
@@ -102,7 +102,7 @@ static BOOLEAN CheckNPCWithin(UINT8 ubFirstNPC, UINT8 ubSecondNPC, UINT8 ubMaxDi
   return (PythSpacesAway(pFirstNPC->sGridNo, pSecondNPC->sGridNo) <= ubMaxDistance);
 }
 
-static BOOLEAN CheckGuyVisible(UINT8 ubNPC, UINT8 ubGuy) {
+static BOOLEAN CheckGuyVisible(uint8_t ubNPC, uint8_t ubGuy) {
   // NB ONLY WORKS IF ON DIFFERENT TEAMS
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubNPC);
   const SOLDIERTYPE *const pGuy = FindSoldierByProfileID(ubGuy);
@@ -116,7 +116,7 @@ static BOOLEAN CheckGuyVisible(UINT8 ubNPC, UINT8 ubGuy) {
   }
 }
 
-static BOOLEAN CheckNPCAt(UINT8 ubNPC, INT16 sGridNo) {
+static BOOLEAN CheckNPCAt(uint8_t ubNPC, int16_t sGridNo) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubNPC);
   if (!pNPC) {
     return (FALSE);
@@ -124,7 +124,7 @@ static BOOLEAN CheckNPCAt(UINT8 ubNPC, INT16 sGridNo) {
   return (pNPC->sGridNo == sGridNo);
 }
 
-static BOOLEAN CheckNPCIsEnemy(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCIsEnemy(uint8_t ubProfileID) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC) {
     return (FALSE);
@@ -143,11 +143,11 @@ static BOOLEAN CheckNPCIsEnemy(UINT8 ubProfileID) {
   }
 }
 
-static INT8 NumWoundedMercsNearby(ProfileID const pid) {
+static int8_t NumWoundedMercsNearby(ProfileID const pid) {
   SOLDIERTYPE const *const npc = FindSoldierByProfileID(pid);
   if (!npc) return 0;
 
-  INT8 n = 0;
+  int8_t n = 0;
   GridNo const gridno = npc->sGridNo;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE const &s = **i;
@@ -160,11 +160,11 @@ static INT8 NumWoundedMercsNearby(ProfileID const pid) {
   return n;
 }
 
-static INT8 NumMercsNear(ProfileID const pid, UINT8 const max_dist) {
+static int8_t NumMercsNear(ProfileID const pid, uint8_t const max_dist) {
   SOLDIERTYPE const *const npc = FindSoldierByProfileID(pid);
   if (!npc) return 0;
 
-  INT8 n = 0;
+  int8_t n = 0;
   GridNo const gridno = npc->sGridNo;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE const &s = **i;
@@ -176,7 +176,7 @@ static INT8 NumMercsNear(ProfileID const pid, UINT8 const max_dist) {
   return n;
 }
 
-static BOOLEAN CheckNPCIsEPC(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCIsEPC(uint8_t ubProfileID) {
   if (gMercProfiles[ubProfileID].bMercStatus == MERC_IS_DEAD) {
     return (FALSE);
   }
@@ -188,7 +188,7 @@ static BOOLEAN CheckNPCIsEPC(UINT8 ubProfileID) {
   return ((pNPC->ubWhatKindOfMercAmI == MERC_TYPE__EPC));
 }
 
-BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID) {
+BOOLEAN NPCInRoom(uint8_t ubProfileID, uint8_t ubRoomID) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] != ubRoomID)) {
     return (FALSE);
@@ -196,7 +196,7 @@ BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID) {
   return (TRUE);
 }
 
-static BOOLEAN NPCInRoomRange(UINT8 ubProfileID, UINT8 ubRoomID1, UINT8 ubRoomID2) {
+static BOOLEAN NPCInRoomRange(uint8_t ubProfileID, uint8_t ubRoomID1, uint8_t ubRoomID2) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] < ubRoomID1) ||
       (gubWorldRoomInfo[pNPC->sGridNo] > ubRoomID2)) {
@@ -205,8 +205,8 @@ static BOOLEAN NPCInRoomRange(UINT8 ubProfileID, UINT8 ubRoomID1, UINT8 ubRoomID
   return (TRUE);
 }
 
-static BOOLEAN PCInSameRoom(UINT8 ubProfileID) {
-  UINT8 ubRoom;
+static BOOLEAN PCInSameRoom(uint8_t ubProfileID) {
+  uint8_t ubRoom;
 
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC) {
@@ -258,11 +258,11 @@ static BOOLEAN CheckTalkerUnpropositionedFemale() {
   return (FALSE);
 }
 
-static INT8 NumMalesPresent(ProfileID const pid) {
+static int8_t NumMalesPresent(ProfileID const pid) {
   SOLDIERTYPE const *const npc = FindSoldierByProfileID(pid);
   if (!npc) return 0;
 
-  INT8 n = 0;
+  int8_t n = 0;
   GridNo const gridno = npc->sGridNo;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE const &s = **i;
@@ -302,7 +302,8 @@ static BOOLEAN CheckPlayerHasHead() {
   return FALSE;
 }
 
-static BOOLEAN CheckNPCSector(UINT8 ubProfileID, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+static BOOLEAN CheckNPCSector(uint8_t ubProfileID, int16_t sSectorX, int16_t sSectorY,
+                              int8_t bSectorZ) {
   const SOLDIERTYPE *const pSoldier = FindSoldierByProfileIDOnPlayerTeam(ubProfileID);
   if (pSoldier) {
     if (pSoldier->sSectorX == sSectorX && pSoldier->sSectorY == sSectorY &&
@@ -318,7 +319,7 @@ static BOOLEAN CheckNPCSector(UINT8 ubProfileID, INT16 sSectorX, INT16 sSectorY,
   return (FALSE);
 }
 
-static bool AIMMercWithin(GridNo const gridno, INT16 const distance) {
+static bool AIMMercWithin(GridNo const gridno, int16_t const distance) {
   FOR_EACH_MERC(i) {
     SOLDIERTYPE const &s = **i;
     if (s.bTeam != OUR_TEAM) continue;
@@ -330,7 +331,7 @@ static bool AIMMercWithin(GridNo const gridno, INT16 const distance) {
   return false;
 }
 
-static BOOLEAN CheckNPCCowering(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCCowering(uint8_t ubProfileID) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC) {
     return (FALSE);
@@ -338,9 +339,9 @@ static BOOLEAN CheckNPCCowering(UINT8 ubProfileID) {
   return (((pNPC->uiStatusFlags & SOLDIER_COWERING) != 0));
 }
 
-static UINT8 CountBartenders() {
-  UINT8 ubLoop;
-  UINT8 ubBartenders = 0;
+static uint8_t CountBartenders() {
+  uint8_t ubLoop;
+  uint8_t ubBartenders = 0;
 
   for (ubLoop = HERVE; ubLoop <= CARLO; ubLoop++) {
     if (gMercProfiles[ubLoop].bNPCData != 0) {
@@ -350,7 +351,7 @@ static UINT8 CountBartenders() {
   return (ubBartenders);
 }
 
-static BOOLEAN CheckNPCIsUnderFire(UINT8 ubProfileID) {
+static BOOLEAN CheckNPCIsUnderFire(uint8_t ubProfileID) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC) {
     return (FALSE);
@@ -358,7 +359,7 @@ static BOOLEAN CheckNPCIsUnderFire(UINT8 ubProfileID) {
   return (pNPC->bUnderFire != 0);
 }
 
-static BOOLEAN NPCHeardShot(UINT8 ubProfileID) {
+static BOOLEAN NPCHeardShot(uint8_t ubProfileID) {
   const SOLDIERTYPE *const pNPC = FindSoldierByProfileID(ubProfileID);
   if (!pNPC) {
     return (FALSE);
@@ -366,14 +367,14 @@ static BOOLEAN NPCHeardShot(UINT8 ubProfileID) {
   return (pNPC->ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT);
 }
 
-static bool InTownSectorWithTrainingLoyalty(UINT8 const sector) {
-  UINT8 const town = GetTownIdForSector(sector);
+static bool InTownSectorWithTrainingLoyalty(uint8_t const sector) {
+  uint8_t const town = GetTownIdForSector(sector);
   return town != BLANK_SECTOR && gfTownUsesLoyalty[town] && gTownLoyalty[town].fStarted &&
          gTownLoyalty[town].ubRating >= MIN_RATING_TO_TRAIN_TOWN;
 }
 
-BOOLEAN CheckFact(Fact const usFact, UINT8 const ubProfileID) {
-  INT8 bTown = -1;
+BOOLEAN CheckFact(Fact const usFact, uint8_t const ubProfileID) {
+  int8_t bTown = -1;
 
   switch (usFact) {
     case FACT_DIMITRI_DEAD:
@@ -987,11 +988,12 @@ BOOLEAN CheckFact(Fact const usFact, UINT8 const ubProfileID) {
   return (gubFact[usFact]);
 }
 
-void StartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY) {
+void StartQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY) {
   InternalStartQuest(ubQuest, sSectorX, sSectorY, TRUE);
 }
 
-void InternalStartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUpdateHistory) {
+void InternalStartQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY,
+                        BOOLEAN fUpdateHistory) {
   if (gubQuest[ubQuest] == QUESTNOTSTARTED) {
     gubQuest[ubQuest] = QUESTINPROGRESS;
 
@@ -1004,11 +1006,11 @@ void InternalStartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN f
   }
 }
 
-void EndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY) {
+void EndQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY) {
   InternalEndQuest(ubQuest, sSectorX, sSectorY, TRUE);
 }
 
-void InternalEndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUpdateHistory) {
+void InternalEndQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY, BOOLEAN fUpdateHistory) {
   if (gubQuest[ubQuest] == QUESTINPROGRESS) {
     gubQuest[ubQuest] = QUESTDONE;
 
@@ -1047,7 +1049,7 @@ void InitQuestEngine() {
   gfBoxersResting = FALSE;
 }
 
-void CheckForQuests(UINT32 uiDay) {
+void CheckForQuests(uint32_t uiDay) {
   // This function gets called at 8:00 AM time of the day
 
 #ifdef TESTQUESTS

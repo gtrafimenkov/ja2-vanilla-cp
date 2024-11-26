@@ -7,10 +7,10 @@
 #include "Tactical/Overhead.h"
 
 void ExtractRealObjectFromFile(HWFILE const file, REAL_OBJECT *const o) {
-  BYTE data[256];
+  uint8_t data[256];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_BOOL(d, o->fAllocated)
   EXTR_BOOL(d, o->fAlive)
   EXTR_BOOL(d, o->fApplyFriction)
@@ -72,9 +72,9 @@ void ExtractRealObjectFromFile(HWFILE const file, REAL_OBJECT *const o) {
 }
 
 void InjectRealObjectIntoFile(HWFILE const file, REAL_OBJECT const *const o) {
-  BYTE data[256];
+  uint8_t data[256];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_BOOL(d, o->fAllocated)
   INJ_BOOL(d, o->fAlive)
   INJ_BOOL(d, o->fApplyFriction)

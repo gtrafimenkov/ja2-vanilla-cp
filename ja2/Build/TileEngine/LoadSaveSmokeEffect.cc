@@ -7,10 +7,10 @@
 #include "TileEngine/SmokeEffects.h"
 
 void ExtractSmokeEffectFromFile(HWFILE const file, SMOKEEFFECT *const s) {
-  BYTE data[16];
+  uint8_t data[16];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_I16(d, s->sGridNo)
   EXTR_U8(d, s->ubDuration)
   EXTR_U8(d, s->ubRadius)
@@ -26,9 +26,9 @@ void ExtractSmokeEffectFromFile(HWFILE const file, SMOKEEFFECT *const s) {
 }
 
 void InjectSmokeEffectIntoFile(HWFILE const file, SMOKEEFFECT const *const s) {
-  BYTE data[16];
+  uint8_t data[16];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_I16(d, s->sGridNo)
   INJ_U8(d, s->ubDuration)
   INJ_U8(d, s->ubRadius)

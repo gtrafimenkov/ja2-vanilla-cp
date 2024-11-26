@@ -29,27 +29,27 @@
 #define STEEL_SLIDER_HEIGHT 25
 
 struct SLIDER {
-  UINT16 usPosX;
-  UINT16 usPosY;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT16 usNumberOfIncrements;
+  uint16_t usPosX;
+  uint16_t usPosY;
+  uint16_t usWidth;
+  uint16_t usHeight;
+  uint16_t usNumberOfIncrements;
   SLIDER_CHANGE_CALLBACK SliderChangeCallback;
 
-  UINT16 usCurrentIncrement;
+  uint16_t usCurrentIncrement;
 
-  UINT16 usBackGroundColor;
+  uint16_t usBackGroundColor;
 
   MOUSE_REGION ScrollAreaMouseRegion;
 
-  UINT16 usCurrentSliderBoxPosition;
+  uint16_t usCurrentSliderBoxPosition;
 
   SGPRect LastRect;
 
-  UINT32 uiFlags;
+  uint32_t uiFlags;
 
-  UINT8 ubSliderWidth;
-  UINT8 ubSliderHeight;
+  uint8_t ubSliderWidth;
+  uint8_t ubSliderHeight;
 
   SLIDER *pNext;
   SLIDER *pPrev;
@@ -84,11 +84,11 @@ void ShutDownSlider() {
 }
 
 static void CalculateNewSliderBoxPosition(SLIDER *pSlider);
-static void SelectedSliderButtonCallBack(MOUSE_REGION *r, INT32 iReason);
-static void SelectedSliderMovementCallBack(MOUSE_REGION *r, INT32 reason);
+static void SelectedSliderButtonCallBack(MOUSE_REGION *r, int32_t iReason);
+static void SelectedSliderMovementCallBack(MOUSE_REGION *r, int32_t reason);
 
-SLIDER *AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth,
-                  UINT16 usNumberOfIncrements, INT8 sPriority,
+SLIDER *AddSlider(uint8_t ubStyle, uint16_t usCursor, uint16_t usPosX, uint16_t usPosY,
+                  uint16_t usWidth, uint16_t usNumberOfIncrements, int8_t sPriority,
                   SLIDER_CHANGE_CALLBACK SliderChangeCallback) {
   AssertMsg(guiSliderBoxImage != NULL,
             "Trying to Add a Slider Bar when the Slider System was never inited");
@@ -104,10 +104,10 @@ SLIDER *AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, 
   s->usCurrentIncrement = 0;
   s->usBackGroundColor = Get16BPPColor(FROMRGB(255, 255, 255));
 
-  UINT16 x = usPosX;
-  UINT16 y = usPosY;
-  UINT16 w;
-  UINT16 h;
+  uint16_t x = usPosX;
+  uint16_t y = usPosY;
+  uint16_t w;
+  uint16_t h;
   switch (ubStyle) {
     case SLIDER_VERTICAL_STEEL:
       s->uiFlags = SLIDER_VERTICAL;
@@ -154,14 +154,14 @@ SLIDER *AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, 
   return s;
 }
 
-static void CalculateNewSliderIncrement(SLIDER *s, UINT16 usPos);
+static void CalculateNewSliderIncrement(SLIDER *s, uint16_t usPos);
 static void RenderSelectedSliderBar(SLIDER *s);
 
 void RenderAllSliderBars() {
   // set the currently selectd slider bar
   if (gfLeftButtonState && gpCurrentSlider != NULL) {
     SLIDER *const s = gpCurrentSlider;
-    const UINT16 pos = gusMouseYPos < s->usPosY ? 0 : gusMouseYPos - s->usPosY;
+    const uint16_t pos = gusMouseYPos < s->usPosY ? 0 : gusMouseYPos - s->usPosY;
     CalculateNewSliderIncrement(s, pos);
   } else {
     gpCurrentSlider = NULL;
@@ -172,17 +172,17 @@ void RenderAllSliderBars() {
   }
 }
 
-static void OptDisplayLine(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY,
-                           INT16 iColor);
+static void OptDisplayLine(uint16_t usStartX, uint16_t usStartY, uint16_t EndX, uint16_t EndY,
+                           int16_t iColor);
 static void RenderSliderBox(SLIDER *s);
 
 static void RenderSelectedSliderBar(SLIDER *s) {
   if (!(s->uiFlags & SLIDER_VERTICAL)) {
     // Display the background (the bar)
-    const UINT16 x = s->usPosX;
-    const UINT16 y = s->usPosY;
-    const UINT16 w = s->usWidth;
-    const UINT16 c = s->usBackGroundColor;
+    const uint16_t x = s->usPosX;
+    const uint16_t y = s->usPosY;
+    const uint16_t w = s->usWidth;
+    const uint16_t c = s->usBackGroundColor;
     OptDisplayLine(x + 1, y - 1, x + w - 1, y - 1, c);
     OptDisplayLine(x, y, x + w, y, c);
     OptDisplayLine(x + 1, y + 1, x + w - 1, y + 1, c);
@@ -248,7 +248,7 @@ void RemoveSliderBar(SLIDER *s) {
   MemFree(s);
 }
 
-static void SelectedSliderMovementCallBack(MOUSE_REGION *r, INT32 reason) {
+static void SelectedSliderMovementCallBack(MOUSE_REGION *r, int32_t reason) {
   // if we already have an anchored slider bar
   if (gpCurrentSlider != NULL) return;
 
@@ -266,11 +266,11 @@ static void SelectedSliderMovementCallBack(MOUSE_REGION *r, INT32 reason) {
     return;
   }
 
-  const UINT16 pos = s->uiFlags & SLIDER_VERTICAL ? r->RelativeYPos : r->RelativeXPos;
+  const uint16_t pos = s->uiFlags & SLIDER_VERTICAL ? r->RelativeYPos : r->RelativeXPos;
   CalculateNewSliderIncrement(s, pos);
 }
 
-static void SetSliderPos(SLIDER *s, INT32 pos) {
+static void SetSliderPos(SLIDER *s, int32_t pos) {
   if (pos == s->usCurrentIncrement) return;
   s->usCurrentIncrement = pos;
   CalculateNewSliderBoxPosition(s);
@@ -278,31 +278,31 @@ static void SetSliderPos(SLIDER *s, INT32 pos) {
   s->SliderChangeCallback(pos);
 }
 
-static void SelectedSliderButtonCallBack(MOUSE_REGION *r, INT32 iReason) {
+static void SelectedSliderButtonCallBack(MOUSE_REGION *r, int32_t iReason) {
   // if we already have an anchored slider bar
   if (gpCurrentSlider != NULL) return;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN || iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     SLIDER *const s = r->GetUserPtr<SLIDER>();
-    const UINT16 pos = s->uiFlags & SLIDER_VERTICAL ? r->RelativeYPos : r->RelativeXPos;
+    const uint16_t pos = s->uiFlags & SLIDER_VERTICAL ? r->RelativeYPos : r->RelativeXPos;
     CalculateNewSliderIncrement(s, pos);
   } else if (iReason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     SLIDER *const s = r->GetUserPtr<SLIDER>();
-    const INT32 step = (s->usNumberOfIncrements + WHEEL_MOVE_FRACTION - 1) / WHEEL_MOVE_FRACTION;
-    INT32 pos = s->usCurrentIncrement - step;
+    const int32_t step = (s->usNumberOfIncrements + WHEEL_MOVE_FRACTION - 1) / WHEEL_MOVE_FRACTION;
+    int32_t pos = s->usCurrentIncrement - step;
     pos = std::max(0, pos);
     SetSliderPos(s, pos);
   } else if (iReason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
     SLIDER *const s = r->GetUserPtr<SLIDER>();
-    const INT32 step = (s->usNumberOfIncrements + WHEEL_MOVE_FRACTION - 1) / WHEEL_MOVE_FRACTION;
-    INT32 pos = s->usCurrentIncrement + step;
+    const int32_t step = (s->usNumberOfIncrements + WHEEL_MOVE_FRACTION - 1) / WHEEL_MOVE_FRACTION;
+    int32_t pos = s->usCurrentIncrement + step;
     pos = std::min(pos, (int32_t)s->usNumberOfIncrements);
     SetSliderPos(s, pos);
   }
 }
 
-static void CalculateNewSliderIncrement(SLIDER *s, UINT16 usPos) {
-  INT32 pos;
+static void CalculateNewSliderIncrement(SLIDER *s, uint16_t usPos) {
+  int32_t pos;
   if (s->uiFlags & SLIDER_VERTICAL) {
     if (usPos <= s->usHeight) {
       pos = s->usNumberOfIncrements * usPos / s->usHeight;
@@ -316,16 +316,16 @@ static void CalculateNewSliderIncrement(SLIDER *s, UINT16 usPos) {
   SetSliderPos(s, pos);
 }
 
-static void OptDisplayLine(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY,
-                           INT16 iColor) {
+static void OptDisplayLine(uint16_t usStartX, uint16_t usStartY, uint16_t EndX, uint16_t EndY,
+                           int16_t iColor) {
   SGPVSurface::Lock l(FRAME_BUFFER);
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  LineDraw(FALSE, usStartX, usStartY, EndX, EndY, iColor, l.Buffer<UINT16>());
+  LineDraw(FALSE, usStartX, usStartY, EndX, EndY, iColor, l.Buffer<uint16_t>());
 }
 
 static void CalculateNewSliderBoxPosition(SLIDER *s) {
-  UINT16 pos;
-  UINT16 usMaxPos;
+  uint16_t pos;
+  uint16_t usMaxPos;
   if (s->uiFlags & SLIDER_VERTICAL) {
     // if the box is in the last position
     if (s->usCurrentIncrement >= s->usNumberOfIncrements) {
@@ -348,7 +348,7 @@ static void CalculateNewSliderBoxPosition(SLIDER *s) {
   s->usCurrentSliderBoxPosition = std::min(pos, usMaxPos);
 }
 
-void SetSliderValue(SLIDER *s, UINT32 uiNewValue) {
+void SetSliderValue(SLIDER *s, uint32_t uiNewValue) {
   if (uiNewValue >= s->usNumberOfIncrements) return;
 
   if (s->uiFlags & SLIDER_VERTICAL) {

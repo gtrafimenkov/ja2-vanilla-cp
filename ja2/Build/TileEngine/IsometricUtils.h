@@ -14,13 +14,13 @@
 #define MAPHEIGHT (WORLD_ROWS)
 #define MAPLENGTH (MAPHEIGHT * MAPWIDTH)
 
-static inline UINT8 OppositeDirection(UINT dir) { return (dir + 4) % NUM_WORLD_DIRECTIONS; }
-static inline UINT8 TwoCCDirection(UINT dir) { return (dir + 6) % NUM_WORLD_DIRECTIONS; }
-static inline UINT8 TwoCDirection(UINT dir) { return (dir + 2) % NUM_WORLD_DIRECTIONS; }
-static inline UINT8 OneCCDirection(UINT dir) { return (dir + 7) % NUM_WORLD_DIRECTIONS; }
-static inline UINT8 OneCDirection(UINT dir) { return (dir + 1) % NUM_WORLD_DIRECTIONS; }
+static inline uint8_t OppositeDirection(uint32_t dir) { return (dir + 4) % NUM_WORLD_DIRECTIONS; }
+static inline uint8_t TwoCCDirection(uint32_t dir) { return (dir + 6) % NUM_WORLD_DIRECTIONS; }
+static inline uint8_t TwoCDirection(uint32_t dir) { return (dir + 2) % NUM_WORLD_DIRECTIONS; }
+static inline uint8_t OneCCDirection(uint32_t dir) { return (dir + 7) % NUM_WORLD_DIRECTIONS; }
+static inline uint8_t OneCDirection(uint32_t dir) { return (dir + 1) % NUM_WORLD_DIRECTIONS; }
 
-extern const UINT8 gPurpendicularDirection[NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS];
+extern const uint8_t gPurpendicularDirection[NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS];
 
 // Macros
 
@@ -33,69 +33,71 @@ extern const UINT8 gPurpendicularDirection[NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
                                                                   : ((r) * WORLD_COLS + (c)))
 
 #define GETWORLDINDEXFROMWORLDCOORDS(r, c) \
-  ((INT16)(r / CELL_X_SIZE)) * WORLD_COLS + ((INT16)(c / CELL_Y_SIZE))
+  ((int16_t)(r / CELL_X_SIZE)) * WORLD_COLS + ((int16_t)(c / CELL_Y_SIZE))
 
-void ConvertGridNoToXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
-void ConvertGridNoToCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
-void ConvertGridNoToCenterCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
+void ConvertGridNoToXY(int16_t sGridNo, int16_t *sXPos, int16_t *sYPos);
+void ConvertGridNoToCellXY(int16_t sGridNo, int16_t *sXPos, int16_t *sYPos);
+void ConvertGridNoToCenterCellXY(int16_t sGridNo, int16_t *sXPos, int16_t *sYPos);
 
 // GRID NO MANIPULATION FUNCTIONS
-INT16 NewGridNo(INT16 sGridno, INT16 sDirInc);
-INT16 DirectionInc(INT16 sDirection);
-INT32 OutOfBounds(INT16 sGridno, INT16 sProposedGridno);
+int16_t NewGridNo(int16_t sGridno, int16_t sDirInc);
+int16_t DirectionInc(int16_t sDirection);
+int32_t OutOfBounds(int16_t sGridno, int16_t sProposedGridno);
 
-BOOLEAN GetMouseXY(INT16 *psMouseX, INT16 *psMouseY);
-BOOLEAN GetMouseWorldCoords(INT16 *psMouseX, INT16 *psMouseY);
+BOOLEAN GetMouseXY(int16_t *psMouseX, int16_t *psMouseY);
+BOOLEAN GetMouseWorldCoords(int16_t *psMouseX, int16_t *psMouseY);
 
 /* Returns the GridNo of the tile the mouse cursor is currently over or NOWHERE
  * if the cursor is not over any tile. */
 GridNo GetMouseMapPos();
 
-void GetAbsoluteScreenXYFromMapPos(GridNo pos, INT16 *psWorldScreenX, INT16 *psWorldScreenY);
-GridNo GetMapPosFromAbsoluteScreenXY(INT16 sWorldScreenX, INT16 sWorldScreenY);
+void GetAbsoluteScreenXYFromMapPos(GridNo pos, int16_t *psWorldScreenX, int16_t *psWorldScreenY);
+GridNo GetMapPosFromAbsoluteScreenXY(int16_t sWorldScreenX, int16_t sWorldScreenY);
 
-void FromCellToScreenCoordinates(INT16 sCellX, INT16 sCellY, INT16 *psScreenX, INT16 *psScreenY);
-void FromScreenToCellCoordinates(INT16 sScreenX, INT16 sScreenY, INT16 *psCellX, INT16 *psCellY);
+void FromCellToScreenCoordinates(int16_t sCellX, int16_t sCellY, int16_t *psScreenX,
+                                 int16_t *psScreenY);
+void FromScreenToCellCoordinates(int16_t sScreenX, int16_t sScreenY, int16_t *psCellX,
+                                 int16_t *psCellY);
 
 // Higher resolution convertion functions
-void FloatFromCellToScreenCoordinates(FLOAT dCellX, FLOAT dCellY, FLOAT *pdScreenX,
-                                      FLOAT *pdScreenY);
+void FloatFromCellToScreenCoordinates(float dCellX, float dCellY, float *pdScreenX,
+                                      float *pdScreenY);
 
-BOOLEAN GridNoOnVisibleWorldTile(INT16 sGridNo);
-BOOLEAN GridNoOnEdgeOfMap(INT16 sGridNo, INT8 *pbDirection);
+BOOLEAN GridNoOnVisibleWorldTile(int16_t sGridNo);
+BOOLEAN GridNoOnEdgeOfMap(int16_t sGridNo, int8_t *pbDirection);
 
-void CellXYToScreenXY(INT16 sCellX, INT16 sCellY, INT16 *sScreenX, INT16 *sScreenY);
+void CellXYToScreenXY(int16_t sCellX, int16_t sCellY, int16_t *sScreenX, int16_t *sScreenY);
 
-INT32 GetRangeFromGridNoDiff(INT16 sGridNo1, INT16 sGridNo2);
-INT32 GetRangeInCellCoordsFromGridNoDiff(INT16 sGridNo1, INT16 sGridNo2);
+int32_t GetRangeFromGridNoDiff(int16_t sGridNo1, int16_t sGridNo2);
+int32_t GetRangeInCellCoordsFromGridNoDiff(int16_t sGridNo1, int16_t sGridNo2);
 
-bool IsPointInScreenRect(INT16 x, INT16 y, SGPRect const &);
-BOOLEAN IsPointInScreenRectWithRelative(INT16 sXPos, INT16 sYPos, SGPRect *pRect, INT16 *sXRel,
-                                        INT16 *sRelY);
+bool IsPointInScreenRect(int16_t x, int16_t y, SGPRect const &);
+BOOLEAN IsPointInScreenRectWithRelative(int16_t sXPos, int16_t sYPos, SGPRect *pRect,
+                                        int16_t *sXRel, int16_t *sRelY);
 
-INT16 PythSpacesAway(INT16 sOrigin, INT16 sDest);
-INT16 SpacesAway(INT16 sOrigin, INT16 sDest);
-INT16 CardinalSpacesAway(INT16 sOrigin, INT16 sDest);
-bool FindHigherLevel(SOLDIERTYPE const *, INT8 *out_direction = 0);
-bool FindLowerLevel(SOLDIERTYPE const *, INT8 *out_direction = 0);
+int16_t PythSpacesAway(int16_t sOrigin, int16_t sDest);
+int16_t SpacesAway(int16_t sOrigin, int16_t sDest);
+int16_t CardinalSpacesAway(int16_t sOrigin, int16_t sDest);
+bool FindHigherLevel(SOLDIERTYPE const *, int8_t *out_direction = 0);
+bool FindLowerLevel(SOLDIERTYPE const *, int8_t *out_direction = 0);
 
-INT16 QuickestDirection(INT16 origin, INT16 dest);
-INT16 ExtQuickestDirection(INT16 origin, INT16 dest);
+int16_t QuickestDirection(int16_t origin, int16_t dest);
+int16_t ExtQuickestDirection(int16_t origin, int16_t dest);
 
 // Returns the (center ) cell coordinates in X
-INT16 CenterX(INT16 sGridno);
+int16_t CenterX(int16_t sGridno);
 
 // Returns the (center ) cell coordinates in Y
-INT16 CenterY(INT16 sGridno);
+int16_t CenterY(int16_t sGridno);
 
-BOOLEAN FindFenceJumpDirection(SOLDIERTYPE const *, INT8 *out_direction = 0);
+BOOLEAN FindFenceJumpDirection(SOLDIERTYPE const *, int8_t *out_direction = 0);
 
 // Simply chooses a random gridno within valid boundaries (for dropping things
 // in unloaded sectors)
-INT16 RandomGridNo();
+int16_t RandomGridNo();
 
-extern UINT32 guiForceRefreshMousePositionCalculation;
+extern uint32_t guiForceRefreshMousePositionCalculation;
 
-extern const INT16 DirIncrementer[8];
+extern const int16_t DirIncrementer[8];
 
 #endif

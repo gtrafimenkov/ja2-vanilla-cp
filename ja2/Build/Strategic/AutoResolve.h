@@ -5,28 +5,29 @@
 #include "ScreenIDs.h"
 #include "Tactical/ItemTypes.h"
 
-void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY);
+void EnterAutoResolveMode(uint8_t ubSectorX, uint8_t ubSectorY);
 
 // is the autoresolve active?
 BOOLEAN IsAutoResolveActive();
 
-void EliminateAllEnemies(UINT8 ubSectorX, UINT8 ubSectorY);
+void EliminateAllEnemies(uint8_t ubSectorX, uint8_t ubSectorY);
 
 void ConvertTacticalBattleIntoStrategicAutoResolveBattle();
 
-UINT8 GetAutoResolveSectorID();
+uint8_t GetAutoResolveSectorID();
 
 extern BOOLEAN gfTransferTacticalOppositionToAutoResolve;
 
 // Returns TRUE if autoresolve is active or a sector is loaded.
-BOOLEAN GetCurrentBattleSectorXYZ(INT16 *psSectorX, INT16 *psSectorY, INT16 *psSectorZ);
+BOOLEAN GetCurrentBattleSectorXYZ(int16_t *psSectorX, int16_t *psSectorY, int16_t *psSectorZ);
 
-UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJECTTYPE *pKit,
-                                INT16 sKitPts, INT16 sStatus);
+uint32_t VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJECTTYPE *pKit,
+                                  int16_t sKitPts, int16_t sStatus);
 
 // Returns TRUE if a battle is happening ONLY
-BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(INT16 *psSectorX, INT16 *psSectorY,
-                                                               INT16 *psSectorZ);
+BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(int16_t *psSectorX,
+                                                               int16_t *psSectorY,
+                                                               int16_t *psSectorZ);
 
 ScreenID AutoResolveScreenHandle();
 

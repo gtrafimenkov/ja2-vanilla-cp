@@ -507,27 +507,27 @@ enum {
 
 // Struct for animation 'surface' information
 struct AnimationSurfaceType {
-  const UINT16 ubName;
+  const uint16_t ubName;
   const char Filename[50];
-  const CHAR8 bStructDataType;
-  const UINT8 ubFlags;
-  const UINT32 uiNumDirections;
-  UINT32 uiNumFramesPerDir;
+  const char bStructDataType;
+  const uint8_t ubFlags;
+  const uint32_t uiNumDirections;
+  uint32_t uiNumFramesPerDir;
   HVOBJECT hVideoObject;
-  INT8 bUsageCount;
-  const INT8 bProfile;
+  int8_t bUsageCount;
+  const int8_t bProfile;
 };
 
 extern AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES];
 
 void InitAnimationSystem();
 void DeInitAnimationSystem();
-void LoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState);
-void UnLoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex);
-void ClearAnimationSurfacesUsageHistory(UINT16 usSoldierID);
+void LoadAnimationSurface(uint16_t usSoldierID, uint16_t usSurfaceIndex, uint16_t usAnimState);
+void UnLoadAnimationSurface(uint16_t usSoldierID, uint16_t usSurfaceIndex);
+void ClearAnimationSurfacesUsageHistory(uint16_t usSoldierID);
 
-STRUCTURE_FILE_REF *GetAnimationStructureRef(const SOLDIERTYPE *s, UINT16 usSurfaceIndex,
-                                             UINT16 usAnimState);
+STRUCTURE_FILE_REF *GetAnimationStructureRef(const SOLDIERTYPE *s, uint16_t usSurfaceIndex,
+                                             uint16_t usAnimState);
 
 // Profile data
 extern ANIM_PROF *gpAnimProfiles;

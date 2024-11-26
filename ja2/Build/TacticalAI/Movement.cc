@@ -23,8 +23,8 @@
 // GoAsFarAsPossibleTowards - C.O. stuff related to current animation esp first
 // aid
 
-int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, UINT8 ubWaterOK,
-                        UINT8 fFlags) {
+int LegalNPCDestination(SOLDIERTYPE *pSoldier, int16_t sGridno, uint8_t ubPathMode,
+                        uint8_t ubWaterOK, uint8_t fFlags) {
   BOOLEAN fSkipTilesWithMercs;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
@@ -102,8 +102,8 @@ int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, 
     return (FALSE);  // illegal destination
 }
 
-int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
-  UINT8 ubSuccess = FALSE;
+int TryToResumeMovement(SOLDIERTYPE *pSoldier, int16_t sGridno) {
+  uint8_t ubSuccess = FALSE;
 
   // have to make sure the old destination is still legal (somebody may
   // have occupied the destination gridno in the meantime!)
@@ -155,7 +155,7 @@ int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
   return (ubSuccess);
 }
 
-static INT16 NextPatrolPoint(SOLDIERTYPE *pSoldier) {
+static int16_t NextPatrolPoint(SOLDIERTYPE *pSoldier) {
   // patrol slot 0 is UNUSED, so max patrolCnt is actually only 9
   if ((pSoldier->bPatrolCnt < 1) || (pSoldier->bPatrolCnt >= MAXPATROLGRIDS)) {
 #ifdef BETAVERSION
@@ -176,9 +176,9 @@ static INT16 NextPatrolPoint(SOLDIERTYPE *pSoldier) {
   return (pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt]);
 }
 
-INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
-  INT16 sPatrolPoint;
-  INT8 bOldOrders;
+int8_t PointPatrolAI(SOLDIERTYPE *pSoldier) {
+  int16_t sPatrolPoint;
+  int8_t bOldOrders;
 
   sPatrolPoint = pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt];
 
@@ -242,10 +242,10 @@ INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
   return (TRUE);
 }
 
-INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
-  INT16 sPatrolPoint;
-  INT8 bOldOrders, bPatrolIndex;
-  INT8 bCnt;
+int8_t RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
+  int16_t sPatrolPoint;
+  int8_t bOldOrders, bPatrolIndex;
+  int8_t bCnt;
 
   sPatrolPoint = pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt];
 
@@ -259,7 +259,7 @@ INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
     do {
       // usPatrolGrid[0] gets used for centre of close etc patrols, so we have
       // to add 1 to the Random #
-      bPatrolIndex = (INT8)PreRandom(pSoldier->bPatrolCnt) + 1;
+      bPatrolIndex = (int8_t)PreRandom(pSoldier->bPatrolCnt) + 1;
       sPatrolPoint = pSoldier->usPatrolGrid[bPatrolIndex];
       bCnt++;
     } while ((sPatrolPoint == pSoldier->sGridNo) ||
@@ -321,16 +321,16 @@ INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
   return (TRUE);
 }
 
-INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bReserveAPs,
-                                       INT8 bAction, INT8 fFlags) {
-  INT16 sLoop, sAPCost;
-  INT16 sTempDest, sGoToGrid;
-  INT16 sOrigin;
-  UINT16 usMaxDist;
-  UINT8 ubDirection, ubDirsLeft, ubDirChecked[8], fFound = FALSE;
-  INT8 fPathFlags;
+int16_t InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, int16_t sDesGrid,
+                                         int8_t bReserveAPs, int8_t bAction, int8_t fFlags) {
+  int16_t sLoop, sAPCost;
+  int16_t sTempDest, sGoToGrid;
+  int16_t sOrigin;
+  uint16_t usMaxDist;
+  uint8_t ubDirection, ubDirsLeft, ubDirChecked[8], fFound = FALSE;
+  int8_t fPathFlags;
 
-  INT8 bAPsLeft = -1;  // XXX HACK000E
+  int8_t bAPsLeft = -1;  // XXX HACK000E
 
   if (bReserveAPs == -1) {
     // default reserve points
@@ -346,7 +346,7 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
   // obtain maximum roaming distance from soldier's sOrigin
   usMaxDist = RoamingRange(pSoldier, &sOrigin);
 
-  UINT8 room_required = NO_ROOM;
+  uint8_t room_required = NO_ROOM;
   if (pSoldier->bOrders <= CLOSEPATROL &&
       (pSoldier->bTeam == CIV_TEAM || pSoldier->ubProfile != NO_PROFILE) &&
       /* make sure this doesn't interfere with pathing for scripts */
@@ -425,14 +425,14 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
         }
         // randomly select a direction which hasn't been 'checked' yet
         do {
-          ubDirection = (UINT8)Random(8);
+          ubDirection = (uint8_t)Random(8);
         } while (ubDirChecked[ubDirection]);
 
         ubDirChecked[ubDirection] = TRUE;
 
         // determine the gridno 1 tile away from current friend in this
         // direction
-        sTempDest = NewGridNo(sDesGrid, DirectionInc((INT16)(ubDirection + 1)));
+        sTempDest = NewGridNo(sDesGrid, DirectionInc((int16_t)(ubDirection + 1)));
 
         // if that's out of bounds, ignore it & check next direction
         if (sTempDest == sDesGrid) continue;
@@ -477,9 +477,9 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
   for (sLoop = 0; sLoop < (pSoldier->usPathDataSize - pSoldier->usPathIndex); sLoop++) {
     // what is the next gridno in the path?
 
-    // sTempDest = NewGridNo( sGoToGrid,DirectionInc( (INT16)
+    // sTempDest = NewGridNo( sGoToGrid,DirectionInc( (int16_t)
     // (pSoldier->usPathingData[sLoop] + 1) ) );
-    sTempDest = NewGridNo(sGoToGrid, DirectionInc((INT16)(pSoldier->usPathingData[sLoop])));
+    sTempDest = NewGridNo(sGoToGrid, DirectionInc((int16_t)(pSoldier->usPathingData[sLoop])));
     // NumMessage("sTempDest = ",sTempDest);
 
     // this should NEVER be out of bounds
@@ -555,9 +555,9 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
       }
 
       // ATE: Direction here?
-      sAPCost += EstimateActionPointCost(pSoldier, sTempDest, (INT8)pSoldier->usPathingData[sLoop],
-                                         pSoldier->usUIMovementMode, (INT8)sLoop,
-                                         (INT8)pSoldier->usPathDataSize);
+      sAPCost += EstimateActionPointCost(
+          pSoldier, sTempDest, (int8_t)pSoldier->usPathingData[sLoop], pSoldier->usUIMovementMode,
+          (int8_t)sLoop, (int8_t)pSoldier->usPathDataSize);
 
       bAPsLeft = pSoldier->bActionPoints - sAPCost;
     }
@@ -606,12 +606,12 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
   }
 }
 
-INT16 GoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bAction) {
+int16_t GoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, int16_t sDesGrid, int8_t bAction) {
   return (InternalGoAsFarAsPossibleTowards(pSoldier, sDesGrid, -1, bAction, 0));
 }
 
 void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
-  INT16 usNewGridNo, bAPCost;
+  int16_t usNewGridNo, bAPCost;
 
   // turn off the flag now that we're going to do something about it...
   // ATE: USed to be redundent, now if called befroe NewDest can cause some side
@@ -651,13 +651,13 @@ void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
 #endif
   }
 
-  usNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo,
-                          DirectionInc((UINT8)pSoldier->usPathingData[pSoldier->usPathIndex]));
+  usNewGridNo = NewGridNo((uint16_t)pSoldier->sGridNo,
+                          DirectionInc((uint8_t)pSoldier->usPathingData[pSoldier->usPathIndex]));
 
   // Find out how much it takes to move here!
   bAPCost = EstimateActionPointCost(
-      pSoldier, usNewGridNo, (INT8)pSoldier->usPathingData[pSoldier->usPathIndex],
-      pSoldier->usUIMovementMode, (INT8)pSoldier->usPathIndex, (INT8)pSoldier->usPathDataSize);
+      pSoldier, usNewGridNo, (int8_t)pSoldier->usPathingData[pSoldier->usPathIndex],
+      pSoldier->usUIMovementMode, (int8_t)pSoldier->usPathIndex, (int8_t)pSoldier->usPathDataSize);
 
   if (pSoldier->bActionPoints >= bAPCost) {
     // seems to have enough points...
@@ -697,18 +697,18 @@ void HaltMoveForSoldierOutOfPoints(SOLDIERTYPE &s) {
 
 #define RADIUS 3
 
-INT16 TrackScent(SOLDIERTYPE *pSoldier) {
+int16_t TrackScent(SOLDIERTYPE *pSoldier) {
   // This function returns the best gridno to go to based on the scent being
   // followed, and the soldier (creature/animal)'s current direction (which is
   // used to resolve ties.
-  INT32 iXDiff, iYDiff, iXIncr;
-  INT32 iStart, iXStart, iYStart;
-  INT32 iGridNo;
-  INT8 bDir;
-  INT32 iBestGridNo = NOWHERE;
-  UINT8 ubBestDirDiff = 5, ubBestStrength = 0;
-  UINT8 ubDirDiff, ubStrength;
-  UINT8 ubSoughtSmell;
+  int32_t iXDiff, iYDiff, iXIncr;
+  int32_t iStart, iXStart, iYStart;
+  int32_t iGridNo;
+  int8_t bDir;
+  int32_t iBestGridNo = NOWHERE;
+  uint8_t ubBestDirDiff = 5, ubBestStrength = 0;
+  uint8_t ubDirDiff, ubStrength;
+  uint8_t ubSoughtSmell;
   MAP_ELEMENT *pMapElement;
 
   iStart = pSoldier->sGridNo;
@@ -748,8 +748,8 @@ INT16 TrackScent(SOLDIERTYPE *pSoldier) {
             if (ubStrength > ubBestStrength) {
               iBestGridNo = iGridNo;
               ubBestStrength = ubStrength;
-              bDir = atan8((INT16)iXStart, (INT16)iYStart, (INT16)(iXStart + iXDiff),
-                           (INT16)(iYStart + iYDiff));
+              bDir = atan8((int16_t)iXStart, (int16_t)iYStart, (int16_t)(iXStart + iXDiff),
+                           (int16_t)(iYStart + iYDiff));
               // now convert it into a difference in degree between it and our
               // current dir
               ubBestDirDiff = abs(pSoldier->bDirection - bDir);
@@ -765,8 +765,8 @@ INT16 TrackScent(SOLDIERTYPE *pSoldier) {
               } else {
                 // use directions to decide between the two
                 // start by calculating direction to the new gridno
-                bDir = atan8((INT16)iXStart, (INT16)iYStart, (INT16)(iXStart + iXDiff),
-                             (INT16)(iYStart + iYDiff));
+                bDir = atan8((int16_t)iXStart, (int16_t)iYStart, (int16_t)(iXStart + iXDiff),
+                             (int16_t)(iYStart + iYDiff));
                 // now convert it into a difference in degree between it and our
                 // current dir
                 ubDirDiff = abs(pSoldier->bDirection - bDir);
@@ -791,8 +791,8 @@ INT16 TrackScent(SOLDIERTYPE *pSoldier) {
     // who else can track?
   }
   if (iBestGridNo != NOWHERE) {
-    pSoldier->usActionData = (INT16)iBestGridNo;
-    return ((INT16)iBestGridNo);
+    pSoldier->usActionData = (int16_t)iBestGridNo;
+    return ((int16_t)iBestGridNo);
   }
   return (0);
 }

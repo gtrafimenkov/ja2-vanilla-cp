@@ -4,9 +4,9 @@
 #include "JA2Types.h"
 
 void ResetBurstLocations();
-void AccumulateBurstLocation(INT16 sGridNo);
+void AccumulateBurstLocation(int16_t sGridNo);
 void PickBurstLocations(SOLDIERTYPE *pSoldier);
-void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTargets[5]);
+void AIPickBurstLocations(SOLDIERTYPE *pSoldier, int8_t bTargets, SOLDIERTYPE *pTargets[5]);
 
 void RenderAccumulatedBurstLocations();
 

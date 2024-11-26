@@ -21,7 +21,7 @@ char const g_version_number[16] = "Build 04.12.02";
 
 #define SAVE_GAME_VERSION 99
 
-const UINT32 guiSavedGameVersion = SAVE_GAME_VERSION;
+const uint32_t guiSavedGameVersion = SAVE_GAME_VERSION;
 
 #include "gtest/gtest.h"
 

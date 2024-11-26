@@ -13,11 +13,11 @@
 #define AMB_TOD_NIGHT 3
 
 struct AMBIENTDATA_STRUCT {
-  UINT32 uiMinTime;
-  UINT32 uiMaxTime;
-  UINT8 ubTimeCatagory;
+  uint32_t uiMinTime;
+  uint32_t uiMaxTime;
+  uint8_t ubTimeCatagory;
   SGPFILENAME zFilename;
-  UINT32 uiVol;
+  uint32_t uiVol;
 };
 
 #endif

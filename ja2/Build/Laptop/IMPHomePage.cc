@@ -27,12 +27,12 @@
 
 #include "SDL_keycode.h"
 
-const UINT32 GlowColorsList[] = {FROMRGB(0, 0, 0),   FROMRGB(0, 25, 0),  FROMRGB(0, 50, 0),
-                                 FROMRGB(0, 75, 0),  FROMRGB(0, 100, 0), FROMRGB(0, 125, 0),
-                                 FROMRGB(0, 150, 0), FROMRGB(0, 175, 0), FROMRGB(0, 200, 0),
-                                 FROMRGB(0, 225, 0), FROMRGB(0, 255, 0)};
+const uint32_t GlowColorsList[] = {FROMRGB(0, 0, 0),   FROMRGB(0, 25, 0),  FROMRGB(0, 50, 0),
+                                   FROMRGB(0, 75, 0),  FROMRGB(0, 100, 0), FROMRGB(0, 125, 0),
+                                   FROMRGB(0, 150, 0), FROMRGB(0, 175, 0), FROMRGB(0, 200, 0),
+                                   FROMRGB(0, 225, 0), FROMRGB(0, 255, 0)};
 
-static void BtnIMPAboutUsCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPAboutUsCallback(GUI_BUTTON *btn, int32_t reason);
 
 // position defines
 #define IMP_PLAYER_ACTIVATION_STRING_X LAPTOP_SCREEN_UL_X + 261
@@ -47,8 +47,8 @@ static BUTTON_PICS *giIMPHomePageButtonImage[1];
 wchar_t pPlayerActivationString[32];
 
 // position within player activation string
-INT32 iStringPos = 0;
-UINT16 uiCursorPosition = IMP_PLAYER_ACTIVATION_STRING_X;
+int32_t iStringPos = 0;
+uint16_t uiCursorPosition = IMP_PLAYER_ACTIVATION_STRING_X;
 
 // has a new char been added or deleted?
 BOOLEAN fNewCharInActivationString = FALSE;
@@ -143,9 +143,9 @@ static void DisplayPlayerActivationString() {
 static void DisplayActivationStringCursor() {
   // this procdure will draw the activation string cursor on the screen at
   // position cursorx cursory
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  static UINT32 iCurrentState = 0;
+  static uint32_t uiBaseTime = 0;
+  uint32_t uiDeltaTime = 0;
+  static uint32_t iCurrentState = 0;
   static BOOLEAN fIncrement = TRUE;
 
   if (uiBaseTime == 0) {
@@ -181,10 +181,10 @@ static void DisplayActivationStringCursor() {
     SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     // draw line in current state
     LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT,
-             Get16BPPColor(GlowColorsList[iCurrentState]), l.Buffer<UINT16>());
+             Get16BPPColor(GlowColorsList[iCurrentState]), l.Buffer<uint16_t>());
   }
 
-  InvalidateRegion((UINT16)uiCursorPosition, CURSOR_Y, (UINT16)uiCursorPosition + 1,
+  InvalidateRegion((uint16_t)uiCursorPosition, CURSOR_Y, (uint16_t)uiCursorPosition + 1,
                    CURSOR_Y + CURSOR_HEIGHT + 1);
 }
 
@@ -309,7 +309,7 @@ static void RemoveIMPHomePageButtons() {
   UnloadButtonImage(giIMPHomePageButtonImage[0]);
 }
 
-static void BtnIMPAboutUsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAboutUsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_ABOUT_US;
     fButtonPendingFlag = TRUE;

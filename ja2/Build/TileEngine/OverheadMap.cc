@@ -66,7 +66,7 @@ struct SMALL_TILE_SURF {
 
 struct SMALL_TILE_DB {
   HVOBJECT vo;
-  UINT16 usSubIndex;
+  uint16_t usSubIndex;
 };
 
 static SMALL_TILE_SURF gSmTileSurf[NUMBEROFTILETYPES];
@@ -79,9 +79,9 @@ static SGPVObject *uiOVERMAP;
 static SGPVObject *uiPERSONS;
 BOOLEAN gfOverheadMapDirty = FALSE;
 extern BOOLEAN gfRadarCurrentGuyFlash;
-static INT16 gsStartRestrictedX;
-static INT16 gsStartRestrictedY;
-static INT16 gsOveritemPoolGridNo = NOWHERE;
+static int16_t gsStartRestrictedX;
+static int16_t gsStartRestrictedY;
+static int16_t gsOveritemPoolGridNo = NOWHERE;
 
 static void CopyOverheadDBShadetablesFromTileset();
 
@@ -89,7 +89,7 @@ void InitNewOverheadDB(TileSetID const ubTilesetID) {
   if (gubSmTileNum == ubTilesetID) return;
   TrashOverheadMap();
 
-  for (UINT32 i = 0; i < NUMBEROFTILETYPES; ++i) {
+  for (uint32_t i = 0; i < NUMBEROFTILETYPES; ++i) {
     const char *filename = gTilesets[ubTilesetID].TileSurfaceFilenames[i];
     TileSetID use_tileset = ubTilesetID;
     if (filename[0] == '\0') {
@@ -112,14 +112,14 @@ void InitNewOverheadDB(TileSetID const ubTilesetID) {
   }
 
   // Create database
-  UINT32 dbSize = 0;
-  for (UINT32 i = 0; i < NUMBEROFTILETYPES; ++i) {
+  uint32_t dbSize = 0;
+  for (uint32_t i = 0; i < NUMBEROFTILETYPES; ++i) {
     SGPVObject *const vo = gSmTileSurf[i].vo;
 
     // Get number of regions and check for overflow
-    UINT32 const NumRegions = std::min(vo->SubregionCount(), gNumTilesPerType[i]);
+    uint32_t const NumRegions = std::min(vo->SubregionCount(), gNumTilesPerType[i]);
 
-    UINT32 k = 0;
+    uint32_t k = 0;
     for (; k < NumRegions; ++k) {
       gSmTileDB[dbSize].vo = vo;
       gSmTileDB[dbSize].usSubIndex = k;
@@ -139,10 +139,10 @@ void InitNewOverheadDB(TileSetID const ubTilesetID) {
 
   // Calculate Scale factors because of restricted map scroll regions
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    INT16 sX1;
-    INT16 sY1;
-    INT16 sX2;
-    INT16 sY2;
+    int16_t sX1;
+    int16_t sY1;
+    int16_t sX2;
+    int16_t sY2;
     CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &gsStartRestrictedY, SCREEN_WIDTH, 320);
     CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &gsStartRestrictedX, &sY2, SCREEN_WIDTH, 320);
   }
@@ -152,21 +152,21 @@ void InitNewOverheadDB(TileSetID const ubTilesetID) {
   gubSmTileNum = ubTilesetID;
 }
 
-static ITEM_POOL const *GetClosestItemPool(INT16 const sweet_gridno, UINT8 const radius,
-                                           INT8 const level) {
+static ITEM_POOL const *GetClosestItemPool(int16_t const sweet_gridno, uint8_t const radius,
+                                           int8_t const level) {
   ITEM_POOL const *closest_item_pool = 0;
-  INT32 lowest_range = 999999;
-  for (INT16 y = -radius; y <= radius; ++y) {
-    INT32 const leftmost = (sweet_gridno + WORLD_COLS * y) / WORLD_COLS * WORLD_COLS;
-    for (INT16 x = -radius; x <= radius; ++x) {
-      INT16 const gridno = sweet_gridno + WORLD_COLS * y + x;
+  int32_t lowest_range = 999999;
+  for (int16_t y = -radius; y <= radius; ++y) {
+    int32_t const leftmost = (sweet_gridno + WORLD_COLS * y) / WORLD_COLS * WORLD_COLS;
+    for (int16_t x = -radius; x <= radius; ++x) {
+      int16_t const gridno = sweet_gridno + WORLD_COLS * y + x;
       if (gridno < 0 || WORLD_MAX <= gridno) continue;
       if (gridno < leftmost || leftmost + WORLD_COLS <= gridno) continue;
 
       ITEM_POOL const *item_pool = GetItemPool(gridno, level);
       if (!item_pool) continue;
 
-      INT32 const range = GetRangeInCellCoordsFromGridNoDiff(sweet_gridno, gridno);
+      int32_t const range = GetRangeInCellCoordsFromGridNoDiff(sweet_gridno, gridno);
       if (lowest_range <= range) continue;
 
       lowest_range = range;
@@ -176,13 +176,13 @@ static ITEM_POOL const *GetClosestItemPool(INT16 const sweet_gridno, UINT8 const
   return closest_item_pool;
 }
 
-static SOLDIERTYPE *GetClosestMercInOverheadMap(INT16 const sweet_gridno, UINT8 const radius) {
+static SOLDIERTYPE *GetClosestMercInOverheadMap(int16_t const sweet_gridno, uint8_t const radius) {
   SOLDIERTYPE *res = 0;
-  INT32 lowest_range = 999999;
-  for (INT16 y = -radius; y <= radius; ++y) {
-    INT32 const leftmost = (sweet_gridno + WORLD_COLS * y) / WORLD_COLS * WORLD_COLS;
-    for (INT16 x = -radius; x <= radius; ++x) {
-      INT16 const gridno = sweet_gridno + WORLD_COLS * y + x;
+  int32_t lowest_range = 999999;
+  for (int16_t y = -radius; y <= radius; ++y) {
+    int32_t const leftmost = (sweet_gridno + WORLD_COLS * y) / WORLD_COLS * WORLD_COLS;
+    for (int16_t x = -radius; x <= radius; ++x) {
+      int16_t const gridno = sweet_gridno + WORLD_COLS * y + x;
       if (gridno < 0 || WORLD_MAX <= gridno) continue;
       if (gridno < leftmost || leftmost + WORLD_COLS <= gridno) continue;
 
@@ -192,7 +192,7 @@ static SOLDIERTYPE *GetClosestMercInOverheadMap(INT16 const sweet_gridno, UINT8 
       SOLDIERTYPE *const s = l->pSoldier;
       if (!l || s->bVisible == -1) continue;
 
-      INT32 const range = GetRangeInCellCoordsFromGridNoDiff(sweet_gridno, gridno);
+      int32_t const range = GetRangeInCellCoordsFromGridNoDiff(sweet_gridno, gridno);
       if (lowest_range <= range) continue;
 
       lowest_range = range;
@@ -202,13 +202,15 @@ static SOLDIERTYPE *GetClosestMercInOverheadMap(INT16 const sweet_gridno, UINT8 
   return res;
 }
 
-static INT16 GetOffsetLandHeight(INT32 const gridno) { return gpWorldLevelData[gridno].sHeight; }
+static int16_t GetOffsetLandHeight(int32_t const gridno) {
+  return gpWorldLevelData[gridno].sHeight;
+}
 
-static void GetOverheadScreenXYFromGridNo(INT16 const gridno, INT16 *const out_x,
-                                          INT16 *const out_y) {
+static void GetOverheadScreenXYFromGridNo(int16_t const gridno, int16_t *const out_x,
+                                          int16_t *const out_y) {
   GetAbsoluteScreenXYFromMapPos(gridno, out_x, out_y);
-  INT16 x = *out_x / 5;
-  INT16 y = *out_y / 5;
+  int16_t x = *out_x / 5;
+  int16_t y = *out_y / 5;
 
   x += gsStartRestrictedX + 5;
   y += gsStartRestrictedY + 5;
@@ -222,13 +224,13 @@ static void GetOverheadScreenXYFromGridNo(INT16 const gridno, INT16 *const out_x
 
 static void DisplayMercNameInOverhead(SOLDIERTYPE const &s) {
   // Get Screen position of guy
-  INT16 x;
-  INT16 y;
+  int16_t x;
+  int16_t y;
   GetOverheadScreenXYFromGridNo(s.sGridNo, &x, &y);
   y -= s.sHeightAdjustment / 5 + 13;
 
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
   SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
   FindFontCenterCoordinates(x, y, 1, 1, s.name, TINYFONT1, &sX, &sY);
   GDirtyPrint(sX, sY, s.name);
@@ -270,7 +272,7 @@ void HandleOverheadMap() {
   if (!gfEditMode && !gfTacticalPlacementGUIActive) {
     HandleAnyMercInSquadHasCompatibleStuff(NULL);
 
-    INT16 const usMapPos = GetOverheadMouseGridNo();
+    int16_t const usMapPos = GetOverheadMouseGridNo();
     if (usMapPos != NOWHERE) {
       const ITEM_POOL *pItemPool;
 
@@ -279,7 +281,7 @@ void HandleOverheadMap() {
       if (pItemPool != NULL) {
         const STRUCTURE *const structure =
             FindStructure(usMapPos, STRUCTURE_HASITEMONTOP | STRUCTURE_OPENABLE);
-        INT8 const bZLevel = GetZLevelOfItemPoolGivenStructure(usMapPos, 0, structure);
+        int8_t const bZLevel = GetZLevelOfItemPoolGivenStructure(usMapPos, 0, structure);
         if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
           DrawItemPoolList(pItemPool, bZLevel, gusMouseXPos, gusMouseYPos);
           gsOveritemPoolGridNo = GetWorldItem(pItemPool->iItemIndex).sGridNo;
@@ -288,7 +290,7 @@ void HandleOverheadMap() {
 
       pItemPool = GetClosestItemPool(usMapPos, 1, 1);
       if (pItemPool != NULL) {
-        const INT8 bZLevel = 0;
+        const int8_t bZLevel = 0;
         if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
           DrawItemPoolList(pItemPool, bZLevel, gusMouseXPos, gusMouseYPos - 5);
           gsOveritemPoolGridNo = GetWorldItem(pItemPool->iItemIndex).sGridNo;
@@ -304,7 +306,7 @@ void HandleOverheadMap() {
     if (sel != NULL) DisplayMercNameInOverhead(*sel);
 
     gSelectedGuy = NULL;
-    INT16 const usMapPos = GetOverheadMouseGridNoForFullSoldiersGridNo();
+    int16_t const usMapPos = GetOverheadMouseGridNoForFullSoldiersGridNo();
     if (usMapPos != NOWHERE) {
       SOLDIERTYPE *const s = GetClosestMercInOverheadMap(usMapPos, 1);
       if (s != NULL) {
@@ -324,7 +326,7 @@ void HandleOverheadMap() {
 
 BOOLEAN InOverheadMap() { return (gfInOverheadMap); }
 
-static void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason);
+static void ClickOverheadRegionCallback(MOUSE_REGION *reg, int32_t reason);
 
 void GoIntoOverheadMap() {
   gfInOverheadMap = TRUE;
@@ -401,15 +403,15 @@ void KillOverheadMap() {
   DisableTacticalTeamPanelButtons(FALSE);
 }
 
-static INT16 GetModifiedOffsetLandHeight(INT32 const gridno) {
-  INT16 const h = GetOffsetLandHeight(gridno);
-  INT16 const mod_h = (h / 80 - 1) * 80;
+static int16_t GetModifiedOffsetLandHeight(int32_t const gridno) {
+  int16_t const h = GetOffsetLandHeight(gridno);
+  int16_t const mod_h = (h / 80 - 1) * 80;
   return mod_h < 0 ? 0 : mod_h;
 }
 
-void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
-                       INT16 const sStartPointX_S, INT16 const sStartPointY_S, INT16 const sEndXS,
-                       INT16 const sEndYS, BOOLEAN const fFromMapUtility) {
+void RenderOverheadMap(int16_t const sStartPointX_M, int16_t const sStartPointY_M,
+                       int16_t const sStartPointX_S, int16_t const sStartPointY_S,
+                       int16_t const sEndXS, int16_t const sEndYS, BOOLEAN const fFromMapUtility) {
   if (!gfOverheadMapDirty) return;
 
   // Black out
@@ -420,30 +422,30 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
 
   {
     SGPVSurface::Lock l(FRAME_BUFFER);
-    UINT16 *const pDestBuf = l.Buffer<UINT16>();
-    UINT32 const uiDestPitchBYTES = l.Pitch();
+    uint16_t *const pDestBuf = l.Buffer<uint16_t>();
+    uint32_t const uiDestPitchBYTES = l.Pitch();
 
     {  // Begin Render Loop
-      INT16 sAnchorPosX_M = sStartPointX_M;
-      INT16 sAnchorPosY_M = sStartPointY_M;
-      INT16 sAnchorPosX_S = sStartPointX_S;
-      INT16 sAnchorPosY_S = sStartPointY_S;
+      int16_t sAnchorPosX_M = sStartPointX_M;
+      int16_t sAnchorPosY_M = sStartPointY_M;
+      int16_t sAnchorPosX_S = sStartPointX_S;
+      int16_t sAnchorPosY_S = sStartPointY_S;
       bool bXOddFlag = false;
       do {
-        INT16 sTempPosX_M = sAnchorPosX_M;
-        INT16 sTempPosY_M = sAnchorPosY_M;
-        INT16 sTempPosX_S = sAnchorPosX_S;
-        INT16 sTempPosY_S = sAnchorPosY_S;
+        int16_t sTempPosX_M = sAnchorPosX_M;
+        int16_t sTempPosY_M = sAnchorPosY_M;
+        int16_t sTempPosX_S = sAnchorPosX_S;
+        int16_t sTempPosY_S = sAnchorPosY_S;
         if (bXOddFlag) sTempPosX_S += 4;
         do {
-          UINT32 const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
+          uint32_t const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
           if (usTileIndex < GRIDSIZE) {
-            INT16 const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
+            int16_t const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
             for (LEVELNODE const *n = gpWorldLevelData[usTileIndex].pLandStart; n;
                  n = n->pPrevNode) {
               SMALL_TILE_DB const &pTile = gSmTileDB[n->usIndex];
-              INT16 const sX = sTempPosX_S;
-              INT16 const sY = sTempPosY_S - sHeight + gsRenderHeight / 5;
+              int16_t const sX = sTempPosX_S;
+              int16_t const sY = sTempPosY_S - sHeight + gsRenderHeight / 5;
               pTile.vo->CurrentShade(n->ubShadeLevel);
               Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY,
                                                   pTile.usSubIndex);
@@ -467,22 +469,22 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
     }
 
     {  // Begin Render Loop
-      INT16 sAnchorPosX_M = sStartPointX_M;
-      INT16 sAnchorPosY_M = sStartPointY_M;
-      INT16 sAnchorPosX_S = sStartPointX_S;
-      INT16 sAnchorPosY_S = sStartPointY_S;
+      int16_t sAnchorPosX_M = sStartPointX_M;
+      int16_t sAnchorPosY_M = sStartPointY_M;
+      int16_t sAnchorPosX_S = sStartPointX_S;
+      int16_t sAnchorPosY_S = sStartPointY_S;
       bool bXOddFlag = false;
       do {
-        INT16 sTempPosX_M = sAnchorPosX_M;
-        INT16 sTempPosY_M = sAnchorPosY_M;
-        INT16 sTempPosX_S = sAnchorPosX_S;
-        INT16 sTempPosY_S = sAnchorPosY_S;
+        int16_t sTempPosX_M = sAnchorPosX_M;
+        int16_t sTempPosY_M = sAnchorPosY_M;
+        int16_t sTempPosX_S = sAnchorPosX_S;
+        int16_t sTempPosY_S = sAnchorPosY_S;
         if (bXOddFlag) sTempPosX_S += 4;
         do {
-          UINT32 const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
+          uint32_t const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
           if (usTileIndex < GRIDSIZE) {
-            INT16 const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
-            INT16 const sModifiedHeight = GetModifiedOffsetLandHeight(usTileIndex) / 5;
+            int16_t const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
+            int16_t const sModifiedHeight = GetModifiedOffsetLandHeight(usTileIndex) / 5;
 
             for (LEVELNODE const *n = gpWorldLevelData[usTileIndex].pObjectHead; n; n = n->pNext) {
               if (n->usIndex >= NUMBEROFTILES) continue;
@@ -490,8 +492,8 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
               if (n->uiFlags & LEVELNODE_ITEM) continue;
 
               SMALL_TILE_DB const &pTile = gSmTileDB[n->usIndex];
-              INT16 const sX = sTempPosX_S;
-              INT16 sY = sTempPosY_S;
+              int16_t const sX = sTempPosX_S;
+              int16_t sY = sTempPosY_S;
 
               if (gTileDatabase[n->usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                 sY -= sModifiedHeight;
@@ -510,8 +512,8 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
               if (n->usIndex >= NUMBEROFTILES) continue;
 
               SMALL_TILE_DB const &pTile = gSmTileDB[n->usIndex];
-              INT16 const sX = sTempPosX_S;
-              INT16 sY = sTempPosY_S - sHeight;
+              int16_t const sX = sTempPosX_S;
+              int16_t sY = sTempPosY_S - sHeight;
 
               sY += gsRenderHeight / 5;
 
@@ -526,8 +528,8 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
               if (n->uiFlags & LEVELNODE_ITEM) continue;
 
               SMALL_TILE_DB const &pTile = gSmTileDB[n->usIndex];
-              INT16 const sX = sTempPosX_S;
-              INT16 sY = sTempPosY_S;
+              int16_t const sX = sTempPosX_S;
+              int16_t sY = sTempPosY_S;
 
               if (gTileDatabase[n->usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                 sY -= sModifiedHeight;
@@ -561,29 +563,29 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
 
     {  // ROOF RENDR LOOP
       // Begin Render Loop
-      INT16 sAnchorPosX_M = sStartPointX_M;
-      INT16 sAnchorPosY_M = sStartPointY_M;
-      INT16 sAnchorPosX_S = sStartPointX_S;
-      INT16 sAnchorPosY_S = sStartPointY_S;
+      int16_t sAnchorPosX_M = sStartPointX_M;
+      int16_t sAnchorPosY_M = sStartPointY_M;
+      int16_t sAnchorPosX_S = sStartPointX_S;
+      int16_t sAnchorPosY_S = sStartPointY_S;
       bool bXOddFlag = false;
       do {
-        INT16 sTempPosX_M = sAnchorPosX_M;
-        INT16 sTempPosY_M = sAnchorPosY_M;
-        INT16 sTempPosX_S = sAnchorPosX_S;
-        INT16 sTempPosY_S = sAnchorPosY_S;
+        int16_t sTempPosX_M = sAnchorPosX_M;
+        int16_t sTempPosY_M = sAnchorPosY_M;
+        int16_t sTempPosX_S = sAnchorPosX_S;
+        int16_t sTempPosY_S = sAnchorPosY_S;
         if (bXOddFlag) sTempPosX_S += 4;
         do {
-          UINT32 const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
+          uint32_t const usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
           if (usTileIndex < GRIDSIZE) {
-            INT16 const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
+            int16_t const sHeight = GetOffsetLandHeight(usTileIndex) / 5;
 
             for (LEVELNODE const *n = gpWorldLevelData[usTileIndex].pRoofHead; n; n = n->pNext) {
               if (n->usIndex >= NUMBEROFTILES) continue;
               if (n->uiFlags & LEVELNODE_HIDDEN) continue;
 
               SMALL_TILE_DB const &pTile = gSmTileDB[n->usIndex];
-              INT16 const sX = sTempPosX_S;
-              INT16 sY = sTempPosY_S - sHeight;
+              int16_t const sX = sTempPosX_S;
+              int16_t sY = sTempPosY_S - sHeight;
 
               sY -= WALL_HEIGHT / 5;
               sY += gsRenderHeight / 5;
@@ -615,11 +617,11 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
 
   // OK, blacken out edges of smaller maps...
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    UINT16 const black = Get16BPPColor(FROMRGB(0, 0, 0));
-    INT16 sX1;
-    INT16 sX2;
-    INT16 sY1;
-    INT16 sY2;
+    uint16_t const black = Get16BPPColor(FROMRGB(0, 0, 0));
+    int16_t sX1;
+    int16_t sX2;
+    int16_t sY1;
+    int16_t sY2;
 
     CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &sY2, sEndXS, sEndYS);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, black);
@@ -644,16 +646,16 @@ void RenderOverheadMap(INT16 const sStartPointX_M, INT16 const sStartPointY_M,
 
 static void RenderOverheadOverlays() {
   SGPVSurface::Lock l(FRAME_BUFFER);
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
-  UINT32 const uiDestPitchBYTES = l.Pitch();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
+  uint32_t const uiDestPitchBYTES = l.Pitch();
 
   // Soldier overlay
   SGPVObject *const marker = uiPERSONS;
   SOLDIERTYPE const *const sel =
       gfTacticalPlacementGUIActive || !gfRadarCurrentGuyFlash ? 0 : GetSelectedMan();
-  UINT16 const end =
+  uint16_t const end =
       gfTacticalPlacementGUIActive ? gTacticalStatus.Team[OUR_TEAM].bLastID : MAX_NUM_SOLDIERS;
-  for (UINT32 i = 0; i < end; ++i) {
+  for (uint32_t i = 0; i < end; ++i) {
     SOLDIERTYPE const &s = GetMan(i);
     if (!s.bActive || !s.bInSector) continue;
 
@@ -666,8 +668,8 @@ static void RenderOverheadOverlays() {
 
     // Soldier is here.  Calculate his screen position based on his current
     // gridno.
-    INT16 sX;
-    INT16 sY;
+    int16_t sX;
+    int16_t sY;
     GetOverheadScreenXYFromGridNo(s.sGridNo, &sX, &sY);
     // Now, draw his "doll"
 
@@ -677,22 +679,22 @@ static void RenderOverheadOverlays() {
 
     sY -= s.sHeightAdjustment / 5;  // Adjust for height
 
-    UINT32 const shade = &s == sel             ? 2
-                         : s.sHeightAdjustment ? 1
-                                               :  // On roof
-                             0;
+    uint32_t const shade = &s == sel             ? 2
+                           : s.sHeightAdjustment ? 1
+                                                 :  // On roof
+                               0;
     marker->CurrentShade(shade);
 
     if (gfEditMode && GameState::getInstance()->isEditorMode() && gpSelected &&
         gpSelected->pSoldier == &s) {  // editor:  show the selected edited merc as the yellow one.
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, marker, sX, sY, 0);
     } else {
-      UINT16 const region = !gfTacticalPlacementGUIActive              ? s.bTeam
-                            : s.uiStatusFlags & SOLDIER_VEHICLE        ? 9
-                            : &s == gpTacticalPlacementSelectedSoldier ? 7
-                            : &s == gpTacticalPlacementHilightedSoldier && s.uiStatusFlags
-                                ? 8
-                                : s.bTeam;
+      uint16_t const region = !gfTacticalPlacementGUIActive              ? s.bTeam
+                              : s.uiStatusFlags & SOLDIER_VEHICLE        ? 9
+                              : &s == gpTacticalPlacementSelectedSoldier ? 7
+                              : &s == gpTacticalPlacementHilightedSoldier && s.uiStatusFlags
+                                  ? 8
+                                  : s.bTeam;
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, marker, sX, sY, region);
       ETRLEObject const &e = marker->SubregionProperties(region);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, sX + e.sOffsetX, sY + e.sOffsetY, e.usWidth,
@@ -707,14 +709,14 @@ static void RenderOverheadOverlays() {
         continue;
       }
 
-      INT16 sX;
-      INT16 sY;
+      int16_t sX;
+      int16_t sY;
       GetOverheadScreenXYFromGridNo(wi->sGridNo, &sX, &sY);
 
       // adjust for position.
       sY += 6;
 
-      UINT32 col;
+      uint32_t col;
       if (gsOveritemPoolGridNo == wi->sGridNo) {
         col = FROMRGB(255, 0, 0);
       } else if (gfRadarCurrentGuyFlash) {
@@ -745,8 +747,8 @@ static void RenderOverheadOverlays() {
   }
 }
 
-static void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
-  INT16 sWorldScreenX, sWorldScreenY;
+static void ClickOverheadRegionCallback(MOUSE_REGION *reg, int32_t reason) {
+  int16_t sWorldScreenX, sWorldScreenY;
 
   if (gfTacticalPlacementGUIActive) {
     HandleTacticalPlacementClicksInOverheadMap(reason);
@@ -759,8 +761,8 @@ static void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
 
     // Get new proposed center location.
     const GridNo pos = GetMapPosFromAbsoluteScreenXY(sWorldScreenX, sWorldScreenY);
-    INT16 cell_x;
-    INT16 cell_y;
+    int16_t cell_x;
+    int16_t cell_y;
     ConvertGridNoToCenterCellXY(pos, &cell_x, &cell_y);
 
     SetRenderCenter(cell_x, cell_y);
@@ -771,12 +773,12 @@ static void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static GridNo InternalGetOverheadMouseGridNo(const INT dy) {
+static GridNo InternalGetOverheadMouseGridNo(const int32_t dy) {
   if (!(OverheadRegion.uiFlags & MSYS_MOUSE_IN_AREA)) return NOWHERE;
 
   // ATE: Adjust alogrithm values a tad to reflect map positioning
-  INT16 const sWorldScreenX = (gusMouseXPos - gsStartRestrictedX - 5) * 5;
-  INT16 sWorldScreenY = (gusMouseYPos - gsStartRestrictedY + dy) * 5;
+  int16_t const sWorldScreenX = (gusMouseXPos - gsStartRestrictedX - 5) * 5;
+  int16_t sWorldScreenY = (gusMouseYPos - gsStartRestrictedY + dy) * 5;
 
   // Get new proposed center location.
   const GridNo grid_no = GetMapPosFromAbsoluteScreenXY(sWorldScreenX, sWorldScreenY);
@@ -794,8 +796,8 @@ static GridNo GetOverheadMouseGridNoForFullSoldiersGridNo() {
   return InternalGetOverheadMouseGridNo(0);
 }
 
-void CalculateRestrictedMapCoords(INT8 bDirection, INT16 *psX1, INT16 *psY1, INT16 *psX2,
-                                  INT16 *psY2, INT16 sEndXS, INT16 sEndYS) {
+void CalculateRestrictedMapCoords(int8_t bDirection, int16_t *psX1, int16_t *psY1, int16_t *psX2,
+                                  int16_t *psY2, int16_t sEndXS, int16_t sEndYS) {
   switch (bDirection) {
     case NORTH:
 

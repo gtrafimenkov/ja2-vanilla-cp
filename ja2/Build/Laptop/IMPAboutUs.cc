@@ -15,7 +15,7 @@
 static GUIButtonRef giIMPAboutUsButton[1];
 static BUTTON_PICS *giIMPAboutUsButtonImage[1];
 
-static void BtnIMPBackCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPBackCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPAboutUsButtons();
 
@@ -75,7 +75,7 @@ static void DeleteIMPAboutUsButtons() {
   UnloadButtonImage(giIMPAboutUsButtonImage[0]);
 }
 
-static void BtnIMPBackCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPBackCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_HOME_PAGE;
   }

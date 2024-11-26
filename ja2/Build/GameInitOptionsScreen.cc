@@ -124,43 +124,43 @@ static BOOLEAN gfGIOScreenExit = FALSE;
 static BOOLEAN gfReRenderGIOScreen = TRUE;
 static BOOLEAN gfGIOButtonsAllocated = FALSE;
 
-static UINT8 gubGameOptionScreenHandler = GIO_NOTHING;
+static uint8_t gubGameOptionScreenHandler = GIO_NOTHING;
 
 static ScreenID gubGIOExitScreen = GAME_INIT_OPTIONS_SCREEN;
 
 static SGPVObject *guiGIOMainBackGroundImage;
 
 // Done Button
-static void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGIODoneCallback(GUI_BUTTON *btn, int32_t reason);
 static GUIButtonRef guiGIODoneButton;
 static BUTTON_PICS *giGIODoneBtnImage;
 
 // Cancel Button
-static void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGIOCancelCallback(GUI_BUTTON *btn, int32_t reason);
 static GUIButtonRef guiGIOCancelButton;
 static BUTTON_PICS *giGIOCancelBtnImage;
 
 // checkbox to toggle the Diff level
 static GUIButtonRef guiDifficultySettingsToggles[NUM_DIFF_SETTINGS];
-static void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 
 // checkbox to toggle Game style
 static GUIButtonRef guiGameStyleToggles[NUM_GAME_STYLES];
-static void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 
 // checkbox to toggle Gun options
 static GUIButtonRef guiGunOptionToggles[NUM_GUN_OPTIONS];
-static void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 
 #if 0  // JA2Gold: no more timed turns setting
 //checkbox to toggle Timed turn option on or off
-static UINT32 guiTimedTurnToggles[GIO_NUM_TIMED_TURN_OPTIONS];
-static void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static uint32_t guiTimedTurnToggles[GIO_NUM_TIMED_TURN_OPTIONS];
+static void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 #endif
 
 // checkbox to toggle Save style
 static GUIButtonRef guiGameSaveToggles[NUM_SAVE_OPTIONS];
-static void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void EnterGIOScreen();
 static void ExitGIOScreen();
@@ -222,7 +222,7 @@ ScreenID GameInitOptionsScreenHandle() {
   return gubGIOExitScreen;
 }
 
-static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
+static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const int16_t x,
                                const GUI_CALLBACK click) {
   GUIButtonRef const btn = CreateIconAndTextButton(
       img, text, OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR,
@@ -231,9 +231,9 @@ static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text
   return btn;
 }
 
-static void MakeCheckBoxes(GUIButtonRef *const btns, size_t const n, INT16 const x, INT16 y,
+static void MakeCheckBoxes(GUIButtonRef *const btns, size_t const n, int16_t const x, int16_t y,
                            GUI_CALLBACK const click, size_t const def) {
-  for (INT32 i = 0; i != n; y += GIO_GAP_BN_SETTINGS, ++i) {
+  for (int32_t i = 0; i != n; y += GIO_GAP_BN_SETTINGS, ++i) {
     GUIButtonRef const b = CreateCheckBoxButton(x, y, INTERFACEDIR "/optionscheck.sti",
                                                 MSYS_PRIORITY_HIGH + 10, click);
     btns[i] = b;
@@ -261,8 +261,8 @@ static void EnterGIOScreen() {
                                   GIO_CANCEL_X, BtnGIOCancelCallback);
 
   {  // Check box to toggle difficulty settings
-    INT16 const x = GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
-    INT16 const y = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
+    int16_t const x = GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
+    int16_t const y = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
     size_t def;
     switch (gGameOptions.ubDifficultyLevel) {
       case DIF_LEVEL_EASY:
@@ -281,24 +281,24 @@ static void EnterGIOScreen() {
   }
 
   {  // Check box to toggle game settings (realistic, sci fi)
-    INT16 const x = GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
-    INT16 const y = GIO_GAME_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
+    int16_t const x = GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
+    int16_t const y = GIO_GAME_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
     size_t const def = gGameOptions.fSciFi ? GIO_SCI_FI : GIO_REALISTIC;
     MakeCheckBoxes(guiGameStyleToggles, lengthof(guiGameStyleToggles), x, y,
                    BtnGameStyleTogglesCallback, def);
   }
 
   {  // JA2Gold: iron man buttons
-    INT16 const x = GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX;
-    INT16 const y = GIO_IRON_MAN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
+    int16_t const x = GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX;
+    int16_t const y = GIO_IRON_MAN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
     size_t const def = gGameOptions.fIronManMode ? GIO_IRON_MAN : GIO_CAN_SAVE;
     MakeCheckBoxes(guiGameSaveToggles, lengthof(guiGameSaveToggles), x, y,
                    BtnGameSaveTogglesCallback, def);
   }
 
   {  // Check box to toggle Gun options
-    INT16 const x = GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
-    INT16 const y = GIO_GUN_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
+    int16_t const x = GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX;
+    int16_t const y = GIO_GUN_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
     size_t const def = gGameOptions.fGunNut ? GIO_GUN_NUT : GIO_REDUCED_GUNS;
     MakeCheckBoxes(guiGunOptionToggles, lengthof(guiGunOptionToggles), x, y,
                    BtnGunOptionsTogglesCallback, def);
@@ -306,8 +306,8 @@ static void EnterGIOScreen() {
 
 #if 0  // JA2 Gold: no more timed turns
 	{ // Check box to toggle the timed turn option
-		INT16  const x   = GIO_TIMED_TURN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX;
-		INT16  const y   = GIO_TIMED_TURN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
+		int16_t  const x   = GIO_TIMED_TURN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX;
+		int16_t  const y   = GIO_TIMED_TURN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
 		size_t const def = gGameOptions.fGunNut ? GIO_TIMED_TURNS : GIO_NO_TIMED_TURNS;
 		MakeCheckBoxes(guiTimedTurnToggles, lengthof(guiTimedTurnToggles), x, y, BtnTimedTurnsTogglesCallback, def);
 	}
@@ -396,7 +396,7 @@ static void HandleGIOScreen() {
 }
 
 static void RenderGIOScreen() {
-  UINT16 usPosY;
+  uint16_t usPosY;
 
   BltVideoObject(FRAME_BUFFER, guiGIOMainBackGroundImage, 0, 0, 0);
 
@@ -524,32 +524,32 @@ static inline void SelectCheckbox(T &array, GUI_BUTTON const &sel) {
   SelectCheckbox(array, endof(array), sel);
 }
 
-static void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectCheckbox(guiDifficultySettingsToggles, *btn);
   }
 }
 
-static void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectCheckbox(guiGameStyleToggles, *btn);
   }
 }
 
-static void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectCheckbox(guiGameSaveToggles, *btn);
   }
 }
 
-static void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectCheckbox(guiGunOptionToggles, *btn);
   }
 }
 
 #if 0  // JA2Gold: no more timed turns setting
-static void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn, INT32 reason)
+static void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn, int32_t reason)
 {
 	if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
 	{
@@ -558,7 +558,7 @@ static void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn, INT32 reason)
 }
 #endif
 
-static void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGIODoneCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if the user doesnt have IRON MAN mode selected
     if (!DisplayMessageToUserAboutIronManMode()) {
@@ -568,14 +568,14 @@ static void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGIOCancelCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubGameOptionScreenHandler = GIO_CANCEL;
   }
 }
 
-static UINT8 GetCurrentDifficultyButtonSetting() {
-  UINT8 cnt;
+static uint8_t GetCurrentDifficultyButtonSetting() {
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
     if (guiDifficultySettingsToggles[cnt]->Clicked()) return cnt;
@@ -583,8 +583,8 @@ static UINT8 GetCurrentDifficultyButtonSetting() {
   return 0;
 }
 
-static UINT8 GetCurrentGameStyleButtonSetting() {
-  UINT8 cnt;
+static uint8_t GetCurrentGameStyleButtonSetting() {
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
     if (guiGameStyleToggles[cnt]->Clicked()) return cnt;
@@ -592,8 +592,8 @@ static UINT8 GetCurrentGameStyleButtonSetting() {
   return 0;
 }
 
-static UINT8 GetCurrentGunButtonSetting() {
-  UINT8 cnt;
+static uint8_t GetCurrentGunButtonSetting() {
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
     if (guiGunOptionToggles[cnt]->Clicked()) return cnt;
@@ -602,9 +602,9 @@ static UINT8 GetCurrentGunButtonSetting() {
 }
 
 #if 0  // JA2 Gold: no timed turns
-static UINT8 GetCurrentTimedTurnsButtonSetting()
+static uint8_t GetCurrentTimedTurnsButtonSetting()
 {
-	UINT8	cnt;
+	uint8_t	cnt;
 
 	for (cnt = 0; cnt < GIO_NUM_TIMED_TURN_OPTIONS; cnt++)
 	{
@@ -614,8 +614,8 @@ static UINT8 GetCurrentTimedTurnsButtonSetting()
 }
 #endif
 
-static UINT8 GetCurrentGameSaveButtonSetting() {
-  UINT8 cnt;
+static uint8_t GetCurrentGameSaveButtonSetting() {
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
     if (guiGameSaveToggles[cnt]->Clicked()) return cnt;
@@ -624,8 +624,8 @@ static UINT8 GetCurrentGameSaveButtonSetting() {
 }
 
 static void RestoreGIOButtonBackGrounds() {
-  UINT8 cnt;
-  UINT16 usPosY;
+  uint8_t cnt;
+  uint16_t usPosY;
 
   // Check box to toggle Difficulty settings
   usPosY = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
@@ -718,7 +718,7 @@ static void ConfirmGioDifSettingMessageBoxCallBack(MessageBoxReturnValue const b
 }
 
 static BOOLEAN DisplayMessageToUserAboutIronManMode() {
-  UINT8 ubIronManMode = GetCurrentGameSaveButtonSetting();
+  uint8_t ubIronManMode = GetCurrentGameSaveButtonSetting();
 
   // if the user has selected IRON MAN mode
   if (ubIronManMode) {

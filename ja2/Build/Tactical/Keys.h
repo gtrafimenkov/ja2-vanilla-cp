@@ -6,8 +6,8 @@
 #include "Tactical/ItemTypes.h"
 
 struct KEY {
-  UINT16 usSectorFound;  // where and
-  UINT16 usDateFound;    // when the key was found
+  uint16_t usSectorFound;  // where and
+  uint16_t usDateFound;    // when the key was found
 };
 
 #define KEY_USED 0x01
@@ -23,12 +23,12 @@ struct KEY {
 
 #define MAXLOCKDESCLENGTH 40
 struct LOCK {
-  UINT8 ubEditorName[MAXLOCKDESCLENGTH];  // name to display in editor
-  UINT16 usKeyItem;                       // key for this door uses which graphic (item #)?
-  UINT8 ubLockType;                       // regular, padlock, electronic, etc
-  UINT8 ubPickDifficulty;                 // difficulty to pick such a lock
-  UINT8 ubSmashDifficulty;                // difficulty to smash such a lock
-  UINT8 ubFiller;                         // XXX HACK000B
+  uint8_t ubEditorName[MAXLOCKDESCLENGTH];  // name to display in editor
+  uint16_t usKeyItem;                       // key for this door uses which graphic (item #)?
+  uint8_t ubLockType;                       // regular, padlock, electronic, etc
+  uint8_t ubPickDifficulty;                 // difficulty to pick such a lock
+  uint8_t ubSmashDifficulty;                // difficulty to smash such a lock
+  uint8_t ubFiller;                         // XXX HACK000B
 };
 
 // Defines below for the perceived value of the door
@@ -41,18 +41,18 @@ struct LOCK {
 #define DOOR_PERCEIVED_UNTRAPPED 2
 
 struct DOOR {
-  INT16 sGridNo;
-  BOOLEAN fLocked;         // is the door locked
-  UINT8 ubTrapLevel;       // difficulty of finding the trap, 0-10
-  UINT8 ubTrapID;          // the trap type (0 is no trap)
-  UINT8 ubLockID;          // the lock (0 is no lock)
-  INT8 bPerceivedLocked;   // The perceived lock value can be different than the
-                           // fLocked. Values for this include the fact that we
-                           // don't know the status of the door, etc
-  INT8 bPerceivedTrapped;  // See above, but with respect to traps rather than
-                           // locked status
-  INT8 bLockDamage;        // Damage to the lock
-  INT8 bPadding[4];        // extra bytes // XXX HACK000B
+  int16_t sGridNo;
+  BOOLEAN fLocked;           // is the door locked
+  uint8_t ubTrapLevel;       // difficulty of finding the trap, 0-10
+  uint8_t ubTrapID;          // the trap type (0 is no trap)
+  uint8_t ubLockID;          // the lock (0 is no lock)
+  int8_t bPerceivedLocked;   // The perceived lock value can be different than the
+                             // fLocked. Values for this include the fact that we
+                             // don't know the status of the door, etc
+  int8_t bPerceivedTrapped;  // See above, but with respect to traps rather than
+                             // locked status
+  int8_t bLockDamage;        // Damage to the lock
+  int8_t bPadding[4];        // extra bytes // XXX HACK000B
 };
 
 enum DoorTrapTypes {
@@ -71,7 +71,7 @@ enum DoorTrapTypes {
 #define DOOR_TRAP_SILENT 0x04
 
 struct DOORTRAP {
-  UINT8 fFlags;  // stops action?  recurring trap?
+  uint8_t fFlags;  // stops action?  recurring trap?
 };
 
 // The status of the door, either open or closed
@@ -84,8 +84,8 @@ struct DOORTRAP {
 #define DONTSETDOORSTATUS 2
 
 struct DOOR_STATUS {
-  INT16 sGridNo;
-  UINT8 ubFlags;
+  int16_t sGridNo;
+  uint8_t ubFlags;
 };
 
 // This is the number of different types of doors we can have
@@ -103,11 +103,11 @@ extern KEY KeyTable[NUM_KEYS];
 extern LOCK LockTable[NUM_LOCKS];
 extern DOORTRAP const DoorTrapTable[NUM_DOOR_TRAPS];
 
-extern BOOLEAN AddKeysToKeyRing(SOLDIERTYPE *pSoldier, UINT8 ubKeyID, UINT8 ubNumber);
-extern BOOLEAN RemoveKeyFromKeyRing(SOLDIERTYPE *pSoldier, UINT8 ubPos, OBJECTTYPE *pObj);
-extern BOOLEAN RemoveAllOfKeyFromKeyRing(SOLDIERTYPE *pSoldier, UINT8 ubPos, OBJECTTYPE *pObj);
-bool KeyExistsInKeyRing(SOLDIERTYPE const &, UINT8 key_id);
-bool SoldierHasKey(SOLDIERTYPE const &, UINT8 key_id);
+extern BOOLEAN AddKeysToKeyRing(SOLDIERTYPE *pSoldier, uint8_t ubKeyID, uint8_t ubNumber);
+extern BOOLEAN RemoveKeyFromKeyRing(SOLDIERTYPE *pSoldier, uint8_t ubPos, OBJECTTYPE *pObj);
+extern BOOLEAN RemoveAllOfKeyFromKeyRing(SOLDIERTYPE *pSoldier, uint8_t ubPos, OBJECTTYPE *pObj);
+bool KeyExistsInKeyRing(SOLDIERTYPE const &, uint8_t key_id);
+bool SoldierHasKey(SOLDIERTYPE const &, uint8_t key_id);
 
 /**********************************
  * Door utils add by Kris Morness *
@@ -120,7 +120,7 @@ bool SoldierHasKey(SOLDIERTYPE const &, UINT8 key_id);
 extern DOOR *DoorTable;
 
 // Current number of doors in world.
-extern UINT8 gubNumDoors;
+extern uint8_t gubNumDoors;
 // File I/O for loading the door information from the map.  This automatically
 // allocates the exact number of slots when loading.
 
@@ -141,9 +141,9 @@ extern void AddDoorInfoToTable(DOOR *pDoor);
 // When the editor removes a door from the world, this function looks for and
 // removes accompanying door information.  If the entry is not the last entry,
 // the last entry is move to it's current slot, to keep everything contiguous.
-extern void RemoveDoorInfoFromTable(INT32 iMapIndex);
+extern void RemoveDoorInfoFromTable(int32_t iMapIndex);
 // This is the link to see if a door exists at a gridno.
-DOOR *FindDoorInfoAtGridNo(INT32 iMapIndex);
+DOOR *FindDoorInfoAtGridNo(int32_t iMapIndex);
 // Upon world deallocation, the door table needs to be deallocated.
 void TrashDoorTable();
 
@@ -163,7 +163,7 @@ void HandleDoorTrap(SOLDIERTYPE &, DOOR const &);
 void UpdateDoorPerceivedValue(DOOR *pDoor);
 
 // Saves the Door Table array to the temp file
-void SaveDoorTableToDoorTableTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void SaveDoorTableToDoorTableTempFile(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 // Load the door table from the temp file
 void LoadDoorTableFromDoorTableTempFile();
@@ -178,7 +178,7 @@ bool ModifyDoorStatus(GridNo, BOOLEAN is_open, BOOLEAN perceived_open);
 void TrashDoorStatusArray();
 
 // Saves the Door Status array to the MapTempfile
-void SaveDoorStatusArrayToDoorStatusTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void SaveDoorStatusArrayToDoorStatusTempFile(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 // Load the door status from the door status temp file
 void LoadDoorStatusArrayFromDoorStatusTempFile();
@@ -190,7 +190,7 @@ void SaveKeyTableToSaveGameFile(HWFILE);
 void LoadKeyTableFromSaveedGameFile(HWFILE);
 
 // Returns a doors status value, NULL if not found
-DOOR_STATUS *GetDoorStatus(INT16 sGridNo);
+DOOR_STATUS *GetDoorStatus(int16_t sGridNo);
 
 bool AllMercsLookForDoor(GridNo);
 
@@ -204,9 +204,9 @@ void LoadLockTable();
 
 void ExamineDoorsOnEnteringSector();
 
-void AttachStringToDoor(INT16 sGridNo);
+void AttachStringToDoor(int16_t sGridNo);
 
-void DropKeysInKeyRing(SOLDIERTYPE &, GridNo, INT8 level, Visibility, bool add_to_drop_list,
-                       INT32 drop_list_slot, bool use_unloaded);
+void DropKeysInKeyRing(SOLDIERTYPE &, GridNo, int8_t level, Visibility, bool add_to_drop_list,
+                       int32_t drop_list_slot, bool use_unloaded);
 
 #endif

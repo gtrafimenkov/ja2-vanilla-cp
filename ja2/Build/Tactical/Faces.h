@@ -35,8 +35,8 @@
 #define FACE_NO_TEXT_OVER 0
 
 struct AUDIO_GAP {
-  UINT32 start;
-  UINT32 end;
+  uint32_t start;
+  uint32_t end;
 };
 
 /* This is a structure that will contain data about the gaps in a particular
@@ -47,7 +47,7 @@ struct AudioGapList {
 };
 
 struct FACETYPE {
-  UINT32 uiFlags;             // Basic flags
+  uint32_t uiFlags;           // Basic flags
   BOOLEAN fAllocated;         // Allocated or not
   BOOLEAN fTalking;           // Set to true if face is talking ( can be sitting for user
                               // input to esc )
@@ -56,25 +56,25 @@ struct FACETYPE {
   BOOLEAN fValidSpeech;
   BOOLEAN fInvalidAnim;
 
-  UINT32 uiTalkingDuration;                // A delay based on text length for how long to talk
-                                           // if no speech
-  UINT32 uiTalkingTimer;                   // A timer to handle delay when no speech file
-  UINT32 uiTalkingFromVeryBeginningTimer;  // Timer from very beginning of
-                                           // talking...
+  uint32_t uiTalkingDuration;                // A delay based on text length for how long to talk
+                                             // if no speech
+  uint32_t uiTalkingTimer;                   // A timer to handle delay when no speech file
+  uint32_t uiTalkingFromVeryBeginningTimer;  // Timer from very beginning of
+                                             // talking...
 
   BOOLEAN
   fFinishTalking;  // A flag to indicate we want to delay after speech done
 
   VIDEO_OVERLAY *video_overlay;  // Value for video overlay ( not used too much )
 
-  UINT32 uiSoundID;      // Sound ID if one being played
-  SOLDIERTYPE *soldier;  // Soldier if one specified
-  UINT8 ubCharacterNum;  // Profile ID num
+  uint32_t uiSoundID;      // Sound ID if one being played
+  SOLDIERTYPE *soldier;    // Soldier if one specified
+  uint8_t ubCharacterNum;  // Profile ID num
 
-  UINT16 usFaceX;  // X location to render face
-  UINT16 usFaceY;  // Y location to render face
-  UINT16 usFaceWidth;
-  UINT16 usFaceHeight;
+  uint16_t usFaceX;  // X location to render face
+  uint16_t usFaceY;  // Y location to render face
+  uint16_t usFaceWidth;
+  uint16_t usFaceHeight;
   SGPVSurface *uiAutoDisplayBuffer;  // Display buffer for face
   SGPVSurface *uiAutoRestoreBuffer;  // Restore buffer
   BOOLEAN fAutoRestoreBuffer;        // Flag to indicate our own restorebuffer or not
@@ -83,49 +83,49 @@ struct FACETYPE {
   BOOLEAN fCanHandleInactiveNow;
   wchar_t zDisplayText[30];  // String of text that can be displayed
 
-  UINT16 usEyesX;
-  UINT16 usEyesY;
-  UINT16 usEyesOffsetX;
-  UINT16 usEyesOffsetY;
+  uint16_t usEyesX;
+  uint16_t usEyesY;
+  uint16_t usEyesOffsetX;
+  uint16_t usEyesOffsetY;
 
-  UINT16 usEyesWidth;
-  UINT16 usEyesHeight;
+  uint16_t usEyesWidth;
+  uint16_t usEyesHeight;
 
-  UINT16 usMouthX;
-  UINT16 usMouthY;
-  UINT16 usMouthOffsetX;
-  UINT16 usMouthOffsetY;
-  UINT16 usMouthWidth;
-  UINT16 usMouthHeight;
+  uint16_t usMouthX;
+  uint16_t usMouthY;
+  uint16_t usMouthOffsetX;
+  uint16_t usMouthOffsetY;
+  uint16_t usMouthWidth;
+  uint16_t usMouthHeight;
 
-  UINT16 sEyeFrame;
-  INT8 ubEyeWait;
-  UINT32 uiEyelast;
-  UINT32 uiEyeDelay;
-  UINT32 uiBlinkFrequency;
-  UINT32 uiExpressionFrequency;
+  uint16_t sEyeFrame;
+  int8_t ubEyeWait;
+  uint32_t uiEyelast;
+  uint32_t uiEyeDelay;
+  uint32_t uiBlinkFrequency;
+  uint32_t uiExpressionFrequency;
 
-  UINT8 ubExpression;
+  uint8_t ubExpression;
 
-  INT8 bOldSoldierLife;
-  INT8 bOldActionPoints;
-  INT8 bOldAssignment;
-  INT8 ubOldServiceCount;
+  int8_t bOldSoldierLife;
+  int8_t bOldActionPoints;
+  int8_t bOldAssignment;
+  int8_t ubOldServiceCount;
   const SOLDIERTYPE *old_service_partner;
 
-  UINT16 sMouthFrame;
-  UINT32 uiMouthlast;
-  UINT32 uiMouthDelay;
+  uint16_t sMouthFrame;
+  uint32_t uiMouthlast;
+  uint32_t uiMouthDelay;
 
-  UINT32 uiLastBlink;
-  UINT32 uiLastExpression;
+  uint32_t uiLastBlink;
+  uint32_t uiLastExpression;
 
   SGPVObject *uiVideoObject;
 
   BOOLEAN fCompatibleItems;
   BOOLEAN fOldCompatibleItems;
   BOOLEAN bOldStealthMode;
-  INT8 bOldOppCnt;
+  int8_t bOldOppCnt;
 
   AudioGapList GapList;
 
@@ -134,7 +134,7 @@ struct FACETYPE {
     struct  // Used for FACE_PCTRIGGER_NPC
     {
       ProfileID npc;
-      UINT8 record;
+      uint8_t record;
     } trigger;
     struct  // Used for FACE_TRIGGER_PREBATTLE_INT
     {
@@ -146,7 +146,7 @@ struct FACETYPE {
 // FACE HANDLING
 //
 // Faces are done like this: Call
-FACETYPE &InitFace(ProfileID id, SOLDIERTYPE *s, UINT32 uiInitFlags);
+FACETYPE &InitFace(ProfileID id, SOLDIERTYPE *s, uint32_t uiInitFlags);
 /* The first parameter is the profile ID and the second is the soldier (which
  * for most cases will be NULL if the face is not created from a SOLDIERTYPE).
  * This function allocates a slot in the table for the face, loads its STI file,
@@ -159,8 +159,8 @@ void DeleteFace(FACETYPE *);
 
 // IF you want to setup the face for automatic eye blinking, mouth movement, you
 // need to call
-void SetAutoFaceActive(SGPVSurface *display, SGPVSurface *restore, FACETYPE &, UINT16 usFaceX,
-                       UINT16 usFaceY);
+void SetAutoFaceActive(SGPVSurface *display, SGPVSurface *restore, FACETYPE &, uint16_t usFaceX,
+                       uint16_t usFaceY);
 // The first paramter is the display buffer you wish the face to be rendered on.
 // The second is the Internal savebuffer which is used to facilitate the
 // rendering of only things which have changed when blinking. IF the value of
@@ -184,7 +184,7 @@ void SetFaceTalking(FACETYPE &, char const *zSoundFile, wchar_t const *zTextStri
 // cannot be played for any reason.
 
 // Set some face talking flags without need to play sound
-void ExternSetFaceTalking(FACETYPE &, UINT32 sound_id);
+void ExternSetFaceTalking(FACETYPE &, uint32_t sound_id);
 
 // Once this is done, this function must be called overy gameloop that you want
 // to handle the sprite:
@@ -218,7 +218,7 @@ void DeleteSoldierFace(SOLDIERTYPE *pSoldier);
 
 /* To render an allocated face, but one that is independent of its active
  * status and does not require eye blinking or mouth movements, call */
-void ExternRenderFace(SGPVSurface *buffer, FACETYPE &, INT16 x, INT16 y);
+void ExternRenderFace(SGPVSurface *buffer, FACETYPE &, int16_t x, int16_t y);
 
 void LoadFacesGraphics();
 void DeleteFacesGraphics();

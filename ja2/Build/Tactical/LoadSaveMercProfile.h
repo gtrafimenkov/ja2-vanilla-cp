@@ -11,18 +11,18 @@
  * Extract merc profile from the binary data.
  * @param encodingCorrection Perform encoding correction - it is necessary for
  * loading strings from the game data files. */
-void ExtractMercProfile(BYTE const *const Src, MERCPROFILESTRUCT &p, bool stracLinuxFormat,
-                        UINT32 *checksum, const IEncodingCorrector *fixer);
+void ExtractMercProfile(uint8_t const *const Src, MERCPROFILESTRUCT &p, bool stracLinuxFormat,
+                        uint32_t *checksum, const IEncodingCorrector *fixer);
 
 /** Calculates soldier profile checksum. */
-UINT32 SoldierProfileChecksum(MERCPROFILESTRUCT const &p);
+uint32_t SoldierProfileChecksum(MERCPROFILESTRUCT const &p);
 
 /** Extract IMP merc profile from file.
  * If saved checksum is not correct, exception will be thrown. */
-void ExtractImpProfileFromFile(const char *fileName, INT32 *iProfileId, INT32 *iPortraitNumber,
+void ExtractImpProfileFromFile(const char *fileName, int32_t *iProfileId, int32_t *iPortraitNumber,
                                MERCPROFILESTRUCT &p);
 
-void InjectMercProfile(BYTE *Dst, MERCPROFILESTRUCT const &);
+void InjectMercProfile(uint8_t *Dst, MERCPROFILESTRUCT const &);
 void InjectMercProfileIntoFile(HWFILE, MERCPROFILESTRUCT const &);
 
 /** Load raw merc profiles.

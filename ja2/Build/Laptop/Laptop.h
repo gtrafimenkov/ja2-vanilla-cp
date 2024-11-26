@@ -8,23 +8,23 @@
 
 void ExitLaptop();
 void HandleLapTopESCKey();
-void SetBookMark(INT32 iBookId);
+void SetBookMark(int32_t iBookId);
 void SetLaptopExitScreen(ScreenID uiExitScreen);
 void SetLaptopNewGameFlag();
-void LapTopScreenCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+void LapTopScreenCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 void HandleRightButtonUpEvent();
 void DoLapTopMessageBox(MessageBoxStyleID, wchar_t const *zString, ScreenID uiExitScreen,
                         MessageBoxFlags, MSGBOX_CALLBACK ReturnCallback);
-void GoToWebPage(INT32 iPageId);
-void WebPageTileBackground(UINT8 ubNumX, UINT8 ubNumY, UINT16 usWidth, UINT16 usHeight,
+void GoToWebPage(int32_t iPageId);
+void WebPageTileBackground(uint8_t ubNumX, uint8_t ubNumY, uint16_t usWidth, uint16_t usHeight,
                            const SGPVObject *background);
 void BlitTitleBarIcons();
-void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usKeyState);
+void HandleKeyBoardShortCutsForLapTop(uint16_t usEvent, uint32_t usParam, uint16_t usKeyState);
 void RenderWWWProgramTitleBar();
 void DisplayProgramBoundingBox(BOOLEAN fMarkButtons);
 void DoLapTopSystemMessageBox(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,
                               MSGBOX_CALLBACK ReturnCallback);
-void CreateFileAndNewEmailIconFastHelpText(UINT32 uiHelpTextID, BOOLEAN fClearHelpText);
+void CreateFileAndNewEmailIconFastHelpText(uint32_t uiHelpTextID, BOOLEAN fClearHelpText);
 void InitLaptopAndLaptopScreens();
 
 // clear out all temp files from laptop
@@ -82,7 +82,7 @@ enum LaptopMode {
 
 extern LaptopMode guiCurrentLaptopMode;
 extern LaptopMode guiPreviousLaptopMode;
-extern INT32 giCurrentSubPage;
+extern int32_t giCurrentSubPage;
 extern BOOLEAN fReDrawScreenFlag;
 extern BOOLEAN fPausedReDrawScreenFlag;
 extern BOOLEAN fLoadPendingFlag;

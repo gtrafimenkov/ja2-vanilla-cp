@@ -4,23 +4,23 @@
 #include "Editor/EditorDefines.h"
 
 struct EditorItemsInfo {
-  BOOLEAN fGameInit;     // Used for initializing save variables the first time.
-  BOOLEAN fActive;       // currently active
-  UINT16 *pusItemIndex;  // a dynamic array of Item indices
+  BOOLEAN fGameInit;       // Used for initializing save variables the first time.
+  BOOLEAN fActive;         // currently active
+  uint16_t *pusItemIndex;  // a dynamic array of Item indices
   SGPVSurface *uiBuffer;
   ToolbarMode uiItemType;  // Weapons, ammo, armour, explosives, equipment
-  INT16 sNumItems;         // total number of items in the current class of item.
-  INT16 sSelItemIndex;     // currently selected item index.
-  INT16 sHilitedItemIndex;
-  INT16 sScrollIndex;  // current scroll index (0 is far left, 1 is next tile to
-                       // the right, ...)
-  INT16 sSaveSelWeaponsIndex, sSaveSelAmmoIndex, sSaveSelArmourIndex, sSaveSelExplosivesIndex,
+  int16_t sNumItems;       // total number of items in the current class of item.
+  int16_t sSelItemIndex;   // currently selected item index.
+  int16_t sHilitedItemIndex;
+  int16_t sScrollIndex;  // current scroll index (0 is far left, 1 is next tile to
+                         // the right, ...)
+  int16_t sSaveSelWeaponsIndex, sSaveSelAmmoIndex, sSaveSelArmourIndex, sSaveSelExplosivesIndex,
       sSaveSelEquipment1Index, sSaveSelEquipment2Index, sSaveSelEquipment3Index,
       sSaveSelTriggersIndex, sSaveSelKeysIndex;
-  INT16 sSaveWeaponsScrollIndex, sSaveAmmoScrollIndex, sSaveArmourScrollIndex,
+  int16_t sSaveWeaponsScrollIndex, sSaveAmmoScrollIndex, sSaveArmourScrollIndex,
       sSaveExplosivesScrollIndex, sSaveEquipment1ScrollIndex, sSaveEquipment2ScrollIndex,
       sSaveEquipment3ScrollIndex, sSaveTriggersScrollIndex, sSaveKeysScrollIndex;
-  INT16 sNumWeapons, sNumAmmo, sNumArmour, sNumExplosives, sNumEquipment1, sNumEquipment2,
+  int16_t sNumWeapons, sNumAmmo, sNumArmour, sNumExplosives, sNumEquipment1, sNumEquipment2,
       sNumEquipment3, sNumTriggers, sNumKeys;
 };
 
@@ -34,8 +34,8 @@ void DisplayItemStatistics();
 void DetermineItemsScrolling();
 
 // User actions
-void AddSelectedItemToWorld(INT16 sGridNo);
-void HandleRightClickOnItem(INT16 sGridNo);
+void AddSelectedItemToWorld(int16_t sGridNo);
+void HandleRightClickOnItem(int16_t sGridNo);
 void DeleteSelectedItem();
 void ShowSelectedItem();
 void HideSelectedItem();
@@ -46,9 +46,9 @@ void SelectPrevItemInPool();
 void KillItemPoolList();
 void BuildItemPoolList();
 
-void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent);
+void HandleItemsPanel(uint16_t usScreenX, uint16_t usScreenY, int8_t bEvent);
 
-extern INT32 giDefaultExistChance;
+extern int32_t giDefaultExistChance;
 
 extern ITEM_POOL *gpItemPool;
 

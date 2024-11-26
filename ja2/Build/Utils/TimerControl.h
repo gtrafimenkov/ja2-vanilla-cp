@@ -37,15 +37,15 @@ enum {
 // Base resultion of callback timer
 #define BASETIMESLICE 10
 
-extern const INT32 giTimerIntervals[NUMTIMERS];
-extern INT32 giTimerCounters[NUMTIMERS];
+extern const int32_t giTimerIntervals[NUMTIMERS];
+extern int32_t giTimerCounters[NUMTIMERS];
 
 // GLOBAL SYNC TEMP TIME
-extern INT32 giClockTimer;
+extern int32_t giClockTimer;
 
-extern INT32 giTimerDiag;
+extern int32_t giTimerDiag;
 
-extern INT32 giTimerTeamTurnUpdate;
+extern int32_t giTimerTeamTurnUpdate;
 
 void InitializeJA2Clock();
 void ShutdownJA2Clock();
@@ -54,12 +54,12 @@ void ShutdownJA2Clock();
 
 void PauseTime(BOOLEAN fPaused);
 
-void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
+void SetCustomizableTimerCallbackAndDelay(int32_t iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
                                           BOOLEAN fReplace);
 void CheckCustomizableTimer();
 
 // Don't modify this value
-extern UINT32 guiBaseJA2Clock;
+extern uint32_t guiBaseJA2Clock;
 extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 
 // MACROS

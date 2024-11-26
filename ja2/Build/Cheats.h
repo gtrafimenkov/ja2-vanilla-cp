@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-extern UINT8 gubCheatLevel;
+extern uint8_t gubCheatLevel;
 
 /** Reset cheat level to initial value. */
 extern void resetCheatLevelToInitialValue();

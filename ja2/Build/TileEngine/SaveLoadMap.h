@@ -45,13 +45,13 @@ enum {
 };
 
 struct MODIFY_MAP {
-  UINT16 usGridNo;         // The gridno the graphic will be applied to
-  UINT16 usImageType;      // graphic index
-  UINT16 usSubImageIndex;  //
-                           //	UINT16	usIndex;
-  UINT8 ubType;            // the layer it will be applied to
+  uint16_t usGridNo;         // The gridno the graphic will be applied to
+  uint16_t usImageType;      // graphic index
+  uint16_t usSubImageIndex;  //
+                             //	uint16_t	usIndex;
+  uint8_t ubType;            // the layer it will be applied to
 
-  UINT8 ubExtra;  // Misc. variable used to strore arbritary values
+  uint8_t ubExtra;  // Misc. variable used to strore arbritary values
 };
 
 // Use this as sentry, so map changes are added to the map temp file
@@ -68,39 +68,40 @@ class ApplyMapChangesToMapTempFile {
 };
 
 // Applies a change TO THE MAP TEMP file
-void AddStructToMapTempFile(UINT32 iMapIndex, UINT16 usIndex);
+void AddStructToMapTempFile(uint32_t iMapIndex, uint16_t usIndex);
 
-void AddObjectToMapTempFile(UINT32 uiMapIndex, UINT16 usIndex);
+void AddObjectToMapTempFile(uint32_t uiMapIndex, uint16_t usIndex);
 
 void LoadAllMapChangesFromMapTempFileAndApplyThem();
 
-void RemoveStructFromMapTempFile(UINT32 uiMapIndex, UINT16 usIndex);
+void RemoveStructFromMapTempFile(uint32_t uiMapIndex, uint16_t usIndex);
 
-void AddRemoveObjectToMapTempFile(UINT32 uiMapIndex, UINT16 usIndex);
+void AddRemoveObjectToMapTempFile(uint32_t uiMapIndex, uint16_t usIndex);
 
 void SaveBloodSmellAndRevealedStatesFromMapToTempFile();
 
-void SaveRevealedStatusArrayToRevealedTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void SaveRevealedStatusArrayToRevealedTempFile(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 void LoadRevealedStatusArrayFromRevealedTempFile();
 
-void RemoveStructFromUnLoadedMapTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX,
-                                         INT16 sSectorY, UINT8 ubSectorZ);
-void AddStructToUnLoadedMapTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX,
-                                    INT16 sSectorY, UINT8 ubSectorZ);
+void RemoveStructFromUnLoadedMapTempFile(uint32_t uiMapIndex, uint16_t usIndex, int16_t sSectorX,
+                                         int16_t sSectorY, uint8_t ubSectorZ);
+void AddStructToUnLoadedMapTempFile(uint32_t uiMapIndex, uint16_t usIndex, int16_t sSectorX,
+                                    int16_t sSectorY, uint8_t ubSectorZ);
 
 // Adds the exit grid to
-void AddExitGridToMapTempFile(UINT16 usGridNo, EXITGRID *pExitGrid, INT16 sSectorX, INT16 sSectorY,
-                              UINT8 ubSectorZ);
+void AddExitGridToMapTempFile(uint16_t usGridNo, EXITGRID *pExitGrid, int16_t sSectorX,
+                              int16_t sSectorY, uint8_t ubSectorZ);
 
 // This function removes a struct with the same MapIndex and graphic index from
 // the given sectors temp file
-BOOLEAN RemoveGraphicFromTempFile(UINT32 uiMapIndex, UINT16 usIndex, INT16 sSectorX, INT16 sSectorY,
-                                  UINT8 ubSectorZ);
+BOOLEAN RemoveGraphicFromTempFile(uint32_t uiMapIndex, uint16_t usIndex, int16_t sSectorX,
+                                  int16_t sSectorY, uint8_t ubSectorZ);
 
-void AddWindowHitToMapTempFile(UINT32 uiMapIndex);
+void AddWindowHitToMapTempFile(uint32_t uiMapIndex);
 
-void ChangeStatusOfOpenableStructInUnloadedSector(UINT16 usSectorX, UINT16 usSectorY, INT8 bSectorZ,
-                                                  UINT16 usGridNo, BOOLEAN fChangeToOpen);
+void ChangeStatusOfOpenableStructInUnloadedSector(uint16_t usSectorX, uint16_t usSectorY,
+                                                  int8_t bSectorZ, uint16_t usGridNo,
+                                                  BOOLEAN fChangeToOpen);
 
 #endif

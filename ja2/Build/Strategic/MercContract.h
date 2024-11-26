@@ -36,7 +36,7 @@ enum
 };
 */
 
-BOOLEAN MercContractHandling(SOLDIERTYPE *pSoldier, UINT8 ubDesiredAction);
+BOOLEAN MercContractHandling(SOLDIERTYPE *pSoldier, uint8_t ubDesiredAction);
 
 void StrategicRemoveMerc(SOLDIERTYPE &);
 void MakeCharacterDialogueEventContractEnding(SOLDIERTYPE &, bool add_rehire_button);
@@ -49,7 +49,7 @@ void FindOutIfAnyMercAboutToLeaveIsGonnaRenew();
 void BeginContractRenewalSequence();
 void HandleContractRenewalSequence();
 
-UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier);
+uint32_t GetHourWhenContractDone(SOLDIERTYPE *pSoldier);
 
 void LoadContractRenewalDataFromSaveGameFile(HWFILE);
 void SaveContractRenewalDataToSaveGameFile(HWFILE);

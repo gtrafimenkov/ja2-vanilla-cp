@@ -24,23 +24,24 @@ ENUM_BITSET(SoldierFindFlags)
 #define FINDSOLDIERSAMELEVEL(l) (FIND_SOLDIER_SAMELEVEL | (l) << 16)
 
 SOLDIERTYPE *FindSoldierFromMouse();
-SOLDIERTYPE *FindSoldier(GridNo, UINT32 flags);
+SOLDIERTYPE *FindSoldier(GridNo, uint32_t flags);
 
 bool IsOwnedMerc(SOLDIERTYPE const &);
 SoldierFindFlags GetSoldierFindFlags(SOLDIERTYPE const &);
 
-BOOLEAN CycleSoldierFindStack(UINT16 usMapPos);
+BOOLEAN CycleSoldierFindStack(uint16_t usMapPos);
 
 bool GridNoOnScreen(GridNo);
 
 BOOLEAN SoldierOnScreen(const SOLDIERTYPE *s);
-BOOLEAN SoldierLocationRelativeToScreen(INT16 sGridNo, INT8 *pbDirection, UINT32 *puiScrollFlags);
-void GetSoldierScreenPos(const SOLDIERTYPE *pSoldier, INT16 *psScreenX, INT16 *psScreenY);
-void GetSoldierTRUEScreenPos(const SOLDIERTYPE *pSoldier, INT16 *psScreenX, INT16 *psScreenY);
-BOOLEAN IsPointInSoldierBoundingBox(SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY);
-UINT16 FindRelativeSoldierPosition(const SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY);
+BOOLEAN SoldierLocationRelativeToScreen(int16_t sGridNo, int8_t *pbDirection,
+                                        uint32_t *puiScrollFlags);
+void GetSoldierScreenPos(const SOLDIERTYPE *pSoldier, int16_t *psScreenX, int16_t *psScreenY);
+void GetSoldierTRUEScreenPos(const SOLDIERTYPE *pSoldier, int16_t *psScreenX, int16_t *psScreenY);
+BOOLEAN IsPointInSoldierBoundingBox(SOLDIERTYPE *pSoldier, int16_t sX, int16_t sY);
+uint16_t FindRelativeSoldierPosition(const SOLDIERTYPE *pSoldier, int16_t sX, int16_t sY);
 
-void GetGridNoScreenPos(INT16 sGridNo, UINT8 ubLevel, INT16 *psScreenX, INT16 *psScreenY);
+void GetGridNoScreenPos(int16_t sGridNo, uint8_t ubLevel, int16_t *psScreenX, int16_t *psScreenY);
 
 BOOLEAN IsValidTargetMerc(const SOLDIERTYPE *s);
 

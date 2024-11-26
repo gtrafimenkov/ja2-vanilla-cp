@@ -23,7 +23,7 @@
 
 // GLOBAL FOR LIGHT LISTING
 static LIGHTEFFECT gLightEffectData[NUM_LIGHT_EFFECT_SLOTS];
-static UINT32 guiNumLightEffects = 0;
+static uint32_t guiNumLightEffects = 0;
 
 #define BASE_FOR_EACH_LIGHTEFFECT(type, iter)                                                     \
   for (type *iter = gLightEffectData, *const iter##__end = gLightEffectData + guiNumLightEffects; \
@@ -45,7 +45,7 @@ static LIGHTEFFECT *GetFreeLightEffect() {
 }
 
 static void UpdateLightingSprite(LIGHTEFFECT *pLight) {
-  CHAR8 LightName[20];
+  char LightName[20];
   // Build light....
 
   sprintf(LightName, "Light%d", pLight->bRadius);
@@ -69,9 +69,9 @@ static void UpdateLightingSprite(LIGHTEFFECT *pLight) {
                       CenterY(pLight->sGridNo) / CELL_Y_SIZE);
 }
 
-LIGHTEFFECT *NewLightEffect(const INT16 sGridNo, const INT8 bType) {
-  UINT8 ubDuration = 0;
-  UINT8 ubStartRadius = 0;
+LIGHTEFFECT *NewLightEffect(const int16_t sGridNo, const int8_t bType) {
+  uint8_t ubDuration = 0;
+  uint8_t ubStartRadius = 0;
 
   LIGHTEFFECT *const l = GetFreeLightEffect();
   if (l == NULL) return NULL;
@@ -105,18 +105,18 @@ LIGHTEFFECT *NewLightEffect(const INT16 sGridNo, const INT8 bType) {
   return l;
 }
 
-void DecayLightEffects(UINT32 uiTime) {
+void DecayLightEffects(uint32_t uiTime) {
   // age all active tear gas clouds, deactivate those that are just dispersing
   FOR_EACH_LIGHTEFFECT(l) {
     // ATE: Do this every so ofte, to acheive the effect we want...
     if (uiTime - l->uiTimeOfLastUpdate <= 350) continue;
 
-    const UINT16 usNumUpdates = (uiTime - l->uiTimeOfLastUpdate) / 350;
+    const uint16_t usNumUpdates = (uiTime - l->uiTimeOfLastUpdate) / 350;
 
     l->uiTimeOfLastUpdate = uiTime;
 
     BOOLEAN fDelete = FALSE;
-    for (UINT32 i = 0; i < usNumUpdates; ++i) {
+    for (uint32_t i = 0; i < usNumUpdates; ++i) {
       l->bAge++;
 
       // if this cloud remains effective (duration not reached)
@@ -151,12 +151,12 @@ void LoadLightEffectsFromLoadGameFile(HWFILE const hFile) {
   memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
 
   // Load the Number of Light Effects
-  FileRead(hFile, &guiNumLightEffects, sizeof(UINT32));
+  FileRead(hFile, &guiNumLightEffects, sizeof(uint32_t));
 
   // if there are lights saved.
   if (guiNumLightEffects != 0) {
     // loop through and apply the light effects to the map
-    for (UINT32 uiCount = 0; uiCount < guiNumLightEffects; ++uiCount) {
+    for (uint32_t uiCount = 0; uiCount < guiNumLightEffects; ++uiCount) {
       ExtractLightEffectFromFile(hFile, &gLightEffectData[uiCount]);
     }
   }
@@ -165,9 +165,9 @@ void LoadLightEffectsFromLoadGameFile(HWFILE const hFile) {
   FOR_EACH_LIGHTEFFECT(l) { UpdateLightingSprite(l); }
 }
 
-void SaveLightEffectsToMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 const bMapZ) {
-  UINT32 uiNumLightEffects = 0;
-  CHAR8 zMapName[128];
+void SaveLightEffectsToMapTempFile(int16_t const sMapX, int16_t const sMapY, int8_t const bMapZ) {
+  uint32_t uiNumLightEffects = 0;
+  char zMapName[128];
 
   // get the name of the map
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -188,7 +188,7 @@ void SaveLightEffectsToMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 co
   AutoSGPFile hFile(FileMan::openForWriting(zMapName));
 
   // Save the Number of Light Effects
-  FileWrite(hFile, &uiNumLightEffects, sizeof(UINT32));
+  FileWrite(hFile, &uiNumLightEffects, sizeof(uint32_t));
 
   // loop through and save the number of Light effects
   CFOR_EACH_LIGHTEFFECT(l) { InjectLightEffectIntoFile(hFile, l); }
@@ -196,9 +196,9 @@ void SaveLightEffectsToMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 co
   SetSectorFlag(sMapX, sMapY, bMapZ, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS);
 }
 
-void LoadLightEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 const bMapZ) {
-  UINT32 uiCnt = 0;
-  CHAR8 zMapName[128];
+void LoadLightEffectsFromMapTempFile(int16_t const sMapX, int16_t const sMapY, int8_t const bMapZ) {
+  uint32_t uiCnt = 0;
+  char zMapName[128];
 
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -208,7 +208,7 @@ void LoadLightEffectsFromMapTempFile(INT16 const sMapX, INT16 const sMapY, INT8 
   ResetLightEffects();
 
   // Load the Number of Light Effects
-  FileRead(hFile, &guiNumLightEffects, sizeof(UINT32));
+  FileRead(hFile, &guiNumLightEffects, sizeof(uint32_t));
 
   // loop through and load the list
   for (uiCnt = 0; uiCnt < guiNumLightEffects; uiCnt++) {

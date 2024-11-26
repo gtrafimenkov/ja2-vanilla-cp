@@ -35,10 +35,10 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 
-static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure,
+static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, int16_t sGridNo, STRUCTURE *pStructure,
                                     BOOLEAN fNoAnimations);
 
-void HandleDoorChangeFromGridNo(SOLDIERTYPE *const s, INT16 const grid_no,
+void HandleDoorChangeFromGridNo(SOLDIERTYPE *const s, int16_t const grid_no,
                                 BOOLEAN const no_animation) {
   STRUCTURE *const structure = FindStructure(grid_no, STRUCTURE_ANYDOOR);
   if (!structure) {
@@ -60,8 +60,8 @@ void HandleDoorChangeFromGridNo(SOLDIERTYPE *const s, INT16 const grid_no,
   if (door_animated) door_status->ubFlags |= DOOR_BUSY;
 }
 
-UINT16 GetAnimStateForInteraction(SOLDIERTYPE const &s, BOOLEAN const door,
-                                  UINT16 const anim_state) {
+uint16_t GetAnimStateForInteraction(SOLDIERTYPE const &s, BOOLEAN const door,
+                                    uint16_t const anim_state) {
   bool const standing = gAnimControl[s.usAnimState].ubEndHeight == ANIM_STAND;
   switch (anim_state) {
     case OPEN_DOOR:
@@ -113,7 +113,7 @@ UINT16 GetAnimStateForInteraction(SOLDIERTYPE const &s, BOOLEAN const door,
 void InteractWithClosedDoor(SOLDIERTYPE *const pSoldier, HandleDoor const ubHandleCode) {
   pSoldier->ubDoorHandleCode = ubHandleCode;
 
-  UINT16 state;
+  uint16_t state;
   switch (ubHandleCode) {
     case HANDLE_DOOR_OPEN:
     case HANDLE_DOOR_UNLOCK:
@@ -145,7 +145,7 @@ static bool DoTrapCheckOnStartingMenu(SOLDIERTYPE &s, DOOR &d) {
   if (d.bPerceivedTrapped != DOOR_PERCEIVED_UNKNOWN) return false;
 
   // check for noticing the trap
-  INT8 const detect_level = CalcTrapDetectLevel(&s, FALSE);
+  int8_t const detect_level = CalcTrapDetectLevel(&s, FALSE);
   if (detect_level < d.ubTrapLevel) return false;
 
   // say quote, update status
@@ -154,7 +154,7 @@ static bool DoTrapCheckOnStartingMenu(SOLDIERTYPE &s, DOOR &d) {
   return true;
 }
 
-void InteractWithOpenableStruct(SOLDIERTYPE &s, STRUCTURE &structure, UINT8 const direction) {
+void InteractWithOpenableStruct(SOLDIERTYPE &s, STRUCTURE &structure, uint8_t const direction) {
   STRUCTURE &base = *FindBaseStructure(&structure);
   bool const is_door = structure.fFlags & STRUCTURE_ANYDOOR;
 
@@ -211,7 +211,7 @@ void InteractWithOpenableStruct(SOLDIERTYPE &s, STRUCTURE &structure, UINT8 cons
 
 static void ProcessImplicationsOfPCMessingWithDoor(SOLDIERTYPE *pSoldier) {
   // if player is hacking at a door in the brothel and a kingpin guy can see him
-  UINT8 const room = GetRoom(pSoldier->sGridNo);
+  uint8_t const room = GetRoom(pSoldier->sGridNo);
   if (IN_BROTHEL(room) ||
       (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 &&
        (pSoldier->sGridNo == 11010 || pSoldier->sGridNo == 11177 || pSoldier->sGridNo == 11176))) {
@@ -239,9 +239,9 @@ static void ProcessImplicationsOfPCMessingWithDoor(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure) {
+BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, int16_t sGridNo, STRUCTURE *pStructure) {
   BOOLEAN fHandleDoor = FALSE;
-  INT16 sAPCost = 0, sBPCost = 0;
+  int16_t sAPCost = 0, sBPCost = 0;
   DOOR *pDoor;
   BOOLEAN fDoAction = TRUE;
   BOOLEAN fDoor = FALSE;
@@ -643,10 +643,10 @@ BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pS
   return (fHandleDoor);
 }
 
-static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure,
+static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, int16_t sGridNo, STRUCTURE *pStructure,
                                     BOOLEAN fNoAnimations) try {
   LEVELNODE *pShadowNode;
-  INT32 cnt;
+  int32_t cnt;
   BOOLEAN fOpenedGraphic = FALSE;
   BOOLEAN fDoAnimation = TRUE;
   STRUCTURE *pBaseStructure;
@@ -705,7 +705,7 @@ static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCT
 
   if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
     // ATE, the last parameter is the perceived value, I dont know what it is so
-    // could you please add the value? ModifyDoorStatus( INT16 sGridNo, BOOLEAN
+    // could you please add the value? ModifyDoorStatus( int16_t sGridNo, BOOLEAN
     // fOpen, BOOLEAN fPercievedOpen )
     ModifyDoorStatus(sGridNo, TRUE, DONTSETDOORSTATUS);
 
@@ -790,7 +790,7 @@ static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCT
 
   } else {
     // ATE, the last parameter is the perceived value, I dont know what it is so
-    // could you please add the value? ModifyDoorStatus( INT16 sGridNo, BOOLEAN
+    // could you please add the value? ModifyDoorStatus( int16_t sGridNo, BOOLEAN
     // fOpen, BOOLEAN fInitiallyPercieveOpen )
     ModifyDoorStatus(sGridNo, FALSE, DONTSETDOORSTATUS);
 
@@ -881,7 +881,7 @@ static BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCT
   return FALSE;
 }
 
-void SetDoorString(INT16 const sGridNo) {
+void SetDoorString(int16_t const sGridNo) {
   if (!GetIntTileLocationText()) {
     SetIntTileLocationText(TacticalStr[DOOR_DOOR_MOUSE_DESCRIPTION]);
     DOOR const *const d = FindDoorInfoAtGridNo(sGridNo);

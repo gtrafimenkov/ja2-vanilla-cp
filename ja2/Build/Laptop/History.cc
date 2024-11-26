@@ -32,12 +32,12 @@
 #define HISTORY_QUEST_TEXT_SIZE 80
 
 struct HistoryUnit {
-  UINT8 ubCode;        // the code index in the finance code table
-  UINT8 ubSecondCode;  // secondary code
-  UINT32 uiDate;       // time in the world in global time
-  INT16 sSectorX;      // sector X this took place in
-  INT16 sSectorY;      // sector Y this took place in
-  INT8 bSectorZ;
+  uint8_t ubCode;        // the code index in the finance code table
+  uint8_t ubSecondCode;  // secondary code
+  uint32_t uiDate;       // time in the world in global time
+  int16_t sSectorX;      // sector X this took place in
+  int16_t sSectorY;      // sector Y this took place in
+  int8_t bSectorZ;
   HistoryUnit *Next;  // next unit in the list
 };
 
@@ -63,9 +63,9 @@ struct HistoryUnit {
 #define RECORD_HEADER_Y 90
 
 #define NUM_RECORDS_PER_PAGE PAGE_SIZE
-#define SIZE_OF_HISTORY_FILE_RECORD                                                   \
-  (sizeof(UINT8) + sizeof(UINT8) + sizeof(UINT32) + sizeof(UINT16) + sizeof(UINT16) + \
-   sizeof(UINT8) + sizeof(UINT8))
+#define SIZE_OF_HISTORY_FILE_RECORD                                                             \
+  (sizeof(uint8_t) + sizeof(uint8_t) + sizeof(uint32_t) + sizeof(uint16_t) + sizeof(uint16_t) + \
+   sizeof(uint8_t) + sizeof(uint8_t))
 
 // button positions
 #define NEXT_BTN_X 577
@@ -90,7 +90,7 @@ static MOUSE_REGION g_scroll_region;
 
 static BOOLEAN fInHistoryMode = FALSE;
 // current page displayed
-static INT32 iCurrentHistoryPage = 1;
+static int32_t iCurrentHistoryPage = 1;
 
 // the History record list
 static HistoryUnit *pHistoryListHead = NULL;
@@ -98,9 +98,9 @@ static HistoryUnit *pHistoryListHead = NULL;
 void ClearHistoryList();
 
 static void AppendHistoryToEndOfFile();
-static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage);
-static void ProcessAndEnterAHistoryRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubSecondCode,
-                                          INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+static BOOLEAN LoadInHistoryRecords(const uint32_t uiPage);
+static void ProcessAndEnterAHistoryRecord(uint8_t ubCode, uint32_t uiDate, uint8_t ubSecondCode,
+                                          int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 void AddHistoryToPlayersLog(uint8_t ubCode, uint8_t ubSecondCode, uint32_t uiDate, int16_t sSectorX,
                             int16_t sSectorY) {
@@ -221,7 +221,7 @@ static void DrawHistoryTitleText() {
 static void LoadNextHistoryPage();
 static void LoadPreviousHistoryPage();
 
-static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
+static void ScrollRegionCallback(MOUSE_REGION *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     LoadPreviousHistoryPage();
   } else if (reason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -229,8 +229,8 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   }
 }
 
-static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason);
-static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason);
+static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, int32_t reason);
+static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateHistoryButtons() {
   // the prev/next page buttons
@@ -245,10 +245,10 @@ static void CreateHistoryButtons() {
   giHistoryButton[0]->SetCursor(CURSOR_LAPTOP_SCREEN);
   giHistoryButton[1]->SetCursor(CURSOR_LAPTOP_SCREEN);
 
-  UINT16 const x = TOP_X + 8;
-  UINT16 const y = TOP_Y + 53;
-  UINT16 const w = 482;
-  UINT16 const h = 354;
+  uint16_t const x = TOP_X + 8;
+  uint16_t const y = TOP_Y + 53;
+  uint16_t const w = 482;
+  uint16_t const h = 354;
   MSYS_DefineRegion(&g_scroll_region, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                     MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
@@ -262,7 +262,7 @@ static void DestroyHistoryButtons() {
   RemoveButton(giHistoryButton[0]);
 }
 
-static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
   }
@@ -272,7 +272,7 @@ static void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
   }
@@ -282,9 +282,9 @@ static void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ProcessAndEnterAHistoryRecord(const UINT8 ubCode, const UINT32 uiDate,
-                                          const UINT8 ubSecondCode, const INT16 sSectorX,
-                                          const INT16 sSectorY, const INT8 bSectorZ) {
+static void ProcessAndEnterAHistoryRecord(const uint8_t ubCode, const uint32_t uiDate,
+                                          const uint8_t ubSecondCode, const int16_t sSectorX,
+                                          const int16_t sSectorY, const int8_t bSectorZ) {
   HistoryUnit *const h = MALLOC(HistoryUnit);
   h->Next = NULL;
   h->ubCode = ubCode;
@@ -306,21 +306,21 @@ static void OpenAndReadHistoryFile() {
 
   AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
-  UINT entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
+  uint32_t entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
   while (entry_count-- > 0) {
-    UINT8 ubCode;
-    UINT8 ubSecondCode;
-    UINT32 uiDate;
-    INT16 sSectorX;
-    INT16 sSectorY;
-    INT8 bSectorZ;
+    uint8_t ubCode;
+    uint8_t ubSecondCode;
+    uint32_t uiDate;
+    int16_t sSectorX;
+    int16_t sSectorY;
+    int8_t bSectorZ;
 
-    FileRead(f, &ubCode, sizeof(UINT8));
-    FileRead(f, &ubSecondCode, sizeof(UINT8));
-    FileRead(f, &uiDate, sizeof(UINT32));
-    FileRead(f, &sSectorX, sizeof(INT16));
-    FileRead(f, &sSectorY, sizeof(INT16));
-    FileRead(f, &bSectorZ, sizeof(INT8));
+    FileRead(f, &ubCode, sizeof(uint8_t));
+    FileRead(f, &ubSecondCode, sizeof(uint8_t));
+    FileRead(f, &uiDate, sizeof(uint32_t));
+    FileRead(f, &sSectorX, sizeof(int16_t));
+    FileRead(f, &sSectorY, sizeof(int16_t));
+    FileRead(f, &bSectorZ, sizeof(int8_t));
     FileSeek(f, 1, FILE_SEEK_FROM_CURRENT);
 
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ);
@@ -340,8 +340,8 @@ static void DisplayHistoryListHeaders() {
   // this procedure will display the headers to each column in History
   SetFontAttributes(HISTORY_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
-  INT16 usX;
-  INT16 usY;
+  int16_t usX;
+  int16_t usY;
 
   // the date header
   FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0],
@@ -364,7 +364,7 @@ static void DisplayHistoryListHeaders() {
 
 static void DisplayHistoryListBackground() {
   // this function will display the History list display background
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // get shaded line object
   for (iCounter = 0; iCounter < 11; iCounter++) {
@@ -384,28 +384,28 @@ static void ProcessHistoryTransactionString(wchar_t *pString, size_t Length,
 // draw the text of the records
 static void DrawHistoryRecordsText() {
   wchar_t sString[512];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   SetFont(HISTORY_TEXT_FONT);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
 
-  UINT entry_count = 0;
+  uint32_t entry_count = 0;
   for (const HistoryUnit *h = pHistoryListHead; h != NULL; h = h->Next) {
-    const UINT8 colour =
+    const uint8_t colour =
         h->ubCode == HISTORY_CHEAT_ENABLED ||
                 (h->ubCode == HISTORY_QUEST_STARTED && gubQuest[h->ubSecondCode] == QUESTINPROGRESS)
             ? FONT_RED
             : FONT_BLACK;
     SetFontForeground(colour);
 
-    const INT32 y = RECORD_Y + entry_count * BOX_HEIGHT + 3;
+    const int32_t y = RECORD_Y + entry_count * BOX_HEIGHT + 3;
 
     // get and write the date
     swprintf(sString, lengthof(sString), L"%d", h->uiDate / (24 * 60));
-    INT16 usX;
-    INT16 usY;
+    int16_t usX;
+    int16_t usY;
     FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString,
                               HISTORY_TEXT_FONT, &usX, &usY);
     MPrint(usX, y, sString);
@@ -462,15 +462,15 @@ static void DrawAPageofHistoryRecords() {
   DisplayPageNumberAndDateRange();
 }
 
-static INT32 GetNumberOfHistoryPages();
+static int32_t GetNumberOfHistoryPages();
 
 /* go through the list of 'histories' starting at current until end or
  * NUM_RECORDS_PER_PAGE and get the date range and the page number */
 static void DisplayPageNumberAndDateRange() {
-  UINT current_page;
-  UINT count_pages;
-  UINT first_date;
-  UINT last_date;
+  uint32_t current_page;
+  uint32_t count_pages;
+  uint32_t first_date;
+  uint32_t last_date;
   const HistoryUnit *h = pHistoryListHead;
   if (h == NULL) {
     current_page = 1;
@@ -482,7 +482,7 @@ static void DisplayPageNumberAndDateRange() {
     count_pages = GetNumberOfHistoryPages();
     first_date = h->uiDate / (24 * 60);
 
-    UINT entry_count = NUM_RECORDS_PER_PAGE;
+    uint32_t entry_count = NUM_RECORDS_PER_PAGE;
     while (--entry_count != 0 && h->Next != NULL) h = h->Next;
 
     last_date = h->uiDate / (24 * 60);
@@ -496,12 +496,12 @@ static void DisplayPageNumberAndDateRange() {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void GetQuestEndedString(UINT8 ubQuestValue, wchar_t *sQuestString);
-static void GetQuestStartedString(UINT8 ubQuestValue, wchar_t *sQuestString);
+static void GetQuestEndedString(uint8_t ubQuestValue, wchar_t *sQuestString);
+static void GetQuestStartedString(uint8_t ubQuestValue, wchar_t *sQuestString);
 
 static void ProcessHistoryTransactionString(wchar_t *const pString, const size_t Length,
                                             const HistoryUnit *const h) {
-  const UINT8 code = h->ubCode;
+  const uint8_t code = h->ubCode;
   switch (code) {
     case HISTORY_QUEST_STARTED:
       GetQuestStartedString(h->ubSecondCode, pString);
@@ -615,7 +615,7 @@ static void SetHistoryButtonStates() {
 }
 
 // loads in records belogning, to page uiPage
-static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage) try {
+static BOOLEAN LoadInHistoryRecords(const uint32_t uiPage) try {
   ClearHistoryList();
 
   // check if bad page
@@ -623,8 +623,8 @@ static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage) try {
 
   AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
-  UINT entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
-  UINT const skip = (uiPage - 1) * NUM_RECORDS_PER_PAGE;
+  uint32_t entry_count = FileGetSize(f) / SIZE_OF_HISTORY_FILE_RECORD;
+  uint32_t const skip = (uiPage - 1) * NUM_RECORDS_PER_PAGE;
   if (entry_count <= skip) return FALSE;
 
   FileSeek(f, skip * SIZE_OF_HISTORY_FILE_RECORD, FILE_SEEK_FROM_START);
@@ -633,19 +633,19 @@ static BOOLEAN LoadInHistoryRecords(const UINT32 uiPage) try {
   if (entry_count > NUM_RECORDS_PER_PAGE) entry_count = NUM_RECORDS_PER_PAGE;
 
   while (entry_count-- > 0) {
-    UINT8 ubCode;
-    UINT8 ubSecondCode;
-    UINT32 uiDate;
-    INT16 sSectorX;
-    INT16 sSectorY;
-    INT8 bSectorZ;
+    uint8_t ubCode;
+    uint8_t ubSecondCode;
+    uint32_t uiDate;
+    int16_t sSectorX;
+    int16_t sSectorY;
+    int8_t bSectorZ;
 
-    FileRead(f, &ubCode, sizeof(UINT8));
-    FileRead(f, &ubSecondCode, sizeof(UINT8));
-    FileRead(f, &uiDate, sizeof(UINT32));
-    FileRead(f, &sSectorX, sizeof(INT16));
-    FileRead(f, &sSectorY, sizeof(INT16));
-    FileRead(f, &bSectorZ, sizeof(INT8));
+    FileRead(f, &ubCode, sizeof(uint8_t));
+    FileRead(f, &ubSecondCode, sizeof(uint8_t));
+    FileRead(f, &uiDate, sizeof(uint32_t));
+    FileRead(f, &sSectorX, sizeof(int16_t));
+    FileRead(f, &sSectorY, sizeof(int16_t));
+    FileRead(f, &bSectorZ, sizeof(int8_t));
     FileSeek(f, 1, FILE_SEEK_FROM_CURRENT);
 
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ);
@@ -681,8 +681,8 @@ static void AppendHistoryToEndOfFile() {
 
   const HistoryUnit *const h = pHistoryListHead;
 
-  BYTE data[12];
-  BYTE *d = data;
+  uint8_t data[12];
+  uint8_t *d = data;
   INJ_U8(d, h->ubCode)
   INJ_U8(d, h->ubSecondCode)
   INJ_U32(d, h->uiDate)
@@ -699,7 +699,7 @@ uint32_t GetTimeQuestWasStarted(uint8_t ubCode) {
   iCurrentHistoryPage = 0;
   OpenAndReadHistoryFile();
 
-  UINT32 uiTime = 0;
+  uint32_t uiTime = 0;
   for (const HistoryUnit *h = pHistoryListHead; h != NULL; h = h->Next) {
     if (h->ubSecondCode == ubCode && h->ubCode == HISTORY_QUEST_STARTED) {
       uiTime = h->uiDate;
@@ -712,23 +712,23 @@ uint32_t GetTimeQuestWasStarted(uint8_t ubCode) {
   return uiTime;
 }
 
-static void GetQuestStartedString(const UINT8 ubQuestValue, wchar_t *const sQuestString) {
+static void GetQuestStartedString(const uint8_t ubQuestValue, wchar_t *const sQuestString) {
   // open the file and copy the string
   LoadEncryptedDataFromFile(BINARYDATADIR "/quests.edt", sQuestString,
                             HISTORY_QUEST_TEXT_SIZE * ubQuestValue * 2, HISTORY_QUEST_TEXT_SIZE);
 }
 
-static void GetQuestEndedString(const UINT8 ubQuestValue, wchar_t *const sQuestString) {
+static void GetQuestEndedString(const uint8_t ubQuestValue, wchar_t *const sQuestString) {
   // open the file and copy the string
   LoadEncryptedDataFromFile(BINARYDATADIR "/quests.edt", sQuestString,
                             HISTORY_QUEST_TEXT_SIZE * (ubQuestValue * 2 + 1),
                             HISTORY_QUEST_TEXT_SIZE);
 }
 
-static INT32 GetNumberOfHistoryPages() {
+static int32_t GetNumberOfHistoryPages() {
   AutoSGPFile f(FileMan::openForReadingSmart(HISTORY_DATA_FILE, true));
 
-  const UINT32 uiFileSize = FileGetSize(f);
+  const uint32_t uiFileSize = FileGetSize(f);
 
   if (uiFileSize == 0) return 1;
 

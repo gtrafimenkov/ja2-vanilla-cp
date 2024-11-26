@@ -15,7 +15,7 @@ void NewWayOfLoadingEnemySoldiersFromTempFile();
 // are stored in the c_* temp file
 void NewWayOfLoadingCiviliansFromTempFile();
 
-void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ,
+void NewWayOfSavingEnemyAndCivliansToTempFile(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ,
                                               BOOLEAN fEnemy, BOOLEAN fValidateOnly);
 
 extern BOOLEAN gfRestoringEnemySoldiersFromTempFile;

@@ -5,8 +5,8 @@
 
 void InitStrategicMovementCosts();
 
-UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector);
+uint8_t GetTraversability(int16_t sStartSector, int16_t sEndSector);
 
-bool SectorIsPassable(INT16 sSector);
+bool SectorIsPassable(int16_t sSector);
 
 #endif

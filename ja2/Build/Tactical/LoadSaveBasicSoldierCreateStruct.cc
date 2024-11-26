@@ -6,10 +6,10 @@
 #include "Tactical/SoldierCreate.h"
 
 void ExtractBasicSoldierCreateStructFromFile(HWFILE const f, BASIC_SOLDIERCREATE_STRUCT &b) {
-  BYTE data[52];
+  uint8_t data[52];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_BOOL(d, b.fDetailedPlacement)
   EXTR_SKIP(d, 1)
   EXTR_U16(d, b.usStartingGridNo)
@@ -33,8 +33,8 @@ void ExtractBasicSoldierCreateStructFromFile(HWFILE const f, BASIC_SOLDIERCREATE
 }
 
 void InjectBasicSoldierCreateStructIntoFile(HWFILE const f, BASIC_SOLDIERCREATE_STRUCT const &b) {
-  BYTE data[52];
-  BYTE *d = data;
+  uint8_t data[52];
+  uint8_t *d = data;
   INJ_BOOL(d, b.fDetailedPlacement)
   INJ_SKIP(d, 1)
   INJ_U16(d, b.usStartingGridNo)

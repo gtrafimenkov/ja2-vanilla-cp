@@ -15,9 +15,9 @@
 #define TEXT_CODE_NEWCOLOR 180
 #define TEXT_CODE_DEFCOLOR 181
 
-UINT16 IanDisplayWrappedString(UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT8 ubGap, Font,
-                               UINT8 ubColor, const wchar_t *pString, UINT8 ubBackGroundColor,
-                               UINT32 uiFlags);
+uint16_t IanDisplayWrappedString(uint16_t usPosX, uint16_t usPosY, uint16_t usWidth, uint8_t ubGap,
+                                 Font, uint8_t ubColor, const wchar_t *pString,
+                                 uint8_t ubBackGroundColor, uint32_t uiFlags);
 
 #define LEFT_JUSTIFIED 0x00000001
 #define CENTER_JUSTIFIED 0x00000002
@@ -38,15 +38,15 @@ struct WRAPPED_STRING {
   wchar_t sString[];
 };
 
-WRAPPED_STRING *LineWrap(Font, UINT16 usLineWidthPixels, wchar_t const *pString);
-UINT16 DisplayWrappedString(UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT8 ubGap, Font,
-                            UINT8 ubColor, const wchar_t *pString, UINT8 ubBackGroundColor,
-                            UINT32 ulFlags);
+WRAPPED_STRING *LineWrap(Font, uint16_t usLineWidthPixels, wchar_t const *pString);
+uint16_t DisplayWrappedString(uint16_t usPosX, uint16_t usPosY, uint16_t usWidth, uint8_t ubGap,
+                              Font, uint8_t ubColor, const wchar_t *pString,
+                              uint8_t ubBackGroundColor, uint32_t ulFlags);
 void CleanOutControlCodesFromString(const wchar_t *pSourceString, wchar_t *pDestString);
-void DrawTextToScreen(const wchar_t *pStr, UINT16 LocX, UINT16 LocY, UINT16 usWidth, Font,
-                      UINT8 ubColor, UINT8 ubBackGroundColor, UINT32 ulFlags);
-UINT16 IanWrappedStringHeight(UINT16 usWidth, UINT8 ubGap, Font, const wchar_t *pString);
+void DrawTextToScreen(const wchar_t *pStr, uint16_t LocX, uint16_t LocY, uint16_t usWidth, Font,
+                      uint8_t ubColor, uint8_t ubBackGroundColor, uint32_t ulFlags);
+uint16_t IanWrappedStringHeight(uint16_t usWidth, uint8_t ubGap, Font, const wchar_t *pString);
 
-void ReduceStringLength(wchar_t *pString, size_t Length, UINT32 uiWidth, Font);
+void ReduceStringLength(wchar_t *pString, size_t Length, uint32_t uiWidth, Font);
 
 #endif

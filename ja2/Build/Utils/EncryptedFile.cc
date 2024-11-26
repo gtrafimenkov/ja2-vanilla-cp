@@ -4,15 +4,15 @@
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"
 
-void LoadEncryptedData(HWFILE const File, wchar_t *DestString, UINT32 const seek_chars,
-                       UINT32 const read_chars) {
+void LoadEncryptedData(HWFILE const File, wchar_t *DestString, uint32_t const seek_chars,
+                       uint32_t const read_chars) {
   FileSeek(File, seek_chars * 2, FILE_SEEK_FROM_START);
 
-  UINT16 *Str = MALLOCN(UINT16, read_chars);
-  FileRead(File, Str, sizeof(UINT16) * read_chars);
+  uint16_t *Str = MALLOCN(uint16_t, read_chars);
+  FileRead(File, Str, sizeof(uint16_t) * read_chars);
 
   Str[read_chars - 1] = '\0';
-  for (const UINT16 *i = Str; *i != '\0'; ++i) {
+  for (const uint16_t *i = Str; *i != '\0'; ++i) {
     /* "Decrypt" the ROT-1 "encrypted" data */
     wchar_t c = (*i > 33 ? *i - 1 : *i);
 
@@ -122,7 +122,7 @@ void LoadEncryptedData(HWFILE const File, wchar_t *DestString, UINT32 const seek
 }
 
 void LoadEncryptedDataFromFile(char const *const Filename, wchar_t DestString[],
-                               UINT32 const seek_chars, UINT32 const read_chars) {
+                               uint32_t const seek_chars, uint32_t const read_chars) {
   AutoSGPFile File(FileMan::openForReadingSmart(Filename, true));
   LoadEncryptedData(File, DestString, seek_chars, read_chars);
 }

@@ -37,8 +37,8 @@
 // this define should go in soldier control.h
 
 void LoadWeaponIfNeeded(SOLDIERTYPE *pSoldier) {
-  UINT16 usInHand;
-  INT8 bPayloadPocket;
+  uint16_t usInHand;
+  int8_t bPayloadPocket;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -96,21 +96,22 @@ void LoadWeaponIfNeeded(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ubChanceToHit);
+static int32_t EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
+                                  uint8_t ubChanceToHit);
 
 void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
-  INT32 iAttackValue;
-  INT32 iThreatValue;
-  INT32 iHitRate, iBestHitRate, iPercentBetter;
-  INT32 iEstDamage;
-  UINT8 ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime, ubAimTime, ubBestAimTime;
-  UINT8 ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit, ubBestChanceToHit = 0;
+  int32_t iAttackValue;
+  int32_t iThreatValue;
+  int32_t iHitRate, iBestHitRate, iPercentBetter;
+  int32_t iEstDamage;
+  uint8_t ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime, ubAimTime, ubBestAimTime;
+  uint8_t ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit, ubBestChanceToHit = 0;
 
   ubBestChanceToHit = ubBestAimTime = ubChanceToHit = 0;
 
   pSoldier->usAttackingWeapon = pSoldier->inv[HANDPOS].usItem;
 
-  UINT8 const ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), pSoldier->inv[HANDPOS]);
+  uint8_t const ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), pSoldier->inv[HANDPOS]);
 
   InitAttackType(pBestShot);  // set all structure fields to defaults
 
@@ -160,18 +161,18 @@ void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
     if (ubChanceToGetThrough == 0) continue;  // next opponent
 
     if ((pSoldier->uiStatusFlags & SOLDIER_MONSTER) && (pSoldier->ubBodyType != QUEENMONSTER)) {
-      UINT16 usAnimSurface;
+      uint16_t usAnimSurface;
 
       usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, pSoldier->usUIMovementMode);
       const STRUCTURE_FILE_REF *const pStructureFileRef =
           GetAnimationStructureRef(pSoldier, usAnimSurface, pSoldier->usUIMovementMode);
       if (pStructureFileRef) {
-        UINT16 usStructureID;
-        INT8 bDir;
+        uint16_t usStructureID;
+        int8_t bDir;
 
         // must make sure that structure data can be added in the direction of
         // the target
-        bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pOpponent->sGridNo);
+        bDir = (int8_t)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pOpponent->sGridNo);
 
         // ATE: Only if we have a levelnode...
         if (pSoldier->pLevelNode != NULL && pSoldier->pLevelNode->pStructureData != NULL) {
@@ -223,7 +224,7 @@ void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
       // NumMessage("ubAimTime = ",ubAimTime);
 
       ubChanceToHit =
-          (UINT8)AICalcChanceToHitGun(pSoldier, pOpponent->sGridNo, ubAimTime, AIM_SHOT_TORSO);
+          (uint8_t)AICalcChanceToHitGun(pSoldier, pOpponent->sGridNo, ubAimTime, AIM_SHOT_TORSO);
       // ExtMen[pOpponent->ubID].haveStats = TRUE;
       // NumMessage("chance to Hit = ",ubChanceToHit);
 
@@ -317,14 +318,14 @@ void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
 }
 
 // JA2Gold: added
-static BOOLEAN CloseEnoughForGrenadeToss(INT16 sGridNo, INT16 sGridNo2) {
-  INT16 sTempGridNo;
-  UINT8 ubMovementCost;
+static BOOLEAN CloseEnoughForGrenadeToss(int16_t sGridNo, int16_t sGridNo2) {
+  int16_t sTempGridNo;
+  uint8_t ubMovementCost;
 
   if (sGridNo == sGridNo2) {
     // checking the same space; if there is a closed door next to location in
     // ANY direction then forget it (could be the player closed a door on us)
-    for (INT8 bDirection = 0; bDirection < NUM_WORLD_DIRECTIONS; ++bDirection) {
+    for (int8_t bDirection = 0; bDirection < NUM_WORLD_DIRECTIONS; ++bDirection) {
       sTempGridNo = NewGridNo(sGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
@@ -344,7 +345,7 @@ static BOOLEAN CloseEnoughForGrenadeToss(INT16 sGridNo, INT16 sGridNo2) {
 
     sTempGridNo = sGridNo;
 
-    const INT8 bDirection = GetDirectionToGridNoFromGridNo(sGridNo, sGridNo2);
+    const int8_t bDirection = GetDirectionToGridNoFromGridNo(sGridNo, sGridNo2);
 
     // For each step of the loop, we are checking for door or obstacle movement
     // costs.  If we find we're blocked, then this is no good for grenade
@@ -364,38 +365,38 @@ static BOOLEAN CloseEnoughForGrenadeToss(INT16 sGridNo, INT16 sGridNo2) {
   return (TRUE);
 }
 
-static INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIERTYPE *pOpponent,
-                                 INT16 sGridno);
+static int32_t EstimateThrowDamage(SOLDIERTYPE *pSoldier, uint8_t ubItemPos, SOLDIERTYPE *pOpponent,
+                                   int16_t sGridno);
 
 static void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   // September 9, 1998: added code for LAWs (CJC)
-  UINT8 ubLoop2;
-  INT32 iAttackValue;
-  INT32 iHitRate, iThreatValue, iTotalThreatValue, iOppThreatValue[MAXMERCS];
-  INT16 sGridNo, sEndGridNo, sFriendTile[MAXMERCS], sOpponentTile[MAXMERCS];
-  INT8 bFriendLevel[MAXMERCS], bOpponentLevel[MAXMERCS];
-  INT32 iEstDamage;
-  UINT8 ubFriendCnt = 0;
-  UINT8 ubOpponentCnt = 0;
+  uint8_t ubLoop2;
+  int32_t iAttackValue;
+  int32_t iHitRate, iThreatValue, iTotalThreatValue, iOppThreatValue[MAXMERCS];
+  int16_t sGridNo, sEndGridNo, sFriendTile[MAXMERCS], sOpponentTile[MAXMERCS];
+  int8_t bFriendLevel[MAXMERCS], bOpponentLevel[MAXMERCS];
+  int32_t iEstDamage;
+  uint8_t ubFriendCnt = 0;
+  uint8_t ubOpponentCnt = 0;
   SOLDIERTYPE *opponents[MAXMERCS];
-  UINT8 ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime;
-  UINT8 ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit;
-  UINT32 uiPenalty;
-  UINT8 ubSearchRange;
-  UINT16 usOppDist;
+  uint8_t ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime;
+  uint8_t ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit;
+  uint32_t uiPenalty;
+  uint8_t ubSearchRange;
+  uint16_t usOppDist;
   BOOLEAN fFriendsNearby;
-  UINT16 usInHand, usGrenade;
-  UINT8 ubOppsInRange, ubOppsAdjacent;
+  uint16_t usInHand, usGrenade;
+  uint8_t ubOppsInRange, ubOppsAdjacent;
   BOOLEAN fSkipLocation;
-  INT8 bPayloadPocket;
-  INT8 bMaxLeft, bMaxRight, bMaxUp, bMaxDown, bXOffset, bYOffset;
-  INT8 bPersOL, bPublOL;
-  static INT16 sExcludeTile[100];  // This array is for storing tiles that we have
-  UINT8 ubNumExcludedTiles = 0;    // already considered, to prevent duplication of effort
-  INT32 iTossRange;
-  UINT8 ubSafetyMargin = 0;
-  UINT8 ubDiff;
-  INT8 bEndLevel;
+  int8_t bPayloadPocket;
+  int8_t bMaxLeft, bMaxRight, bMaxUp, bMaxDown, bXOffset, bYOffset;
+  int8_t bPersOL, bPublOL;
+  static int16_t sExcludeTile[100];  // This array is for storing tiles that we have
+  uint8_t ubNumExcludedTiles = 0;    // already considered, to prevent duplication of effort
+  int32_t iTossRange;
+  uint8_t ubSafetyMargin = 0;
+  uint8_t ubDiff;
+  int8_t bEndLevel;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
   usGrenade = NOTHING;
@@ -627,7 +628,7 @@ static void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   // look at the squares near each known opponent and try to find the one
   // place where a tossed projectile would do the most harm to the opponents
   // while avoiding one's friends
-  for (UINT8 ubLoop = 0; ubLoop < ubOpponentCnt; ++ubLoop) {
+  for (uint8_t ubLoop = 0; ubLoop < ubOpponentCnt; ++ubLoop) {
     // search all tiles within 2 squares of this opponent
     ubSearchRange = MAX_TOSS_SEARCH_DIST;
 
@@ -829,7 +830,7 @@ static void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
               // target
               uiPenalty = 100 * PythSpacesAway(sGridNo, sEndGridNo) / (ubSafetyMargin - 1);
               if (uiPenalty < 100) {
-                ubChanceToGetThrough = 100 - (UINT8)uiPenalty;
+                ubChanceToGetThrough = 100 - (uint8_t)uiPenalty;
               } else {
                 continue;
               }
@@ -861,13 +862,13 @@ static void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
 
         if (EXPLOSIVE_GUN(usInHand)) {
           ubRawAPCost = MinAPsToShootOrStab(*pSoldier, sGridNo, FALSE);
-          ubChanceToHit =
-              (UINT8)AICalcChanceToHitGun(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
+          ubChanceToHit = (uint8_t)AICalcChanceToHitGun(pSoldier, sGridNo, ubMaxPossibleAimTime,
+                                                        AIM_SHOT_TORSO);
         } else {
           // NB grenade launcher is NOT a direct fire weapon!
           ubRawAPCost = MinAPsToThrow(*pSoldier, sGridNo, FALSE);
-          ubChanceToHit =
-              (UINT8)CalcThrownChanceToHit(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
+          ubChanceToHit = (uint8_t)CalcThrownChanceToHit(pSoldier, sGridNo, ubMaxPossibleAimTime,
+                                                         AIM_SHOT_TORSO);
         }
 
         // mortars are inherently quite inaccurate, don't get proximity bonus
@@ -942,18 +943,18 @@ static void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   }
 }
 
-static INT32 EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ubChanceToHit,
-                                BOOLEAN fBladeAttack);
+static int32_t EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
+                                  uint8_t ubChanceToHit, BOOLEAN fBladeAttack);
 
 void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAttack) {
-  INT32 iAttackValue;
-  INT32 iThreatValue, iHitRate, iBestHitRate, iPercentBetter, iEstDamage;
+  int32_t iAttackValue;
+  int32_t iThreatValue, iHitRate, iBestHitRate, iPercentBetter, iEstDamage;
   BOOLEAN fSurpriseStab;
-  UINT8 ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime;
-  UINT8 ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
-  UINT16 usTrueMovementMode;
+  uint8_t ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime;
+  uint8_t ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
+  uint16_t usTrueMovementMode;
 
-  UINT8 ubBestAimTime = (UINT8)-1;  // XXX HACK000E
+  uint8_t ubBestAimTime = (uint8_t)-1;  // XXX HACK000E
 
   InitAttackType(pBestStab);  // set all structure fields to defaults
 
@@ -1049,9 +1050,9 @@ void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAt
 
       if (!fSurpriseStab) {
         if (fBladeAttack) {
-          ubChanceToHit = (UINT8)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
+          ubChanceToHit = (uint8_t)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
         } else {
-          ubChanceToHit = (UINT8)CalcChanceToPunch(pSoldier, pOpponent, ubAimTime);
+          ubChanceToHit = (uint8_t)CalcChanceToPunch(pSoldier, pOpponent, ubAimTime);
         }
       } else
         ubChanceToHit = MAXCHANCETOHIT;
@@ -1135,13 +1136,13 @@ void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAt
 }
 
 void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab) {
-  INT32 iAttackValue;
-  INT32 iThreatValue, iHitRate, iBestHitRate, iEstDamage;
+  int32_t iAttackValue;
+  int32_t iThreatValue, iHitRate, iBestHitRate, iEstDamage;
   BOOLEAN fSurpriseStab;
-  UINT8 ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime;
-  UINT8 ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
+  uint8_t ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime;
+  uint8_t ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
 
-  UINT8 ubBestAimTime = (UINT8)-1;  // XXX HACK000E
+  uint8_t ubBestAimTime = (uint8_t)-1;  // XXX HACK000E
 
   InitAttackType(pBestStab);  // set all structure fields to defaults
 
@@ -1208,7 +1209,7 @@ void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab) {
       // NumMessage("ubAimTime = ",ubAimTime);
 
       if (!fSurpriseStab) {
-        ubChanceToHit = (UINT8)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
+        ubChanceToHit = (uint8_t)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
       } else
         ubChanceToHit = MAXCHANCETOHIT;
       // NumMessage("chance to Hit = ",ubChanceToHit);
@@ -1271,8 +1272,8 @@ void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab) {
   }
 }
 
-static UINT8 NumMercsCloseTo(INT16 sGridNo, UINT8 ubMaxDist) {
-  INT8 bNumber = 0;
+static uint8_t NumMercsCloseTo(int16_t sGridNo, uint8_t ubMaxDist) {
+  int8_t bNumber = 0;
   FOR_EACH_MERC(i) {
     const SOLDIERTYPE *const s = *i;
     if (s->bTeam == OUR_TEAM && s->bLife >= OKLIFE &&
@@ -1283,15 +1284,15 @@ static UINT8 NumMercsCloseTo(INT16 sGridNo, UINT8 ubMaxDist) {
   return bNumber;
 }
 
-static INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
-                                UINT8 ubChanceToHit) {
-  INT32 iRange, iMaxRange, iPowerLost;
-  INT32 iDamage;
-  UINT8 ubBonus;
-  INT32 iHeadProt = 0, iTorsoProt = 0, iLegProt = 0;
-  INT32 iTotalProt;
-  INT8 bPlatePos;
-  UINT8 ubAmmoType;
+static int32_t EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
+                                  uint8_t ubChanceToHit) {
+  int32_t iRange, iMaxRange, iPowerLost;
+  int32_t iDamage;
+  uint8_t ubBonus;
+  int32_t iHeadProt = 0, iTorsoProt = 0, iLegProt = 0;
+  int32_t iTotalProt;
+  int8_t bPlatePos;
+  uint8_t ubAmmoType;
 
   /*
           if ( pOpponent->uiStatusFlags & SOLDIER_VEHICLE )
@@ -1324,33 +1325,35 @@ static INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
 
   // if opponent is wearing a helmet
   if (pOpponent->inv[HELMETPOS].usItem) {
-    iHeadProt += (INT32)Armour[Item[pOpponent->inv[HELMETPOS].usItem].ubClassIndex].ubProtection *
-                 (INT32)pOpponent->inv[HELMETPOS].bStatus[0] / 100;
+    iHeadProt += (int32_t)Armour[Item[pOpponent->inv[HELMETPOS].usItem].ubClassIndex].ubProtection *
+                 (int32_t)pOpponent->inv[HELMETPOS].bStatus[0] / 100;
   }
 
   // if opponent is wearing a protective vest
   if (ubAmmoType != AMMO_MONSTER && ubAmmoType != AMMO_KNIFE) {
     // monster spit and knives ignore kevlar vests
     if (pOpponent->inv[VESTPOS].usItem) {
-      iTorsoProt += (INT32)Armour[Item[pOpponent->inv[VESTPOS].usItem].ubClassIndex].ubProtection *
-                    (INT32)pOpponent->inv[VESTPOS].bStatus[0] / 100;
+      iTorsoProt +=
+          (int32_t)Armour[Item[pOpponent->inv[VESTPOS].usItem].ubClassIndex].ubProtection *
+          (int32_t)pOpponent->inv[VESTPOS].bStatus[0] / 100;
     }
   }
 
   // check for ceramic plates; these do affect monster spit
   bPlatePos = FindAttachment(&(pOpponent->inv[VESTPOS]), CERAMIC_PLATES);
   if (bPlatePos != -1) {
-    iTorsoProt += (INT32)Armour[Item[pOpponent->inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex]
-                      .ubProtection *
-                  (INT32)pOpponent->inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
+    iTorsoProt +=
+        (int32_t)Armour[Item[pOpponent->inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex]
+            .ubProtection *
+        (int32_t)pOpponent->inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
   }
 
   // if opponent is wearing armoured leggings (LEGPOS)
   if (ubAmmoType != AMMO_MONSTER &&
       ubAmmoType != AMMO_KNIFE) {  // monster spit and knives ignore kevlar leggings
     if (pOpponent->inv[LEGPOS].usItem) {
-      iLegProt += (INT32)Armour[Item[pOpponent->inv[LEGPOS].usItem].ubClassIndex].ubProtection *
-                  (INT32)pOpponent->inv[LEGPOS].bStatus[0] / 100;
+      iLegProt += (int32_t)Armour[Item[pOpponent->inv[LEGPOS].usItem].ubClassIndex].ubProtection *
+                  (int32_t)pOpponent->inv[LEGPOS].bStatus[0] / 100;
     }
   }
 
@@ -1383,7 +1386,7 @@ static INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
   if (ubAmmoType == AMMO_MONSTER) {
     // cheat and emphasize shots
     // iDamage = (iDamage * 15) / 10;
-    UINT32 gas;
+    uint32_t gas;
     switch (pSoldier->inv[pSoldier->ubAttackingHand].usItem) {
       // explosive damage is 100-200% that of the rated, so multiply by 3/2s here
       case CREATURE_QUEEN_SPIT:
@@ -1405,11 +1408,11 @@ static INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
   return (iDamage);
 }
 
-static INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIERTYPE *pOpponent,
-                                 INT16 sGridno) {
-  UINT8 ubExplosiveIndex;
-  INT32 iExplosDamage, iBreathDamage, iArmourAmount, iDamage = 0;
-  INT8 bSlot;
+static int32_t EstimateThrowDamage(SOLDIERTYPE *pSoldier, uint8_t ubItemPos, SOLDIERTYPE *pOpponent,
+                                   int16_t sGridno) {
+  uint8_t ubExplosiveIndex;
+  int32_t iExplosDamage, iBreathDamage, iArmourAmount, iDamage = 0;
+  int8_t bSlot;
 
   switch (pSoldier->inv[ubItemPos].usItem) {
     case GL_SMOKE_GRENADE:
@@ -1431,8 +1434,8 @@ static INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIER
     return (5 * (LightTrueLevel(pOpponent->sGridNo, pOpponent->bLevel) - NORMAL_LIGHTLEVEL_DAY));
   }
 
-  iExplosDamage = (((INT32)Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
-  iBreathDamage = (((INT32)Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
+  iExplosDamage = (((int32_t)Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
+  iBreathDamage = (((int32_t)Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
 
   if (Explosive[ubExplosiveIndex].ubType == EXPLOSV_TEARGAS ||
       Explosive[ubExplosiveIndex].ubType == EXPLOSV_MUSTGAS) {
@@ -1476,9 +1479,9 @@ static INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIER
   return (iDamage);
 }
 
-static INT32 EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ubChanceToHit,
-                                BOOLEAN fBladeAttack) {
-  INT32 iImpact, iFluke, iBonus;
+static int32_t EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent,
+                                  uint8_t ubChanceToHit, BOOLEAN fBladeAttack) {
+  int32_t iImpact, iFluke, iBonus;
 
   if (fBladeAttack) {
     iImpact = Weapon[pSoldier->usAttackingWeapon].ubImpact;
@@ -1520,16 +1523,16 @@ static INT32 EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, U
   return (iImpact);
 }
 
-static INT8 TryToReload(SOLDIERTYPE *const s) {
+static int8_t TryToReload(SOLDIERTYPE *const s) {
   OBJECTTYPE &hand = s->inv[HANDPOS];
   WEAPONTYPE const &weapon = Weapon[hand.usItem];
-  INT8 const slot = FindAmmo(s, weapon.ubCalibre, weapon.ubMagSize, NO_SLOT);
+  int8_t const slot = FindAmmo(s, weapon.ubCalibre, weapon.ubMagSize, NO_SLOT);
   return slot != NO_SLOT && ReloadGun(s, &hand, &s->inv[slot]) ? TRUE : NOSHOOT_NOAMMO;
 }
 
-INT8 CanNPCAttack(SOLDIERTYPE *pSoldier) {
-  INT8 bCanAttack;
-  INT8 bWeaponIn;
+int8_t CanNPCAttack(SOLDIERTYPE *pSoldier) {
+  int8_t bCanAttack;
+  int8_t bWeaponIn;
 
   // NEUTRAL civilians are not allowed to attack, but those that are not
   // neutral (KILLNPC mission guynums, escorted guys) can, if they're armed
@@ -1577,7 +1580,7 @@ INT8 CanNPCAttack(SOLDIERTYPE *pSoldier) {
 }
 
 void CheckIfTossPossible(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
-  UINT8 ubMinAPcost;
+  uint8_t ubMinAPcost;
 
   if (TANK(pSoldier)) {
     pBestThrow->bWeaponIn = FindObj(pSoldier, TANK_CANNON);
@@ -1623,12 +1626,12 @@ void CheckIfTossPossible(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   }
 }
 
-static INT8 CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, INT16 sFirstTarget,
-                                       INT8 bTargetLevel) {
+static int8_t CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, int16_t sFirstTarget,
+                                         int8_t bTargetLevel) {
   // return the number of people next to this guy for burst-spread purposes
 
-  INT8 bDirLoop, bDir, bCheckDir, bTargetIndex, bTargets;
-  INT16 sTarget;
+  int8_t bDirLoop, bDir, bCheckDir, bTargetIndex, bTargets;
+  int16_t sTarget;
   SOLDIERTYPE *pTargets[5] = {NULL};
 
   bTargetIndex = -1;
@@ -1640,7 +1643,7 @@ static INT8 CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, INT16 sFirstTarget
   }
   bTargets = 1;
 
-  bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
+  bDir = (int8_t)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
 
   for (bDirLoop = 0; bDirLoop < 8; bDirLoop++) {
     if (bDir % 2) {
@@ -1740,11 +1743,11 @@ static INT8 CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, INT16 sFirstTarget
   return (bTargets - 1);
 }
 
-INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLevel) {
-  INT8 bDirLoop, bDir, bCheckDir, bTargetIndex = 0, bLoop, bTargets;
-  INT16 sTarget;
+int16_t CalcSpreadBurst(SOLDIERTYPE *pSoldier, int16_t sFirstTarget, int8_t bTargetLevel) {
+  int8_t bDirLoop, bDir, bCheckDir, bTargetIndex = 0, bLoop, bTargets;
+  int16_t sTarget;
   SOLDIERTYPE *pTargets[5] = {NULL};
-  INT8 bAdjacents, bOtherAdjacents;
+  int8_t bAdjacents, bOtherAdjacents;
 
   bCheckDir = -1;
 
@@ -1755,7 +1758,7 @@ INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLev
   bTargets = 1;
   bAdjacents = CountAdjacentSpreadTargets(pSoldier, sFirstTarget, bTargetLevel);
 
-  bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
+  bDir = (int8_t)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
 
   for (bDirLoop = 0; bDirLoop < 8; bDirLoop++) {
     if (bDir % 2) {
@@ -1891,11 +1894,11 @@ INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLev
   return (sFirstTarget);
 }
 
-INT16 AdvanceToFiringRange(SOLDIERTYPE *pSoldier, INT16 sClosestOpponent) {
+int16_t AdvanceToFiringRange(SOLDIERTYPE *pSoldier, int16_t sClosestOpponent) {
   // see how far we can go down a path and still shoot
 
-  INT8 bAttackCost, bTrueActionPoints;
-  UINT16 usActionData;
+  int8_t bAttackCost, bTrueActionPoints;
+  uint16_t usActionData;
 
   bAttackCost = MinAPsToAttack(pSoldier, sClosestOpponent, ADDTURNCOST);
 

@@ -6,8 +6,8 @@
 #include "Tactical/Overhead.h"
 
 void ExtractBulletFromFile(HWFILE const file, BULLET *const b) {
-  BYTE src[128];
-  const BYTE *s = src;
+  uint8_t src[128];
+  const uint8_t *s = src;
 
   FileRead(file, src, sizeof(src));
 
@@ -62,8 +62,8 @@ void ExtractBulletFromFile(HWFILE const file, BULLET *const b) {
 }
 
 void InjectBulletIntoFile(HWFILE const file, BULLET const *b) {
-  BYTE dst[128];
-  BYTE *d = dst;
+  uint8_t dst[128];
+  uint8_t *d = dst;
 
   INJ_SKIP(d, 4)
   INJ_SOLDIER(d, b->pFirer)

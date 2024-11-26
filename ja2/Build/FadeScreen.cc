@@ -15,13 +15,13 @@
 
 static ScreenID guiExitScreen;
 BOOLEAN gfFadeInitialized = FALSE;
-INT16 gsFadeLimit;
-UINT32 guiTime;
-UINT32 guiFadeDelay;
+int16_t gsFadeLimit;
+uint32_t guiTime;
+uint32_t guiFadeDelay;
 BOOLEAN gfFirstTimeInFade = FALSE;
-INT16 gsFadeCount;
-static INT8 gbFadeType;
-INT16 gsFadeRealCount;
+int16_t gsFadeCount;
+static int8_t gbFadeType;
+int16_t gsFadeRealCount;
 BOOLEAN gfFadeInVideo;
 
 FADE_FUNCTION gFadeFunction = NULL;
@@ -44,7 +44,7 @@ void FadeOutNextFrame() {
   gfFadeOutDone = FALSE;
 }
 
-static void BeginFade(ScreenID uiExitScreen, INT8 bFadeValue, INT8 bType, UINT32 uiDelay);
+static void BeginFade(ScreenID uiExitScreen, int8_t bFadeValue, int8_t bType, uint32_t uiDelay);
 
 BOOLEAN HandleBeginFadeIn(ScreenID const uiScreenExit) {
   if (gfFadeIn) {
@@ -109,8 +109,8 @@ BOOLEAN HandleFadeInCallback() {
 static void FadeFrameBufferRealFade();
 static void FadeInFrameBufferRealFade();
 
-static void BeginFade(ScreenID const uiExitScreen, INT8 const bFadeValue, INT8 const bType,
-                      UINT32 const uiDelay) {
+static void BeginFade(ScreenID const uiExitScreen, int8_t const bFadeValue, int8_t const bType,
+                      uint32_t const uiDelay) {
   // Init some paramters
   guiExitScreen = uiExitScreen;
   guiFadeDelay = uiDelay;
@@ -146,7 +146,7 @@ static void BeginFade(ScreenID const uiExitScreen, INT8 const bFadeValue, INT8 c
 }
 
 ScreenID FadeScreenHandle() {
-  UINT32 uiTime;
+  uint32_t uiTime;
 
   if (!gfFadeInitialized) {
     SET_ERROR("Fade Screen called but not intialized ");
@@ -209,7 +209,7 @@ static void FadeFrameBufferRealFade() {
 }
 
 static void FadeInFrameBufferRealFade() {
-  INT32 cnt;
+  int32_t cnt;
 
   if (gsFadeRealCount != gsFadeCount) {
     for (cnt = 0; cnt < (gsFadeLimit - gsFadeCount); cnt++) {

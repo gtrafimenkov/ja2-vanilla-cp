@@ -13,39 +13,39 @@
 
 void InitPathAI();
 void ShutDownPathAI();
-INT16 PlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot,
-               UINT16 usMovementMode, INT16 sAPBudget);
-INT16 UIPlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot,
-                 UINT16 usMovementMode, INT16 sAPBudget);
-INT16 EstimatePlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot,
-                       UINT16 usMovementMode, INT16 sAPBudget);
+int16_t PlotPath(SOLDIERTYPE *pSold, int16_t sDestGridno, int8_t bCopyRoute, int8_t bPlot,
+                 uint16_t usMovementMode, int16_t sAPBudget);
+int16_t UIPlotPath(SOLDIERTYPE *pSold, int16_t sDestGridno, int8_t bCopyRoute, int8_t bPlot,
+                   uint16_t usMovementMode, int16_t sAPBudget);
+int16_t EstimatePlotPath(SOLDIERTYPE *pSold, int16_t sDestGridno, int8_t bCopyRoute, int8_t bPlot,
+                         uint16_t usMovementMode, int16_t sAPBudget);
 
 void ErasePath();
-INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMovementMode,
-                   INT8 bCopy, UINT8 fFlags);
-void GlobalReachableTest(INT16 sStartGridNo);
-void GlobalItemsReachableTest(INT16 sStartGridNo1, INT16 sStartGridNo2);
-void RoofReachableTest(INT16 sStartGridNo, UINT8 ubBuildingID);
-void LocalReachableTest(INT16 sStartGridNo, INT8 bRadius);
+int32_t FindBestPath(SOLDIERTYPE *s, int16_t sDestination, int8_t ubLevel, int16_t usMovementMode,
+                     int8_t bCopy, uint8_t fFlags);
+void GlobalReachableTest(int16_t sStartGridNo);
+void GlobalItemsReachableTest(int16_t sStartGridNo1, int16_t sStartGridNo2);
+void RoofReachableTest(int16_t sStartGridNo, uint8_t ubBuildingID);
+void LocalReachableTest(int16_t sStartGridNo, int8_t bRadius);
 
-UINT8 DoorTravelCost(const SOLDIERTYPE *pSoldier, INT32 iGridNo, UINT8 ubMovementCost,
-                     BOOLEAN fReturnPerceivedValue, INT32 *piDoorGridNo);
-UINT8 InternalDoorTravelCost(const SOLDIERTYPE *pSoldier, INT32 iGridNo, UINT8 ubMovementCost,
-                             BOOLEAN fReturnPerceivedValue, INT32 *piDoorGridNo,
-                             BOOLEAN fReturnDoorCost);
+uint8_t DoorTravelCost(const SOLDIERTYPE *pSoldier, int32_t iGridNo, uint8_t ubMovementCost,
+                       BOOLEAN fReturnPerceivedValue, int32_t *piDoorGridNo);
+uint8_t InternalDoorTravelCost(const SOLDIERTYPE *pSoldier, int32_t iGridNo, uint8_t ubMovementCost,
+                               BOOLEAN fReturnPerceivedValue, int32_t *piDoorGridNo,
+                               BOOLEAN fReturnDoorCost);
 
-INT16 RecalculatePathCost(SOLDIERTYPE *pSoldier, UINT16 usMovementMode);
+int16_t RecalculatePathCost(SOLDIERTYPE *pSoldier, uint16_t usMovementMode);
 
 // Exporting these global variables
-extern UINT32 guiPathingData[256];
-extern UINT8 gubNPCAPBudget;
-extern UINT8 gubNPCDistLimit;
-extern UINT8 gubNPCPathCount;
+extern uint32_t guiPathingData[256];
+extern uint8_t gubNPCAPBudget;
+extern uint8_t gubNPCDistLimit;
+extern uint8_t gubNPCPathCount;
 extern BOOLEAN gfPlotPathToExitGrid;
 extern BOOLEAN gfNPCCircularDistLimit;
 extern BOOLEAN gfEstimatePath;
 extern BOOLEAN gfPathAroundObstacles;
-extern UINT8 gubGlobalPathFlags;
+extern uint8_t gubGlobalPathFlags;
 
 // Ian's terrain values for travelling speed/pathing purposes
 // Fixed by CJC March 4, 1998.  Please do not change these unless familiar

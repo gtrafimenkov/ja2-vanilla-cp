@@ -11,19 +11,19 @@
 #define MAX_COLOURS 255
 
 struct NODE {
-  BOOLEAN bIsLeaf;   // TRUE if node has no children
-  UINT nPixelCount;  // Number of pixels represented by this leaf
-  UINT nRedSum;      // Sum of red components
-  UINT nGreenSum;    // Sum of green components
-  UINT nBlueSum;     // Sum of blue components
-  NODE *pChild[8];   // Pointers to child nodes
-  NODE *pNext;       // Pointer to next reducible node
+  BOOLEAN bIsLeaf;       // TRUE if node has no children
+  uint32_t nPixelCount;  // Number of pixels represented by this leaf
+  uint32_t nRedSum;      // Sum of red components
+  uint32_t nGreenSum;    // Sum of green components
+  uint32_t nBlueSum;     // Sum of blue components
+  NODE *pChild[8];       // Pointers to child nodes
+  NODE *pNext;           // Pointer to next reducible node
 };
 
-static UINT g_leaf_count;
+static uint32_t g_leaf_count;
 static NODE *g_reducible_nodes[COLOUR_BITS];
 
-static NODE *CreateNode(const UINT level) {
+static NODE *CreateNode(const uint32_t level) {
   NODE *const node = MALLOCZ(NODE);
 
   node->bIsLeaf = level == COLOUR_BITS;
@@ -36,8 +36,8 @@ static NODE *CreateNode(const UINT level) {
   return node;
 }
 
-static void AddColor(NODE **const ppNode, const BYTE r, const BYTE g, const BYTE b,
-                     const UINT level) {
+static void AddColor(NODE **const ppNode, const uint8_t r, const uint8_t g, const uint8_t b,
+                     const uint32_t level) {
   // If the node doesn't exist, create it.
   if (*ppNode == NULL) *ppNode = CreateNode(level);
   NODE *const node = *ppNode;
@@ -66,10 +66,10 @@ static void ReduceTree() {
   NODE *const node = g_reducible_nodes[i];
   g_reducible_nodes[i] = node->pNext;
 
-  UINT nRedSum = 0;
-  UINT nGreenSum = 0;
-  UINT nBlueSum = 0;
-  UINT nChildren = 0;
+  uint32_t nRedSum = 0;
+  uint32_t nGreenSum = 0;
+  uint32_t nBlueSum = 0;
+  uint32_t nChildren = 0;
 
   for (i = 0; i < 8; ++i) {
     NODE *const child = node->pChild[i];
@@ -125,19 +125,20 @@ static void DeleteTree(NODE *const node) {
   free(node);
 }
 
-static void MapPalette(UINT8 *const pDest, const SGPPaletteEntry *const pSrc, const INT16 sWidth,
-                       const INT16 sHeight, const INT16 sNumColors, const SGPPaletteEntry *pTable) {
+static void MapPalette(uint8_t *const pDest, const SGPPaletteEntry *const pSrc,
+                       const int16_t sWidth, const int16_t sHeight, const int16_t sNumColors,
+                       const SGPPaletteEntry *pTable) {
   for (size_t i = sWidth * sHeight; i != 0; --i) {
     // For each palette entry, find closest
-    INT32 best = 0;
-    UINT32 lowest_dist = 9999999;
-    for (INT32 cnt = 0; cnt < sNumColors; ++cnt) {
+    int32_t best = 0;
+    uint32_t lowest_dist = 9999999;
+    for (int32_t cnt = 0; cnt < sNumColors; ++cnt) {
       const SGPPaletteEntry *const a = &pSrc[i];
       const SGPPaletteEntry *const b = &pTable[cnt];
-      const INT32 dr = a->r - b->r;
-      const INT32 dg = a->g - b->g;
-      const INT32 db = a->b - b->b;
-      const UINT32 dist = dr * dr + dg * dg + db * db;
+      const int32_t dr = a->r - b->r;
+      const int32_t dg = a->g - b->g;
+      const int32_t db = a->b - b->b;
+      const uint32_t dist = dr * dr + dg * dg + db * db;
       if (dist < lowest_dist) {
         lowest_dist = dist;
         best = cnt;
@@ -150,8 +151,8 @@ static void MapPalette(UINT8 *const pDest, const SGPPaletteEntry *const pSrc, co
   }
 }
 
-void QuantizeImage(UINT8 *const pDest, const SGPPaletteEntry *const pSrc, const INT16 sWidth,
-                   const INT16 sHeight, SGPPaletteEntry *const pPalette) {
+void QuantizeImage(uint8_t *const pDest, const SGPPaletteEntry *const pSrc, const int16_t sWidth,
+                   const int16_t sHeight, SGPPaletteEntry *const pPalette) {
   // First create palette
   g_leaf_count = 0;
   FOR_EACH(NODE *, i, g_reducible_nodes) *i = 0;

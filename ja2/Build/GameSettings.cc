@@ -42,16 +42,16 @@ void LoadGameSettings() {
   try {
     AutoSGPFile f(FileMan::openForReadingSmart(GAME_SETTINGS_FILE, false));
 
-    BYTE data[76];
+    uint8_t data[76];
     if (FileGetSize(f) != sizeof(data)) goto fail;
     FileRead(f, data, sizeof(data));
 
-    UINT8 music_volume;
-    UINT8 sound_volume;
-    UINT8 speech_volume;
-    UINT32 settings_version;
+    uint8_t music_volume;
+    uint8_t sound_volume;
+    uint8_t speech_volume;
+    uint32_t settings_version;
     GAME_SETTINGS &g = gGameSettings;
-    BYTE const *d = data;
+    uint8_t const *d = data;
     EXTR_I8(d, g.bLastSavedGameSlot)
     EXTR_U8(d, music_volume)
     EXTR_U8(d, sound_volume)
@@ -103,14 +103,14 @@ void SaveGameSettings() {
   // Record the current settings into the game settins structure
   GAME_SETTINGS &g = gGameSettings;
 
-  BYTE data[76];
-  BYTE *d = data;
+  uint8_t data[76];
+  uint8_t *d = data;
   INJ_I8(d, g.bLastSavedGameSlot)
-  UINT8 const music_volume = MusicGetVolume();
+  uint8_t const music_volume = MusicGetVolume();
   INJ_U8(d, music_volume)
-  UINT8 const sound_volume = GetSoundEffectsVolume();
+  uint8_t const sound_volume = GetSoundEffectsVolume();
   INJ_U8(d, sound_volume)
-  UINT8 const speech_volume = GetSpeechVolume();
+  uint8_t const speech_volume = GetSpeechVolume();
   INJ_U8(d, speech_volume)
   INJ_U8A(d, g.fOptions, lengthof(g.fOptions))
   INJ_STR(d, g_version_number, lengthof(g_version_number))
@@ -226,12 +226,12 @@ void DisplayGameSettings() {
   }
 }
 
-bool MeanwhileSceneSeen(UINT8 const meanwhile_id) {
+bool MeanwhileSceneSeen(uint8_t const meanwhile_id) {
   return meanwhile_id < NUM_MEANWHILES &&  // XXX assertion/exception?
          gGameSettings.uiMeanwhileScenesSeenFlags & (1U << meanwhile_id);
 }
 
-void SetMeanwhileSceneSeen(UINT8 const meanwhile_id) {
+void SetMeanwhileSceneSeen(uint8_t const meanwhile_id) {
   if (meanwhile_id >= NUM_MEANWHILES) return;  // XXX assertion/exception?
   gGameSettings.uiMeanwhileScenesSeenFlags |= 1U << meanwhile_id;
 }

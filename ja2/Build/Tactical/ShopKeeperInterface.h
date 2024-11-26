@@ -31,21 +31,21 @@ enum {
 
 struct INVENTORY_IN_SLOT {
   BOOLEAN fActive;
-  INT16 sItemIndex;
-  UINT32 uiFlags;
+  int16_t sItemIndex;
+  uint32_t uiFlags;
   OBJECTTYPE ItemObject;
-  UINT8 ubLocationOfObject;  // An enum value for the location of the item (
-                             // either in the arms dealers inventory, one of the
-                             // offer areas or in the users inventory)
-  INT8 bSlotIdInOtherLocation;
+  uint8_t ubLocationOfObject;  // An enum value for the location of the item (
+                               // either in the arms dealers inventory, one of the
+                               // offer areas or in the users inventory)
+  int8_t bSlotIdInOtherLocation;
 
-  UINT8 ubIdOfMercWhoOwnsTheItem;
-  UINT32 uiItemPrice;  // Only used for the players item that have been evaluated
+  uint8_t ubIdOfMercWhoOwnsTheItem;
+  uint32_t uiItemPrice;  // Only used for the players item that have been evaluated
 
-  INT16 sSpecialItemElement;  // refers to which special item element an item in
-                              // a dealer's inventory area occupies.  -1 Means
-                              // the item is "perfect" and has no associated
-                              // special item.
+  int16_t sSpecialItemElement;  // refers to which special item element an item in
+                                // a dealer's inventory area occupies.  -1 Means
+                                // the item is "perfect" and has no associated
+                                // special item.
 };
 
 enum {
@@ -54,7 +54,7 @@ enum {
   SKI_DIRTY_LEVEL2,  // redraw everything
 };
 
-extern UINT8 gubSkiDirtyLevel;
+extern uint8_t gubSkiDirtyLevel;
 
 extern const OBJECTTYPE *gpHighLightedItemObject;
 
@@ -66,21 +66,21 @@ void ShopKeeperScreenInit();
 ScreenID ShopKeeperScreenHandle();
 void ShopKeeperScreenShutdown();
 
-void EnterShopKeeperInterfaceScreen(UINT8 ubArmsDealer);
+void EnterShopKeeperInterfaceScreen(uint8_t ubArmsDealer);
 
-void DrawHatchOnInventory(SGPVSurface *dst, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth,
-                          UINT16 usHeight);
-BOOLEAN ShouldSoldierDisplayHatchOnItem(UINT8 ubProfileID, INT16 sSlotNum);
+void DrawHatchOnInventory(SGPVSurface *dst, uint16_t usPosX, uint16_t usPosY, uint16_t usWidth,
+                          uint16_t usHeight);
+BOOLEAN ShouldSoldierDisplayHatchOnItem(uint8_t ubProfileID, int16_t sSlotNum);
 void ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack(MessageBoxReturnValue);
 void ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(MessageBoxReturnValue);
 
-void SetSkiCursor(UINT16 usCursor);
+void SetSkiCursor(uint16_t usCursor);
 
 void InitShopKeeperSubTitledText(const wchar_t *pString);
 
-void AddItemToPlayersOfferAreaAfterShopKeeperOpen(OBJECTTYPE *pItemObject, INT8 bPreviousInvPos);
+void AddItemToPlayersOfferAreaAfterShopKeeperOpen(OBJECTTYPE *pItemObject, int8_t bPreviousInvPos);
 
-void BeginSkiItemPointer(UINT8 ubSource, INT8 bSlotNum, BOOLEAN fOfferToDealerFirst);
+void BeginSkiItemPointer(uint8_t ubSource, int8_t bSlotNum, BOOLEAN fOfferToDealerFirst);
 
 void DeleteShopKeeperItemDescBox();
 

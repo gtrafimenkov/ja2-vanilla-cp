@@ -17,8 +17,8 @@
 enum FileSeekMode { FILE_SEEK_FROM_START, FILE_SEEK_FROM_END, FILE_SEEK_FROM_CURRENT };
 
 struct SGP_FILETIME {
-  UINT32 Lo;
-  UINT32 Hi;
+  uint32_t Lo;
+  uint32_t Hi;
 };
 
 void InitializeFileManager(const char *exeFolder);
@@ -41,10 +41,10 @@ static inline void FileWriteArray(HWFILE const f, T const &n, U const *const dat
   if (n != 0) FileWrite(f, data, sizeof(*data) * n);
 }
 
-void FileSeek(HWFILE, INT32 distance, FileSeekMode);
-INT32 FileGetPos(HWFILE);
+void FileSeek(HWFILE, int32_t distance, FileSeekMode);
+int32_t FileGetPos(HWFILE);
 
-UINT32 FileGetSize(HWFILE);
+uint32_t FileGetSize(HWFILE);
 
 /* Removes ALL FILES in the specified directory, but leaves the directory alone.
  * Does not affect any subdirectories! */
@@ -70,8 +70,8 @@ BOOLEAN GetFileManFileTime(HWFILE hFile, SGP_FILETIME *pCreationTime,
  * -  0 First file time is equal to second file time.
  * - +1 First file time is greater than second file time (first file is newer).
  */
-INT32 CompareSGPFileTimes(const SGP_FILETIME *const pFirstFileTime,
-                          const SGP_FILETIME *const pSecondFileTime);
+int32_t CompareSGPFileTimes(const SGP_FILETIME *const pFirstFileTime,
+                            const SGP_FILETIME *const pSecondFileTime);
 
 /* Pass in the Fileman file handle of an OPEN file and it will return..
  * - if its a Real File, the return will be the handle of the REAL file
@@ -80,7 +80,7 @@ FILE *GetRealFileHandleFromFileManFileHandle(HWFILE hFile);
 
 // Gets the amount of free space on the hard drive that the main executeablt is
 // runnning from
-UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
+uint32_t GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
 typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
 

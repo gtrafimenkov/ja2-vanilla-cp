@@ -3,8 +3,8 @@
 #include "SGP/Debug.h"
 #include "SGP/LoadSaveData.h"
 
-const BYTE *ExtractObject(const BYTE *const data, OBJECTTYPE *const o) {
-  const BYTE *d = data;
+const uint8_t *ExtractObject(const uint8_t *const data, OBJECTTYPE *const o) {
+  const uint8_t *d = data;
   EXTR_U16(d, o->usItem)
   EXTR_U8(d, o->ubNumberOfObjects)
   EXTR_SKIP(d, 1)
@@ -96,8 +96,8 @@ const BYTE *ExtractObject(const BYTE *const data, OBJECTTYPE *const o) {
   return d;
 }
 
-BYTE *InjectObject(BYTE *const data, const OBJECTTYPE *const o) {
-  BYTE *d = data;
+uint8_t *InjectObject(uint8_t *const data, const OBJECTTYPE *const o) {
+  uint8_t *d = data;
   INJ_U16(d, o->usItem)
   INJ_U8(d, o->ubNumberOfObjects)
   INJ_SKIP(d, 1)

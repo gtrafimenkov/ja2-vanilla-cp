@@ -40,17 +40,17 @@
 // This value is used to keep a small static array of uBID's which are stacked
 #define MAX_STACKED_MERCS 10
 
-static const UINT32 gScrollSlideInertiaDirection[NUM_WORLD_DIRECTIONS] = {
+static const uint32_t gScrollSlideInertiaDirection[NUM_WORLD_DIRECTIONS] = {
     3, 0, 0, 0, 0, 0, 3, 3,
 };
 
 // Struct used for cycling through multiple mercs per mouse position
 struct SOLDIER_STACK_TYPE {
-  INT8 bNum;
+  int8_t bNum;
   SOLDIERTYPE *mercs[MAX_STACKED_MERCS];
-  INT8 bCur;
+  int8_t bCur;
   BOOLEAN fUseGridNo;
-  UINT16 sUseGridNoGridNo;
+  uint16_t sUseGridNoGridNo;
 };
 
 static SOLDIER_STACK_TYPE gSoldierStack;
@@ -99,7 +99,7 @@ SoldierFindFlags GetSoldierFindFlags(SOLDIERTYPE const &s) {
 static void GetSoldierScreenRect(const SOLDIERTYPE *pSoldier, SGPRect *pRect);
 
 // This function is called fairly regularly
-SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
+SOLDIERTYPE *FindSoldier(GridNo const gridno, uint32_t flags) {
   if (IsKeyDown(SHIFT)) flags = FIND_SOLDIER_GRIDNO;
 
   if (flags & FIND_SOLDIER_BEGINSTACK) {
@@ -107,7 +107,7 @@ SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
     gSoldierStack.fUseGridNo = FALSE;
   }
 
-  INT16 heighest_merc_screen_y = -32000;
+  int16_t heighest_merc_screen_y = -32000;
   SOLDIERTYPE *best_merc = 0;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE &s = **i;
@@ -120,15 +120,15 @@ SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
 
     // If we want same level, skip if soldier is not on the same level
     if (flags & FIND_SOLDIER_SAMELEVEL) {
-      if (s.bLevel != (UINT8)(flags >> 16)) continue;
+      if (s.bLevel != (uint8_t)(flags >> 16)) continue;
     }
 
     if (!(flags & FIND_SOLDIER_GRIDNO)) {
       SGPRect soldier_rect;
       GetSoldierScreenRect(&s, &soldier_rect);
 
-      INT16 const screen_x = gusMouseXPos;
-      INT16 const screen_y = gusMouseYPos;
+      int16_t const screen_x = gusMouseXPos;
+      int16_t const screen_y = gusMouseYPos;
 
       bool in_screen_rect = IsPointInScreenRect(screen_x, screen_y, soldier_rect);
 
@@ -153,10 +153,10 @@ SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
 
       // Check if we are a vehicle and refine if so
       if (s.uiStatusFlags & SOLDIER_VEHICLE) {
-        UINT16 const anim_surface = GetSoldierAnimationSurface(&s);
+        uint16_t const anim_surface = GetSoldierAnimationSurface(&s);
         if (anim_surface != INVALID_ANIMATION_SURFACE) {
-          INT32 const merc_screen_x = screen_x - soldier_rect.iLeft;
-          INT32 const merc_screen_y = -(screen_y - soldier_rect.iBottom);
+          int32_t const merc_screen_x = screen_x - soldier_rect.iLeft;
+          int32_t const merc_screen_y = -(screen_y - soldier_rect.iBottom);
           if (!CheckVideoObjectScreenCoordinateInData(
                   gAnimSurfaceDatabase[anim_surface].hVideoObject, s.usAniFrame, merc_screen_x,
                   merc_screen_y)) {
@@ -213,7 +213,7 @@ SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
   return 0;
 }
 
-BOOLEAN CycleSoldierFindStack(UINT16 usMapPos) {
+BOOLEAN CycleSoldierFindStack(uint16_t usMapPos) {
   // Have we initalized for this yet?
   if (!gfHandleStack && FindSoldier(usMapPos, FINDSOLDIERSAMELEVEL(gsInterfaceLevel) |
                                                   FIND_SOLDIER_BEGINSTACK) != NULL) {
@@ -269,7 +269,7 @@ BOOLEAN IsValidTargetMerc(const SOLDIERTYPE *const s) {
 }
 
 static void GetSoldierScreenRect(const SOLDIERTYPE *const pSoldier, SGPRect *const pRect) {
-  INT16 sMercScreenX, sMercScreenY;
+  int16_t sMercScreenX, sMercScreenY;
 
   GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
 
@@ -279,17 +279,17 @@ static void GetSoldierScreenRect(const SOLDIERTYPE *const pSoldier, SGPRect *con
   pRect->iRight = sMercScreenX + pSoldier->sBoundingBoxWidth;
 }
 
-void GetSoldierScreenPos(const SOLDIERTYPE *const s, INT16 *const psScreenX,
-                         INT16 *const psScreenY) {
+void GetSoldierScreenPos(const SOLDIERTYPE *const s, int16_t *const psScreenX,
+                         int16_t *const psScreenY) {
   GetSoldierTRUEScreenPos(s, psScreenX, psScreenY);
   *psScreenX += s->sBoundingBoxOffsetX;
   *psScreenY += s->sBoundingBoxOffsetY;
 }
 
 // THE TRUE SCREN RECT DOES NOT TAKE THE OFFSETS OF BUDDY INTO ACCOUNT!
-void GetSoldierTRUEScreenPos(const SOLDIERTYPE *const s, INT16 *const psScreenX,
-                             INT16 *const psScreenY) {
-  UINT16 const usAnimSurface = GetSoldierAnimationSurface(s);
+void GetSoldierTRUEScreenPos(const SOLDIERTYPE *const s, int16_t *const psScreenX,
+                             int16_t *const psScreenY) {
+  uint16_t const usAnimSurface = GetSoldierAnimationSurface(s);
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     *psScreenX = 0;
     *psScreenY = 0;
@@ -297,15 +297,15 @@ void GetSoldierTRUEScreenPos(const SOLDIERTYPE *const s, INT16 *const psScreenX,
   }
 
   // Get 'TRUE' merc position
-  FLOAT const dOffsetX = s->dXPos - gsRenderCenterX;
-  FLOAT const dOffsetY = s->dYPos - gsRenderCenterY;
+  float const dOffsetX = s->dXPos - gsRenderCenterX;
+  float const dOffsetY = s->dYPos - gsRenderCenterY;
 
-  FLOAT dTempX_S;
-  FLOAT dTempY_S;
+  float dTempX_S;
+  float dTempY_S;
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  INT16 sMercScreenX = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (INT16)dTempX_S;
-  INT16 sMercScreenY = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (INT16)dTempY_S;
+  int16_t sMercScreenX = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2 + (int16_t)dTempX_S;
+  int16_t sMercScreenY = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2 + (int16_t)dTempY_S;
 
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
@@ -322,10 +322,10 @@ void GetSoldierTRUEScreenPos(const SOLDIERTYPE *const s, INT16 *const psScreenX,
 }
 
 bool GridNoOnScreen(GridNo const gridno) {
-  INT16 world_x;
-  INT16 world_y;
+  int16_t world_x;
+  int16_t world_y;
   GetAbsoluteScreenXYFromMapPos(gridno, &world_x, &world_y);
-  INT16 const allowance = gsVIEWPORT_WINDOW_START_Y == 20 ? 40 : 20;
+  int16_t const allowance = gsVIEWPORT_WINDOW_START_Y == 20 ? 40 : 20;
   /* ATE: Adjust the top value so that it's a tile and a bit over, because of
    * our mercs. */
   return gsTopLeftWorldX <= world_x && world_x <= gsBottomRightWorldX &&
@@ -334,13 +334,13 @@ bool GridNoOnScreen(GridNo const gridno) {
 
 BOOLEAN SoldierOnScreen(const SOLDIERTYPE *s) { return GridNoOnScreen(s->sGridNo); }
 
-BOOLEAN SoldierLocationRelativeToScreen(const INT16 sGridNo, INT8 *const pbDirection,
-                                        UINT32 *const puiScrollFlags) {
-  INT16 sWorldX;
-  INT16 sWorldY;
+BOOLEAN SoldierLocationRelativeToScreen(const int16_t sGridNo, int8_t *const pbDirection,
+                                        uint32_t *const puiScrollFlags) {
+  int16_t sWorldX;
+  int16_t sWorldY;
   static BOOLEAN fCountdown = 0;
-  INT16 sScreenCenterX, sScreenCenterY;
-  INT16 sDistToCenterY, sDistToCenterX;
+  int16_t sScreenCenterX, sScreenCenterY;
+  int16_t sDistToCenterY, sDistToCenterX;
 
   *puiScrollFlags = 0;
 
@@ -395,7 +395,7 @@ BOOLEAN SoldierLocationRelativeToScreen(const INT16 sGridNo, INT8 *const pbDirec
   return (TRUE);
 }
 
-BOOLEAN IsPointInSoldierBoundingBox(SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY) {
+BOOLEAN IsPointInSoldierBoundingBox(SOLDIERTYPE *pSoldier, int16_t sX, int16_t sY) {
   SGPRect aRect;
 
   // Get Rect contained in the soldier
@@ -404,17 +404,17 @@ BOOLEAN IsPointInSoldierBoundingBox(SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY) {
   return IsPointInScreenRect(sX, sY, aRect);
 }
 
-UINT16 FindRelativeSoldierPosition(const SOLDIERTYPE *const pSoldier, const INT16 sX,
-                                   const INT16 sY) {
+uint16_t FindRelativeSoldierPosition(const SOLDIERTYPE *const pSoldier, const int16_t sX,
+                                     const int16_t sY) {
   SGPRect aRect;
-  INT16 sRelX, sRelY;
-  FLOAT dRelPer;
+  int16_t sRelX, sRelY;
+  float dRelPer;
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, &aRect);
 
   if (IsPointInScreenRectWithRelative(sX, sY, &aRect, &sRelX, &sRelY)) {
-    dRelPer = (FLOAT)sRelY / (aRect.iBottom - aRect.iTop);
+    dRelPer = (float)sRelY / (aRect.iBottom - aRect.iTop);
 
     // Determine relative positions
     switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
@@ -433,22 +433,22 @@ UINT16 FindRelativeSoldierPosition(const SOLDIERTYPE *const pSoldier, const INT1
   return 0;
 }
 
-void GetGridNoScreenPos(INT16 sGridNo, UINT8 ubLevel, INT16 *psScreenX, INT16 *psScreenY) {
-  INT16 sScreenX, sScreenY;
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
+void GetGridNoScreenPos(int16_t sGridNo, uint8_t ubLevel, int16_t *psScreenX, int16_t *psScreenY) {
+  int16_t sScreenX, sScreenY;
+  float dOffsetX, dOffsetY;
+  float dTempX_S, dTempY_S;
 
   // Get 'TRUE' merc position
-  dOffsetX = (FLOAT)(CenterX(sGridNo) - gsRenderCenterX);
-  dOffsetY = (FLOAT)(CenterY(sGridNo) - gsRenderCenterY);
+  dOffsetX = (float)(CenterX(sGridNo) - gsRenderCenterX);
+  dOffsetY = (float)(CenterY(sGridNo) - gsRenderCenterY);
 
   // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
   dOffsetX -= CELL_Y_SIZE;
 
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S;
+  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (int16_t)dTempX_S;
+  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (int16_t)dTempY_S;
 
   // Adjust starting screen coordinates
   sScreenX -= gsRenderWorldOffsetX;

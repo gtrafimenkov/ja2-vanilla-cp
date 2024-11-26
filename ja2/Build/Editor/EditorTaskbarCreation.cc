@@ -18,7 +18,7 @@
 #include "Utils/FontControl.h"
 
 static void InitEditorItemStatsButtons() {
-  INT16 const y = TASKBAR_Y;
+  int16_t const y = TASKBAR_Y;
   iEditorButton[ITEMSTATS_PANEL] =
       CreateLabel(NULL, 0, 0, 0, 480, y + 1, 160, 99, MSYS_PRIORITY_NORMAL);
   iEditorButton[ITEMSTATS_HIDDEN_BTN] = CreateCheckBoxButton(
@@ -28,7 +28,7 @@ static void InitEditorItemStatsButtons() {
                        MSYS_PRIORITY_NORMAL + 1, ItemStatsDeleteCallback);
 }
 
-static void MakeButton(UINT idx, INT16 x, INT16 y, GUI_CALLBACK click, const char *gfx,
+static void MakeButton(uint32_t idx, int16_t x, int16_t y, GUI_CALLBACK click, const char *gfx,
                        const wchar_t *help) {
   GUIButtonRef const btn =
       QuickCreateButtonImg(gfx, -1, 1, 2, 3, 4, x, TASKBAR_Y + y, MSYS_PRIORITY_NORMAL, click);
@@ -37,33 +37,33 @@ static void MakeButton(UINT idx, INT16 x, INT16 y, GUI_CALLBACK click, const cha
   btn->SetFastHelpText(help);
 }
 
-static void MakeCheck(UINT idx, INT16 x, INT16 y, GUI_CALLBACK click, const char *gfx,
+static void MakeCheck(uint32_t idx, int16_t x, int16_t y, GUI_CALLBACK click, const char *gfx,
                       const wchar_t *help) {
   GUIButtonRef const btn = CreateCheckBoxButton(x, TASKBAR_Y + y, gfx, MSYS_PRIORITY_NORMAL, click);
   iEditorButton[idx] = btn;
   btn->SetFastHelpText(help);
 }
 
-static GUIButtonRef MakeRadio(INT16 const x, INT16 const y, GUI_CALLBACK const click) {
+static GUIButtonRef MakeRadio(int16_t const x, int16_t const y, GUI_CALLBACK const click) {
   return CreateCheckBoxButton(x, TASKBAR_Y + y, EDITORDIR "/radiobutton.sti", MSYS_PRIORITY_NORMAL,
                               click);
 }
 
-static void MakeButtonTeam(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t *text) {
+static void MakeButtonTeam(uint32_t idx, int16_t y, GUI_CALLBACK click, const wchar_t *text) {
   GUIButtonRef const btn = CreateTextButton(text, BLOCKFONT, 165, FONT_BLACK, 20, TASKBAR_Y + y, 78,
                                             19, MSYS_PRIORITY_NORMAL, click);
   iEditorButton[idx] = btn;
   btn->SpecifyDownTextColors(FONT_YELLOW, FONT_BLACK);
 }
 
-static GUIButtonRef MakeTextButton(wchar_t const *const text, INT16 const fore_colour,
-                                   INT16 const x, INT16 const y, INT16 const w, INT16 const h,
-                                   GUI_CALLBACK const click) {
+static GUIButtonRef MakeTextButton(wchar_t const *const text, int16_t const fore_colour,
+                                   int16_t const x, int16_t const y, int16_t const w,
+                                   int16_t const h, GUI_CALLBACK const click) {
   return CreateTextButton(text, SMALLCOMPFONT, fore_colour, FONT_BLACK, x, TASKBAR_Y + y, w, h,
                           MSYS_PRIORITY_NORMAL, click);
 }
 
-static void MakeButtonEquipment(UINT idx, UINT level, INT16 colour, const wchar_t *text) {
+static void MakeButtonEquipment(uint32_t idx, uint32_t level, int16_t colour, const wchar_t *text) {
   GUIButtonRef const btn = MakeTextButton(text, FONT_GRAY1, 480, 20 + 15 * level, 40, 15,
                                           MercsSetRelativeEquipmentCallback);
   iEditorButton[idx] = btn;
@@ -71,7 +71,7 @@ static void MakeButtonEquipment(UINT idx, UINT level, INT16 colour, const wchar_
   btn->SetUserData(level);
 }
 
-static void MakeButtonAttribute(UINT idx, UINT level, INT16 colour, const wchar_t *text) {
+static void MakeButtonAttribute(uint32_t idx, uint32_t level, int16_t colour, const wchar_t *text) {
   GUIButtonRef const btn = MakeTextButton(text, FONT_GRAY1, 530, TASKBAR_Y + 20 + 15 * level, 40,
                                           15, MercsSetRelativeAttributesCallback);
   iEditorButton[idx] = btn;
@@ -79,7 +79,7 @@ static void MakeButtonAttribute(UINT idx, UINT level, INT16 colour, const wchar_
   btn->SetUserData(level);
 }
 
-static void MakeButtonDir(UINT idx, UINT dir, INT16 x, INT16 y) {
+static void MakeButtonDir(uint32_t idx, uint32_t dir, int16_t x, int16_t y) {
   const wchar_t *const FaceDirs[] = {L"north", L"northeast", L"east", L"southeast",
                                      L"south", L"southwest", L"west", L"northwest"};
 
@@ -93,19 +93,19 @@ static void MakeButtonDir(UINT idx, UINT dir, INT16 x, INT16 y) {
   btn->SetUserData(dir);
 }
 
-static void MakeButtonRank(UINT idx, INT16 y, INT32 rank) {
+static void MakeButtonRank(uint32_t idx, int16_t y, int32_t rank) {
   GUIButtonRef const btn = MakeRadio(575, y, MercsSetEnemyColorCodeCallback);
   iEditorButton[idx] = btn;
   btn->SetUserData(rank);
 }
 
-static void MakeButtonSchedule(UINT idx, INT16 x, INT16 y, INT16 w, INT16 h, GUI_CALLBACK click,
-                               const wchar_t *text) {
+static void MakeButtonSchedule(uint32_t idx, int16_t x, int16_t y, int16_t w, int16_t h,
+                               GUI_CALLBACK click, const wchar_t *text) {
   iEditorButton[idx] = CreateTextButton(text, FONT10ARIAL, FONT_YELLOW, FONT_BLACK, x,
                                         TASKBAR_Y + y, w, h, MSYS_PRIORITY_NORMAL, click);
 }
 
-static void MakeButtonInventory(UINT idx, INT16 x, INT16 y, INT32 pos) {
+static void MakeButtonInventory(uint32_t idx, int16_t x, int16_t y, int32_t pos) {
   GUIButtonRef const btn = CreateCheckBoxButton(
       x, y, EDITORDIR "/smcheckbox.sti", MSYS_PRIORITY_NORMAL + 1, MercsInventorySlotCallback);
   iEditorButton[idx] = btn;
@@ -137,7 +137,7 @@ static void InitEditorMercsToolbar() {
   MakeButtonTeam(MERCS_REBEL, 62, MercsRebelTeamCallback, L"Rebels");
   MakeButtonTeam(MERCS_CIVILIAN, 82, MercsCivilianTeamCallback, L"Civilian");
 
-  INT16 const y = TASKBAR_Y;
+  int16_t const y = TASKBAR_Y;
 
   iEditorButton[MERCS_1] = CreateLabel(L"DETAILED PLACEMENT", SMALLCOMPFONT, FONT_ORANGE, 60, 100,
                                        y + 2, 68, 20, MSYS_PRIORITY_NORMAL);
@@ -196,7 +196,7 @@ static void InitEditorMercsToolbar() {
       MakeTextButton(L"POINT PATROL", FONT_GRAY2, 270, 32, 70, 12, MercsSetOrdersCallback);
   iEditorButton[MERCS_ORDERS_RNDPTPATROL] =
       MakeTextButton(L"RND PT PATROL", FONT_GRAY2, 270, 44, 70, 12, MercsSetOrdersCallback);
-  for (INT32 x = 0; x < 8; x++) {
+  for (int32_t x = 0; x < 8; x++) {
     iEditorButton[FIRST_MERCS_ORDERS_BUTTON + x]->SetUserData(x);
   }
 
@@ -213,7 +213,7 @@ static void InitEditorMercsToolbar() {
       MakeTextButton(L"CUNNING SOLO", FONT_GRAY4, 270, 76, 70, 12, MercsSetAttitudeCallback);
   iEditorButton[MERCS_ATTITUDE_CUNNINGAID] =
       MakeTextButton(L"CUNNING AID", FONT_GRAY4, 270, 88, 70, 12, MercsSetAttitudeCallback);
-  for (INT32 x = 0; x < 6; x++) {
+  for (int32_t x = 0; x < 6; x++) {
     iEditorButton[FIRST_MERCS_ATTITUDE_BUTTON + x]->SetUserData(x);
   }
 
@@ -252,9 +252,9 @@ static void InitEditorMercsToolbar() {
 
   iEditorButton[MERCS_TOGGLECOLOR_BUTTON] = CreateCheckBoxButton(
       180, y + 4, EDITORDIR "/checkbox.sti", MSYS_PRIORITY_NORMAL, MercsToggleColorModeCallback);
-  for (INT32 i = 0; i != 4; ++i) {
-    UINT const idx = FIRST_MERCS_COLOR_BUTTON + 2 * i;
-    INT16 const y = 4 + 24 * i;
+  for (int32_t i = 0; i != 4; ++i) {
+    uint32_t const idx = FIRST_MERCS_COLOR_BUTTON + 2 * i;
+    int16_t const y = 4 + 24 * i;
     MakeButton(idx, 200, y, MercsSetColorsCallback, EDITORDIR "/leftarrow.sti",
                L"Previous color set");
     MakeButton(idx + 1, 360, y, MercsSetColorsCallback, EDITORDIR "/rightarrow.sti",
@@ -377,7 +377,7 @@ static void InitEditorBuildingsToolbar() {
 }
 
 static void InitEditorItemsToolbar() {
-  INT16 const y = TASKBAR_Y;
+  int16_t const y = TASKBAR_Y;
   iEditorButton[ITEMS_WEAPONS] =
       CreateTextButton(L"Weapons", BLOCKFONT, FONT_MCOLOR_DKWHITE, FONT_BLACK, 100, y + 80, 59, 20,
                        MSYS_PRIORITY_NORMAL, ItemsWeaponsCallback);
@@ -415,7 +415,7 @@ static void InitEditorMapInfoToolbar() {
   MakeButton(MAPINFO_ADD_LIGHT1_SOURCE, 10, 2, BtnDrawLightsCallback, EDITORDIR "/light.sti",
              L"Add ambient light source");
 
-  INT16 const y = TASKBAR_Y;
+  int16_t const y = TASKBAR_Y;
   iEditorButton[MAPINFO_LIGHT_PANEL] =
       CreateLabel(NULL, 0, 0, 0, 45, y + 2, 60, 50, MSYS_PRIORITY_NORMAL);
   iEditorButton[MAPINFO_PRIMETIME_LIGHT] = MakeRadio(48, 5, MapInfoPrimeTimeRadioCallback);
@@ -496,7 +496,7 @@ static void InitEditorTerrainToolbar() {
              L"Lower brush density");
 }
 
-static void MakeButtonTab(UINT idx, INT16 x, GUI_CALLBACK click, const wchar_t *text) {
+static void MakeButtonTab(uint32_t idx, int16_t x, GUI_CALLBACK click, const wchar_t *text) {
   GUIButtonRef const btn = CreateTextButton(text, SMALLFONT1, FONT_LTKHAKI, FONT_DKKHAKI, x,
                                             TASKBAR_Y + 100, 90, 20, MSYS_PRIORITY_HIGH, click);
   iEditorButton[idx] = btn;

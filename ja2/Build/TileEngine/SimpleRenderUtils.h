@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-void MarkMapIndexDirty(INT32 iMapIndex);
-void CenterScreenAtMapIndex(INT32 iMapIndex);
+void MarkMapIndexDirty(int32_t iMapIndex);
+void CenterScreenAtMapIndex(int32_t iMapIndex);
 void MarkWorldDirty();
 
 #endif

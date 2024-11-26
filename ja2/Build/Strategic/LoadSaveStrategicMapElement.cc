@@ -5,10 +5,10 @@
 #include "SGP/LoadSaveData.h"
 
 void ExtractStrategicMapElementFromFile(HWFILE const f, StrategicMapElement &e) {
-  BYTE data[41];
+  uint8_t data[41];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_SKIP(d, 16)
   EXTR_I8(d, e.bNameId)
   EXTR_BOOL(d, e.fEnemyControlled)
@@ -20,8 +20,8 @@ void ExtractStrategicMapElementFromFile(HWFILE const f, StrategicMapElement &e) 
 }
 
 void InjectStrategicMapElementIntoFile(HWFILE const f, StrategicMapElement const &e) {
-  BYTE data[41];
-  BYTE *d = data;
+  uint8_t data[41];
+  uint8_t *d = data;
   INJ_SKIP(d, 16)
   INJ_I8(d, e.bNameId)
   INJ_BOOL(d, e.fEnemyControlled)

@@ -8,14 +8,14 @@ struct SLIDER;
 // defines for the different styles of sliders
 enum { SLIDER_DEFAULT_STYLE, SLIDER_VERTICAL_STEEL, NUM_SLIDER_STYLES };
 
-typedef void (*SLIDER_CHANGE_CALLBACK)(INT32);
+typedef void (*SLIDER_CHANGE_CALLBACK)(int32_t);
 
-SLIDER *AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth,
-                  UINT16 usNumberOfIncrements, INT8 sPriority,
+SLIDER *AddSlider(uint8_t ubStyle, uint16_t usCursor, uint16_t usPosX, uint16_t usPosY,
+                  uint16_t usWidth, uint16_t usNumberOfIncrements, int8_t sPriority,
                   SLIDER_CHANGE_CALLBACK SliderChangeCallback);
 void RemoveSliderBar(SLIDER *s);
 
-void SetSliderValue(SLIDER *s, UINT32 uiNewValue);
+void SetSliderValue(SLIDER *s, uint32_t uiNewValue);
 
 void InitSlider();
 void ShutDownSlider();

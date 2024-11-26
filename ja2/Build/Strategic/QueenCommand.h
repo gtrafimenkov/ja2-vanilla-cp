@@ -8,15 +8,15 @@
 extern BOOLEAN gfPendingEnemies;
 
 // Counts enemies and crepitus, but not bloodcats.
-UINT8 NumHostilesInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
+uint8_t NumHostilesInSector(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ);
 
-UINT8 NumEnemiesInAnySector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
+uint8_t NumEnemiesInAnySector(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ);
 
-UINT8 NumEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
-UINT8 NumStationaryEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
-UINT8 NumMobileEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
-void GetNumberOfEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdmins,
-                                UINT8 *pubNumTroops, UINT8 *pubNumElites);
+uint8_t NumEnemiesInSector(int16_t sSectorX, int16_t sSectorY);
+uint8_t NumStationaryEnemiesInSector(int16_t sSectorX, int16_t sSectorY);
+uint8_t NumMobileEnemiesInSector(int16_t sSectorX, int16_t sSectorY);
+void GetNumberOfEnemiesInSector(int16_t sSectorX, int16_t sSectorY, uint8_t *pubNumAdmins,
+                                uint8_t *pubNumTroops, uint8_t *pubNumElites);
 
 /* Called when entering a sector so the campaign AI can automatically insert the
  * correct number of troops of each type based on the current number in the
@@ -33,16 +33,16 @@ void LoadUnderGroundSectorInfoFromSavedGame(HWFILE);
 
 // Finds and returns the specified underground structure ( DONT MODIFY IT ).
 // Else returns NULL
-UNDERGROUND_SECTORINFO *FindUnderGroundSector(INT16 sMapX, INT16 sMapY, UINT8 bMapZ);
+UNDERGROUND_SECTORINFO *FindUnderGroundSector(int16_t sMapX, int16_t sMapY, uint8_t bMapZ);
 
 void EnemyCapturesPlayerSoldier(SOLDIERTYPE *pSoldier);
 void BeginCaptureSquence();
 void EndCaptureSequence();
 
-BOOLEAN PlayerSectorDefended(UINT8 ubSectorID);
+BOOLEAN PlayerSectorDefended(uint8_t ubSectorID);
 
 BOOLEAN OnlyHostileCivsInSector();
 
-extern INT16 gsInterrogationGridNo[3];
+extern int16_t gsInterrogationGridNo[3];
 
 #endif

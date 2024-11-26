@@ -61,13 +61,13 @@ enum UI_MODE {
 struct UI_EVENT {
   typedef ScreenID (*UI_HANDLEFNC)(UI_EVENT *);
 
-  UINT32 uiFlags;
+  uint32_t uiFlags;
   UI_MODE ChangeToUIMode;
   UI_HANDLEFNC HandleEvent;
   BOOLEAN fFirstTime;
   BOOLEAN fDoneMenu;
   UI_MODE uiMenuPreviousMode;
-  UINT32 uiParams[3];
+  uint32_t uiParams[3];
 };
 
 // EVENT ENUMERATION
@@ -152,7 +152,7 @@ typedef BOOLEAN (*UIKEYBOARD_HOOK)(InputAtom *pInputEvent);
 extern UI_MODE gCurrentUIMode;
 extern UIEventKind guiCurrentEvent;
 extern UICursorID guiCurrentUICursor;
-extern INT16 gsSelectedLevel;
+extern int16_t gsSelectedLevel;
 extern BOOLEAN gfPlotNewMovement;
 extern UIEventKind guiPendingOverrideEvent;
 
@@ -161,11 +161,11 @@ extern BOOLEAN gfUIDisplayActionPoints;
 extern BOOLEAN gfUIDisplayActionPointsInvalid;
 extern BOOLEAN gfUIDisplayActionPointsBlack;
 extern BOOLEAN gfUIDisplayActionPointsCenter;
-extern INT16 gUIDisplayActionPointsOffY;
-extern INT16 gUIDisplayActionPointsOffX;
-extern UINT32 guiShowUPDownArrows;
+extern int16_t gUIDisplayActionPointsOffY;
+extern int16_t gUIDisplayActionPointsOffX;
+extern uint32_t guiShowUPDownArrows;
 extern BOOLEAN gfUIHandleSelection;
-extern INT16 gsSelectedGridNo;
+extern int16_t gsSelectedGridNo;
 extern SOLDIERTYPE *gSelectedGuy;
 
 extern BOOLEAN gfUIMouseOnValidCatcher;
@@ -173,7 +173,7 @@ extern const SOLDIERTYPE *gUIValidCatcher;
 extern BOOLEAN gUIUseReverse;
 
 extern BOOLEAN gfUIHandleShowMoveGrid;
-extern UINT16 gsUIHandleShowMoveGridLocation;
+extern uint16_t gsUIHandleShowMoveGridLocation;
 
 extern BOOLEAN gUITargetShotWaiting;
 
@@ -191,7 +191,7 @@ extern SOLDIERTYPE *gUIFullTarget;
 extern SoldierFindFlags guiUIFullTargetFlags;
 
 extern BOOLEAN gfUIConfirmExitArrows;
-extern INT16 gsJumpOverGridNo;
+extern int16_t gsJumpOverGridNo;
 
 ScreenID HandleTacticalUI();
 ScreenID UIHandleEndTurn(UI_EVENT *);
@@ -201,7 +201,7 @@ extern BOOLEAN gfUIShowCurIntTile;
 extern SGPRect gRubberBandRect;
 extern BOOLEAN gRubberBandActive;
 
-void EndMenuEvent(UINT32 uiEvent);
+void EndMenuEvent(uint32_t uiEvent);
 void SetUIKeyboardHook(UIKEYBOARD_HOOK KeyboardHookFnc);
 
 extern BOOLEAN gfUIForceReExamineCursorData;
@@ -212,7 +212,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent);
 
 void GetTBMouseButtonInput(UIEventKind *puiNewEvent);
 void GetTBMousePositionInput(UIEventKind *puiNewEvent);
-void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight);
+void HandleStanceChangeFromUIKeys(uint8_t ubAnimHeight);
 void HandleKeyInputOnEnemyTurn();
 
 BOOLEAN SelectedMercCanAffordAttack();
@@ -222,13 +222,13 @@ void ToggleHandCursorMode(UIEventKind *puiNewEvent);
 void ToggleTalkCursorMode(UIEventKind *puiNewEvent);
 void ToggleLookCursorMode();
 
-void UIHandleSoldierStanceChange(SOLDIERTYPE *s, INT8 bNewStance);
+void UIHandleSoldierStanceChange(SOLDIERTYPE *s, int8_t bNewStance);
 MouseMoveState GetCursorMovementFlags();
 
-BOOLEAN HandleUIMovementCursor(SOLDIERTYPE *, MouseMoveState, UINT16 usMapPos, MoveUITarget);
+BOOLEAN HandleUIMovementCursor(SOLDIERTYPE *, MouseMoveState, uint16_t usMapPos, MoveUITarget);
 bool UIMouseOnValidAttackLocation(SOLDIERTYPE *);
 
-BOOLEAN UIOkForItemPickup(SOLDIERTYPE *pSoldier, INT16 sGridNo);
+BOOLEAN UIOkForItemPickup(SOLDIERTYPE *pSoldier, int16_t sGridNo);
 
 SOLDIERTYPE *GetValidTalkableNPCFromMouse(BOOLEAN fGive, BOOLEAN fAllowMercs,
                                           BOOLEAN fCheckCollapsed);
@@ -244,14 +244,14 @@ void UnSetUIBusy(const SOLDIERTYPE *s);
 
 ScreenID UIHandleLUIEndLock(UI_EVENT *);
 
-void BeginDisplayTimedCursor(UICursorID, UINT32 uiDelay);
+void BeginDisplayTimedCursor(UICursorID, uint32_t uiDelay);
 
-void HandleHandCursorClick(UINT16 usMapPos, UIEventKind *puiNewEvent);
+void HandleHandCursorClick(uint16_t usMapPos, UIEventKind *puiNewEvent);
 
 ScreenID UIHandleChangeLevel(UI_EVENT *);
 BOOLEAN UIHandleOnMerc(BOOLEAN fMovementMode);
 
-void ChangeInterfaceLevel(INT16 sLevel);
+void ChangeInterfaceLevel(int16_t sLevel);
 
 void EndRubberBanding();
 void ResetMultiSelection();
@@ -263,12 +263,12 @@ BOOLEAN SelectedGuyInBusyAnimation();
 void GotoLowerStance(SOLDIERTYPE *);
 void GotoHigherStance(SOLDIERTYPE *);
 
-BOOLEAN IsValidJumpLocation(const SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckForPath);
+BOOLEAN IsValidJumpLocation(const SOLDIERTYPE *pSoldier, int16_t sGridNo, BOOLEAN fCheckForPath);
 
 void PopupAssignmentMenuInTactical();
 
 extern GridNo gfUIOverItemPoolGridNo;
-extern INT16 gsCurrentActionPoints;
+extern int16_t gsCurrentActionPoints;
 extern BOOLEAN fRightButtonDown;
 extern BOOLEAN fLeftButtonDown;
 extern BOOLEAN fIgnoreLeftUp;

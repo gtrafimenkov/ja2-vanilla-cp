@@ -77,7 +77,7 @@ void InitializeTacticalInterface();
 extern DirtyLevel fInterfacePanelDirty;
 extern BOOLEAN gfPausedTacticalRenderFlags;
 extern DirtyLevel gfPausedTacticalRenderInterfaceFlags;
-extern INT16 gsInterfaceLevel;
+extern int16_t gsInterfaceLevel;
 extern BOOLEAN gfInMovementMenu;
 
 void PopupMovementMenu(UI_EVENT *pUIEvent);
@@ -118,10 +118,10 @@ void EndUIMessage();
 void BeginUIMessage(BOOLEAN fUseSkullIcon, const wchar_t *text);
 
 // map screen version, for centering over the map area
-void BeginMapUIMessage(INT16 delta_y, const wchar_t *text);
+void BeginMapUIMessage(int16_t delta_y, const wchar_t *text);
 
 extern VIDEO_OVERLAY *g_ui_message_overlay;
-extern UINT32 guiUIMessageTime;
+extern uint32_t guiUIMessageTime;
 
 enum MESSAGE_TYPES {
   NO_MESSAGE,
@@ -137,14 +137,14 @@ void HandleTopMessages();
 void AddTopMessage(MESSAGE_TYPES ubType);
 void EndTopMessage();
 
-void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies);
+void InitEnemyUIBar(uint8_t ubNumEnemies, uint8_t ubDoneEnemies);
 
 const wchar_t *GetSoldierHealthString(const SOLDIERTYPE *s);
 
 void ResetPhysicsTrajectoryUI();
 void SetupPhysicsTrajectoryUI();
 void EndPhysicsTrajectoryUI();
-void BeginPhysicsTrajectoryUI(INT16 sGridNo, INT8 bLevel, BOOLEAN fBadCTGT);
+void BeginPhysicsTrajectoryUI(int16_t sGridNo, int8_t bLevel, BOOLEAN fBadCTGT);
 
 void InitPlayerUIBar(BOOLEAN fInterrupt);
 
@@ -152,16 +152,16 @@ void ToggleTacticalPanels();
 
 void DirtyTopMessage();
 
-void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel);
+void BeginMultiPurposeLocator(int16_t sGridNo, int8_t bLevel);
 void HandleMultiPurposeLocator();
 void RenderTopmostMultiPurposeLocator();
 
-void GetSoldierAboveGuyPositions(const SOLDIERTYPE *s, INT16 *psX, INT16 *psY, BOOLEAN fRadio);
+void GetSoldierAboveGuyPositions(const SOLDIERTYPE *s, int16_t *psX, int16_t *psY, BOOLEAN fRadio);
 
 void UpdateEnemyUIBar();
 
 extern BOOLEAN gfInOpenDoorMenu;
-extern UINT32 guiUIMessageTimeDelay;
+extern uint32_t guiUIMessageTimeDelay;
 extern BOOLEAN gfTopMessageDirty;
 
 #endif

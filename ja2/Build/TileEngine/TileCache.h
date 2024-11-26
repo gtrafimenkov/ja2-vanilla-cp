@@ -10,8 +10,8 @@
 struct TILE_CACHE_ELEMENT {
   char zName[128];         // Name of tile (filename and directory here)
   TILE_IMAGERY *pImagery;  // Tile imagery
-  INT16 sHits;
-  UINT8 ubNumFrames;
+  int16_t sHits;
+  uint8_t ubNumFrames;
   STRUCTURE_FILE_REF *struct_file_ref;
 };
 
@@ -20,14 +20,14 @@ extern TILE_CACHE_ELEMENT *gpTileCache;
 void InitTileCache();
 void DeleteTileCache();
 
-INT32 GetCachedTile(const char *cFilename);
-void RemoveCachedTile(INT32 cached_tile);
+int32_t GetCachedTile(const char *cFilename);
+void RemoveCachedTile(int32_t cached_tile);
 
 STRUCTURE_FILE_REF *GetCachedTileStructureRefFromFilename(const char *cFilename);
 
-void CheckForAndAddTileCacheStructInfo(LEVELNODE *pNode, INT16 sGridNo, UINT16 usIndex,
-                                       UINT16 usSubIndex);
-void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, UINT16 usIndex);
+void CheckForAndAddTileCacheStructInfo(LEVELNODE *pNode, int16_t sGridNo, uint16_t usIndex,
+                                       uint16_t usSubIndex);
+void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, uint16_t usIndex);
 void GetRootName(char *pDestStr, size_t n, char const *pSrcStr);
 
 // OF COURSE, FOR SPEED, WE EXPORT OUR ARRAY

@@ -75,7 +75,7 @@
 
 #define DECAY_SMELL_STRENGTH(s)                     \
   {                                                 \
-    UINT8 ubStrength = SMELL_STRENGTH((s));         \
+    uint8_t ubStrength = SMELL_STRENGTH((s));       \
     ubStrength--;                                   \
     ubStrength = ubStrength << SMELL_TYPE_NUM_BITS; \
     (s) = SMELL_TYPE_BITS((s)) | ubStrength;        \
@@ -100,7 +100,7 @@
 
 #define DECAY_BLOOD_FLOOR_STRENGTH(b)             \
   {                                               \
-    UINT8 ubFloorStrength;                        \
+    uint8_t ubFloorStrength;                      \
     ubFloorStrength = BLOOD_FLOOR_STRENGTH((b));  \
     ubFloorStrength--;                            \
     SET_BLOOD_FLOOR_STRENGTH(b, ubFloorStrength); \
@@ -108,14 +108,14 @@
 
 #define DECAY_BLOOD_ROOF_STRENGTH(b)             \
   {                                              \
-    UINT8 ubRoofStrength;                        \
+    uint8_t ubRoofStrength;                      \
     ubRoofStrength = BLOOD_ROOF_STRENGTH((b));   \
     ubRoofStrength--;                            \
     SET_BLOOD_FLOOR_STRENGTH(b, ubRoofStrength); \
   }
 
 #define SET_BLOOD_DELAY_TIME(b) \
-  { (b) = BLOOD_DELAY_TIME((UINT8)Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC); }
+  { (b) = BLOOD_DELAY_TIME((uint8_t)Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC); }
 
 #define SET_BLOOD_FLOOR_TYPE(s, ntg) \
   { (s) = BLOOD_FLOOR_TYPE(ntg) | (s & 0xFE); }
@@ -123,7 +123,7 @@
 #define SET_BLOOD_ROOF_TYPE(s, ntr) \
   { (s) = BLOOD_ROOF_TYPE(ntr) | (s & 0xFD); }
 
-void RemoveBlood(GridNo const gridno, INT8 const level) {
+void RemoveBlood(GridNo const gridno, int8_t const level) {
   MAP_ELEMENT &me = gpWorldLevelData[gridno];
   me.ubBloodInfo = 0;
   me.uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
@@ -132,7 +132,7 @@ void RemoveBlood(GridNo const gridno, INT8 const level) {
 
 void DecaySmells() {
   FOR_EACH_WORLD_TILE(i) {
-    UINT8 &smell = i->ubSmellInfo;
+    uint8_t &smell = i->ubSmellInfo;
     if (smell == 0) continue;
     DECAY_SMELL_STRENGTH(smell);
     // If the strength left is 0, wipe the whole byte to clear the type
@@ -185,8 +185,8 @@ static void DecayBlood() {
   }
 }
 
-void DecayBloodAndSmells(UINT32 uiTime) {
-  UINT32 uiCheckTime;
+void DecayBloodAndSmells(uint32_t uiTime) {
+  uint32_t uiCheckTime;
 
   if (!gfWorldLoaded) {
     return;
@@ -220,10 +220,10 @@ void DecayBloodAndSmells(UINT32 uiTime) {
 
 void DropSmell(SOLDIERTYPE &s) {
   MAP_ELEMENT *pMapElement;
-  UINT8 ubOldSmell;
-  UINT8 ubOldStrength;
-  UINT8 ubSmell;
-  UINT8 ubStrength;
+  uint8_t ubOldSmell;
+  uint8_t ubOldStrength;
+  uint8_t ubSmell;
+  uint8_t ubStrength;
 
   /*
    *  Here we are creating a new smell on the ground.  If there is blood in
@@ -282,8 +282,8 @@ void DropSmell(SOLDIERTYPE &s) {
   // otherwise skip dropping smell
 }
 
-void InternalDropBlood(GridNo const gridno, INT8 const level, BloodKind const blood_kind,
-                       UINT8 strength, INT8 const visible) {
+void InternalDropBlood(GridNo const gridno, int8_t const level, BloodKind const blood_kind,
+                       uint8_t strength, int8_t const visible) {
   /* Dropping some blood;
    * We can check the type of blood by consulting the type in the smell byte */
 
@@ -297,10 +297,10 @@ void InternalDropBlood(GridNo const gridno, INT8 const level, BloodKind const bl
   // Ensure max strength is okay
   strength = std::min(strength, (uint8_t)BLOOD_STRENGTH_MAX);
 
-  UINT8 new_strength = 0;
+  uint8_t new_strength = 0;
   MAP_ELEMENT &me = gpWorldLevelData[gridno];
   if (level == 0) {  // Dropping blood on ground
-    UINT8 const old_strength = BLOOD_FLOOR_STRENGTH(me.ubBloodInfo);
+    uint8_t const old_strength = BLOOD_FLOOR_STRENGTH(me.ubBloodInfo);
     if (old_strength > 0) {
       // blood already there... we'll leave the decay time as it is
       if (BLOOD_FLOOR_TYPE(me.ubBloodInfo) == blood_kind) {  // Combine blood strengths
@@ -322,7 +322,7 @@ void InternalDropBlood(GridNo const gridno, INT8 const level, BloodKind const bl
       SET_BLOOD_FLOOR_TYPE(me.ubSmellInfo, blood_kind);
     }
   } else {  // Dropping blood on roof
-    UINT8 const old_strength = BLOOD_ROOF_STRENGTH(me.ubBloodInfo);
+    uint8_t const old_strength = BLOOD_ROOF_STRENGTH(me.ubBloodInfo);
     if (old_strength > 0) {
       // Blood already there, we'll leave the decay time as it is
       if (BLOOD_ROOF_TYPE(me.ubSmellInfo) == blood_kind) {  // Combine blood strengths
@@ -352,7 +352,7 @@ void InternalDropBlood(GridNo const gridno, INT8 const level, BloodKind const bl
   if (visible != -1) UpdateBloodGraphics(gridno, level);
 }
 
-void DropBlood(SOLDIERTYPE const &s, UINT8 const strength) {
+void DropBlood(SOLDIERTYPE const &s, uint8_t const strength) {
   // Figure out the kind of blood that we're dropping
   BloodKind const b = !(s.uiStatusFlags & SOLDIER_MONSTER) ? HUMAN
                       : s.bLevel == 0                      ? CREATURE_ON_FLOOR
@@ -360,7 +360,7 @@ void DropBlood(SOLDIERTYPE const &s, UINT8 const strength) {
   InternalDropBlood(s.sGridNo, s.bLevel, b, strength, s.bVisible);
 }
 
-void UpdateBloodGraphics(GridNo const gridno, INT8 const level) {
+void UpdateBloodGraphics(GridNo const gridno, int8_t const level) {
   // Based on level, type, display graphics for blood
 
   // Check for blood option
@@ -378,12 +378,12 @@ void UpdateBloodGraphics(GridNo const gridno, INT8 const level) {
     }
 
     // Pick new one. based on strength and randomness
-    INT8 const strength = BLOOD_FLOOR_STRENGTH(me.ubBloodInfo);
+    int8_t const strength = BLOOD_FLOOR_STRENGTH(me.ubBloodInfo);
     if (strength == 0) return;
 
-    UINT16 const index = Random(4) * 4 + 3 - strength / 2U;
-    UINT32 const type = BLOOD_FLOOR_TYPE(me.ubSmellInfo) == HUMAN ? HUMANBLOOD : CREATUREBLOOD;
-    UINT16 const new_index = GetTileIndexFromTypeSubIndex(type, index + 1);
+    uint16_t const index = Random(4) * 4 + 3 - strength / 2U;
+    uint32_t const type = BLOOD_FLOOR_TYPE(me.ubSmellInfo) == HUMAN ? HUMANBLOOD : CREATUREBLOOD;
+    uint16_t const new_index = GetTileIndexFromTypeSubIndex(type, index + 1);
     AddObjectToHead(gridno, new_index);
 
     // Update rendering

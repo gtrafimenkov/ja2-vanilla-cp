@@ -43,11 +43,12 @@ void InitArmyGunTypes();
 
 // Chooses equipment based on the equipment level (1-11) with best being 11.  It
 // allocates a range of equipment to choose from.
-void GenerateRandomEquipment(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass, INT8 bEquipmentRating);
+void GenerateRandomEquipment(SOLDIERCREATE_STRUCT *pp, int8_t bSoldierClass,
+                             int8_t bEquipmentRating);
 
 void AssignCreatureInventory(SOLDIERTYPE *pSoldier);
 
-void ReplaceExtendedGuns(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass);
+void ReplaceExtendedGuns(SOLDIERCREATE_STRUCT *pp, int8_t bSoldierClass);
 
 void ResetMortarsOnTeamCount();
 

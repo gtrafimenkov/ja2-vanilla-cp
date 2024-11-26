@@ -5,10 +5,10 @@
 #include "SGP/LoadSaveData.h"
 
 void ExtractUndergroundSectorInfoFromFile(HWFILE const file, UNDERGROUND_SECTORINFO *const u) {
-  BYTE data[72];
+  uint8_t data[72];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_U32(d, u->uiFlags)
   EXTR_U8(d, u->ubSectorX)
   EXTR_U8(d, u->ubSectorY)
@@ -33,8 +33,8 @@ void ExtractUndergroundSectorInfoFromFile(HWFILE const file, UNDERGROUND_SECTORI
 }
 
 void InjectUndergroundSectorInfoIntoFile(HWFILE const file, UNDERGROUND_SECTORINFO const *const u) {
-  BYTE data[72];
-  BYTE *d = data;
+  uint8_t data[72];
+  uint8_t *d = data;
   INJ_U32(d, u->uiFlags)
   INJ_U8(d, u->ubSectorX)
   INJ_U8(d, u->ubSectorY)

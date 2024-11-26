@@ -52,8 +52,8 @@
 #include "Utils/TimerControl.h"
 
 // zoom x and y coords for map scrolling
-INT32 iZoomX = 0;
-INT32 iZoomY = 0;
+int32_t iZoomX = 0;
+int32_t iZoomY = 0;
 
 // Scroll region width
 #define SCROLL_REGION 4
@@ -317,15 +317,15 @@ static SGPVObject *guiBULLSEYE;
 // the militia box buttons
 static GUIButtonRef giMapMilitiaButton[5];
 
-static INT16 const gsMilitiaSectorButtonColors[] = {FONT_LTGREEN, FONT_LTBLUE, 16};
+static int16_t const gsMilitiaSectorButtonColors[] = {FONT_LTGREEN, FONT_LTBLUE, 16};
 
 // track number of townspeople picked up
-INT16 sGreensOnCursor = 0;
-INT16 sRegularsOnCursor = 0;
-INT16 sElitesOnCursor = 0;
+int16_t sGreensOnCursor = 0;
+int16_t sRegularsOnCursor = 0;
+int16_t sElitesOnCursor = 0;
 
 // the current militia town id
-INT16 sSelectedMilitiaTown = 0;
+int16_t sSelectedMilitiaTown = 0;
 
 // sublevel graphics
 static SGPVObject *guiSubLevel1;
@@ -340,21 +340,21 @@ static SGPVObject *guiCHARBETWEENSECTORICONSCLOSE;
 BOOLEAN fFoundTixa = FALSE;
 
 // selected sector
-UINT16 sSelMapX = 9;
-UINT16 sSelMapY = 1;
+uint16_t sSelMapX = 9;
+uint16_t sSelMapY = 1;
 
 // highlighted sector
-INT16 gsHighlightSectorX = -1;
-INT16 gsHighlightSectorY = -1;
+int16_t gsHighlightSectorX = -1;
+int16_t gsHighlightSectorY = -1;
 
 // the current sector Z value of the map being displayed
-INT32 iCurrentMapSectorZ = 0;
+int32_t iCurrentMapSectorZ = 0;
 
 // the palettes
-static UINT16 *pMapLTRedPalette;
-static UINT16 *pMapDKRedPalette;
-static UINT16 *pMapLTGreenPalette;
-static UINT16 *pMapDKGreenPalette;
+static uint16_t *pMapLTRedPalette;
+static uint16_t *pMapDKRedPalette;
+static uint16_t *pMapLTGreenPalette;
+static uint16_t *pMapDKGreenPalette;
 
 // heli pop up
 static SGPVObject *guiMapBorderHeliSectors;
@@ -417,13 +417,13 @@ BOOLEAN fDrawTempHeliPath = FALSE;
 static SGPVObject *guiMAPCURSORS;
 
 // destination plotting character
-INT8 bSelectedDestChar = -1;
+int8_t bSelectedDestChar = -1;
 
 // assignment selection character
-INT8 bSelectedAssignChar = -1;
+int8_t bSelectedAssignChar = -1;
 
 // current contract char
-INT8 bSelectedContractChar = -1;
+int8_t bSelectedContractChar = -1;
 
 // has the temp path for character or helicopter been already drawn?
 BOOLEAN fTempPathAlreadyDrawn = FALSE;
@@ -441,19 +441,19 @@ static SGPVObject *guiMilitiaSectorHighLight;
 static SGPVObject *guiMilitiaSectorOutline;
 
 // the sector that is highlighted on the militia map
-static INT16 sSectorMilitiaMapSector = -1;
+static int16_t sSectorMilitiaMapSector = -1;
 static bool fMilitiaMapButtonsCreated = false;
-static INT16 sSectorMilitiaMapSectorOutline = -1;
+static int16_t sSectorMilitiaMapSectorOutline = -1;
 
 // have any nodes in the current path list been deleted?
 BOOLEAN fDeletedNode = FALSE;
 
-static UINT16 gusUndergroundNearBlack;
+static uint16_t gusUndergroundNearBlack;
 
 BOOLEAN gfMilitiaPopupCreated = FALSE;
 
-INT32 giAnimateRouteBaseTime = 0;
-INT32 giPotHeliPathBaseTime = 0;
+int32_t giAnimateRouteBaseTime = 0;
+int32_t giPotHeliPathBaseTime = 0;
 
 // sam and mine icons
 static SGPVObject *guiSAMICON;
@@ -469,24 +469,24 @@ void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow) {
 
   bool const draw_cursors = CanDrawSectorCursor();
   bool const sel_candidate = bSelectedDestChar == -1 && !fPlotForHelicopter;
-  UINT8 const sel_colour = fSelectedCursorIsYellow ? FONT_YELLOW : FONT_WHITE;
-  for (INT32 i = 1; i <= MAX_VIEW_SECTORS; ++i) {
-    INT16 usX;
-    INT16 usY;
+  uint8_t const sel_colour = fSelectedCursorIsYellow ? FONT_YELLOW : FONT_WHITE;
+  for (int32_t i = 1; i <= MAX_VIEW_SECTORS; ++i) {
+    int16_t usX;
+    int16_t usY;
 
-    UINT8 const colour_x = !draw_cursors                    ? MAP_INDEX_COLOR
-                           : i == sSelMapX && sel_candidate ? sel_colour
-                           : i == gsHighlightSectorX        ? FONT_WHITE
-                                                            : MAP_INDEX_COLOR;
+    uint8_t const colour_x = !draw_cursors                    ? MAP_INDEX_COLOR
+                             : i == sSelMapX && sel_candidate ? sel_colour
+                             : i == gsHighlightSectorX        ? FONT_WHITE
+                                                              : MAP_INDEX_COLOR;
     SetFontForeground(colour_x);
     FindFontCenterCoordinates(MAP_HORT_INDEX_X + (i - 1) * MAP_GRID_X, MAP_HORT_INDEX_Y, MAP_GRID_X,
                               MAP_HORT_HEIGHT, pMapHortIndex[i], MAP_FONT, &usX, &usY);
     MPrint(usX, usY, pMapHortIndex[i]);
 
-    UINT8 const colour_y = !draw_cursors                    ? MAP_INDEX_COLOR
-                           : i == sSelMapY && sel_candidate ? sel_colour
-                           : i == gsHighlightSectorY        ? FONT_WHITE
-                                                            : MAP_INDEX_COLOR;
+    uint8_t const colour_y = !draw_cursors                    ? MAP_INDEX_COLOR
+                             : i == sSelMapY && sel_candidate ? sel_colour
+                             : i == gsHighlightSectorY        ? FONT_WHITE
+                                                              : MAP_INDEX_COLOR;
     SetFontForeground(colour_y);
     FindFontCenterCoordinates(MAP_VERT_INDEX_X, MAP_VERT_INDEX_Y + (i - 1) * MAP_GRID_Y,
                               MAP_HORT_HEIGHT, MAP_GRID_Y, pMapVertIndex[i], MAP_FONT, &usX, &usY);
@@ -504,8 +504,8 @@ void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow) {
 void DrawMapIndexSmallMap( BOOLEAN fSelectedCursorIsYellow )
 {
         // this procedure will draw the coord indexes on the zoomed in map
-        INT16 usX, usY;
-        INT32 iCount=0;
+        int16_t usX, usY;
+        int32_t iCount=0;
         BOOLEAN fDrawCursors;
 
 
@@ -553,12 +553,12 @@ MAP_HORT_HEIGHT); SetFontDestBuffer(FRAME_BUFFER);
 }
 */
 
-static void HandleShowingOfEnemyForcesInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ,
-                                               UINT8 ubIconPosition);
+static void HandleShowingOfEnemyForcesInSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ,
+                                               uint8_t ubIconPosition);
 
 static void HandleShowingOfEnemiesWithMilitiaOn() {
-  for (INT16 sX = 1; sX < MAP_WORLD_X - 1; ++sX) {
-    for (INT16 sY = 1; sY < MAP_WORLD_Y - 1; ++sY) {
+  for (int16_t sX = 1; sX < MAP_WORLD_X - 1; ++sX) {
+    for (int16_t sY = 1; sY < MAP_WORLD_Y - 1; ++sY) {
       HandleShowingOfEnemyForcesInSector(sX, sY, iCurrentMapSectorZ,
                                          CountAllMilitiaInSector(sX, sY));
     }
@@ -566,8 +566,8 @@ static void HandleShowingOfEnemiesWithMilitiaOn() {
 }
 
 static void BlitMineGridMarkers();
-static void BlitMineIcon(INT16 sMapX, INT16 sMapY);
-static void BlitMineText(UINT8 mine_idx, INT16 sMapX, INT16 sMapY);
+static void BlitMineIcon(int16_t sMapX, int16_t sMapY);
+static void BlitMineText(uint8_t mine_idx, int16_t sMapX, int16_t sMapY);
 static void BlitTownGridMarkers();
 static void DisplayLevelString();
 static void DrawBullseye();
@@ -575,7 +575,7 @@ static void DrawOrta();
 static void DrawTixa();
 static void DrawTownMilitiaForcesOnMap();
 static void HandleLowerLevelMapBlit();
-static void ShadeMapElem(INT16 sMapX, INT16 sMapY, INT32 iColor);
+static void ShadeMapElem(int16_t sMapX, int16_t sMapY, int32_t iColor);
 static void ShowItemsOnMap();
 static void ShowSAMSitesOnStrategicMap();
 static void ShowTeamAndVehicles();
@@ -589,12 +589,12 @@ void DrawMap() {
       if (iZoomY < NORTH_ZOOM_BOUND + 1) iZoomY = NORTH_ZOOM_BOUND;
       if (iZoomY > SOUTH_ZOOM_BOUND) iZoomY = SOUTH_ZOOM_BOUND;
 
-      INT16 const x = iZoomX - 2;
-      INT16 const y = iZoomY - 3;
-      INT16 w = MAP_VIEW_WIDTH + 2;
-      INT16 h = MAP_VIEW_HEIGHT - 1;
-      UINT16 const src_w = guiBIGMAP->Width();
-      UINT16 const src_h = guiBIGMAP->Height();
+      int16_t const x = iZoomX - 2;
+      int16_t const y = iZoomY - 3;
+      int16_t w = MAP_VIEW_WIDTH + 2;
+      int16_t h = MAP_VIEW_HEIGHT - 1;
+      uint16_t const src_w = guiBIGMAP->Width();
+      uint16_t const src_h = guiBIGMAP->Height();
       if (w > src_w - x) w = src_w - x;
       if (h > src_h - x) h = src_h - y;
       SGPBox const clip = {x, y, w, h};
@@ -606,10 +606,10 @@ void DrawMap() {
 
     // shade map sectors (must be done after Tixa/Orta/Mine icons have been
     // blitted, but before icons!)
-    for (INT16 cnt = 1; cnt < MAP_WORLD_X - 1; ++cnt) {
-      for (INT16 cnt2 = 1; cnt2 < MAP_WORLD_Y - 1; ++cnt2) {
+    for (int16_t cnt = 1; cnt < MAP_WORLD_X - 1; ++cnt) {
+      for (int16_t cnt2 = 1; cnt2 < MAP_WORLD_Y - 1; ++cnt2) {
         if (!GetSectorFlagStatus(cnt, cnt2, iCurrentMapSectorZ, SF_ALREADY_VISITED)) {
-          INT32 color;
+          int32_t color;
           if (fShowAircraftFlag) {
             if (!StrategicMap[cnt + cnt2 * WORLD_MAP_X].fEnemyAirControlled) {
               // sector not visited, not air controlled
@@ -625,7 +625,7 @@ void DrawMap() {
           ShadeMapElem(cnt, cnt2, color);
         } else {
           if (fShowAircraftFlag) {
-            INT32 color;
+            int32_t color;
             if (!StrategicMap[cnt + cnt2 * WORLD_MAP_X].fEnemyAirControlled) {
               // sector visited and air controlled
               color = MAP_SHADE_LT_GREEN;
@@ -651,10 +651,10 @@ void DrawMap() {
     ShowSAMSitesOnStrategicMap();
 
     // draw mine icons and descriptive text
-    for (INT32 i = 0; i < MAX_NUMBER_OF_MINES; ++i) {
-      UINT8 const sector = gMineLocation[i].sector;
-      INT16 const x = SECTORX(sector);
-      INT16 const y = SECTORY(sector);
+    for (int32_t i = 0; i < MAX_NUMBER_OF_MINES; ++i) {
+      uint8_t const sector = gMineLocation[i].sector;
+      int16_t const x = SECTORX(sector);
+      int16_t const y = SECTORY(sector);
       BlitMineIcon(x, y);
       // show mine name/production text
       if (fShowMineFlag) BlitMineText(i, x, y);
@@ -688,9 +688,9 @@ void DrawMap() {
   DisplayLevelString();
 }
 
-void GetScreenXYFromMapXY(INT16 sMapX, INT16 sMapY, INT16 *psX, INT16 *psY) {
-  INT16 sXTempOff = 1;
-  INT16 sYTempOff = 1;
+void GetScreenXYFromMapXY(int16_t sMapX, int16_t sMapY, int16_t *psX, int16_t *psY) {
+  int16_t sXTempOff = 1;
+  int16_t sYTempOff = 1;
   if (fZoomFlag) {
     *psX = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
     *psY = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
@@ -700,12 +700,13 @@ void GetScreenXYFromMapXY(INT16 sMapX, INT16 sMapY, INT16 *psX, INT16 *psY) {
   }
 }
 
-static void GetScreenXYFromMapXYStationary(INT16 sMapX, INT16 sMapY, INT16 *psX, INT16 *psY) {
-  INT16 sXTempOff = 1;
-  INT16 sYTempOff = 1;
+static void GetScreenXYFromMapXYStationary(int16_t sMapX, int16_t sMapY, int16_t *psX,
+                                           int16_t *psY) {
+  int16_t sXTempOff = 1;
+  int16_t sYTempOff = 1;
   //(MAP_VIEW_START_X+((iCount+1)*MAP_GRID_X)*2-iZoomX));
-  *psX = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - ((INT16)iZoomX) + MAP_VIEW_START_X;
-  *psY = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - ((INT16)iZoomY) + MAP_VIEW_START_Y;
+  *psX = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - ((int16_t)iZoomX) + MAP_VIEW_START_X;
+  *psY = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - ((int16_t)iZoomY) + MAP_VIEW_START_Y;
 }
 
 // display the town names and loyalty on the screen
@@ -716,13 +717,13 @@ static void ShowTownText() {
                     MapScreenRect.iRight, MapScreenRect.iBottom);
   ClipBlitsToMapViewRegion();
 
-  for (INT8 town = FIRST_TOWN; town < NUM_TOWNS; ++town) {
+  for (int8_t town = FIRST_TOWN; town < NUM_TOWNS; ++town) {
     // skip Orta/Tixa until found
     if (town == ORTA && !fFoundOrta) continue;
     if (town == TIXA && !fFoundTixa) continue;
 
-    UINT16 x = MAP_VIEW_START_X + MAP_GRID_X;
-    UINT16 y = MAP_VIEW_START_Y + MAP_GRID_Y;
+    uint16_t x = MAP_VIEW_START_X + MAP_GRID_X;
+    uint16_t y = MAP_VIEW_START_Y + MAP_GRID_Y;
     if (!fZoomFlag) {
       x += pTownPoints[town].iX * MAP_GRID_X / 10;
       y += pTownPoints[town].iY * MAP_GRID_Y / 10 + 1;
@@ -740,19 +741,19 @@ static void ShowTownText() {
     if (gTownLoyalty[town].fStarted && gfTownUsesLoyalty[town]) {
       // if loyalty is too low to train militia, and militia training is allowed
       // here
-      UINT8 const colour = gTownLoyalty[town].ubRating < MIN_RATING_TO_TRAIN_TOWN &&
-                                   MilitiaTrainingAllowedInTown(town)
-                               ? FONT_MCOLOR_RED
-                               : FONT_MCOLOR_LTGREEN;
+      uint8_t const colour = gTownLoyalty[town].ubRating < MIN_RATING_TO_TRAIN_TOWN &&
+                                     MilitiaTrainingAllowedInTown(town)
+                                 ? FONT_MCOLOR_RED
+                                 : FONT_MCOLOR_LTGREEN;
       SetFontForeground(colour);
 
       wchar_t loyalty_str[32];
       swprintf(loyalty_str, lengthof(loyalty_str), gsLoyalString, gTownLoyalty[town].ubRating);
 
-      INT16 loyalty_x = x - StringPixLength(loyalty_str, MAP_FONT) / 2;
+      int16_t loyalty_x = x - StringPixLength(loyalty_str, MAP_FONT) / 2;
       if (!fZoomFlag)  // make sure we don't go past left edge (Grumm)
       {
-        INT16 const min_x = MAP_VIEW_START_X + 23;
+        int16_t const min_x = MAP_VIEW_START_X + 23;
         if (loyalty_x < min_x) loyalty_x = min_x;
       }
 
@@ -762,18 +763,18 @@ static void ShowTownText() {
     }
 
     wchar_t const *const name = pTownNames[town];
-    INT16 const name_x = x - StringPixLength(name, MAP_FONT) / 2;
+    int16_t const name_x = x - StringPixLength(name, MAP_FONT) / 2;
     GDirtyPrint(name_x, y, name);
   }
 
   RestoreClipRegionToFullScreen();
 }
 
-static void DrawMapBoxIcon(HVOBJECT, UINT16 icon, INT16 sec_x, INT16 sec_y, UINT8 icon_pos);
+static void DrawMapBoxIcon(HVOBJECT, uint16_t icon, int16_t sec_x, int16_t sec_y, uint8_t icon_pos);
 
 // "on duty" includes mercs inside vehicles
-static INT32 ShowOnDutyTeam(INT16 const x, INT16 const y) {
-  UINT8 icon_pos = 0;
+static int32_t ShowOnDutyTeam(int16_t const x, int16_t const y) {
+  uint8_t icon_pos = 0;
   CFOR_EACH_IN_CHAR_LIST(c) {
     SOLDIERTYPE const &s = *c->merc;
     if (s.uiStatusFlags & SOLDIER_VEHICLE) continue;
@@ -789,7 +790,7 @@ static INT32 ShowOnDutyTeam(INT16 const x, INT16 const y) {
   return icon_pos;
 }
 
-static INT32 ShowAssignedTeam(INT16 const x, INT16 const y, INT32 icon_pos) {
+static int32_t ShowAssignedTeam(int16_t const x, int16_t const y, int32_t icon_pos) {
   CFOR_EACH_IN_CHAR_LIST(c) {
     SOLDIERTYPE const &s = *c->merc;
     // given number of on duty members, find number of assigned chars
@@ -811,7 +812,7 @@ static INT32 ShowAssignedTeam(INT16 const x, INT16 const y, INT32 icon_pos) {
   return icon_pos;
 }
 
-static INT32 ShowVehicles(INT16 const x, INT16 const y, INT32 icon_pos) {
+static int32_t ShowVehicles(int16_t const x, int16_t const y, int32_t icon_pos) {
   CFOR_EACH_VEHICLE(i) {
     VEHICLETYPE const &v = *i;
     // skip the chopper, it has its own icon and displays in airspace mode
@@ -829,27 +830,28 @@ static INT32 ShowVehicles(INT16 const x, INT16 const y, INT32 icon_pos) {
   return icon_pos;
 }
 
-static void ShowEnemiesInSector(INT16 const x, INT16 const y, INT16 n_enemies, UINT8 icon_pos) {
+static void ShowEnemiesInSector(int16_t const x, int16_t const y, int16_t n_enemies,
+                                uint8_t icon_pos) {
   while (n_enemies-- != 0) {
     DrawMapBoxIcon(guiCHARICONS, SMALL_RED_BOX, x, y, icon_pos++);
   }
 }
 
-static void ShowUncertainNumberEnemiesInSector(INT16 const sec_x, INT16 const sec_y) {
+static void ShowUncertainNumberEnemiesInSector(int16_t const sec_x, int16_t const sec_y) {
   if (!fZoomFlag) {
-    INT16 const x = MAP_VIEW_START_X + sec_x * MAP_GRID_X + MAP_X_ICON_OFFSET;
-    INT16 const y = MAP_VIEW_START_Y + sec_y * MAP_GRID_Y - 1;
+    int16_t const x = MAP_VIEW_START_X + sec_x * MAP_GRID_X + MAP_X_ICON_OFFSET;
+    int16_t const y = MAP_VIEW_START_Y + sec_y * MAP_GRID_Y - 1;
     BltVideoObject(guiSAVEBUFFER, guiCHARICONS, SMALL_QUESTION_MARK, x, y);
     InvalidateRegion(x, y, x + DMAP_GRID_X, y + DMAP_GRID_Y);
   }
 #if 0  // XXX was commented out
 	else
 	{
-		INT16 sX;
-		INT16 sY;
+		int16_t sX;
+		int16_t sY;
 		GetScreenXYFromMapXYStationary(sec_x, sec_y, &sX, &sY);
-		INT16 const x = sX - MAP_GRID_X + MAP_X_ICON_OFFSET;
- 	 	INT16 const y = sY - MAP_GRID_Y - 1;
+		int16_t const x = sX - MAP_GRID_X + MAP_X_ICON_OFFSET;
+ 	 	int16_t const y = sY - MAP_GRID_Y - 1;
 
 		ClipBlitsToMapViewRegion();
 		BltVideoObject(guiSAVEBUFFER, guiCHARICONS, BIG_QUESTION_MARK, x, y);
@@ -859,14 +861,14 @@ static void ShowUncertainNumberEnemiesInSector(INT16 const sec_x, INT16 const se
 #endif
 }
 
-static void ShowPeopleInMotion(INT16 sX, INT16 sY);
+static void ShowPeopleInMotion(int16_t sX, int16_t sY);
 
 static void ShowTeamAndVehicles() {
   // Go through each sector, display the on duty, assigned, and vehicles
-  INT32 icon_pos = 0;
+  int32_t icon_pos = 0;
   GROUP const *const g = gfDisplayPotentialRetreatPaths ? gpBattleGroup : 0;
-  for (INT16 x = 1; x != MAP_WORLD_X - 1; ++x) {
-    for (INT16 y = 1; y != MAP_WORLD_Y - 1; ++y) {
+  for (int16_t x = 1; x != MAP_WORLD_X - 1; ++x) {
+    for (int16_t y = 1; y != MAP_WORLD_Y - 1; ++y) {
       /* Don't show mercs/vehicles currently in this sector if player is
        * contemplating retreating from THIS sector */
       if (!g || x != g->ubSectorX || y != g->ubSectorY) {
@@ -881,14 +883,14 @@ static void ShowTeamAndVehicles() {
   }
 }
 
-static void ShadeMapElemZoomIn(INT16 sMapX, INT16 sMapY, INT32 iColor);
+static void ShadeMapElemZoomIn(int16_t sMapX, int16_t sMapY, int32_t iColor);
 
-static void ShadeMapElem(const INT16 sMapX, const INT16 sMapY, const INT32 iColor) {
+static void ShadeMapElem(const int16_t sMapX, const int16_t sMapY, const int32_t iColor) {
   if (fZoomFlag) {
     ShadeMapElemZoomIn(sMapX, sMapY, iColor);
   } else {
-    INT16 sScreenX;
-    INT16 sScreenY;
+    int16_t sScreenX;
+    int16_t sScreenY;
     GetScreenXYFromMapXY(sMapX, sMapY, &sScreenX, &sScreenY);
 
     // compensate for original BIG_MAP blit being done at MAP_VIEW_START_X + 1
@@ -900,7 +902,7 @@ static void ShadeMapElem(const INT16 sMapX, const INT16 sMapY, const INT32 iColo
     // non-airspace
     if (iColor == MAP_SHADE_BLACK) sScreenY -= 1;
 
-    UINT16 *pal;
+    uint16_t *pal;
     switch (iColor) {
       case MAP_SHADE_BLACK:
         // simply shade darker
@@ -930,7 +932,7 @@ static void ShadeMapElem(const INT16 sMapX, const INT16 sMapY, const INT32 iColo
     // SGPVSurface* const mine = guiMINEICON;
     // SGPVSurface* const sam  = guiSAMICON;
 
-    UINT16 *const org_pal = map->p16BPPPalette;
+    uint16_t *const org_pal = map->p16BPPPalette;
     map->p16BPPPalette = pal;
     // mine->p16BPPPalette = pal;
     // sam->p16BPPPalette  = pal;
@@ -941,15 +943,15 @@ static void ShadeMapElem(const INT16 sMapX, const INT16 sMapY, const INT32 iColo
   }
 }
 
-static void ShadeMapElemZoomIn(const INT16 sMapX, const INT16 sMapY, INT32 iColor) {
+static void ShadeMapElemZoomIn(const int16_t sMapX, const int16_t sMapY, int32_t iColor) {
   // trabslate to screen co-ords for zoomed
-  INT16 sScreenX;
-  INT16 sScreenY;
+  int16_t sScreenX;
+  int16_t sScreenY;
   GetScreenXYFromMapXYStationary(sMapX, sMapY, &sScreenX, &sScreenY);
 
   // shift left by one sector
-  const INT32 iX = sScreenX - MAP_GRID_X;
-  const INT32 iY = sScreenY - MAP_GRID_Y;
+  const int32_t iX = sScreenX - MAP_GRID_X;
+  const int32_t iY = sScreenY - MAP_GRID_Y;
 
   if (MapScreenRect.iLeft - MAP_GRID_X * 2 < iX && iX < MapScreenRect.iRight &&
       MapScreenRect.iTop - MAP_GRID_Y * 2 < iY && iY < MapScreenRect.iBottom) {
@@ -988,7 +990,7 @@ static void ShadeMapElemZoomIn(const INT16 sMapX, const INT16 sMapY, INT32 iColo
 
     if (sScreenX > MapScreenRect.iRight || sScreenY > MapScreenRect.iBottom) return;
 
-    UINT16 *pal;
+    uint16_t *pal;
     switch (iColor) {
       case MAP_SHADE_BLACK:
         // simply shade darker
@@ -1014,7 +1016,7 @@ static void ShadeMapElemZoomIn(const INT16 sMapX, const INT16 sMapY, INT32 iColo
 
     SGPBox const r = {clip.iLeft, clip.iTop, clip.iRight - clip.iLeft, clip.iBottom - clip.iTop};
     SGPVSurface *const map = guiBIGMAP;
-    UINT16 *const org_pal = map->p16BPPPalette;
+    uint16_t *const org_pal = map->p16BPPPalette;
     map->p16BPPPalette = pal;
     BltVideoSurface(guiSAVEBUFFER, guiBIGMAP, sScreenX, sScreenY, &r);
     map->p16BPPPalette = org_pal;
@@ -1046,7 +1048,7 @@ void ShutDownPalettesForMap() {
 
 static void CopyPathToCharactersSquadIfInOne(SOLDIERTYPE *pCharacter);
 
-void PlotPathForCharacter(SOLDIERTYPE &s, INT16 const x, INT16 const y,
+void PlotPathForCharacter(SOLDIERTYPE &s, int16_t const x, int16_t const y,
                           bool const tactical_traversal) {
   // Don't build path, if cursor isn't allowed here
   if (!IsTheCursorAllowedToHighLightThisSector(x, y)) return;
@@ -1066,8 +1068,8 @@ void PlotPathForCharacter(SOLDIERTYPE &s, INT16 const x, INT16 const y,
 
   /* Plot a path from current position to x, y: Get last sector in characters
    * list, build new path, remove tail section, and append onto old list */
-  INT16 const start = GetLastSectorIdInCharactersPath(&s);
-  INT16 const end = x + y * MAP_WORLD_X;
+  int16_t const start = GetLastSectorIdInCharactersPath(&s);
+  int16_t const end = x + y * MAP_WORLD_X;
   PathSt *const path = BuildAStrategicPath(start, end, *GetSoldierGroup(s), tactical_traversal);
   s.pMercPath = AppendStrategicPath(path, s.pMercPath);
 
@@ -1078,8 +1080,8 @@ void PlotPathForCharacter(SOLDIERTYPE &s, INT16 const x, INT16 const y,
   }
 }
 
-void PlotATemporaryPathForCharacter(const SOLDIERTYPE *const pCharacter, const INT16 sX,
-                                    const INT16 sY) {
+void PlotATemporaryPathForCharacter(const SOLDIERTYPE *const pCharacter, const int16_t sX,
+                                    const int16_t sY) {
   // clear old temp path
   pTempCharacterPath = ClearStrategicPathList(pTempCharacterPath, -1);
 
@@ -1094,8 +1096,8 @@ void PlotATemporaryPathForCharacter(const SOLDIERTYPE *const pCharacter, const I
 }
 
 // clear out character path list, after and including this sector
-UINT32 ClearPathAfterThisSectorForCharacter(SOLDIERTYPE *pCharacter, INT16 sX, INT16 sY) {
-  INT32 iOrigLength = 0;
+uint32_t ClearPathAfterThisSectorForCharacter(SOLDIERTYPE *pCharacter, int16_t sX, int16_t sY) {
+  int32_t iOrigLength = 0;
   VEHICLETYPE *pVehicle = NULL;
 
   iOrigLength = GetLengthOfMercPath(pCharacter);
@@ -1164,7 +1166,7 @@ void CancelPathForCharacter(SOLDIERTYPE *pCharacter) {
   // current X,Y sector.
   RebuildWayPointsForGroupPath(pCharacter->pMercPath, *GetGroup(pCharacter->ubGroupID));
   //	GroupReversingDirectionsBetweenSectors( GetGroup( pCharacter->ubGroupID
-  //), ( UINT8 )( pCharacter->sSectorX ), ( UINT8 )( pCharacter->sSectorY ),
+  //), ( uint8_t )( pCharacter->sSectorX ), ( uint8_t )( pCharacter->sSectorY ),
   // FALSE );
 
   // if he's in a vehicle, clear out the vehicle, too
@@ -1255,7 +1257,7 @@ void DisplayHelicopterTempPath() {
   if (fDrawTempHeliPath) TracePathRoute(pTempHelicopterPath);
 }
 
-void PlotPathForHelicopter(const INT16 sX, const INT16 sY) {
+void PlotPathForHelicopter(const int16_t sX, const int16_t sY) {
   // will plot the path for the helicopter
 
   // no heli...go back
@@ -1272,14 +1274,14 @@ void PlotPathForHelicopter(const INT16 sX, const INT16 sY) {
   // get last sector in helicopters list, build new path, remove tail section,
   // move to beginning of list, and append onto old list
   v.pMercPath = AppendStrategicPath(
-      BuildAStrategicPath(GetLastSectorOfHelicoptersPath(), (INT16)(sX + sY * MAP_WORLD_X),
+      BuildAStrategicPath(GetLastSectorOfHelicoptersPath(), (int16_t)(sX + sY * MAP_WORLD_X),
                           *GetGroup(v.ubMovementGroup), FALSE),
       v.pMercPath);
 
   fMapPanelDirty = TRUE;
 }
 
-void PlotATemporaryPathForHelicopter(INT16 sX, INT16 sY) {
+void PlotATemporaryPathForHelicopter(int16_t sX, int16_t sY) {
   // clear old temp path
   pTempHelicopterPath = ClearStrategicPathList(pTempHelicopterPath, 0);
 
@@ -1294,8 +1296,8 @@ void PlotATemporaryPathForHelicopter(INT16 sX, INT16 sY) {
 }
 
 // clear out helicopter path list, after and including this sector
-UINT32 ClearPathAfterThisSectorForHelicopter(INT16 sX, INT16 sY) {
-  INT32 iOrigLength = 0;
+uint32_t ClearPathAfterThisSectorForHelicopter(int16_t sX, int16_t sY) {
+  int32_t iOrigLength = 0;
 
   // clear out helicopter path list, after and including this sector
   if (iHelicopterVehicleId == -1 || !CanHelicopterFly()) {
@@ -1335,14 +1337,14 @@ UINT32 ClearPathAfterThisSectorForHelicopter(INT16 sX, INT16 sY) {
   }
 }
 
-INT16 GetLastSectorOfHelicoptersPath() {
+int16_t GetLastSectorOfHelicoptersPath() {
   VEHICLETYPE const &v = GetHelicopter();
   // will return the last sector of the helicopter's current path
-  INT16 sLastSector = v.sSectorX + v.sSectorY * MAP_WORLD_X;
+  int16_t sLastSector = v.sSectorX + v.sSectorY * MAP_WORLD_X;
   PathSt *pNode = v.pMercPath;
 
   while (pNode) {
-    sLastSector = (INT16)(pNode->uiSectorId);
+    sLastSector = (int16_t)(pNode->uiSectorId);
     pNode = pNode->pNext;
   }
 
@@ -1355,21 +1357,21 @@ static void TracePathRoute(PathSt *const pPath) {
   if (pPath == NULL) return;
   Assert(pPath->pPrev == NULL);
 
-  INT32 iDirection = -1;
-  INT32 iArrow = -1;
+  int32_t iDirection = -1;
+  int32_t iArrow = -1;
   const PathSt *prev = NULL;
   const PathSt *next;
   for (const PathSt *node = pPath; node != NULL; prev = node, node = next) {
     next = node->pNext;
 
     BOOLEAN fUTurnFlag = FALSE;
-    INT32 iArrowX;
-    INT32 iArrowY;
-    INT32 iX;
-    INT32 iY;
+    int32_t iArrowX;
+    int32_t iArrowY;
+    int32_t iX;
+    int32_t iY;
     if (prev && next) {
-      const INT32 iDeltaA = (INT16)node->uiSectorId - (INT16)prev->uiSectorId;
-      const INT32 iDeltaB = (INT16)node->uiSectorId - (INT16)next->uiSectorId;
+      const int32_t iDeltaA = (int16_t)node->uiSectorId - (int16_t)prev->uiSectorId;
+      const int32_t iDeltaB = (int16_t)node->uiSectorId - (int16_t)next->uiSectorId;
       if (iDeltaA == 0) return;
       if (!fZoomFlag) {
         iX = node->uiSectorId % MAP_WORLD_X;
@@ -1377,8 +1379,8 @@ static void TracePathRoute(PathSt *const pPath) {
         iX = iX * MAP_GRID_X + MAP_VIEW_START_X;
         iY = iY * MAP_GRID_Y + MAP_VIEW_START_Y;
       } else {
-        INT16 sX;
-        INT16 sY;
+        int16_t sX;
+        int16_t sY;
         GetScreenXYFromMapXYStationary(node->uiSectorId % MAP_WORLD_X,
                                        node->uiSectorId / MAP_WORLD_X, &sX, &sY);
         iY = sY - MAP_GRID_Y;
@@ -1389,7 +1391,7 @@ static void TracePathRoute(PathSt *const pPath) {
       if (prev->pPrev && next->pNext) {
         // check to see if out-of sector U-turn
         // for placement of arrows
-        const INT32 iDeltaB1 = next->uiSectorId - next->pNext->uiSectorId;
+        const int32_t iDeltaB1 = next->uiSectorId - next->pNext->uiSectorId;
         fUTurnFlag = (iDeltaB1 == -WORLD_MAP_X && iDeltaA == -WORLD_MAP_X && iDeltaB == -1) ||
                      (iDeltaB1 == -WORLD_MAP_X && iDeltaA == -WORLD_MAP_X && iDeltaB == 1) ||
                      (iDeltaB1 == WORLD_MAP_X && iDeltaA == WORLD_MAP_X && iDeltaB == 1) ||
@@ -1604,8 +1606,8 @@ static void TracePathRoute(PathSt *const pPath) {
         iX = iX * MAP_GRID_X + MAP_VIEW_START_X;
         iY = iY * MAP_GRID_Y + MAP_VIEW_START_Y;
       } else {
-        INT16 sX;
-        INT16 sY;
+        int16_t sX;
+        int16_t sY;
         GetScreenXYFromMapXYStationary(node->uiSectorId % MAP_WORLD_X,
                                        node->uiSectorId / MAP_WORLD_X, &sX, &sY);
         iY = sY - MAP_GRID_Y;
@@ -1616,7 +1618,7 @@ static void TracePathRoute(PathSt *const pPath) {
       // display enter and exit 'X's
       if (prev) {
         fUTurnFlag = TRUE;
-        const INT32 iDeltaA = (INT16)node->uiSectorId - (INT16)prev->uiSectorId;
+        const int32_t iDeltaA = (int16_t)node->uiSectorId - (int16_t)prev->uiSectorId;
         if (iDeltaA == -1) {
           iDirection = fZoomFlag ? ZOOM_RED_X_WEST : RED_X_WEST;
         } else if (iDeltaA == 1) {
@@ -1629,7 +1631,7 @@ static void TracePathRoute(PathSt *const pPath) {
       }
       if (next) {
         fUTurnFlag = FALSE;
-        const INT32 iDeltaB = (INT16)node->uiSectorId - (INT16)next->uiSectorId;
+        const int32_t iDeltaB = (int16_t)node->uiSectorId - (int16_t)next->uiSectorId;
         if (iDeltaB == -1) {
           if (fZoomFlag) {
             iDirection = ZOOM_GREEN_X_EAST;
@@ -1689,7 +1691,7 @@ static void TracePathRoute(PathSt *const pPath) {
       BltVideoObject(FRAME_BUFFER, guiMAPCURSORS, iDirection, iX, iY);
 
       if (!fUTurnFlag) {
-        BltVideoObject(FRAME_BUFFER, guiMAPCURSORS, (UINT16)iArrow, iArrowX, iArrowY);
+        BltVideoObject(FRAME_BUFFER, guiMAPCURSORS, (uint16_t)iArrow, iArrowX, iArrowY);
         InvalidateRegion(iArrowX, iArrowY, iArrowX + 2 * MAP_GRID_X, iArrowY + 2 * MAP_GRID_Y);
       }
 
@@ -1715,16 +1717,16 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
   static PathSt *pCurrentNode = NULL;
   static BOOLEAN fUpDateFlag = FALSE;
   static BOOLEAN fPauseFlag = TRUE;
-  static UINT8 ubCounter = 1;
+  static uint8_t ubCounter = 1;
 
-  INT32 iDifference = 0;
-  INT32 iArrow = -1;
-  INT32 iX = 0, iY = 0;
-  INT32 iPastX, iPastY;
-  INT16 sX = 0, sY = 0;
-  INT32 iArrowX, iArrowY;
-  INT32 iDeltaA, iDeltaB, iDeltaB1;
-  INT32 iDirection = -1;
+  int32_t iDifference = 0;
+  int32_t iArrow = -1;
+  int32_t iX = 0, iY = 0;
+  int32_t iPastX, iPastY;
+  int16_t sX = 0, sY = 0;
+  int32_t iArrowX, iArrowY;
+  int32_t iDeltaA, iDeltaB, iDeltaB1;
+  int32_t iDirection = -1;
   BOOLEAN fUTurnFlag = FALSE;
   BOOLEAN fNextNode = FALSE;
   PathSt *pTempNode = NULL;
@@ -1825,8 +1827,8 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
   // go through characters list and display arrows for path
   fUTurnFlag = FALSE;
   if ((pPastNode) && (pNextNode)) {
-    iDeltaA = (INT16)pNode->uiSectorId - (INT16)pPastNode->uiSectorId;
-    iDeltaB = (INT16)pNode->uiSectorId - (INT16)pNextNode->uiSectorId;
+    iDeltaA = (int16_t)pNode->uiSectorId - (int16_t)pPastNode->uiSectorId;
+    iDeltaB = (int16_t)pNode->uiSectorId - (int16_t)pNextNode->uiSectorId;
     if (iDeltaA == 0) return FALSE;
     if (!fZoomFlag) {
       iX = (pNode->uiSectorId % MAP_WORLD_X);
@@ -1834,8 +1836,8 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
       iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
       iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     } else {
-      GetScreenXYFromMapXYStationary(((UINT16)(pNode->uiSectorId % MAP_WORLD_X)),
-                                     ((UINT16)(pNode->uiSectorId / MAP_WORLD_X)), &sX, &sY);
+      GetScreenXYFromMapXYStationary(((uint16_t)(pNode->uiSectorId % MAP_WORLD_X)),
+                                     ((uint16_t)(pNode->uiSectorId / MAP_WORLD_X)), &sX, &sY);
       iY = sY - MAP_GRID_Y;
       iX = sX - MAP_GRID_X;
     }
@@ -2200,7 +2202,7 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
     if (pPastNode) {
       // red 'X'
       fUTurnFlag = TRUE;
-      iDeltaA = (INT16)pNode->uiSectorId - (INT16)pPastNode->uiSectorId;
+      iDeltaA = (int16_t)pNode->uiSectorId - (int16_t)pPastNode->uiSectorId;
       if (iDeltaA == -1) {
         iDirection = RED_X_WEST;
         // iX+=RED_WEST_OFF_X;
@@ -2217,7 +2219,7 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
     }
     if (pNextNode) {
       fUTurnFlag = FALSE;
-      iDeltaB = (INT16)pNode->uiSectorId - (INT16)pNextNode->uiSectorId;
+      iDeltaB = (int16_t)pNode->uiSectorId - (int16_t)pNextNode->uiSectorId;
       if (iDeltaB == -1) {
         iDirection = GREEN_X_EAST;
         if (!ubCounter)
@@ -2271,12 +2273,12 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
       if (!fZoomFlag || (MAP_VIEW_START_X < iX && iX < SCREEN_WIDTH - MAP_GRID_X * 2 &&
                          MAP_VIEW_START_Y < iY && iY < MAP_VIEW_START_Y + MAP_VIEW_HEIGHT)) {
         // if(!fZoomFlag)
-        // RestoreExternBackgroundRect(((INT16)iArrowX),((INT16)iArrowY),DMAP_GRID_X,
+        // RestoreExternBackgroundRect(((int16_t)iArrowX),((int16_t)iArrowY),DMAP_GRID_X,
         // DMAP_GRID_Y); else
-        // RestoreExternBackgroundRect(((INT16)iArrowX),
-        // ((INT16)iArrowY),DMAP_GRID_ZOOM_X, DMAP_GRID_ZOOM_Y);
+        // RestoreExternBackgroundRect(((int16_t)iArrowX),
+        // ((int16_t)iArrowY),DMAP_GRID_ZOOM_X, DMAP_GRID_ZOOM_Y);
         if (pNode != pPath) {
-          BltVideoObject(FRAME_BUFFER, guiMAPCURSORS, (UINT16)iArrow, iArrowX, iArrowY);
+          BltVideoObject(FRAME_BUFFER, guiMAPCURSORS, (uint16_t)iArrow, iArrowX, iArrowY);
           InvalidateRegion(iArrowX, iArrowY, iArrowX + 2 * MAP_GRID_X, iArrowY + 2 * MAP_GRID_Y);
         }
       }
@@ -2298,11 +2300,11 @@ static BOOLEAN TraceCharAnimatedRoute(PathSt *const pPath, const BOOLEAN fForceU
 }
 
 // display potential path, yes or no?
-void DisplayThePotentialPathForHelicopter(INT16 sMapX, INT16 sMapY) {
+void DisplayThePotentialPathForHelicopter(int16_t sMapX, int16_t sMapY) {
   // simply check if we want to refresh the screen to display path
   static BOOLEAN fOldShowAirCraft = FALSE;
-  static INT16 sOldMapX, sOldMapY;
-  INT32 iDifference = 0;
+  static int16_t sOldMapX, sOldMapY;
+  int32_t iDifference = 0;
 
   if (fOldShowAirCraft != fShowAircraftFlag) {
     fOldShowAirCraft = fShowAircraftFlag;
@@ -2342,12 +2344,12 @@ void DisplayThePotentialPathForHelicopter(INT16 sMapX, INT16 sMapY) {
   }
 }
 
-bool IsTheCursorAllowedToHighLightThisSector(INT16 const x, INT16 const y) {
+bool IsTheCursorAllowedToHighLightThisSector(int16_t const x, int16_t const y) {
   return SectorInfo[SECTOR(x, y)].ubTraversability[THROUGH_STRATEGIC_MOVE] != EDGEOFWORLD;
 }
 
-void RestoreBackgroundForMapGrid(INT16 sMapX, INT16 sMapY) {
-  INT16 sX, sY;
+void RestoreBackgroundForMapGrid(int16_t sMapX, int16_t sMapY) {
+  int16_t sX, sY;
 
   if (!fZoomFlag) {
     // screen values
@@ -2396,7 +2398,7 @@ void RestoreClipRegionToFullScreen() {
   gDirtyClipRect = gOldClipRect;
 }
 
-void ClipBlitsToMapViewRegionForRectangleAndABit(UINT32 uiDestPitchBYTES) {
+void ClipBlitsToMapViewRegionForRectangleAndABit(uint32_t uiDestPitchBYTES) {
   // clip blits to map view region
   // because MC's map coordinates system is so screwy, these had to be
   // hand-tuned to work right...  ARM
@@ -2411,7 +2413,7 @@ void ClipBlitsToMapViewRegionForRectangleAndABit(UINT32 uiDestPitchBYTES) {
                                    MapScreenRect.iBottom - MapScreenRect.iTop + 2);
 }
 
-void RestoreClipRegionToFullScreenForRectangle(UINT32 uiDestPitchBYTES) {
+void RestoreClipRegionToFullScreenForRectangle(uint32_t uiDestPitchBYTES) {
   // clip blits to map view region
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
@@ -2454,14 +2456,14 @@ void RestoreClipRegionToFullScreenForRectangle(UINT32 uiDestPitchBYTES) {
 #define ICON_WIDTH 8
 
 // show the icons for people in motion
-static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
+static void ShowPeopleInMotion(int16_t const sX, int16_t const sY) {
   if (iCurrentMapSectorZ != 0) return;
 
   // show the icons for people in motion from this sector to the next guy over
-  INT16 const sSource = CALCULATE_STRATEGIC_INDEX(sX, sY);
-  for (INT32 dir = 0; dir != 4;
+  int16_t const sSource = CALCULATE_STRATEGIC_INDEX(sX, sY);
+  for (int32_t dir = 0; dir != 4;
        ++dir) {  // find how many people are coming and going in this sector
-    INT16 sDest = sSource;
+    int16_t sDest = sSource;
     switch (dir) {
       case 0:
         if (sY <= 1) continue;
@@ -2484,18 +2486,18 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
         abort();
     }
 
-    INT32 sExiting;
-    INT32 sEntering;
+    int32_t sExiting;
+    int32_t sEntering;
     BOOLEAN fAboutToEnter;
-    INT16 const sec_src = SECTOR(sSource % MAP_WORLD_X, sSource / MAP_WORLD_X);
-    INT16 const sec_dst = SECTOR(sDest % MAP_WORLD_X, sDest / MAP_WORLD_X);
+    int16_t const sec_src = SECTOR(sSource % MAP_WORLD_X, sSource / MAP_WORLD_X);
+    int16_t const sec_dst = SECTOR(sDest % MAP_WORLD_X, sDest / MAP_WORLD_X);
     if (!PlayersBetweenTheseSectors(sec_src, sec_dst, &sExiting, &sEntering, &fAboutToEnter))
       continue;
     // someone is leaving
 
     // now find position
-    INT16 sOffsetX;
-    INT16 sOffsetY;
+    int16_t sOffsetX;
+    int16_t sOffsetY;
     if (dir % 2 == 0) {     // guys going north or south
       if (sEntering > 0) {  // more than one coming in, offset from middle
         sOffsetX = dir == 0 ? (!fZoomFlag ? NORTH_X_MVT_OFFSET : NORTH_X_MVT_OFFSET_ZOOM)
@@ -2524,8 +2526,8 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
       }
     }
 
-    INT16 sTextXOffset;
-    INT16 sTextYOffset;
+    int16_t sTextXOffset;
+    int16_t sTextYOffset;
     switch (dir) {
       case 0:
         sTextXOffset = NORTH_TEXT_X_OFFSET;
@@ -2552,16 +2554,16 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
     SGPVObject const *const hIconHandle =
         fAboutToEnter ? guiCHARBETWEENSECTORICONSCLOSE : guiCHARBETWEENSECTORICONS;
 
-    INT16 iX;
-    INT16 iY;
+    int16_t iX;
+    int16_t iY;
     // zoomed in or not?
     if (!fZoomFlag) {
       iX = MAP_VIEW_START_X + sX * MAP_GRID_X + sOffsetX;
       iY = MAP_Y_ICON_OFFSET + MAP_VIEW_START_Y + sY * MAP_GRID_Y + sOffsetY;
       BltVideoObject(guiSAVEBUFFER, hIconHandle, dir, iX, iY);
     } else {
-      INT16 sXPosition;
-      INT16 sYPosition;
+      int16_t sXPosition;
+      int16_t sYPosition;
       GetScreenXYFromMapXYStationary(sX, sY, &sXPosition, &sYPosition);
       iY = sYPosition - MAP_GRID_Y + sOffsetY;
       iX = sXPosition - MAP_GRID_X + sOffsetX;
@@ -2572,20 +2574,20 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
     }
 
     // blit the text
-    UINT8 const foreground = fAboutToEnter ? FONT_BLACK : FONT_WHITE;
+    uint8_t const foreground = fAboutToEnter ? FONT_BLACK : FONT_WHITE;
     SetFontAttributes(MAP_MVT_ICON_FONT, foreground);
     SetFontDestBuffer(guiSAVEBUFFER);
 
     wchar_t buf[32];
     swprintf(buf, lengthof(buf), L"%d", sExiting);
 
-    INT16 usX;
-    INT16 usY;
+    int16_t usX;
+    int16_t usY;
     FindFontCenterCoordinates(iX + sTextXOffset, 0, ICON_WIDTH, 0, buf, MAP_FONT, &usX, &usY);
     MPrint(usX, iY + sTextYOffset, buf);
 
-    INT32 iWidth;
-    INT32 iHeight;
+    int32_t iWidth;
+    int32_t iHeight;
     if (dir % 2 == 0) {  // north south
       iWidth = 10;
       iHeight = 12;
@@ -2606,7 +2608,7 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
     }
 
     if (iWidth > 0 && iHeight > 0) {
-      RestoreExternBackgroundRect(iX, iY, (INT16)iWidth, (INT16)iHeight);
+      RestoreExternBackgroundRect(iX, iY, (int16_t)iWidth, (int16_t)iHeight);
     }
   }
 
@@ -2617,13 +2619,13 @@ static void ShowPeopleInMotion(INT16 const sX, INT16 const sY) {
 /* calculate the distance travelled, the proposed distance, and total distance
  * one can go and display these on screen */
 void DisplayDistancesForHelicopter() {
-  static INT16 sOldYPosition = 0;
+  static int16_t sOldYPosition = 0;
 
-  INT16 sMapX;
-  INT16 sMapY;
-  INT16 const sYPosition = !fZoomFlag && GetMouseMapXY(&sMapX, &sMapY) && sMapY >= 13
-                               ? MAP_HELICOPTER_UPPER_ETA_POPUP_Y
-                               : MAP_HELICOPTER_ETA_POPUP_Y;
+  int16_t sMapX;
+  int16_t sMapY;
+  int16_t const sYPosition = !fZoomFlag && GetMouseMapXY(&sMapX, &sMapY) && sMapY >= 13
+                                 ? MAP_HELICOPTER_UPPER_ETA_POPUP_Y
+                                 : MAP_HELICOPTER_ETA_POPUP_Y;
 
   if (sOldYPosition != 0 && sOldYPosition != sYPosition) {
     RestoreExternBackgroundRect(MAP_HELICOPTER_ETA_POPUP_X, sOldYPosition,
@@ -2636,30 +2638,30 @@ void DisplayDistancesForHelicopter() {
 
   SetFontAttributes(MAP_FONT, FONT_LTGREEN);
 
-  INT32 const x = MAP_HELICOPTER_ETA_POPUP_X + 5;
-  INT32 y = sYPosition + 5;
-  INT32 const w = MAP_HELICOPTER_ETA_POPUP_WIDTH;
-  INT32 const h = GetFontHeight(MAP_FONT);
+  int32_t const x = MAP_HELICOPTER_ETA_POPUP_X + 5;
+  int32_t y = sYPosition + 5;
+  int32_t const w = MAP_HELICOPTER_ETA_POPUP_WIDTH;
+  int32_t const h = GetFontHeight(MAP_FONT);
   wchar_t sString[32];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   MPrint(x, y, pHelicopterEtaStrings[0]);
-  INT32 const total_distance = DistanceOfIntendedHelicopterPath();
+  int32_t const total_distance = DistanceOfIntendedHelicopterPath();
   swprintf(sString, lengthof(sString), L"%d", total_distance);
   FindFontRightCoordinates(x, y, w, 0, sString, MAP_FONT, &sX, &sY);
   MPrint(sX, y, sString);
   y += h;
 
   MPrint(x, y, pHelicopterEtaStrings[1]);
-  INT16 const n_safe_sectors = GetNumSafeSectorsInPath();
+  int16_t const n_safe_sectors = GetNumSafeSectorsInPath();
   swprintf(sString, lengthof(sString), L"%d", n_safe_sectors);
   FindFontRightCoordinates(x, y, w, 0, sString, MAP_FONT, &sX, &sY);
   MPrint(sX, y, sString);
   y += h;
 
   MPrint(x, y, pHelicopterEtaStrings[2]);
-  INT16 const n_unsafe_sectors = GetNumUnSafeSectorsInPath();
+  int16_t const n_unsafe_sectors = GetNumUnSafeSectorsInPath();
   swprintf(sString, lengthof(sString), L"%d", n_unsafe_sectors);
   FindFontRightCoordinates(x, y, w, 0, sString, MAP_FONT, &sX, &sY);
   MPrint(sX, y, sString);
@@ -2668,7 +2670,7 @@ void DisplayDistancesForHelicopter() {
   // calculate the cost of the trip based on the number of safe and unsafe
   // sectors it will pass through
   MPrint(x, y, pHelicopterEtaStrings[3]);
-  UINT32 const uiTripCost =
+  uint32_t const uiTripCost =
       n_safe_sectors * COST_AIRSPACE_SAFE + n_unsafe_sectors * COST_AIRSPACE_UNSAFE;
   SPrintMoney(sString, uiTripCost);
   FindFontRightCoordinates(x, y, w, 0, sString, MAP_FONT, &sX, &sY);
@@ -2677,7 +2679,7 @@ void DisplayDistancesForHelicopter() {
 
   MPrint(x, y, pHelicopterEtaStrings[4]);
   // get travel time for the last path segment
-  INT32 iTime = GetPathTravelTimeDuringPlotting(pTempHelicopterPath);
+  int32_t iTime = GetPathTravelTimeDuringPlotting(pTempHelicopterPath);
   // add travel time for any prior path segments (stored in the helicopter's
   // mercpath, but waypoints aren't built)
   iTime += GetPathTravelTimeDuringPlotting(GetHelicopter().pMercPath);
@@ -2702,11 +2704,11 @@ static void DisplayDestinationOfHelicopter();
 
 // grab position of helicopter and blt to screen
 void DisplayPositionOfHelicopter() {
-  static INT16 sOldMapX = 0, sOldMapY = 0;
-  //	INT16 sX =0, sY = 0;
-  FLOAT flRatio = 0.0;
-  UINT32 x, y;
-  UINT16 minX, minY, maxX, maxY;
+  static int16_t sOldMapX = 0, sOldMapY = 0;
+  //	int16_t sX =0, sY = 0;
+  float flRatio = 0.0;
+  uint32_t x, y;
+  uint16_t minX, minY, maxX, maxY;
 
   AssertMsg(0 <= sOldMapX && sOldMapX < SCREEN_WIDTH,
             String("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
@@ -2766,14 +2768,14 @@ void DisplayPositionOfHelicopter() {
 
                                       // zoomed in, takes a little more work
                                       GetScreenXYFromMapXYStationary(
-         ((UINT16)(pGroup->ubSectorX)),((UINT16)(pGroup->ubSectorY)) , &sX, &sY
+         ((uint16_t)(pGroup->ubSectorX)),((uint16_t)(pGroup->ubSectorY)) , &sX, &sY
          ); sY=sY-MAP_GRID_Y; sX=sX-MAP_GRID_X;
 
                                       minX = ( sX );
                                       minY = ( sY );
 
                                       GetScreenXYFromMapXYStationary(
-         ((UINT16)(pGroup->ubNextX)),((UINT16)(pGroup->ubNextY)) , &sX, &sY );
+         ((uint16_t)(pGroup->ubNextX)),((uint16_t)(pGroup->ubNextY)) , &sX, &sY );
                                       sY=sY-MAP_GRID_Y;
                                       sX=sX-MAP_GRID_X;
 
@@ -2789,8 +2791,8 @@ void DisplayPositionOfHelicopter() {
 
       // IMPORTANT: Since min can easily be larger than max, we gotta cast to as
       // signed value
-      x = (UINT32)(minX + flRatio * ((INT16)maxX - (INT16)minX));
-      y = (UINT32)(minY + flRatio * ((INT16)maxY - (INT16)minY));
+      x = (uint32_t)(minX + flRatio * ((int16_t)maxX - (int16_t)minX));
+      y = (uint32_t)(minY + flRatio * ((int16_t)maxY - (int16_t)minY));
 
       /*
                               if( fZoomFlag )
@@ -2830,16 +2832,16 @@ void DisplayPositionOfHelicopter() {
       RestoreClipRegionToFullScreen();
 
       // now store the old stuff
-      sOldMapX = (INT16)x;
-      sOldMapY = (INT16)y;
+      sOldMapX = (int16_t)x;
+      sOldMapY = (int16_t)y;
     }
   }
 }
 
 static void DisplayDestinationOfHelicopter() {
-  static INT16 sOldMapX = 0, sOldMapY = 0;
-  INT16 sMapX, sMapY;
-  UINT32 x, y;
+  static int16_t sOldMapX = 0, sOldMapY = 0;
+  int16_t sMapX, sMapY;
+  uint32_t x, y;
 
   AssertMsg(0 <= sOldMapX && sOldMapX < SCREEN_WIDTH,
             String("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
@@ -2856,7 +2858,7 @@ static void DisplayDestinationOfHelicopter() {
   // if helicopter is going somewhere
   if (GetLengthOfPath(GetHelicopter().pMercPath) > 1) {
     // get destination
-    const INT16 sSector = GetLastSectorOfHelicoptersPath();
+    const int16_t sSector = GetLastSectorOfHelicoptersPath();
     sMapX = sSector % MAP_WORLD_X;
     sMapY = sSector / MAP_WORLD_X;
 
@@ -2879,16 +2881,16 @@ static void DisplayDestinationOfHelicopter() {
     RestoreClipRegionToFullScreen();
 
     // now store the old stuff
-    sOldMapX = (INT16)x;
-    sOldMapY = (INT16)y;
+    sOldMapX = (int16_t)x;
+    sOldMapY = (int16_t)y;
   }
 }
 
-BOOLEAN CheckForClickOverHelicopterIcon(INT16 sClickedSectorX, INT16 sClickedSectorY) {
+BOOLEAN CheckForClickOverHelicopterIcon(int16_t sClickedSectorX, int16_t sClickedSectorY) {
   BOOLEAN fHelicopterOverNextSector = FALSE;
-  FLOAT flRatio = 0.0;
-  INT16 sSectorX;
-  INT16 sSectorY;
+  float flRatio = 0.0;
+  int16_t sSectorX;
+  int16_t sSectorY;
 
   if (!fShowAircraftFlag) return FALSE;
   if (iHelicopterVehicleId == -1) return FALSE;
@@ -2935,12 +2937,12 @@ BOOLEAN CheckForClickOverHelicopterIcon(INT16 sClickedSectorX, INT16 sClickedSec
   return (TRUE);
 }
 
-static void DrawSite(const INT16 sector_x, const INT16 sector_y, const SGPVObject *const icon) {
-  INT16 x;
-  INT16 y;
-  UINT16 max_w;
-  UINT16 max_h;
-  UINT8 vo_idx;
+static void DrawSite(const int16_t sector_x, const int16_t sector_y, const SGPVObject *const icon) {
+  int16_t x;
+  int16_t y;
+  uint16_t max_w;
+  uint16_t max_h;
+  uint8_t vo_idx;
   if (fZoomFlag) {
     {
       SGPVSurface::Lock l(guiSAVEBUFFER);
@@ -2964,8 +2966,8 @@ static void DrawSite(const INT16 sector_x, const INT16 sector_y, const SGPVObjec
   }
 
   ETRLEObject const &ETRLEProps = icon->SubregionProperties(vo_idx);
-  UINT16 const w = ETRLEProps.usWidth;
-  UINT16 const h = ETRLEProps.usHeight;
+  uint16_t const w = ETRLEProps.usWidth;
+  uint16_t const h = ETRLEProps.usHeight;
   x += (max_w - w) / 2;
   /* If the icon is higher than a map cell, align with the bottom of the cell */
   y += (h > max_h ? max_h - h : (max_h - h) / 2);
@@ -2973,9 +2975,9 @@ static void DrawSite(const INT16 sector_x, const INT16 sector_y, const SGPVObjec
   BltVideoObject(guiSAVEBUFFER, icon, vo_idx, x, y);
 }
 
-static void BlitMineIcon(INT16 sMapX, INT16 sMapY) { DrawSite(sMapX, sMapY, guiMINEICON); }
+static void BlitMineIcon(int16_t sMapX, int16_t sMapY) { DrawSite(sMapX, sMapY, guiMINEICON); }
 
-static void PrintStringCenteredBoxed(INT32 x, const INT32 y, const wchar_t *const string) {
+static void PrintStringCenteredBoxed(int32_t x, const int32_t y, const wchar_t *const string) {
   x -= StringPixLength(string, MAP_FONT) / 2;
   if (!fZoomFlag)  // it's ok to cut strings off in zoomed mode
   {
@@ -2984,10 +2986,10 @@ static void PrintStringCenteredBoxed(INT32 x, const INT32 y, const wchar_t *cons
   MPrint(x, y, string);
 }
 
-static void BlitMineText(UINT8 const mine_idx, INT16 const sMapX, INT16 const sMapY) {
+static void BlitMineText(uint8_t const mine_idx, int16_t const sMapX, int16_t const sMapY) {
   // set coordinates for start of mine text
-  INT16 sScreenX;
-  INT16 sScreenY;
+  int16_t sScreenX;
+  int16_t sScreenY;
   if (fZoomFlag) {
     GetScreenXYFromMapXYStationary(sMapX, sMapY, &sScreenX, &sScreenY);
     sScreenY += MAP_GRID_ZOOM_Y / 2 + 1;  // slightly below
@@ -3004,9 +3006,9 @@ static void BlitMineText(UINT8 const mine_idx, INT16 const sMapX, INT16 const sM
                     MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7);
   SetFontAttributes(MAP_FONT, FONT_LTGREEN);
 
-  INT32 const x = sScreenX;
-  INT32 y = sScreenY;
-  INT32 const h = GetFontHeight(MAP_FONT);
+  int32_t const x = sScreenX;
+  int32_t y = sScreenY;
+  int32_t const h = GetFontHeight(MAP_FONT);
   wchar_t buf[32];
 
   // display associated town name, followed by "mine"
@@ -3050,13 +3052,13 @@ static void BlitMineText(UINT8 const mine_idx, INT16 const sMapX, INT16 const sM
 
 static void BlitTownGridMarkers() {
   SGPVSurface::Lock l(guiSAVEBUFFER);
-  UINT16 *const buf = l.Buffer<UINT16>();
-  UINT32 const pitch = l.Pitch();
+  uint16_t *const buf = l.Buffer<uint16_t>();
+  uint32_t const pitch = l.Pitch();
 
   ClipBlitsToMapViewRegionForRectangleAndABit(pitch);
 
   // Go through list of towns and place on screen
-  UINT16 const color = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const color = Get16BPPColor(FROMRGB(100, 100, 100));
   FOR_EACH_TOWN_SECTOR(i) {
     // skip Orta/Tixa until found
     switch (i->town) {
@@ -3068,11 +3070,11 @@ static void BlitTownGridMarkers() {
         break;
     }
 
-    INT32 const sector = i->sector;
-    INT16 x;
-    INT16 y;
-    INT16 w;
-    INT16 h;
+    int32_t const sector = i->sector;
+    int16_t x;
+    int16_t y;
+    int16_t w;
+    int16_t h;
     if (fZoomFlag) {
       GetScreenXYFromMapXYStationary(SECTORX(sector), SECTORY(sector), &x, &y);
       x -= MAP_GRID_X - 1;
@@ -3086,7 +3088,7 @@ static void BlitTownGridMarkers() {
       x += 2;
     }
 
-    INT32 const loc = SECTOR_INFO_TO_STRATEGIC_INDEX(sector);
+    int32_t const loc = SECTOR_INFO_TO_STRATEGIC_INDEX(sector);
     if (StrategicMap[loc - MAP_WORLD_X].bNameId == BLANK_SECTOR) {
       LineDraw(TRUE, x - 1, y - 1, x + w - 1, y - 1, color, buf);
     }
@@ -3109,19 +3111,19 @@ static void BlitTownGridMarkers() {
 
 static void BlitMineGridMarkers() {
   SGPVSurface::Lock l(guiSAVEBUFFER);
-  UINT32 const pitch = l.Pitch();
+  uint32_t const pitch = l.Pitch();
 
   ClipBlitsToMapViewRegionForRectangleAndABit(pitch);
 
-  UINT16 const color = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const color = Get16BPPColor(FROMRGB(100, 100, 100));
   FOR_EACH(MINE_LOCATION_TYPE const, i, gMineLocation) {
-    INT16 x;
-    INT16 y;
-    INT16 w;
-    INT16 h;
+    int16_t x;
+    int16_t y;
+    int16_t w;
+    int16_t h;
     MINE_LOCATION_TYPE const &m = *i;
-    INT16 const mx = SECTORX(m.sector);
-    INT16 const my = SECTORY(m.sector);
+    int16_t const mx = SECTORX(m.sector);
+    int16_t const my = SECTORY(m.sector);
     if (fZoomFlag) {
       GetScreenXYFromMapXYStationary(mx, my, &x, &y);
       x -= MAP_GRID_X;
@@ -3134,7 +3136,7 @@ static void BlitMineGridMarkers() {
       h = MAP_GRID_Y;
     }
 
-    RectangleDraw(TRUE, x, y - 1, x + w, y + h - 1, color, l.Buffer<UINT16>());
+    RectangleDraw(TRUE, x, y - 1, x + w, y + h - 1, color, l.Buffer<uint16_t>());
   }
 
   RestoreClipRegionToFullScreenForRectangle(pitch);
@@ -3159,7 +3161,7 @@ static void DisplayLevelString() {
   SetFontDestBuffer(FRAME_BUFFER);
 }
 
-static INT16 &GetPickedUpMilitia(UINT8 const type) {
+static int16_t &GetPickedUpMilitia(uint8_t const type) {
   switch (type) {
     case GREEN_MILITIA:
       return sGreensOnCursor;
@@ -3173,13 +3175,13 @@ static INT16 &GetPickedUpMilitia(UINT8 const type) {
 }
 
 // function to manipulate the number of towns people on the cursor
-static void PickUpATownPersonFromSector(UINT8 const type, UINT8 const sector) {
+static void PickUpATownPersonFromSector(uint8_t const type, uint8_t const sector) {
   // Are they in the same town as they were picked up from?
   if (GetTownIdForSector(sector) != sSelectedMilitiaTown) return;
 
   if (!SectorOursAndPeaceful(SECTORX(sector), SECTORY(sector), 0)) return;
 
-  UINT8 &n_type = SectorInfo[sector].ubNumberOfCivsAtLevel[type];
+  uint8_t &n_type = SectorInfo[sector].ubNumberOfCivsAtLevel[type];
   // See if there are any militia of this type in this sector
   if (n_type == 0) return;
 
@@ -3189,20 +3191,19 @@ static void PickUpATownPersonFromSector(UINT8 const type, UINT8 const sector) {
   if (sector == GetWorldSector()) gfStrategicMilitiaChangesMade = TRUE;
 }
 
-static void DropAPersonInASector(UINT8 const type, UINT8 const sector) {
+static void DropAPersonInASector(uint8_t const type, uint8_t const sector) {
   // Are they in the same town as they were picked up from?
   if (GetTownIdForSector(sector) != sSelectedMilitiaTown) return;
 
   if (!SectorOursAndPeaceful(SECTORX(sector), SECTORY(sector), 0)) return;
 
-  UINT8(&n_milita)
-  [MAX_MILITIA_LEVELS] = SectorInfo[sector].ubNumberOfCivsAtLevel;
+  uint8_t(&n_milita)[MAX_MILITIA_LEVELS] = SectorInfo[sector].ubNumberOfCivsAtLevel;
   if (n_milita[GREEN_MILITIA] + n_milita[REGULAR_MILITIA] + n_milita[ELITE_MILITIA] >=
       MAX_ALLOWABLE_MILITIA_PER_SECTOR)
     return;
 
   // Drop the guy into this sector
-  INT16 &n_type = GetPickedUpMilitia(type);
+  int16_t &n_type = GetPickedUpMilitia(type);
   if (n_type == 0) return;
 
   --n_type;
@@ -3316,12 +3317,12 @@ void DrawMilitiaPopUpBox() {
 
 static void CreateMilitiaPanelBottomButton();
 static void DeleteMilitiaPanelBottomButton();
-static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(INT16 sTownValue);
-static void MilitiaRegionClickCallback(MOUSE_REGION *, INT32 reason);
-static void MilitiaRegionMoveCallback(MOUSE_REGION *, INT32 reason);
+static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(int16_t sTownValue);
+static void MilitiaRegionClickCallback(MOUSE_REGION *, int32_t reason);
+static void MilitiaRegionMoveCallback(MOUSE_REGION *, int32_t reason);
 
 void CreateDestroyMilitiaPopUPRegions() {
-  static INT16 sOldTown = 0;
+  static int16_t sOldTown = 0;
 
   // create destroy militia pop up regions for mapscreen militia pop up box
   if (sSelectedMilitiaTown != 0) {
@@ -3329,11 +3330,11 @@ void CreateDestroyMilitiaPopUPRegions() {
   }
 
   if (fShowMilitia && sSelectedMilitiaTown && !gfMilitiaPopupCreated) {
-    for (INT32 i = 0; i < 9; ++i) {
+    for (int32_t i = 0; i < 9; ++i) {
       MOUSE_REGION *const r = &gMapScreenMilitiaBoxRegions[i];
-      UINT16 const x =
+      uint16_t const x =
           MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + i % MILITIA_BOX_ROWS * MILITIA_BOX_BOX_WIDTH;
-      UINT16 const y =
+      uint16_t const y =
           MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + i / MILITIA_BOX_ROWS * MILITIA_BOX_BOX_HEIGHT;
       MSYS_DefineRegion(r, x, y, x + MILITIA_BOX_BOX_WIDTH, y + MILITIA_BOX_BOX_HEIGHT,
                         MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, MilitiaRegionMoveCallback,
@@ -3344,7 +3345,7 @@ void CreateDestroyMilitiaPopUPRegions() {
     CreateMilitiaPanelBottomButton();
     gfMilitiaPopupCreated = TRUE;
   } else if (gfMilitiaPopupCreated && (!fShowMilitia || !sSelectedMilitiaTown)) {
-    for (INT32 i = 0; i < 9; ++i) {
+    for (int32_t i = 0; i < 9; ++i) {
       MSYS_RemoveRegion(&gMapScreenMilitiaBoxRegions[i]);
     }
 
@@ -3357,15 +3358,15 @@ void CreateDestroyMilitiaPopUPRegions() {
   }
 }
 
-static INT16 GetBaseSectorForCurrentTown();
+static int16_t GetBaseSectorForCurrentTown();
 
 static void RenderIconsPerSectorForSelectedTown() {
   // render icons for map
-  INT16 const sBaseSectorValue = GetBaseSectorForCurrentTown();
-  for (INT32 iCounter = 0; iCounter != 9; ++iCounter) {
-    INT32 const dx = iCounter % MILITIA_BOX_ROWS;
-    INT32 const dy = iCounter / MILITIA_BOX_ROWS;
-    INT16 const sector = sBaseSectorValue + dx + dy * 16;
+  int16_t const sBaseSectorValue = GetBaseSectorForCurrentTown();
+  for (int32_t iCounter = 0; iCounter != 9; ++iCounter) {
+    int32_t const dx = iCounter % MILITIA_BOX_ROWS;
+    int32_t const dy = iCounter / MILITIA_BOX_ROWS;
+    int16_t const sector = sBaseSectorValue + dx + dy * 16;
 
     // skip sectors not in the selected town (nearby other towns or wilderness
     // SAM Sites)
@@ -3373,10 +3374,10 @@ static void RenderIconsPerSectorForSelectedTown() {
 
     // get number of each
     SECTORINFO const &si = SectorInfo[sector];
-    INT32 const n_greens = si.ubNumberOfCivsAtLevel[GREEN_MILITIA];
-    INT32 const n_regulars = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-    INT32 const n_elites = si.ubNumberOfCivsAtLevel[ELITE_MILITIA];
-    INT32 const n_total = n_greens + n_regulars + n_elites;
+    int32_t const n_greens = si.ubNumberOfCivsAtLevel[GREEN_MILITIA];
+    int32_t const n_regulars = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
+    int32_t const n_elites = si.ubNumberOfCivsAtLevel[ELITE_MILITIA];
+    int32_t const n_total = n_greens + n_regulars + n_elites;
 
     StrategicMapElement const &e = StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sector)];
     if (e.bNameId != BLANK_SECTOR && !e.fEnemyControlled) {
@@ -3384,21 +3385,21 @@ static void RenderIconsPerSectorForSelectedTown() {
       SetFont(FONT10ARIAL);
       wchar_t sString[32];
       swprintf(sString, lengthof(sString), L"%d", n_total);
-      INT16 sX;
-      INT16 sY;
-      INT16 const x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
-      INT16 const y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
+      int16_t sX;
+      int16_t sY;
+      int16_t const x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
+      int16_t const y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
       FindFontRightCoordinates(x, y, MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL, &sX, &sY);
       MPrint(sSectorMilitiaMapSector != iCounter ? sX : sX - 15, sY + MILITIA_BOX_BOX_HEIGHT - 5,
              sString);
     }
 
     // now display
-    for (INT32 i = 0; i < n_total; ++i) {
+    for (int32_t i = 0; i < n_total; ++i) {
       // get screen x and y coords
-      INT16 x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
-      INT16 y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
-      UINT16 icon_base;
+      int16_t x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
+      int16_t y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
+      uint16_t icon_base;
       if (sSectorMilitiaMapSector == iCounter) {
         x += i % POPUP_MILITIA_ICONS_PER_ROW * MEDIUM_MILITIA_ICON_SPACING + 2;
         y += i / POPUP_MILITIA_ICONS_PER_ROW * (MEDIUM_MILITIA_ICON_SPACING - 1) + 3;
@@ -3409,21 +3410,21 @@ static void RenderIconsPerSectorForSelectedTown() {
         icon_base = 8;
       }
 
-      UINT16 const icon = i < n_greens                ? icon_base
-                          : i < n_greens + n_regulars ? icon_base + 1
-                                                      : icon_base + 2;
+      uint16_t const icon = i < n_greens                ? icon_base
+                            : i < n_greens + n_regulars ? icon_base + 1
+                                                        : icon_base + 2;
       BltVideoObject(FRAME_BUFFER, guiMilitia, icon, x, y);
     }
   }
 }
 
 // Get the sector value for the upper left corner
-static INT16 GetBaseSectorForCurrentTown() {
-  INT16 sBaseSector = 0;
+static int16_t GetBaseSectorForCurrentTown() {
+  int16_t sBaseSector = 0;
 
   // is the current town
   if (sSelectedMilitiaTown != 0) {
-    sBaseSector = sBaseSectorList[(INT16)(sSelectedMilitiaTown - 1)];
+    sBaseSector = sBaseSectorList[(int16_t)(sSelectedMilitiaTown - 1)];
   }
 
   // return the current sector value
@@ -3432,7 +3433,7 @@ static INT16 GetBaseSectorForCurrentTown() {
 
 static void ShowHighLightedSectorOnMilitiaMap() {
   // show the highlighted sector on the militia map
-  INT16 sX = 0, sY = 0;
+  int16_t sX = 0, sY = 0;
 
   if (sSectorMilitiaMapSector != -1) {
     sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X +
@@ -3451,11 +3452,11 @@ static void ShowHighLightedSectorOnMilitiaMap() {
   }
 }
 
-static bool IsThisMilitiaTownSectorAllowable(INT16 sSectorIndexValue);
+static bool IsThisMilitiaTownSectorAllowable(int16_t sSectorIndexValue);
 
-static void MilitiaRegionClickCallback(MOUSE_REGION *const r, INT32 const reason) {
+static void MilitiaRegionClickCallback(MOUSE_REGION *const r, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT16 const val = MSYS_GetRegionUserData(r, 0);
+    int16_t const val = MSYS_GetRegionUserData(r, 0);
     sSectorMilitiaMapSector = !IsThisMilitiaTownSectorAllowable(val) ? -1
                               : sSectorMilitiaMapSector == val       ? -1
                                                                      : val;
@@ -3464,29 +3465,29 @@ static void MilitiaRegionClickCallback(MOUSE_REGION *const r, INT32 const reason
   }
 }
 
-static void MilitiaRegionMoveCallback(MOUSE_REGION *const r, INT32 const reason) {
+static void MilitiaRegionMoveCallback(MOUSE_REGION *const r, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    INT16 const val = MSYS_GetRegionUserData(r, 0);
+    int16_t const val = MSYS_GetRegionUserData(r, 0);
     sSectorMilitiaMapSectorOutline = !IsThisMilitiaTownSectorAllowable(val) ? -1 : val;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     sSectorMilitiaMapSectorOutline = -1;
   }
 }
 
-static void MilitiaButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void MilitiaButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 void CreateDestroyMilitiaSectorButtons() {
-  static INT16 sOldSectorValue = -1;
+  static int16_t sOldSectorValue = -1;
 
   if (!fMilitiaMapButtonsCreated && sOldSectorValue == sSectorMilitiaMapSector && fShowMilitia &&
       sSelectedMilitiaTown && sSectorMilitiaMapSector != -1) {
     // given sector..place down the 3 buttons
-    INT16 const x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X +
-                    sSectorMilitiaMapSector % MILITIA_BOX_ROWS * MILITIA_BOX_BOX_WIDTH +
-                    MILITIA_BTN_OFFSET_X;
-    INT16 y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y +
-              sSectorMilitiaMapSector / MILITIA_BOX_ROWS * MILITIA_BOX_BOX_HEIGHT + 2;
-    for (INT32 i = 0; i != 3; y += MILITIA_BTN_HEIGHT, ++i) {
+    int16_t const x = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X +
+                      sSectorMilitiaMapSector % MILITIA_BOX_ROWS * MILITIA_BOX_BOX_WIDTH +
+                      MILITIA_BTN_OFFSET_X;
+    int16_t y = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y +
+                sSectorMilitiaMapSector / MILITIA_BOX_ROWS * MILITIA_BOX_BOX_HEIGHT + 2;
+    for (int32_t i = 0; i != 3; y += MILITIA_BTN_HEIGHT, ++i) {
       GUIButtonRef b = QuickCreateButtonImg(INTERFACEDIR "/militia.sti", 3, 4, x, y,
                                             MSYS_PRIORITY_HIGHEST - 1, MilitiaButtonCallback);
       giMapMilitiaButton[i] = b;
@@ -3507,7 +3508,7 @@ void CreateDestroyMilitiaSectorButtons() {
     sOldSectorValue = sSectorMilitiaMapSector;
 
     // get rid of the buttons
-    for (INT32 i = 0; i != 3; ++i) {
+    for (int32_t i = 0; i != 3; ++i) {
       RemoveButton(giMapMilitiaButton[i]);
     }
 
@@ -3529,9 +3530,9 @@ static void SetMilitiaMapButtonsText() {
   if (!fMilitiaMapButtonsCreated) return;
 
   // grab the appropriate global sector value in the world
-  INT16 const base_sector = GetBaseSectorForCurrentTown();
-  INT16 const sector = base_sector + (sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
-                                      sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16);
+  int16_t const base_sector = GetBaseSectorForCurrentTown();
+  int16_t const sector = base_sector + (sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
+                                        sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16);
   SECTORINFO const &si = SectorInfo[sector];
   wchar_t buf[64];
 
@@ -3548,13 +3549,13 @@ static void SetMilitiaMapButtonsText() {
   giMapMilitiaButton[2]->SpecifyText(buf);
 }
 
-static void MilitiaButtonCallback(GUI_BUTTON *btn, INT32 reason) {
-  INT32 const iValue = btn->GetUserData();
+static void MilitiaButtonCallback(GUI_BUTTON *btn, int32_t reason) {
+  int32_t const iValue = btn->GetUserData();
 
   // get the sector value for the upper left corner
-  INT16 sBaseSectorValue = GetBaseSectorForCurrentTown();
-  INT16 sGlobalMapSector = sBaseSectorValue + sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
-                           sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16;
+  int16_t sBaseSectorValue = GetBaseSectorForCurrentTown();
+  int16_t sGlobalMapSector = sBaseSectorValue + sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
+                             sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DropAPersonInASector(iValue, sGlobalMapSector);
@@ -3565,10 +3566,10 @@ static void MilitiaButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 
 static void DisplayUnallocatedMilitia() {
   // show the nunber on the cursor
-  INT32 iTotalNumberOfTroops = 0, iNumberOfGreens = 0, iNumberOfRegulars = 0, iNumberOfElites = 0,
-        iCurrentTroopIcon = 0;
-  INT32 iCurrentIcon = 0;
-  INT16 sX = 0, sY = 0;
+  int32_t iTotalNumberOfTroops = 0, iNumberOfGreens = 0, iNumberOfRegulars = 0, iNumberOfElites = 0,
+          iCurrentTroopIcon = 0;
+  int32_t iCurrentIcon = 0;
+  int16_t sX = 0, sY = 0;
 
   // get number of each
   iNumberOfGreens = sGreensOnCursor;
@@ -3599,24 +3600,24 @@ static void DisplayUnallocatedMilitia() {
 }
 
 // Is this sector allowed to be clicked on?
-static bool IsThisMilitiaTownSectorAllowable(INT16 const sSectorIndexValue) {
-  INT16 const base_sector = GetBaseSectorForCurrentTown();
-  INT16 const sector = base_sector + sSectorIndexValue % MILITIA_BOX_ROWS +
-                       sSectorIndexValue / MILITIA_BOX_ROWS * 16;
-  INT16 const x = SECTORX(sector);
-  INT16 const y = SECTORY(sector);
+static bool IsThisMilitiaTownSectorAllowable(int16_t const sSectorIndexValue) {
+  int16_t const base_sector = GetBaseSectorForCurrentTown();
+  int16_t const sector = base_sector + sSectorIndexValue % MILITIA_BOX_ROWS +
+                         sSectorIndexValue / MILITIA_BOX_ROWS * 16;
+  int16_t const x = SECTORX(sector);
+  int16_t const y = SECTORY(sector);
   return StrategicMap[CALCULATE_STRATEGIC_INDEX(x, y)].bNameId != BLANK_SECTOR &&
          SectorOursAndPeaceful(x, y, 0);
 }
 
 static void DrawTownMilitiaName() {
   wchar_t const *const town = pTownNames[sSelectedMilitiaTown];
-  INT16 const x = MAP_MILITIA_BOX_POS_X;
-  INT16 const y = MAP_MILITIA_BOX_POS_Y;
-  INT16 const w = MILITIA_BOX_WIDTH;
+  int16_t const x = MAP_MILITIA_BOX_POS_X;
+  int16_t const y = MAP_MILITIA_BOX_POS_Y;
+  int16_t const w = MILITIA_BOX_WIDTH;
   wchar_t buf[64];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   // get the name for the current militia town
   swprintf(buf, lengthof(buf), L"%ls %ls", town, pMilitiaString[0]);
@@ -3631,18 +3632,18 @@ static void DrawTownMilitiaName() {
   MPrint(sX, sY, buf);
 }
 
-static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(INT16 const town) {
+static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(int16_t const town) {
   // check if anyone still on the cursor
   if (sGreensOnCursor == 0 && sRegularsOnCursor == 0 && sElitesOnCursor == 0) return;
 
   FOR_EACH_SECTOR_IN_TOWN(i, town) {
-    INT32 const sector = i->sector;
+    int32_t const sector = i->sector;
     if (!SectorOursAndPeaceful(SECTORX(sector), SECTORY(sector), 0)) continue;
     SECTORINFO &si = SectorInfo[sector];
-    UINT8 &n_green = si.ubNumberOfCivsAtLevel[GREEN_MILITIA];
-    UINT8 &n_regular = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-    UINT8 &n_elite = si.ubNumberOfCivsAtLevel[ELITE_MILITIA];
-    INT32 n = MAX_ALLOWABLE_MILITIA_PER_SECTOR - n_green - n_regular - n_elite;
+    uint8_t &n_green = si.ubNumberOfCivsAtLevel[GREEN_MILITIA];
+    uint8_t &n_regular = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
+    uint8_t &n_elite = si.ubNumberOfCivsAtLevel[ELITE_MILITIA];
+    int32_t n = MAX_ALLOWABLE_MILITIA_PER_SECTOR - n_green - n_regular - n_elite;
     if (n == 0) continue;
 
     while (sGreensOnCursor != 0 || sRegularsOnCursor != 0 || sElitesOnCursor != 0) {
@@ -3675,18 +3676,18 @@ static void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(INT16 const town) {
 
 // Even out troops among the town
 static void HandleEveningOutOfTroopsAmongstSectors() {
-  INT8 const town = sSelectedMilitiaTown;
+  int8_t const town = sSelectedMilitiaTown;
 
   // How many sectors in the selected town do we control?
-  INT32 const n_under_control = GetTownSectorsUnderControl(town);
+  int32_t const n_under_control = GetTownSectorsUnderControl(town);
   if (n_under_control == 0) return;  // If none, there's nothing to be done
 
-  INT32 n_green = 0;
-  INT32 n_regular = 0;
-  INT32 n_elite = 0;
-  INT16 const base_sector = GetBaseSectorForCurrentTown();
-  for (INT32 i = 0; i != 9; ++i) {
-    INT16 const sector = base_sector + i % MILITIA_BOX_ROWS + i / MILITIA_BOX_ROWS * 16;
+  int32_t n_green = 0;
+  int32_t n_regular = 0;
+  int32_t n_elite = 0;
+  int16_t const base_sector = GetBaseSectorForCurrentTown();
+  for (int32_t i = 0; i != 9; ++i) {
+    int16_t const sector = base_sector + i % MILITIA_BOX_ROWS + i / MILITIA_BOX_ROWS * 16;
 
     // Skip sectors not in the selected town (nearby other towns or wilderness
     // SAM Sites)
@@ -3707,17 +3708,17 @@ static void HandleEveningOutOfTroopsAmongstSectors() {
 
   if (n_green + n_regular + n_elite == 0) return;
 
-  INT32 const n_green_per_sector = n_green / n_under_control;
-  INT32 const n_regular_per_sector = n_regular / n_under_control;
-  INT32 const n_elite_per_sector = n_elite / n_under_control;
+  int32_t const n_green_per_sector = n_green / n_under_control;
+  int32_t const n_regular_per_sector = n_regular / n_under_control;
+  int32_t const n_elite_per_sector = n_elite / n_under_control;
 
   // Get the left overs
-  INT32 n_left_over_green = n_green % n_under_control;
-  INT32 n_left_over_regular = n_regular % n_under_control;
-  INT32 n_left_over_elite = n_elite % n_under_control;
+  int32_t n_left_over_green = n_green % n_under_control;
+  int32_t n_left_over_regular = n_regular % n_under_control;
+  int32_t n_left_over_elite = n_elite % n_under_control;
 
   FOR_EACH_SECTOR_IN_TOWN(i, town) {
-    INT32 const sector = i->sector;
+    int32_t const sector = i->sector;
     if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sector)].fEnemyControlled) continue;
     if (NumHostilesInSector(SECTORX(sector), SECTORY(sector), 0) != 0) continue;
 
@@ -3729,7 +3730,7 @@ static void HandleEveningOutOfTroopsAmongstSectors() {
     si.ubNumberOfCivsAtLevel[ELITE_MILITIA] = n_elite_per_sector;
 
     // Add leftovers that weren't included in the div operation
-    INT16 total_so_far = n_green_per_sector + n_regular_per_sector + n_elite_per_sector;
+    int16_t total_so_far = n_green_per_sector + n_regular_per_sector + n_elite_per_sector;
     if (n_left_over_green != 0 && total_so_far < MAX_ALLOWABLE_MILITIA_PER_SECTOR) {
       ++si.ubNumberOfCivsAtLevel[GREEN_MILITIA];
       ++total_so_far;
@@ -3755,7 +3756,7 @@ static void HandleEveningOutOfTroopsAmongstSectors() {
   sElitesOnCursor = 0;
 }
 
-static void MakeButton(UINT idx, INT16 x, GUI_CALLBACK click, const wchar_t *text) {
+static void MakeButton(uint32_t idx, int16_t x, GUI_CALLBACK click, const wchar_t *text) {
   GUIButtonRef const btn = QuickCreateButtonImg(INTERFACEDIR "/militia.sti", 1, 2, x,
                                                 MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_BOX_AUTO_BOX_Y,
                                                 MSYS_PRIORITY_HIGHEST - 1, click);
@@ -3764,8 +3765,8 @@ static void MakeButton(UINT idx, INT16 x, GUI_CALLBACK click, const wchar_t *tex
 }
 
 static bool CanMilitiaAutoDistribute();
-static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateMilitiaPanelBottomButton() {
   MakeButton(3, MAP_MILITIA_BOX_POS_X + MAP_MILITIA_BOX_AUTO_BOX_X, MilitiaAutoButtonCallback,
@@ -3796,7 +3797,7 @@ static void DeleteMilitiaPanelBottomButton() {
   fMapPanelDirty = TRUE;
 }
 
-static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // distribute troops over all the sectors under control
     HandleEveningOutOfTroopsAmongstSectors();
@@ -3804,7 +3805,7 @@ static void MilitiaAutoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // reset fact we are in the box
     sSelectedMilitiaTown = 0;
@@ -3814,42 +3815,42 @@ static void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 
 static void RenderShadingForUnControlledSectors() {
   // now render shading over any uncontrolled sectors
-  INT16 const sBaseSectorValue = GetBaseSectorForCurrentTown();
-  for (INT32 dy = 0; dy != 3; ++dy) {
-    for (INT32 dx = 0; dx != 3; ++dx) {
-      INT32 const x = SECTORX(sBaseSectorValue) + dx;
-      INT32 const y = SECTORY(sBaseSectorValue) + dy;
+  int16_t const sBaseSectorValue = GetBaseSectorForCurrentTown();
+  for (int32_t dy = 0; dy != 3; ++dy) {
+    for (int32_t dx = 0; dx != 3; ++dx) {
+      int32_t const x = SECTORX(sBaseSectorValue) + dx;
+      int32_t const y = SECTORY(sBaseSectorValue) + dy;
 
       StrategicMapElement const &e = StrategicMap[CALCULATE_STRATEGIC_INDEX(x, y)];
       if (e.bNameId == BLANK_SECTOR) continue;
       if (!e.fEnemyControlled && NumHostilesInSector(x, y, 0) == 0) continue;
 
       // shade this sector, not under our control
-      INT16 const sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
-      INT16 const sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
+      int16_t const sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + dx * MILITIA_BOX_BOX_WIDTH;
+      int16_t const sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + dy * MILITIA_BOX_BOX_HEIGHT;
       FRAME_BUFFER->ShadowRect(sX, sY, sX + MILITIA_BOX_BOX_WIDTH - 1,
                                sY + MILITIA_BOX_BOX_HEIGHT - 1);
     }
   }
 }
 
-static void DrawMilitiaForcesForSector(INT32 const sector) {
-  INT16 const x = SECTORX(sector);
-  INT16 const y = SECTORY(sector);
+static void DrawMilitiaForcesForSector(int32_t const sector) {
+  int16_t const x = SECTORX(sector);
+  int16_t const y = SECTORY(sector);
 
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(x, y)].fEnemyControlled) return;
 
   /* Large/small icon offset in the .sti */
-  INT32 const icon = fZoomFlag ? 11 : 5;
-  INT32 pos = 0;
+  int32_t const icon = fZoomFlag ? 11 : 5;
+  int32_t pos = 0;
   SECTORINFO const &si = SectorInfo[sector];
-  for (INT32 i = si.ubNumberOfCivsAtLevel[GREEN_MILITIA]; i != 0; --i) {
+  for (int32_t i = si.ubNumberOfCivsAtLevel[GREEN_MILITIA]; i != 0; --i) {
     DrawMapBoxIcon(guiMilitia, icon, x, y, pos++);
   }
-  for (INT32 i = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA]; i != 0; --i) {
+  for (int32_t i = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA]; i != 0; --i) {
     DrawMapBoxIcon(guiMilitia, icon + 1, x, y, pos++);
   }
-  for (INT32 i = si.ubNumberOfCivsAtLevel[ELITE_MILITIA]; i != 0; --i) {
+  for (int32_t i = si.ubNumberOfCivsAtLevel[ELITE_MILITIA]; i != 0; --i) {
     DrawMapBoxIcon(guiMilitia, icon + 2, x, y, pos++);
   }
 }
@@ -3860,7 +3861,7 @@ static void DrawTownMilitiaForcesOnMap() {
   FOR_EACH_TOWN_SECTOR(i) { DrawMilitiaForcesForSector(i->sector); }
 
   // now handle militia for sam sectors
-  FOR_EACH(INT16 const, i, pSamList) { DrawMilitiaForcesForSector(*i); }
+  FOR_EACH(int16_t const, i, pSamList) { DrawMilitiaForcesForSector(*i); }
 
   RestoreClipRegionToFullScreen();
 }
@@ -3871,13 +3872,13 @@ static void CheckAndUpdateStatesOfSelectedMilitiaSectorButtons() {
     return;
   }
 
-  INT16 const base_sector = GetBaseSectorForCurrentTown();
-  INT16 const sector = base_sector + (sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
-                                      sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16);
+  int16_t const base_sector = GetBaseSectorForCurrentTown();
+  int16_t const sector = base_sector + (sSectorMilitiaMapSector % MILITIA_BOX_ROWS +
+                                        sSectorMilitiaMapSector / MILITIA_BOX_ROWS * 16);
   SECTORINFO const &si = SectorInfo[sector];
-  INT32 const n_green = si.ubNumberOfCivsAtLevel[GREEN_MILITIA] + sGreensOnCursor;
-  INT32 const n_regular = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA] + sRegularsOnCursor;
-  INT32 const n_elite = si.ubNumberOfCivsAtLevel[ELITE_MILITIA] + sElitesOnCursor;
+  int32_t const n_green = si.ubNumberOfCivsAtLevel[GREEN_MILITIA] + sGreensOnCursor;
+  int32_t const n_regular = si.ubNumberOfCivsAtLevel[REGULAR_MILITIA] + sRegularsOnCursor;
+  int32_t const n_elite = si.ubNumberOfCivsAtLevel[ELITE_MILITIA] + sElitesOnCursor;
   EnableButton(giMapMilitiaButton[4],
                sGreensOnCursor + sRegularsOnCursor + sElitesOnCursor == 0);  // Done
   EnableButton(giMapMilitiaButton[0], n_green != 0);                         // greens button
@@ -3885,7 +3886,7 @@ static void CheckAndUpdateStatesOfSelectedMilitiaSectorButtons() {
   EnableButton(giMapMilitiaButton[2], n_elite != 0);                         // elites button
 }
 
-static void HideExistenceOfUndergroundMapSector(UINT8 ubSectorX, UINT8 ubSectorY);
+static void HideExistenceOfUndergroundMapSector(uint8_t ubSectorX, uint8_t ubSectorY);
 
 static void ShadeSubLevelsNotVisited() {
   // Obtain the 16-bit version of the same color used in the mine STIs
@@ -3893,7 +3894,7 @@ static void ShadeSubLevelsNotVisited() {
 
   // Run through all (real & possible) underground sectors
   for (UNDERGROUND_SECTORINFO const *i = gpUndergroundSectorInfoHead; i; i = i->next) {
-    if (i->ubSectorZ != (UINT8)iCurrentMapSectorZ) continue;
+    if (i->ubSectorZ != (uint8_t)iCurrentMapSectorZ) continue;
     if (i->uiFlags & SF_ALREADY_VISITED) continue;
     /* The sector is on the currently displayed sublevel and has never been
      * visited.  Remove that portion of the "mine" graphics from view. */
@@ -3926,8 +3927,8 @@ static void HandleLowerLevelMapBlit() {
   ShadeSubLevelsNotVisited();
 }
 
-INT32 GetNumberOfMilitiaInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
-  INT32 iNumberInSector = 0;
+int32_t GetNumberOfMilitiaInSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ) {
+  int32_t iNumberInSector = 0;
 
   if (!bSectorZ) {
     iNumberInSector =
@@ -3945,7 +3946,7 @@ INT32 GetNumberOfMilitiaInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) 
 // is displayed to reflect that the player no longer knows.  This is the function
 // that clears that flag.
 void ClearAnySectorsFlashingNumberOfEnemies() {
-  INT32 i;
+  int32_t i;
   for (i = 0; i < 256; i++) {
     SectorInfo[i].uiFlags &= ~SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
   }
@@ -3954,10 +3955,10 @@ void ClearAnySectorsFlashingNumberOfEnemies() {
   fMapPanelDirty = TRUE;
 }
 
-static BOOLEAN CanMercsScoutThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+static BOOLEAN CanMercsScoutThisSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
-UINT32 WhatPlayerKnowsAboutEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
-  UINT32 uiSectorFlags = SectorInfo[SECTOR(sSectorX, sSectorY)].uiFlags;
+uint32_t WhatPlayerKnowsAboutEnemiesInSector(int16_t sSectorX, int16_t sSectorY) {
+  uint32_t uiSectorFlags = SectorInfo[SECTOR(sSectorX, sSectorY)].uiFlags;
 
   // if player has militia close enough to scout this sector out, if there are
   // mercs who can scout here, OR
@@ -4002,7 +4003,7 @@ UINT32 WhatPlayerKnowsAboutEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
   return KNOWS_NOTHING;
 }
 
-static BOOLEAN CanMercsScoutThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+static BOOLEAN CanMercsScoutThisSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ) {
   CFOR_EACH_IN_TEAM(pSoldier, OUR_TEAM) {
     // vehicles can't scout!
     if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
@@ -4036,15 +4037,15 @@ static BOOLEAN CanMercsScoutThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSec
   return (FALSE);
 }
 
-static void HandleShowingOfEnemyForcesInSector(INT16 const x, INT16 const y, INT8 const z,
-                                               UINT8 const icon_pos) {
+static void HandleShowingOfEnemyForcesInSector(int16_t const x, int16_t const y, int8_t const z,
+                                               uint8_t const icon_pos) {
   // ATE: If game has just started, don't do it
   if (DidGameJustStart()) return;
 
   // Never display enemies underground - sector info doesn't have support for it
   if (z != 0) return;
 
-  INT16 const n_enemies = NumEnemiesInSector(x, y);
+  int16_t const n_enemies = NumEnemiesInSector(x, y);
   if (n_enemies == 0) return;  // No enemies here, display nothing
 
   switch (WhatPlayerKnowsAboutEnemiesInSector(x, y)) {
@@ -4069,19 +4070,19 @@ static void ShowSAMSitesOnStrategicMap() {
   if (fShowAircraftFlag) BlitSAMGridMarkers();
 
   BOOLEAN const *found = fSamSiteFound;
-  FOR_EACH(INT16 const, i, pSamList) {
+  FOR_EACH(int16_t const, i, pSamList) {
     // Has the sam site here been found?
     if (!*found++) continue;
 
-    INT16 const sector = *i;
-    INT16 const sec_x = SECTORX(sector);
-    INT16 const sec_y = SECTORY(sector);
+    int16_t const sector = *i;
+    int16_t const sec_x = SECTORX(sector);
+    int16_t const sec_y = SECTORY(sector);
 
     DrawSite(sec_x, sec_y, guiSAMICON);
 
     if (fShowAircraftFlag) {  // write "SAM Site" centered underneath
-      INT16 x;
-      INT16 y;
+      int16_t x;
+      int16_t y;
       if (fZoomFlag) {
         GetScreenXYFromMapXYStationary(sec_x, sec_y, &x, &y);
         x += 1;
@@ -4116,23 +4117,23 @@ static void ShowSAMSitesOnStrategicMap() {
 }
 
 static void BlitSAMGridMarkers() {
-  UINT16 const colour = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const colour = Get16BPPColor(FROMRGB(100, 100, 100));
 
   SGPVSurface::Lock l(guiSAVEBUFFER);
-  UINT32 const uiDestPitchBYTES = l.Pitch();
+  uint32_t const uiDestPitchBYTES = l.Pitch();
 
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
 
   BOOLEAN const *found = fSamSiteFound;
-  FOR_EACH(INT16 const, i, pSamList) {
+  FOR_EACH(int16_t const, i, pSamList) {
     // Has the sam site here been found?
     if (!*found++) continue;
 
-    INT16 x;
-    INT16 y;
-    INT16 w;
-    INT16 h;
-    INT16 const sector = *i;
+    int16_t x;
+    int16_t y;
+    int16_t w;
+    int16_t h;
+    int16_t const sector = *i;
     if (fZoomFlag) {
       GetScreenXYFromMapXYStationary(SECTORX(sector), SECTORY(sector), &x, &y);
       x -= MAP_GRID_X;
@@ -4145,24 +4146,24 @@ static void BlitSAMGridMarkers() {
       h = MAP_GRID_Y;
     }
 
-    RectangleDraw(TRUE, x, y - 1, x + w, y + h - 1, colour, l.Buffer<UINT16>());
+    RectangleDraw(TRUE, x, y - 1, x + w, y + h - 1, colour, l.Buffer<uint16_t>());
   }
 
   RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES);
 }
 
 static bool CanMilitiaAutoDistribute() {
-  INT8 const town = sSelectedMilitiaTown;
+  int8_t const town = sSelectedMilitiaTown;
 
   // Cannot auto-distribute, if we don't have a town selected. (this excludes
   // SAM sites)
   if (town == BLANK_SECTOR) return false;
 
   FOR_EACH_SECTOR_IN_TOWN(i, town) {
-    INT16 const sector = i->sector;
+    int16_t const sector = i->sector;
     if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sector)].fEnemyControlled) continue;
 
-    UINT8 const(&n_milita)[MAX_MILITIA_LEVELS] = SectorInfo[sector].ubNumberOfCivsAtLevel;
+    uint8_t const(&n_milita)[MAX_MILITIA_LEVELS] = SectorInfo[sector].ubNumberOfCivsAtLevel;
     if (n_milita[GREEN_MILITIA] + n_milita[REGULAR_MILITIA] + n_milita[ELITE_MILITIA] != 0)
       return true;
   }
@@ -4178,19 +4179,19 @@ static void ShowItemsOnMap() {
   SetFontAttributes(MAP_FONT, FONT_MCOLOR_LTGREEN);
 
   // run through sectors
-  for (INT16 x = 1; x < MAP_WORLD_X - 1; ++x) {
-    for (INT16 y = 1; y < MAP_WORLD_Y - 1; ++y) {
+  for (int16_t x = 1; x < MAP_WORLD_X - 1; ++x) {
+    for (int16_t y = 1; y < MAP_WORLD_Y - 1; ++y) {
       // to speed this up, only look at sector that player has visited
       if (!GetSectorFlagStatus(x, y, iCurrentMapSectorZ, SF_ALREADY_VISITED)) continue;
 
-      UINT32 const n_items =
+      uint32_t const n_items =
           GetNumberOfVisibleWorldItemsFromSectorStructureForSector(x, y, iCurrentMapSectorZ);
       if (n_items == 0) continue;
 
-      INT16 usXPos;
-      INT16 usYPos;
-      INT16 const sXCorner = MAP_VIEW_START_X + x * MAP_GRID_X;
-      INT16 const sYCorner = MAP_VIEW_START_Y + y * MAP_GRID_Y;
+      int16_t usXPos;
+      int16_t usYPos;
+      int16_t const sXCorner = MAP_VIEW_START_X + x * MAP_GRID_X;
+      int16_t const sYCorner = MAP_VIEW_START_Y + y * MAP_GRID_Y;
       wchar_t sString[10];
       swprintf(sString, lengthof(sString), L"%d", n_items);
       FindFontCenterCoordinates(sXCorner, sYCorner, MAP_GRID_X, MAP_GRID_Y, sString, MAP_FONT,
@@ -4202,28 +4203,28 @@ static void ShowItemsOnMap() {
   RestoreClipRegionToFullScreen();
 }
 
-static void DrawMapBoxIcon(HVOBJECT const vo, UINT16 const icon, INT16 const sec_x,
-                           INT16 const sec_y, UINT8 const icon_pos) {
+static void DrawMapBoxIcon(HVOBJECT const vo, uint16_t const icon, int16_t const sec_x,
+                           int16_t const sec_y, uint8_t const icon_pos) {
   /* Don't show any more icons than will fit into one sector, to keep them from
    * spilling into sector(s) beneath */
   if (icon_pos >= MERC_ICONS_PER_LINE * ROWS_PER_SECTOR) return;
 
-  INT32 const col = icon_pos % MERC_ICONS_PER_LINE;
-  INT32 const row = icon_pos / MERC_ICONS_PER_LINE;
+  int32_t const col = icon_pos % MERC_ICONS_PER_LINE;
+  int32_t const row = icon_pos / MERC_ICONS_PER_LINE;
   if (!fZoomFlag) {
-    INT32 const x = MAP_VIEW_START_X + sec_x * MAP_GRID_X + MAP_X_ICON_OFFSET + 3 * col;
-    INT32 const y = MAP_VIEW_START_Y + sec_y * MAP_GRID_Y + MAP_Y_ICON_OFFSET + 3 * row;
+    int32_t const x = MAP_VIEW_START_X + sec_x * MAP_GRID_X + MAP_X_ICON_OFFSET + 3 * col;
+    int32_t const y = MAP_VIEW_START_Y + sec_y * MAP_GRID_Y + MAP_Y_ICON_OFFSET + 3 * row;
     BltVideoObject(guiSAVEBUFFER, vo, icon, x, y);
     InvalidateRegion(x, y, x + DMAP_GRID_X, y + DMAP_GRID_Y);
   }
 #if 0  // XXX was commented out
 	else
 	{
-		INT sX;
-		INT sY;
-		GetScreenXYFromMapXYStationary((UINT16)sX, (UINT16)sY, &sX, &sY); // XXX first two parameters should be sector x/y
-		INT32 const x = MAP_X_ICON_OFFSET + sX - MAP_GRID_X + 6 * col + 2;
- 	 	INT32 const y = MAP_Y_ICON_OFFSET + sY - MAP_GRID_Y + 6 * row;
+		int32_t sX;
+		int32_t sY;
+		GetScreenXYFromMapXYStationary((uint16_t)sX, (uint16_t)sY, &sX, &sY); // XXX first two parameters should be sector x/y
+		int32_t const x = MAP_X_ICON_OFFSET + sX - MAP_GRID_X + 6 * col + 2;
+ 	 	int32_t const y = MAP_Y_ICON_OFFSET + sY - MAP_GRID_Y + 6 * row;
 
 		ClipBlitsToMapViewRegion();
 		BltVideoObject(guiSAVEBUFFER, vo, BIG_YELLOW_BOX, x, y); // XXX should use icon instead of hardcoding BIG_YELLOW_BOX
@@ -4238,7 +4239,7 @@ static void DrawOrta() { DrawSite(ORTA_SECTOR_X, ORTA_SECTOR_Y, guiORTAICON); }
 static void DrawTixa() { DrawSite(TIXA_SECTOR_X, TIXA_SECTOR_Y, guiTIXAICON); }
 
 static void DrawBullseye() {
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   GetScreenXYFromMapXY(SECTORX(g_merc_arrive_sector), SECTORY(g_merc_arrive_sector), &sX, &sY);
   sY -= 2;
@@ -4246,9 +4247,9 @@ static void DrawBullseye() {
   BltVideoObject(guiSAVEBUFFER, guiBULLSEYE, 0, sX, sY);
 }
 
-static void HideExistenceOfUndergroundMapSector(UINT8 ubSectorX, UINT8 ubSectorY) {
-  INT16 sScreenX;
-  INT16 sScreenY;
+static void HideExistenceOfUndergroundMapSector(uint8_t ubSectorX, uint8_t ubSectorY) {
+  int16_t sScreenX;
+  int16_t sScreenY;
 
   GetScreenXYFromMapXY(ubSectorX, ubSectorY, &sScreenX, &sScreenY);
 
@@ -4263,11 +4264,11 @@ void InitMapSecrets() {
   FOR_EACH(BOOLEAN, i, fSamSiteFound) *i = FALSE;
 }
 
-BOOLEAN CanRedistributeMilitiaInSector(INT16 sClickedSectorX, INT16 sClickedSectorY,
-                                       INT8 bClickedTownId) {
-  INT32 iCounter = 0;
-  INT16 sBaseSectorValue = 0, sCurrentSectorValue = 0;
-  INT16 sSectorX = 0, sSectorY = 0;
+BOOLEAN CanRedistributeMilitiaInSector(int16_t sClickedSectorX, int16_t sClickedSectorY,
+                                       int8_t bClickedTownId) {
+  int32_t iCounter = 0;
+  int16_t sBaseSectorValue = 0, sCurrentSectorValue = 0;
+  int16_t sSectorX = 0, sSectorY = 0;
 
   // if no world is loaded, we can't be in combat (PBI/Auto-resolve locks out
   // normal mapscreen interface for this)

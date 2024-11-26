@@ -15,13 +15,13 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 
-UINT8 ubDrugTravelRate[] = {4, 2};
-UINT8 ubDrugWearoffRate[] = {2, 2};
-UINT8 ubDrugEffect[] = {15, 8};
-UINT8 ubDrugSideEffect[] = {20, 10};
-UINT8 ubDrugSideEffectRate[] = {2, 1};
+uint8_t ubDrugTravelRate[] = {4, 2};
+uint8_t ubDrugWearoffRate[] = {2, 2};
+uint8_t ubDrugEffect[] = {15, 8};
+uint8_t ubDrugSideEffect[] = {20, 10};
+uint8_t ubDrugSideEffectRate[] = {2, 1};
 
-INT32 giDrunkModifier[] = {
+int32_t giDrunkModifier[] = {
     100,  // Sober
     75,   // Feeling good,
     65,   // Bporderline
@@ -32,7 +32,7 @@ INT32 giDrunkModifier[] = {
 #define HANGOVER_AP_REDUCE 5
 #define HANGOVER_BP_REDUCE 200
 
-static UINT8 GetDrugType(UINT16 usItem) {
+static uint8_t GetDrugType(uint16_t usItem) {
   if (usItem == ADRENALINE_BOOSTER) {
     return (DRUG_TYPE_ADRENALINE);
   }
@@ -49,9 +49,9 @@ static UINT8 GetDrugType(UINT16 usItem) {
 }
 
 BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
-  UINT8 ubDrugType;
-  UINT8 ubKitPoints;
-  UINT16 usItem;
+  uint8_t ubDrugType;
+  uint8_t ubKitPoints;
+  uint16_t usItem;
 
   usItem = pObject->usItem;
 
@@ -138,17 +138,17 @@ BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
     }
   } else {
     if (ubDrugType == DRUG_TYPE_REGENERATION) {
-      UINT8 const n = --pObject->ubNumberOfObjects;
-      INT8 const status = pObject->bStatus[n];
+      uint8_t const n = --pObject->ubNumberOfObjects;
+      int8_t const status = pObject->bStatus[n];
       if (n == 0) DeleteObj(pObject);
 
       // each use of a regen booster over 1, each day, reduces the effect
-      INT8 bRegenPointsGained = REGEN_POINTS_PER_BOOSTER * status / 100;
+      int8_t bRegenPointsGained = REGEN_POINTS_PER_BOOSTER * status / 100;
       // are there fractional %s left over?
       if (status % (100 / REGEN_POINTS_PER_BOOSTER) != 0) {
         // chance of an extra point
         if (PreRandom(100 / REGEN_POINTS_PER_BOOSTER) <
-            (UINT32)(status % (100 / REGEN_POINTS_PER_BOOSTER))) {
+            (uint32_t)(status % (100 / REGEN_POINTS_PER_BOOSTER))) {
           bRegenPointsGained++;
         }
       }
@@ -178,9 +178,9 @@ BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
 }
 
 void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier) {
-  INT32 cnt, cnt2;
-  INT32 iNumLoops;
-  //	INT8 bBandaged;
+  int32_t cnt, cnt2;
+  int32_t iNumLoops;
+  //	int8_t bBandaged;
 
   for (cnt = 0; cnt < NUM_COMPLEX_DRUGS; cnt++) {
     // If side effect aret is non-zero....
@@ -265,13 +265,13 @@ void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 GetDrugEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType) {
+int8_t GetDrugEffect(SOLDIERTYPE *pSoldier, uint8_t ubDrugType) {
   return (pSoldier->bDrugEffect[ubDrugType]);
 }
 
-void HandleAPEffectDueToDrugs(const SOLDIERTYPE *const pSoldier, UINT8 *const pubPoints) {
-  INT8 bDrunkLevel;
-  INT16 sPoints = (*pubPoints);
+void HandleAPEffectDueToDrugs(const SOLDIERTYPE *const pSoldier, uint8_t *const pubPoints) {
+  int8_t bDrunkLevel;
+  int16_t sPoints = (*pubPoints);
 
   // Are we in a side effect or good effect?
   if (pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE]) {
@@ -297,11 +297,11 @@ void HandleAPEffectDueToDrugs(const SOLDIERTYPE *const pSoldier, UINT8 *const pu
     }
   }
 
-  (*pubPoints) = (UINT8)sPoints;
+  (*pubPoints) = (uint8_t)sPoints;
 }
 
-void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, INT16 *psPointReduction) {
-  INT8 bDrunkLevel;
+void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, int16_t *psPointReduction) {
+  int8_t bDrunkLevel;
 
   // Are we in a side effect or good effect?
   if (pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE]) {
@@ -322,8 +322,8 @@ void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, INT16 *psPointReduction) {
   }
 }
 
-INT8 GetDrunkLevel(const SOLDIERTYPE *pSoldier) {
-  INT8 bNumDrinks;
+int8_t GetDrunkLevel(const SOLDIERTYPE *pSoldier) {
+  int8_t bNumDrinks;
 
   // If we have a -ve effect ...
   if (pSoldier->bDrugEffect[DRUG_TYPE_ALCOHOL] == 0 &&
@@ -348,7 +348,7 @@ INT8 GetDrunkLevel(const SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT32 EffectStatForBeingDrunk(const SOLDIERTYPE *pSoldier, INT32 iStat) {
+int32_t EffectStatForBeingDrunk(const SOLDIERTYPE *pSoldier, int32_t iStat) {
   return ((iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100));
 }
 

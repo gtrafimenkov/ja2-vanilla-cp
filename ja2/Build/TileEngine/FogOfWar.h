@@ -4,6 +4,6 @@
 #include "SGP/Types.h"
 
 // Removes and smooths the adjacent tiles.
-void RemoveFogFromGridNo(UINT32 uiGridNo);
+void RemoveFogFromGridNo(uint32_t uiGridNo);
 
 #endif

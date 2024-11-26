@@ -531,7 +531,7 @@ void InitCursors() {
   SetMouseBltHook(BltJA2CursorData);
 }
 
-static void UpdateFlashingCursorFrames(UINT32 uiCursorIndex);
+static void UpdateFlashingCursorFrames(uint32_t uiCursorIndex);
 
 void HandleAnimatedCursors() {
   if (COUNTERDONE(CURSORCOUNTER)) {
@@ -590,8 +590,8 @@ static void DrawMouseText() {
   static BOOLEAN fHoldInvalid = TRUE;
 
   wchar_t pStr[512];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   if (gzLocation != NULL) {
     // Set dest for gprintf to be different
@@ -713,11 +713,11 @@ static void DrawMouseText() {
 #endif
 }
 
-void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex) {
+void UpdateAnimatedCursorFrames(uint32_t uiCursorIndex) {
   if (uiCursorIndex == VIDEO_NO_CURSOR) return;
 
   CursorData *pCurData = &CursorDatabase[uiCursorIndex];
-  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+  for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
     CursorImage *pCurImage = &pCurData->Composites[cnt];
     const CursorFileData *CFData = &CursorFileDatabase[pCurImage->uiFileIndex];
 
@@ -730,7 +730,7 @@ void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex) {
   }
 }
 
-static void UpdateFlashingCursorFrames(UINT32 uiCursorIndex) {
+static void UpdateFlashingCursorFrames(uint32_t uiCursorIndex) {
   if (uiCursorIndex == VIDEO_NO_CURSOR) return;
 
   CursorData *pCurData = &CursorDatabase[uiCursorIndex];
@@ -744,12 +744,14 @@ static void UpdateFlashingCursorFrames(UINT32 uiCursorIndex) {
   }
 }
 
-void SetCursorSpecialFrame(UINT32 uiCursor, UINT8 ubFrame) {
+void SetCursorSpecialFrame(uint32_t uiCursor, uint8_t ubFrame) {
   CursorDatabase[uiCursor].bFlashIndex = ubFrame;
 }
 
-void SetCursorFlags(UINT32 uiCursor, UINT8 ubFlags) { CursorDatabase[uiCursor].bFlags |= ubFlags; }
+void SetCursorFlags(uint32_t uiCursor, uint8_t ubFlags) {
+  CursorDatabase[uiCursor].bFlags |= ubFlags;
+}
 
-void RemoveCursorFlags(UINT32 uiCursor, UINT8 ubFlags) {
+void RemoveCursorFlags(uint32_t uiCursor, uint8_t ubFlags) {
   CursorDatabase[uiCursor].bFlags &= ~ubFlags;
 }

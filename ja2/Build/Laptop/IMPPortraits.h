@@ -8,6 +8,6 @@ void RenderIMPPortraits();
 void ExitIMPPortraits();
 void HandleIMPPortraits();
 
-extern INT32 iPortraitNumber;
+extern int32_t iPortraitNumber;
 
 #endif

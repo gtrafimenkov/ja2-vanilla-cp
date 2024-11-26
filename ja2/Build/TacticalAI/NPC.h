@@ -46,50 +46,51 @@ enum Approach {
   APPROACH_FRIENDLY_DIRECT_OR_RECRUIT,  // 30
 };
 
-extern INT8 const gbFirstApproachFlags[4];
+extern int8_t const gbFirstApproachFlags[4];
 
 void ShutdownNPCQuotes();
 
-extern void SetQuoteRecordAsUsed(UINT8 ubNPC, UINT8 ubRecord);
+extern void SetQuoteRecordAsUsed(uint8_t ubNPC, uint8_t ubRecord);
 
 // uiApproachData is used for approach things like giving items, etc.
-UINT8 CalcDesireToTalk(UINT8 ubNPC, UINT8 ubMerc, Approach);
-void ConverseFull(UINT8 ubNPC, UINT8 ubMerc, Approach, UINT8 approach_record,
+uint8_t CalcDesireToTalk(uint8_t ubNPC, uint8_t ubMerc, Approach);
+void ConverseFull(uint8_t ubNPC, uint8_t ubMerc, Approach, uint8_t approach_record,
                   OBJECTTYPE *approach_object);
-void Converse(UINT8 ubNPC, UINT8 ubMerc, Approach);
+void Converse(uint8_t ubNPC, uint8_t ubMerc, Approach);
 
 extern void NPCReachedDestination(SOLDIERTYPE *pNPC, BOOLEAN fAlreadyThere);
-extern void PCsNearNPC(UINT8 ubNPC);
-extern BOOLEAN PCDoesFirstAidOnNPC(UINT8 ubNPC);
-extern void TriggerNPCRecord(UINT8 ubTriggerNPC, UINT8 ubTriggerNPCRec);
-extern BOOLEAN TriggerNPCWithIHateYouQuote(UINT8 ubTriggerNPC);
+extern void PCsNearNPC(uint8_t ubNPC);
+extern BOOLEAN PCDoesFirstAidOnNPC(uint8_t ubNPC);
+extern void TriggerNPCRecord(uint8_t ubTriggerNPC, uint8_t ubTriggerNPCRec);
+extern BOOLEAN TriggerNPCWithIHateYouQuote(uint8_t ubTriggerNPC);
 
-extern void TriggerNPCRecordImmediately(UINT8 ubTriggerNPC, UINT8 ubTriggerNPCRec);
+extern void TriggerNPCRecordImmediately(uint8_t ubTriggerNPC, uint8_t ubTriggerNPCRec);
 
-BOOLEAN TriggerNPCWithGivenApproach(UINT8 ubTriggerNPC, Approach);
+BOOLEAN TriggerNPCWithGivenApproach(uint8_t ubTriggerNPC, Approach);
 
-bool ReloadQuoteFile(UINT8 ubNPC);
+bool ReloadQuoteFile(uint8_t ubNPC);
 void ReloadAllQuoteFiles();
 
 // Save and loads the npc info to a saved game file
 void SaveNPCInfoToSaveGameFile(HWFILE);
-void LoadNPCInfoFromSavedGameFile(HWFILE, UINT32 uiSaveGameVersion);
+void LoadNPCInfoFromSavedGameFile(HWFILE, uint32_t uiSaveGameVersion);
 
-extern void TriggerFriendWithHostileQuote(UINT8 ubNPC);
+extern void TriggerFriendWithHostileQuote(uint8_t ubNPC);
 
-extern void ReplaceLocationInNPCDataFromProfileID(UINT8 ubNPC, INT16 sOldGridNo, INT16 sNewGridNo);
+extern void ReplaceLocationInNPCDataFromProfileID(uint8_t ubNPC, int16_t sOldGridNo,
+                                                  int16_t sNewGridNo);
 
-extern UINT8 ActionIDForMovementRecord(UINT8 ubNPC, UINT8 ubRecord);
+extern uint8_t ActionIDForMovementRecord(uint8_t ubNPC, uint8_t ubRecord);
 
 // given a victory in this sector, handle specific facts
-void HandleVictoryInNPCSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
+void HandleVictoryInNPCSector(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ);
 
 // check if this shopkeep has been shutdown, if so do soething and return the
 // fact
-BOOLEAN HandleShopKeepHasBeenShutDown(UINT8 ubCharNum);
+BOOLEAN HandleShopKeepHasBeenShutDown(uint8_t ubCharNum);
 
-BOOLEAN NPCHasUnusedRecordWithGivenApproach(UINT8 ubNPC, Approach);
-BOOLEAN NPCWillingToAcceptItem(UINT8 ubNPC, UINT8 ubMerc, OBJECTTYPE *pObj);
+BOOLEAN NPCHasUnusedRecordWithGivenApproach(uint8_t ubNPC, Approach);
+BOOLEAN NPCWillingToAcceptItem(uint8_t ubNPC, uint8_t ubMerc, OBJECTTYPE *pObj);
 
 void SaveBackupNPCInfoToSaveGameFile(HWFILE);
 void LoadBackupNPCInfoFromSavedGameFile(HWFILE);
@@ -98,20 +99,21 @@ void UpdateDarrelScriptToGoTo(SOLDIERTYPE *pSoldier);
 
 #define WALTER_BRIBE_AMOUNT 20000
 
-BOOLEAN GetInfoForAbandoningEPC(UINT8 ubNPC, UINT16 *pusQuoteNum, Fact *fact_to_set_true);
+BOOLEAN GetInfoForAbandoningEPC(uint8_t ubNPC, uint16_t *pusQuoteNum, Fact *fact_to_set_true);
 
-BOOLEAN RecordHasDialogue(UINT8 ubNPC, UINT8 ubRecord);
+BOOLEAN RecordHasDialogue(uint8_t ubNPC, uint8_t ubRecord);
 
-INT8 ConsiderCivilianQuotes(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, BOOLEAN fSetAsUsed);
+int8_t ConsiderCivilianQuotes(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ,
+                              BOOLEAN fSetAsUsed);
 
-void ResetOncePerConvoRecordsForNPC(UINT8 ubNPC);
+void ResetOncePerConvoRecordsForNPC(uint8_t ubNPC);
 
 void HandleNPCChangesForTacticalTraversal(const SOLDIERTYPE *s);
 
-BOOLEAN NPCHasUnusedHostileRecord(UINT8 ubNPC, Approach);
+BOOLEAN NPCHasUnusedHostileRecord(uint8_t ubNPC, Approach);
 
 void ResetOncePerConvoRecordsForAllNPCsInLoadedSector();
 
-INT16 NPCConsiderInitiatingConv(const SOLDIERTYPE *pNPC);
+int16_t NPCConsiderInitiatingConv(const SOLDIERTYPE *pNPC);
 
 #endif

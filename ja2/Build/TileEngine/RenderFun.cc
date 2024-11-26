@@ -18,17 +18,17 @@
 #include "TileEngine/WorldMan.h"
 
 // Room Information
-UINT8 gubWorldRoomInfo[WORLD_MAX];
-UINT8 gubWorldRoomHidden[MAX_ROOMS];
+uint8_t gubWorldRoomInfo[WORLD_MAX];
+uint8_t gubWorldRoomHidden[MAX_ROOMS];
 
 void InitRoomDatabase() {
   memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
   memset(gubWorldRoomHidden, TRUE, sizeof(gubWorldRoomHidden));
 }
 
-UINT8 GetRoom(UINT16 const gridno) { return gubWorldRoomInfo[gridno]; }
+uint8_t GetRoom(uint16_t const gridno) { return gubWorldRoomInfo[gridno]; }
 
-BOOLEAN InAHiddenRoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
+BOOLEAN InAHiddenRoom(uint16_t sGridNo, uint8_t *pubRoomNo) {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
       *pubRoomNo = gubWorldRoomInfo[sGridNo];
@@ -40,21 +40,21 @@ BOOLEAN InAHiddenRoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
 }
 
 // @@ATECLIP TO WORLD!
-void SetRecalculateWireFrameFlagRadius(const GridNo pos, const INT16 sRadius) {
-  INT16 pos_x_;
-  INT16 pos_y_;
+void SetRecalculateWireFrameFlagRadius(const GridNo pos, const int16_t sRadius) {
+  int16_t pos_x_;
+  int16_t pos_y_;
   ConvertGridNoToXY(pos, &pos_x_, &pos_y_);
-  const INT16 pos_x = pos_x_;
-  const INT16 pos_y = pos_y_;
-  for (INT16 y = pos_y - sRadius; y < pos_y + sRadius + 2; ++y) {
-    for (INT16 x = pos_x - sRadius; x < pos_x + sRadius + 2; ++x) {
-      const UINT32 uiTile = MAPROWCOLTOPOS(y, x);
+  const int16_t pos_x = pos_x_;
+  const int16_t pos_y = pos_y_;
+  for (int16_t y = pos_y - sRadius; y < pos_y + sRadius + 2; ++y) {
+    for (int16_t x = pos_x - sRadius; x < pos_x + sRadius + 2; ++x) {
+      const uint32_t uiTile = MAPROWCOLTOPOS(y, x);
       gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_RECALCULATE_WIREFRAMES;
     }
   }
 }
 
-void SetGridNoRevealedFlag(UINT16 const grid_no) {
+void SetGridNoRevealedFlag(uint16_t const grid_no) {
   // Set hidden flag, for any roofs
   SetRoofIndexFlagsFromTypeRange(grid_no, FIRSTROOF, FOURTHROOF, LEVELNODE_HIDDEN);
 
@@ -136,8 +136,8 @@ void ExamineGridNoForSlantRoofExtraGraphic(GridNo const check_grid_no) {
   }
 }
 
-void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
-  UINT32 cnt;
+void RemoveRoomRoof(uint16_t sGridNo, uint8_t bRoomNum, SOLDIERTYPE *pSoldier) {
+  uint32_t cnt;
   BOOLEAN fSaidItemSeenQuote = FALSE;
 
   //	STRUCTURE					*pStructure;//, *pBase;
@@ -145,7 +145,7 @@ void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
   // LOOP THORUGH WORLD AND CHECK ROOM INFO
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (gubWorldRoomInfo[cnt] == bRoomNum) {
-      SetGridNoRevealedFlag((UINT16)cnt);
+      SetGridNoRevealedFlag((uint16_t)cnt);
 
       RemoveRoofIndexFlagsFromTypeRange(cnt, FIRSTROOF, SECONDSLANTROOF, LEVELNODE_REVEAL);
 
@@ -155,7 +155,8 @@ void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
           fSaidItemSeenQuote = TRUE;
 
           if (pSoldier != NULL) {
-            TacticalCharacterDialogue(pSoldier, (UINT16)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+            TacticalCharacterDialogue(pSoldier,
+                                      (uint16_t)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
           }
         }
       }
@@ -169,7 +170,7 @@ void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
   //{
   //	if ( gubWorldRoomInfo[ cnt ] == bRoomNum )
   //	{
-  //		ExamineGridNoForSlantRoofExtraGraphic( (UINT16)cnt );
+  //		ExamineGridNoForSlantRoofExtraGraphic( (uint16_t)cnt );
   //	}
   //}
 

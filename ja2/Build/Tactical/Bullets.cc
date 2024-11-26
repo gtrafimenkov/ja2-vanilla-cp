@@ -22,7 +22,7 @@
 #define NUM_BULLET_SLOTS 50
 
 static BULLET gBullets[NUM_BULLET_SLOTS];
-UINT32 guiNumBullets = 0;
+uint32_t guiNumBullets = 0;
 
 static BULLET *GetFreeBullet() {
   BULLET *b;
@@ -35,18 +35,18 @@ static BULLET *GetFreeBullet() {
 }
 
 static void RecountBullets() {
-  INT32 uiCount;
+  int32_t uiCount;
 
   for (uiCount = guiNumBullets - 1; (uiCount >= 0); uiCount--) {
     if ((gBullets[uiCount].fAllocated)) {
-      guiNumBullets = (UINT32)(uiCount + 1);
+      guiNumBullets = (uint32_t)(uiCount + 1);
       return;
     }
   }
   guiNumBullets = 0;
 }
 
-BULLET *CreateBullet(SOLDIERTYPE *const firer, const BOOLEAN fFake, const UINT16 usFlags) {
+BULLET *CreateBullet(SOLDIERTYPE *const firer, const BOOLEAN fFake, const uint16_t usFlags) {
   BULLET *const b = GetFreeBullet();
   if (b == NULL) return NULL;
 
@@ -63,15 +63,15 @@ BULLET *CreateBullet(SOLDIERTYPE *const firer, const BOOLEAN fFake, const UINT16
 
 void HandleBulletSpecialFlags(BULLET *pBullet) {
   ANITILE_PARAMS AniParams;
-  FLOAT dX, dY;
-  UINT8 ubDirection;
+  float dX, dY;
+  uint8_t ubDirection;
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
 
   if (pBullet->fReal) {
     // Create ani tile if this is a spit!
     if (pBullet->usFlags & (BULLET_FLAG_KNIFE)) {
-      AniParams.sGridNo = (INT16)pBullet->sGridNo;
+      AniParams.sGridNo = (int16_t)pBullet->sGridNo;
       AniParams.ubLevelID = ANI_STRUCT_LEVEL;
       AniParams.sDelay = 100;
       AniParams.sStartFrame = 3;
@@ -88,10 +88,10 @@ void HandleBulletSpecialFlags(BULLET *pBullet) {
       }
 
       // Get direction to use for this guy....
-      dX = ((FLOAT)(pBullet->qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
-      dY = ((FLOAT)(pBullet->qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dX = ((float)(pBullet->qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dY = ((float)(pBullet->qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
 
-      ubDirection = atan8(0, 0, (INT16)(dX * 100), (INT16)(dY * 100));
+      ubDirection = atan8(0, 0, (int16_t)(dX * 100), (int16_t)(dY * 100));
 
       AniParams.v.user.uiData3 = ubDirection;
 
@@ -158,7 +158,7 @@ void LocateBullet(BULLET *b) {
 }
 
 void UpdateBullets() {
-  UINT32 uiCount;
+  uint32_t uiCount;
   LEVELNODE *pNode;
   BOOLEAN fDeletedSome = FALSE;
 
@@ -272,9 +272,9 @@ void AddMissileTrail(BULLET *pBullet, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qC
   }
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
-  AniParams.sGridNo = (INT16)pBullet->sGridNo;
+  AniParams.sGridNo = (int16_t)pBullet->sGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-  AniParams.sDelay = (INT16)(100 + Random(100));
+  AniParams.sDelay = (int16_t)(100 + Random(100));
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_FORWARD | ANITILE_ALWAYS_TRANSLUCENT;
   AniParams.sX = FIXEDPT_TO_INT32(qCurrX);
@@ -289,15 +289,15 @@ void AddMissileTrail(BULLET *pBullet, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qC
     AniParams.zCachedFile = TILECACHEDIR "/msle_spt.sti";
   } else if (pBullet->usFlags & (BULLET_FLAG_FLAME)) {
     AniParams.zCachedFile = TILECACHEDIR "/flmthr2.sti";
-    AniParams.sDelay = (INT16)(100);
+    AniParams.sDelay = (int16_t)(100);
   }
 
   CreateAnimationTile(&AniParams);
 }
 
 void SaveBulletStructureToSaveGameFile(HWFILE const hFile) {
-  UINT16 usCnt;
-  UINT32 uiBulletCount = 0;
+  uint16_t usCnt;
+  uint32_t uiBulletCount = 0;
 
   // loop through and count the number of bullets
   for (usCnt = 0; usCnt < NUM_BULLET_SLOTS; usCnt++) {
@@ -308,7 +308,7 @@ void SaveBulletStructureToSaveGameFile(HWFILE const hFile) {
   }
 
   // Save the number of Bullets in the array
-  FileWrite(hFile, &uiBulletCount, sizeof(UINT32));
+  FileWrite(hFile, &uiBulletCount, sizeof(uint32_t));
 
   if (uiBulletCount != 0) {
     for (usCnt = 0; usCnt < NUM_BULLET_SLOTS; usCnt++) {
@@ -326,9 +326,9 @@ void LoadBulletStructureFromSavedGameFile(HWFILE const hFile) {
   memset(gBullets, 0, sizeof(gBullets));
 
   // Load the number of Bullets in the array
-  FileRead(hFile, &guiNumBullets, sizeof(UINT32));
+  FileRead(hFile, &guiNumBullets, sizeof(uint32_t));
 
-  for (UINT i = 0; i < guiNumBullets; ++i) {
+  for (uint32_t i = 0; i < guiNumBullets; ++i) {
     BULLET *const b = &gBullets[i];
     // Load the the Bullet structure
     ExtractBulletFromFile(hFile, b);
@@ -348,7 +348,7 @@ void StopBullet(BULLET *b) {
 }
 
 void DeleteAllBullets() {
-  for (UINT32 i = 0; i < guiNumBullets; ++i) {
+  for (uint32_t i = 0; i < guiNumBullets; ++i) {
     BULLET *const b = &gBullets[i];
     if (b->fAllocated) {
       // Remove from old position

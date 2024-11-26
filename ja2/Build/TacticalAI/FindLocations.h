@@ -3,6 +3,6 @@
 
 #include "SGP/Types.h"
 
-INT16 FindNearestOpenableNonDoor(INT16 sStartGridNo);
+int16_t FindNearestOpenableNonDoor(int16_t sStartGridNo);
 
 #endif

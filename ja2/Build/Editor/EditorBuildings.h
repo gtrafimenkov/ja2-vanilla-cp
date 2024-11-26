@@ -4,8 +4,8 @@
 #include "SGP/Types.h"
 
 extern BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
-extern UINT8 gubCurrRoomNumber;
-extern UINT8 gubMaxRoomNumber;
+extern uint8_t gubCurrRoomNumber;
+extern uint8_t gubMaxRoomNumber;
 
 void SetupTextInputForBuildings();
 void ExtractAndUpdateBuildingInfo();
@@ -16,28 +16,28 @@ void GameInitEditorBuildingInfo();
 // Selection method callbacks
 // Building utility functions
 void UpdateBuildingsInfo();
-void KillBuilding(UINT32 iMapIndex);
+void KillBuilding(uint32_t iMapIndex);
 
 struct BUILDINGLAYOUTNODE {
   BUILDINGLAYOUTNODE *next;
-  INT16 sGridNo;
+  int16_t sGridNo;
 };
 
 extern BUILDINGLAYOUTNODE *gpBuildingLayoutList;
-extern INT16 gsBuildingLayoutAnchorGridNo;
+extern int16_t gsBuildingLayoutAnchorGridNo;
 
 // The first step is copying a building.  After that, it either must be pasted
 // or moved.
-void CopyBuilding(INT32 iMapIndex);
-void MoveBuilding(INT32 iMapIndex);
-void PasteBuilding(INT32 iMapIndex);
+void CopyBuilding(int32_t iMapIndex);
+void MoveBuilding(int32_t iMapIndex);
+void PasteBuilding(int32_t iMapIndex);
 void DeleteBuildingLayout();
 
-void ReplaceBuildingWithNewRoof(INT32 iMapIndex);
+void ReplaceBuildingWithNewRoof(int32_t iMapIndex);
 void UpdateWallsView();
 void UpdateRoofsView();
 
-void InitDoorEditing(INT32 iMapIndex);
+void InitDoorEditing(int32_t iMapIndex);
 void ExtractAndUpdateDoorInfo();
 void KillDoorEditing();
 void RenderDoorEditingWindow();
@@ -48,6 +48,6 @@ void FindNextLockedDoor();
 
 extern BOOLEAN gfEditingDoor;
 
-extern UINT16 usCurrentMode;
+extern uint16_t usCurrentMode;
 
 #endif

@@ -8,8 +8,8 @@
 #include "TileEngine/WorldMan.h"
 
 struct MACROSTRUCT {
-  INT16 sMacroID;
-  INT16 sOffset;
+  int16_t sMacroID;
+  int16_t sOffset;
 };
 // road macros
 
@@ -363,13 +363,13 @@ MACROSTRUCT gRoadMacros[] = {
     {TE, -1},
     {TE, 0}};
 
-INT16 gsRoadMacroStartIndex[NUM_ROAD_MACROS];
+int16_t gsRoadMacroStartIndex[NUM_ROAD_MACROS];
 
 // A simple optimization function that calculates the first index in the large
 // database for the particular macro ID.
 void InitializeRoadMacros() {
-  INT16 i, end;
-  INT16 sMacro = 0;
+  int16_t i, end;
+  int16_t sMacro = 0;
   end = sizeof(gRoadMacros) / sizeof(MACROSTRUCT);
   for (i = 0; i < end; i++) {
     if (gRoadMacros[i].sMacroID == sMacro) {
@@ -383,13 +383,13 @@ void InitializeRoadMacros() {
 // Road macros vary in size from 3 gridnos to 18 gridnos.  Using the anchor
 // gridno based off of the original road system, this function will place the new
 // macro (consisting of multiple road pieces in multiple gridnos).
-void PlaceRoadMacroAtGridNo(INT32 iMapIndex, INT32 iMacroID) {
-  INT32 i;
+void PlaceRoadMacroAtGridNo(int32_t iMapIndex, int32_t iMacroID) {
+  int32_t i;
   i = gsRoadMacroStartIndex[iMacroID];
   while (gRoadMacros[i].sMacroID == iMacroID) {
     AddToUndoList(iMapIndex + gRoadMacros[i].sOffset);
     RemoveAllObjectsOfTypeRange(i, ROADPIECES, ROADPIECES);
-    UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(ROADPIECES, i + 1);
+    uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(ROADPIECES, i + 1);
     AddObjectToHead(iMapIndex + gRoadMacros[i].sOffset, usTileIndex);
     i++;
   }
@@ -402,8 +402,8 @@ void PlaceRoadMacroAtGridNo(INT32 iMapIndex, INT32 iMacroID) {
 // replaces any locations containing the original road tile information, delete
 // it, and replace it by inserting it's equivalent macro.
 void ReplaceObsoleteRoads() {
-  INT32 i;
-  INT32 iMacro;
+  int32_t i;
+  int32_t iMacro;
   LEVELNODE *pObject;
   BOOLEAN fRoadExistsAtGridNo;
   for (i = 0; i < WORLD_MAX; i++) {

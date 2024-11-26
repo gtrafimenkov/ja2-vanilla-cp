@@ -7,9 +7,9 @@ void BuildShadeTable();
 void BuildIntensityTable();
 void SetShadeTablePercent(float uiShadePercent);
 
-extern UINT16 IntensityTable[65536];
-extern UINT16 ShadeTable[65536];
-extern UINT16 White16BPPPalette[256];
+extern uint16_t IntensityTable[65536];
+extern uint16_t ShadeTable[65536];
+extern uint16_t White16BPPPalette[256];
 
 #define DEFAULT_SHADE_LEVEL 4
 

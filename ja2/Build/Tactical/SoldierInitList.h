@@ -4,8 +4,8 @@
 #include "Tactical/SoldierCreate.h"
 
 struct SOLDIERINITNODE {
-  UINT8 ubNodeID;
-  UINT8 ubSoldierID;
+  uint8_t ubNodeID;
+  uint8_t ubSoldierID;
   BASIC_SOLDIERCREATE_STRUCT *pBasicPlacement;
   SOLDIERCREATE_STRUCT *pDetailedPlacement;
   SOLDIERTYPE *pSoldier;
@@ -45,16 +45,16 @@ void InitSoldierInitList();
 void KillSoldierInitList();
 SOLDIERINITNODE *AddBasicPlacementToSoldierInitList(BASIC_SOLDIERCREATE_STRUCT const &);
 void RemoveSoldierNodeFromInitList(SOLDIERINITNODE *pNode);
-SOLDIERINITNODE *FindSoldierInitNodeWithID(UINT16 usID);
+SOLDIERINITNODE *FindSoldierInitNodeWithID(uint16_t usID);
 SOLDIERINITNODE *FindSoldierInitNodeBySoldier(SOLDIERTYPE const &);
 
-void AddSoldierInitListTeamToWorld(INT8 team);
-void AddSoldierInitListEnemyDefenceSoldiers(UINT8 ubTotalAdmin, UINT8 ubTotalTroops,
-                                            UINT8 ubTotalElite);
-void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumInfants,
-                                 UINT8 ubNumYoungMales, UINT8 ubNumYoungFemales,
-                                 UINT8 ubNumAdultMales, UINT8 ubNumAdultFemales);
-void AddSoldierInitListMilitia(UINT8 ubNumGreen, UINT8 ubNumReg, UINT8 ubNumElites);
+void AddSoldierInitListTeamToWorld(int8_t team);
+void AddSoldierInitListEnemyDefenceSoldiers(uint8_t ubTotalAdmin, uint8_t ubTotalTroops,
+                                            uint8_t ubTotalElite);
+void AddSoldierInitListCreatures(BOOLEAN fQueen, uint8_t ubNumLarvae, uint8_t ubNumInfants,
+                                 uint8_t ubNumYoungMales, uint8_t ubNumYoungFemales,
+                                 uint8_t ubNumAdultMales, uint8_t ubNumAdultFemales);
+void AddSoldierInitListMilitia(uint8_t ubNumGreen, uint8_t ubNumReg, uint8_t ubNumElites);
 
 void AddSoldierInitListBloodcats();
 

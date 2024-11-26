@@ -25,7 +25,7 @@ MAPCREATE_STRUCT gMapInformation;
 
 // Current minor map version updater.
 #define MINOR_MAP_VERSION 25
-UINT8 gubMinorMapVersion = MINOR_MAP_VERSION;
+uint8_t gubMinorMapVersion = MINOR_MAP_VERSION;
 
 /*
 MINOR_MAP_VERSION Log -- Created by Kris Morness, November 14, 1997
@@ -54,7 +54,7 @@ have priority existance. Version 8 -- Kris -- obsolete April 16, 1998 MAJOR
 CONFLICT RESULTING IN A MAJOR VERSION UPDATE 2.00! Bug 10) Padding on detailed
 placements is uninitialized.  Clear it. Version 9 -- Kris -- obsolete April 26,
 1998 This version requires no auto updating, but external code has adjusted the
-size of the mapedgepoint arraysize from UINT8 to UINT16.  See Map Edgepoints.c.
+size of the mapedgepoint arraysize from uint8_t to uint16_t.  See Map Edgepoints.c.
         Bug 11) Convert all wheelchaired placement bodytypes to cows.  Result of
 change in the animation database. Version 11 -- Kris -- obsolete May 2, 1998
   Added new center entry point.  Need to initialize the original padding to -1.
@@ -62,9 +62,9 @@ change in the animation database. Version 11 -- Kris -- obsolete May 2, 1998
 
 // EntryPoints can't be placed on the top two gridnos in a map.  So all we do in
 // this case is return the closest gridno.  Returns TRUE if the mapindex changes.
-BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo) {
-  INT16 sWorldX, sWorldY;
-  INT16 sTopLimit, sBottomLimit;
+BOOLEAN ValidateEntryPointGridNo(int16_t *sGridNo) {
+  int16_t sWorldX, sWorldY;
+  int16_t sTopLimit, sBottomLimit;
 
   if (*sGridNo < 0) return FALSE;  // entry point is non-existant
 
@@ -106,7 +106,7 @@ void LoadMapInformation(HWFILE const f) {
 static void UpdateOldVersionMap() {
 #if 0   // This code is no longer needed since the major version update from 1.0
         // to 4.0 However, I am keeping it in for reference.
-	INT32 i;
+	int32_t i;
 	LEVELNODE *pStruct;
 	//VERSION 0 -- obsolete November 14, 1997
 	if( gMapInformation.ubMapVersion == 0 )
@@ -121,7 +121,7 @@ static void UpdateOldVersionMap() {
 			//Bug #02)  The attitude variable was accidentally being generated like attributes
 			//					which put it completely out of range.
 			if( curr->pBasicPlacement->bAttitude > 7 )
-				curr->pBasicPlacement->bAttitude = (INT8)Random(8);
+				curr->pBasicPlacement->bAttitude = (int8_t)Random(8);
 		}
 	}
 	//VERSION 1 -- obsolete January 7, 1998
@@ -276,7 +276,7 @@ static void UpdateOldVersionMap() {
 	if( gMapInformation.ubMapVersion == 14 )
 	{ //Toast all of the ambiguous road pieces that ended up wrapping the byte.
 		LEVELNODE *pStruct, *pStruct2;
-		INT32 i;
+		int32_t i;
 		for( i = 0; i < WORLD_MAX; i++ )
 		{
 			pStruct = gpWorldLevelData[ i ].pObjectHead;
@@ -365,7 +365,7 @@ static void UpdateOldVersionMap() {
 	}
 	if( gMapInformation.ubMapVersion < 13 )
 	{	//replace all merc ammo inventory slots status value with the max ammo that the clip can hold.
-		INT32 i, cnt;
+		int32_t i, cnt;
 		OBJECTTYPE *pItem;
 		gMapInformation.ubMapVersion++;
 		CFOR_EACH_SOLDIERINITNODE(curr)
@@ -438,7 +438,7 @@ static void UpdateOldVersionMap() {
     gMapInformation.ubMapVersion = 21;
     CFOR_EACH_SOLDIERINITNODE(curr) {
       if (curr->pDetailedPlacement) {
-        INT32 i;
+        int32_t i;
         for (i = 0; i < NUM_INV_SLOTS; i++) {
           if (!curr->pDetailedPlacement->Inv[i].usItem) {
             if (curr->pDetailedPlacement->Inv[i].fFlags & OBJECT_UNDROPPABLE) {
@@ -478,7 +478,7 @@ static void UpdateOldVersionMap() {
 }
 
 static void AutoCalculateItemNoOverwriteStatus() {
-  INT32 i;
+  int32_t i;
   OBJECTTYPE *pItem;
 
   // Recalculate the "no overwrite" status flag on all items.  There are two

@@ -38,12 +38,12 @@
 static SGPVObject *guiBobbyLink;
 static SGPVObject *guiFuneralLink;
 static SGPVObject *guiInsuranceLink;
-static UINT8 const gubLinkPages[] = {BOBBYR_BOOKMARK, FUNERAL_BOOKMARK, INSURANCE_BOOKMARK};
+static uint8_t const gubLinkPages[] = {BOBBYR_BOOKMARK, FUNERAL_BOOKMARK, INSURANCE_BOOKMARK};
 
 // Clicking on guys Face
 static MOUSE_REGION gSelectedLinkRegion[AIM_LINK_NUM_LINKS];
 
-static void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterAimLinks() {
   InitAimDefaults();
@@ -56,9 +56,9 @@ void EnterAimLinks() {
   // Load the Insurance graphic.
   guiInsuranceLink = AddVideoObjectFromFile(GetMLGFilename(MLG_INSURANCELINK));
 
-  UINT16 const x = AIM_LINK_LINK_OFFSET_Y;
-  UINT16 y = AIM_LINK_BOBBY_LINK_Y;
-  UINT8 const *page = gubLinkPages;
+  uint16_t const x = AIM_LINK_LINK_OFFSET_Y;
+  uint16_t y = AIM_LINK_BOBBY_LINK_Y;
+  uint8_t const *page = gubLinkPages;
   FOR_EACHX(MOUSE_REGION, i, gSelectedLinkRegion, y += AIM_LINK_LINK_OFFSET_Y) {
     MOUSE_REGION &r = *i;
     MSYS_DefineRegion(&r, x, y, x + AIM_LINK_LINK_WIDTH, y + AIM_LINK_LINK_HEIGHT,
@@ -100,9 +100,9 @@ void RenderAimLinks() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 gNextLaptopPage;
+    uint32_t gNextLaptopPage;
 
     gNextLaptopPage = MSYS_GetRegionUserData(pRegion, 0);
 

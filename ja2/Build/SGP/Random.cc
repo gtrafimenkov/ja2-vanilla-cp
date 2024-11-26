@@ -5,8 +5,8 @@
 
 #ifdef PRERANDOM_GENERATOR
 
-UINT32 guiPreRandomIndex = 0;
-UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
+uint32_t guiPreRandomIndex = 0;
+uint32_t guiPreRandomNums[MAX_PREGENERATED_NUMS];
 
 #endif
 
@@ -24,8 +24,8 @@ void InitializeRandom() {
 }
 
 // Returns a pseudo-random integer between 0 and uiRange
-UINT32 Random(UINT32 uiRange) {
-  UINT32 x;
+uint32_t Random(uint32_t uiRange) {
+  uint32_t x;
   // Always return 0, if no range given (it's not an error)
   if (uiRange == 0) return (0);
   /* Ensures a correct average value by actually limiting the possible
@@ -40,12 +40,12 @@ UINT32 Random(UINT32 uiRange) {
   return x % uiRange;
 }
 
-BOOLEAN Chance(UINT32 uiChance) { return Random(100) < uiChance; }
+BOOLEAN Chance(uint32_t uiChance) { return Random(100) < uiChance; }
 
 #ifdef PRERANDOM_GENERATOR
 
-UINT32 PreRandom(UINT32 uiRange) {
-  UINT32 uiNum;
+uint32_t PreRandom(uint32_t uiRange) {
+  uint32_t uiNum;
   if (!uiRange) return 0;
   // Extract the current pregenerated number
   /* HACK0007 Stop PreRandom always returning 0 or 1
@@ -60,10 +60,10 @@ UINT32 PreRandom(UINT32 uiRange) {
 
   // Go to the next index.
   guiPreRandomIndex++;
-  if (guiPreRandomIndex >= (UINT32)MAX_PREGENERATED_NUMS) guiPreRandomIndex = 0;
+  if (guiPreRandomIndex >= (uint32_t)MAX_PREGENERATED_NUMS) guiPreRandomIndex = 0;
   return uiNum;
 }
 
-BOOLEAN PreChance(UINT32 uiChance) { return PreRandom(100) < uiChance; }
+BOOLEAN PreChance(uint32_t uiChance) { return PreRandom(100) < uiChance; }
 
 #endif

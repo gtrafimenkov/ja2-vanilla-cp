@@ -29,7 +29,7 @@
 BOOLEAN gfRestoringEnemySoldiersFromTempFile = FALSE;
 BOOLEAN gfRestoringCiviliansFromTempFile = FALSE;
 
-static void RemoveTempFile(INT16 const x, INT16 const y, INT8 const z,
+static void RemoveTempFile(int16_t const x, int16_t const y, int8_t const z,
                            SectorFlags const file_flag) {
   if (!GetSectorFlagStatus(x, y, z, file_flag)) return;
 
@@ -44,9 +44,9 @@ static void RemoveTempFile(INT16 const x, INT16 const y, INT8 const z,
 void LoadEnemySoldiersFromTempFile() {
   gfRestoringEnemySoldiersFromTempFile = TRUE;
 
-  INT16 const x = gWorldSectorX;
-  INT16 const y = gWorldSectorY;
-  INT8 const z = gbWorldSectorZ;
+  int16_t const x = gWorldSectorX;
+  int16_t const y = gWorldSectorY;
+  int8_t const z = gbWorldSectorZ;
 
   // STEP ONE: Set up the temp file to read from.
   char map_name[128];
@@ -56,7 +56,7 @@ void LoadEnemySoldiersFromTempFile() {
   /* STEP TWO: Determine whether or not we should use this data.  Because it
    * is the demo, it is automatically used. */
 
-  INT16 saved_y;
+  int16_t saved_y;
   FileRead(f, &saved_y, 2);
   if (y != saved_y) {
     throw std::runtime_error("Sector Y mismatch");
@@ -66,20 +66,20 @@ void LoadEnemySoldiersFromTempFile() {
 
   // STEP THREE: Read the data
 
-  INT16 saved_x;
+  int16_t saved_x;
   FileRead(f, &saved_x, 2);
   if (x != saved_x) {
     throw std::runtime_error("Sector X mismatch");
   }
 
-  INT32 saved_slots;
+  int32_t saved_slots;
   FileRead(f, &saved_slots, 4);
-  INT32 const slots = saved_slots;
+  int32_t const slots = saved_slots;
 
-  UINT32 timestamp;
+  uint32_t timestamp;
   FileRead(f, &timestamp, 4);
 
-  INT8 saved_z;
+  int8_t saved_z;
   FileRead(f, &saved_z, 1);
   if (z != saved_z) {
     throw std::runtime_error("Sector Z mismatch");
@@ -115,10 +115,10 @@ void LoadEnemySoldiersFromTempFile() {
   }
 
   // get the number of enemies in this sector.
-  UINT8 ubStrategicElites;
-  UINT8 ubStrategicTroops;
-  UINT8 ubStrategicAdmins;
-  UINT8 ubStrategicCreatures;
+  uint8_t ubStrategicElites;
+  uint8_t ubStrategicTroops;
+  uint8_t ubStrategicAdmins;
+  uint8_t ubStrategicCreatures;
   if (z != 0) {
     UNDERGROUND_SECTORINFO const *const pSector = FindUnderGroundSector(x, y, z);
     if (!pSector) {
@@ -134,13 +134,13 @@ void LoadEnemySoldiersFromTempFile() {
     GetNumberOfEnemiesInSector(x, y, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
   }
 
-  UINT8 ubNumElites = 0;
-  UINT8 ubNumTroops = 0;
-  UINT8 ubNumAdmins = 0;
-  UINT8 ubNumCreatures = 0;
-  for (INT32 i = 0; i < slots; ++i) {
+  uint8_t ubNumElites = 0;
+  uint8_t ubNumTroops = 0;
+  uint8_t ubNumAdmins = 0;
+  uint8_t ubNumCreatures = 0;
+  for (int32_t i = 0; i < slots; ++i) {
     SOLDIERCREATE_STRUCT tempDetailedPlacement;
-    UINT16 saved_checksum;
+    uint16_t saved_checksum;
     ExtractSoldierCreateFromFileWithChecksumAndGuess(f, &tempDetailedPlacement, &saved_checksum);
     FOR_EACH_SOLDIERINITNODE(curr) {
       BASIC_SOLDIERCREATE_STRUCT *const bp = curr->pBasicPlacement;
@@ -171,10 +171,10 @@ void LoadEnemySoldiersFromTempFile() {
       bp->fHasKeys = dp->fHasKeys;
       bp->usStartingGridNo = dp->sInsertionGridNo;
       bp->bPatrolCnt = dp->bPatrolCnt;
-      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(INT16) * bp->bPatrolCnt);
+      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(int16_t) * bp->bPatrolCnt);
 
       // Verify the checksum equation (anti-hack) -- see save
-      UINT16 const checksum = CalcSoldierCreateCheckSum(dp);
+      uint16_t const checksum = CalcSoldierCreateCheckSum(dp);
       if (saved_checksum != checksum) {  // Hacker has modified the stats on the enemy placements.
         throw std::runtime_error("Invalid checksum for placement");
       }
@@ -204,7 +204,7 @@ void LoadEnemySoldiersFromTempFile() {
     }
   }
 
-  UINT8 saved_sector_id;
+  uint8_t saved_sector_id;
   FileRead(f, &saved_sector_id, 1);
   if (saved_sector_id != SECTOR(x, y)) {
     throw std::runtime_error("Sector ID mismatch");
@@ -221,27 +221,27 @@ void LoadEnemySoldiersFromTempFile() {
 }
 
 static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
-    UINT8 *n_elites, UINT8 *n_regulars, UINT8 *n_admins, UINT8 *n_creatures);
+    uint8_t *n_elites, uint8_t *n_regulars, uint8_t *n_admins, uint8_t *n_creatures);
 
 void NewWayOfLoadingEnemySoldiersFromTempFile() {
-  UINT8 ubStrategicElites;
-  UINT8 ubStrategicTroops;
-  UINT8 ubStrategicAdmins;
-  UINT8 ubStrategicCreatures;
+  uint8_t ubStrategicElites;
+  uint8_t ubStrategicTroops;
+  uint8_t ubStrategicAdmins;
+  uint8_t ubStrategicCreatures;
 
   gfRestoringEnemySoldiersFromTempFile = TRUE;
 
-  INT16 const x = gWorldSectorX;
-  INT16 const y = gWorldSectorY;
-  INT8 const z = gbWorldSectorZ;
+  int16_t const x = gWorldSectorX;
+  int16_t const y = gWorldSectorY;
+  int8_t const z = gbWorldSectorZ;
 
   /* Count the number of enemies (elites, regulars, admins and creatures) that
    * are in the temp file. */
   UNDERGROUND_SECTORINFO const *underground_info = NULL;
-  UINT8 ubNumElites = 0;
-  UINT8 ubNumTroops = 0;
-  UINT8 ubNumAdmins = 0;
-  UINT8 ubNumCreatures = 0;
+  uint8_t ubNumElites = 0;
+  uint8_t ubNumTroops = 0;
+  uint8_t ubNumAdmins = 0;
+  uint8_t ubNumCreatures = 0;
   if (z != 0) {
     underground_info = FindUnderGroundSector(x, y, z);
     if (!underground_info) {
@@ -281,7 +281,7 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
   /* STEP TWO:  Determine whether or not we should use this data.  Because it
    * is the demo, it is automatically used. */
 
-  INT16 saved_y;
+  int16_t saved_y;
   FileRead(f, &saved_y, 2);
   if (y != saved_y) {
     throw std::runtime_error("Sector Y mismatch");
@@ -291,20 +291,20 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
 
   // STEP THREE:  read the data
 
-  INT16 saved_x;
+  int16_t saved_x;
   FileRead(f, &saved_x, 2);
   if (x != saved_x) {
     throw std::runtime_error("Sector X mismatch");
   }
 
-  INT32 saved_slots;
+  int32_t saved_slots;
   FileRead(f, &saved_slots, 4);
-  INT32 const slots = saved_slots;
+  int32_t const slots = saved_slots;
 
-  UINT32 timestamp;
+  uint32_t timestamp;
   FileRead(f, &timestamp, 4);
 
-  INT8 saved_z;
+  int8_t saved_z;
   FileRead(f, &saved_z, 1);
   if (z != saved_z) {
     throw std::runtime_error("Sector Z mismatch");
@@ -350,8 +350,8 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
     GetNumberOfEnemiesInSector(x, y, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
   }
 
-  for (INT32 i = 0; i != slots; ++i) {
-    UINT16 saved_checksum;
+  for (int32_t i = 0; i != slots; ++i) {
+    uint16_t saved_checksum;
     SOLDIERCREATE_STRUCT tempDetailedPlacement;
     ExtractSoldierCreateFromFileWithChecksumAndGuess(f, &tempDetailedPlacement, &saved_checksum);
     FOR_EACH_SOLDIERINITNODE(curr) {
@@ -380,10 +380,10 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
       bp->fHasKeys = dp->fHasKeys;
       bp->usStartingGridNo = dp->sInsertionGridNo;
       bp->bPatrolCnt = dp->bPatrolCnt;
-      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(INT16) * bp->bPatrolCnt);
+      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(int16_t) * bp->bPatrolCnt);
 
       // verify the checksum equation (anti-hack) -- see save
-      UINT16 const checksum = CalcSoldierCreateCheckSum(dp);
+      uint16_t const checksum = CalcSoldierCreateCheckSum(dp);
       if (saved_checksum != checksum) {  // Hacker has modified the stats on the enemy placements.
         throw std::runtime_error("Invalid checksum for placement");
       }
@@ -408,7 +408,7 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
     }
   }
 
-  UINT8 saved_sector_id;
+  uint8_t saved_sector_id;
   FileRead(f, &saved_sector_id, 1);
   if (saved_sector_id != SECTOR(x, y)) {
     throw std::runtime_error("Sector ID mismatch");
@@ -427,9 +427,9 @@ void NewWayOfLoadingEnemySoldiersFromTempFile() {
 void NewWayOfLoadingCiviliansFromTempFile() {
   gfRestoringCiviliansFromTempFile = TRUE;
 
-  INT16 const x = gWorldSectorX;
-  INT16 const y = gWorldSectorY;
-  INT8 const z = gbWorldSectorZ;
+  int16_t const x = gWorldSectorX;
+  int16_t const y = gWorldSectorY;
+  int8_t const z = gbWorldSectorZ;
 
   // STEP ONE: Set up the temp file to read from.
   char map_name[128];
@@ -439,7 +439,7 @@ void NewWayOfLoadingCiviliansFromTempFile() {
   /* STEP TWO:  Determine whether or not we should use this data.  Because it
    * is the demo, it is automatically used. */
 
-  INT16 saved_y;
+  int16_t saved_y;
   FileRead(f, &saved_y, 2);
   if (y != saved_y) {
     throw std::runtime_error("Sector Y mismatch");
@@ -449,21 +449,21 @@ void NewWayOfLoadingCiviliansFromTempFile() {
 
   // STEP THREE:  read the data
 
-  INT16 saved_x;
+  int16_t saved_x;
   FileRead(f, &saved_x, 2);
   if (x != saved_x) {
     throw std::runtime_error("Sector X mismatch");
   }
 
-  INT32 saved_slots;
+  int32_t saved_slots;
   FileRead(f, &saved_slots, 4);
-  INT32 const slots = saved_slots;
+  int32_t const slots = saved_slots;
 
-  UINT32 timestamp;
+  uint32_t timestamp;
   FileRead(f, &timestamp, 4);
-  UINT32 const time_since_last_loaded = GetWorldTotalMin() - timestamp;
+  uint32_t const time_since_last_loaded = GetWorldTotalMin() - timestamp;
 
-  INT8 saved_z;
+  int8_t saved_z;
   FileRead(f, &saved_z, 1);
   if (z != saved_z) {
     throw std::runtime_error("Sector Z mismatch");
@@ -490,8 +490,8 @@ void NewWayOfLoadingCiviliansFromTempFile() {
   }
 
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  for (INT32 i = 0; i != slots; ++i) {
-    UINT16 saved_checksum;
+  for (int32_t i = 0; i != slots; ++i) {
+    uint16_t saved_checksum;
     ExtractSoldierCreateFromFileWithChecksumAndGuess(f, &tempDetailedPlacement, &saved_checksum);
     FOR_EACH_SOLDIERINITNODE(curr) {
       BASIC_SOLDIERCREATE_STRUCT *const bp = curr->pBasicPlacement;
@@ -522,19 +522,19 @@ void NewWayOfLoadingCiviliansFromTempFile() {
       bp->fHasKeys = dp->fHasKeys;
       bp->usStartingGridNo = dp->sInsertionGridNo;
       bp->bPatrolCnt = dp->bPatrolCnt;
-      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(INT16) * bp->bPatrolCnt);
+      memcpy(bp->sPatrolGrid, dp->sPatrolGrid, sizeof(int16_t) * bp->bPatrolCnt);
 
       // Verify the checksum equation (anti-hack) -- see save
-      UINT16 const checksum = CalcSoldierCreateCheckSum(curr->pDetailedPlacement);
+      uint16_t const checksum = CalcSoldierCreateCheckSum(curr->pDetailedPlacement);
       if (saved_checksum != checksum) {  // Hacker has modified the stats on the
                                          // civilian placements.
         throw std::runtime_error("Invalid checksum for placement");
       }
 
       if (dp->bLife < dp->bLifeMax) {  // Add 4 life for every hour that passes.
-        INT32 const new_life =
+        int32_t const new_life =
             std::min((int32_t)(dp->bLife + time_since_last_loaded / 15), (int32_t)dp->bLifeMax);
-        dp->bLife = (INT8)new_life;
+        dp->bLife = (int8_t)new_life;
       }
 
       if (bp->bTeam == CIV_TEAM) break;
@@ -551,7 +551,7 @@ void NewWayOfLoadingCiviliansFromTempFile() {
     RemoveSoldierNodeFromInitList(curr);
   }
 
-  UINT8 saved_sector_id;
+  uint8_t saved_sector_id;
   FileRead(f, &saved_sector_id, 1);
 #if 0  // XXX was commented out
 	if (saved_sector_id != SECTOR(sSectorX, sSectorY))
@@ -564,12 +564,12 @@ void NewWayOfLoadingCiviliansFromTempFile() {
 /* If we are saving a game and we are in the sector, we will need to preserve
  * the links between the soldiers and the soldier init list.  Otherwise, the
  * temp file will be deleted. */
-void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const sSectorY,
-                                              INT8 const bSectorZ, BOOLEAN const fEnemy,
+void NewWayOfSavingEnemyAndCivliansToTempFile(int16_t const sSectorX, int16_t const sSectorY,
+                                              int8_t const bSectorZ, BOOLEAN const fEnemy,
                                               BOOLEAN const fValidateOnly) {
   // if we are saving the enemy info to the enemy temp file
-  UINT8 first_team;
-  UINT8 last_team;
+  uint8_t first_team;
+  uint8_t last_team;
   SectorFlags file_flag;
   if (fEnemy) {
     first_team = ENEMY_TEAM;
@@ -581,15 +581,15 @@ void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const 
     file_flag = SF_CIV_PRESERVED_TEMP_FILE_EXISTS;
   }
 
-  UINT8 const first = gTacticalStatus.Team[first_team].bFirstID;
-  UINT8 const last = gTacticalStatus.Team[last_team].bLastID;
+  uint8_t const first = gTacticalStatus.Team[first_team].bFirstID;
+  uint8_t const last = gTacticalStatus.Team[last_team].bLastID;
 
   // STEP ONE:  Prep the soldiers for saving
 
   /* Modify the map's soldier init list to reflect the changes to the member's
    * still alive */
-  INT32 slots = 0;
-  for (INT32 i = first; i <= last; ++i) {
+  int32_t slots = 0;
+  for (int32_t i = first; i <= last; ++i) {
     SOLDIERTYPE const &s = GetMan(i);
 
     // Make sure the person is active, alive, and is not a profiled person
@@ -702,7 +702,7 @@ void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const 
 
   FileWrite(f, &slots, 4);
 
-  UINT32 const timestamp = GetWorldTotalMin();
+  uint32_t const timestamp = GetWorldTotalMin();
   FileWrite(f, &timestamp, 4);
 
   FileWrite(f, &bSectorZ, 1);
@@ -710,7 +710,7 @@ void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const 
   /* If we are saving the game, we don't need to preserve the soldier
    * information, just preserve the links to the placement list. */
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-    for (INT32 i = first; i <= last; ++i) {
+    for (int32_t i = first; i <= last; ++i) {
       SOLDIERTYPE const &s = GetMan(i);
       // CJC: note that bInSector is not required; the civ could be offmap!
       if (!s.bActive || s.bLife == 0 || s.ubProfile != NO_PROFILE) continue;
@@ -723,11 +723,11 @@ void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const 
       SOLDIERCREATE_STRUCT const *const dp = curr->pDetailedPlacement;
       InjectSoldierCreateIntoFile(f, dp);
       // Insert a checksum equation (anti-hack)
-      UINT16 const checksum = CalcSoldierCreateCheckSum(dp);
+      uint16_t const checksum = CalcSoldierCreateCheckSum(dp);
       FileWrite(f, &checksum, 2);
     }
 
-    UINT8 const sector_id = SECTOR(sSectorX, sSectorY);
+    uint8_t const sector_id = SECTOR(sSectorX, sSectorY);
     FileWrite(f, &sector_id, 1);
   }
 
@@ -735,17 +735,17 @@ void NewWayOfSavingEnemyAndCivliansToTempFile(INT16 const sSectorX, INT16 const 
 }
 
 static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
-    UINT8 *const n_elites, UINT8 *const n_regulars, UINT8 *const n_admins,
-    UINT8 *const n_creatures) {
+    uint8_t *const n_elites, uint8_t *const n_regulars, uint8_t *const n_admins,
+    uint8_t *const n_creatures) {
   // Make sure the variables are initialized
   *n_elites = 0;
   *n_regulars = 0;
   *n_admins = 0;
   *n_creatures = 0;
 
-  INT16 const x = gWorldSectorX;
-  INT16 const y = gWorldSectorY;
-  INT8 const z = gbWorldSectorZ;
+  int16_t const x = gWorldSectorX;
+  int16_t const y = gWorldSectorY;
+  int8_t const z = gbWorldSectorZ;
 
   // STEP ONE: Set up the temp file to read from.
   char map_name[128];
@@ -755,7 +755,7 @@ static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFi
   /* STEP TWO: Determine whether or not we should use this data.  Because it
    * is the demo, it is automatically used. */
 
-  INT16 saved_y;
+  int16_t saved_y;
   FileRead(f, &saved_y, 2);
   if (y != saved_y) {
     throw std::runtime_error("Sector Y mismatch");
@@ -765,20 +765,20 @@ static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFi
 
   // STEP THREE: Read the data
 
-  INT16 saved_x;
+  int16_t saved_x;
   FileRead(f, &saved_x, 2);
   if (x != saved_x) {
     throw std::runtime_error("Sector X mismatch");
   }
 
-  INT32 saved_slots = 0;
+  int32_t saved_slots = 0;
   FileRead(f, &saved_slots, 4);
-  INT32 slots = saved_slots;
+  int32_t slots = saved_slots;
 
   // Skip timestamp
   FileSeek(f, 4, FILE_SEEK_FROM_CURRENT);
 
-  INT8 saved_z;
+  int8_t saved_z;
   FileRead(f, &saved_z, 1);
   if (z != saved_z) {
     throw std::runtime_error("Sector Z mismatch");
@@ -793,8 +793,8 @@ static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFi
     throw std::runtime_error("Invalid slot count");
   }
 
-  for (INT32 i = 0; i != slots; ++i) {
-    UINT16 saved_checksum;
+  for (int32_t i = 0; i != slots; ++i) {
+    uint16_t saved_checksum;
     SOLDIERCREATE_STRUCT tempDetailedPlacement;
     ExtractSoldierCreateFromFileWithChecksumAndGuess(f, &tempDetailedPlacement, &saved_checksum);
     // Increment the current type of soldier
@@ -814,7 +814,7 @@ static void CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFi
     }
   }
 
-  UINT8 saved_sector_id;
+  uint8_t saved_sector_id;
   FileRead(f, &saved_sector_id, 1);
   if (saved_sector_id != SECTOR(x, y)) {
     throw std::runtime_error("Sector ID mismatch");

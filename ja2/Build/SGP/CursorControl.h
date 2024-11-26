@@ -4,7 +4,7 @@
 #include "SGP/Types.h"
 
 void CursorDatabaseClear();
-BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex);
+BOOLEAN SetCurrentCursorFromDatabase(uint32_t uiCursorIndex);
 
 #define USE_OUTLINE_BLITTER 0x08
 
@@ -34,43 +34,43 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex);
 struct CursorFileData {
   const char *Filename;  // If NULL then an extern video object is used
   HVOBJECT hVObject;
-  UINT8 ubFlags;
-  UINT8 ubNumberOfFrames;  // If != 0 then the cursor is animated
+  uint8_t ubFlags;
+  uint8_t ubNumberOfFrames;  // If != 0 then the cursor is animated
 };
 
 struct CursorImage {
-  UINT32 uiFileIndex;
-  UINT16 uiSubIndex;
-  UINT32 uiCurrentFrame;
-  INT16 usPosX;
-  INT16 usPosY;
+  uint32_t uiFileIndex;
+  uint16_t uiSubIndex;
+  uint32_t uiCurrentFrame;
+  int16_t usPosX;
+  int16_t usPosY;
 };
 
 struct CursorData {
   CursorImage Composites[MAX_COMPOSITES];
-  UINT16 usNumComposites;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
-  UINT8 bFlags;
-  UINT8 bFlashIndex;
+  uint16_t usNumComposites;
+  int16_t sOffsetX;
+  int16_t sOffsetY;
+  uint16_t usHeight;
+  uint16_t usWidth;
+  uint8_t bFlags;
+  uint8_t bFlashIndex;
 };
 
-extern INT16 gsGlobalCursorYOffset;
+extern int16_t gsGlobalCursorYOffset;
 
 // Globals for cursor database offset values
-extern UINT16 gsCurMouseHeight;
-extern UINT16 gsCurMouseWidth;
+extern uint16_t gsCurMouseHeight;
+extern uint16_t gsCurMouseWidth;
 
-void SetExternMouseCursor(SGPVObject const &, UINT16 region_idx);
+void SetExternMouseCursor(SGPVObject const &, uint16_t region_idx);
 
 typedef void (*MOUSEBLT_HOOK)();
 
 void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
-                        UINT16 suNumDataFiles);
+                        uint16_t suNumDataFiles);
 void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);
 
-void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex);
+void SetExternVOData(uint32_t uiCursorIndex, HVOBJECT hVObject, uint16_t usSubIndex);
 
 #endif

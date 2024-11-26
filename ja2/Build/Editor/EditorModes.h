@@ -3,11 +3,11 @@
 
 #include "SGP/Types.h"
 
-void SetEditorItemsTaskbarMode(UINT16 usNewMode);
-void SetEditorBuildingTaskbarMode(UINT16 usNewMode);
-void SetEditorTerrainTaskbarMode(UINT16 usNewMode);
-void SetEditorMapInfoTaskbarMode(UINT16 usNewMode);
-void SetEditorSmoothingMode(UINT8 ubNewMode);
+void SetEditorItemsTaskbarMode(uint16_t usNewMode);
+void SetEditorBuildingTaskbarMode(uint16_t usNewMode);
+void SetEditorTerrainTaskbarMode(uint16_t usNewMode);
+void SetEditorMapInfoTaskbarMode(uint16_t usNewMode);
+void SetEditorSmoothingMode(uint8_t ubNewMode);
 
 void HideExitGrids();
 

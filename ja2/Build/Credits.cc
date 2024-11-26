@@ -27,8 +27,8 @@
 #include "SDL_keycode.h"
 
 struct CRDT_NODE {
-  INT16 sPosY;
-  INT16 sHeightOfString;  // The height of the displayed string
+  int16_t sPosY;
+  int16_t sHeightOfString;  // The height of the displayed string
   SGPVSurface *uiVideoSurfaceImage;
   CRDT_NODE *next;
 };
@@ -89,20 +89,20 @@ struct CRDT_NODE {
 #define CRDT_EYES_CLOSED_TIME 150
 
 struct CreditFace {
-  const INT16 sX;
-  const INT16 sY;
-  const INT16 sWidth;
-  const INT16 sHeight;
+  const int16_t sX;
+  const int16_t sY;
+  const int16_t sWidth;
+  const int16_t sHeight;
 
-  const INT16 sEyeX;
-  const INT16 sEyeY;
+  const int16_t sEyeX;
+  const int16_t sEyeY;
 
-  const INT16 sMouthX;
-  const INT16 sMouthY;
+  const int16_t sMouthX;
+  const int16_t sMouthY;
 
-  const UINT16 sBlinkFreq;
-  UINT32 uiLastBlinkTime;
-  UINT32 uiEyesClosedTime;
+  const uint16_t sBlinkFreq;
+  uint32_t uiLastBlinkTime;
+  uint32_t uiEyesClosedTime;
 };
 
 static CreditFace gCreditFaces[] = {
@@ -135,22 +135,22 @@ static SGPVObject *guiCreditFaces;
 static CRDT_NODE *g_credits_head;
 static CRDT_NODE *g_credits_tail;
 
-static INT32 giCurrentlySelectedFace;
+static int32_t giCurrentlySelectedFace;
 
-static Font guiCreditScreenActiveFont;    // the font that is used
-static Font guiCreditScreenTitleFont;     // the font that is used
-static UINT8 gubCreditScreenActiveColor;  // color of the font
-static UINT8 gubCreditScreenTitleColor;   // color of a Title node
+static Font guiCreditScreenActiveFont;      // the font that is used
+static Font guiCreditScreenTitleFont;       // the font that is used
+static uint8_t gubCreditScreenActiveColor;  // color of the font
+static uint8_t gubCreditScreenTitleColor;   // color of a Title node
 
-static UINT32 guiCrdtNodeScrollSpeed;       // speed credits go up at
-static UINT32 guiCrdtLastTimeUpdatingNode;  // the last time a node was read from the file
-static UINT8 gubCrdtJustification;          // the current justification
+static uint32_t guiCrdtNodeScrollSpeed;       // speed credits go up at
+static uint32_t guiCrdtLastTimeUpdatingNode;  // the last time a node was read from the file
+static uint8_t gubCrdtJustification;          // the current justification
 
-static UINT32 guiGapBetweenCreditSections;
-static UINT32 guiGapBetweenCreditNodes;
-static UINT32 guiGapTillReadNextCredit;
+static uint32_t guiGapBetweenCreditSections;
+static uint32_t guiGapBetweenCreditNodes;
+static uint32_t guiGapTillReadNextCredit;
 
-static UINT32 guiCurrentCreditRecord;
+static uint32_t guiCurrentCreditRecord;
 static BOOLEAN gfPauseCreditScreen;
 
 static BOOLEAN EnterCreditsScreen();
@@ -178,7 +178,7 @@ ScreenID CreditScreenHandle() {
 
 static void InitCreditEyeBlinking();
 static void RenderCreditScreen();
-static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static BOOLEAN EnterCreditsScreen() try {
   guiCreditBackGroundImage = AddVideoObjectFromFile(INTERFACEDIR "/credits.sti");
@@ -198,14 +198,14 @@ static BOOLEAN EnterCreditsScreen() try {
   guiGapBetweenCreditNodes = CRDT_SPACE_BN_NODES;
   guiGapTillReadNextCredit = CRDT_SPACE_BN_NODES;
 
-  for (INT32 i = 0; i != lengthof(gCrdtMouseRegions); ++i) {
+  for (int32_t i = 0; i != lengthof(gCrdtMouseRegions); ++i) {
     // Make a mouse region
     MOUSE_REGION *const r = &gCrdtMouseRegions[i];
     CreditFace const &f = gCreditFaces[i];
-    UINT16 const x = f.sX;
-    UINT16 const y = f.sY;
-    UINT16 const w = f.sWidth;
-    UINT16 const h = f.sHeight;
+    uint16_t const x = f.sX;
+    uint16_t const y = f.sY;
+    uint16_t const w = f.sWidth;
+    uint16_t const h = f.sHeight;
     MSYS_DefineRegion(r, x, y, x + w, y + h, MSYS_PRIORITY_NORMAL, CURSOR_WWW,
                       SelectCreditFaceMovementRegionCallBack, NULL);
     MSYS_SetRegionUserData(r, 0, i);
@@ -251,7 +251,7 @@ static void HandleCreditScreen() {
   // is it time to get a new node
   if (g_credits_tail == NULL ||
       (CRDT_START_POS_Y - (g_credits_tail->sPosY + g_credits_tail->sHeightOfString - 16)) >=
-          (INT16)guiGapTillReadNextCredit) {
+          (int16_t)guiGapTillReadNextCredit) {
     // if there are no more credits in the file
     if (!GetNextCreditFromTextFile() && g_credits_tail == NULL) {
       g_credits_active = FALSE;
@@ -303,12 +303,12 @@ static void DeleteFirstNode() {
   MemFree(del);
 }
 
-static void AddCreditNode(UINT32 uiFlags, const wchar_t *pString) {
+static void AddCreditNode(uint32_t uiFlags, const wchar_t *pString) {
   CRDT_NODE *const pNodeToAdd = MALLOCZ(CRDT_NODE);
 
   // Determine the font and the color to use
   Font uiFontToUse;
-  UINT8 uiColorToUse;
+  uint8_t uiColorToUse;
   if (uiFlags & CRDT_FLAG__TITLE) {
     uiFontToUse = guiCreditScreenTitleFont;
     uiColorToUse = gubCreditScreenTitleColor;
@@ -371,8 +371,8 @@ static void HandleCreditNodes() {
 
 static void DisplayCreditNode(const CRDT_NODE *const pCurrent) {
   // Restore the background before blitting the text back on
-  INT16 y = pCurrent->sPosY + CRDT_SCROLL_PIXEL_AMOUNT;
-  INT16 h = pCurrent->sHeightOfString;
+  int16_t y = pCurrent->sPosY + CRDT_SCROLL_PIXEL_AMOUNT;
+  int16_t h = pCurrent->sHeightOfString;
   /* Clip to the screen area */
   if (y < 0) {
     h += y;
@@ -386,17 +386,17 @@ static void DisplayCreditNode(const CRDT_NODE *const pCurrent) {
                   NULL);
 }
 
-static UINT32 GetNumber(const wchar_t *const string) {
+static uint32_t GetNumber(const wchar_t *const string) {
   unsigned int v = 0;
   swscanf(string, L"%u", &v);
   return v;
 }
 
-static void HandleCreditFlags(UINT32 uiFlags);
+static void HandleCreditFlags(uint32_t uiFlags);
 
 static BOOLEAN GetNextCreditFromTextFile() {
   wchar_t text[CREDITS_LINESIZE];
-  const UINT32 pos = CREDITS_LINESIZE * guiCurrentCreditRecord++;
+  const uint32_t pos = CREDITS_LINESIZE * guiCurrentCreditRecord++;
   try {
     LoadEncryptedDataFromFile(CRDT_NAME_OF_CREDIT_FILE, text, pos, CREDITS_LINESIZE);
   } catch (...)  // XXX fishy, should check file size beforehand
@@ -404,7 +404,7 @@ static BOOLEAN GetNextCreditFromTextFile() {
     return FALSE;
   }
 
-  UINT32 flags = 0;
+  uint32_t flags = 0;
   const wchar_t *s = text;
   if (*s == CRDT_START_CODE) {
     for (;;) {
@@ -481,7 +481,7 @@ handle_text:
   return TRUE;
 }
 
-static void HandleCreditFlags(UINT32 uiFlags) {
+static void HandleCreditFlags(uint32_t uiFlags) {
   if (uiFlags & CRDT_FLAG__START_SECTION) {
     guiGapTillReadNextCredit = guiGapBetweenCreditNodes;
   }
@@ -491,7 +491,7 @@ static void HandleCreditFlags(UINT32 uiFlags) {
   }
 }
 
-static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     giCurrentlySelectedFace = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -500,18 +500,18 @@ static void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 
 }
 
 static void InitCreditEyeBlinking() {
-  const UINT32 now = GetJA2Clock();
+  const uint32_t now = GetJA2Clock();
   FOR_EACH(CreditFace, f, gCreditFaces) { f->uiLastBlinkTime = now + Random(f->sBlinkFreq * 2); }
 }
 
 static void HandleCreditEyeBlinking() {
-  UINT16 gfx = 0;
+  uint16_t gfx = 0;
   FOR_EACHX(CreditFace, i, gCreditFaces, gfx += 3) {
     CreditFace &f = *i;
-    UINT32 const now = GetJA2Clock();
+    uint32_t const now = GetJA2Clock();
     if (now - f.uiLastBlinkTime > f.sBlinkFreq) {
-      INT32 const x = f.sEyeX;
-      INT32 const y = f.sEyeY;
+      int32_t const x = f.sEyeX;
+      int32_t const y = f.sEyeY;
       BltVideoObject(FRAME_BUFFER, guiCreditFaces, gfx, x, y);
       InvalidateRegion(x, y, x + CRDT_EYE_WIDTH, y + CRDT_EYE_HEIGHT);
 

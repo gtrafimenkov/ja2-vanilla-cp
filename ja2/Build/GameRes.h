@@ -83,7 +83,7 @@ bool isRussianVersion();
 bool isRussianGoldVersion();
 
 /** Get major map version. */
-FLOAT getMajorMapVersion();
+float getMajorMapVersion();
 
 wchar_t getZeroGlyphChar();
 

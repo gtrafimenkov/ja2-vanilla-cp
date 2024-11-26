@@ -3,8 +3,8 @@
 
 #include "JA2Types.h"
 
-void ExtractSoldierType(const BYTE *Src, SOLDIERTYPE *Soldier, bool stracLinuxFormat);
+void ExtractSoldierType(const uint8_t *Src, SOLDIERTYPE *Soldier, bool stracLinuxFormat);
 
-void InjectSoldierType(BYTE *Dst, const SOLDIERTYPE *Soldier);
+void InjectSoldierType(uint8_t *Dst, const SOLDIERTYPE *Soldier);
 
 #endif

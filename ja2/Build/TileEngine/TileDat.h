@@ -3492,7 +3492,7 @@ enum TileTypeDefines {
 #define LASTROAD (DEBRISROCKS - 1)
 #define LASTDEBRIS (ANIOSTRUCT - 1)
 #define LASTITEM (WINDOWSHATTER - 1)
-//#define LASTDEBRIS				(FOOTPRINTS - 1)
+// #define LASTDEBRIS				(FOOTPRINTS - 1)
 #define LASTFOOTPRINTS (FIRSTPOINTERS - 1)
 #define LASTPOINTERS (SELRING - 1)
 #define LASTUIELEM (WIREFRAMES - 1)  // Change this entry if adding new types to the end
@@ -3506,11 +3506,11 @@ enum TileTypeDefines {
 #define WALL_AFRAME3 33
 #define WALL_AFRAME4 34
 
-extern const INT16 gOpenDoorList[];
-extern const INT16 gClosedDoorList[];
+extern const int16_t gOpenDoorList[];
+extern const int16_t gClosedDoorList[];
 
 extern const char *const gTileSurfaceName[NUMBEROFTILETYPES];
-extern const UINT16 gNumTilesPerType[NUMBEROFTILETYPES];
-extern UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES];
+extern const uint16_t gNumTilesPerType[NUMBEROFTILETYPES];
+extern uint8_t gTileTypeLogicalHeight[NUMBEROFTILETYPES];
 
 #endif

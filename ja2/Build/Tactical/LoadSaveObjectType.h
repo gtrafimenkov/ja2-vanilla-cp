@@ -3,8 +3,8 @@
 
 #include "Tactical/ItemTypes.h"
 
-const BYTE *ExtractObject(const BYTE *Src, OBJECTTYPE *o);
+const uint8_t *ExtractObject(const uint8_t *Src, OBJECTTYPE *o);
 
-BYTE *InjectObject(BYTE *Dst, const OBJECTTYPE *o);
+uint8_t *InjectObject(uint8_t *Dst, const OBJECTTYPE *o);
 
 #endif

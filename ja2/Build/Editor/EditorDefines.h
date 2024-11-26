@@ -219,13 +219,13 @@ enum {
 
 extern GUIButtonRef iEditorButton[NUMBER_EDITOR_BUTTONS];
 extern ToolbarMode iEditorToolbarState;
-extern INT32 iDrawMode;
-extern INT32 iCurrentAction;
-extern INT32 iActionParam;
+extern int32_t iDrawMode;
+extern int32_t iCurrentAction;
+extern int32_t iActionParam;
 
-extern UINT16 gusLightLevel;
-extern UINT16 gusLightLevelPercentage;
-extern INT16 gsLightRadius;
+extern uint16_t gusLightLevel;
+extern uint16_t gusLightLevelPercentage;
+extern int16_t gsLightRadius;
 
 extern BOOLEAN gfRenderWorld;
 extern BOOLEAN gfRenderTaskbar;

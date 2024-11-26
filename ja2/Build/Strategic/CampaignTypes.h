@@ -389,51 +389,50 @@ enum {
 
 struct SECTORINFO {
   // information pertaining to this sector
-  UINT32 uiFlags;                // various special conditions
-  UINT8 ubGarrisonID;            // IF the sector has an ID for this (non 255), then the
-                                 // queen values this sector and it indexes the garrison
-                                 // group.
-  INT8 ubPendingReinforcements;  // when the enemy owns this sector, this value
-                                 // will keep track of HIGH priority
-                                 // reinforcements -- not regular.
+  uint32_t uiFlags;                // various special conditions
+  uint8_t ubGarrisonID;            // IF the sector has an ID for this (non 255), then the
+                                   // queen values this sector and it indexes the garrison
+                                   // group.
+  int8_t ubPendingReinforcements;  // when the enemy owns this sector, this value
+                                   // will keep track of HIGH priority
+                                   // reinforcements -- not regular.
   BOOLEAN fMilitiaTrainingPaid;
-  UINT8 ubMilitiaTrainingPercentDone;
-  UINT8 ubMilitiaTrainingHundredths;
+  uint8_t ubMilitiaTrainingPercentDone;
+  uint8_t ubMilitiaTrainingHundredths;
   // enemy only info
-  UINT8 ubNumTroops;     // the actual number of troops here.
-  UINT8 ubNumElites;     // the actual number of elites here.
-  UINT8 ubNumAdmins;     // the actual number of admins here.
-  UINT8 ubNumCreatures;  // only set when immediately before ground attack made!
-  UINT8 ubTroopsInBattle, ubElitesInBattle, ubAdminsInBattle, ubCreaturesInBattle;
+  uint8_t ubNumTroops;     // the actual number of troops here.
+  uint8_t ubNumElites;     // the actual number of elites here.
+  uint8_t ubNumAdmins;     // the actual number of admins here.
+  uint8_t ubNumCreatures;  // only set when immediately before ground attack made!
+  uint8_t ubTroopsInBattle, ubElitesInBattle, ubAdminsInBattle, ubCreaturesInBattle;
 
-  UINT32 ubDayOfLastCreatureAttack;
-  UINT32 uiFacilitiesFlags;  // the flags for various facilities
+  uint32_t ubDayOfLastCreatureAttack;
+  uint32_t uiFacilitiesFlags;  // the flags for various facilities
 
-  UINT8 ubTraversability[5];  // determines the traversability ratings to
-                              // adjacent sectors. The last index represents the
-                              // traversability if travelling throught the sector
-                              // without entering it.
-  INT8 bBloodCats;
-  INT8 bBloodCatPlacements;
+  uint8_t ubTraversability[5];  // determines the traversability ratings to
+                                // adjacent sectors. The last index represents the
+                                // traversability if travelling throught the sector
+                                // without entering it.
+  int8_t bBloodCats;
+  int8_t bBloodCatPlacements;
 
-  UINT8
-  ubTravelRating;  // Represents how travelled a sector is.  Typically, the
-                   // higher the travel rating, the more people go near it.  A
-                   // travel rating of 0 means there are never people around.
-                   // This value is used for determining how often items would
-                   // "vanish" from a sector (nice theory, except it isn't
-                   // being used that way.  Stealing is only in towns.  ARM)
-  UINT8 ubNumberOfCivsAtLevel[MAX_MILITIA_LEVELS];  // town militia per
-                                                    // experience class, 0/1/2 is
-                                                    // GREEN/REGULAR/ELITE
-  UINT32 uiTimeCurrentSectorWasLastLoaded;          // Specifies the last time the player
-                                                    // was in the sector
-  UINT32 uiTimeLastPlayerLiberated;                 // in game seconds (used to prevent the
-                                                    // queen from attacking for awhile)
+  uint8_t ubTravelRating;  // Represents how travelled a sector is.  Typically, the
+                           // higher the travel rating, the more people go near it.  A
+                           // travel rating of 0 means there are never people around.
+                           // This value is used for determining how often items would
+                           // "vanish" from a sector (nice theory, except it isn't
+                           // being used that way.  Stealing is only in towns.  ARM)
+  uint8_t ubNumberOfCivsAtLevel[MAX_MILITIA_LEVELS];  // town militia per
+                                                      // experience class, 0/1/2 is
+                                                      // GREEN/REGULAR/ELITE
+  uint32_t uiTimeCurrentSectorWasLastLoaded;          // Specifies the last time the player
+                                                      // was in the sector
+  uint32_t uiTimeLastPlayerLiberated;                 // in game seconds (used to prevent the
+                                                      // queen from attacking for awhile)
 
   BOOLEAN fSurfaceWasEverPlayerControlled;
 
-  UINT32 uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
+  uint32_t uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
 };
 
 #define NO_ADJACENT_SECTOR 0x00
@@ -443,18 +442,18 @@ struct SECTORINFO {
 #define WEST_ADJACENT_SECTOR 0x08
 
 struct UNDERGROUND_SECTORINFO {
-  UINT32 uiFlags;
-  UINT8 ubSectorX, ubSectorY, ubSectorZ;
-  UINT8 ubNumElites, ubNumTroops, ubNumAdmins, ubNumCreatures;
-  UINT32 uiTimeCurrentSectorWasLastLoaded;  // Specifies the last time the player
-                                            // was in the sector
+  uint32_t uiFlags;
+  uint8_t ubSectorX, ubSectorY, ubSectorZ;
+  uint8_t ubNumElites, ubNumTroops, ubNumAdmins, ubNumCreatures;
+  uint32_t uiTimeCurrentSectorWasLastLoaded;  // Specifies the last time the player
+                                              // was in the sector
   UNDERGROUND_SECTORINFO *next;
-  UINT8 ubAdjacentSectors;  // mask containing which sectors are adjacent
-  UINT8 ubCreatureHabitat;  // determines how creatures live in this sector (see
-                            // creature spreading.c)
-  UINT8 ubElitesInBattle, ubTroopsInBattle, ubAdminsInBattle, ubCreaturesInBattle;
+  uint8_t ubAdjacentSectors;  // mask containing which sectors are adjacent
+  uint8_t ubCreatureHabitat;  // determines how creatures live in this sector (see
+                              // creature spreading.c)
+  uint8_t ubElitesInBattle, ubTroopsInBattle, ubAdminsInBattle, ubCreaturesInBattle;
 
-  UINT32 uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
+  uint32_t uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
 };
 
 // The sector information required for the strategic AI.  Contains the number of

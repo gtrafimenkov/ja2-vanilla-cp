@@ -55,7 +55,7 @@
 // current temp path for dest char
 extern PathSt *pTempHelicopterPath;
 
-extern UINT8 ubSAMControlledSectors[MAP_WORLD_X][MAP_WORLD_Y];
+extern uint8_t ubSAMControlledSectors[MAP_WORLD_X][MAP_WORLD_Y];
 
 // whether helicopted variables have been set up
 BOOLEAN fSkyRiderSetUp = FALSE;
@@ -64,18 +64,18 @@ BOOLEAN fSkyRiderSetUp = FALSE;
 BOOLEAN fPlotForHelicopter = FALSE;
 
 // helicopter vehicle id
-INT32 iHelicopterVehicleId = -1;
+int32_t iHelicopterVehicleId = -1;
 
 // total owed to player
-INT32 iTotalAccumulatedCostByPlayer = 0;
+int32_t iTotalAccumulatedCostByPlayer = 0;
 
 // helicopter destroyed
 BOOLEAN fHelicopterDestroyed = FALSE;
 
 struct RefuelSite {
-  INT16 sector;
+  int16_t sector;
   GridNo grid_no;
-  INT16 heli_ostruct;
+  int16_t heli_ostruct;
 };
 
 // list of sector locations where SkyRider can be refueled
@@ -97,10 +97,10 @@ BOOLEAN fHeliReturnStraightToBase = FALSE;
 BOOLEAN fHoveringHelicopter = FALSE;
 
 // time started hovering
-UINT32 uiStartHoverTime = 0;
+uint32_t uiStartHoverTime = 0;
 
 // what state are skyrider's monologues in in?
-UINT32 guiHelicopterSkyriderTalkState = 0;
+uint32_t guiHelicopterSkyriderTalkState = 0;
 
 // the flags for skyrider events
 BOOLEAN fShowEstoniRefuelHighLight = FALSE;
@@ -108,12 +108,12 @@ BOOLEAN fShowOtherSAMHighLight = FALSE;
 BOOLEAN fShowDrassenSAMHighLight = FALSE;
 BOOLEAN fShowCambriaHospitalHighLight = FALSE;
 
-UINT32 guiTimeOfLastSkyriderMonologue = 0;
+uint32_t guiTimeOfLastSkyriderMonologue = 0;
 
-UINT8 gubHelicopterHitsTaken = 0;
+uint8_t gubHelicopterHitsTaken = 0;
 
 BOOLEAN gfSkyriderSaidCongratsOnTakingSAM = FALSE;
-UINT8 gubPlayerProgressSkyriderLastCommentedOn = 0;
+uint8_t gubPlayerProgressSkyriderLastCommentedOn = 0;
 
 void InitializeHelicopter() {
   // must be called whenever a new game starts up!
@@ -176,17 +176,17 @@ BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier) {
 }
 
 static BOOLEAN CheckForArrivalAtRefuelPoint();
-static BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies);
+static BOOLEAN DoesSkyriderNoticeEnemiesInSector(uint8_t ubNumEnemies);
 static BOOLEAN EndOfHelicoptersPath();
-static INT32 GetCostOfPassageForHelicopter(INT16 sX, INT16 sY);
-static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSectorY);
-static void HeliCharacterDialogue(UINT16 usQuoteNum);
+static int32_t GetCostOfPassageForHelicopter(int16_t sX, int16_t sY);
+static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(int16_t sSectorX, int16_t sSectorY);
+static void HeliCharacterDialogue(uint16_t usQuoteNum);
 static void PaySkyriderBill();
 static void ReFuelHelicopter();
 static void StartHoverTime();
 
-BOOLEAN HandleHeliEnteringSector(INT16 sX, INT16 sY) {
-  UINT8 ubNumEnemies;
+BOOLEAN HandleHeliEnteringSector(int16_t sX, int16_t sY) {
+  uint8_t ubNumEnemies;
 
   // check for SAM attack upon the chopper.  If it's destroyed by the attack, do
   // nothing else here
@@ -288,20 +288,20 @@ static RefuelSite const &NearestRefuelPoint(bool const fNotifyPlayerIfNoSafeLZ) 
 // find the location sector of closest refuel point for heli..and the criteria
 // if the sector must be under the players control
 static RefuelSite const *FindClosestRefuelSite(bool const must_be_available) {
-  INT32 shortest_distance = 9999;
+  int32_t shortest_distance = 9999;
   RefuelSite const *closest_site = 0;
 
   // find shortest distance to refuel site
-  for (INT32 i = 0; i < NUMBER_OF_REFUEL_SITES; ++i) {
+  for (int32_t i = 0; i < NUMBER_OF_REFUEL_SITES; ++i) {
     // if this refuelling site is available
     if (!fRefuelingSiteAvailable[i] && must_be_available) continue;
 
     // find if sector is under control, find distance from heli to it
     VEHICLETYPE const &v = GetHelicopter();
     RefuelSite const &r = g_refuel_site[i];
-    INT16 const dest = r.sector;
-    INT32 const distance = FindStratPath(CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY), dest,
-                                         *GetGroup(v.ubMovementGroup), FALSE);
+    int16_t const dest = r.sector;
+    int32_t const distance = FindStratPath(CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY), dest,
+                                           *GetGroup(v.ubMovementGroup), FALSE);
     if (distance >= shortest_distance) continue;
 
     // shorter, copy over
@@ -313,11 +313,11 @@ static RefuelSite const *FindClosestRefuelSite(bool const must_be_available) {
 }
 
 // How far to nearest refuel point from this sector?
-static INT32 DistanceToNearestRefuelPoint(VEHICLETYPE const &heli) {
+static int32_t DistanceToNearestRefuelPoint(VEHICLETYPE const &heli) {
   // Don't notify player during these checks!
-  INT16 const start = CALCULATE_STRATEGIC_INDEX(heli.sSectorX, heli.sSectorY);
-  INT16 const dest = NearestRefuelPoint(false).sector;
-  INT32 const distance = FindStratPath(start, dest, *GetGroup(heli.ubMovementGroup), FALSE);
+  int16_t const start = CALCULATE_STRATEGIC_INDEX(heli.sSectorX, heli.sSectorY);
+  int16_t const dest = NearestRefuelPoint(false).sector;
+  int32_t const distance = FindStratPath(start, dest, *GetGroup(heli.ubMovementGroup), FALSE);
   return distance;
 }
 
@@ -329,10 +329,10 @@ static void ReFuelHelicopter() {
 }
 
 // how much will it cost for helicopter to travel through this sector?
-static INT32 GetCostOfPassageForHelicopter(INT16 sX, INT16 sY) {
+static int32_t GetCostOfPassageForHelicopter(int16_t sX, int16_t sY) {
   // check if sector is air controlled or not, if so, then normal cost,
   // otherwise increase the cost
-  INT32 iCost = 0;
+  int32_t iCost = 0;
 
   // if they don't control it
   if (!StrategicMap[CALCULATE_STRATEGIC_INDEX(sX, sY)].fEnemyAirControlled) {
@@ -492,8 +492,8 @@ void HandleHeliHoverTooLong() {
 }
 
 // check if anyone in the chopper sees any baddies in sector
-static BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies) {
-  UINT8 ubChance;
+static BOOLEAN DoesSkyriderNoticeEnemiesInSector(uint8_t ubNumEnemies) {
+  uint8_t ubChance;
 
   // is the pilot and heli around?
   if (!CanHelicopterFly()) return FALSE;
@@ -517,8 +517,8 @@ static BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies) {
 
 // if the heli is on the move, what is the distance it will move..the length of
 // the merc path, less the first node
-INT32 DistanceOfIntendedHelicopterPath() {
-  INT32 iLength = 0;
+int32_t DistanceOfIntendedHelicopterPath() {
+  int32_t iLength = 0;
 
   if (!CanHelicopterFly()) {
     // big number, no go
@@ -579,7 +579,7 @@ void SetUpHelicopterForMovement() {
   }
 }
 
-static void SkyriderDialogue(UINT16 const quote) {
+static void SkyriderDialogue(uint16_t const quote) {
   CharacterDialogue(SKYRIDER, quote, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE],
                     DIALOGUE_EXTERNAL_NPC_UI, FALSE);
 }
@@ -591,14 +591,14 @@ enum SkyriderMonologueEvent {
   SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL
 };
 
-static void HandleSkyRiderMonologueEvent(SkyriderMonologueEvent, UINT32 uiSpecialCode);
+static void HandleSkyRiderMonologueEvent(SkyriderMonologueEvent, uint32_t uiSpecialCode);
 
 static void SkyriderDialogueWithSpecialEvent(SkyriderMonologueEvent const event,
-                                             UINT32 const special_code) {
+                                             uint32_t const special_code) {
   class DialogueEventSkyriderMapScreenEvent : public DialogueEvent {
    public:
     DialogueEventSkyriderMapScreenEvent(SkyriderMonologueEvent const event,
-                                        UINT32 const special_code)
+                                        uint32_t const special_code)
         : event_(event), special_code_(special_code) {}
 
     bool Execute() {
@@ -608,22 +608,22 @@ static void SkyriderDialogueWithSpecialEvent(SkyriderMonologueEvent const event,
 
    private:
     SkyriderMonologueEvent const event_;
-    UINT32 const special_code_;
+    uint32_t const special_code_;
   };
 
   DialogueEvent::Add(new DialogueEventSkyriderMapScreenEvent(event, special_code));
 }
 
-static void HeliCharacterDialogue(UINT16 const usQuoteNum) {
+static void HeliCharacterDialogue(uint16_t const usQuoteNum) {
   // ARM: we could just return, but since various flags are often being set it's
   // safer to honk so it gets fixed right!
   Assert(iHelicopterVehicleId != -1);
   SkyriderDialogue(usQuoteNum);
 }
 
-INT32 GetNumberOfPassengersInHelicopter() { return GetNumberInVehicle(GetHelicopter()); }
+int32_t GetNumberOfPassengersInHelicopter() { return GetNumberInVehicle(GetHelicopter()); }
 
-bool IsRefuelSiteInSector(INT16 const sector) {
+bool IsRefuelSiteInSector(int16_t const sector) {
   FOR_EACH(RefuelSite const, i, g_refuel_site) {
     if (i->sector == sector) return true;
   }
@@ -631,7 +631,7 @@ bool IsRefuelSiteInSector(INT16 const sector) {
 }
 
 void UpdateRefuelSiteAvailability() {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // Generally, only Drassen is initially available for refuelling
   // Estoni must first be captured (although player may already have it when he
@@ -652,7 +652,7 @@ void UpdateRefuelSiteAvailability() {
   }
 }
 
-void SetUpHelicopterForPlayer(INT16 sX, INT16 sY) {
+void SetUpHelicopterForPlayer(int16_t sX, int16_t sY) {
   if (!fSkyRiderSetUp) {
     iHelicopterVehicleId = AddVehicleToList(sX, sY, 0, HELICOPTER);
 
@@ -668,11 +668,11 @@ void SetUpHelicopterForPlayer(INT16 sX, INT16 sY) {
 
 void MoveAllInHelicopterToFootMovementGroup() {
   // take everyone out of heli and add to movement group
-  INT8 bNewSquad;
+  int8_t bNewSquad;
   BOOLEAN fSuccess;
-  UINT8 ubInsertionCode = (UINT8)-1;  // XXX HACK000E
+  uint8_t ubInsertionCode = (uint8_t)-1;  // XXX HACK000E
   BOOLEAN fInsertionCodeSet = FALSE;
-  UINT16 usInsertionData = (UINT16)-1;  // XXX HACK000E
+  uint16_t usInsertionData = (uint16_t)-1;  // XXX HACK000E
 
   // put these guys on their own squad (we need to return their group ID, and
   // can only return one, so they need a unique one
@@ -704,21 +704,21 @@ void MoveAllInHelicopterToFootMovementGroup() {
   }
 }
 
-void SkyRiderTalk(UINT16 usQuoteNum) {
+void SkyRiderTalk(uint16_t usQuoteNum) {
   // have skyrider talk to player
   HeliCharacterDialogue(usQuoteNum);
 
   fTeamPanelDirty = TRUE;
 }
 
-static void HandleSkyRiderMonologueAboutCambriaHospital(UINT32 uiSpecialCode);
-static void HandleSkyRiderMonologueAboutDrassenSAMSite(UINT32 uiSpecialCode);
-static void HandleSkyRiderMonologueAboutEstoniRefuel(UINT32 uiSpecialCode);
-static void HandleSkyRiderMonologueAboutOtherSAMSites(UINT32 uiSpecialCode);
+static void HandleSkyRiderMonologueAboutCambriaHospital(uint32_t uiSpecialCode);
+static void HandleSkyRiderMonologueAboutDrassenSAMSite(uint32_t uiSpecialCode);
+static void HandleSkyRiderMonologueAboutEstoniRefuel(uint32_t uiSpecialCode);
+static void HandleSkyRiderMonologueAboutOtherSAMSites(uint32_t uiSpecialCode);
 
 // Skyrider monlogue events for mapscreen
 static void HandleSkyRiderMonologueEvent(SkyriderMonologueEvent const uiEventCode,
-                                         UINT32 const uiSpecialCode) {
+                                         uint32_t const uiSpecialCode) {
   // will handle the skyrider monologue about where the SAM sites are and what
   // not
 
@@ -747,7 +747,7 @@ static void HandleSkyRiderMonologueEvent(SkyriderMonologueEvent const uiEventCod
   guiTimeOfLastSkyriderMonologue = GetWorldTotalMin();
 }
 
-static void HandleSkyRiderMonologueAboutEstoniRefuel(UINT32 const uiSpecialCode) {
+static void HandleSkyRiderMonologueAboutEstoniRefuel(uint32_t const uiSpecialCode) {
   // Once Estoni is free tell player about refueling
   switch (uiSpecialCode) {
     case 0: {
@@ -769,7 +769,7 @@ static void HandleSkyRiderMonologueAboutEstoniRefuel(UINT32 const uiSpecialCode)
   }
 }
 
-static void HandleSkyRiderMonologueAboutDrassenSAMSite(UINT32 const uiSpecialCode) {
+static void HandleSkyRiderMonologueAboutDrassenSAMSite(uint32_t const uiSpecialCode) {
   switch (uiSpecialCode) {
     case 0: {
       // if special event data 2 is true, then do dialogue, else this is just a
@@ -801,7 +801,7 @@ static void HandleSkyRiderMonologueAboutDrassenSAMSite(UINT32 const uiSpecialCod
   }
 }
 
-static void HandleSkyRiderMonologueAboutCambriaHospital(UINT32 const uiSpecialCode) {
+static void HandleSkyRiderMonologueAboutCambriaHospital(uint32_t const uiSpecialCode) {
   switch (uiSpecialCode) {
     case 0: {
       // if special event data 2 is true, then do dialogue, else this is just a
@@ -820,7 +820,7 @@ static void HandleSkyRiderMonologueAboutCambriaHospital(UINT32 const uiSpecialCo
   }
 }
 
-static void HandleSkyRiderMonologueAboutOtherSAMSites(UINT32 const uiSpecialCode) {
+static void HandleSkyRiderMonologueAboutOtherSAMSites(uint32_t const uiSpecialCode) {
   /* Handle skyrider telling player about other SAM sites on fifth hiring or
    * after one near drassen is taken out */
   switch (uiSpecialCode) {
@@ -881,7 +881,7 @@ void CheckAndHandleSkyriderMonologues() {
   }
 }
 
-static void HandleBlitOfSectorLocatorIcon(UINT8 const sector, UINT8 const locator) {
+static void HandleBlitOfSectorLocatorIcon(uint8_t const sector, uint8_t const locator) {
   HandleBlitOfSectorLocatorIcon(SECTORX(sector), SECTORY(sector), 0, locator);
 }
 
@@ -932,7 +932,7 @@ void HandleAnimationOfSectors() {
   // show Estoni site
   if (fShowEstoniRefuelHighLight) {
     fOldShowEstoniRefuelHighLight = TRUE;
-    INT16 const sec = g_refuel_site[ESTONI_REFUELING_SITE].sector;
+    int16_t const sec = g_refuel_site[ESTONI_REFUELING_SITE].sector;
     HandleBlitOfSectorLocatorIcon(GET_X_FROM_STRATEGIC_INDEX(sec), GET_Y_FROM_STRATEGIC_INDEX(sec),
                                   0, LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = TRUE;
@@ -963,7 +963,7 @@ void HandleHelicopterOnGroundGraphic() {
   // No worries if underground
   if (gbWorldSectorZ != 0) return;
 
-  for (UINT8 site = 0; site != NUMBER_OF_REFUEL_SITES; ++site) {
+  for (uint8_t site = 0; site != NUMBER_OF_REFUEL_SITES; ++site) {
     RefuelSite const &r = g_refuel_site[site];
     // Is this refueling site sector the loaded sector?
     if (CALCULATE_STRATEGIC_INDEX(gWorldSectorX, gWorldSectorY) != r.sector) continue;
@@ -1002,7 +1002,7 @@ void HandleHelicopterOnGroundSkyriderProfile() {
   // No worries if underground
   if (gbWorldSectorZ != 0) return;
 
-  for (UINT8 site = 0; site != NUMBER_OF_REFUEL_SITES; ++site) {
+  for (uint8_t site = 0; site != NUMBER_OF_REFUEL_SITES; ++site) {
     RefuelSite const &r = g_refuel_site[site];
     // is this refueling site sector the loaded sector?
     if (CALCULATE_STRATEGIC_INDEX(gWorldSectorX, gWorldSectorY) != r.sector) continue;
@@ -1049,11 +1049,11 @@ static bool IsHelicopterOnGroundAtRefuelingSite(RefuelSite const &r) {
 }
 
 /*
-BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY )
+BOOLEAN WillAirRaidBeStopped( int16_t sSectorX, int16_t sSectorY )
 {
-        UINT8 ubSamNumber = 0;
-        INT8 bSAMCondition;
-        UINT8 ubChance;
+        uint8_t ubSamNumber = 0;
+        int8_t bSAMCondition;
+        uint8_t ubChance;
 
 
         // if enemy controls this SAM site, then it can't stop an air raid
@@ -1108,10 +1108,10 @@ working order if (ubChance > MAX_SAM_SITE_ACCURACY)
 
 static void HeliCrashSoundStopCallback(void *pData) { SkyriderDestroyed(); }
 
-static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSectorY) {
-  UINT8 ubSamNumber = 0;
-  INT8 bSAMCondition;
-  UINT8 ubChance;
+static BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(int16_t sSectorX, int16_t sSectorY) {
+  uint8_t ubSamNumber = 0;
+  int8_t bSAMCondition;
+  uint8_t ubChance;
 
   // if this sector is in friendly airspace, we're safe
   if (!StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].fEnemyAirControlled) {
@@ -1208,7 +1208,7 @@ BOOLEAN CanHelicopterTakeOff() {
 
   VEHICLETYPE const &v = GetHelicopter();
   // grab location
-  INT16 const sHelicopterSector = v.sSectorX + v.sSectorY * MAP_WORLD_X;
+  int16_t const sHelicopterSector = v.sSectorX + v.sSectorY * MAP_WORLD_X;
   // if it's not in enemy control, we can take off
   if (!StrategicMap[sHelicopterSector].fEnemyControlled) {
     return (TRUE);
@@ -1217,14 +1217,14 @@ BOOLEAN CanHelicopterTakeOff() {
   return (FALSE);
 }
 
-static void AddHeliPiece(INT16 const sGridNo, UINT16 const sOStruct) {
+static void AddHeliPiece(int16_t const sGridNo, uint16_t const sOStruct) {
   if (IndexExistsInStructLayer(sGridNo, sOStruct)) return;
   AddStructToTail(sGridNo, sOStruct);
 }
 
 static void AddHelicopterToMaps(bool const add, RefuelSite const &r) {
   GridNo const grid_no = r.grid_no;
-  INT16 const ostruct = r.heli_ostruct;
+  int16_t const ostruct = r.heli_ostruct;
 
   // are we adding or taking away
   if (add) {
@@ -1236,12 +1236,12 @@ static void AddHelicopterToMaps(bool const add, RefuelSite const &r) {
     AddHeliPiece(grid_no - 800, ostruct + 5);
 
     // ATE: If any mercs here, bump them off!
-    INT16 sCentreGridX;
-    INT16 sCentreGridY;
+    int16_t sCentreGridX;
+    int16_t sCentreGridY;
     ConvertGridNoToXY(grid_no, &sCentreGridX, &sCentreGridY);
 
-    for (INT16 y = sCentreGridY - 5; y < sCentreGridY + 5; ++y) {
-      for (INT16 x = sCentreGridX - 5; x < sCentreGridX + 5; ++x) {
+    for (int16_t y = sCentreGridY - 5; y < sCentreGridY + 5; ++y) {
+      for (int16_t x = sCentreGridX - 5; x < sCentreGridX + 5; ++x) {
         BumpAnyExistingMerc(MAPROWCOLTOPOS(y, x));
       }
     }
@@ -1259,7 +1259,7 @@ static void AddHelicopterToMaps(bool const add, RefuelSite const &r) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-bool IsSkyriderIsFlyingInSector(INT16 const x, INT16 const y) {
+bool IsSkyriderIsFlyingInSector(int16_t const x, int16_t const y) {
   // up and about?
   if (iHelicopterVehicleId == -1) return false;
   if (!CanHelicopterFly()) return false;
@@ -1275,19 +1275,19 @@ bool IsGroupTheHelicopterGroup(GROUP const &g) {
   return v.ubMovementGroup != 0 && v.ubMovementGroup == g.ubGroupID;
 }
 
-INT16 GetNumSafeSectorsInPath() {
+int16_t GetNumSafeSectorsInPath() {
   if (!CanHelicopterFly()) return 0;
 
   VEHICLETYPE const &v = GetHelicopter();
-  INT32 const sector = CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY);
+  int32_t const sector = CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY);
   GROUP *const g = GetGroup(v.ubMovementGroup);
-  UINT32 n = 0;
+  uint32_t n = 0;
 
   if (PathSt const *i = v.pMercPath) {
     /* First node: Skip it if that's the sector the chopper is currently in, AND
      * we're NOT gonna be changing directions (not actually performed until
      * waypoints are rebuilt AFTER plotting is done) */
-    if ((INT32)i->uiSectorId == sector && i->pNext &&
+    if ((int32_t)i->uiSectorId == sector && i->pNext &&
         !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(
             g, GET_X_FROM_STRATEGIC_INDEX(i->pNext->uiSectorId),
             GET_Y_FROM_STRATEGIC_INDEX(i->pNext->uiSectorId))) {
@@ -1306,7 +1306,7 @@ INT16 GetNumSafeSectorsInPath() {
      * waypoints are rebuilt AFTER plotting is done) OR if the chopper has a
      * mercpath, in which case this a continuation of it that would count the
      * sector twice */
-    if (((INT32)i->uiSectorId == sector && i->pNext &&
+    if (((int32_t)i->uiSectorId == sector && i->pNext &&
          !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(
              g, GET_X_FROM_STRATEGIC_INDEX(i->pNext->uiSectorId),
              GET_Y_FROM_STRATEGIC_INDEX(i->pNext->uiSectorId))) ||
@@ -1323,10 +1323,10 @@ INT16 GetNumSafeSectorsInPath() {
   return n;
 }
 
-INT16 GetNumUnSafeSectorsInPath() {
+int16_t GetNumUnSafeSectorsInPath() {
   // get the last sector value in the helictoper's path
-  UINT32 uiLocation = 0;
-  UINT32 uiCount = 0;
+  uint32_t uiLocation = 0;
+  uint32_t uiCount = 0;
 
   // if the heli is on the move, what is the distance it will move..the length
   // of the merc path, less the first node
@@ -1334,7 +1334,7 @@ INT16 GetNumUnSafeSectorsInPath() {
 
   VEHICLETYPE const &v = GetHelicopter();
   // may need to skip the sector the chopper is currently in
-  INT32 const iHeliSector = CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY);
+  int32_t const iHeliSector = CALCULATE_STRATEGIC_INDEX(v.sSectorX, v.sSectorY);
 
   // get chopper's group ptr
   GROUP *const pGroup = GetGroup(v.ubMovementGroup);
@@ -1346,10 +1346,10 @@ INT16 GetNumUnSafeSectorsInPath() {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until
     // waypoints are rebuilt AFTER plotting is done)
-    if (((INT32)pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) &&
+    if (((int32_t)pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) &&
         !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(
-            pGroup, (UINT8)GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId),
-            (UINT8)GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) {
+            pGroup, (uint8_t)GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId),
+            (uint8_t)GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) {
       pNode = pNode->pNext;
     }
 
@@ -1372,10 +1372,10 @@ INT16 GetNumUnSafeSectorsInPath() {
     // waypoints are rebuilt AFTER plotting is done) OR if the chopper has a
     // mercpath, in which case this a continuation of it that would count the
     // sector twice
-    if ((((INT32)pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) &&
+    if ((((int32_t)pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) &&
          !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(
-             pGroup, (UINT8)GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId),
-             (UINT8)GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) ||
+             pGroup, (uint8_t)GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId),
+             (uint8_t)GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) ||
         GetLengthOfPath(v.pMercPath) > 0) {
       pNode = pNode->pNext;
     }
@@ -1391,7 +1391,7 @@ INT16 GetNumUnSafeSectorsInPath() {
     }
   }
 
-  return ((INT16)uiCount);
+  return ((int16_t)uiCount);
 }
 
 static void PaySkyriderBill() {
@@ -1433,8 +1433,8 @@ static void PaySkyriderBill() {
 }
 
 void PayOffSkyriderDebtIfAny() {
-  INT32 iAmountOwed;
-  INT32 iPayAmount;
+  int32_t iAmountOwed;
+  int32_t iPayAmount;
 
   iAmountOwed = -gMercProfiles[SKYRIDER].iBalance;
 

@@ -25,11 +25,11 @@ extern ScreenID guiCurrentScreen;
 typedef void (*RENDER_HOOK)();
 
 void SetRenderHook(RENDER_HOOK pRenderOverride);
-void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage);
+void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, int8_t ubPage);
 
 void EnableFPSOverlay(BOOLEAN fEnable);
 
 extern BOOLEAN gfExitDebugScreen;
-extern INT8 gCurDebugPage;
+extern int8_t gCurDebugPage;
 
 #endif

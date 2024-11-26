@@ -7,8 +7,8 @@
 
 // When line of sight reaches a gridno, and there is a light there, it turns it
 // on. This is only done in the cave levels.
-void RemoveFogFromGridNo(UINT32 uiGridNo) {
-  INT32 x, y;
+void RemoveFogFromGridNo(uint32_t uiGridNo) {
+  int32_t x, y;
   x = uiGridNo % WORLD_COLS;
   y = uiGridNo / WORLD_COLS;
   FOR_EACH_LIGHT_SPRITE(l) {

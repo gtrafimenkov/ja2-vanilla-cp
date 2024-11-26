@@ -41,21 +41,21 @@
 #define NUM_DAYS_TILL_UNPAID_RPC_QUITS 3
 
 void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE &s) {
-  UINT32 const now = GetWorldTotalMin();
+  uint32_t const now = GetWorldTotalMin();
 
   if (s.ubProfile != NO_PROFILE) {  // Add to the history log the fact that the
                                     // merc died and the circumstances
 
     // CJC Nov 11, 2002: Use the soldier's sector location unless impossible
-    INT16 x = s.sSectorX;
-    INT16 y = s.sSectorY;
+    int16_t x = s.sSectorX;
+    int16_t y = s.sSectorY;
     if (s.sSectorX == 0 || s.sSectorY == 0) {
       x = gWorldSectorX;
       y = gWorldSectorY;
     }
 
     SOLDIERTYPE const *const killer = s.attacker;
-    UINT8 const code =
+    uint8_t const code =
         killer && killer->bTeam == OUR_TEAM ? HISTORY_MERC_KILLED_CHARACTER : HISTORY_MERC_KILLED;
     AddHistoryToPlayersLog(code, s.ubProfile, now, x, y);
   }
@@ -188,8 +188,8 @@ void MercDailyUpdate() {
         ++s->iTotalContractLength;
 
         // The player owes the salary
-        INT16 const sSalary = p.sSalary;
-        INT32 iMoneyOwedToMerc = sSalary;
+        int16_t const sSalary = p.sSalary;
+        int32_t iMoneyOwedToMerc = sSalary;
 
         // if the player owes the npc money, the balance field will be negative
         if (p.iBalance < 0) iMoneyOwedToMerc += -p.iBalance;
@@ -252,7 +252,7 @@ void MercDailyUpdate() {
     }
   }
 
-  for (INT32 cnt = 0; cnt < NUM_PROFILES; ++cnt) {
+  for (int32_t cnt = 0; cnt < NUM_PROFILES; ++cnt) {
     MERCPROFILESTRUCT &p = GetProfile(cnt);
 
     // dead guys don't do nuthin' !
@@ -298,7 +298,7 @@ void MercDailyUpdate() {
     {
       if (cnt < AIM_AND_MERC_MERCS) {
         // check to see if he goes on another assignment
-        UINT32 uiChance;
+        uint32_t uiChance;
         if (cnt < MAX_NUMBER_MERCS) {  // A.I.M. merc
           uiChance = 2 * p.bExpLevel;
 
@@ -386,9 +386,9 @@ void RPCWhineAboutNoPay(SOLDIERTYPE &s) {
 
 // OK loop through and check!
 BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier) {
-  UINT16 usItem;
-  INT8 bBestArmour = -1;
-  INT8 bBestGun = -1;
+  uint16_t usItem;
+  int8_t bBestArmour = -1;
+  int8_t bBestGun = -1;
 
   CFOR_EACH_SOLDIER_INV_SLOT(i, *pSoldier) {
     usItem = i->usItem;
@@ -432,7 +432,7 @@ BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-void MercComplainAboutEquipment(UINT8 ubProfile) {
+void MercComplainAboutEquipment(uint8_t ubProfile) {
   if (ubProfile == LARRY_NORMAL) {
     if (CheckFact(FACT_LARRY_CHANGED, 0)) {
       ubProfile = LARRY_DRUNK;
@@ -486,13 +486,13 @@ void UpdateBuddyAndHatedCounters() {
 
         ProfileID const ubOtherProfileID = other->ubProfile;
 
-        for (INT32 i = 0; i < 4; ++i) {
+        for (int32_t i = 0; i < 4; ++i) {
           switch (i) {
             case 0:
             case 1:
               if (p.bHated[i] == ubOtherProfileID) {
                 // arrgs, we're on assignment with the person we loathe!
-                INT8 &hated_count = p.bHatedCount[i];
+                int8_t &hated_count = p.bHatedCount[i];
                 if (hated_count > 0) {
                   hated_count--;
                   if (hated_count == 0 && s->bInSector &&
@@ -503,13 +503,14 @@ void UpdateBuddyAndHatedCounters() {
                              (hated_count == p.bHatedTime[i] / 2 ||
                               (hated_count < p.bHatedTime[i] / 2 &&
                                hated_count % TIME_BETWEEN_HATED_COMPLAINTS == 0))) {  // Complain!
-                    UINT16 const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
+                    uint16_t const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
                     TacticalCharacterDialogue(s, quote);
                     StopTimeCompression();
                   } else if (hated_count == 0) {  // Zero count!
                     if (s->ubWhatKindOfMercAmI == MERC_TYPE__MERC ||
                         s->ubWhatKindOfMercAmI == MERC_TYPE__NPC) {  // MERC mercs leave now!
-                      UINT16 const quote = i == 0 ? QUOTE_MERC_QUIT_HATED1 : QUOTE_MERC_QUIT_HATED2;
+                      uint16_t const quote =
+                          i == 0 ? QUOTE_MERC_QUIT_HATED1 : QUOTE_MERC_QUIT_HATED2;
                       TacticalCharacterDialogue(s, quote);
 
                       // Leave now! (handle equipment too)
@@ -517,7 +518,7 @@ void UpdateBuddyAndHatedCounters() {
 
                       s->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
                     } else {  // Complain!
-                      UINT16 const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
+                      uint16_t const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
                       TacticalCharacterDialogue(s, quote);
                       p.ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
                     }
@@ -535,7 +536,7 @@ void UpdateBuddyAndHatedCounters() {
                   }
 
                   if (p.ubTimeTillNextHatedComplaint == 0) {  // Complain!
-                    UINT16 const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
+                    uint16_t const quote = i == 0 ? QUOTE_HATED_MERC_ONE : QUOTE_HATED_MERC_TWO;
                     TacticalCharacterDialogue(s, quote);
                   }
                 }

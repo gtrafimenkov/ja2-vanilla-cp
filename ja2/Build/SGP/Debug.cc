@@ -50,7 +50,7 @@ static void _DebugRecordToFile(BOOLEAN gfState) { gfRecordToFile = gfState; }
 
 static void _DebugRecordToDebugger(BOOLEAN gfState) { gfRecordToDebugger = gfState; }
 
-void _DebugMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile) {
+void _DebugMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFile) {
   char ubOutputString[512];
   sprintf(ubOutputString, "{ %ld } %s [Line %d in %s]\n", GetClock(), pString, uiLineNum,
           pSourceFile);
@@ -70,7 +70,7 @@ void _DebugMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFil
 #endif
 }
 
-void _FailMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile) {
+void _FailMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFile) {
   char ubOutputString[512];
   if (pString != NULL)
     sprintf(ubOutputString, "{ %ld } Assertion Failure [Line %d in %s]: %s\n", GetClock(),
@@ -99,7 +99,7 @@ void _FailMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile
 
 const char *String(const char *const fmt, ...) {
   static char TmpDebugString[8][512];
-  static UINT StringIndex = 0;
+  static uint32_t StringIndex = 0;
 
   // Record string index. This index is used since we live in a multitasking
   // environment. It is still not bulletproof, but it's better than a single

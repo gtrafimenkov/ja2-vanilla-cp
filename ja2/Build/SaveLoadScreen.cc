@@ -141,8 +141,8 @@ BOOLEAN gfSaveGame = TRUE;
 
 static BOOLEAN gfSaveLoadScreenButtonsCreated = FALSE;
 
-static INT8 gbSelectedSaveLocation = -1;
-static INT8 gbHighLightedLocation = -1;
+static int8_t gbSelectedSaveLocation = -1;
+static int8_t gbHighLightedLocation = -1;
 
 static SGPVObject *guiSlgBackGroundImage;
 static SGPVObject *guiBackGroundAddOns;
@@ -151,7 +151,7 @@ static SGPVObject *guiBackGroundAddOns;
 static wchar_t gzGameDescTextField[SIZE_OF_SAVE_GAME_DESC];
 
 static BOOLEAN gfUserInTextInputMode = FALSE;
-static UINT8 gubSaveGameNextPass = 0;
+static uint8_t gubSaveGameNextPass = 0;
 
 static BOOLEAN gfStartedFadingOut = FALSE;
 
@@ -295,21 +295,21 @@ static void LeaveSaveLoadScreen() {
   SetSaveLoadExitScreen(exit_screen);
 }
 
-static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
+static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const int16_t x,
                                const GUI_CALLBACK click) {
   return CreateIconAndTextButton(img, text, OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW,
                                  OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, x, SLG_BTN_POS_Y,
                                  MSYS_PRIORITY_HIGH, click);
 }
 
-static void BtnSlgCancelCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnSlgSaveLoadCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnSlgCancelCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnSlgSaveLoadCallback(GUI_BUTTON *btn, int32_t reason);
 static void ClearSelectedSaveSlot();
 static void InitSaveGameArray();
-static BOOLEAN LoadSavedGameHeader(INT8 bEntry, SAVED_GAME_HEADER *pSaveGameHeader);
-static void SelectedSLSEntireRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
+static BOOLEAN LoadSavedGameHeader(int8_t bEntry, SAVED_GAME_HEADER *pSaveGameHeader);
+static void SelectedSLSEntireRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason);
 static void StartFadeOutForSaveLoadScreen();
 
 static void EnterSaveLoadScreen() {
@@ -329,7 +329,7 @@ static void EnterSaveLoadScreen() {
   // If the user has asked to load the selected save
   if (gfLoadGameUponEntry) {
     // Make sure the save is valid
-    INT8 const last_slot = gGameSettings.bLastSavedGameSlot;
+    int8_t const last_slot = gGameSettings.bLastSavedGameSlot;
     if (last_slot != -1 && gbSaveGameArray[last_slot]) {
       gbSelectedSaveLocation = last_slot;
       StartFadeOutForSaveLoadScreen();
@@ -347,7 +347,7 @@ static void EnterSaveLoadScreen() {
                                BtnSlgCancelCallback);
 
   // Either the save or load button
-  INT32 gfx;
+  int32_t gfx;
   wchar_t const *text;
   if (gfSaveGame) {
     gfx = 5;
@@ -361,9 +361,9 @@ static void EnterSaveLoadScreen() {
       MakeButton(guiSaveLoadImage, text, SLG_SAVE_LOAD_BTN_POS_X, BtnSlgSaveLoadCallback);
   guiSlgSaveLoadBtn->SpecifyDisabledStyle(GUI_BUTTON::DISABLED_STYLE_HATCHED);
 
-  UINT16 const x = SLG_FIRST_SAVED_SPOT_X;
-  UINT16 y = SLG_FIRST_SAVED_SPOT_Y;
-  for (INT8 i = 0; i != NUM_SAVE_GAMES; ++i) {
+  uint16_t const x = SLG_FIRST_SAVED_SPOT_X;
+  uint16_t y = SLG_FIRST_SAVED_SPOT_Y;
+  for (int8_t i = 0; i != NUM_SAVE_GAMES; ++i) {
     MOUSE_REGION &r = gSelectedSaveRegion[i];
     MSYS_DefineRegion(&r, x, y, x + SLG_SAVELOCATION_WIDTH, y + SLG_SAVELOCATION_HEIGHT,
                       MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedSaveRegionMovementCallBack,
@@ -391,7 +391,7 @@ static void EnterSaveLoadScreen() {
 
   // If the last saved game slot is ok, set the selected slot to the last saved
   // slot
-  INT8 const last_slot = gGameSettings.bLastSavedGameSlot;
+  int8_t const last_slot = gGameSettings.bLastSavedGameSlot;
   if (last_slot != -1 && gbSaveGameArray[last_slot] &&
       (!gfSaveGame || last_slot != 0))  // If it is not the quicksave slot, and we are loading
   {
@@ -428,7 +428,7 @@ static void EnterSaveLoadScreen() {
 }
 
 static void ExitSaveLoadScreen() {
-  INT8 i;
+  int8_t i;
 
   gfLoadGameUponEntry = FALSE;
 
@@ -487,7 +487,7 @@ static void RenderSaveLoadScreen() {
   BltVideoObject(FRAME_BUFFER, guiSlgBackGroundImage, 0, 0, 0);
 
   // Display the Title
-  UINT16 const gfx = gfSaveGame ? 1 : 0;
+  uint16_t const gfx = gfSaveGame ? 1 : 0;
   BltVideoObject(FRAME_BUFFER, guiBackGroundAddOns, gfx, SLG_TITLE_POS_X, SLG_TITLE_POS_Y);
 
   DisplaySaveGameList();
@@ -495,7 +495,7 @@ static void RenderSaveLoadScreen() {
 }
 
 static bool GetGameDescription() {
-  INT8 const id = GetActiveFieldID();
+  int8_t const id = GetActiveFieldID();
   if (id == 0 || id == -1) return false;
 
   wcsncpy(gzGameDescTextField, GetStringFromField(id), lengthof(gzGameDescTextField));
@@ -503,10 +503,10 @@ static bool GetGameDescription() {
 }
 
 static void DisplayOnScreenNumber(BOOLEAN display);
-static BOOLEAN DisplaySaveGameEntry(INT8 bEntryID);
+static BOOLEAN DisplaySaveGameEntry(int8_t bEntryID);
 static void MoveSelectionDown();
 static void MoveSelectionUp();
-static void SetSelection(UINT8 ubNewSelection);
+static void SetSelection(uint8_t ubNewSelection);
 
 static void GetSaveLoadScreenUserInput() {
   static BOOLEAN fWasCtrlHeldDownLastFrame = FALSE;
@@ -566,7 +566,7 @@ static void GetSaveLoadScreenUserInput() {
       switch (e.usParam) {
         case 'a':
           if (IsKeyDown(ALT) && !gfSaveGame) {
-            INT8 const slot = GetNumberForAutoSave(TRUE);
+            int8_t const slot = GetNumberForAutoSave(TRUE);
             if (slot == -1) break;
 
             guiLastSaveGameNum = slot;
@@ -577,7 +577,7 @@ static void GetSaveLoadScreenUserInput() {
 
         case 'b':
           if (IsKeyDown(ALT) && !gfSaveGame) {
-            INT8 const slot = GetNumberForAutoSave(FALSE);
+            int8_t const slot = GetNumberForAutoSave(FALSE);
             if (slot == -1) break;
 
             guiLastSaveGameNum = 1 - slot;
@@ -622,13 +622,13 @@ static void GetSaveLoadScreenUserInput() {
   }
 }
 
-static UINT8 CompareSaveGameVersion(INT8 bSaveGameID);
+static uint8_t CompareSaveGameVersion(int8_t bSaveGameID);
 static void ConfirmSavedGameMessageBoxCallBack(MessageBoxReturnValue);
 static void LoadSavedGameWarningMessageBoxCallBack(MessageBoxReturnValue);
 static void SaveGameToSlotNum();
 
 static void SaveLoadGameNumber() {
-  INT8 const save_slot_id = gbSelectedSaveLocation;
+  int8_t const save_slot_id = gbSelectedSaveLocation;
   if (save_slot_id < 0 || NUM_SAVE_GAMES <= save_slot_id) return;
 
   if (gfSaveGame) {
@@ -646,7 +646,7 @@ static void SaveLoadGameNumber() {
     }
   } else {
     // Check to see if the save game headers are the same
-    UINT8 const ret = CompareSaveGameVersion(save_slot_id);
+    uint8_t const ret = CompareSaveGameVersion(save_slot_id);
     if (ret != SLS_HEADER_OK) {
       wchar_t const *const msg = ret == SLS_GAME_VERSION_OUT_OF_DATE
                                      ? zSaveLoadText[SLG_GAME_VERSION_DIF]
@@ -675,39 +675,39 @@ void DoSaveLoadMessageBox(wchar_t const *const zString, ScreenID const uiExitScr
 }
 
 static void InitSaveGameArray() {
-  for (INT8 cnt = 0; cnt < NUM_SAVE_GAMES; ++cnt) {
+  for (int8_t cnt = 0; cnt < NUM_SAVE_GAMES; ++cnt) {
     SAVED_GAME_HEADER SaveGameHeader;
     gbSaveGameArray[cnt] = LoadSavedGameHeader(cnt, &SaveGameHeader);
   }
 }
 
 static void DisplaySaveGameList() {
-  for (INT8 i = 0; i != NUM_SAVE_GAMES; ++i) {  // Display all the information from the header
+  for (int8_t i = 0; i != NUM_SAVE_GAMES; ++i) {  // Display all the information from the header
     DisplaySaveGameEntry(i);
   }
 }
 
-static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx) {
+static BOOLEAN DisplaySaveGameEntry(int8_t const entry_idx) {
   if (entry_idx == -1) return TRUE;
   // If we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) return TRUE;
   // If we are currently fading out, leave
   if (gfStartedFadingOut) return TRUE;
 
-  UINT16 const bx = SLG_FIRST_SAVED_SPOT_X;
-  UINT16 const by = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * entry_idx;
+  uint16_t const bx = SLG_FIRST_SAVED_SPOT_X;
+  uint16_t const by = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * entry_idx;
 
   bool const is_selected = entry_idx == gbSelectedSaveLocation;
   bool const save_exists = gbSaveGameArray[entry_idx];
 
   // Background
-  UINT16 const gfx =
+  uint16_t const gfx =
       is_selected ? SLG_SELECTED_SLOT_GRAPHICS_NUMBER : SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
   BltVideoObject(FRAME_BUFFER, guiBackGroundAddOns, gfx, bx, by);
 
   Font font = SAVE_LOAD_NORMAL_FONT;
-  UINT8 foreground;
-  UINT8 shadow;
+  uint8_t foreground;
+  uint8_t shadow;
   if (entry_idx == 0 && gfSaveGame) {  // The QuickSave slot
     FRAME_BUFFER->ShadowRect(bx, by, bx + SLG_SAVELOCATION_WIDTH, by + SLG_SAVELOCATION_HEIGHT);
     foreground = SAVE_LOAD_QUICKSAVE_COLOR;
@@ -747,8 +747,8 @@ static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx) {
       return FALSE;
     }
 
-    UINT16 x = bx;
-    UINT16 y = by + SLG_DATE_OFFSET_Y;
+    uint16_t x = bx;
+    uint16_t y = by + SLG_DATE_OFFSET_Y;
     if (is_selected) {  // This is the currently selected location, move the text
                         // up a bit
       x++;
@@ -807,7 +807,7 @@ static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx) {
 
       // Number of mercs on the team
       // If only 1 merc is on the team use "merc" else "mercs"
-      UINT8 const n_mercs = header.ubNumOfMercsOnPlayersTeam;
+      uint8_t const n_mercs = header.ubNumOfMercsOnPlayersTeam;
       wchar_t const *const merc =
           n_mercs == 1 ? MercAccountText[MERC_ACCOUNT_MERC] : pMessageStrings[MSG_MERCS];
       wchar_t merc_count[128];
@@ -842,7 +842,7 @@ static BOOLEAN DisplaySaveGameEntry(INT8 const entry_idx) {
   return TRUE;
 }
 
-static BOOLEAN LoadSavedGameHeader(const INT8 bEntry, SAVED_GAME_HEADER *const header) {
+static BOOLEAN LoadSavedGameHeader(const int8_t bEntry, SAVED_GAME_HEADER *const header) {
   // make sure the entry is valid
   if (0 <= bEntry && bEntry < NUM_SAVE_GAMES) {
     char zSavedGameName[512];
@@ -864,13 +864,13 @@ static BOOLEAN LoadSavedGameHeader(const INT8 bEntry, SAVED_GAME_HEADER *const h
   return FALSE;
 }
 
-static void BtnSlgCancelCallback(GUI_BUTTON *const btn, INT32 const reason) {
+static void BtnSlgCancelCallback(GUI_BUTTON *const btn, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LeaveSaveLoadScreen();
   }
 }
 
-static void BtnSlgSaveLoadCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnSlgSaveLoadCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SaveLoadGameNumber();
   }
@@ -880,11 +880,11 @@ static void DisableSelectedSlot();
 static void InitSaveLoadScreenTextInputBoxes();
 static void RedrawSaveLoadScreenAfterMessageBox(MessageBoxReturnValue);
 
-static void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 bSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
-    static UINT32 uiLastTime = 0;
-    UINT32 uiCurTime = GetJA2Clock();
+    uint8_t bSelected = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
+    static uint32_t uiLastTime = 0;
+    uint32_t uiCurTime = GetJA2Clock();
 
     /*
                     //If we are saving and this is the quick save slot
@@ -996,9 +996,9 @@ static void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+static void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    INT8 bTemp = gbHighLightedLocation;
+    int8_t bTemp = gbHighLightedLocation;
     gbHighLightedLocation = -1;
     //		DisplaySaveGameList();
     DisplaySaveGameEntry(bTemp);
@@ -1008,7 +1008,7 @@ static void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reas
       return;
     }
 
-    gbHighLightedLocation = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gbHighLightedLocation = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
     DisplaySaveGameEntry(gbHighLightedLocation);  //, usPosY );
   }
 }
@@ -1041,9 +1041,9 @@ static void InitSaveLoadScreenTextInputBoxes() {
   }
 
   // Game Desc Field
-  INT16 const x = SLG_FIRST_SAVED_SPOT_X + SLG_SAVE_GAME_DESC_X;
-  INT16 const y = SLG_FIRST_SAVED_SPOT_Y + SLG_SAVE_GAME_DESC_Y - 5 +
-                  SLG_GAP_BETWEEN_LOCATIONS * gbSelectedSaveLocation;
+  int16_t const x = SLG_FIRST_SAVED_SPOT_X + SLG_SAVE_GAME_DESC_X;
+  int16_t const y = SLG_FIRST_SAVED_SPOT_Y + SLG_SAVE_GAME_DESC_Y - 5 +
+                    SLG_GAP_BETWEEN_LOCATIONS * gbSelectedSaveLocation;
   AddTextInputField(x, y, SLG_SAVELOCATION_WIDTH - SLG_SAVE_GAME_DESC_X - 7, 17,
                     MSYS_PRIORITY_HIGH + 2, gzGameDescTextField, 46, INPUTTYPE_FULL_TEXT);
   SetActiveField(1);
@@ -1057,14 +1057,14 @@ static void DestroySaveLoadTextInputBoxes() {
   SetTextInputCursor(CURSOR_IBEAM);
 }
 
-static void SetSelection(UINT8 const new_selection) {
+static void SetSelection(uint8_t const new_selection) {
   // If we are loading and there is no entry, return
   if (!gfSaveGame && !gbSaveGameArray[new_selection]) return;
 
   gfRedrawSaveLoadScreen = TRUE;
   DestroySaveLoadTextInputBoxes();
 
-  INT8 const old_slot = gbSelectedSaveLocation;
+  int8_t const old_slot = gbSelectedSaveLocation;
   gbSelectedSaveLocation = new_selection;
 
   if (gfSaveGame && old_slot != new_selection) {
@@ -1080,8 +1080,8 @@ static void SetSelection(UINT8 const new_selection) {
   EnableButton(guiSlgSaveLoadBtn);
 }
 
-static UINT8 CompareSaveGameVersion(INT8 bSaveGameID) {
-  UINT8 ubRetVal = SLS_HEADER_OK;
+static uint8_t CompareSaveGameVersion(int8_t bSaveGameID) {
+  uint8_t ubRetVal = SLS_HEADER_OK;
 
   SAVED_GAME_HEADER SaveGameHeader;
 
@@ -1137,7 +1137,7 @@ static void LoadSavedGameDeleteAllSaveGameMessageBoxCallBack(
 }
 
 static void DeleteAllSaveGameFile() {
-  UINT8 cnt;
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     DeleteSaveGameNumber(cnt);
@@ -1148,7 +1148,7 @@ static void DeleteAllSaveGameFile() {
   InitSaveGameArray();
 }
 
-void DeleteSaveGameNumber(UINT8 const save_slot_id) {
+void DeleteSaveGameNumber(uint8_t const save_slot_id) {
   char filename[512];
   CreateSavedGameFileNameFromNumber(save_slot_id, filename);
   FileDelete(filename);
@@ -1156,14 +1156,14 @@ void DeleteSaveGameNumber(UINT8 const save_slot_id) {
 
 static void DisplayOnScreenNumber(BOOLEAN display) {
   // Start at 1 - don't diplay it for the quicksave
-  for (INT8 bLoopNum = 1; bLoopNum < NUM_SAVE_GAMES; ++bLoopNum) {
-    const UINT16 usPosX = 6;
-    const UINT16 usPosY = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * bLoopNum;
+  for (int8_t bLoopNum = 1; bLoopNum < NUM_SAVE_GAMES; ++bLoopNum) {
+    const uint16_t usPosX = 6;
+    const uint16_t usPosY = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * bLoopNum;
 
     BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, usPosX, usPosY + SLG_DATE_OFFSET_Y, 10, 10);
 
     if (display) {
-      const INT8 bNum = (bLoopNum == 10 ? 0 : bLoopNum);
+      const int8_t bNum = (bLoopNum == 10 ? 0 : bLoopNum);
       wchar_t zTempString[16];
       swprintf(zTempString, lengthof(zTempString), L"%2d", bNum);
       DrawTextToScreen(zTempString, usPosX, usPosY + SLG_DATE_OFFSET_Y, 0, SAVE_LOAD_NUMBER_FONT,
@@ -1229,7 +1229,7 @@ static void DoneFadeInForSaveLoadScreen() {
   }
 }
 
-static void SelectedSLSEntireRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectedSLSEntireRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     DisableSelectedSlot();
   }
@@ -1296,7 +1296,7 @@ void DoQuickLoad() {
 }
 
 bool AreThereAnySavedGameFiles() {
-  for (INT8 i = 0; i != NUM_SAVE_GAMES; ++i) {
+  for (int8_t i = 0; i != NUM_SAVE_GAMES; ++i) {
     char filename[512];
     CreateSavedGameFileNameFromNumber(i, filename);
     if (FileExists(filename)) return true;
@@ -1309,7 +1309,7 @@ static void RedrawSaveLoadScreenAfterMessageBox(MessageBoxReturnValue const bExi
 }
 
 static void MoveSelectionDown() {
-  INT8 const slot = gbSelectedSaveLocation;
+  int8_t const slot = gbSelectedSaveLocation;
   if (gfSaveGame) {  // We are saving, any slot other then the quick save slot is
                      // valid
     if (slot == -1) {
@@ -1318,7 +1318,7 @@ static void MoveSelectionDown() {
       SetSelection(slot + 1);
     }
   } else {
-    for (INT32 i = slot != -1 ? slot + 1 : 0; i != NUM_SAVE_GAMES; ++i) {
+    for (int32_t i = slot != -1 ? slot + 1 : 0; i != NUM_SAVE_GAMES; ++i) {
       if (!gbSaveGameArray[i]) continue;
       SetSelection(i);
       break;
@@ -1327,7 +1327,7 @@ static void MoveSelectionDown() {
 }
 
 static void MoveSelectionUp() {
-  INT8 const slot = gbSelectedSaveLocation;
+  int8_t const slot = gbSelectedSaveLocation;
   if (gfSaveGame) {  // We are saving, any slot other then the quick save slot is
                      // valid
     if (slot == -1) {
@@ -1336,7 +1336,7 @@ static void MoveSelectionUp() {
       SetSelection(slot - 1);
     }
   } else {
-    for (INT32 i = slot != -1 ? slot - 1 : NUM_SAVE_GAMES - 1; i >= 0; --i) {
+    for (int32_t i = slot != -1 ? slot - 1 : NUM_SAVE_GAMES - 1; i >= 0; --i) {
       if (!gbSaveGameArray[i]) continue;
       SetSelection(i);
       break;

@@ -3,7 +3,7 @@
 
 #include "JA2Types.h"
 
-extern UINT8 gubMinorMapVersion;
+extern uint8_t gubMinorMapVersion;
 
 enum  // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
 {
@@ -20,20 +20,20 @@ struct MAPCREATE_STRUCT {
   // by simply checking if those points are sittable by mercs, and that you can
   // plot a path from these points to each other.  These values can only be set
   // by the editor : mapinfo tab
-  INT16 sNorthGridNo;
-  INT16 sEastGridNo;
-  INT16 sSouthGridNo;
-  INT16 sWestGridNo;
+  int16_t sNorthGridNo;
+  int16_t sEastGridNo;
+  int16_t sSouthGridNo;
+  int16_t sWestGridNo;
   // This contains the number of individuals in the map.
   // Individuals include NPCs, enemy placements, creatures, civilians, rebels,
   // and animals.
-  UINT8 ubNumIndividuals;
-  UINT8 ubMapVersion;
-  UINT8 ubRestrictedScrollID;
-  UINT8 ubEditorSmoothingType;  // normal, basement, or caves
-  INT16 sCenterGridNo;
-  INT16 sIsolatedGridNo;
-  INT8 bPadding[83];  // I'm sure lots of map info will be added // XXX HACK000B
+  uint8_t ubNumIndividuals;
+  uint8_t ubMapVersion;
+  uint8_t ubRestrictedScrollID;
+  uint8_t ubEditorSmoothingType;  // normal, basement, or caves
+  int16_t sCenterGridNo;
+  int16_t sIsolatedGridNo;
+  int8_t bPadding[83];  // I'm sure lots of map info will be added // XXX HACK000B
 };  // 99 bytes
 
 extern MAPCREATE_STRUCT gMapInformation;
@@ -45,7 +45,7 @@ void UpdateSummaryInfo(SUMMARYFILE *);
 
 void LoadMapInformation(HWFILE);
 void ValidateAndUpdateMapVersionIfNecessary();
-BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo);
+BOOLEAN ValidateEntryPointGridNo(int16_t *sGridNo);
 
 extern BOOLEAN gfWorldLoaded;
 

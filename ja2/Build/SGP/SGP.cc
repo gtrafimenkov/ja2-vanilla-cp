@@ -132,7 +132,7 @@ static void MainLoop() {
       }
     } else {
       if (s_doGameCycles) {
-        UINT32 gameCycleMS = GetClock();
+        uint32_t gameCycleMS = GetClock();
         GameLoop();
         gameCycleMS = GetClock() - gameCycleMS;
 

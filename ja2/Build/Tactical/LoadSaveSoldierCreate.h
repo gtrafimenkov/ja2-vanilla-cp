@@ -3,7 +3,7 @@
 
 #include "Tactical/SoldierCreate.h"
 
-UINT16 CalcSoldierCreateCheckSum(const SOLDIERCREATE_STRUCT *const s);
+uint16_t CalcSoldierCreateCheckSum(const SOLDIERCREATE_STRUCT *const s);
 
 void ExtractSoldierCreateFromFile(HWFILE, SOLDIERCREATE_STRUCT *, bool stracLinuxFormat);
 
@@ -12,7 +12,7 @@ void ExtractSoldierCreateFromFile(HWFILE, SOLDIERCREATE_STRUCT *, bool stracLinu
  * format the structure was saved in (vanilla windows format or stracciatella
  * linux format). */
 void ExtractSoldierCreateFromFileWithChecksumAndGuess(HWFILE, SOLDIERCREATE_STRUCT *,
-                                                      UINT16 *checksum);
+                                                      uint16_t *checksum);
 
 void InjectSoldierCreateIntoFile(HWFILE, SOLDIERCREATE_STRUCT const *);
 

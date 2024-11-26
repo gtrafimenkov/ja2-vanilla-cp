@@ -23,7 +23,7 @@
 #include "Utils/WordWrap.h"
 
 struct FilesUnit {
-  UINT8 ubCode;  // the code index in the files code table
+  uint8_t ubCode;  // the code index in the files code table
   BOOLEAN fRead;
   FilesUnit *Next;  // next unit in the list
 };
@@ -34,10 +34,10 @@ struct FileString {
 };
 
 struct FileRecordWidth {
-  INT32 iRecordNumber;
-  INT32 iRecordWidth;
-  INT32 iRecordHeightAdjustment;
-  UINT8 ubFlags;
+  int32_t iRecordNumber;
+  int32_t iRecordWidth;
+  int32_t iRecordHeightAdjustment;
+  uint8_t ubFlags;
   FileRecordWidth *Next;
 };
 
@@ -83,7 +83,7 @@ enum {
 #define FILES_COUNTER_3_WIDTH 45
 
 // the highlighted line
-static INT32 iHighLightFileLine = -1;
+static int32_t iHighLightFileLine = -1;
 
 // the files record list
 static FilesUnit *pFilesListHead = NULL;
@@ -104,14 +104,14 @@ static SGPVObject *guiTITLE;
 static SGPVObject *guiTOP;
 
 // currewnt page of multipage files we are on
-static INT32 giFilesPage = 0;
+static int32_t giFilesPage = 0;
 // strings
 
 #define SLAY_LENGTH 12
 
 struct FileInfo {
-  UINT16 profile_id;
-  UINT16 file_offset;
+  uint16_t profile_id;
+  uint16_t file_offset;
 };
 
 static FileInfo const g_file_info[] = {
@@ -140,9 +140,9 @@ static MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
 static void CheckForUnreadFiles();
 static void OpenAndReadFilesFile();
 static void OpenAndWriteFilesFile();
-static void ProcessAndEnterAFilesRecord(UINT8 ubCode, BOOLEAN fRead);
+static void ProcessAndEnterAFilesRecord(uint8_t ubCode, BOOLEAN fRead);
 
-static void AddFilesToPlayersLog(UINT8 ubCode) {
+static void AddFilesToPlayersLog(uint8_t ubCode) {
   // adds Files item to player's log(Files List)
   // outside of the Files system(the code in this .c file), this is the only
   // function you'll ever need
@@ -279,7 +279,7 @@ static void RemoveFiles() {
   DeleteVideoObject(guiTITLE);
 }
 
-static void ProcessAndEnterAFilesRecord(const UINT8 ubCode, const BOOLEAN fRead) {
+static void ProcessAndEnterAFilesRecord(const uint8_t ubCode, const BOOLEAN fRead) {
   // Append node to list
   FilesUnit **anchor;
   for (anchor = &pFilesListHead; *anchor != NULL; anchor = &(*anchor)->Next) {
@@ -308,14 +308,14 @@ static void OpenAndReadFilesFile() {
   }
 
   // file exists, read in data, continue until file end
-  for (UINT i = FileGetSize(f) / FILE_ENTRY_SIZE; i != 0; --i) {
-    BYTE data[FILE_ENTRY_SIZE];
+  for (uint32_t i = FileGetSize(f) / FILE_ENTRY_SIZE; i != 0; --i) {
+    uint8_t data[FILE_ENTRY_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT8 already_read;
+    uint8_t code;
+    uint8_t already_read;
 
-    const BYTE *d = data;
+    const uint8_t *d = data;
     EXTR_U8(d, code)
     EXTR_SKIP(d, 261)
     EXTR_U8(d, already_read)
@@ -329,8 +329,8 @@ static void OpenAndWriteFilesFile() {
   AutoSGPFile f(FileMan::openForWriting(FILES_DAT_FILE));
 
   for (const FilesUnit *i = pFilesListHead; i; i = i->Next) {
-    BYTE data[FILE_ENTRY_SIZE];
-    BYTE *d = data;
+    uint8_t data[FILE_ENTRY_SIZE];
+    uint8_t *d = data;
     INJ_U8(d, i->ubCode)
     INJ_SKIP(d, 261)
     INJ_U8(d, i->fRead)
@@ -357,14 +357,14 @@ static void DisplayFilesList() {
   // 'sender'
   SetFontAttributes(FILES_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
-  INT32 i = 0;
-  INT32 const x = FILES_LIST_X;
-  INT32 y = FILES_LIST_Y;
-  INT32 const w = FILES_LIST_W;
-  INT32 const h = FILES_LIST_H;
+  int32_t i = 0;
+  int32_t const x = FILES_LIST_X;
+  int32_t y = FILES_LIST_Y;
+  int32_t const w = FILES_LIST_W;
+  int32_t const h = FILES_LIST_H;
   for (FilesUnit const *fu = pFilesListHead; fu; ++i, fu = fu->Next) {
     if (i == iHighLightFileLine) {
-      UINT16 const colour = Get16BPPColor(FROMRGB(240, 240, 200));
+      uint16_t const colour = Get16BPPColor(FROMRGB(240, 240, 200));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + w, y + h, colour);
     }
     MPrint(FILES_SENDER_TEXT_X, y + 2, pFilesSenderList[fu->ubCode]);
@@ -384,14 +384,14 @@ static void DisplayFileMessage() {
   }
 }
 
-static void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void FilesBtnCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void InitializeFilesMouseRegions() {
-  UINT16 const x = FILES_LIST_X;
-  UINT16 y = FILES_LIST_Y;
-  UINT16 const w = FILES_LIST_W;
-  UINT16 const h = FILES_LIST_H;
-  for (INT32 i = 0; i != MAX_FILES_PAGE; ++i) {
+  uint16_t const x = FILES_LIST_X;
+  uint16_t y = FILES_LIST_Y;
+  uint16_t const w = FILES_LIST_W;
+  uint16_t const h = FILES_LIST_H;
+  for (int32_t i = 0; i != MAX_FILES_PAGE; ++i) {
     MOUSE_REGION *const r = &pFilesRegions[i];
     MSYS_DefineRegion(r, x, y, x + w - 1, y + h - 1, MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, FilesBtnCallBack);
@@ -404,11 +404,11 @@ static void RemoveFilesMouseRegions() {
   FOR_EACH(MOUSE_REGION, i, pFilesRegions) MSYS_RemoveRegion(&*i);
 }
 
-static void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void FilesBtnCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     FilesUnit *pFilesList = pFilesListHead;
-    INT32 iFileId = MSYS_GetRegionUserData(pRegion, 0);
-    INT32 iCounter = 0;
+    int32_t iFileId = MSYS_GetRegionUserData(pRegion, 0);
+    int32_t iCounter = 0;
 
     // reset iHighLightListLine
     iHighLightFileLine = -1;
@@ -430,19 +430,19 @@ static void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
 }
 
 static void HandleSpecialFiles();
-static void HandleSpecialTerroristFile(INT32 file_idx);
+static void HandleSpecialTerroristFile(int32_t file_idx);
 
 static void DisplayFormattedText() {
   fWaitAFrame = FALSE;
 
-  UINT16 const white = Get16BPPColor(FROMRGB(255, 255, 255));
-  INT32 const x = FILE_VIEWER_X;
-  INT32 const y = FILE_VIEWER_Y;
+  uint16_t const white = Get16BPPColor(FROMRGB(255, 255, 255));
+  int32_t const x = FILE_VIEWER_X;
+  int32_t const y = FILE_VIEWER_Y;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + FILE_VIEWER_W, y + FILE_VIEWER_H, white);
 
   // Get the file that was highlighted
   FilesUnit *fu = pFilesListHead;
-  for (INT32 n = iHighLightFileLine; n != 0; --n) {
+  for (int32_t n = iHighLightFileLine; n != 0; --n) {
     fu = fu->Next;
   }
 
@@ -462,16 +462,16 @@ static void DisplayFormattedText() {
 }
 
 static FileString const *GetFirstStringOnThisPage(FileString const *RecordList, Font const font,
-                                                  UINT16 usWidth, UINT8 ubGap, INT32 iPage,
-                                                  INT32 iPageSize, FileRecordWidth *WidthList) {
+                                                  uint16_t usWidth, uint8_t ubGap, int32_t iPage,
+                                                  int32_t iPageSize, FileRecordWidth *WidthList) {
   // get the first record on this page - build pages up until this point
   FileString const *CurrentRecord = NULL;
 
-  INT32 iCurrentPositionOnThisPage = 0;
-  INT32 iCurrentPage = 0;
-  INT32 iCounter = 0;
+  int32_t iCurrentPositionOnThisPage = 0;
+  int32_t iCurrentPage = 0;
+  int32_t iCounter = 0;
   FileRecordWidth *pWidthList = WidthList;
-  UINT16 usCurrentWidth = usWidth;
+  uint16_t usCurrentWidth = usWidth;
 
   // null record list, nothing to do
   if (RecordList == NULL) {
@@ -487,7 +487,7 @@ static FileString const *GetFirstStringOnThisPage(FileString const *RecordList, 
 
     while (pWidthList) {
       if (iCounter == pWidthList->iRecordNumber) {
-        usCurrentWidth = (INT16)pWidthList->iRecordWidth;
+        usCurrentWidth = (int16_t)pWidthList->iRecordWidth;
         //				iCurrentPositionOnThisPage +=
         // pWidthList->iRecordHeightAdjustment;
 
@@ -502,7 +502,8 @@ static FileString const *GetFirstStringOnThisPage(FileString const *RecordList, 
 
     // build record list to this point
     for (;;) {
-      UINT16 const h = IanWrappedStringHeight(usCurrentWidth, ubGap, font, CurrentRecord->pString);
+      uint16_t const h =
+          IanWrappedStringHeight(usCurrentWidth, ubGap, font, CurrentRecord->pString);
       if (iCurrentPositionOnThisPage + h >= iPageSize) break;
 
       // still room on this page
@@ -516,7 +517,7 @@ static FileString const *GetFirstStringOnThisPage(FileString const *RecordList, 
       pWidthList = WidthList;
       while (pWidthList) {
         if (iCounter == pWidthList->iRecordNumber) {
-          usCurrentWidth = (INT16)pWidthList->iRecordWidth;
+          usCurrentWidth = (int16_t)pWidthList->iRecordWidth;
 
           if (pWidthList->iRecordHeightAdjustment == iPageSize) {
             if (iCurrentPositionOnThisPage != 0)
@@ -539,7 +540,7 @@ static FileString const *GetFirstStringOnThisPage(FileString const *RecordList, 
   return (CurrentRecord);
 }
 
-static FileString *LoadStringsIntoFileList(char const *const filename, UINT32 offset, size_t n) {
+static FileString *LoadStringsIntoFileList(char const *const filename, uint32_t offset, size_t n) {
   FileString *head = 0;
   FileString **anchor = &head;
   AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
@@ -585,19 +586,19 @@ static void HandleSpecialFiles() {
 
   // Find out where this string is
   FileString const *i = head;
-  INT32 clause = 0;
+  int32_t clause = 0;
   for (; i != start; i = i->Next) {
     ++clause;
   }
 
   // Move through list and display
-  for (INT32 y = 0; i; clause++, i = i->Next) {
+  for (int32_t y = 0; i; clause++, i = i->Next) {
     Font const font = giFilesPage == 0 && clause == 0 ? FILES_TITLE_FONT : FILES_TEXT_FONT;
 
     /* Based on the record we are at, selected X start position and the width to
      * wrap the line, to fit around pictures */
-    INT32 max_width = 350;
-    INT32 start_x = FILE_VIEWER_X + 10;
+    int32_t max_width = 350;
+    int32_t start_x = FILE_VIEWER_X + 10;
     switch (clause) {
       case FILES_COUNTER_1_WIDTH:
         if (giFilesPage == 0) y = MAX_FILE_MESSAGE_PAGE_SIZE;
@@ -655,7 +656,7 @@ static void LoadNextPage() {
   MarkButtonsDirty();
 }
 
-static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
+static void ScrollRegionCallback(MOUSE_REGION *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     LoadPreviousPage();
   } else if (reason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -663,8 +664,8 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   }
 }
 
-static void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnNextFilePageCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnPreviousFilePageCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateButtonsForFilesPage() {
   // will create buttons for the files page
@@ -678,8 +679,8 @@ static void CreateButtonsForFilesPage() {
   giFilesPageButtons[0]->SetCursor(CURSOR_LAPTOP_SCREEN);
   giFilesPageButtons[1]->SetCursor(CURSOR_LAPTOP_SCREEN);
 
-  UINT16 const x = FILE_VIEWER_X;
-  UINT16 const y = FILE_VIEWER_Y;
+  uint16_t const x = FILE_VIEWER_X;
+  uint16_t const y = FILE_VIEWER_Y;
   MSYS_DefineRegion(&g_scroll_region, x, y, x + FILE_VIEWER_W - 1, y + FILE_VIEWER_H - 1,
                     MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
@@ -691,13 +692,13 @@ static void DeleteButtonsForFilesPage() {
   RemoveButton(giFilesPageButtons[1]);
 }
 
-static void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnPreviousFilePageCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadPreviousPage();
   }
 }
 
-static void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnNextFilePageCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadNextPage();
   }
@@ -717,8 +718,8 @@ static void HandleFileViewerButtonStates() {
   EnableButton(giFilesPageButtons[1], !fOnLastFilesPageFlag);
 }
 
-static FileRecordWidth *CreateRecordWidth(INT32 iRecordNumber, INT32 iRecordWidth,
-                                          INT32 iRecordHeightAdjustment, UINT8 ubFlags) {
+static FileRecordWidth *CreateRecordWidth(int32_t iRecordNumber, int32_t iRecordWidth,
+                                          int32_t iRecordHeightAdjustment, uint8_t ubFlags) {
   // allocs and inits a width info record for the multipage file viewer...this
   // will tell the procedure that does inital computation on which record is the
   // start of the current page how wide special records are ( ones that share
@@ -790,7 +791,7 @@ static void ClearOutWidthRecordsList(FileRecordWidth *i) {
 // open new files for viewing
 static void OpenFirstUnreadFile() {
   // open the first unread file in the list
-  INT32 i = 0;
+  int32_t i = 0;
   for (FilesUnit *fu = pFilesListHead; fu; ++i, fu = fu->Next) {
     if (fu->fRead) continue;
     iHighLightFileLine = i;
@@ -815,7 +816,7 @@ static void CheckForUnreadFiles() {
                                         !fNewFilesInFileViewer);
 }
 
-static void HandleSpecialTerroristFile(INT32 const file_idx) {
+static void HandleSpecialTerroristFile(int32_t const file_idx) {
   FileRecordWidth *const width_list = CreateWidthRecordsForTerroristFile();
   FileInfo const &info = g_file_info[file_idx];
   AutoStringList const head(
@@ -826,13 +827,13 @@ static void HandleSpecialTerroristFile(INT32 const file_idx) {
 
   // Find out where this string is
   FileString const *i = head;
-  INT32 clause = 0;
+  int32_t clause = 0;
   for (; i != start; i = i->Next) {
     ++clause;
   }
 
   // Move through list and display
-  for (INT32 y = 0; i; ++clause, i = i->Next) {
+  for (int32_t y = 0; i; ++clause, i = i->Next) {
     // Show picture
     if (giFilesPage == 0 && clause == 4) {
       AutoSGPVObject vo(LoadBigPortrait(GetProfile(info.profile_id)));
@@ -845,8 +846,8 @@ static void HandleSpecialTerroristFile(INT32 const file_idx) {
 
     /* Based on the record we are at, selected X start position and the width to
      * wrap the line, to fit around pictures */
-    INT32 max_width;
-    INT32 start_x;
+    int32_t max_width;
+    int32_t start_x;
     if (4 <= clause && clause < 7) {
       max_width = 170;
       start_x = FILE_VIEWER_X + 180;
@@ -868,7 +869,7 @@ static void HandleSpecialTerroristFile(INT32 const file_idx) {
 }
 
 void AddFilesAboutTerrorists() {
-  for (INT32 i = 1; i != lengthof(g_file_info); ++i) {
+  for (int32_t i = 1; i != lengthof(g_file_info); ++i) {
     AddFilesToPlayersLog(i);
   }
 }

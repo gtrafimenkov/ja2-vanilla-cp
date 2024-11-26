@@ -60,17 +60,17 @@ static const char *const gzMeanwhileStr[] = {
 };
 
 // the snap to grid nos for meanwhile scenes
-static const UINT16 gusMeanWhileGridNo[] = {
+static const uint16_t gusMeanWhileGridNo[] = {
     12248, 12248, 12248, 12248, 12248, 12248, 12248, 12248, 12248,
     12248, 12248, 8075,  12248, 12248, 12248, 12248, 12248,
 };
 
 struct NPC_SAVE_INFO {
-  UINT8 ubProfile;
-  INT16 sX;
-  INT16 sY;
-  INT16 sZ;
-  INT16 sGridNo;
+  uint8_t ubProfile;
+  int16_t sX;
+  int16_t sY;
+  int16_t sZ;
+  int16_t sGridNo;
 };
 
 // BEGIN SERALIZATION
@@ -79,21 +79,21 @@ MEANWHILE_DEFINITION gMeanwhileDef[NUM_MEANWHILES];
 BOOLEAN gfMeanwhileTryingToStart = FALSE;
 BOOLEAN gfInMeanwhile = FALSE;
 // END SERIALIZATION
-static INT16 gsOldSectorX;
-static INT16 gsOldSectorY;
-static INT16 gsOldSectorZ;
-static INT16 gsOldSelectedSectorX;
-static INT16 gsOldSelectedSectorY;
-static INT16 gsOldSelectedSectorZ;
+static int16_t gsOldSectorX;
+static int16_t gsOldSectorY;
+static int16_t gsOldSectorZ;
+static int16_t gsOldSelectedSectorX;
+static int16_t gsOldSelectedSectorY;
+static int16_t gsOldSelectedSectorZ;
 
-static UINT32 guiOldScreen;
+static uint32_t guiOldScreen;
 static NPC_SAVE_INFO gNPCSaveData[MAX_MEANWHILE_PROFILES];
-static UINT32 guiNumNPCSaves = 0;
+static uint32_t guiNumNPCSaves = 0;
 static BOOLEAN gfReloadingScreenFromMeanwhile = FALSE;
 static BOOLEAN gfWorldWasLoaded = FALSE;
-static UINT8 ubCurrentMeanWhileId = 0;
+static uint8_t ubCurrentMeanWhileId = 0;
 
-UINT32 uiMeanWhileFlags = 0;
+uint32_t uiMeanWhileFlags = 0;
 
 // meanwhile flag defines
 #define END_OF_PLAYERS_FIRST_BATTLE_FLAG 0x00000001
@@ -114,7 +114,7 @@ UINT32 uiMeanWhileFlags = 0;
 #define INTERROGATION_FLAG 0x00008000
 #define BALIME_LIBERATED_FLAG 0x00010000
 
-static UINT32 MeanwhileIDToFlag(UINT8 const meanwhile_id) {
+static uint32_t MeanwhileIDToFlag(uint8_t const meanwhile_id) {
   switch (meanwhile_id) {
     case END_OF_PLAYERS_FIRST_BATTLE:
       return END_OF_PLAYERS_FIRST_BATTLE_FLAG;
@@ -156,12 +156,12 @@ static UINT32 MeanwhileIDToFlag(UINT8 const meanwhile_id) {
 }
 
 // set flag for this event
-static void SetMeanWhileFlag(UINT8 const meanwhile_id) {
+static void SetMeanWhileFlag(uint8_t const meanwhile_id) {
   uiMeanWhileFlags |= MeanwhileIDToFlag(meanwhile_id);
 }
 
 // is this flag set?
-static bool GetMeanWhileFlag(UINT8 const meanwhile_id) {
+static bool GetMeanWhileFlag(uint8_t const meanwhile_id) {
   return uiMeanWhileFlags & MeanwhileIDToFlag(meanwhile_id);
 }
 
@@ -175,8 +175,8 @@ static NPC_SAVE_INFO *GetFreeNPCSave() {
   return NULL;
 }
 
-void ScheduleMeanwhileEvent(INT16 const x, INT16 const y, UINT16 const trigger_event,
-                            UINT8 const meanwhile_id, UINT8 const npc, UINT32 const time) {
+void ScheduleMeanwhileEvent(int16_t const x, int16_t const y, uint16_t const trigger_event,
+                            uint8_t const meanwhile_id, uint8_t const npc, uint32_t const time) {
   // event scheduled to happen before, ignore
   if (GetMeanWhileFlag(meanwhile_id)) return;
 
@@ -205,8 +205,8 @@ void ScheduleMeanwhileEvent(INT16 const x, INT16 const y, UINT16 const trigger_e
   AddStrategicEvent(EVENT_MEANWHILE, time, meanwhile_id);
 }
 
-void BeginMeanwhile(UINT8 ubMeanwhileID) {
-  INT32 cnt;
+void BeginMeanwhile(uint8_t ubMeanwhileID) {
+  int32_t cnt;
 
   // copy meanwhile data from array to structure for current
   gCurrentMeanwhileDef = gMeanwhileDef[ubMeanwhileID];
@@ -267,7 +267,7 @@ void CheckForMeanwhileOKStart() {
   }
 }
 
-static void SetNPCMeanwhile(const ProfileID pid, const INT16 sector_x, const INT16 sector_y) {
+static void SetNPCMeanwhile(const ProfileID pid, const int16_t sector_x, const int16_t sector_y) {
   NPC_SAVE_INFO *const si = GetFreeNPCSave();
   if (si == NULL) return;
 
@@ -294,7 +294,7 @@ static void StartMeanwhile() {
 
   gsOldSelectedSectorX = sSelMapX;
   gsOldSelectedSectorY = sSelMapY;
-  gsOldSelectedSectorZ = (INT16)iCurrentMapSectorZ;
+  gsOldSelectedSectorZ = (int16_t)iCurrentMapSectorZ;
 
   gfInMeanwhile = TRUE;
 
@@ -369,7 +369,7 @@ static void DoneFadeInMeanwhile() {
     }
 
     TriggerNPCRecordImmediately(gCurrentMeanwhileDef.ubNPCNumber,
-                                (UINT8)gCurrentMeanwhileDef.usTriggerEvent);
+                                (uint8_t)gCurrentMeanwhileDef.usTriggerEvent);
   }
 }
 
@@ -435,7 +435,7 @@ static void ProcessImplicationsOfMeanwhile() {
       HandleNPCDoAction(QUEEN, NPC_ACTION_ADD_RAT, 0);
       break;
     case AWOL_SCIENTIST: {
-      INT16 sSectorX, sSectorY;  // XXX HACK000E
+      int16_t sSectorX, sSectorY;  // XXX HACK000E
 
       StartQuest(QUEST_FIND_SCIENTIST, -1, -1);
       // place Madlab and robot!
@@ -464,7 +464,7 @@ static void ProcessImplicationsOfMeanwhile() {
     } break;
 
       {
-        UINT8 sector;
+        uint8_t sector;
         case NW_SAM:
           sector = pSamList[0];
           goto send_troops_to_sam;
@@ -495,8 +495,8 @@ static void RestoreNPCMeanwhile() {
     MERCPROFILESTRUCT &p = GetProfile(pid);
     p.sSectorX = si->sX;
     p.sSectorY = si->sY;
-    p.bSectorZ = (INT8)si->sZ;
-    p.sGridNo = (INT8)si->sGridNo;
+    p.bSectorZ = (int8_t)si->sZ;
+    p.sGridNo = (int8_t)si->sGridNo;
 
     // Ensure NPC files loaded...
     ReloadQuoteFile(pid);
@@ -545,7 +545,7 @@ static void DoneFadeOutMeanwhileOnceDone() {
   gfReloadingScreenFromMeanwhile = TRUE;
 
   if (gfWorldWasLoaded) {
-    SetCurrentWorldSector(gsOldSectorX, gsOldSectorY, (INT8)gsOldSectorZ);
+    SetCurrentWorldSector(gsOldSectorX, gsOldSectorY, (int8_t)gsOldSectorZ);
 
     ExamineCurrentSquadLights();
   } else {
@@ -554,7 +554,7 @@ static void DoneFadeOutMeanwhileOnceDone() {
     SetWorldSectorInvalid();
   }
 
-  ChangeSelectedMapSector(gsOldSelectedSectorX, gsOldSelectedSectorY, (INT8)gsOldSelectedSectorZ);
+  ChangeSelectedMapSector(gsOldSelectedSectorX, gsOldSelectedSectorY, (int8_t)gsOldSelectedSectorZ);
 
   gfReloadingScreenFromMeanwhile = FALSE;
 
@@ -581,7 +581,7 @@ static void DoneFadeOutMeanwhileOnceDone() {
 static void DoneFadeInMeanwhileOnceDone() {}
 
 static void LocateMeanWhileGrid() {
-  INT16 sGridNo = 0;
+  int16_t sGridNo = 0;
 
   // go to the approp. gridno
   sGridNo = gusMeanWhileGridNo[ubCurrentMeanWhileId];
@@ -598,17 +598,17 @@ void LocateToMeanwhileCharacter() {
 
 BOOLEAN AreReloadingFromMeanwhile() { return (gfReloadingScreenFromMeanwhile); }
 
-UINT8 GetMeanwhileID() { return (gCurrentMeanwhileDef.ubMeanwhileID); }
+uint8_t GetMeanwhileID() { return (gCurrentMeanwhileDef.ubMeanwhileID); }
 
 void HandleCreatureRelease() {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, CREATURES, QUEEN, uiTime);
 }
 
-void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId) {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+void HandleMeanWhileEventPostingForTownLiberation(uint8_t bTownId) {
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
 
-  UINT8 ubId;
+  uint8_t ubId;
   switch (bTownId)  // which town liberated?
   {
     case DRASSEN:
@@ -636,12 +636,12 @@ void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId) {
 }
 
 void HandleMeanWhileEventPostingForTownLoss() {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, LOST_TOWN, QUEEN, uiTime);
 }
 
-void HandleMeanWhileEventPostingForSAMLiberation(INT8 bSamId) {
-  UINT8 ubId;
+void HandleMeanWhileEventPostingForSAMLiberation(int8_t bSamId) {
+  uint8_t ubId;
   switch (bSamId)  // which SAM liberated?
   {
     case 0:
@@ -658,12 +658,12 @@ void HandleMeanWhileEventPostingForSAMLiberation(INT8 bSamId) {
     default:
       return;  // invalid parameter
   }
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, ubId, QUEEN, uiTime);
 }
 
-void HandleFlowersMeanwhileScene(INT8 bTimeCode) {
-  UINT32 uiTime = 0;
+void HandleFlowersMeanwhileScene(int8_t bTimeCode) {
+  uint32_t uiTime = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(FLOWERS)) {
@@ -683,7 +683,7 @@ void HandleFlowersMeanwhileScene(INT8 bTimeCode) {
 }
 
 void HandleOutskirtsOfMedunaMeanwhileScene() {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, OUTSKIRTS_MEDUNA, QUEEN, uiTime);
 }
 
@@ -693,17 +693,17 @@ void HandleKillChopperMeanwhileScene() {
     return;
   }
 
-  UINT32 const uiTime = GetWorldTotalMin() + 55 + Random(10);
+  uint32_t const uiTime = GetWorldTotalMin() + 55 + Random(10);
   ScheduleMeanwhileEvent(3, 16, 0, KILL_CHOPPER, QUEEN, uiTime);
 }
 
 void HandleScientistAWOLMeanwhileScene() {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, AWOL_SCIENTIST, QUEEN, uiTime);
 }
 
 static void HandleFirstBattleVictory() {
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, END_OF_PLAYERS_FIRST_BATTLE, QUEEN, uiTime);
 }
 
@@ -712,17 +712,17 @@ static void HandleDelayedFirstBattleVictory() {
   //It is theoretically impossible to liberate a town within 60 minutes of the
   first battle (which is supposed to
   //occur outside of a town in this scenario).  The delay is attributed to the
-  info taking longer to reach the queen. UINT32 const uiTime =
+  info taking longer to reach the queen. uint32_t const uiTime =
   GetWorldTotalMin() + 60;
   */
-  UINT32 const uiTime = GetWorldTotalMin() + 5;
+  uint32_t const uiTime = GetWorldTotalMin() + 5;
   ScheduleMeanwhileEvent(3, 16, 0, END_OF_PLAYERS_FIRST_BATTLE, QUEEN, uiTime);
 }
 
-void HandleFirstBattleEndingWhileInTown(INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ,
+void HandleFirstBattleEndingWhileInTown(int16_t sSectorX, int16_t sSectorY, int16_t bSectorZ,
                                         BOOLEAN fFromAutoResolve) {
-  INT8 bTownId = 0;
-  INT16 sSector = 0;
+  int8_t bTownId = 0;
+  int16_t sSector = 0;
 
   if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
     return;

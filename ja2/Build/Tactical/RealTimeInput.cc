@@ -48,8 +48,8 @@
 #include "Utils/TimerControl.h"
 
 static BOOLEAN gfStartLookingForRubberBanding = FALSE;
-static UINT16 gusRubberBandX = 0;
-static UINT16 gusRubberBandY = 0;
+static uint16_t gusRubberBandX = 0;
+static uint16_t gusRubberBandY = 0;
 
 BOOLEAN gfBeginBurstSpreadTracking = FALSE;
 
@@ -65,7 +65,7 @@ void GetRTMouseButtonInput(UIEventKind *puiNewEvent) {
 }
 
 static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
-  static UINT32 uiSingleClickTime;
+  static uint32_t uiSingleClickTime;
   static BOOLEAN fDoubleClickIntercepted = FALSE;
   static BOOLEAN fValidDoubleClickPossible = FALSE;
   static BOOLEAN fCanCheckForSpeechAdvance = FALSE;
@@ -126,7 +126,7 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
                       ResetMultiSelection();
                     }
                   } else {
-                    INT8 const bReturnCode = HandleMoveModeInteractiveClick(usMapPos);
+                    int8_t const bReturnCode = HandleMoveModeInteractiveClick(usMapPos);
                     if (bReturnCode == -1) {
                       // gfRTClickLeftHoldIntercepted = TRUE;
                     } else if (bReturnCode == -2) {
@@ -237,9 +237,9 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
       if (fLeftButtonDown) {
         if (!fIgnoreLeftUp) {
           // set flag for handling single clicks
-          // OK , FOR DOUBLE CLICKS - TAKE TIME STAMP & RECORD EVENT
+          // OK , FOR double CLICKS - TAKE TIME STAMP & RECORD EVENT
           if ((GetJA2Clock() - uiSingleClickTime) < 300) {
-            // CHECK HERE FOR DOUBLE CLICK EVENTS
+            // CHECK HERE FOR double CLICK EVENTS
             if (fValidDoubleClickPossible) {
               if (gpItemPointer == NULL) {
                 fDoubleClickIntercepted = TRUE;
@@ -437,7 +437,7 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
                                 }
                                 gfRTClickLeftHoldIntercepted = TRUE;
                               } else {
-                                INT8 const bReturnCode = HandleMoveModeInteractiveClick(usMapPos);
+                                int8_t const bReturnCode = HandleMoveModeInteractiveClick(usMapPos);
                                 if (bReturnCode == -1) {
                                   gfRTClickLeftHoldIntercepted = TRUE;
                                 } else if (bReturnCode == -2) {
@@ -603,7 +603,7 @@ static void QueryRTLeftButton(UIEventKind *const puiNewEvent) {
 static void QueryRTRightButton(UIEventKind *const puiNewEvent) {
   static BOOLEAN fClickHoldIntercepted = FALSE;
   static BOOLEAN fClickIntercepted = FALSE;
-  static UINT32 uiSingleClickTime;
+  static uint32_t uiSingleClickTime;
   static BOOLEAN fDoubleClickIntercepted = FALSE;
   static BOOLEAN fValidDoubleClickPossible = FALSE;
 
@@ -709,9 +709,9 @@ static void QueryRTRightButton(UIEventKind *const puiNewEvent) {
 
     } else {
       if (fRightButtonDown) {
-        // OK , FOR DOUBLE CLICKS - TAKE TIME STAMP & RECORD EVENT
+        // OK , FOR double CLICKS - TAKE TIME STAMP & RECORD EVENT
         if ((GetJA2Clock() - uiSingleClickTime) < 300) {
-          // CHECK HERE FOR DOUBLE CLICK EVENTS
+          // CHECK HERE FOR double CLICK EVENTS
           if (fValidDoubleClickPossible) {
             fDoubleClickIntercepted = TRUE;
 
@@ -853,7 +853,7 @@ static void QueryRTRightButton(UIEventKind *const puiNewEvent) {
 void GetRTMousePositionInput(UIEventKind *const puiNewEvent) {
   static const SOLDIERTYPE *MoveTargetSoldier = NULL;
 
-  static UINT16 usOldMapPos = 0;
+  static uint16_t usOldMapPos = 0;
 
   const GridNo usMapPos = GetMouseMapPos();
   if (usMapPos == NOWHERE) return;

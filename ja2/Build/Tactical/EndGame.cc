@@ -39,16 +39,16 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
-INT16 sStatueGridNos[] = {13829, 13830, 13669, 13670};
+int16_t sStatueGridNos[] = {13829, 13830, 13669, 13670};
 
 SOLDIERTYPE *gpKillerSoldier = NULL;
-INT16 gsGridNo;
-INT8 gbLevel;
+int16_t gsGridNo;
+int8_t gbLevel;
 
 // This function checks if our statue exists in the current sector at given
 // gridno
-BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo) {
-  INT32 cnt;
+BOOLEAN DoesO3SectorStatueExistHere(int16_t sGridNo) {
+  int32_t cnt;
   EXITGRID ExitGrid;
 
   // First check current sector......
@@ -70,7 +70,7 @@ BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo) {
 // This function changes the graphic of the statue and adds the exit grid...
 void ChangeO3SectorStatue(BOOLEAN fFromExplosion) {
   EXITGRID ExitGrid;
-  UINT16 usTileIndex;
+  uint16_t usTileIndex;
 
   // Remove old graphic
   {
@@ -111,11 +111,11 @@ void ChangeO3SectorStatue(BOOLEAN fFromExplosion) {
   RecompileLocalMovementCostsFromRadius(13830, 5);
 }
 
-static void HandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
+static void HandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel);
 
 static void DeidrannaTimerCallback() { HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel); }
 
-void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel) {
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
   gbLevel = bLevel;
@@ -132,8 +132,8 @@ void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 
 
 static void DoneFadeOutKilledQueen();
 
-static void HandleDeidrannaDeath(SOLDIERTYPE *const pKillerSoldier, const INT16 sGridNo,
-                                 const INT8 bLevel) {
+static void HandleDeidrannaDeath(SOLDIERTYPE *const pKillerSoldier, const int16_t sGridNo,
+                                 const int8_t bLevel) {
   // Start victory music here...
   SetMusicMode(MUSIC_TACTICAL_VICTORY);
 
@@ -148,7 +148,7 @@ static void HandleDeidrannaDeath(SOLDIERTYPE *const pKillerSoldier, const INT16 
     if (s != pKillerSoldier && OkControllableMerc(s) && !(s->uiStatusFlags & SOLDIER_GASSED) &&
         !AM_AN_EPC(s) && QuoteExp_WitnessDeidrannaDeath[s->ubProfile]) {
       // Can we see location?
-      const INT16 sDistVisible =
+      const int16_t sDistVisible =
           DistanceVisible(s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
       if (SoldierTo3DLocationLineOfSightTest(s, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
         TacticalCharacterDialogue(s, QUOTE_KILLING_DEIDRANNA);
@@ -311,11 +311,11 @@ static void DoneFadeOutEndCinematic() {
   SetIntroType(INTRO_ENDING);
 }
 
-static void HandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
+static void HandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel);
 
 static void QueenBitchTimerCallback() { HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel); }
 
-void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel) {
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
   gbLevel = bLevel;
@@ -348,8 +348,8 @@ void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8
   }
 }
 
-static void HandleQueenBitchDeath(SOLDIERTYPE *const pKillerSoldier, const INT16 sGridNo,
-                                  const INT8 bLevel) {
+static void HandleQueenBitchDeath(SOLDIERTYPE *const pKillerSoldier, const int16_t sGridNo,
+                                  const int8_t bLevel) {
   // Start victory music here...
   SetMusicMode(MUSIC_TACTICAL_VICTORY);
 
@@ -364,7 +364,7 @@ static void HandleQueenBitchDeath(SOLDIERTYPE *const pKillerSoldier, const INT16
     if (s != pKillerSoldier && OkControllableMerc(s) && !(s->uiStatusFlags & SOLDIER_GASSED) &&
         !AM_AN_EPC(s) && QuoteExp_WitnessQueenBugDeath[s->ubProfile]) {
       // Can we see location?
-      const INT16 sDistVisible =
+      const int16_t sDistVisible =
           DistanceVisible(s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
       if (SoldierTo3DLocationLineOfSightTest(s, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
         TacticalCharacterDialogue(s, QUOTE_KILLING_QUEEN);

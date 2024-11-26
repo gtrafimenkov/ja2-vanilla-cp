@@ -40,7 +40,7 @@
 #include "Utils/Text.h"
 
 static DOOR_STATUS *gpDoorStatus = NULL;
-static UINT8 gubNumDoorStatus = 0;
+static uint8_t gubNumDoorStatus = 0;
 
 #define FOR_EACH_DOOR_STATUS(iter)                                                     \
   for (DOOR_STATUS *iter = gpDoorStatus, *const iter##__end = iter + gubNumDoorStatus; \
@@ -49,14 +49,14 @@ static UINT8 gubNumDoorStatus = 0;
 KEY KeyTable[NUM_KEYS];
 
 // Current number of doors in world.
-UINT8 gubNumDoors = 0;
+uint8_t gubNumDoors = 0;
 
 // Current max number of doors.  This is only used by the editor.  When adding
 // doors to the world, we may run out of space in the DoorTable, so we will
 // allocate a new array with extra slots, then copy everything over again.
 // gubMaxDoors holds the arrays actual number of slots, even though the current
 // number (gubNumDoors) will be <= to it.
-static UINT8 gubMaxDoors = 0;
+static uint8_t gubMaxDoors = 0;
 
 LOCK LockTable[NUM_LOCKS];
 
@@ -110,7 +110,7 @@ DOORTRAP const DoorTrapTable[NUM_DOOR_TRAPS] = {
 DOOR *DoorTable = NULL;
 
 void LoadLockTable() try {
-  UINT32 uiBytesToRead;
+  uint32_t uiBytesToRead;
   const char *pFileName = BINARYDATADIR "/Locks.bin";
 
   // Load the Lock Table
@@ -124,13 +124,13 @@ void LoadLockTable() try {
   throw;
 }
 
-static bool KeyExistsInInventory(SOLDIERTYPE const &, UINT8 key_id);
+static bool KeyExistsInInventory(SOLDIERTYPE const &, uint8_t key_id);
 
-bool SoldierHasKey(SOLDIERTYPE const &s, UINT8 const key_id) {
+bool SoldierHasKey(SOLDIERTYPE const &s, uint8_t const key_id) {
   return KeyExistsInKeyRing(s, key_id) || KeyExistsInInventory(s, key_id);
 }
 
-bool KeyExistsInKeyRing(SOLDIERTYPE const &s, UINT8 const key_id) {
+bool KeyExistsInKeyRing(SOLDIERTYPE const &s, uint8_t const key_id) {
   if (!s.pKeyRing) return FALSE;  // No key ring
 
   KEY_ON_RING const *const end = s.pKeyRing + NUM_KEYS;
@@ -142,7 +142,7 @@ bool KeyExistsInKeyRing(SOLDIERTYPE const &s, UINT8 const key_id) {
   return false;
 }
 
-static bool KeyExistsInInventory(SOLDIERTYPE const &s, UINT8 const key_id) {
+static bool KeyExistsInInventory(SOLDIERTYPE const &s, uint8_t const key_id) {
   CFOR_EACH_SOLDIER_INV_SLOT(i, s) {
     if (Item[i->usItem].usItemClass != IC_KEY) continue;
     if (i->ubKeyID != key_id && key_id != ANYKEY) continue;
@@ -151,16 +151,16 @@ static bool KeyExistsInInventory(SOLDIERTYPE const &s, UINT8 const key_id) {
   return false;
 }
 
-static BOOLEAN ValidKey(DOOR *pDoor, UINT8 ubKeyID) { return (pDoor->ubLockID == ubKeyID); }
+static BOOLEAN ValidKey(DOOR *pDoor, uint8_t ubKeyID) { return (pDoor->ubLockID == ubKeyID); }
 
-static void DoLockDoor(DOOR *pDoor, UINT8 ubKeyID) {
+static void DoLockDoor(DOOR *pDoor, uint8_t ubKeyID) {
   // if the door is unlocked and this is the right key, lock the door
   if (!(pDoor->fLocked) && ValidKey(pDoor, ubKeyID)) {
     pDoor->fLocked = TRUE;
   }
 }
 
-static void DoUnlockDoor(DOOR *pDoor, UINT8 ubKeyID) {
+static void DoUnlockDoor(DOOR *pDoor, uint8_t ubKeyID) {
   // if the door is locked and this is the right key, unlock the door
   if ((pDoor->fLocked) && ValidKey(pDoor, ubKeyID)) {
     // Play lockpicking
@@ -171,7 +171,7 @@ static void DoUnlockDoor(DOOR *pDoor, UINT8 ubKeyID) {
 }
 
 BOOLEAN AttemptToUnlockDoor(const SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  const UINT8 ubKeyID = pDoor->ubLockID;
+  const uint8_t ubKeyID = pDoor->ubLockID;
   if (SoldierHasKey(*pSoldier, ubKeyID)) {
     DoUnlockDoor(pDoor, ubKeyID);
     return TRUE;
@@ -184,7 +184,7 @@ BOOLEAN AttemptToUnlockDoor(const SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 BOOLEAN AttemptToLockDoor(const SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  const UINT8 ubKeyID = pDoor->ubLockID;
+  const uint8_t ubKeyID = pDoor->ubLockID;
   if (SoldierHasKey(*pSoldier, ubKeyID)) {
     DoLockDoor(pDoor, ubKeyID);
     return TRUE;
@@ -195,8 +195,8 @@ BOOLEAN AttemptToLockDoor(const SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  INT32 iResult;
-  INT8 bStress, bSlot;
+  int32_t iResult;
+  int8_t bStress, bSlot;
 
   bSlot = FindUsableObj(pSoldier, CROWBAR);
   if (bSlot == ITEM_NOT_FOUND) {
@@ -230,18 +230,18 @@ BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   bStress = std::min(EffectiveStrength(pSoldier),
                      (int8_t)(LockTable[pDoor->ubLockID].ubSmashDifficulty + 30));
   // reduce crowbar status by random % between 0 and 5%
-  DamageObj(&(pSoldier->inv[bSlot]), (INT8)PreRandom(bStress / 20));
+  DamageObj(&(pSoldier->inv[bSlot]), (int8_t)PreRandom(bStress / 20));
 
   // did we succeed?
 
   if (LockTable[pDoor->ubLockID].ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (int8_t)(-100));
     iResult = -100;
   } else {
     iResult = SkillCheck(
         pSoldier, OPEN_WITH_CROWBAR,
-        (INT8)(-(INT8)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
+        (int8_t)(-(int8_t)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
   }
 
   if (iResult > 0) {
@@ -261,7 +261,7 @@ BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
       StatChange(*pSoldier, STRAMT, 5, FROM_SUCCESS);
 
       // we came close... so do some damage to the lock
-      pDoor->bLockDamage += (INT8)(10 + iResult);
+      pDoor->bLockDamage += (int8_t)(10 + iResult);
     } else if (iResult > -40 && pSoldier->sGridNo != pSoldier->sSkillCheckGridNo) {
       // give token point for effort :-)
       StatChange(*pSoldier, STRAMT, 1, FROM_SUCCESS);
@@ -272,7 +272,7 @@ BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  INT32 iResult;
+  int32_t iResult;
 
   LOCK *pLock;
 
@@ -303,12 +303,12 @@ BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   // did we succeed?
   if (pLock->ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (int8_t)(-100));
     iResult = -100;
   } else {
     iResult = SkillCheck(
         pSoldier, SMASH_DOOR_CHECK,
-        (INT8)(-(INT8)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
+        (int8_t)(-(int8_t)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
   }
   if (iResult > 0) {
     // STR GAIN (20) - Pried open a lock
@@ -328,7 +328,7 @@ BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
       StatChange(*pSoldier, STRAMT, 5, FROM_SUCCESS);
 
       // we came close... so do some damage to the lock
-      pDoor->bLockDamage += (INT8)(10 + iResult);
+      pDoor->bLockDamage += (int8_t)(10 + iResult);
     } else if (iResult > -40 && pSoldier->sGridNo != pSoldier->sSkillCheckGridNo) {
       // give token point for effort :-)
       StatChange(*pSoldier, STRAMT, 1, FROM_SUCCESS);
@@ -338,8 +338,8 @@ BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 BOOLEAN AttemptToPickLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  INT32 iResult;
-  INT8 bReason;
+  int32_t iResult;
+  int8_t bReason;
   LOCK *pLock;
 
   if (pDoor->ubLockID == LOCK_UNOPENABLE) {
@@ -364,10 +364,10 @@ BOOLEAN AttemptToPickLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   // The difficulty is negated here to make it a skill adjustment
   if (pLock->ubPickDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, bReason, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, bReason, (int8_t)(-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, bReason, (INT8)(-(INT8)(pLock->ubPickDifficulty)));
+    iResult = SkillCheck(pSoldier, bReason, (int8_t)(-(int8_t)(pLock->ubPickDifficulty)));
   }
   if (iResult > 0) {
     // MECHANICAL GAIN:  Picked open a lock
@@ -389,13 +389,13 @@ BOOLEAN AttemptToPickLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 BOOLEAN AttemptToUntrapDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  INT32 iResult;
+  int32_t iResult;
 
   // See if we measure up to the task.
   if (pDoor->ubTrapID == EXPLOSION) {
-    iResult = SkillCheck(pSoldier, DISARM_TRAP_CHECK, (INT8)(pDoor->ubTrapLevel * 7));
+    iResult = SkillCheck(pSoldier, DISARM_TRAP_CHECK, (int8_t)(pDoor->ubTrapLevel * 7));
   } else {
-    iResult = SkillCheck(pSoldier, DISARM_ELECTRONIC_TRAP_CHECK, (INT8)(pDoor->ubTrapLevel * 7));
+    iResult = SkillCheck(pSoldier, DISARM_ELECTRONIC_TRAP_CHECK, (int8_t)(pDoor->ubTrapLevel * 7));
   }
 
   if (iResult > 0) {
@@ -411,7 +411,7 @@ BOOLEAN AttemptToUntrapDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 
 BOOLEAN ExamineDoorForTraps(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   // Check to see if there is a trap or not on this door
-  INT8 bDetectLevel;
+  int8_t bDetectLevel;
 
   if (pDoor->ubTrapID == NO_TRAP) {
     // No trap!
@@ -434,7 +434,7 @@ BOOLEAN ExamineDoorForTraps(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 
 BOOLEAN HasDoorTrapGoneOff(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   // Check to see if the soldier causes the trap to go off
-  INT8 bDetectLevel;
+  int8_t bDetectLevel;
 
   if (pDoor->ubTrapID != NO_TRAP) {
     // one quick check to see if the guy sees the trap ahead of time!
@@ -448,7 +448,7 @@ BOOLEAN HasDoorTrapGoneOff(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 }
 
 wchar_t const *GetTrapName(DOOR const &d) {
-  UINT8 trap_kind = d.ubTrapID;
+  uint8_t trap_kind = d.ubTrapID;
   switch (trap_kind) {
     case BROTHEL_SIREN:
       trap_kind = SIREN;
@@ -526,8 +526,8 @@ void HandleDoorTrap(SOLDIERTYPE &s, DOOR const &d) {
 }
 
 BOOLEAN AttemptToBlowUpLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
-  INT32 iResult;
-  INT8 bSlot = NO_SLOT;
+  int32_t iResult;
+  int8_t bSlot = NO_SLOT;
 
   bSlot = FindObj(pSoldier, SHAPED_CHARGE);
   if (bSlot == NO_SLOT) {
@@ -539,8 +539,8 @@ BOOLEAN AttemptToBlowUpLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
     // Do explosive graphic....
     {
       ANITILE_PARAMS AniParams;
-      INT16 sGridNo;
-      INT16 sX, sY, sZ;
+      int16_t sGridNo;
+      int16_t sX, sY, sZ;
 
       // Get gridno
       sGridNo = pDoor->sGridNo;
@@ -554,7 +554,7 @@ BOOLEAN AttemptToBlowUpLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 
       AniParams.sGridNo = sGridNo;
       AniParams.ubLevelID = ANI_TOPMOST_LEVEL;
-      AniParams.sDelay = (INT16)(100);
+      AniParams.sDelay = (int16_t)(100);
       AniParams.sStartFrame = 0;
       AniParams.uiFlags = ANITILE_FORWARD | ANITILE_ALWAYS_TRANSLUCENT;
       AniParams.sX = sX;
@@ -621,7 +621,7 @@ void LoadDoorTableFromMap(HWFILE const f) {
 // possible in the editor to delete doors in many different ways, so I opted to
 // put it in the saving routine.
 void SaveDoorTableToMap(HWFILE fp) {
-  INT32 i = 0;
+  int32_t i = 0;
 
   while (i < gubNumDoors) {
     if (!OpenableAtGridNo(DoorTable[i].sGridNo))
@@ -665,9 +665,9 @@ void AddDoorInfoToTable(DOOR *pDoor) {
 // When the editor removes a door from the world, this function looks for and
 // removes accompanying door information.  If the entry is not the last entry,
 // the last entry is move to it's current slot, to keep everything contiguous.
-void RemoveDoorInfoFromTable(INT32 iMapIndex) {
-  INT32 i;
-  INT32 iNumDoorsToCopy;
+void RemoveDoorInfoFromTable(int32_t iMapIndex) {
+  int32_t i;
+  int32_t iNumDoorsToCopy;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex) {
       iNumDoorsToCopy = gubNumDoors - i - 1;
@@ -681,7 +681,7 @@ void RemoveDoorInfoFromTable(INT32 iMapIndex) {
 }
 
 // This is the link to see if a door exists at a gridno.
-DOOR *FindDoorInfoAtGridNo(INT32 iMapIndex) {
+DOOR *FindDoorInfoAtGridNo(int32_t iMapIndex) {
   FOR_EACH_DOOR(i) {
     DOOR &d = *i;
     if (d.sGridNo == iMapIndex) return &d;
@@ -713,7 +713,7 @@ void UpdateDoorPerceivedValue(DOOR *pDoor) {
   }
 }
 
-void SaveDoorTableToDoorTableTempFile(INT16 const x, INT16 const y, INT8 const z) {
+void SaveDoorTableToDoorTableTempFile(int16_t const x, int16_t const y, int8_t const z) {
   char map_name[128];
   GetMapTempFileName(SF_DOOR_TABLE_TEMP_FILES_EXISTS, map_name, x, y, z);
   AutoSGPFile f(FileMan::openForWriting(map_name));
@@ -723,7 +723,7 @@ void SaveDoorTableToDoorTableTempFile(INT16 const x, INT16 const y, INT8 const z
 }
 
 void LoadDoorTableFromDoorTableTempFile() {
-  CHAR8 zMapName[128];
+  char zMapName[128];
 
   //	return( TRUE );
 
@@ -739,7 +739,7 @@ void LoadDoorTableFromDoorTableTempFile() {
   AutoSGPFile hFile(FileMan::openForReadingSmart(zMapName, true));
 
   // Read in the number of doors
-  FileRead(hFile, &gubMaxDoors, sizeof(UINT8));
+  FileRead(hFile, &gubMaxDoors, sizeof(uint8_t));
 
   gubNumDoors = gubMaxDoors;
 
@@ -787,7 +787,7 @@ bool ModifyDoorStatus(GridNo const gridno, BOOLEAN const is_open, BOOLEAN const 
   }
 
   // Add a new door status structure
-  UINT8 const n = gubNumDoorStatus;
+  uint8_t const n = gubNumDoorStatus;
   gpDoorStatus = REALLOC(gpDoorStatus, DOOR_STATUS, n + 1);
   gubNumDoorStatus = n + 1;
 
@@ -821,7 +821,7 @@ void TrashDoorStatusArray() {
 }
 
 // Returns a doors status value, NULL if not found
-DOOR_STATUS *GetDoorStatus(INT16 const sGridNo) {
+DOOR_STATUS *GetDoorStatus(int16_t const sGridNo) {
   if (!gpDoorStatus) return 0;
 
   // Find the base tile for the door structure and use that gridno
@@ -839,7 +839,7 @@ DOOR_STATUS *GetDoorStatus(INT16 const sGridNo) {
 }
 
 static bool IsCloseEnoughAndHasLOS(SOLDIERTYPE const &s, GridNo const gridno,
-                                   INT16 const dist_visible) {
+                                   int16_t const dist_visible) {
   return
       /* Is he close enough to see that gridno if he turns his head? */
       PythSpacesAway(s.sGridNo, gridno) <= dist_visible &&
@@ -848,7 +848,8 @@ static bool IsCloseEnoughAndHasLOS(SOLDIERTYPE const &s, GridNo const gridno,
       SoldierTo3DLocationLineOfSightTest(&s, gridno, 0, 0, dist_visible, TRUE);
 }
 
-static INT8 const g_dirs[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST};
+static int8_t const g_dirs[] = {NORTH,     SOUTH,     EAST,      WEST,
+                                NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST};
 
 bool AllMercsLookForDoor(GridNo const gridno) {
   if (!GetDoorStatus(gridno)) return false;
@@ -859,14 +860,14 @@ bool AllMercsLookForDoor(GridNo const gridno) {
     if (s.sGridNo == NOWHERE) continue;
     if (!s.bInSector) continue;
 
-    INT16 const dist_visible =
+    int16_t const dist_visible =
         DistanceVisible(&s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gridno, 0);
     if (IsCloseEnoughAndHasLOS(s, gridno, dist_visible)) return true;
 
     // Now try other adjacent gridnos
-    for (INT32 dir = 0; dir != 8; ++dir) {
+    for (int32_t dir = 0; dir != 8; ++dir) {
       GridNo const new_gridno = NewGridNo(gridno, DirectionInc(g_dirs[dir]));
-      INT16 const dist_visible =
+      int16_t const dist_visible =
           DistanceVisible(&s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, new_gridno, 0);
       if (IsCloseEnoughAndHasLOS(s, new_gridno, dist_visible)) return true;
     }
@@ -886,7 +887,7 @@ void MercLooksForDoors(SOLDIERTYPE const &s) {
     if (!InternalIsPerceivedDifferentThanReality(d)) continue;
 
     GridNo const gridno = d.sGridNo;
-    INT16 const dist_visible =
+    int16_t const dist_visible =
         DistanceVisible(&s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gridno, 0);
 
     if (IsCloseEnoughAndHasLOS(s, gridno, dist_visible)) {
@@ -897,7 +898,7 @@ void MercLooksForDoors(SOLDIERTYPE const &s) {
     }
 
     // Now try other adjacent gridnos
-    for (INT32 dir = 0; dir != 8; ++dir) {
+    for (int32_t dir = 0; dir != 8; ++dir) {
       GridNo const new_gridno = NewGridNo(gridno, DirectionInc(g_dirs[dir]));
       // XXX It seems strage that AllMercsLookForDoor() calculates a new
       // dist_visible, but MercLooksForDoors() does not
@@ -948,7 +949,7 @@ static void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS const &d, bool const
   // First look for an opened door
   // get what it is now
   bool openend_graphic = false;
-  INT32 cnt;
+  int32_t cnt;
   for (cnt = 0; gClosedDoorList[cnt] != -1; ++cnt) {
     // IF WE ARE A SHADOW TYPE
     if (node->usIndex == gClosedDoorList[cnt]) {
@@ -967,7 +968,7 @@ static void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS const &d, bool const
     // Adjust graphic
 
     // Loop through and and find opened graphic for the closed one
-    for (INT32 i = 0; gOpenDoorList[i] != -1; ++i) {
+    for (int32_t i = 0; gOpenDoorList[i] != -1; ++i) {
       // IF WE ARE A SHADOW TYPE
       if (node->usIndex == gOpenDoorList[i]) {
         // OK, now use opened graphic.
@@ -983,7 +984,7 @@ static void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS const &d, bool const
     // Adjust graphic
 
     // Loop through and and find closed graphic for the opend one
-    for (INT32 i = 0; gClosedDoorList[i] != -1; ++i) {
+    for (int32_t i = 0; gClosedDoorList[i] != -1; ++i) {
       // IF WE ARE A SHADOW TYPE
       if (node->usIndex == gClosedDoorList[i]) {
         node->usIndex = gOpenDoorList[i];
@@ -999,7 +1000,7 @@ static void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS const &d, bool const
   } else if (!openend_graphic && want_to_be_open) {
     bool different = false;
     // Find the closed door graphic and adjust
-    for (INT32 i = 0; gOpenDoorList[i] != -1; ++i) {
+    for (int32_t i = 0; gOpenDoorList[i] != -1; ++i) {
       // IF WE ARE A SHADOW TYPE
       if (node->usIndex == gOpenDoorList[i]) {
         // Open the beast!
@@ -1037,7 +1038,7 @@ static void InternalUpdateDoorsPerceivedValue(
   d.ubFlags |= (d.ubFlags & DOOR_OPEN ? DOOR_PERCEIVED_OPEN : 0);
 }
 
-void SaveDoorStatusArrayToDoorStatusTempFile(INT16 const x, INT16 const y, INT8 const z) {
+void SaveDoorStatusArrayToDoorStatusTempFile(int16_t const x, int16_t const y, int8_t const z) {
   // Turn off any door busy flags
   FOR_EACH_DOOR_STATUS(i) i->ubFlags &= ~DOOR_BUSY;
 
@@ -1059,7 +1060,7 @@ void LoadDoorStatusArrayFromDoorStatusTempFile() {
   AutoSGPFile f(FileMan::openForReadingSmart(map_name, true));
 
   // Load the number of elements in the door status array
-  FileRead(f, &gubNumDoorStatus, sizeof(UINT8));
+  FileRead(f, &gubNumDoorStatus, sizeof(uint8_t));
   if (gubNumDoorStatus == 0) return;
 
   gpDoorStatus = MALLOCNZ(DOOR_STATUS, gubNumDoorStatus);
@@ -1077,8 +1078,8 @@ void LoadDoorStatusArrayFromDoorStatusTempFile() {
 void SaveKeyTableToSaveGameFile(HWFILE const f) {
   FOR_EACH(KEY const, i, KeyTable) {
     KEY const &k = *i;
-    BYTE data[8];
-    BYTE *d = data;
+    uint8_t data[8];
+    uint8_t *d = data;
     INJ_SKIP(d, 4)
     INJ_U16(d, k.usSectorFound)
     INJ_U16(d, k.usDateFound)
@@ -1089,10 +1090,10 @@ void SaveKeyTableToSaveGameFile(HWFILE const f) {
 
 void LoadKeyTableFromSaveedGameFile(HWFILE const f) {
   FOR_EACH(KEY, i, KeyTable) {
-    BYTE data[8];
+    uint8_t data[8];
     FileRead(f, data, sizeof(data));
     KEY &k = *i;
-    BYTE *d = data;
+    uint8_t *d = data;
     EXTR_SKIP(d, 4)
     EXTR_U16(d, k.usSectorFound)
     EXTR_U16(d, k.usDateFound)
@@ -1120,9 +1121,9 @@ void ExamineDoorsOnEnteringSector() {
   }
 }
 
-void DropKeysInKeyRing(SOLDIERTYPE &s, GridNo const gridno, INT8 const level,
+void DropKeysInKeyRing(SOLDIERTYPE &s, GridNo const gridno, int8_t const level,
                        Visibility const visible, bool const add_to_drop_list,
-                       INT32 const drop_list_slot, bool const use_unloaded) {
+                       int32_t const drop_list_slot, bool const use_unloaded) {
   KEY_ON_RING *const key_ring = s.pKeyRing;
   if (!key_ring) return;  // No key ring
 

@@ -17,30 +17,31 @@ static BOOLEAN gfCursorDatabaseInit = FALSE;
 
 static CursorFileData *gpCursorFileDatabase;
 static CursorData *gpCursorDatabase;
-INT16 gsGlobalCursorYOffset = 0;
-UINT16 gsCurMouseHeight = 0;
-UINT16 gsCurMouseWidth = 0;
-static UINT16 gusNumDataFiles = 0;
+int16_t gsGlobalCursorYOffset = 0;
+uint16_t gsCurMouseHeight = 0;
+uint16_t gsCurMouseWidth = 0;
+static uint16_t gusNumDataFiles = 0;
 static SGPVObject const *guiExternVo;
-static UINT16 gusExternVoSubIndex;
-static UINT32 guiOldSetCursor = 0;
-static UINT32 guiDelayTimer = 0;
+static uint16_t gusExternVoSubIndex;
+static uint32_t guiOldSetCursor = 0;
+static uint32_t guiDelayTimer = 0;
 
 static MOUSEBLT_HOOK gMouseBltOverride = NULL;
 
 static void EraseMouseCursor() { MOUSE_BUFFER->Fill(0); }
 
-static void BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
-                                        UINT16 usXPos, UINT16 usYPos) {
+static void BltToMouseCursorFromVObject(HVOBJECT hVObject, uint16_t usVideoObjectSubIndex,
+                                        uint16_t usXPos, uint16_t usYPos) {
   BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos);
 }
 
-static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
-                                                   UINT16 usXPos, UINT16 usYPos) {
+static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject,
+                                                   uint16_t usVideoObjectSubIndex, uint16_t usXPos,
+                                                   uint16_t usYPos) {
   // Center and adjust for offsets
   ETRLEObject const &pTrav = hVObject->SubregionProperties(usVideoObjectSubIndex);
-  INT16 const sXPos = (gsCurMouseWidth - pTrav.usWidth) / 2 - pTrav.sOffsetX;
-  INT16 const sYPos = (gsCurMouseHeight - pTrav.usHeight) / 2 - pTrav.sOffsetY;
+  int16_t const sXPos = (gsCurMouseWidth - pTrav.usWidth) / 2 - pTrav.sOffsetX;
+  int16_t const sYPos = (gsCurMouseHeight - pTrav.usHeight) / 2 - pTrav.sOffsetY;
   BltVideoObjectOutline(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, sXPos, sYPos,
                         Get16BPPColor(FROMRGB(0, 255, 0)));
 }
@@ -48,7 +49,7 @@ static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usV
 // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC
 // VARIABLES
 void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
-                        UINT16 suNumDataFiles) {
+                        uint16_t suNumDataFiles) {
   // Set global values!
   gpCursorFileDatabase = pCursorFileData;
   gpCursorDatabase = pCursorData;
@@ -62,14 +63,14 @@ void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void LoadCursorData(UINT32 uiCursorIndex) {
+static void LoadCursorData(uint32_t uiCursorIndex) {
   // Load cursor data will load all data required for the cursor specified by
   // this index
   CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
 
-  INT16 sMaxHeight = -1;
-  INT16 sMaxWidth = -1;
-  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+  int16_t sMaxHeight = -1;
+  int16_t sMaxWidth = -1;
+  for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
     const CursorImage *pCurImage = &pCurData->Composites[cnt];
     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
 
@@ -86,7 +87,7 @@ static void LoadCursorData(UINT32 uiCursorIndex) {
       if (hImage->uiAppDataSize > 0) {
         // Valid auxiliary data, so get # od frames from data
         AuxObjectData const *const pAuxData =
-            (AuxObjectData const *)(UINT8 const *)hImage->pAppData;
+            (AuxObjectData const *)(uint8_t const *)hImage->pAppData;
         if (pAuxData->fFlags & AUX_ANIMATED_TILE) {
           CFData->ubNumberOfFrames = pAuxData->ubNumberOfFrames;
         }
@@ -131,7 +132,7 @@ static void LoadCursorData(UINT32 uiCursorIndex) {
   gsCurMouseWidth = pCurData->usWidth;
 
   // Adjust relative offsets
-  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+  for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
     CursorImage *pCurImage = &pCurData->Composites[cnt];
 
     // Get ETRLE Data for this video object
@@ -149,14 +150,14 @@ static void LoadCursorData(UINT32 uiCursorIndex) {
   }
 }
 
-static void UnLoadCursorData(UINT32 uiCursorIndex) {
+static void UnLoadCursorData(uint32_t uiCursorIndex) {
   // This function will unload add data used for this cursor
   //
   // Ok, first we make sure that the video object file is indeed loaded. Once
   // this is verified, we will move on to the deletion
   const CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
 
-  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+  for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
     const CursorImage *pCurImage = &pCurData->Composites[cnt];
     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
 
@@ -168,7 +169,7 @@ static void UnLoadCursorData(UINT32 uiCursorIndex) {
 }
 
 void CursorDatabaseClear() {
-  for (UINT32 uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
+  for (uint32_t uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
     CursorFileData *CFData = &gpCursorFileDatabase[uiIndex];
     if (CFData->hVObject != NULL && CFData->Filename != NULL) {
       DeleteVideoObject(CFData->hVObject);
@@ -177,7 +178,7 @@ void CursorDatabaseClear() {
   }
 }
 
-BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
+BOOLEAN SetCurrentCursorFromDatabase(uint32_t uiCursorIndex) {
   if (uiCursorIndex == VIDEO_NO_CURSOR) {
     SetMouseCursorProperties(0, 0, 0, 0);
   } else if (gfCursorDatabaseInit) {
@@ -187,8 +188,8 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
       EraseMouseCursor();
 
       ETRLEObject const &pTrav = guiExternVo->SubregionProperties(gusExternVoSubIndex);
-      UINT16 const usEffHeight = pTrav.usHeight + pTrav.sOffsetY;
-      UINT16 const usEffWidth = pTrav.usWidth + pTrav.sOffsetX;
+      uint16_t const usEffHeight = pTrav.usHeight + pTrav.sOffsetY;
+      uint16_t const usEffWidth = pTrav.usWidth + pTrav.sOffsetX;
 
       BltVideoObjectOutline(MOUSE_BUFFER, guiExternVo, gusExternVoSubIndex, 0, 0, SGP_TRANSPARENT);
 
@@ -225,7 +226,7 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
       // NOW ACCOMODATE COMPOSITE CURSORS
       pCurData = &gpCursorDatabase[uiCursorIndex];
 
-      for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+      for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
         // Check if we are a flashing cursor!
         if (pCurData->bFlags & CURSOR_TO_FLASH && cnt <= 1 && pCurData->bFlashIndex != cnt) {
           continue;
@@ -250,7 +251,7 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
         CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
 
         // Adjust sub-index if cursor is animated
-        UINT16 usSubIndex;
+        uint16_t usSubIndex;
         if (CFData->ubNumberOfFrames != 0) {
           usSubIndex = pCurImage->uiCurrentFrame;
         } else {
@@ -272,8 +273,8 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
       // Hook into hook function
       if (gMouseBltOverride != NULL) gMouseBltOverride();
 
-      INT16 sCenterValX = pCurData->sOffsetX;
-      INT16 sCenterValY = pCurData->sOffsetY;
+      int16_t sCenterValX = pCurData->sOffsetX;
+      int16_t sCenterValY = pCurData->sOffsetY;
       SetMouseCursorProperties(sCenterValX, sCenterValY + gsGlobalCursorYOffset, pCurData->usHeight,
                                pCurData->usWidth);
     }
@@ -285,10 +286,10 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
 void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) { gMouseBltOverride = pMouseBltOverride; }
 
 // Sets an external video object as cursor file data....
-void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex) {
+void SetExternVOData(uint32_t uiCursorIndex, HVOBJECT hVObject, uint16_t usSubIndex) {
   CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
 
-  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+  for (uint32_t cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
     CursorImage *pCurImage = &pCurData->Composites[cnt];
     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
 
@@ -308,7 +309,7 @@ void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex)
   }
 }
 
-void SetExternMouseCursor(SGPVObject const &vo, UINT16 const region_idx) {
+void SetExternMouseCursor(SGPVObject const &vo, uint16_t const region_idx) {
   guiExternVo = &vo;
   gusExternVoSubIndex = region_idx;
 }

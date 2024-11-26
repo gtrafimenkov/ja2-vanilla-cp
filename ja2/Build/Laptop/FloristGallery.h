@@ -15,7 +15,7 @@ void HandleFloristGallery();
 void RenderFloristGallery();
 void EnterInitFloristGallery();
 
-extern UINT32 guiCurrentlySelectedFlower;
-extern UINT8 gubCurFlowerIndex;
+extern uint32_t guiCurrentlySelectedFlower;
+extern uint8_t gubCurFlowerIndex;
 
 #endif

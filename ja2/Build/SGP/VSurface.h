@@ -32,14 +32,14 @@ class SGPVSurface {
   SGPVSurface(SDL_Surface *);
 
  protected:
-  SGPVSurface(UINT16 w, UINT16 h, UINT8 bpp);
+  SGPVSurface(uint16_t w, uint16_t h, uint8_t bpp);
 
  public:
   virtual ~SGPVSurface();
 
-  UINT16 Width() const;
-  UINT16 Height() const;
-  UINT8 BPP() const;
+  uint16_t Width() const;
+  uint16_t Height() const;
+  uint8_t BPP() const;
 
   // Set palette, also sets 16BPP palette
   void SetPalette(const SGPPaletteEntry *src_pal);
@@ -50,17 +50,17 @@ class SGPVSurface {
   void SetTransparency(COLORVAL);
 
   /* Fill an entire surface with a colour */
-  void Fill(UINT16 colour);
+  void Fill(uint16_t colour);
 
-  void ShadowRect(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
-  void ShadowRectUsingLowPercentTable(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
+  void ShadowRect(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
+  void ShadowRectUsingLowPercentTable(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 
   /* Fills an rectangular area with a specified color value. */
-  friend void ColorFillVideoSurfaceArea(SGPVSurface *, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
-                                        INT32 iDestY2, UINT16 Color16BPP);
+  friend void ColorFillVideoSurfaceArea(SGPVSurface *, int32_t iDestX1, int32_t iDestY1,
+                                        int32_t iDestX2, int32_t iDestY2, uint16_t Color16BPP);
 
   // Blits a video Surface to another video Surface
-  friend void BltVideoSurface(SGPVSurface *dst, SGPVSurface *src, INT32 iDestX, INT32 iDestY,
+  friend void BltVideoSurface(SGPVSurface *dst, SGPVSurface *src, int32_t iDestX, int32_t iDestY,
                               SGPBox const *src_rect);
 
   /* This function will stretch the source image to the size of the dest rect.
@@ -73,7 +73,7 @@ class SGPVSurface {
   SGP::Buffer<SGPPaletteEntry> palette_;
 
  public:
-  UINT16 *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
+  uint16_t *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
   SGPVSurface *next_;
 
  private:
@@ -86,7 +86,7 @@ class SGPVSurface {
       return static_cast<T *>(_Surface_GetPixels(surface_));
     }
 
-    UINT32 Pitch() { return _Surface_GetPitch(surface_); }
+    uint32_t Pitch() { return _Surface_GetPitch(surface_); }
 
    protected:
     SDL_Surface *surface_;
@@ -121,25 +121,25 @@ class SGPVSurface {
  * frees SDL_Surface when the object is destroyed. */
 class SGPVSurfaceAuto : public SGPVSurface {
  public:
-  SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp);
+  SGPVSurfaceAuto(uint16_t w, uint16_t h, uint8_t bpp);
   SGPVSurfaceAuto(SDL_Surface *);
 
   virtual ~SGPVSurfaceAuto();
 };
 
-SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth);
+SGPVSurfaceAuto *AddVideoSurface(uint16_t Width, uint16_t Height, uint8_t BitDepth);
 SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *Filename);
 
 /* Blits a video surface in half size to another video surface.
  * If SrcRect is NULL the entire source surface is blitted.
  * Only blitting from 8bbp surfaces to 16bpp surfaces is supported. */
-void BltVideoSurfaceHalf(SGPVSurface *dst, SGPVSurface *src, INT32 DestX, INT32 DestY,
+void BltVideoSurfaceHalf(SGPVSurface *dst, SGPVSurface *src, int32_t DestX, int32_t DestY,
                          SGPBox const *src_rect);
 
 // Deletes all data, including palettes
 static inline void DeleteVideoSurface(SGPVSurface *const vs) { delete vs; }
 
-void BltVideoSurfaceOnce(SGPVSurface *dst, const char *filename, INT32 x, INT32 y);
+void BltVideoSurfaceOnce(SGPVSurface *dst, const char *filename, int32_t x, int32_t y);
 
 /** Draw image on the video surface stretching the image if necessary. */
 void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename);

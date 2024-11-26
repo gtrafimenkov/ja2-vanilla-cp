@@ -74,17 +74,17 @@ void SetErrorCatchString(wchar_t const *const fmt, ...) {
 
 enum { DIALOG_NONE, DIALOG_SAVE, DIALOG_LOAD, DIALOG_CANCEL, DIALOG_DELETE };
 
-static INT32 iTotalFiles;
-static INT32 iTopFileShown;
-static INT32 iCurrFileShown;
-static INT32 iLastFileClicked;
-static INT32 iLastClickTime;
+static int32_t iTotalFiles;
+static int32_t iTopFileShown;
+static int32_t iCurrFileShown;
+static int32_t iLastFileClicked;
+static int32_t iLastClickTime;
 
 static wchar_t gzFilename[31];
 
 static FDLG_LIST *FileList = NULL;
 
-static INT32 iFDlgState = DIALOG_NONE;
+static int32_t iFDlgState = DIALOG_NONE;
 static GUIButtonRef iFileDlgButtons[7];
 
 static BOOLEAN gfLoadError;
@@ -101,8 +101,8 @@ static MOUSE_REGION BlanketRegion;
 static char gszCurrFilename[80];
 
 enum { IOSTATUS_NONE, INITIATE_MAP_SAVE, SAVING_MAP, INITIATE_MAP_LOAD, LOADING_MAP };
-static INT8 gbCurrentFileIOStatus;  // 1 init saving message, 2 save, 3 init
-                                    // loading message, 4 load, 0 none
+static int8_t gbCurrentFileIOStatus;  // 1 init saving message, 2 save, 3 init
+                                      // loading message, 4 load, 0 none
 
 static bool gfUpdateSummaryInfo = true;
 
@@ -169,7 +169,7 @@ static ScreenID ProcessLoadSaveScreenMessageBoxResult() {
   }
   if (gfDeleteFile) {
     if (gfMessageBoxResult) {  // delete file
-      INT32 x;
+      int32_t x;
       curr = FileList;
       for (x = 0; x < iCurrFileShown && x < iTotalFiles && curr; x++) {
         curr = curr->pNext;
@@ -235,7 +235,7 @@ static ScreenID ProcessFileIO();
 
 ScreenID LoadSaveScreenHandle() {
   FDLG_LIST *FListNode;
-  INT32 x;
+  int32_t x;
   InputAtom DialogEvent;
 
   if (fEnteringLoadSaveScreen) {
@@ -303,7 +303,7 @@ ScreenID LoadSaveScreenHandle() {
 
     case DIALOG_DELETE: {
       sprintf(gszCurrFilename, MAPSDIR "/%ls", gzFilename);
-      const UINT32 attr = FileGetAttributes(gszCurrFilename);
+      const uint32_t attr = FileGetAttributes(gszCurrFilename);
       if (attr != FILE_ATTR_ERROR) {
         wchar_t str[40];
         if (attr & FILE_ATTR_READONLY) {
@@ -327,7 +327,7 @@ ScreenID LoadSaveScreenHandle() {
       if (FileExists(gszCurrFilename)) {
         gfFileExists = TRUE;
         gfReadOnly = FALSE;
-        const UINT32 attr = FileGetAttributes(gszCurrFilename);
+        const uint32_t attr = FileGetAttributes(gszCurrFilename);
         if (attr != FILE_ATTR_ERROR && attr & FILE_ATTR_READONLY) {
           gfReadOnly = TRUE;
         }
@@ -362,7 +362,7 @@ ScreenID LoadSaveScreenHandle() {
   return LOADSAVE_SCREEN;
 }
 
-static GUIButtonRef MakeButtonArrow(const char *const gfx, const INT16 y,
+static GUIButtonRef MakeButtonArrow(const char *const gfx, const int16_t y,
                                     const GUI_CALLBACK click) {
   GUIButtonRef const btn =
       QuickCreateButtonImg(gfx, -1, 1, 2, 3, 4, 426, y, MSYS_PRIORITY_HIGH, click);
@@ -370,13 +370,13 @@ static GUIButtonRef MakeButtonArrow(const char *const gfx, const INT16 y,
   return btn;
 }
 
-static void FDlgCancelCallback(GUI_BUTTON *butn, INT32 reason);
-static void FDlgDwnCallback(GUI_BUTTON *butn, INT32 reason);
-static void FDlgNamesCallback(GUI_BUTTON *butn, INT32 reason);
-static void FDlgOkCallback(GUI_BUTTON *butn, INT32 reason);
-static void FDlgUpCallback(GUI_BUTTON *butn, INT32 reason);
-static void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering);
-static void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason);
+static void FDlgCancelCallback(GUI_BUTTON *butn, int32_t reason);
+static void FDlgDwnCallback(GUI_BUTTON *butn, int32_t reason);
+static void FDlgNamesCallback(GUI_BUTTON *butn, int32_t reason);
+static void FDlgOkCallback(GUI_BUTTON *butn, int32_t reason);
+static void FDlgUpCallback(GUI_BUTTON *butn, int32_t reason);
+static void FileDialogModeCallback(uint8_t ubID, BOOLEAN fEntering);
+static void UpdateWorldInfoCallback(GUI_BUTTON *b, int32_t reason);
 
 static void CreateFileDialog(const wchar_t *zTitle) {
   iFDlgState = DIALOG_NONE;
@@ -420,7 +420,7 @@ static void CreateFileDialog(const wchar_t *zTitle) {
   AddUserInputField(FileDialogModeCallback);
 }
 
-static void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason) {
+static void UpdateWorldInfoCallback(GUI_BUTTON *b, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) gfUpdateSummaryInfo = b->Clicked();
 }
 
@@ -428,8 +428,8 @@ static void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason) {
 // the user is currently editing text, and presses Tab to transfer to the file
 // dialog mode.  When this happens, we set the text field to the currently
 // selected file in the list which is already know.
-static void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering) {
-  INT32 x;
+static void FileDialogModeCallback(uint8_t ubID, BOOLEAN fEntering) {
+  int32_t x;
   FDLG_LIST *FListNode;
   if (fEntering) {
     // Skip to first filename
@@ -450,7 +450,7 @@ static void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering) {
 }
 
 static void RemoveFileDialog() {
-  INT32 x;
+  int32_t x;
 
   MSYS_RemoveRegion(&BlanketRegion);
 
@@ -498,9 +498,9 @@ static void DrawFileDialog() {
 
 // The callback calls this function passing the relative y position of where
 // the user clicked on the hot spot.
-static void SelectFileDialogYPos(UINT16 usRelativeYPos) {
-  INT16 sSelName;
-  INT32 x;
+static void SelectFileDialogYPos(uint16_t usRelativeYPos) {
+  int16_t sSelName;
+  int32_t x;
   FDLG_LIST *FListNode;
 
   sSelName = usRelativeYPos / 15;
@@ -515,8 +515,8 @@ static void SelectFileDialogYPos(UINT16 usRelativeYPos) {
   }
 
   for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
-    if ((INT32)sSelName == (x - iTopFileShown)) {
-      INT32 iCurrClickTime;
+    if ((int32_t)sSelName == (x - iTopFileShown)) {
+      int32_t iCurrClickTime;
       iCurrFileShown = x;
       FListNode->filename[30] = '\0';
       swprintf(gzFilename, lengthof(gzFilename), L"%hs", FListNode->filename);
@@ -577,11 +577,11 @@ static void TrashFDlgList(FDLG_LIST *i) {
   }
 }
 
-static void SetTopFileToLetter(UINT16 usLetter) {
-  UINT32 x;
+static void SetTopFileToLetter(uint16_t usLetter) {
+  uint32_t x;
   FDLG_LIST *curr;
   FDLG_LIST *prev;
-  UINT16 usNodeLetter;
+  uint16_t usNodeLetter;
 
   // Skip to first filename
   x = 0;
@@ -603,7 +603,7 @@ static void SetTopFileToLetter(UINT16 usLetter) {
 }
 
 static void HandleMainKeyEvents(InputAtom *pEvent) {
-  INT32 iPrevFileShown = iCurrFileShown;
+  int32_t iPrevFileShown = iCurrFileShown;
   // Replace Alt-x press with ESC.
   if (pEvent->usKeyState & ALT_DOWN && pEvent->usParam == 'x') pEvent->usParam = SDLK_ESCAPE;
   switch (pEvent->usParam) {
@@ -664,13 +664,13 @@ static void HandleMainKeyEvents(InputAtom *pEvent) {
       // This case handles jumping the file list to display the file with the
       // letter pressed.
       if (pEvent->usParam >= SDLK_a && pEvent->usParam <= SDLK_z) {
-        SetTopFileToLetter((UINT16)pEvent->usParam);
+        SetTopFileToLetter((uint16_t)pEvent->usParam);
       }
       break;
   }
   // Update the text field if the file value has changed.
   if (iCurrFileShown != iPrevFileShown) {
-    INT32 x;
+    int32_t x;
     FDLG_LIST *curr;
     x = 0;
     curr = FileList;
@@ -690,7 +690,7 @@ static void SetGlobalSectorValues() {
   {
     wchar_t const *f = gzFilename;
 
-    INT16 y;
+    int16_t y;
     if ('A' <= f[0] && f[0] <= 'P') {
       y = f[0] - 'A' + 1;
     } else if ('a' <= f[0] && f[0] <= 'p') {
@@ -699,7 +699,7 @@ static void SetGlobalSectorValues() {
       goto invalid;
     ++f;
 
-    INT16 x;
+    int16_t x;
     if ('1' <= f[0] && f[0] <= '9' && (f[1] < '0' || '9' < f[1])) {  // 1 ... 9
       x = f[0] - '0';
       ++f;
@@ -709,7 +709,7 @@ static void SetGlobalSectorValues() {
     } else
       goto invalid;
 
-    INT8 z = 0;
+    int8_t z = 0;
     if (f[0] == '_' && f[1] == 'b' && '1' <= f[2] && f[2] <= '3') {
       z = f[2] - '0';
     }
@@ -733,7 +733,7 @@ static void InitErrorCatchDialog() {
 // back to the main loop. When we come back for the next frame, we then actually
 // save or load the map.  So this process takes two full screen cycles.
 static ScreenID ProcessFileIO() {
-  INT16 usStartX, usStartY;
+  int16_t usStartX, usStartY;
   char ubNewFilename[50];
   switch (gbCurrentFileIOStatus) {
     case INITIATE_MAP_SAVE:  // draw save message
@@ -794,7 +794,7 @@ static ScreenID ProcessFileIO() {
       RemoveMercsInSector();
 
       try {
-        UINT32 const start = SDL_GetTicks();
+        uint32_t const start = SDL_GetTicks();
         LoadWorld(ubNewFilename);
         fprintf(stderr, "---> %u\n", SDL_GetTicks() - start);
       } catch (...) {  // Want to override crash, so user can do something else.
@@ -826,7 +826,7 @@ static ScreenID ProcessFileIO() {
           LightSetBaseLevel(ubAmbientLightLevel);
         }
       } else
-        gusLightLevel = (UINT16)(EDITOR_LIGHT_MAX - ubAmbientLightLevel);
+        gusLightLevel = (uint16_t)(EDITOR_LIGHT_MAX - ubAmbientLightLevel);
       gEditorLightColor = g_light_color;
       gfRenderWorld = TRUE;
       gfRenderTaskbar = TRUE;
@@ -866,31 +866,31 @@ static ScreenID ProcessFileIO() {
 }
 
 // LOADSCREEN
-static void FDlgNamesCallback(GUI_BUTTON *butn, INT32 reason) {
+static void FDlgNamesCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     SelectFileDialogYPos(butn->RelativeY());
   }
 }
 
-static void FDlgOkCallback(GUI_BUTTON *butn, INT32 reason) {
+static void FDlgOkCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
   }
 }
 
-static void FDlgCancelCallback(GUI_BUTTON *butn, INT32 reason) {
+static void FDlgCancelCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     iFDlgState = DIALOG_CANCEL;
   }
 }
 
-static void FDlgUpCallback(GUI_BUTTON *butn, INT32 reason) {
+static void FDlgUpCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if (iTopFileShown > 0) iTopFileShown--;
   }
 }
 
-static void FDlgDwnCallback(GUI_BUTTON *butn, INT32 reason) {
+static void FDlgDwnCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if ((iTopFileShown + 7) < iTotalFiles) iTopFileShown++;
   }

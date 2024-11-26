@@ -10,14 +10,14 @@
 #include "Tactical/SoldierControl.h"
 #include "TileEngine/WorldDef.h"
 
-INT32 giClockTimer = -1;
-INT32 giTimerDiag = 0;
+int32_t giClockTimer = -1;
+int32_t giTimerDiag = 0;
 
-UINT32 guiBaseJA2Clock = 0;
+uint32_t guiBaseJA2Clock = 0;
 
 static BOOLEAN gfPauseClock = FALSE;
 
-const INT32 giTimerIntervals[NUMTIMERS] = {
+const int32_t giTimerIntervals[NUMTIMERS] = {
     5,     // Tactical Overhead
     20,    // NEXTSCROLL
     200,   // Start Scroll
@@ -41,36 +41,36 @@ const INT32 giTimerIntervals[NUMTIMERS] = {
 };
 
 // TIMER COUNTERS
-INT32 giTimerCounters[NUMTIMERS];
+int32_t giTimerCounters[NUMTIMERS];
 
-INT32 giTimerAirRaidQuote = 0;
-INT32 giTimerAirRaidDiveStarted = 0;
-INT32 giTimerAirRaidUpdate = 0;
-INT32 giTimerCustomizable = 0;
-INT32 giTimerTeamTurnUpdate = 0;
+int32_t giTimerAirRaidQuote = 0;
+int32_t giTimerAirRaidDiveStarted = 0;
+int32_t giTimerAirRaidUpdate = 0;
+int32_t giTimerCustomizable = 0;
+int32_t giTimerTeamTurnUpdate = 0;
 
 CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback = 0;
 
 // Clock Callback event ID
 static SDL_TimerID g_timer;
 
-extern UINT32 guiCompressionStringBaseTime;
-extern INT32 giFlashHighlightedItemBaseTime;
-extern INT32 giCompatibleItemBaseTime;
-extern INT32 giAnimateRouteBaseTime;
-extern INT32 giPotHeliPathBaseTime;
-extern UINT32 guiSectorLocatorBaseTime;
-extern INT32 giCommonGlowBaseTime;
-extern INT32 giFlashAssignBaseTime;
-extern INT32 giFlashContractBaseTime;
-extern UINT32 guiFlashCursorBaseTime;
-extern INT32 giPotCharPathBaseTime;
+extern uint32_t guiCompressionStringBaseTime;
+extern int32_t giFlashHighlightedItemBaseTime;
+extern int32_t giCompatibleItemBaseTime;
+extern int32_t giAnimateRouteBaseTime;
+extern int32_t giPotHeliPathBaseTime;
+extern uint32_t guiSectorLocatorBaseTime;
+extern int32_t giCommonGlowBaseTime;
+extern int32_t giFlashAssignBaseTime;
+extern int32_t giFlashContractBaseTime;
+extern uint32_t guiFlashCursorBaseTime;
+extern int32_t giPotCharPathBaseTime;
 
-static UINT32 TimeProc(UINT32 const interval, void *) {
+static uint32_t TimeProc(uint32_t const interval, void *) {
   if (!gfPauseClock) {
     guiBaseJA2Clock += BASETIMESLICE;
 
-    for (UINT32 i = 0; i != NUMTIMERS; i++) {
+    for (uint32_t i = 0; i != NUMTIMERS; i++) {
       UPDATECOUNTER(i);
     }
 
@@ -116,7 +116,7 @@ void InitializeJA2Clock() {
   SDL_InitSubSystem(SDL_INIT_TIMER);
 
   // Init timer delays
-  for (INT32 i = 0; i != NUMTIMERS; ++i) {
+  for (int32_t i = 0; i != NUMTIMERS; ++i) {
     giTimerCounters[i] = giTimerIntervals[i];
   }
 
@@ -133,7 +133,7 @@ void ShutdownJA2Clock() {
 
 void PauseTime(BOOLEAN const fPaused) { gfPauseClock = fPaused; }
 
-void SetCustomizableTimerCallbackAndDelay(INT32 const delay,
+void SetCustomizableTimerCallbackAndDelay(int32_t const delay,
                                           CUSTOMIZABLE_TIMER_CALLBACK const callback,
                                           BOOLEAN const replace) {
   if (!replace && gpCustomizableTimerCallback) {  // Replace callback but call
@@ -158,7 +158,7 @@ void CheckCustomizableTimer() {
 }
 
 void ResetJA2ClockGlobalTimers() {
-  UINT32 const now = GetJA2Clock();
+  uint32_t const now = GetJA2Clock();
 
   guiCompressionStringBaseTime = now;
   giFlashHighlightedItemBaseTime = now;

@@ -8,18 +8,18 @@
 
 struct EXPLOSIONTYPE {
   SOLDIERTYPE *owner;
-  UINT8 ubTypeID;
+  uint8_t ubTypeID;
 
-  UINT16 usItem;
+  uint16_t usItem;
 
-  INT16 sX;       // World X ( optional )
-  INT16 sY;       // World Y ( optional )
-  INT16 sZ;       // World Z ( optional )
-  INT16 sGridNo;  // World GridNo
-  INT8 bLevel;    // World level
+  int16_t sX;       // World X ( optional )
+  int16_t sY;       // World Y ( optional )
+  int16_t sZ;       // World Z ( optional )
+  int16_t sGridNo;  // World GridNo
+  int8_t bLevel;    // World level
 
   BOOLEAN fAllocated;
-  INT16 sCurrentFrame;
+  int16_t sCurrentFrame;
   LIGHT_SPRITE *light;
 };
 
@@ -38,40 +38,40 @@ enum EXPLOSION_TYPES {
 };
 
 struct ExplosionQueueElement {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  UINT8 fExists;
+  uint32_t uiWorldBombIndex;
+  uint32_t uiTimeStamp;
+  uint8_t fExists;
 };
 
 #define ERASE_SPREAD_EFFECT 2
 #define BLOOD_SPREAD_EFFECT 3
 #define REDO_SPREAD_EFFECT 4
 
-extern UINT8 gubElementsOnExplosionQueue;
+extern uint8_t gubElementsOnExplosionQueue;
 extern BOOLEAN gfExplosionQueueActive;
 
-void IgniteExplosion(SOLDIERTYPE *owner, INT16 z, INT16 sGridNo, UINT16 item, INT8 level);
-void IgniteExplosionXY(SOLDIERTYPE *owner, INT16 sX, INT16 sY, INT16 sZ, INT16 sGridNo,
-                       UINT16 usItem, INT8 bLevel);
-void InternalIgniteExplosion(SOLDIERTYPE *owner, INT16 sX, INT16 sY, INT16 sZ, INT16 sGridNo,
-                             UINT16 usItem, BOOLEAN fLocate, INT8 bLevel);
+void IgniteExplosion(SOLDIERTYPE *owner, int16_t z, int16_t sGridNo, uint16_t item, int8_t level);
+void IgniteExplosionXY(SOLDIERTYPE *owner, int16_t sX, int16_t sY, int16_t sZ, int16_t sGridNo,
+                       uint16_t usItem, int8_t bLevel);
+void InternalIgniteExplosion(SOLDIERTYPE *owner, int16_t sX, int16_t sY, int16_t sZ,
+                             int16_t sGridNo, uint16_t usItem, BOOLEAN fLocate, int8_t bLevel);
 
-void SpreadEffect(INT16 sGridNo, UINT8 ubRadius, UINT16 usItem, SOLDIERTYPE *owner,
-                  BOOLEAN fSubsequent, INT8 bLevel, const SMOKEEFFECT *s);
-void SpreadEffectSmoke(const SMOKEEFFECT *s, BOOLEAN subsequent, INT8 level);
+void SpreadEffect(int16_t sGridNo, uint8_t ubRadius, uint16_t usItem, SOLDIERTYPE *owner,
+                  BOOLEAN fSubsequent, int8_t bLevel, const SMOKEEFFECT *s);
+void SpreadEffectSmoke(const SMOKEEFFECT *s, BOOLEAN subsequent, int8_t level);
 
 void DecayBombTimers();
-void SetOffBombsByFrequency(SOLDIERTYPE *s, INT8 bFrequency);
-BOOLEAN SetOffBombsInGridNo(SOLDIERTYPE *s, INT16 sGridNo, BOOLEAN fAllBombs, INT8 bLevel);
-void ActivateSwitchInGridNo(SOLDIERTYPE *s, INT16 sGridNo);
-void SetOffPanicBombs(SOLDIERTYPE *s, INT8 bPanicTrigger);
+void SetOffBombsByFrequency(SOLDIERTYPE *s, int8_t bFrequency);
+BOOLEAN SetOffBombsInGridNo(SOLDIERTYPE *s, int16_t sGridNo, BOOLEAN fAllBombs, int8_t bLevel);
+void ActivateSwitchInGridNo(SOLDIERTYPE *s, int16_t sGridNo);
+void SetOffPanicBombs(SOLDIERTYPE *s, int8_t bPanicTrigger);
 
-void UpdateExplosionFrame(EXPLOSIONTYPE *e, INT16 sCurrentFrame);
+void UpdateExplosionFrame(EXPLOSIONTYPE *e, int16_t sCurrentFrame);
 void RemoveExplosionData(EXPLOSIONTYPE *e);
 
-void UpdateAndDamageSAMIfFound(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 sGridNo,
-                               UINT8 ubDamage);
-void UpdateSAMDoneRepair(INT16 x, INT16 y, INT16 z);
+void UpdateAndDamageSAMIfFound(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ,
+                               int16_t sGridNo, uint8_t ubDamage);
+void UpdateSAMDoneRepair(int16_t x, int16_t y, int16_t z);
 
 void SaveExplosionTableToSaveGameFile(HWFILE);
 void LoadExplosionTableFromSavedGameFile(HWFILE);
@@ -81,12 +81,12 @@ void RemoveAllActiveTimedBombs();
 
 #define GASMASK_MIN_STATUS 70
 
-BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE const *pExplosive, INT16 sSubsequent,
-                         BOOLEAN fRecompileMovementCosts, INT16 sWoundAmt, INT16 sBreathAmt,
-                         SOLDIERTYPE *owner);
+BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE const *pExplosive,
+                         int16_t sSubsequent, BOOLEAN fRecompileMovementCosts, int16_t sWoundAmt,
+                         int16_t sBreathAmt, SOLDIERTYPE *owner);
 
 void HandleExplosionQueue();
 
-bool DoesSAMExistHere(INT16 x, INT16 y, INT16 z, GridNo);
+bool DoesSAMExistHere(int16_t x, int16_t y, int16_t z, GridNo);
 
 #endif

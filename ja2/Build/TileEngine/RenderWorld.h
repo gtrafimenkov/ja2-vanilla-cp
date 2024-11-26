@@ -4,7 +4,7 @@
 #include "SGP/Types.h"
 
 extern BOOLEAN gfDoVideoScroll;
-extern UINT8 gubCurScrollSpeedID;
+extern uint8_t gubCurScrollSpeedID;
 
 enum RenderFlags {
   RENDER_FLAG_NONE = 0,
@@ -59,48 +59,48 @@ enum RenderLayerFlags {
 };
 ENUM_BITSET(RenderLayerFlags)
 
-extern INT16 gsScrollXIncrement;
-extern INT16 gsScrollYIncrement;
-extern INT16 gsRenderHeight;
+extern int16_t gsScrollXIncrement;
+extern int16_t gsScrollYIncrement;
+extern int16_t gsRenderHeight;
 
-extern const INT16 gsVIEWPORT_START_X;
-extern const INT16 gsVIEWPORT_START_Y;
-extern const INT16 gsVIEWPORT_END_X;
-extern const INT16 gsVIEWPORT_END_Y;
-extern INT16 gsVIEWPORT_WINDOW_START_Y;
-extern INT16 gsVIEWPORT_WINDOW_END_Y;
+extern const int16_t gsVIEWPORT_START_X;
+extern const int16_t gsVIEWPORT_START_Y;
+extern const int16_t gsVIEWPORT_END_X;
+extern const int16_t gsVIEWPORT_END_Y;
+extern int16_t gsVIEWPORT_WINDOW_START_Y;
+extern int16_t gsVIEWPORT_WINDOW_END_Y;
 
-extern INT16 gsRenderCenterX;
-extern INT16 gsRenderCenterY;
-extern INT16 gsRenderWorldOffsetX;
-extern INT16 gsRenderWorldOffsetY;
+extern int16_t gsRenderCenterX;
+extern int16_t gsRenderCenterY;
+extern int16_t gsRenderWorldOffsetX;
+extern int16_t gsRenderWorldOffsetY;
 
 // CURRENT VIEWPORT IN WORLD COORDS
-extern INT16 gsTopLeftWorldX;
-extern INT16 gsTopLeftWorldY;
-extern INT16 gsBottomRightWorldX;
-extern INT16 gsBottomRightWorldY;
+extern int16_t gsTopLeftWorldX;
+extern int16_t gsTopLeftWorldY;
+extern int16_t gsBottomRightWorldX;
+extern int16_t gsBottomRightWorldY;
 
 // GLOBAL COORDINATES
-extern INT16 gCenterWorldX;
-extern INT16 gCenterWorldY;
-extern INT16 gsTLX;
-extern INT16 gsTLY;
-extern INT16 gsTRX;
-extern INT16 gsTRY;
-extern INT16 gsBLX;
-extern INT16 gsBLY;
-extern INT16 gsBRX;
-extern INT16 gsBRY;
-extern INT16 gsCX;
-extern INT16 gsCY;
+extern int16_t gCenterWorldX;
+extern int16_t gCenterWorldY;
+extern int16_t gsTLX;
+extern int16_t gsTLY;
+extern int16_t gsTRX;
+extern int16_t gsTRY;
+extern int16_t gsBLX;
+extern int16_t gsBLY;
+extern int16_t gsBRX;
+extern int16_t gsBRY;
+extern int16_t gsCX;
+extern int16_t gsCY;
 extern double gdScaleX;
 extern double gdScaleY;
 
 extern BOOLEAN gfIgnoreScrollDueToCenterAdjust;
 
 void ScrollWorld();
-void InitRenderParams(UINT8 ubRestrictionID);
+void InitRenderParams(uint8_t ubRestrictionID);
 void RenderWorld();
 
 void ResetSpecificLayerOptimizing(RenderLayerFlags);
@@ -110,17 +110,17 @@ void ClearRenderFlags(RenderFlags);
 
 void RenderSetShadows(BOOLEAN fShadows);
 
-extern UINT16 *gpZBuffer;
+extern uint16_t *gpZBuffer;
 extern BOOLEAN gfIgnoreScrolling;
 
 extern bool g_scroll_inertia;
 extern BOOLEAN gfScrollPending;
 
-void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
+void RenderStaticWorldRect(int16_t sLeft, int16_t sTop, int16_t sRight, int16_t sBottom,
                            BOOLEAN fDynamicsToo);
 
 void InvalidateWorldRedundency();
 
-void SetRenderCenter(INT16 sNewX, INT16 sNewY);
+void SetRenderCenter(int16_t sNewX, int16_t sNewY);
 
 #endif

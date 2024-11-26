@@ -20,8 +20,8 @@
 #include "Utils/Text.h"
 
 // current and last pages
-INT32 iCurrentPortrait = 0;
-INT32 iLastPicture = 7;
+int32_t iCurrentPortrait = 0;
+int32_t iLastPicture = 7;
 
 // buttons needed for the IMP portrait screen
 GUIButtonRef giIMPPortraitButton[3];
@@ -31,7 +31,7 @@ static BUTTON_PICS *giIMPPortraitButtonImage[3];
 BOOLEAN fReDrawPortraitScreenFlag = FALSE;
 
 // face index
-INT32 iPortraitNumber = 0;
+int32_t iPortraitNumber = 0;
 
 static void CreateIMPPortraitButtons();
 
@@ -43,7 +43,7 @@ void EnterIMPPortraits() {
   RenderIMPPortraits();
 }
 
-static void RenderPortrait(INT16 x, INT16 y);
+static void RenderPortrait(int16_t x, int16_t y);
 
 void RenderIMPPortraits() {
   // render background
@@ -79,10 +79,10 @@ void HandleIMPPortraits() {
   }
 }
 
-static void RenderPortrait(INT16 const x,
-                           INT16 const y) {  // Render the portrait of the current picture
+static void RenderPortrait(int16_t const x,
+                           int16_t const y) {  // Render the portrait of the current picture
   SGPFILENAME filename;
-  INT32 const portrait = (fCharacterIsMale ? 200 : 208) + iCurrentPortrait;
+  int32_t const portrait = (fCharacterIsMale ? 200 : 208) + iCurrentPortrait;
   snprintf(filename, lengthof(filename), FACESDIR "/bigfaces/%d.sti", portrait);
   BltVideoObjectOnce(FRAME_BUFFER, filename, 0, LAPTOP_SCREEN_UL_X + x, LAPTOP_SCREEN_WEB_UL_Y + y);
 }
@@ -109,12 +109,12 @@ static void DecrementPicture() {
   }
 }
 
-static void MakeButton(UINT idx, const char *img_file, INT32 off_normal, INT32 on_normal,
-                       const wchar_t *text, INT16 x, INT16 y, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const char *img_file, int32_t off_normal, int32_t on_normal,
+                       const wchar_t *text, int16_t x, int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(img_file, off_normal, on_normal);
   giIMPPortraitButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -122,14 +122,14 @@ static void MakeButton(UINT idx, const char *img_file, INT32 off_normal, INT32 o
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPPortraitButtons() {
   // will create buttons need for the IMP portrait screen
-  const INT16 dx = LAPTOP_SCREEN_UL_X;
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dx = LAPTOP_SCREEN_UL_X;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
   MakeButton(0, LAPTOPDIR "/voicearrows.sti", 1, 3, pImpButtonText[13], dx + 343, dy + 205,
              BtnIMPPortraitNextCallback);  // Next button
   MakeButton(1, LAPTOPDIR "/voicearrows.sti", 0, 2, pImpButtonText[12], dx + 93, dy + 205,
@@ -154,21 +154,21 @@ static void DestroyIMPPortraitButtons() {
   UnloadButtonImage(giIMPPortraitButtonImage[2]);
 }
 
-static void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     IncrementPictureIndex();
     fReDrawPortraitScreenFlag = TRUE;
   }
 }
 
-static void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DecrementPicture();
     fReDrawPortraitScreenFlag = TRUE;
   }
 }
 
-static void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_MAIN_PAGE;
 

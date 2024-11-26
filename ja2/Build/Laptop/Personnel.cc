@@ -162,7 +162,7 @@ enum {
   PRSNL_EMPLOYMENT,
   PRSNL_INV,
 };
-static UINT8 gubPersonnelInfoState = PRSNL_STATS;
+static uint8_t gubPersonnelInfoState = PRSNL_STATS;
 
 // enums for the pPersonnelScreenStrings[]
 enum {
@@ -182,22 +182,22 @@ enum {
   PRSNL_TXT_NOSKILLS,
 };
 
-static UINT8 uiCurrentInventoryIndex = 0;
+static uint8_t uiCurrentInventoryIndex = 0;
 
-static UINT32 guiSliderPosition;
+static uint32_t guiSliderPosition;
 
-static const INT16 pers_stat_x = 407;
-static const INT16 pers_stat_delta_x = 407 + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET;
-static const INT16 pers_stat_data_x = 407 + 36;
-static const INT16 pers_stat_y[] = {215, 225, 235, 245, 255, 265, 325, 280, 290, 300,
-                                    310,  // 10
-                                    405, 395, 425, 435, 455,
-                                    390,  // for contract price
-                                    445,
-                                    33,  // Personnel Header // XXX unused
-                                    340,
-                                    350,  // 20
-                                    365, 375, 385, 395, 405};
+static const int16_t pers_stat_x = 407;
+static const int16_t pers_stat_delta_x = 407 + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET;
+static const int16_t pers_stat_data_x = 407 + 36;
+static const int16_t pers_stat_y[] = {215, 225, 235, 245, 255, 265, 325, 280, 290, 300,
+                                      310,  // 10
+                                      405, 395, 425, 435, 455,
+                                      390,  // for contract price
+                                      445,
+                                      33,  // Personnel Header // XXX unused
+                                      340,
+                                      350,  // 20
+                                      365, 375, 385, 395, 405};
 
 static SGPVObject *guiSCREEN;
 static SGPVObject *guiTITLE;
@@ -219,9 +219,9 @@ static BUTTON_PICS *giPersonnelATMStartButtonImage[3];
 static GUIButtonRef giPersonnelATMStartButton[3];
 
 // the id of currently displayed merc in right half of screen
-static INT32 iCurrentPersonSelectedId = -1;
+static int32_t iCurrentPersonSelectedId = -1;
 
-static INT32 giCurrentUpperLeftPortraitNumber = 0;
+static int32_t giCurrentUpperLeftPortraitNumber = 0;
 
 // which mode are we showing?..current team?...or deadly departed?
 static BOOLEAN fCurrentTeamMode = TRUE;
@@ -426,13 +426,13 @@ static void RenderPersonnelFace(MERCPROFILESTRUCT const &p, BOOLEAN const alive)
   // Display the merc's name on the portrait
   const wchar_t *name = p.zName;
 
-  const UINT16 x = IMAGE_BOX_X;
-  const UINT16 y = IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y;
-  const UINT16 w = IMAGE_NAME_WIDTH;
-  const INT32 iHeightOfText = DisplayWrappedString(x, y, w, 1, PERS_FONT, PERS_FONT_COLOR, name, 0,
-                                                   CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+  const uint16_t x = IMAGE_BOX_X;
+  const uint16_t y = IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y;
+  const uint16_t w = IMAGE_NAME_WIDTH;
+  const int32_t iHeightOfText = DisplayWrappedString(x, y, w, 1, PERS_FONT, PERS_FONT_COLOR, name,
+                                                     0, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
-  const UINT16 line_height = GetFontHeight(PERS_FONT);
+  const uint16_t line_height = GetFontHeight(PERS_FONT);
   if (iHeightOfText - 2 > line_height)  // If the string will wrap
   {
     // Raise where we display it, and wrap it
@@ -444,8 +444,8 @@ static void RenderPersonnelFace(MERCPROFILESTRUCT const &p, BOOLEAN const alive)
 } catch (...) { /* XXX ignore */
 }
 
-static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam();
-static INT32 GetNumberOfPastMercsOnPlayersTeam();
+static int32_t GetNumberOfMercsDeadOrAliveOnPlayersTeam();
+static int32_t GetNumberOfPastMercsOnPlayersTeam();
 
 static void NextPersonnelFace() {
   if (iCurrentPersonSelectedId == -1) return;
@@ -486,7 +486,7 @@ static void PrevPersonnelFace() {
   } else {
     if (iCurrentPersonSelectedId == 0 && giCurrentUpperLeftPortraitNumber == 0) {
       // about to go off the end
-      INT32 count_past = GetNumberOfPastMercsOnPlayersTeam();
+      int32_t count_past = GetNumberOfPastMercsOnPlayersTeam();
       giCurrentUpperLeftPortraitNumber = count_past - count_past % PERSONNEL_PORTRAIT_NUMBER;
       iCurrentPersonSelectedId = count_past % PERSONNEL_PORTRAIT_NUMBER - 1;
     } else if (iCurrentPersonSelectedId == 0) {
@@ -499,16 +499,17 @@ static void PrevPersonnelFace() {
   }
 }
 
-static GUIButtonRef MakeButton(char const *const gfx, INT32 const off_normal, INT32 const on_normal,
-                               INT16 const x, INT16 const y, GUI_CALLBACK const click) {
+static GUIButtonRef MakeButton(char const *const gfx, int32_t const off_normal,
+                               int32_t const on_normal, int16_t const x, int16_t const y,
+                               GUI_CALLBACK const click) {
   GUIButtonRef const b =
       QuickCreateButtonImg(gfx, off_normal, on_normal, x, y, MSYS_PRIORITY_HIGHEST - 1, click);
   b->SetCursor(CURSOR_LAPTOP_SCREEN);
   return b;
 }
 
-static void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-static void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason);
+static void LeftButtonCallBack(GUI_BUTTON *btn, int32_t reason);
+static void RightButtonCallBack(GUI_BUTTON *btn, int32_t reason);
 
 static void CreatePersonnelButtons() {
   // left/right buttons
@@ -523,7 +524,7 @@ static void DeletePersonnelButtons() {
   RemoveButton(g_personnel.next);
 }
 
-static void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void LeftButtonCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fReDrawScreenFlag = TRUE;
     PrevPersonnelFace();
@@ -532,7 +533,7 @@ static void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void RightButtonCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fReDrawScreenFlag = TRUE;
     NextPersonnelFace();
@@ -543,14 +544,14 @@ static void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
 
 static void DisplayCharName(SOLDIERTYPE const &s) {
   // get merc's nickName, assignment, and sector location info
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   SetFontAttributes(CHAR_NAME_FONT, PERS_TEXT_FONT_COLOR);
 
   const wchar_t *sTownName = NULL;
   if (s.bAssignment != ASSIGNMENT_POW && s.bAssignment != IN_TRANSIT) {
     // name of town, if any
-    INT8 const bTownId = GetTownIdForSector(SECTOR(s.sSectorX, s.sSectorY));
+    int8_t const bTownId = GetTownIdForSector(SECTOR(s.sSectorX, s.sSectorY));
     if (bTownId != BLANK_SECTOR) sTownName = pTownNames[bTownId];
   }
 
@@ -572,12 +573,12 @@ static void DisplayCharName(SOLDIERTYPE const &s) {
   MPrint(sX, CHAR_LOC_Y, Assignment);
 }
 
-static void PrintStatWithDelta(UINT idx, INT8 stat, INT8 delta) {
+static void PrintStatWithDelta(uint32_t idx, int8_t stat, int8_t delta) {
   wchar_t sString[50];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
-  const INT32 y = pers_stat_y[idx];
+  const int32_t y = pers_stat_y[idx];
   if (delta > 0) {
     swprintf(sString, lengthof(sString), L"( %+d )", delta);
     FindFontRightCoordinates(pers_stat_delta_x, 0, 30, 0, sString, PERS_FONT, &sX, &sY);
@@ -589,10 +590,10 @@ static void PrintStatWithDelta(UINT idx, INT8 stat, INT8 delta) {
   MPrint(sX, y, sString);
 }
 
-static void PrintStat(UINT16 stat, INT32 y, const wchar_t *text) {
+static void PrintStat(uint16_t stat, int32_t y, const wchar_t *text) {
   wchar_t sString[50];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   mprintf(pers_stat_x, y, L"%ls:", text);
   swprintf(sString, lengthof(sString), L"%d", stat);
@@ -602,8 +603,8 @@ static void PrintStat(UINT16 stat, INT32 y, const wchar_t *text) {
 
 static void DisplayCharStats(SOLDIERTYPE const &s) {
   wchar_t sString[50];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   MERCPROFILESTRUCT const &p = GetProfile(s.ubProfile);
   BOOLEAN const fAmIaRobot = AM_A_ROBOT(&s);
@@ -624,8 +625,8 @@ static void DisplayCharStats(SOLDIERTYPE const &s) {
   MPrint(sX, pers_stat_y[0], sString);
 
   if (fAmIaRobot) {
-    for (INT32 i = 1; i < 11; ++i) {
-      const INT32 y = pers_stat_y[i];
+    for (int32_t i = 1; i < 11; ++i) {
+      const int32_t y = pers_stat_y[i];
       mprintf(pers_stat_x, y, L"%ls:", str_stat_list[i]);
       const wchar_t *const na = gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION];
       FindFontRightCoordinates(pers_stat_x, 0, TEXT_BOX_WIDTH - 20, 0, na, PERS_FONT, &sX, &sY);
@@ -650,8 +651,8 @@ static void DisplayCharStats(SOLDIERTYPE const &s) {
   // Shots/hits
   MPrint(pers_stat_x, pers_stat_y[23], pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
   // check we have shot at least once
-  const UINT32 fired = p.usShotsFired;
-  const UINT32 hits = (fired > 0 ? 100 * p.usShotsHit / fired : 0);
+  const uint32_t fired = p.usShotsFired;
+  const uint32_t hits = (fired > 0 ? 100 * p.usShotsHit / fired : 0);
   swprintf(sString, lengthof(sString), L"%d %%", hits);
   FindFontRightCoordinates(pers_stat_x, 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
   MPrint(sX, pers_stat_y[23], sString);
@@ -668,12 +669,12 @@ static void DisplayCharStats(SOLDIERTYPE const &s) {
    * "NightOps (Expert)" because the German strings are much longer.  In
    * these cases, I ensure that the right justification of the traits
    * do not overlap.  If it would, I move it over to the right. */
-  const INT32 iWidth = StringPixLength(pPersonnelScreenStrings[PRSNL_TXT_SKILLS], PERS_FONT);
-  const INT32 iMinimumX = iWidth + pers_stat_x + 2;
+  const int32_t iWidth = StringPixLength(pPersonnelScreenStrings[PRSNL_TXT_SKILLS], PERS_FONT);
+  const int32_t iMinimumX = iWidth + pers_stat_x + 2;
 
   if (!fAmIaRobot) {
-    INT8 bSkill1 = p.bSkillTrait;
-    INT8 bSkill2 = p.bSkillTrait2;
+    int8_t bSkill1 = p.bSkillTrait;
+    int8_t bSkill2 = p.bSkillTrait2;
 
     if (bSkill1 == NO_SKILLTRAIT) {
       bSkill1 = bSkill2;
@@ -734,8 +735,8 @@ static void DisplayCharStats(SOLDIERTYPE const &s) {
 static void SetPersonnelButtonStates() {
   // this function will look at what page we are viewing, enable and disable
   // buttons as needed
-  const INT32 merc_count = fCurrentTeamMode ? GetNumberOfMercsDeadOrAliveOnPlayersTeam()
-                                            : GetNumberOfPastMercsOnPlayersTeam();
+  const int32_t merc_count = fCurrentTeamMode ? GetNumberOfMercsDeadOrAliveOnPlayersTeam()
+                                              : GetNumberOfPastMercsOnPlayersTeam();
   bool const enable = merc_count > 1;
   EnableButton(g_personnel.prev, enable);
   EnableButton(g_personnel.next, enable);
@@ -763,15 +764,15 @@ static void DeletePersonnelScreenBackgroundGraphics() {
   DeleteVideoObject(guiDEPARTEDTEAM);
 }
 
-static INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam() {
-  INT32 iCounter = 0;
+static int32_t GetNumberOfMercsDeadOrAliveOnPlayersTeam() {
+  int32_t iCounter = 0;
 
   // grab number on team
   CFOR_EACH_PERSONNEL(s)++ iCounter;
   return iCounter;
 }
 
-static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateDestroyMouseRegionsForPersonnelPortraits(BOOLEAN create) {
   // creates/destroys mouse regions for portraits
@@ -779,13 +780,13 @@ static void CreateDestroyMouseRegionsForPersonnelPortraits(BOOLEAN create) {
 
   if (!fCreated && create) {
     // create regions
-    for (INT16 i = 0; i < PERSONNEL_PORTRAIT_NUMBER; i++) {
-      const UINT16 tlx =
+    for (int16_t i = 0; i < PERSONNEL_PORTRAIT_NUMBER; i++) {
+      const uint16_t tlx =
           SMALL_PORTRAIT_START_X + i % PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_WIDTH;
-      const UINT16 tly =
+      const uint16_t tly =
           SMALL_PORTRAIT_START_Y + i / PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_HEIGHT;
-      const UINT16 brx = tlx + SMALL_PORTRAIT_WIDTH;
-      const UINT16 bry = tly + SMALL_PORTRAIT_HEIGHT;
+      const uint16_t brx = tlx + SMALL_PORTRAIT_WIDTH;
+      const uint16_t bry = tly + SMALL_PORTRAIT_HEIGHT;
       MSYS_DefineRegion(&gPortraitMouseRegions[i], tlx, tly, brx, bry, MSYS_PRIORITY_HIGHEST,
                         CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
       MSYS_SetRegionUserData(&gPortraitMouseRegions[i], 0, i);
@@ -794,7 +795,7 @@ static void CreateDestroyMouseRegionsForPersonnelPortraits(BOOLEAN create) {
     fCreated = TRUE;
   } else if (fCreated && !create) {
     // destroy regions
-    for (INT16 i = 0; i < PERSONNEL_PORTRAIT_NUMBER; i++) {
+    for (int16_t i = 0; i < PERSONNEL_PORTRAIT_NUMBER; i++) {
       MSYS_RemoveRegion(&gPortraitMouseRegions[i]);
     }
 
@@ -806,11 +807,12 @@ static void DisplayPicturesOfCurrentTeam() try {
   // will display the small portraits of the current team
   if (!fCurrentTeamMode) return;
 
-  INT32 i = 0;
+  int32_t i = 0;
   CFOR_EACH_PERSONNEL(s) {
     // found the next actual guy
-    INT32 const x = SMALL_PORTRAIT_START_X + i % PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_WIDTH;
-    INT32 const y =
+    int32_t const x =
+        SMALL_PORTRAIT_START_X + i % PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_WIDTH;
+    int32_t const y =
         SMALL_PORTRAIT_START_Y + i / PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_HEIGHT;
     {
       AutoSGPVObject guiFACE(LoadSmallPortrait(GetProfile(s->ubProfile)));
@@ -838,9 +840,9 @@ static void DisplayPicturesOfCurrentTeam() try {
 
 static SOLDIERTYPE const &GetSoldierOfCurrentSlot();
 
-static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  INT32 iPortraitId = 0;
-  INT32 iOldPortraitId;
+static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  int32_t iPortraitId = 0;
+  int32_t iOldPortraitId;
 
   iPortraitId = MSYS_GetRegionUserData(pRegion, 0);
   iOldPortraitId = iCurrentPersonSelectedId;
@@ -913,17 +915,17 @@ static void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 }
 
 struct PastMercInfo {
-  PastMercInfo(MERCPROFILESTRUCT const *const profile_, INT8 const state_)
+  PastMercInfo(MERCPROFILESTRUCT const *const profile_, int8_t const state_)
       : profile(profile_), state(state_) {}
 
   MERCPROFILESTRUCT const *profile;
-  INT8 state;
+  int8_t state;
 };
 
 static void DisplayAmountOnChar(SOLDIERTYPE const &);
-static void DisplayDepartedCharName(MERCPROFILESTRUCT const &, INT32 iState);
-static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &, INT32 iState);
-static void DisplayHighLightBox(INT32 sel_id);
+static void DisplayDepartedCharName(MERCPROFILESTRUCT const &, int32_t iState);
+static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &, int32_t iState);
+static void DisplayHighLightBox(int32_t sel_id);
 static PastMercInfo GetSelectedPastMercInfo();
 
 static void DisplayFaceOfDisplayedMerc() {
@@ -964,15 +966,15 @@ static void DisplayCharInventory(SOLDIERTYPE const &s) {
   // if this is a robot, don't display any inventory
   if (AM_A_ROBOT(&s)) return;
 
-  INT32 item_count = -(INT32)uiCurrentInventoryIndex;
-  for (UINT pos = 0; pos < NUM_INV_SLOTS; ++pos) {
+  int32_t item_count = -(int32_t)uiCurrentInventoryIndex;
+  for (uint32_t pos = 0; pos < NUM_INV_SLOTS; ++pos) {
     // if the character is a robot, only display the inv for the hand pos
     if (s.ubProfile == ROBOT && pos != HANDPOS)
       continue;  // XXX can this ever be true? before is if (AM_A_ROBOT())
                  // return;
 
     OBJECTTYPE const &o = s.inv[pos];
-    INT32 const o_count = o.ubNumberOfObjects;
+    int32_t const o_count = o.ubNumberOfObjects;
     if (o_count == 0) continue;
 
     if (item_count < 0) {
@@ -981,19 +983,19 @@ static void DisplayCharInventory(SOLDIERTYPE const &s) {
     }
 
     wchar_t sString[128];
-    INT16 sX;
-    INT16 sY;
+    int16_t sX;
+    int16_t sY;
 
-    const INT16 PosX = 397 + 3;
-    const INT16 PosY = 200 + 8 + item_count * 29;
+    const int16_t PosX = 397 + 3;
+    const int16_t PosY = 200 + 8 + item_count * 29;
 
-    UINT16 const item_idx = o.usItem;
+    uint16_t const item_idx = o.usItem;
     INVTYPE const &item = Item[item_idx];
 
     SGPVObject const &gfx = GetInterfaceGraphicForItem(item);
     ETRLEObject const &pTrav = gfx.SubregionProperties(item.ubGraphicNum);
-    INT16 const cen_x = PosX + abs(57 - pTrav.usWidth) / 2 - pTrav.sOffsetX;
-    INT16 const cen_y = PosY + abs(22 - pTrav.usHeight) / 2 - pTrav.sOffsetY;
+    int16_t const cen_x = PosX + abs(57 - pTrav.usWidth) / 2 - pTrav.sOffsetX;
+    int16_t const cen_y = PosY + abs(22 - pTrav.usHeight) / 2 - pTrav.sOffsetY;
     BltVideoObjectOutline(FRAME_BUFFER, &gfx, item.ubGraphicNum, cen_x, cen_y, SGP_TRANSPARENT);
 
     SetFontDestBuffer(FRAME_BUFFER);
@@ -1004,8 +1006,8 @@ static void DisplayCharInventory(SOLDIERTYPE const &s) {
 
     // condition
     if (item.usItemClass & IC_AMMO) {
-      INT32 total_ammo = 0;
-      for (INT32 i = 0; i < o_count; ++i) total_ammo += o.ubShotsLeft[i];
+      int32_t total_ammo = 0;
+      for (int32_t i = 0; i < o_count; ++i) total_ammo += o.ubShotsLeft[i];
       swprintf(sString, lengthof(sString), L"%d/%d", total_ammo,
                o_count * Magazine[item.ubClassIndex].ubMagSize);
     } else {
@@ -1043,11 +1045,11 @@ static void InventoryUp() {
   FindPositionOfPersInvSlider();
 }
 
-static INT32 GetNumberOfInventoryItemsOnCurrentMerc();
+static int32_t GetNumberOfInventoryItemsOnCurrentMerc();
 
 static void InventoryDown() {
-  if ((INT32)uiCurrentInventoryIndex >=
-      (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
+  if ((int32_t)uiCurrentInventoryIndex >=
+      (int32_t)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
     return;
   }
   uiCurrentInventoryIndex++;
@@ -1055,13 +1057,13 @@ static void InventoryDown() {
   FindPositionOfPersInvSlider();
 }
 
-static void InventoryUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void InventoryUpButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT || reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     InventoryUp();
   }
 }
 
-static void InventoryDownButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void InventoryDownButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT || reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     InventoryDown();
   }
@@ -1081,8 +1083,8 @@ static void EnableDisableInventoryScrollButtons() {
     EnableButton(giPersonnelInventoryButtons[0]);
   }
 
-  if ((INT32)uiCurrentInventoryIndex >=
-      (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
+  if ((int32_t)uiCurrentInventoryIndex >=
+      (int32_t)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
     giPersonnelInventoryButtons[1]->uiFlags &= ~BUTTON_CLICKED_ON;
     DisableButton(giPersonnelInventoryButtons[1]);
   } else {
@@ -1090,11 +1092,11 @@ static void EnableDisableInventoryScrollButtons() {
   }
 }
 
-static INT32 GetNumberOfInventoryItemsOnCurrentMerc() {
+static int32_t GetNumberOfInventoryItemsOnCurrentMerc() {
   // in current team mode?..nope...move on
   if (!fCurrentTeamMode) return 0;
 
-  UINT32 ubCount = 0;
+  uint32_t ubCount = 0;
   SOLDIERTYPE const &s = GetSoldierOfCurrentSlot();
   CFOR_EACH_SOLDIER_INV_SLOT(i, s) {
     OBJECTTYPE const &o = *i;
@@ -1104,7 +1106,7 @@ static INT32 GetNumberOfInventoryItemsOnCurrentMerc() {
   return ubCount;
 }
 
-static void HandleInventoryCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void HandleInventoryCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     InventoryUp();
   } else if (iReason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -1114,7 +1116,7 @@ static void HandleInventoryCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
 
 static MOUSE_REGION InventoryRegion;
 
-static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateDestroyPersonnelInventoryScrollButtons() {
   static BOOLEAN fCreated = FALSE;
@@ -1131,10 +1133,10 @@ static void CreateDestroyPersonnelInventoryScrollButtons() {
         Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3,
         CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
 
-    const UINT16 x = INVENTORY_BOX_X;
-    const UINT16 y = INVENTORY_BOX_Y;
-    const UINT16 w = INVENTORY_BOX_W;
-    const UINT16 h = INVENTORY_BOX_H;
+    const uint16_t x = INVENTORY_BOX_X;
+    const uint16_t y = INVENTORY_BOX_Y;
+    const uint16_t w = INVENTORY_BOX_W;
+    const uint16_t h = INVENTORY_BOX_H;
     MSYS_DefineRegion(&InventoryRegion, x, y, x + w, y + h, MSYS_PRIORITY_HIGHEST - 3,
                       CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleInventoryCallBack);
 
@@ -1164,14 +1166,14 @@ static void DisplayPersonnelSummary() {
     DisplayCostOfCurrentTeam();
 
     const wchar_t *const s = pPersonelTeamStrings[1];
-    INT16 sX = 0;
-    INT16 sY = 0;
+    int16_t sX = 0;
+    int16_t sY = 0;
     FindFontCenterCoordinates(PERS_CURR_TEAM_X, 0, 65, 0, s, FONT10ARIAL, &sX, &sY);
     MPrint(sX, PERS_DEPART_TEAM_Y, s);
   } else {
     const wchar_t *const s = pPersonelTeamStrings[0];
-    INT16 sX = 0;
-    INT16 sY = 0;
+    int16_t sX = 0;
+    int16_t sY = 0;
     FindFontCenterCoordinates(PERS_CURR_TEAM_X, 0, 65, 0, s, FONT10ARIAL, &sX, &sY);
     MPrint(sX, PERS_CURR_TEAM_Y, s);
 
@@ -1182,15 +1184,15 @@ static void DisplayPersonnelSummary() {
 }
 
 static void DisplayCostOfCurrentTeam() {
-  INT32 min_cost = 999999;
-  INT32 max_cost = 0;
-  INT32 sum_cost = 0;
+  int32_t min_cost = 999999;
+  int32_t max_cost = 0;
+  int32_t sum_cost = 0;
 
   CFOR_EACH_PERSONNEL(s) {
     if (s->bLife <= 0) continue;
 
     // valid soldier, get cost
-    INT32 cost;
+    int32_t cost;
     MERCPROFILESTRUCT const &p = GetProfile(s->ubProfile);
     switch (s->ubWhatKindOfMercAmI) {
       case MERC_TYPE__AIM_MERC:
@@ -1220,8 +1222,8 @@ static void DisplayCostOfCurrentTeam() {
   if (min_cost == 999999) min_cost = 0;
 
   wchar_t sString[32];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   // daily cost
   MPrint(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_COST_Y, pPersonelTeamStrings[2]);
@@ -1246,8 +1248,8 @@ static void DisplayCostOfCurrentTeam() {
 }
 
 static void DisplayTeamStats() {
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   SetFontAttributes(FONT10ARIAL, PERS_TEXT_FONT_COLOR);
 
@@ -1265,26 +1267,26 @@ static void DisplayTeamStats() {
                             pPersonnelCurrentTeamStatsStrings[2], FONT10ARIAL, &sX, &sY);
   MPrint(sX, PERS_STAT_AVG_Y, pPersonnelCurrentTeamStatsStrings[2]);
 
-  for (INT32 stat = 0; stat < 11; stat++) {
+  for (int32_t stat = 0; stat < 11; stat++) {
     // even or odd?..color black or yellow?
     SetFontForeground(stat % 2 == 0 ? PERS_TEXT_FONT_ALTERNATE_COLOR : PERS_TEXT_FONT_COLOR);
 
-    const INT32 y = PERS_STAT_AVG_Y + (stat + 1) * (GetFontHeight(FONT10ARIAL) + 3);
+    const int32_t y = PERS_STAT_AVG_Y + (stat + 1) * (GetFontHeight(FONT10ARIAL) + 3);
 
     // row header
     MPrint(PERS_STAT_LIST_X, y, pPersonnelTeamStatsStrings[stat]);
 
     const wchar_t *min_name = NULL;
     const wchar_t *max_name = NULL;
-    INT32 min_val = 100;
-    INT32 max_val = 0;
-    INT32 sum_val = 0;
-    INT32 count = 0;
+    int32_t min_val = 100;
+    int32_t max_val = 0;
+    int32_t sum_val = 0;
+    int32_t count = 0;
     if (fCurrentTeamMode) {
       CFOR_EACH_PERSONNEL(s) {
         if (s->bLife <= 0 || AM_A_ROBOT(s)) continue;
 
-        INT32 val;  // XXX HACK000E
+        int32_t val;  // XXX HACK000E
         switch (stat) {
           case 0:
             val = s->bLifeMax;
@@ -1335,8 +1337,8 @@ static void DisplayTeamStats() {
         ++count;
       }
     } else {
-      for (UINT CurrentList = 0; CurrentList < 3; ++CurrentList) {
-        const INT16 *CurrentListValue;  // XXX HACK000E
+      for (uint32_t CurrentList = 0; CurrentList < 3; ++CurrentList) {
+        const int16_t *CurrentListValue;  // XXX HACK000E
         switch (CurrentList) {
           case 0:
             CurrentListValue = LaptopSaveInfo.ubDeadCharactersList;
@@ -1352,11 +1354,11 @@ static void DisplayTeamStats() {
             abort();  // HACK000E
         }
 
-        for (UINT32 i = 0; i < 256; i++) {
-          const INT32 id = CurrentListValue[i];
+        for (uint32_t i = 0; i < 256; i++) {
+          const int32_t id = CurrentListValue[i];
           if (id == -1) continue;
 
-          INT32 val;  // XXX HACK000E
+          int32_t val;  // XXX HACK000E
           MERCPROFILESTRUCT const &p = GetProfile(id);
           switch (stat) {
             case 0:
@@ -1434,12 +1436,12 @@ static void DisplayTeamStats() {
   }
 }
 
-static INT32 GetNumberOfDeadOnPastTeam();
-static INT32 GetNumberOfLeftOnPastTeam();
-static INT32 GetNumberOfOtherOnPastTeam();
+static int32_t GetNumberOfDeadOnPastTeam();
+static int32_t GetNumberOfLeftOnPastTeam();
+static int32_t GetNumberOfOtherOnPastTeam();
 
-static INT32 GetNumberOfPastMercsOnPlayersTeam() {
-  INT32 iPastNumberOfMercs = 0;
+static int32_t GetNumberOfPastMercsOnPlayersTeam() {
+  int32_t iPastNumberOfMercs = 0;
   // will run through the list of past mercs on the players team and return
   // their number
 
@@ -1457,25 +1459,29 @@ static void InitPastCharactersList() {
   memset(&LaptopSaveInfo.ubOtherCharactersList, -1, sizeof(LaptopSaveInfo.ubOtherCharactersList));
 }
 
-static INT32 CountList(const INT16 *const list) {
-  INT32 count = 0;
-  for (const INT16 *i = list, *const end = list + 256; i != end; ++i) {
+static int32_t CountList(const int16_t *const list) {
+  int32_t count = 0;
+  for (const int16_t *i = list, *const end = list + 256; i != end; ++i) {
     if (*i != -1) ++count;
   }
   return count;
 }
 
-static INT32 GetNumberOfDeadOnPastTeam() { return CountList(LaptopSaveInfo.ubDeadCharactersList); }
+static int32_t GetNumberOfDeadOnPastTeam() {
+  return CountList(LaptopSaveInfo.ubDeadCharactersList);
+}
 
-static INT32 GetNumberOfLeftOnPastTeam() { return CountList(LaptopSaveInfo.ubLeftCharactersList); }
+static int32_t GetNumberOfLeftOnPastTeam() {
+  return CountList(LaptopSaveInfo.ubLeftCharactersList);
+}
 
-static INT32 GetNumberOfOtherOnPastTeam() {
+static int32_t GetNumberOfOtherOnPastTeam() {
   return CountList(LaptopSaveInfo.ubOtherCharactersList);
 }
 
 // diplays numbers fired, dead and other
 static void DisplayStateOfPastTeamMembers() {
-  INT16 sX, sY;
+  int16_t sX, sY;
   wchar_t sString[32];
 
   // dead
@@ -1500,8 +1506,8 @@ static void DisplayStateOfPastTeamMembers() {
   MPrint(sX, PERS_CURR_TEAM_LOWEST_Y, sString);
 }
 
-static void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateDestroyCurrentDepartedMouseRegions(BOOLEAN create) {
   static BOOLEAN fCreated = FALSE;
@@ -1511,10 +1517,10 @@ static void CreateDestroyCurrentDepartedMouseRegions(BOOLEAN create) {
 
   if (create && !fCreated) {
     // not created, create
-    UINT16 tlx = PERS_TOGGLE_CUR_DEPART_X;
-    UINT16 tly = PERS_TOGGLE_CUR_Y;
-    UINT16 brx = tlx + PERS_TOGGLE_CUR_DEPART_WIDTH;
-    UINT16 bry = tly + PERS_TOGGLE_CUR_DEPART_HEIGHT;
+    uint16_t tlx = PERS_TOGGLE_CUR_DEPART_X;
+    uint16_t tly = PERS_TOGGLE_CUR_Y;
+    uint16_t brx = tlx + PERS_TOGGLE_CUR_DEPART_WIDTH;
+    uint16_t bry = tly + PERS_TOGGLE_CUR_DEPART_HEIGHT;
     MSYS_DefineRegion(&gTogglePastCurrentTeam[0], tlx, tly, brx, bry, MSYS_PRIORITY_HIGHEST - 3,
                       CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
 
@@ -1533,7 +1539,7 @@ static void CreateDestroyCurrentDepartedMouseRegions(BOOLEAN create) {
   }
 }
 
-static void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fCurrentTeamMode) return;
     fCurrentTeamMode = TRUE;
@@ -1544,7 +1550,7 @@ static void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (!fCurrentTeamMode) return;
     fCurrentTeamMode = FALSE;
@@ -1559,8 +1565,8 @@ static void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) 
   }
 }
 
-static void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason);
-static void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason);
+static void DepartedDownCallBack(GUI_BUTTON *btn, int32_t reason);
+static void DepartedUpCallBack(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateDestroyButtonsForDepartedTeamList(const BOOLEAN create) {
   // creates/ destroys the buttons for cdeparted team list
@@ -1583,7 +1589,7 @@ static void CreateDestroyButtonsForDepartedTeamList(const BOOLEAN create) {
   fCreated = create;
 }
 
-static void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void DepartedUpCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (giCurrentUpperLeftPortraitNumber - PERSONNEL_PORTRAIT_NUMBER >= 0) {
       giCurrentUpperLeftPortraitNumber -= PERSONNEL_PORTRAIT_NUMBER;
@@ -1592,9 +1598,9 @@ static void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void DepartedDownCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT32 const n_past = GetNumberOfPastMercsOnPlayersTeam();
+    int32_t const n_past = GetNumberOfPastMercsOnPlayersTeam();
     if (n_past - giCurrentUpperLeftPortraitNumber > PERSONNEL_PORTRAIT_NUMBER) {
       giCurrentUpperLeftPortraitNumber += PERSONNEL_PORTRAIT_NUMBER;
       if (iCurrentPersonSelectedId >= n_past - giCurrentUpperLeftPortraitNumber) {
@@ -1605,7 +1611,7 @@ static void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DisplayPortraitOfPastMerc(INT32 iId, INT32 iCounter, BOOLEAN fDead);
+static void DisplayPortraitOfPastMerc(int32_t iId, int32_t iCounter, BOOLEAN fDead);
 
 /* Display past mercs portraits, starting at giCurrentUpperLeftPortraitNumber
  * and going up PERSONNEL_PORTRAIT_NUMBER mercs. Start at dead mercs, then
@@ -1614,21 +1620,21 @@ static void DisplayPastMercsPortraits() {
   if (fCurrentTeamMode) return;  // Not time to display
 
   LaptopSaveInfoStruct const &l = LaptopSaveInfo;
-  INT32 pos = -giCurrentUpperLeftPortraitNumber;
+  int32_t pos = -giCurrentUpperLeftPortraitNumber;
 
-  FOR_EACH(INT16 const, i, l.ubDeadCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubDeadCharactersList) {
     if (*i == -1) continue;
     if (pos >= 0) DisplayPortraitOfPastMerc(*i, pos, TRUE);
     if (++pos == PERSONNEL_PORTRAIT_NUMBER) return;
   }
 
-  FOR_EACH(INT16 const, i, l.ubLeftCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubLeftCharactersList) {
     if (*i == -1) continue;
     if (pos >= 0) DisplayPortraitOfPastMerc(*i, pos, FALSE);
     if (++pos == PERSONNEL_PORTRAIT_NUMBER) return;
   }
 
-  FOR_EACH(INT16 const, i, l.ubOtherCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubOtherCharactersList) {
     if (*i == -1) continue;
     if (pos >= 0) DisplayPortraitOfPastMerc(*i, pos, FALSE);
     if (++pos == PERSONNEL_PORTRAIT_NUMBER) return;
@@ -1637,30 +1643,30 @@ static void DisplayPastMercsPortraits() {
 
 // returns ID of Merc in this slot
 static PastMercInfo GetSelectedPastMercInfo() {
-  INT32 slot = giCurrentUpperLeftPortraitNumber + iCurrentPersonSelectedId;
+  int32_t slot = giCurrentUpperLeftPortraitNumber + iCurrentPersonSelectedId;
   Assert(slot < GetNumberOfPastMercsOnPlayersTeam());
 
   LaptopSaveInfoStruct const &l = LaptopSaveInfo;
-  FOR_EACH(INT16 const, i, l.ubDeadCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubDeadCharactersList) {
     if (*i == -1 || slot-- != 0) continue;
     return PastMercInfo(&GetProfile(*i), DEPARTED_DEAD);
   }
-  FOR_EACH(INT16 const, i, l.ubLeftCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubLeftCharactersList) {
     if (*i == -1 || slot-- != 0) continue;
     return PastMercInfo(&GetProfile(*i), DEPARTED_FIRED);
   }
-  FOR_EACH(INT16 const, i, l.ubOtherCharactersList) {
+  FOR_EACH(int16_t const, i, l.ubOtherCharactersList) {
     if (*i == -1 || slot-- != 0) continue;
     MERCPROFILESTRUCT &p = GetProfile(*i);
-    INT const state = p.ubMiscFlags2 & PROFILE_MISC_FLAG2_MARRIED_TO_HICKS ? DEPARTED_MARRIED
-                      : *i < BIFF ? DEPARTED_CONTRACT_EXPIRED
-                                  : DEPARTED_QUIT;
+    int32_t const state = p.ubMiscFlags2 & PROFILE_MISC_FLAG2_MARRIED_TO_HICKS ? DEPARTED_MARRIED
+                          : *i < BIFF ? DEPARTED_CONTRACT_EXPIRED
+                                      : DEPARTED_QUIT;
     return PastMercInfo(&p, state);
   }
   return PastMercInfo(0, -1);
 }
 
-static void DisplayPortraitOfPastMerc(const INT32 iId, const INT32 iCounter,
+static void DisplayPortraitOfPastMerc(const int32_t iId, const int32_t iCounter,
                                       const BOOLEAN fDead) try {
   AutoSGPVObject guiFACE(LoadSmallPortrait(GetProfile(iId)));
 
@@ -1671,23 +1677,23 @@ static void DisplayPortraitOfPastMerc(const INT32 iId, const INT32 iCounter,
     guiFACE->CurrentShade(0);
   }
 
-  const INT32 x =
+  const int32_t x =
       SMALL_PORTRAIT_START_X + iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_WIDTH;
-  const INT32 y =
+  const int32_t y =
       SMALL_PORTRAIT_START_Y + iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_HEIGHT;
   BltVideoObject(FRAME_BUFFER, guiFACE, 0, x, y);
 } catch (...) { /* XXX ignore */
 }
 
-static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &p, INT32 const iState) {
+static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &p, int32_t const iState) {
   wchar_t sString[50];
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
 
   SetFontAttributes(FONT10ARIAL, PERS_TEXT_FONT_COLOR);
 
-  INT8 const life = p.bLife;
-  INT8 const cur = (iState == DEPARTED_DEAD ? 0 : life);
+  int8_t const life = p.bLife;
+  int8_t const cur = (iState == DEPARTED_DEAD ? 0 : life);
   swprintf(sString, lengthof(sString), L"%d/%d", cur, life);
   mprintf(pers_stat_x, pers_stat_y[0], L"%ls:", str_stat_health);
   FindFontRightCoordinates(pers_stat_x, 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
@@ -1709,8 +1715,8 @@ static void DisplayDepartedCharStats(MERCPROFILESTRUCT const &p, INT32 const iSt
   // Shots/hits
   MPrint(pers_stat_x, pers_stat_y[23], pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
   // check we have shot at least once
-  UINT32 const fired = p.usShotsFired;
-  UINT32 const hits = (fired > 0 ? 100 * p.usShotsHit / fired : 0);
+  uint32_t const fired = p.usShotsFired;
+  uint32_t const hits = (fired > 0 ? 100 * p.usShotsHit / fired : 0);
   swprintf(sString, lengthof(sString), L"%d %%", hits);
   FindFontRightCoordinates(pers_stat_x, 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
   MPrint(sX, pers_stat_y[23], sString);
@@ -1741,9 +1747,9 @@ static void EnableDisableDeparturesButtons() {
   }
 }
 
-static void DisplayDepartedCharName(MERCPROFILESTRUCT const &p, const INT32 iState) {
+static void DisplayDepartedCharName(MERCPROFILESTRUCT const &p, const int32_t iState) {
   // get merc's nickName, assignment, and sector location info
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   SetFontAttributes(CHAR_NAME_FONT, PERS_TEXT_FONT_COLOR);
 
@@ -1764,18 +1770,18 @@ static void DisplayPersonnelTextOnTitleBar() {
 }
 
 // display box around currently selected merc
-static void DisplayHighLightBox(INT32 const sel_id) {
+static void DisplayHighLightBox(int32_t const sel_id) {
   // will display highlight box around selected merc
-  const INT32 x =
+  const int32_t x =
       SMALL_PORTRAIT_START_X + sel_id % PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_WIDTH - 2;
-  const INT32 y =
+  const int32_t y =
       SMALL_PORTRAIT_START_Y + sel_id / PERSONNEL_PORTRAIT_NUMBER_WIDTH * SMALL_PORT_HEIGHT - 3;
   BltVideoObjectOnce(FRAME_BUFFER, LAPTOPDIR "/picborde.sti", 0, x, y);
 }
 
 // add to dead list
 void AddCharacterToDeadList(SOLDIERTYPE *pSoldier) {
-  for (INT32 i = 0; i < 256; i++) {
+  for (int32_t i = 0; i < 256; i++) {
     if (LaptopSaveInfo.ubDeadCharactersList[i] == -1) {
       // valid slot, merc not found yet, inset here
       LaptopSaveInfo.ubDeadCharactersList[i] = pSoldier->ubProfile;
@@ -1790,7 +1796,7 @@ void AddCharacterToDeadList(SOLDIERTYPE *pSoldier) {
 }
 
 void AddCharacterToFiredList(SOLDIERTYPE *pSoldier) {
-  for (INT32 i = 0; i < 256; i++) {
+  for (int32_t i = 0; i < 256; i++) {
     if (LaptopSaveInfo.ubLeftCharactersList[i] == -1) {
       // valid slot, merc not found yet, inset here
       LaptopSaveInfo.ubLeftCharactersList[i] = pSoldier->ubProfile;
@@ -1805,7 +1811,7 @@ void AddCharacterToFiredList(SOLDIERTYPE *pSoldier) {
 }
 
 void AddCharacterToOtherList(SOLDIERTYPE *pSoldier) {
-  for (INT32 i = 0; i < 256; i++) {
+  for (int32_t i = 0; i < 256; i++) {
     if (LaptopSaveInfo.ubOtherCharactersList[i] == -1) {
       // valid slot, merc not found yet, inset here
       LaptopSaveInfo.ubOtherCharactersList[i] = pSoldier->ubProfile;
@@ -1823,8 +1829,8 @@ void AddCharacterToOtherList(SOLDIERTYPE *pSoldier) {
 // now you are hiring them again, we must get rid of them from the departed
 // section in the personnel screen.  (wouldnt make sense for them
 // to be on your team list, and departed list)
-BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile) {
-  for (INT32 i = 0; i < 256; i++) {
+BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(uint8_t ubProfile) {
+  for (int32_t i = 0; i < 256; i++) {
     // are they already in the Dead list?
     if (LaptopSaveInfo.ubDeadCharactersList[i] == ubProfile) {
       // Reset the fact that they were once hired
@@ -1867,7 +1873,7 @@ static void SelectFirstDisplayedMerc() {
 static SOLDIERTYPE const &GetSoldierOfCurrentSlot() {
   Assert(fCurrentTeamMode);
 
-  INT32 slot = iCurrentPersonSelectedId;
+  int32_t slot = iCurrentPersonSelectedId;
   CFOR_EACH_PERSONNEL(s) {
     if (slot-- == 0) return *s;
   }
@@ -1884,7 +1890,7 @@ static void RenderAtmPanel() try {
 } catch (...) { /* XXX ignore */
 }
 
-static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t *text) {
+static void MakeButton(uint32_t idx, int16_t y, GUI_CALLBACK click, const wchar_t *text) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/atmbuttons.sti", 2, 3);
   giPersonnelATMStartButtonImage[idx] = img;
   GUIButtonRef const btn = QuickCreateButtonNoMove(img, 519, y, MSYS_PRIORITY_HIGHEST - 1, click);
@@ -1893,9 +1899,9 @@ static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t *tex
   btn->SetCursor(CURSOR_LAPTOP_SCREEN);
 }
 
-static void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void EmployementInfoButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateDestroyStartATMButton(const BOOLEAN create) {
   static BOOLEAN fCreated = FALSE;
@@ -1923,22 +1929,22 @@ static void CreateDestroyStartATMButton(const BOOLEAN create) {
 }
 
 static void FindPositionOfPersInvSlider() {
-  const INT32 item_count = GetNumberOfInventoryItemsOnCurrentMerc();
-  const INT32 scroll_count = item_count - NUMBER_OF_INVENTORY_PERSONNEL;
+  const int32_t item_count = GetNumberOfInventoryItemsOnCurrentMerc();
+  const int32_t scroll_count = item_count - NUMBER_OF_INVENTORY_PERSONNEL;
   guiSliderPosition = (Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) *
                       uiCurrentInventoryIndex / scroll_count;
 }
 
-static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN || iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    const INT32 item_count = GetNumberOfInventoryItemsOnCurrentMerc();
+    const int32_t item_count = GetNumberOfInventoryItemsOnCurrentMerc();
     if (item_count <= NUMBER_OF_INVENTORY_PERSONNEL) return;
 
-    const INT32 scroll_count = item_count - NUMBER_OF_INVENTORY_PERSONNEL;
+    const int32_t scroll_count = item_count - NUMBER_OF_INVENTORY_PERSONNEL;
 
     // get the actual item position
-    const INT16 new_item_idx = scroll_count * pRegion->RelativeYPos /
-                               (Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR);
+    const int16_t new_item_idx = scroll_count * pRegion->RelativeYPos /
+                                 (Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR);
 
     if (uiCurrentInventoryIndex != new_item_idx) {
       // get slider position
@@ -1964,7 +1970,7 @@ static void RenderSliderBarForPersonnelInventory() {
                  guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION);
 }
 
-static void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -1974,7 +1980,7 @@ static void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -1984,7 +1990,7 @@ static void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void EmployementInfoButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -1995,8 +2001,8 @@ static void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // get the total amt of money on this guy
-static INT32 GetFundsOnMerc(SOLDIERTYPE const &s) {
-  INT32 iCurrentAmount = 0;
+static int32_t GetFundsOnMerc(SOLDIERTYPE const &s) {
+  int32_t iCurrentAmount = 0;
   // run through mercs pockets, if any money in them, add to total
 
   // run through grunts pockets and count all the spare change
@@ -2063,8 +2069,8 @@ static void DisplayAmountOnChar(SOLDIERTYPE const &s) {
 
   SetFontAttributes(ATM_FONT, FONT_WHITE);
 
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
   FindFontRightCoordinates(ATM_DISPLAY_X, ATM_DISPLAY_Y, ATM_DISPLAY_WIDTH, ATM_DISPLAY_HEIGHT,
                            sString, ATM_FONT, &sX, &sY);
   MPrint(sX, sY, sString);
@@ -2080,31 +2086,31 @@ static void HandlePersonnelKeyboard() {
 static void DisplayEmploymentinformation(SOLDIERTYPE const &s) {
   wchar_t sString[50];
   wchar_t sStringA[50];
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   MERCPROFILESTRUCT const &p = GetProfile(s.ubProfile);
 
   // display the stats for a char
-  for (INT32 i = 0; i < MAX_STATS; i++) {
+  for (int32_t i = 0; i < MAX_STATS; i++) {
     switch (i) {
       case 0:  // Remaining Contract:
       {
         if (s.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC || s.ubProfile == SLAY) {
-          const UINT32 uiMinutesInDay = 24 * 60;
-          INT32 iTimeLeftOnContract = s.iEndofContractTime - GetWorldTotalMin();
+          const uint32_t uiMinutesInDay = 24 * 60;
+          int32_t iTimeLeftOnContract = s.iEndofContractTime - GetWorldTotalMin();
           if (iTimeLeftOnContract < 0) iTimeLeftOnContract = 0;
 
           // if the merc is in transit
           if (s.bAssignment == IN_TRANSIT) {
             // and if the ttime left on the cotract is greater then the contract
             // time
-            if (iTimeLeftOnContract > (INT32)(s.iTotalContractLength * uiMinutesInDay)) {
+            if (iTimeLeftOnContract > (int32_t)(s.iTotalContractLength * uiMinutesInDay)) {
               iTimeLeftOnContract = (s.iTotalContractLength * uiMinutesInDay);
             }
           }
           // if there is going to be a both days and hours left on the contract
-          const INT days = iTimeLeftOnContract / uiMinutesInDay;
-          const INT hours = iTimeLeftOnContract % uiMinutesInDay / 60;
+          const int32_t days = iTimeLeftOnContract / uiMinutesInDay;
+          const int32_t hours = iTimeLeftOnContract % uiMinutesInDay / 60;
           if (days > 0) {
             swprintf(sString, lengthof(sString), L"%d%ls %d%ls / %d%ls", days,
                      gpStrategicString[STR_PB_DAYS_ABBREVIATION], hours,
@@ -2149,7 +2155,7 @@ static void DisplayEmploymentinformation(SOLDIERTYPE const &s) {
         // print contract cost
         MPrint(sX, pers_stat_y[i], sString);
 
-        INT32 salary;
+        int32_t salary;
         switch (s.ubWhatKindOfMercAmI) {
           case MERC_TYPE__AIM_MERC:
             switch (s.bTypeOfLastContract) {

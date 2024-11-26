@@ -5,7 +5,7 @@
 #include "SGP/Debug.h"
 #include "Tactical/SoldierProfileType.h"
 
-extern INT8 gbSkillTraitBonus[NUM_SKILLTRAITS];
+extern int8_t gbSkillTraitBonus[NUM_SKILLTRAITS];
 extern BOOLEAN gfPotentialTeamChangeDuringDeath;
 
 extern MERCPROFILESTRUCT gMercProfiles[NUM_PROFILES];
@@ -188,26 +188,26 @@ enum NPCIDs {
 void LoadMercProfiles();
 
 // Overload the default for the face index (which is the profile ID)
-void SetProfileFaceData(ProfileID, UINT8 face_idx, UINT16 eyes_x, UINT16 eyes_y, UINT16 mouth_x,
-                        UINT16 mouth_y);
+void SetProfileFaceData(ProfileID, uint8_t face_idx, uint16_t eyes_x, uint16_t eyes_y,
+                        uint16_t mouth_x, uint16_t mouth_y);
 
 SOLDIERTYPE *FindSoldierByProfileID(ProfileID);
 SOLDIERTYPE *FindSoldierByProfileIDOnPlayerTeam(ProfileID);
 
-BOOLEAN RecruitRPC(UINT8 ubCharNum);
+BOOLEAN RecruitRPC(uint8_t ubCharNum);
 
-BOOLEAN RecruitEPC(UINT8 ubCharNum);
+BOOLEAN RecruitEPC(uint8_t ubCharNum);
 BOOLEAN UnRecruitEPC(ProfileID);
 
-INT8 WhichBuddy(UINT8 ubCharNum, UINT8 ubBuddy);
-INT8 WhichHated(UINT8 ubCharNum, UINT8 ubHated);
+int8_t WhichBuddy(uint8_t ubCharNum, uint8_t ubBuddy);
+int8_t WhichHated(uint8_t ubCharNum, uint8_t ubHated);
 
-INT8 GetFirstBuddyOnTeam(MERCPROFILESTRUCT const &);
+int8_t GetFirstBuddyOnTeam(MERCPROFILESTRUCT const &);
 
-SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *, UINT8 team);
+SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *, uint8_t team);
 
 bool IsProfileATerrorist(ProfileID);
-BOOLEAN IsProfileAHeadMiner(UINT8 ubProfile);
+BOOLEAN IsProfileAHeadMiner(uint8_t ubProfile);
 
 void UpdateSoldierPointerDataIntoProfile();
 
@@ -219,6 +219,6 @@ void MakeRemainingTerroristsTougher();
 void MakeRemainingAssassinsTougher();
 SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *pSoldier);
 
-BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, INT16 sGridNo);
+BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, int16_t sGridNo);
 
 #endif

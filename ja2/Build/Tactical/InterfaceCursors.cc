@@ -218,9 +218,9 @@ const UICursor gUICursors[NUM_UI_CURSORS] = {
     {REFUEL_RED_UICURSOR, UICURSOR_FREEFLOWING, CURSOR_FUEL_RED, 0},
 };
 
-static UINT32 guiCurUICursor = NO_UICURSOR;
-UINT16 gusCurMousePos;
-UINT16 gusTargetDropPos;
+static uint32_t guiCurUICursor = NO_UICURSOR;
+uint16_t gusCurMousePos;
+uint16_t gusTargetDropPos;
 BOOLEAN gfTargetDropPos = FALSE;
 
 void SetUICursor(UICursorID const uiNewCursor) { guiCurUICursor = uiNewCursor; }
@@ -229,7 +229,7 @@ static void DrawSnappingCursor();
 
 void DrawUICursor() {
   LEVELNODE *pNode;
-  UINT16 usTileCursor;
+  uint16_t usTileCursor;
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
   if (gpItemPointer != NULL) {
@@ -561,7 +561,7 @@ static void EraseSnappingCursor() {
   RemoveAllOnRoofsOfTypeRange(gusCurMousePos, MOCKFLOOR, MOCKFLOOR);
 }
 
-UINT16 GetSnapCursorIndex(UINT16 usAdditionalData) {
+uint16_t GetSnapCursorIndex(uint16_t usAdditionalData) {
   // OK, this function will get the 'true' index for drawing the cursor....
   if (gGameSettings.fOptions[TOPTION_3D_CURSOR]) {
     switch (usAdditionalData) {

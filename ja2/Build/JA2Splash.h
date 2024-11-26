@@ -5,7 +5,7 @@
 
 void InitJA2SplashScreen();
 
-extern UINT32 guiSplashFrameFade;
-extern UINT32 guiSplashStartTime;
+extern uint32_t guiSplashFrameFade;
+extern uint32_t guiSplashStartTime;
 
 #endif

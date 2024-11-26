@@ -294,8 +294,8 @@ static SGPVObject *guiStats;
 static SGPVObject *guiPrice;
 static SGPVObject *guiPortrait;
 static SGPVObject *guiWeaponBox;
-// UINT32		guiVideoFace;
-// UINT32		guiContactButton;
+// uint32_t		guiVideoFace;
+// uint32_t		guiContactButton;
 static SGPVObject *guiVideoConfPopup;
 static SGPVObject *guiVideoConfTerminal;
 static SGPVObject *guiPopUpBox;
@@ -307,8 +307,8 @@ static SGPVObject *guiTransSnow;
 static SGPVObject *guiVideoContractCharge;
 static SGPVSurface *guiVideoTitleBar;
 
-static UINT8 gbCurrentSoldier = 0;
-UINT8 gbCurrentIndex = 0;
+static uint8_t gbCurrentSoldier = 0;
+uint8_t gbCurrentIndex = 0;
 
 AIMVideoMode gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
 static AIMVideoMode gubVideoConferencingPreviousMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
@@ -319,28 +319,28 @@ static BOOLEAN gfVideoFaceActive = FALSE;
 
 static PopUpAction gubPopUpBoxAction = AIM_POPUP_NOTHING;
 static BOOLEAN gfRedrawScreen = FALSE;
-static UINT8 gubContractLength;
+static uint8_t gubContractLength;
 static BOOLEAN gfBuyEquipment;
-static INT32 giContractAmount = 0;
+static int32_t giContractAmount = 0;
 static FACETYPE *giMercFaceIndex;
 static wchar_t gsTalkingMercText[TEXT_POPUP_STRING_SIZE];
-static UINT32 guiTimeThatMercStartedTalking;
-static UINT32 guiLastHandleMercTime;
+static uint32_t guiTimeThatMercStartedTalking;
+static uint32_t guiLastHandleMercTime;
 static BOOLEAN gfFirstTimeInContactScreen;
 
-static UINT8 gubCurrentCount;
-static UINT8 gubCurrentStaticMode;
-static UINT32 guiMercAttitudeTime;  // retains the amount of time the user is in a screen,
-                                    // if over a certain time, the merc gets miffed
-static UINT8 gubMercAttitudeLevel;  // retains the current level the merc is
-                                    // P.O.'ed at the caller.
-static BOOLEAN gfHangUpMerc;        // if we have to cancel the video conferencing
-                                    // after the merc is finsihed talking
+static uint8_t gubCurrentCount;
+static uint8_t gubCurrentStaticMode;
+static uint32_t guiMercAttitudeTime;  // retains the amount of time the user is in a screen,
+                                      // if over a certain time, the merc gets miffed
+static uint8_t gubMercAttitudeLevel;  // retains the current level the merc is
+                                      // P.O.'ed at the caller.
+static BOOLEAN gfHangUpMerc;          // if we have to cancel the video conferencing
+                                      // after the merc is finsihed talking
 static BOOLEAN gfIsShutUpMouseRegionActive;
 static BOOLEAN gfIsAnsweringMachineActive;
 static BOOLEAN gfStopMercFromTalking;
 
-static UINT16 usAimMercSpeechDuration = 0;
+static uint16_t usAimMercSpeechDuration = 0;
 
 static BOOLEAN gfIsNewMailFlagSet = FALSE;
 
@@ -410,7 +410,7 @@ void EnterInitAimMembers() {
   LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = -1;
 }
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click) {
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t x, GUI_CALLBACK click) {
   GUIButtonRef const btn =
       CreateIconAndTextButton(guiPreviousContactNextButtonImage, text, AIM_M_FONT_PREV_NEXT_CONTACT,
                               AIM_M_FONT_PREV_NEXT_CONTACT_COLOR_UP, DEFAULT_SHADOW,
@@ -420,14 +420,14 @@ static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click)
   return btn;
 }
 
-static void BtnContactButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnPreviousButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnContactButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnNextButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnPreviousButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static void InitDeleteVideoConferencePopUp();
-static void InitVideoFace(UINT8 ubMercID);
-static void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void InitVideoFace(uint8_t ubMercID);
+static void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterAIMMembers() {
   // Create a background video surface to blt the face onto
@@ -558,8 +558,8 @@ void ExitAIMMembers() {
   DeleteAimPopUpBox();
 }
 
-static void DelayMercSpeech(UINT8 ubMercID, UINT16 usQuoteNum, UINT16 usDelay, BOOLEAN fNewQuote,
-                            BOOLEAN fReset);
+static void DelayMercSpeech(uint8_t ubMercID, uint16_t usQuoteNum, uint16_t usDelay,
+                            BOOLEAN fNewQuote, BOOLEAN fReset);
 static BOOLEAN DisplayTalkingMercFaceForVideoPopUp(const FACETYPE *);
 static void HandleCurrentVideoConfMode();
 static void HandleMercAttitude();
@@ -652,7 +652,7 @@ static void DisplayVideoConferencingDisplay(MERCPROFILESTRUCT const &);
 static void UpdateMercInfo();
 
 void RenderAIMMembers() {
-  UINT16 x, uiPosX;
+  uint16_t x, uiPosX;
   wchar_t wTemp[50];
 
   DrawAimDefaults();
@@ -733,21 +733,21 @@ void RenderAIMMembers() {
   fReDrawScreenFlag = TRUE;
 }
 
-void DrawNumeralsToScreen(INT32 iNumber, INT8 bWidth, UINT16 usLocX, UINT16 usLocY, Font const font,
-                          UINT8 ubColor) {
+void DrawNumeralsToScreen(int32_t iNumber, int8_t bWidth, uint16_t usLocX, uint16_t usLocY,
+                          Font const font, uint8_t ubColor) {
   wchar_t sStr[10];
   swprintf(sStr, lengthof(sStr), L"%d", iNumber);
   DrawTextToScreen(sStr, usLocX, usLocY, bWidth, font, ubColor, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
 }
 
-static void DrawMoneyToScreen(INT32 iNumber, INT8 bWidth, UINT16 usLocX, UINT16 usLocY,
-                              Font const font, UINT8 ubColor) {
+static void DrawMoneyToScreen(int32_t iNumber, int8_t bWidth, uint16_t usLocX, uint16_t usLocY,
+                              Font const font, uint8_t ubColor) {
   wchar_t sStr[10];
   SPrintMoney(sStr, iNumber);
   DrawTextToScreen(sStr, usLocX, usLocY, bWidth, font, ubColor, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
 }
 
-static void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -759,7 +759,7 @@ static void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gfAimMemberDisplayFaceHelpText = FALSE;
     gfRedrawScreen = TRUE;
@@ -769,7 +769,7 @@ static void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReaso
   }
 }
 
-static void LoadMercBioInfo(UINT8 ubIndex, wchar_t *pInfoString, wchar_t *pAddInfo);
+static void LoadMercBioInfo(uint8_t ubIndex, wchar_t *pInfoString, wchar_t *pAddInfo);
 
 static void UpdateMercInfo() {
   // Display the salaries
@@ -823,9 +823,9 @@ static void UpdateMercInfo() {
   }
 }
 
-static void LoadMercBioInfo(UINT8 const ubIndex, wchar_t *const pInfoString,
+static void LoadMercBioInfo(uint8_t const ubIndex, wchar_t *const pInfoString,
                             wchar_t *const pAddInfo) {
-  UINT32 uiStartSeekAmount = (SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex;
+  uint32_t uiStartSeekAmount = (SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex;
   LoadEncryptedDataFromFile(MERCBIOSFILENAME, pInfoString, uiStartSeekAmount, SIZE_MERC_BIO_INFO);
   LoadEncryptedDataFromFile(MERCBIOSFILENAME, pAddInfo, uiStartSeekAmount + SIZE_MERC_BIO_INFO,
                             SIZE_MERC_ADDITIONAL_INFO);
@@ -836,19 +836,19 @@ static void DisplayMercsInventory(MERCPROFILESTRUCT const &p) {
   // inventory
   if (p.ubMiscFlags & PROFILE_MISC_FLAG_ALREADY_USED_ITEMS) return;
 
-  INT16 x = WEAPONBOX_X + 3;  // + 3 (1 to take care of the shadow, +2 to get
-                              // past the weapon box border)
-  INT16 const y = WEAPONBOX_Y;
-  UINT8 n_items = 0;
-  for (UINT8 i = 0; i < NUM_INV_SLOTS; ++i) {
-    UINT16 const usItem = p.inv[i];
+  int16_t x = WEAPONBOX_X + 3;  // + 3 (1 to take care of the shadow, +2 to get
+                                // past the weapon box border)
+  int16_t const y = WEAPONBOX_Y;
+  uint8_t n_items = 0;
+  for (uint8_t i = 0; i < NUM_INV_SLOTS; ++i) {
+    uint16_t const usItem = p.inv[i];
     if (usItem == NOTHING) continue;
 
     INVTYPE const &item = Item[usItem];
     SGPVObject const &item_vo = GetInterfaceGraphicForItem(item);
     ETRLEObject const &e = item_vo.SubregionProperties(item.ubGraphicNum);
-    INT16 const sCenX = x + abs(WEAPONBOX_SIZE_X - 3 - e.usWidth) / 2 - e.sOffsetX;
-    INT16 const sCenY = y + abs(WEAPONBOX_SIZE_Y - e.usHeight) / 2 - e.sOffsetY;
+    int16_t const sCenX = x + abs(WEAPONBOX_SIZE_X - 3 - e.usWidth) / 2 - e.sOffsetX;
+    int16_t const sCenY = y + abs(WEAPONBOX_SIZE_Y - e.usHeight) / 2 - e.sOffsetY;
 
     // Blt the shadow of the item
     BltVideoObjectOutlineShadow(FRAME_BUFFER, &item_vo, item.ubGraphicNum, sCenX - 2, sCenY + 2);
@@ -866,12 +866,12 @@ static void DisplayMercsInventory(MERCPROFILESTRUCT const &p) {
 
     // If this will only be a single line, center it in the box
     wchar_t const *const item_name = ShortItemNames[usItem];
-    UINT16 const tx = x - 1;
-    UINT16 const ty = AIM_MEMBER_WEAPON_NAME_Y;
-    UINT16 const tw = AIM_MEMBER_WEAPON_NAME_WIDTH;
+    uint16_t const tx = x - 1;
+    uint16_t const ty = AIM_MEMBER_WEAPON_NAME_Y;
+    uint16_t const tw = AIM_MEMBER_WEAPON_NAME_WIDTH;
     Font const tf = AIM_M_WEAPON_TEXT_FONT;
-    UINT8 const tc = AIM_M_WEAPON_TEXT_COLOR;
-    UINT8 const tb = FONT_MCOLOR_BLACK;
+    uint8_t const tc = AIM_M_WEAPON_TEXT_COLOR;
+    uint8_t const tb = FONT_MCOLOR_BLACK;
     if (DisplayWrappedString(tx, ty, tw, 2, tf, tc, item_name, tb,
                              CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) /
             GetFontHeight(tf) ==
@@ -887,7 +887,7 @@ static void DisplayMercsInventory(MERCPROFILESTRUCT const &p) {
   }
 }
 
-static void BtnPreviousButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnPreviousButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DeleteAimPopUpBox();
 
@@ -899,7 +899,7 @@ static void BtnPreviousButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnContactButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnContactButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if we are not already in the video conferemce mode, go in to it
     if (gubVideoConferencingMode == AIM_VIDEO_NOT_DISPLAYED_MODE) {
@@ -913,7 +913,7 @@ static void BtnContactButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnNextButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DeleteAimPopUpBox();
 
@@ -976,18 +976,20 @@ static void DisplayMercsFace() try {
 } catch (...) { /* XXX ignore */
 }
 
-static void DisplayDots(UINT16 usNameX, UINT16 usNameY, UINT16 usStatX, const wchar_t *pString);
+static void DisplayDots(uint16_t usNameX, uint16_t usNameY, uint16_t usStatX,
+                        const wchar_t *pString);
 
-static void DrawStatColoured(const UINT16 x, const UINT16 y, const wchar_t *const stat,
-                             const INT32 val, const UINT8 colour) {
+static void DrawStatColoured(const uint16_t x, const uint16_t y, const wchar_t *const stat,
+                             const int32_t val, const uint8_t colour) {
   DrawTextToScreen(stat, x, y, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT,
                    FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
   DisplayDots(x, y, x + STAT_NAME_WIDTH, stat);
   DrawNumeralsToScreen(val, 3, x + STAT_VALUE_DX, y, AIM_M_NUMBER_FONT, colour);
 }
 
-static void DrawStat(const UINT16 x, const UINT16 y, const wchar_t *const stat, const INT32 val) {
-  const UINT8 colour =
+static void DrawStat(const uint16_t x, const uint16_t y, const wchar_t *const stat,
+                     const int32_t val) {
+  const uint8_t colour =
       (val >= 80 ? HIGH_STAT_COLOR : (val >= 50 ? MED_STAT_COLOR : LOW_STAT_COLOR));
   DrawStatColoured(x, y, stat, val, colour);
 }
@@ -999,7 +1001,7 @@ static void DisplayMercStats(MERCPROFILESTRUCT const &p) {
 
   // First column in stats box.  Health, Agility, dexterity, strength,
   // leadership, wisdom
-  const UINT16 x1 = STATS_FIRST_COL;
+  const uint16_t x1 = STATS_FIRST_COL;
   DrawStat(x1, HEALTH_Y, str_stat_health, p.bLife);
   DrawStat(x1, AGILITY_Y, str_stat_agility, p.bAgility);
   DrawStat(x1, DEXTERITY_Y, str_stat_dexterity, p.bDexterity);
@@ -1009,7 +1011,7 @@ static void DisplayMercStats(MERCPROFILESTRUCT const &p) {
 
   // Second column in stats box.  Exp.Level, Markmanship, mechanical, explosive,
   // medical
-  const UINT16 x2 = STATS_SECOND_COL;
+  const uint16_t x2 = STATS_SECOND_COL;
   DrawStatColoured(x2, EXPLEVEL_Y, str_stat_exp_level, p.bExpLevel, FONT_MCOLOR_WHITE);
   DrawStat(x2, MARKSMAN_Y, str_stat_marksmanship, p.bMarksmanship);
   DrawStat(x2, MECHANAICAL_Y, str_stat_mechanical, p.bMechanical);
@@ -1018,10 +1020,11 @@ static void DisplayMercStats(MERCPROFILESTRUCT const &p) {
 }
 
 // displays the dots between the stats and the stat name
-static void DisplayDots(UINT16 usNameX, UINT16 usNameY, UINT16 usStatX, const wchar_t *pString) {
-  UINT16 usStringLength = StringPixLength(pString, AIM_M_FONT_STATIC_TEXT);
-  INT16 i;
-  UINT16 usPosX;
+static void DisplayDots(uint16_t usNameX, uint16_t usNameY, uint16_t usStatX,
+                        const wchar_t *pString) {
+  uint16_t usStringLength = StringPixLength(pString, AIM_M_FONT_STATIC_TEXT);
+  int16_t i;
+  uint16_t usPosX;
 
   usPosX = usStatX;
   for (i = usNameX + usStringLength; i <= usPosX; usPosX -= 7) {
@@ -1033,7 +1036,7 @@ static void DisplayDots(UINT16 usNameX, UINT16 usNameY, UINT16 usStatX, const wc
 static void DisplayMercChargeAmount();
 static void DisplaySelectLights();
 
-static void BtnContractLengthButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnContractLengthButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     DisplaySelectLights();
   }
@@ -1045,7 +1048,7 @@ static void BtnContractLengthButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnBuyEquipmentButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBuyEquipmentButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     DisplaySelectLights();
   }
@@ -1057,16 +1060,16 @@ static void BtnBuyEquipmentButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static INT8 AimMemberHireMerc();
+static int8_t AimMemberHireMerc();
 static BOOLEAN CanMercBeHired();
 static void EnableDisableCurrentVideoConferenceButtons(BOOLEAN fEnable);
-static void CreateAimPopUpBox(wchar_t const *sString1, wchar_t const *sString2, UINT16 usPosX,
-                              UINT16 usPosY, UINT8 ubData);
+static void CreateAimPopUpBox(wchar_t const *sString1, wchar_t const *sString2, uint16_t usPosX,
+                              uint16_t usPosY, uint8_t ubData);
 
 // Transfer funds button callback
-static void BtnAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnAuthorizeButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubRetValue = btn->GetUserData();
+    uint8_t ubRetValue = btn->GetUserData();
 
     gfStopMercFromTalking = TRUE;
     gubMercAttitudeLevel = QUOTE_DELAY_NO_ACTION;
@@ -1110,7 +1113,7 @@ static void BtnAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static INT8 AimMemberHireMerc() {
+static int8_t AimMemberHireMerc() {
   if (LaptopSaveInfo.iCurrentBalance < giContractAmount) {  // Wasn't hired because of lack of funds
     CreateAimPopUpBox(AimPopUpText[AIM_MEMBER_FUNDS_TRANSFER_FAILED],
                       AimPopUpText[AIM_MEMBER_NOT_ENOUGH_FUNDS], AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y,
@@ -1137,8 +1140,8 @@ static INT8 AimMemberHireMerc() {
   h.fCopyProfileItemsOver = gfBuyEquipment;
   h.uiTimeTillMercArrives = GetMercArrivalTimeOfDay();
 
-  INT8 contract_type;
-  INT16 contract_length;
+  int8_t contract_type;
+  int16_t contract_length;
   switch (gubContractLength) {
     case AIM_CONTRACT_LENGTH_ONE_DAY:
       contract_type = CONTRACT_EXTEND_1_DAY;
@@ -1160,7 +1163,7 @@ static INT8 AimMemberHireMerc() {
   }
   h.iTotalContractLength = contract_length;
 
-  INT8 const ret = HireMerc(h);
+  int8_t const ret = HireMerc(h);
   if (ret == MERC_HIRE_OK) {
     // Set the type of contract the merc is on
     SOLDIERTYPE *const s = FindSoldierByProfileIDOnPlayerTeam(pid);
@@ -1227,9 +1230,9 @@ static void DisplayVideoConferencingDisplay(MERCPROFILESTRUCT const &p) {
 
   //	if( gfMercIsTalking && !gfIsAnsweringMachineActive)
   if (gfMercIsTalking && gGameSettings.fOptions[TOPTION_SUBTITLES]) {
-    UINT16 usActualWidth;
-    UINT16 usActualHeight;
-    UINT16 usPosX;
+    uint16_t usActualWidth;
+    uint16_t usActualHeight;
+    uint16_t usPosX;
 
     AutoMercPopUpBox const aim_members_box(
         PrepareMercPopupBox(0, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER,
@@ -1244,10 +1247,10 @@ static void DisplayVideoConferencingDisplay(MERCPROFILESTRUCT const &p) {
 
 static void DisplayMercsVideoFace() {
   ETRLEObject const &e = guiVideoConfTerminal->SubregionProperties(0);
-  INT32 const x = AIM_MEMBER_VIDEO_CONF_TERMINAL_X;
-  INT32 const y = AIM_MEMBER_VIDEO_CONF_TERMINAL_Y;
-  INT32 const w = e.usWidth;
-  INT32 const h = e.usHeight;
+  int32_t const x = AIM_MEMBER_VIDEO_CONF_TERMINAL_X;
+  int32_t const y = AIM_MEMBER_VIDEO_CONF_TERMINAL_Y;
+  int32_t const w = e.usWidth;
+  int32_t const h = e.usHeight;
 
   // Draw a drop shadow
   FRAME_BUFFER->ShadowRect(x + 3, y + h, x + w, y + h + 3);  // Horizontal
@@ -1260,8 +1263,8 @@ static void DisplayMercsVideoFace() {
 }
 
 static void DrawButtonSelection(GUI_BUTTON const *const btn, bool const selected) {
-  INT32 x = btn->X();
-  INT32 y = btn->Y();
+  int32_t x = btn->X();
+  int32_t y = btn->Y();
   if (btn->Clicked()) {
     x += AIM_SELECT_LIGHT_ON_X;
     y += AIM_SELECT_LIGHT_ON_Y;
@@ -1269,7 +1272,7 @@ static void DrawButtonSelection(GUI_BUTTON const *const btn, bool const selected
     x += AIM_SELECT_LIGHT_OFF_X;
     y += AIM_SELECT_LIGHT_OFF_Y;
   }
-  UINT32 const fill_colour = selected ? FROMRGB(0, 255, 0) : FROMRGB(0, 0, 0);
+  uint32_t const fill_colour = selected ? FROMRGB(0, 255, 0) : FROMRGB(0, 0, 0);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + 8, y + 8, Get16BPPColor(fill_colour));
 }
 
@@ -1300,7 +1303,7 @@ static void DisplayMercChargeAmount() {
 
   if (FindSoldierByProfileIDOnPlayerTeam(gbCurrentSoldier) == NULL) {
     // the contract charge amount
-    INT32 amount;
+    int32_t amount;
 
     // Get the salary rate
     switch (gubContractLength) {
@@ -1342,16 +1345,16 @@ static void DisplayMercChargeAmount() {
                    FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 }
 
-static UINT16 usPopUpBoxPosX;
-static UINT16 usPopUpBoxPosY;
+static uint16_t usPopUpBoxPosX;
+static uint16_t usPopUpBoxPosY;
 static wchar_t sPopUpString1[400];
 static wchar_t sPopUpString2[400];
 static BOOLEAN fPopUpBoxActive = FALSE;
 
-static void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateAimPopUpBox(wchar_t const *const sString1, wchar_t const *const sString2,
-                              UINT16 const usPosX, UINT16 const usPosY, UINT8 const ubData) {
+                              uint16_t const usPosX, uint16_t const usPosY, uint8_t const ubData) {
   if (fPopUpBoxActive) throw std::logic_error("AIM popup box already active");
 
   // Disable the 'X' to close the pop upi video
@@ -1370,10 +1373,10 @@ static void CreateAimPopUpBox(wchar_t const *const sString1, wchar_t const *cons
 
   // Create the popup boxes button
   guiPopUpImage = LoadButtonImage(LAPTOPDIR "/videoconfbuttons.sti", 2, 3);
-  INT16 const colour = AIM_POPUP_BOX_COLOR;
-  INT16 const shadow = AIM_M_VIDEO_NAME_SHADOWCOLOR;
-  INT16 const x = usPosX + AIM_POPUP_BOX_BUTTON_OFFSET_X;
-  INT16 const y = usPosY + AIM_POPUP_BOX_BUTTON_OFFSET_Y;
+  int16_t const colour = AIM_POPUP_BOX_COLOR;
+  int16_t const shadow = AIM_M_VIDEO_NAME_SHADOWCOLOR;
+  int16_t const x = usPosX + AIM_POPUP_BOX_BUTTON_OFFSET_X;
+  int16_t const y = usPosY + AIM_POPUP_BOX_BUTTON_OFFSET_Y;
   guiPopUpOkButton = CreateIconAndTextButton(guiPopUpImage, VideoConfercingText[AIM_MEMBER_OK],
                                              FONT14ARIAL, colour, shadow, colour, shadow, x, y,
                                              MSYS_PRIORITY_HIGH + 5, BtnPopUpOkButtonCallback);
@@ -1395,7 +1398,7 @@ static void CreateAimPopUpBox(wchar_t const *const sString1, wchar_t const *cons
 static BOOLEAN DisplayAimPopUpBox() {
   if (gubPopUpBoxAction != AIM_POPUP_DISPLAY) return FALSE;
 
-  UINT16 y = usPopUpBoxPosY;
+  uint16_t y = usPopUpBoxPosY;
   BltVideoObject(FRAME_BUFFER, guiPopUpBox, 0, usPopUpBoxPosX, y);
 
   SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
@@ -1444,12 +1447,12 @@ static BOOLEAN DeleteAimPopUpBox() {
 
 static void WaitForMercToFinishTalkingOrUserToClick();
 
-static void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   static BOOLEAN fInCallback = TRUE;
 
   if (fInCallback) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      UINT8 const ubCurPageNum = btn->GetUserData();
+      uint8_t const ubCurPageNum = btn->GetUserData();
 
       fInCallback = FALSE;
 
@@ -1474,9 +1477,9 @@ static void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // we first contact merc.  We either go to hire him or cancel the call
-static void BtnFirstContactButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnFirstContactButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 const ubRetValue = btn->GetUserData();
+    uint8_t const ubRetValue = btn->GetUserData();
 
     //		gfStopMercFromTalking = TRUE;
     StopMercTalking();
@@ -1493,9 +1496,9 @@ static void BtnFirstContactButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnAnsweringMachineButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnAnsweringMachineButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 const ubRetValue = btn->GetUserData();
+    uint8_t const ubRetValue = btn->GetUserData();
 
     if (ubRetValue == 0) {
       // Set a flag indicating that the merc has a message
@@ -1522,7 +1525,7 @@ static void BtnAnsweringMachineButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnHangUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnHangUpButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     //		gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
     gubVideoConferencingMode = AIM_VIDEO_POPDOWN_MODE;
@@ -1530,7 +1533,7 @@ static void BtnHangUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // InitVideoFace() is called once to initialize things
-static void InitVideoFace(UINT8 ubMercID) {
+static void InitVideoFace(uint8_t ubMercID) {
   // Create the facial index
   FACETYPE &f = InitFace(ubMercID, 0, 0);
   giMercFaceIndex = &f;
@@ -1548,7 +1551,7 @@ static void InitVideoFace(UINT8 ubMercID) {
 
 // InitVideoFaceTalking() is called to start a merc speaking a particular
 // message
-static BOOLEAN InitVideoFaceTalking(UINT8 ubMercID, UINT16 usQuoteNum) {
+static BOOLEAN InitVideoFaceTalking(uint8_t ubMercID, uint16_t usQuoteNum) {
   // Starts the merc talking
   CharacterDialogue(ubMercID, usQuoteNum, giMercFaceIndex, DIALOGUE_CONTACTPAGE_UI, FALSE);
 
@@ -1643,7 +1646,7 @@ void DisplayTextForMercFaceVideoPopUp(const wchar_t *const pString) {
   gfRedrawScreen = TRUE;
 }
 
-static void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & (MSYS_CALLBACK_REASON_LBUTTON_UP | MSYS_CALLBACK_REASON_RBUTTON_UP)) {
     gfStopMercFromTalking = TRUE;
   }
@@ -1677,13 +1680,13 @@ static BOOLEAN CanMercBeHired() {
     return FALSE;
   }
 
-  INT const buddy = GetFirstBuddyOnTeam(p);
+  int32_t const buddy = GetFirstBuddyOnTeam(p);
 
   // loop through the list of people the merc hates
-  UINT16 join_quote = QUOTE_NONE;
-  for (UINT8 i = 0; i < NUMBER_HATED_MERCS_ONTEAM; ++i) {
+  uint16_t join_quote = QUOTE_NONE;
+  for (uint8_t i = 0; i < NUMBER_HATED_MERCS_ONTEAM; ++i) {
     // see if someone the merc hates is on the team
-    INT8 const bMercID = p.bHated[i];
+    int8_t const bMercID = p.bHated[i];
     if (bMercID < 0) continue;
 
     if (!IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) continue;
@@ -1691,7 +1694,7 @@ static BOOLEAN CanMercBeHired() {
     // if the merc hates someone on the team, see if a buddy is on the team
     // if a buddy is on the team, the merc will join
     switch (buddy) {
-      UINT16 quote;
+      uint16_t quote;
       case 0:
         quote = QUOTE_JOINING_CAUSE_BUDDY_1_ON_TEAM;
         goto join_buddy;
@@ -1707,7 +1710,7 @@ static BOOLEAN CanMercBeHired() {
     }
 
     // the merc doesnt like anybody on the team
-    UINT16 quote;
+    uint16_t quote;
     switch (i) {
       case 0:
         if (p.bHatedTime[i] >= 24) {
@@ -1755,8 +1758,8 @@ static BOOLEAN CanMercBeHired() {
 }
 
 static BOOLEAN DisplaySnowBackground() {
-  UINT32 uiCurrentTime = 0;
-  UINT8 ubCount;
+  uint32_t uiCurrentTime = 0;
+  uint8_t ubCount;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -1791,8 +1794,8 @@ static BOOLEAN DisplaySnowBackground() {
   return (FALSE);
 }
 
-static BOOLEAN DisplayBlackBackground(UINT8 ubMaxNumOfLoops) {
-  UINT32 uiCurrentTime = 0;
+static BOOLEAN DisplayBlackBackground(uint8_t ubMaxNumOfLoops) {
+  uint32_t uiCurrentTime = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -1818,14 +1821,14 @@ static BOOLEAN DisplayBlackBackground(UINT8 ubMaxNumOfLoops) {
   return (FALSE);
 }
 
-static UINT8 DisplayDistortionLine(UINT8 ubMode, const SGPVObject *image, UINT8 ubMaxImages);
-static UINT8 DisplayPixelatedImage(UINT8 ubMaxImages);
-static UINT8 DisplayTransparentSnow(UINT8 ubMode, const SGPVObject *image, UINT8 ubMaxImages,
-                                    BOOLEAN bForward);
+static uint8_t DisplayDistortionLine(uint8_t ubMode, const SGPVObject *image, uint8_t ubMaxImages);
+static uint8_t DisplayPixelatedImage(uint8_t ubMaxImages);
+static uint8_t DisplayTransparentSnow(uint8_t ubMode, const SGPVObject *image, uint8_t ubMaxImages,
+                                      BOOLEAN bForward);
 
 static void HandleVideoDistortion() {
-  static UINT32 uiStaticNoiseSound = NO_SAMPLE;
-  UINT8 ubOldMode = gubCurrentStaticMode;
+  static uint32_t uiStaticNoiseSound = NO_SAMPLE;
+  uint8_t ubOldMode = gubCurrentStaticMode;
 
   // if we are just entering the contact page, display a snowy background
   if (gfFirstTimeInContactScreen && !gfIsAnsweringMachineActive) {
@@ -1838,8 +1841,8 @@ static void HandleVideoDistortion() {
   } else {
     switch (gubCurrentStaticMode) {
       case VC_NO_STATIC: {
-        static UINT32 uiCurTime = 0;
-        UINT8 ubNum;
+        static uint32_t uiCurTime = 0;
+        uint8_t ubNum;
 
         // if the sound is playing, stop it
         if (uiStaticNoiseSound != NO_SAMPLE) {
@@ -1849,7 +1852,7 @@ static void HandleVideoDistortion() {
 
         // DECIDE WHICH ONE TO BLIT NEXT
         if ((GetJA2Clock() - uiCurTime) > 2500) {
-          ubNum = (UINT8)Random(200);  // 125;
+          ubNum = (uint8_t)Random(200);  // 125;
 
           if (ubNum < 15)
             gubCurrentStaticMode = VC_FUZZY_LINE;
@@ -1942,11 +1945,11 @@ static void HandleVideoDistortion() {
 }
 
 // returns true when done. else false
-static UINT8 DisplayTransparentSnow(const UINT8 ubMode, const SGPVObject *const image,
-                                    const UINT8 ubMaxImages, const BOOLEAN bForward) {
-  static INT8 bCount = 0;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+static uint8_t DisplayTransparentSnow(const uint8_t ubMode, const SGPVObject *const image,
+                                      const uint8_t ubMaxImages, const BOOLEAN bForward) {
+  static int8_t bCount = 0;
+  uint32_t uiCurrentTime = 0;
+  static uint32_t uiLastTime = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -1985,11 +1988,11 @@ static UINT8 DisplayTransparentSnow(const UINT8 ubMode, const SGPVObject *const 
 }
 
 // returns true when done. else false
-static UINT8 DisplayDistortionLine(const UINT8 ubMode, const SGPVObject *const image,
-                                   const UINT8 ubMaxImages) {
-  static UINT8 ubCount = 255;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+static uint8_t DisplayDistortionLine(const uint8_t ubMode, const SGPVObject *const image,
+                                     const uint8_t ubMaxImages) {
+  static uint8_t ubCount = 255;
+  uint32_t uiCurrentTime = 0;
+  static uint32_t uiLastTime = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2015,10 +2018,10 @@ static UINT8 DisplayDistortionLine(const UINT8 ubMode, const SGPVObject *const i
     return (ubMode);
 }
 
-static UINT8 DisplayPixelatedImage(UINT8 ubMaxImages) {
-  static UINT8 ubCount = 255;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+static uint8_t DisplayPixelatedImage(uint8_t ubMaxImages) {
+  static uint8_t ubCount = 255;
+  uint32_t uiCurrentTime = 0;
+  static uint32_t uiLastTime = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2042,7 +2045,7 @@ static UINT8 DisplayPixelatedImage(UINT8 ubMaxImages) {
 }
 
 static void HandleMercAttitude() {
-  UINT32 uiCurrentTime = 0;
+  uint32_t uiCurrentTime = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2057,7 +2060,7 @@ static void HandleMercAttitude() {
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_PRECEDENT_TO_REPEATING_ONESELF);
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_IMPATIENT_QUOTE);
     } else if (gubMercAttitudeLevel == QUOTE_DELAY_HANGUP_TALK) {
-      UINT32 uiResetTime;
+      uint32_t uiResetTime;
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_COMMENT_BEFORE_HANG_UP);
 
       // if the merc is going to hang up disable the buttons, so user cant press
@@ -2105,7 +2108,7 @@ static void StopMercTalking() {
   }
 }
 
-static void BtnXToCloseVideoConfButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnXToCloseVideoConfButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubVideoConferencingMode = AIM_VIDEO_POPDOWN_MODE;
     //		gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
@@ -2113,9 +2116,9 @@ static void BtnXToCloseVideoConfButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 static GUIButtonRef MakeButtonVideo(BUTTON_PICS *const img, const wchar_t *const text,
-                                    const INT16 x, const INT16 y, const GUI_CALLBACK click) {
-  const INT16 txt_col = AIM_M_VIDEO_NAME_COLOR;
-  const INT16 shadow_col = AIM_M_VIDEO_NAME_SHADOWCOLOR;
+                                    const int16_t x, const int16_t y, const GUI_CALLBACK click) {
+  const int16_t txt_col = AIM_M_VIDEO_NAME_COLOR;
+  const int16_t shadow_col = AIM_M_VIDEO_NAME_SHADOWCOLOR;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, txt_col, shadow_col, txt_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -2230,10 +2233,10 @@ static void InitDeleteVideoConferencePopUp() {
       gubVideoConferencingPreviousMode = gubVideoConferencingMode;
 
       // Hang up button
-      UINT16 usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
+      uint16_t usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
       BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/videoconfbuttons.sti", 2, 3);
       guiVideoConferenceButtonImage[2] = img;
-      for (UINT8 i = 0; i < 2; ++i) {
+      for (uint8_t i = 0; i < 2; ++i) {
         giAuthorizeButton[i] =
             MakeButtonVideo(img, VideoConfercingText[AIM_MEMBER_HIRE + i], usPosX,
                             AIM_MEMBER_HANG_UP_Y, BtnFirstContactButtonCallback);
@@ -2257,8 +2260,8 @@ static void InitDeleteVideoConferencePopUp() {
       BUTTON_PICS *const img0 = LoadButtonImage(LAPTOPDIR "/videoconfbuttons.sti", 0, 1);
       guiVideoConferenceButtonImage[0] = img0;
       {
-        UINT16 usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
-        for (UINT8 i = 0; i < 3; ++i) {
+        uint16_t usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
+        for (uint8_t i = 0; i < 3; ++i) {
           GUIButtonRef const btn = MakeButtonVideo(
               img0, VideoConfercingText[AIM_MEMBER_ONE_DAY + i], AIM_MEMBER_BUY_CONTRACT_LENGTH_X,
               usPosY, BtnContractLengthButtonCallback);
@@ -2272,8 +2275,8 @@ static void InitDeleteVideoConferencePopUp() {
 
       // BuyEquipment button
       {
-        UINT16 usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
-        for (UINT8 i = 0; i < 2; ++i) {
+        uint16_t usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
+        for (uint8_t i = 0; i < 2; ++i) {
           GUIButtonRef const btn =
               MakeButtonVideo(img0, VideoConfercingText[AIM_MEMBER_NO_EQUIPMENT + i],
                               AIM_MEMBER_BUY_EQUIPMENT_X, usPosY, BtnBuyEquipmentButtonCallback);
@@ -2289,10 +2292,10 @@ static void InitDeleteVideoConferencePopUp() {
       }
 
       // Authorize button
-      UINT16 usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
+      uint16_t usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
       BUTTON_PICS *const img1 = LoadButtonImage(LAPTOPDIR "/videoconfbuttons.sti", 2, 3);
       guiVideoConferenceButtonImage[1] = img1;
-      for (UINT8 i = 0; i < 2; ++i) {
+      for (uint8_t i = 0; i < 2; ++i) {
         GUIButtonRef const btn =
             MakeButtonVideo(img1, VideoConfercingText[AIM_MEMBER_TRANSFER_FUNDS + i], usPosX,
                             AIM_MEMBER_AUTHORIZE_PAY_Y, BtnAuthorizeButtonCallback);
@@ -2314,7 +2317,7 @@ static void InitDeleteVideoConferencePopUp() {
       gfIsAnsweringMachineActive = TRUE;
 
       // Leave msg button
-      UINT16 usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
+      uint16_t usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
       BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/videoconfbuttons.sti", 2, 3);
       guiVideoConferenceButtonImage[2] = img;
 
@@ -2409,22 +2412,22 @@ static void DeleteVideoConfPopUp() {
      * hang up or goto hire merc screen */
     case AIM_VIDEO_FIRST_CONTACT_MERC_MODE:
       UnloadButtonImage(guiVideoConferenceButtonImage[2]);
-      for (UINT16 i = 0; i < 2; ++i) RemoveButton(giAuthorizeButton[i]);
+      for (uint16_t i = 0; i < 2; ++i) RemoveButton(giAuthorizeButton[i]);
       break;
 
     /* The screen in which you set the contract length, and the ability to buy
      * equipment. */
     case AIM_VIDEO_HIRE_MERC_MODE:
-      for (UINT16 i = 0; i < 2; ++i) UnloadButtonImage(guiVideoConferenceButtonImage[i]);
-      for (UINT16 i = 0; i < 3; ++i) RemoveButton(giContractLengthButton[i]);
-      for (UINT16 i = 0; i < 2; ++i) RemoveButton(giBuyEquipmentButton[i]);
-      for (UINT16 i = 0; i < 2; ++i) RemoveButton(giAuthorizeButton[i]);
+      for (uint16_t i = 0; i < 2; ++i) UnloadButtonImage(guiVideoConferenceButtonImage[i]);
+      for (uint16_t i = 0; i < 3; ++i) RemoveButton(giContractLengthButton[i]);
+      for (uint16_t i = 0; i < 2; ++i) RemoveButton(giBuyEquipmentButton[i]);
+      for (uint16_t i = 0; i < 2; ++i) RemoveButton(giAuthorizeButton[i]);
       break;
 
     // The merc is not home and the player gets the answering machine
     case AIM_VIDEO_MERC_ANSWERING_MACHINE_MODE:
       UnloadButtonImage(guiVideoConferenceButtonImage[2]);
-      for (UINT16 i = 0; i < 2; ++i) RemoveButton(giAnsweringMachineButton[i]);
+      for (uint16_t i = 0; i < 2; ++i) RemoveButton(giAnsweringMachineButton[i]);
       break;
 
     // The merc is home but doesnt want to work for player
@@ -2458,7 +2461,7 @@ static void HandleCurrentVideoConfMode() {
 
     // The opening animation of the vc (fuzzy screen, then goes to black)
     case AIM_VIDEO_INIT_MODE: {
-      static UINT8 ubCurMode = 0;
+      static uint8_t ubCurMode = 0;
 
       BOOLEAN done;
       if (ubCurMode == 0) {
@@ -2521,9 +2524,9 @@ static void EnableDisableCurrentVideoConferenceButtons(BOOLEAN const fEnable) {
 
   // HB: typo missing "!"
   // Enable/disable buttons behind the acknowlegde button
-  for (INT8 i = 0; i != 3; ++i) EnableButton(giContractLengthButton[i], !fEnable);
-  for (INT8 i = 0; i != 2; ++i) EnableButton(giBuyEquipmentButton[i], !fEnable);
-  for (INT8 i = 0; i != 2; ++i) EnableButton(giAuthorizeButton[i], !fEnable);
+  for (int8_t i = 0; i != 3; ++i) EnableButton(giContractLengthButton[i], !fEnable);
+  for (int8_t i = 0; i != 2; ++i) EnableButton(giBuyEquipmentButton[i], !fEnable);
+  for (int8_t i = 0; i != 2; ++i) EnableButton(giAuthorizeButton[i], !fEnable);
 }
 
 void ResetMercAnnoyanceAtPlayer(ProfileID ubMercID) {
@@ -2532,7 +2535,7 @@ void ResetMercAnnoyanceAtPlayer(ProfileID ubMercID) {
   } else if (ubMercID == LARRY_DRUNK) {
     if (!CheckFact(FACT_LARRY_CHANGED, 0)) ubMercID = LARRY_NORMAL;
   }
-  INT8 &status = GetProfile(ubMercID).bMercStatus;
+  int8_t &status = GetProfile(ubMercID).bMercStatus;
   if (status == MERC_ANNOYED_WONT_CONTACT || status == MERC_ANNOYED_BUT_CAN_STILL_CONTACT) {
     status = 0;
   }
@@ -2546,21 +2549,21 @@ void DisableNewMailMessage() {
   }
 }
 
-static INT32 Interpolate(INT32 start, INT32 end, INT32 step) {
+static int32_t Interpolate(int32_t start, int32_t end, int32_t step) {
   return start + (end - start) * step / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
 }
 
 static BOOLEAN DisplayMovingTitleBar(BOOLEAN fForward) {
-  static UINT8 ubCount;
+  static uint8_t ubCount;
   static SGPBox LastRect;
 
   if (gfJustSwitchedVideoConferenceMode) {
     ubCount = (fForward ? 1 : AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1);
   }
 
-  UINT16 const usPosX = Interpolate(331, 125, ubCount);
-  UINT16 const usPosRightX = Interpolate(405, 490, ubCount);
-  UINT16 const usPosY = Interpolate(AIM_MEMBER_VIDEO_TITLE_START_Y, 96, ubCount);
+  uint16_t const usPosX = Interpolate(331, 125, ubCount);
+  uint16_t const usPosRightX = Interpolate(405, 490, ubCount);
+  uint16_t const usPosY = Interpolate(AIM_MEMBER_VIDEO_TITLE_START_Y, 96, ubCount);
   SGPBox const SrcRect = {0, 0, AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH,
                           AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT};
   SGPBox const DestRect = {usPosX, usPosY, usPosRightX - usPosX, AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT};
@@ -2607,14 +2610,14 @@ static BOOLEAN DisplayMovingTitleBar(BOOLEAN fForward) {
   }
 }
 
-static void DelayMercSpeech(UINT8 ubMercID, UINT16 usQuoteNum, UINT16 usDelay, BOOLEAN fNewQuote,
-                            BOOLEAN fReset) {
-  static UINT32 uiLastTime = 0;
-  UINT32 uiCurTime;
-  static UINT16 usCurQuoteNum;
-  static UINT16 usCurDelay;
+static void DelayMercSpeech(uint8_t ubMercID, uint16_t usQuoteNum, uint16_t usDelay,
+                            BOOLEAN fNewQuote, BOOLEAN fReset) {
+  static uint32_t uiLastTime = 0;
+  uint32_t uiCurTime;
+  static uint16_t usCurQuoteNum;
+  static uint16_t usCurDelay;
   static BOOLEAN fQuoteWaiting = FALSE;  // a quote is waiting to be said
-  static UINT8 ubCurMercID;
+  static uint8_t ubCurMercID;
   static BOOLEAN fHangUpAfter = FALSE;
 
   uiCurTime = GetJA2Clock();
@@ -2682,7 +2685,7 @@ void DisplayPopUpBoxExplainingMercArrivalLocationAndTime() {
 
   // Calculate the approximate hour the mercs will arrive at
   wchar_t time_string[16];
-  UINT32 const hour = h.uiArrivalTime % 1440 / 60;
+  uint32_t const hour = h.uiArrivalTime % 1440 / 60;
   swprintf(time_string, lengthof(time_string), L"%02d:00", hour);
 
   wchar_t sector_string[512];
@@ -2691,7 +2694,7 @@ void DisplayPopUpBoxExplainingMercArrivalLocationAndTime() {
 
   wchar_t msg[512];
   wchar_t const *const nickname = GetProfile(h.iIdOfMerc).zNickname;
-  UINT32 const day = h.uiArrivalTime / 1440;
+  uint32_t const day = h.uiArrivalTime / 1440;
 
   // German version has a different argument order
   if (isGermanVersion()) {

@@ -65,22 +65,22 @@
 #define AIM_SORT_ALUMNI_TEXT_Y 351 + LAPTOP_SCREEN_WEB_DELTA_Y
 
 struct AIMSortInfo {
-  UINT16 const x;
-  UINT16 const y;
-  UINT32 const align;
-  UINT16 const index;
+  uint16_t const x;
+  uint16_t const y;
+  uint32_t const align;
+  uint16_t const index;
   MOUSE_CALLBACK const click;
   MOUSE_REGION region;
 };
 
-static void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static AIMSortInfo g_aim_sort_info[str_aim_sort_list_SIZE] = {
     {AIM_SORT_SORT_BY_X + 9, AIM_SORT_SORT_BY_Y + 34, LEFT_JUSTIFIED, 0,
@@ -124,9 +124,9 @@ void GameInitAimSort() {
   gubCurrentListMode = AIM_DESCEND;
 }
 
-static void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterAimSort() {
   // Everytime into Aim Sort, reset array.
@@ -177,11 +177,11 @@ void EnterAimSort() {
                     CURSOR_WWW, MSYS_NO_CALLBACK, SelectToArchiveRegionCallBack);
 
   FOR_EACH(AIMSortInfo, i, g_aim_sort_info) {
-    const UINT16 txt_w = StringPixLength(str_aim_sort_list[i->index], AIM_SORT_FONT_SORT_TEXT);
-    const UINT16 x = i->x - (i->align == LEFT_JUSTIFIED ? 0 : 4 + txt_w);
-    const UINT16 w = AIM_SORT_CHECKBOX_SIZE + 4 + txt_w;
-    const UINT16 y = i->y;
-    const UINT16 h = AIM_SORT_CHECKBOX_SIZE;
+    const uint16_t txt_w = StringPixLength(str_aim_sort_list[i->index], AIM_SORT_FONT_SORT_TEXT);
+    const uint16_t x = i->x - (i->align == LEFT_JUSTIFIED ? 0 : 4 + txt_w);
+    const uint16_t w = AIM_SORT_CHECKBOX_SIZE + 4 + txt_w;
+    const uint16_t y = i->y;
+    const uint16_t h = AIM_SORT_CHECKBOX_SIZE;
     MSYS_DefineRegion(&i->region, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, i->click);
   }
@@ -235,7 +235,7 @@ void RenderAimSort() {
 
   // Display all the sort by text
   FOR_EACH(AIMSortInfo const, i, g_aim_sort_info) {
-    const UINT16 x = i->x + (i->align == LEFT_JUSTIFIED ? 14 : -AIM_SORT_ASC_DESC_WIDTH - 4);
+    const uint16_t x = i->x + (i->align == LEFT_JUSTIFIED ? 14 : -AIM_SORT_ASC_DESC_WIDTH - 4);
     DrawTextToScreen(str_aim_sort_list[i->index], x, i->y + 2, AIM_SORT_ASC_DESC_WIDTH,
                      AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK,
                      i->align);
@@ -265,19 +265,19 @@ void RenderAimSort() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX;
   }
 }
 
-static void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS;
   }
 }
 
-static void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_ARCHIVES;
   }
@@ -290,27 +290,27 @@ static void SetSortCriterion(const uint8_t criterion) {
   DrawSelectLight(criterion, AIM_SORT_ON);
 }
 
-static void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(0);
 }
 
-static void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(1);
 }
 
-static void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(2);
 }
 
-static void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(3);
 }
 
-static void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(4);
 }
 
-static void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortCriterion(5);
 }
 
@@ -321,34 +321,34 @@ static void SetSortOrder(const uint8_t order) {
   DrawSelectLight(order, AIM_SORT_ON);
 }
 
-static void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortOrder(AIM_ASCEND);
 }
 
-static void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) SetSortOrder(AIM_DESCEND);
 }
 
 static void DrawSelectLight(const uint8_t ubMode, const uint8_t ubImage) {
   const AIMSortInfo *const asi = &g_aim_sort_info[ubMode];
-  const INT32 x = asi->x;
-  const INT32 y = asi->y;
+  const int32_t x = asi->x;
+  const int32_t y = asi->y;
   BltVideoObject(FRAME_BUFFER, guiSelectLight, ubImage, x, y);
   InvalidateRegion(x, y, x + AIM_SORT_CHECKBOX_SIZE, y + AIM_SORT_CHECKBOX_SIZE);
 }
 
-static INT32 QsortCompare(const void *pNum1, const void *pNum2);
+static int32_t QsortCompare(const void *pNum1, const void *pNum2);
 
 static void SortMercArray() {
   qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(uint8_t), QsortCompare);
 }
 
-static INT32 QsortCompare(const void *pNum1, const void *pNum2) {
+static int32_t QsortCompare(const void *pNum1, const void *pNum2) {
   MERCPROFILESTRUCT const &p1 = GetProfile(*(uint8_t *)pNum1);
   MERCPROFILESTRUCT const &p2 = GetProfile(*(uint8_t *)pNum2);
 
-  INT32 v1;
-  INT32 v2;
+  int32_t v1;
+  int32_t v2;
   switch (gubCurrentSortMode) {
     /* Price        */ case 0:
       v1 = p1.uiWeeklySalary;
@@ -379,6 +379,6 @@ static INT32 QsortCompare(const void *pNum1, const void *pNum2) {
       Assert(0);
       return 0;
   }
-  const INT32 ret = (v1 > v2) - (v1 < v2);
+  const int32_t ret = (v1 > v2) - (v1 < v2);
   return gubCurrentListMode == AIM_ASCEND ? ret : -ret;
 }

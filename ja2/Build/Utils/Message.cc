@@ -32,9 +32,9 @@
 struct ScrollStringSt {
   wchar_t *pString;
   VIDEO_OVERLAY *video_overlay;
-  UINT16 usColor;
+  uint16_t usColor;
   BOOLEAN fBeginningOfNewString;
-  UINT32 uiTimeOfLastUpdate;
+  uint32_t uiTimeOfLastUpdate;
   ScrollStringSt *pNext;
 };
 
@@ -54,11 +54,11 @@ struct ScrollStringSt {
 
 #define MAP_SCREEN_MESSAGE_FONT TINYFONT1
 
-UINT8 gubStartOfMapScreenMessageList = 0;
-static UINT8 gubEndOfMapScreenMessageList = 0;
+uint8_t gubStartOfMapScreenMessageList = 0;
+static uint8_t gubEndOfMapScreenMessageList = 0;
 
 // index of the current string we are looking at
-UINT8 gubCurrentMapMessageString = 0;
+uint8_t gubCurrentMapMessageString = 0;
 
 // are allowed to beep on message scroll?
 BOOLEAN fOkToBeepNewMessage = TRUE;
@@ -70,9 +70,9 @@ static ScrollStringSt *pStringS = NULL;
 BOOLEAN fDisableJustForIan = FALSE;
 
 static BOOLEAN fScrollMessagesHidden = FALSE;
-static UINT32 uiStartOfPauseTime = 0;
+static uint32_t uiStartOfPauseTime = 0;
 
-static ScrollStringSt *AddString(const wchar_t *pString, UINT16 usColor,
+static ScrollStringSt *AddString(const wchar_t *pString, uint16_t usColor,
                                  BOOLEAN fStartOfNewString) {
   ScrollStringSt *const i = MALLOC(ScrollStringSt);
   i->pString = MALLOCN(wchar_t, wcslen(pString) + 1);
@@ -91,7 +91,7 @@ static void RemoveStringVideoOverlay(ScrollStringSt *pStringSt) {
   pStringSt->video_overlay = NULL;
 }
 
-static void SetStringVideoOverlayPosition(ScrollStringSt *pStringSt, UINT16 usX, UINT16 usY) {
+static void SetStringVideoOverlayPosition(ScrollStringSt *pStringSt, uint16_t usX, uint16_t usY) {
   // Donot update if not allocated!
   if (pStringSt->video_overlay == NULL) return;
   SetVideoOverlayPos(pStringSt->video_overlay, usX, usY);
@@ -102,12 +102,12 @@ static void BlitString(VIDEO_OVERLAY *pBlitter) {
 
   SetFontAttributes(pBlitter->uiFontID, pBlitter->ubFontFore, DEFAULT_SHADOW, pBlitter->ubFontBack);
   SGPVSurface::Lock l(pBlitter->uiDestBuff);
-  MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), pBlitter->sX, pBlitter->sY, pBlitter->zText);
+  MPrintBuffer(l.Buffer<uint16_t>(), l.Pitch(), pBlitter->sX, pBlitter->sY, pBlitter->zText);
 }
 
 // this function will go through list of display strings and clear them all out
 void ClearDisplayedListOfTacticalStrings() {
-  for (UINT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
+  for (uint32_t cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
       RemoveStringVideoOverlay(gpDisplayList[cnt]);
       MemFree(gpDisplayList[cnt]->pString);
@@ -117,12 +117,12 @@ void ClearDisplayedListOfTacticalStrings() {
   }
 }
 
-static INT32 GetMessageQueueSize();
+static int32_t GetMessageQueueSize();
 static void PlayNewMessageSound();
 
 void ScrollString() {
   // UPDATE TIMER
-  UINT32 suiTimer = GetJA2Clock();
+  uint32_t suiTimer = GetJA2Clock();
 
   if (guiCurrentScreen == MAP_SCREEN) {
     return;
@@ -136,8 +136,8 @@ void ScrollString() {
     return;
   }
 
-  INT32 iNumberOfMessagesOnQueue = GetMessageQueueSize();
-  INT32 iMaxAge = MAX_AGE;
+  int32_t iNumberOfMessagesOnQueue = GetMessageQueueSize();
+  int32_t iMaxAge = MAX_AGE;
 
   BOOLEAN fDitchLastMessage =
       (iNumberOfMessagesOnQueue > 0 && gpDisplayList[MAX_LINE_COUNT - 1] != NULL);
@@ -149,14 +149,14 @@ void ScrollString() {
   }
 
   // AGE
-  for (UINT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
+  for (uint32_t cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
       if (fDitchLastMessage && cnt == MAX_LINE_COUNT - 1) {
         gpDisplayList[cnt]->uiTimeOfLastUpdate = iMaxAge;
       }
       // CHECK IF WE HAVE AGED
       if (suiTimer - gpDisplayList[cnt]->uiTimeOfLastUpdate >
-          (UINT32)(iMaxAge - 1000 * iNumberOfMessagesOnQueue)) {
+          (uint32_t)(iMaxAge - 1000 * iNumberOfMessagesOnQueue)) {
         RemoveStringVideoOverlay(gpDisplayList[cnt]);
         MemFree(gpDisplayList[cnt]->pString);
         MemFree(gpDisplayList[cnt]);
@@ -175,12 +175,12 @@ void ScrollString() {
       // MOVE ALL UP!
 
       // cpy, then move
-      for (UINT32 cnt = MAX_LINE_COUNT - 1; cnt > 0; cnt--) {
+      for (uint32_t cnt = MAX_LINE_COUNT - 1; cnt > 0; cnt--) {
         gpDisplayList[cnt] = gpDisplayList[cnt - 1];
       }
 
-      INT32 iNumberOfNewStrings = 0;  // the count of new strings, so we can update position by
-                                      // WIDTH_BETWEEN_NEW_STRINGS pixels in the y
+      int32_t iNumberOfNewStrings = 0;  // the count of new strings, so we can update position by
+                                        // WIDTH_BETWEEN_NEW_STRINGS pixels in the y
 
       // now add in the new string
       gpDisplayList[0] = pStringS;
@@ -195,7 +195,7 @@ void ScrollString() {
       pStringS->uiTimeOfLastUpdate = GetJA2Clock();
 
       // now move
-      for (UINT32 cnt = 0; cnt <= MAX_LINE_COUNT - 1; cnt++) {
+      for (uint32_t cnt = 0; cnt <= MAX_LINE_COUNT - 1; cnt++) {
         // Adjust position!
         if (gpDisplayList[cnt] != NULL) {
           SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START,
@@ -239,7 +239,7 @@ void HideMessagesDuringNPCDialogue() {
   fScrollMessagesHidden = TRUE;
   uiStartOfPauseTime = GetJA2Clock();
 
-  for (INT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
+  for (int32_t cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     const ScrollStringSt *const s = gpDisplayList[cnt];
     if (s != NULL) {
       RestoreExternBackgroundRectGivenID(s->video_overlay->background);
@@ -251,7 +251,7 @@ void HideMessagesDuringNPCDialogue() {
 void UnHideMessagesDuringNPCDialogue() {
   fScrollMessagesHidden = FALSE;
 
-  for (INT32 cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
+  for (int32_t cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     ScrollStringSt *const s = gpDisplayList[cnt];
     if (s != NULL) {
       s->uiTimeOfLastUpdate += GetJA2Clock() - uiStartOfPauseTime;
@@ -260,10 +260,10 @@ void UnHideMessagesDuringNPCDialogue() {
   }
 }
 
-static void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
+static void TacticalScreenMsg(uint16_t usColor, uint8_t ubPriority, const wchar_t *pStringA, ...);
 
 // new screen message
-void ScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...) {
+void ScreenMsg(uint16_t usColor, uint8_t ubPriority, const wchar_t *pStringA, ...) {
   if (fDisableJustForIan) {
     switch (ubPriority) {
       case MSG_BETAVERSION:
@@ -314,7 +314,8 @@ static void ClearWrappedStrings(WRAPPED_STRING *pStringWrapperHead) {
 static void WriteMessageToFile(const wchar_t *pString);
 
 // this function sets up the string into several single line structures
-static void TacticalScreenMsg(UINT16 colour, UINT8 const priority, const wchar_t *const fmt, ...) {
+static void TacticalScreenMsg(uint16_t colour, uint8_t const priority, const wchar_t *const fmt,
+                              ...) {
   if (giTimeCompressMode > TIME_COMPRESS_X1) return;
   if (fDisableJustForIan && priority != MSG_ERROR && priority != MSG_INTERFACE) return;
 
@@ -358,11 +359,11 @@ static void TacticalScreenMsg(UINT16 colour, UINT8 const priority, const wchar_t
   ClearWrappedStrings(head);
 }
 
-static void AddStringToMapScreenMessageList(const wchar_t *pString, UINT16 usColor,
+static void AddStringToMapScreenMessageList(const wchar_t *pString, uint16_t usColor,
                                             BOOLEAN fStartOfNewString);
 
 // this function sets up the string into several single line structures
-void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...) {
+void MapScreenMessage(uint16_t usColor, uint8_t ubPriority, const wchar_t *pStringA, ...) {
   if (fDisableJustForIan) {
     switch (ubPriority) {
       case MSG_BETAVERSION:
@@ -431,7 +432,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA,
 }
 
 // add string to the map screen message list
-static void AddStringToMapScreenMessageList(const wchar_t *pString, UINT16 usColor,
+static void AddStringToMapScreenMessageList(const wchar_t *pString, uint16_t usColor,
                                             BOOLEAN fStartOfNewString) {
   ScrollStringSt *const pStringSt = AddString(pString, usColor, fStartOfNewString);
 
@@ -469,12 +470,12 @@ void DisplayStringsInMapScreenMessageList() {
   SetFontBackground(FONT_BLACK);
   SetFontShadow(DEFAULT_SHADOW);
 
-  UINT8 ubCurrentStringIndex = gubCurrentMapMessageString;
+  uint8_t ubCurrentStringIndex = gubCurrentMapMessageString;
 
-  INT16 sY = 377;
-  UINT16 usSpacing = GetFontHeight(MAP_SCREEN_MESSAGE_FONT);
+  int16_t sY = 377;
+  uint16_t usSpacing = GetFontHeight(MAP_SCREEN_MESSAGE_FONT);
 
-  for (UINT8 ubLinesPrinted = 0; ubLinesPrinted < MAX_MESSAGES_ON_MAP_BOTTOM; ubLinesPrinted++) {
+  for (uint8_t ubLinesPrinted = 0; ubLinesPrinted < MAX_MESSAGES_ON_MAP_BOTTOM; ubLinesPrinted++) {
     // reached the end of the list?
     if (ubCurrentStringIndex == gubEndOfMapScreenMessageList) {
       break;
@@ -498,7 +499,7 @@ void DisplayStringsInMapScreenMessageList() {
 void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable) {
   /* will go through the list of video overlays for the tactical scroll message
    * system, and enable/disable video overlays depending on fEnable */
-  for (INT8 bCounter = 0; bCounter < MAX_LINE_COUNT; bCounter++) {
+  for (int8_t bCounter = 0; bCounter < MAX_LINE_COUNT; bCounter++) {
     const ScrollStringSt *const s = gpDisplayList[bCounter];
     if (s != NULL) {
       EnableVideoOverlay(fEnable, s->video_overlay);
@@ -509,7 +510,7 @@ void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable) {
 // play beep when new message is added
 static void PlayNewMessageSound() {
   // play a new message sound, if there is one playing, do nothing
-  static UINT32 uiSoundId = NO_SAMPLE;
+  static uint32_t uiSoundId = NO_SAMPLE;
 
   // if a sound is playing, don't play new one
   if (uiSoundId != NO_SAMPLE && SoundIsPlaying(uiSoundId)) {
@@ -520,7 +521,7 @@ static void PlayNewMessageSound() {
 }
 
 static ScrollStringSt *ExtractScrollStringFromFile(HWFILE const f, bool stracLinuxFormat) {
-  UINT32 size;
+  uint32_t size;
   FileRead(f, &size, sizeof(size));
   if (size == 0) return 0;
 
@@ -542,10 +543,10 @@ static ScrollStringSt *ExtractScrollStringFromFile(HWFILE const f, bool stracLin
     }
   }
 
-  BYTE data[28];
+  uint8_t data[28];
   FileRead(f, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_SKIP(d, 4)
   EXTR_U32(d, s->uiTimeOfLastUpdate)
   EXTR_SKIP(d, 16)
@@ -559,19 +560,19 @@ static ScrollStringSt *ExtractScrollStringFromFile(HWFILE const f, bool stracLin
 
 static void InjectScrollStringIntoFile(HWFILE const f, ScrollStringSt const *const s) {
   if (!s) {
-    UINT32 const size = 0;
+    uint32_t const size = 0;
     FileWrite(f, &size, sizeof(size));
     return;
   }
 
   UTF8String str(s->pString);
   std::vector<uint16_t> utf16data = str.getUTF16();
-  UINT32 const size = 2 * utf16data.size();
+  uint32_t const size = 2 * utf16data.size();
   FileWrite(f, &size, sizeof(size));
   FileWrite(f, utf16data.data(), size);
 
-  BYTE data[28];
-  BYTE *d = data;
+  uint8_t data[28];
+  uint8_t *d = data;
   INJ_SKIP(d, 4)
   INJ_U32(d, s->uiTimeOfLastUpdate)
   INJ_SKIP(d, 16)
@@ -585,12 +586,12 @@ static void InjectScrollStringIntoFile(HWFILE const f, ScrollStringSt const *con
 
 void SaveMapScreenMessagesToSaveGameFile(HWFILE const hFile) {
   // write to the begining of the message list
-  FileWrite(hFile, &gubEndOfMapScreenMessageList, sizeof(UINT8));
+  FileWrite(hFile, &gubEndOfMapScreenMessageList, sizeof(uint8_t));
 
-  FileWrite(hFile, &gubStartOfMapScreenMessageList, sizeof(UINT8));
+  FileWrite(hFile, &gubStartOfMapScreenMessageList, sizeof(uint8_t));
 
   // write the current message string
-  FileWrite(hFile, &gubCurrentMapMessageString, sizeof(UINT8));
+  FileWrite(hFile, &gubCurrentMapMessageString, sizeof(uint8_t));
 
   // Loopthrough all the messages
   FOR_EACH(ScrollStringSt *const, i, gMapScreenMessageList) {
@@ -607,13 +608,13 @@ void LoadMapScreenMessagesFromSaveGameFile(HWFILE const hFile, bool stracLinuxFo
   gubCurrentMapMessageString = 0;
 
   // Read to the begining of the message list
-  FileRead(hFile, &gubEndOfMapScreenMessageList, sizeof(UINT8));
+  FileRead(hFile, &gubEndOfMapScreenMessageList, sizeof(uint8_t));
 
   // Read the current message string
-  FileRead(hFile, &gubStartOfMapScreenMessageList, sizeof(UINT8));
+  FileRead(hFile, &gubStartOfMapScreenMessageList, sizeof(uint8_t));
 
   // Read the current message string
-  FileRead(hFile, &gubCurrentMapMessageString, sizeof(UINT8));
+  FileRead(hFile, &gubCurrentMapMessageString, sizeof(uint8_t));
 
   // Loopthrough all the messages
   FOR_EACH(ScrollStringSt *, i, gMapScreenMessageList) {
@@ -633,8 +634,8 @@ void LoadMapScreenMessagesFromSaveGameFile(HWFILE const hFile, bool stracLinuxFo
   MoveToEndOfMapScreenMessageList();
 }
 
-static INT32 GetMessageQueueSize() {
-  INT32 iCounter = 0;
+static int32_t GetMessageQueueSize() {
+  int32_t iCounter = 0;
   for (const ScrollStringSt *i = pStringS; i != NULL; i = i->pNext) {
     iCounter++;
   }
@@ -672,7 +673,7 @@ void FreeGlobalMessageList() {
   gubCurrentMapMessageString = 0;
 }
 
-UINT8 GetRangeOfMapScreenMessages() {
+uint8_t GetRangeOfMapScreenMessages() {
   // NOTE: End is non-inclusive, so start/end 0/0 means no messages, 0/1 means 1
   // message, etc.
   if (gubStartOfMapScreenMessageList <= gubEndOfMapScreenMessageList) {

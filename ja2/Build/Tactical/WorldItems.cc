@@ -31,18 +31,18 @@
 
 // Global dynamic array of all of the items in a loaded map.
 WORLDITEM *gWorldItems = NULL;
-UINT32 guiNumWorldItems = 0;
+uint32_t guiNumWorldItems = 0;
 
 WORLDBOMB *gWorldBombs = NULL;
-UINT32 guiNumWorldBombs = 0;
+uint32_t guiNumWorldBombs = 0;
 
-static INT32 GetFreeWorldBombIndex() {
-  UINT32 uiCount;
+static int32_t GetFreeWorldBombIndex() {
+  uint32_t uiCount;
   WORLDBOMB *newWorldBombs;
-  UINT32 uiOldNumWorldBombs;
+  uint32_t uiOldNumWorldBombs;
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
-    if (!gWorldBombs[uiCount].fExists) return (INT32)uiCount;
+    if (!gWorldBombs[uiCount].fExists) return (int32_t)uiCount;
   }
 
   uiOldNumWorldBombs = guiNumWorldBombs;
@@ -59,8 +59,8 @@ static INT32 GetFreeWorldBombIndex() {
   return (uiCount);
 }
 
-static INT32 AddBombToWorld(INT32 iItemIndex) {
-  UINT32 iBombIndex;
+static int32_t AddBombToWorld(int32_t iItemIndex) {
+  uint32_t iBombIndex;
 
   iBombIndex = GetFreeWorldBombIndex();
 
@@ -71,7 +71,7 @@ static INT32 AddBombToWorld(INT32 iItemIndex) {
   return (iBombIndex);
 }
 
-static void RemoveBombFromWorldByItemIndex(INT32 iItemIndex) {
+static void RemoveBombFromWorldByItemIndex(int32_t iItemIndex) {
   // Find the world bomb which corresponds with a particular world item, then
   // remove the world bomb from the table.
   FOR_EACH_WORLD_BOMB(wb) {
@@ -82,7 +82,7 @@ static void RemoveBombFromWorldByItemIndex(INT32 iItemIndex) {
   }
 }
 
-INT32 FindWorldItemForBombInGridNo(const INT16 sGridNo, const INT8 bLevel) {
+int32_t FindWorldItemForBombInGridNo(const int16_t sGridNo, const int8_t bLevel) {
   CFOR_EACH_WORLD_BOMB(wb) {
     WORLDITEM const &wi = GetWorldItem(wb->iItemIndex);
     if (wi.sGridNo != sGridNo || wi.ubLevel != bLevel) continue;
@@ -99,7 +99,7 @@ void FindPanicBombsAndTriggers() {
     WORLDITEM const &wi = GetWorldItem(wb->iItemIndex);
     OBJECTTYPE const &o = wi.o;
 
-    INT8 bPanicIndex;
+    int8_t bPanicIndex;
     switch (o.bFrequency) {
       case PANIC_FREQUENCY:
         bPanicIndex = 0;
@@ -115,7 +115,7 @@ void FindPanicBombsAndTriggers() {
     }
 
     if (o.usItem == SWITCH) {
-      INT16 sGridNo = wi.sGridNo;
+      int16_t sGridNo = wi.sGridNo;
       const STRUCTURE *const switch_ = FindStructure(sGridNo, STRUCTURE_SWITCH);
       if (switch_) {
         switch (switch_->ubWallOrientation) {
@@ -146,13 +146,13 @@ void FindPanicBombsAndTriggers() {
   }
 }
 
-static INT32 GetFreeWorldItemIndex() {
-  UINT32 uiCount;
+static int32_t GetFreeWorldItemIndex() {
+  uint32_t uiCount;
   WORLDITEM *newWorldItems;
-  UINT32 uiOldNumWorldItems;
+  uint32_t uiOldNumWorldItems;
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
-    if (!gWorldItems[uiCount].fExists) return (INT32)uiCount;
+    if (!gWorldItems[uiCount].fExists) return (int32_t)uiCount;
   }
 
   uiOldNumWorldItems = guiNumWorldItems;
@@ -169,21 +169,21 @@ static INT32 GetFreeWorldItemIndex() {
   return (uiCount);
 }
 
-static UINT32 GetNumUsedWorldItems() {
-  UINT32 count = 0;
+static uint32_t GetNumUsedWorldItems() {
+  uint32_t count = 0;
   CFOR_EACH_WORLD_ITEM(wi)++ count;
   return count;
 }
 
-INT32 AddItemToWorld(INT16 sGridNo, const OBJECTTYPE *const pObject, const UINT8 ubLevel,
-                     const UINT16 usFlags, const INT8 bRenderZHeightAboveLevel,
-                     const INT8 bVisible) {
+int32_t AddItemToWorld(int16_t sGridNo, const OBJECTTYPE *const pObject, const uint8_t ubLevel,
+                       const uint16_t usFlags, const int8_t bRenderZHeightAboveLevel,
+                       const int8_t bVisible) {
   // ATE: Check if the gridno is OK
   if (sGridNo == NOWHERE) {
     return -1;
   }
 
-  const UINT32 iItemIndex = GetFreeWorldItemIndex();
+  const uint32_t iItemIndex = GetFreeWorldItemIndex();
   WORLDITEM &wi = GetWorldItem(iItemIndex);
 
   // Add the new world item to the table.
@@ -203,7 +203,7 @@ INT32 AddItemToWorld(INT16 sGridNo, const OBJECTTYPE *const pObject, const UINT8
   return iItemIndex;
 }
 
-void RemoveItemFromWorld(const INT32 iItemIndex) {
+void RemoveItemFromWorld(const int32_t iItemIndex) {
   WORLDITEM &wi = GetWorldItem(iItemIndex);
   if (!wi.fExists) return;
 
@@ -229,7 +229,7 @@ void TrashWorldItems() {
 }
 
 void SaveWorldItemsToMap(HWFILE const f) {
-  UINT32 const n_actual_world_items = GetNumUsedWorldItems();
+  uint32_t const n_actual_world_items = GetNumUsedWorldItems();
   FileWrite(f, &n_actual_world_items, sizeof(n_actual_world_items));
 
   CFOR_EACH_WORLD_ITEM(wi) FileWrite(f, wi, sizeof(WORLDITEM));
@@ -243,7 +243,7 @@ void LoadWorldItemsFromMap(HWFILE const f) {
   TrashWorldItems();
 
   // Read the number of items that were saved in the map
-  UINT32 n_world_items;
+  uint32_t n_world_items;
   FileRead(f, &n_world_items, sizeof(n_world_items));
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME &&
@@ -254,9 +254,9 @@ void LoadWorldItemsFromMap(HWFILE const f) {
     return;
   }
 
-  for (UINT32 n = n_world_items; n != 0; --n) { /* Add all of the items to the world indirectly
-                                                 * through AddItemToPool, but only if the chance
-                                                 * associated with them succeed. */
+  for (uint32_t n = n_world_items; n != 0; --n) { /* Add all of the items to the world indirectly
+                                                   * through AddItemToPool, but only if the chance
+                                                   * associated with them succeed. */
     WORLDITEM wi;
     FileRead(f, &wi, sizeof(wi));
     OBJECTTYPE &o = wi.o;
@@ -275,22 +275,22 @@ void LoadWorldItemsFromMap(HWFILE const f) {
         // do replacements?
         INVTYPE const &item = Item[o.usItem];
         if (item.usItemClass == IC_GUN) {
-          UINT16 const replacement = StandardGunListReplacement(o.usItem);
+          uint16_t const replacement = StandardGunListReplacement(o.usItem);
           if (replacement != NOTHING) {
             // everything else can be the same? no.
-            INT8 const ammo = o.ubGunShotsLeft;
-            INT8 new_ammo = Weapon[replacement].ubMagSize * ammo / Weapon[o.usItem].ubMagSize;
+            int8_t const ammo = o.ubGunShotsLeft;
+            int8_t new_ammo = Weapon[replacement].ubMagSize * ammo / Weapon[o.usItem].ubMagSize;
             if (new_ammo == 0 && ammo > 0) new_ammo = 1;
             o.usItem = replacement;
             o.ubGunShotsLeft = new_ammo;
           }
         } else if (item.usItemClass == IC_AMMO) {
-          UINT16 const replacement = StandardGunListAmmoReplacement(o.usItem);
+          uint16_t const replacement = StandardGunListAmmoReplacement(o.usItem);
           if (replacement != NOTHING) {
             // Go through status values and scale up/down
-            UINT8 const mag_size = Magazine[item.ubClassIndex].ubMagSize;
-            UINT8 const new_mag_size = Magazine[Item[replacement].ubClassIndex].ubMagSize;
-            for (UINT8 i = 0; i != o.ubNumberOfObjects; ++i) {
+            uint8_t const mag_size = Magazine[item.ubClassIndex].ubMagSize;
+            uint8_t const new_mag_size = Magazine[Item[replacement].ubClassIndex].ubMagSize;
+            for (uint8_t i = 0; i != o.ubNumberOfObjects; ++i) {
               o.bStatus[i] = o.bStatus[i] * new_mag_size / mag_size;
             }
 
@@ -326,8 +326,8 @@ void LoadWorldItemsFromMap(HWFILE const f) {
     // All armed bombs are buried
     if (wi.usFlags & WORLD_ITEM_ARMED_BOMB) wi.bVisible = BURIED;
 
-    INT32 const item_idx = AddItemToPool(wi.sGridNo, &o, static_cast<Visibility>(wi.bVisible),
-                                         wi.ubLevel, wi.usFlags, wi.bRenderZHeightAboveLevel);
+    int32_t const item_idx = AddItemToPool(wi.sGridNo, &o, static_cast<Visibility>(wi.bVisible),
+                                           wi.ubLevel, wi.usFlags, wi.bRenderZHeightAboveLevel);
     GetWorldItem(item_idx).ubNonExistChance = wi.ubNonExistChance;
   }
 
@@ -357,8 +357,8 @@ static void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere() {
       if (p.sSectorX == gWorldSectorX && p.sSectorY == gWorldSectorY) continue;
 
       // then all items in this location should be deleted
-      const INT16 sGridNo = wi->sGridNo;
-      const UINT8 ubLevel = wi->ubLevel;
+      const int16_t sGridNo = wi->sGridNo;
+      const uint8_t ubLevel = wi->ubLevel;
       FOR_EACH_WORLD_ITEM(owned_item) {
         if (owned_item->sGridNo == sGridNo && owned_item->ubLevel == ubLevel) {
           RemoveItemFromPool(owned_item);
@@ -382,8 +382,8 @@ static void DeleteWorldItemsBelongingToQueenIfThere() {
     if (wi->o.ubOwnerProfile != QUEEN) continue;
 
     // Delete all items on this tile
-    const INT16 sGridNo = wi->sGridNo;
-    const UINT8 ubLevel = wi->ubLevel;
+    const int16_t sGridNo = wi->sGridNo;
+    const uint8_t ubLevel = wi->ubLevel;
     FOR_EACH_WORLD_ITEM(item) {
       if (item->sGridNo != sGridNo) continue;
       if (item->ubLevel != ubLevel) continue;
@@ -392,7 +392,7 @@ static void DeleteWorldItemsBelongingToQueenIfThere() {
       switch (item->o.usItem) {
         case AUTO_ROCKET_RIFLE: {
           // Give her auto rifle
-          INT8 const bSlot = FindObjectInSoldierProfile(q, ROCKET_RIFLE);
+          int8_t const bSlot = FindObjectInSoldierProfile(q, ROCKET_RIFLE);
           if (bSlot != NO_SLOT) q.inv[bSlot] = AUTO_ROCKET_RIFLE;
           break;
         }
@@ -416,7 +416,7 @@ static void DeleteWorldItemsBelongingToQueenIfThere() {
 }
 
 // Refresh item pools
-void RefreshWorldItemsIntoItemPools(const WORLDITEM *const items, const INT32 item_count) {
+void RefreshWorldItemsIntoItemPools(const WORLDITEM *const items, const int32_t item_count) {
   for (const WORLDITEM *i = items; i != items + item_count; ++i) {
     if (!i->fExists) continue;
     OBJECTTYPE o = i->o;  // XXX AddItemToPool() may alter the object

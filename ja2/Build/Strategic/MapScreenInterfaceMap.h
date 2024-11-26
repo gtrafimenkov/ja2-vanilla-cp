@@ -9,25 +9,25 @@ void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow);
 
 void DrawMap();
 
-void GetScreenXYFromMapXY(INT16 sMapX, INT16 sMapY, INT16 *psX, INT16 *psY);
+void GetScreenXYFromMapXY(int16_t sMapX, int16_t sMapY, int16_t *psX, int16_t *psY);
 
 void InitializePalettesForMap();
 void ShutDownPalettesForMap();
 
 // plot path for helicopter
-void PlotPathForHelicopter(INT16 sX, INT16 sY);
+void PlotPathForHelicopter(int16_t sX, int16_t sY);
 
 // the temp path, where the helicopter could go
-void PlotATemporaryPathForHelicopter(INT16 sX, INT16 sY);
+void PlotATemporaryPathForHelicopter(int16_t sX, int16_t sY);
 
 // show arrows for this char
-void DisplayPathArrows(UINT16 usCharNum, HVOBJECT hMapHandle);
+void DisplayPathArrows(uint16_t usCharNum, HVOBJECT hMapHandle);
 
 // build path for character
-void PlotPathForCharacter(SOLDIERTYPE &, INT16 x, INT16 y, bool tactical_traversal);
+void PlotPathForCharacter(SOLDIERTYPE &, int16_t x, int16_t y, bool tactical_traversal);
 
 // build temp path for character
-void PlotATemporaryPathForCharacter(const SOLDIERTYPE *s, INT16 sX, INT16 sY);
+void PlotATemporaryPathForCharacter(const SOLDIERTYPE *s, int16_t sX, int16_t sY);
 
 // display current/temp paths
 void DisplaySoldierPath(SOLDIERTYPE *pCharacter);
@@ -36,7 +36,7 @@ void DisplayHelicopterPath();
 void DisplayHelicopterTempPath();
 
 // clear path after this sector
-UINT32 ClearPathAfterThisSectorForCharacter(SOLDIERTYPE *pCharacter, INT16 sX, INT16 sY);
+uint32_t ClearPathAfterThisSectorForCharacter(SOLDIERTYPE *pCharacter, int16_t sX, int16_t sY);
 
 // cancel path : clear the path completely and gives player feedback message
 // that the route was canceled
@@ -44,27 +44,27 @@ void CancelPathForCharacter(SOLDIERTYPE *pCharacter);
 void CancelPathForVehicle(VEHICLETYPE &, BOOLEAN fAlreadyReversed);
 
 // check if we have waited long enought o update temp path
-void DisplayThePotentialPathForHelicopter(INT16 sMapX, INT16 sMapY);
+void DisplayThePotentialPathForHelicopter(int16_t sMapX, int16_t sMapY);
 
 // clear out helicopter list after this sector
-UINT32 ClearPathAfterThisSectorForHelicopter(INT16 sX, INT16 sY);
+uint32_t ClearPathAfterThisSectorForHelicopter(int16_t sX, int16_t sY);
 
 // check to see if sector is highlightable
-bool IsTheCursorAllowedToHighLightThisSector(INT16 x, INT16 y);
+bool IsTheCursorAllowedToHighLightThisSector(int16_t x, int16_t y);
 
 // restore background for map grids
-void RestoreBackgroundForMapGrid(INT16 sMapX, INT16 sMapY);
+void RestoreBackgroundForMapGrid(int16_t sMapX, int16_t sMapY);
 
 // clip blits to map view region
 void ClipBlitsToMapViewRegion();
-void ClipBlitsToMapViewRegionForRectangleAndABit(UINT32 uiDestPitchBYTES);
+void ClipBlitsToMapViewRegionForRectangleAndABit(uint32_t uiDestPitchBYTES);
 
 // clip blits to full screen....restore after use of ClipBlitsToMapViewRegion( )
 void RestoreClipRegionToFullScreen();
-void RestoreClipRegionToFullScreenForRectangle(UINT32 uiDestPitchBYTES);
+void RestoreClipRegionToFullScreenForRectangle(uint32_t uiDestPitchBYTES);
 
 // last sector in helicopter's path
-INT16 GetLastSectorOfHelicoptersPath();
+int16_t GetLastSectorOfHelicoptersPath();
 
 // display info about helicopter path
 void DisplayDistancesForHelicopter();
@@ -73,13 +73,13 @@ void DisplayDistancesForHelicopter();
 void DisplayPositionOfHelicopter();
 
 // check for click
-BOOLEAN CheckForClickOverHelicopterIcon(INT16 sX, INT16 sY);
+BOOLEAN CheckForClickOverHelicopterIcon(int16_t sX, int16_t sY);
 
 void LoadMapScreenInterfaceMapGraphics();
 void DeleteMapScreenInterfaceMapGraphics();
 
 // grab the total number of militia in sector
-INT32 GetNumberOfMilitiaInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+int32_t GetNumberOfMilitiaInSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 // create destroy
 void CreateDestroyMilitiaPopUPRegions();
@@ -89,7 +89,7 @@ void DrawMilitiaPopUpBox();
 
 // Returns true if the player knows how many enemies are in the sector if that
 // number is greater than 0. Returns false for all other cases.
-UINT32 WhatPlayerKnowsAboutEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
+uint32_t WhatPlayerKnowsAboutEnemiesInSector(int16_t sSectorX, int16_t sSectorY);
 
 // There is a special case flag used when players encounter enemies in a sector,
 // then retreat.  The number of enemies will display on mapscreen until time is
@@ -153,17 +153,17 @@ enum {
 #define MIN_WAIT_TIME_FOR_TEMP_PATH 200
 
 // zoom UL coords
-extern INT32 iZoomX;
-extern INT32 iZoomY;
+extern int32_t iZoomX;
+extern int32_t iZoomY;
 
 // the number of militia on the cursor
-extern INT16 sGreensOnCursor;
-extern INT16 sRegularsOnCursor;
-extern INT16 sElitesOnCursor;
+extern int16_t sGreensOnCursor;
+extern int16_t sRegularsOnCursor;
+extern int16_t sElitesOnCursor;
 
 // highlighted sectors
-extern INT16 gsHighlightSectorX;
-extern INT16 gsHighlightSectorY;
+extern int16_t gsHighlightSectorX;
+extern int16_t gsHighlightSectorY;
 
 // the viewable map bound region
 extern SGPRect MapScreenRect;
@@ -172,28 +172,28 @@ extern SGPRect MapScreenRect;
 extern BOOLEAN fDrawTempHeliPath;
 
 // selected destination char
-extern INT8 bSelectedDestChar;
+extern int8_t bSelectedDestChar;
 
 // current assignment character
-extern INT8 bSelectedAssignChar;
+extern int8_t bSelectedAssignChar;
 
 // the contract char
-extern INT8 bSelectedContractChar;
+extern int8_t bSelectedContractChar;
 
 // has temp path for character path or helicopter been already drawn
 extern BOOLEAN fTempPathAlreadyDrawn;
 
 // the currently selected town militia
-extern INT16 sSelectedMilitiaTown;
+extern int16_t sSelectedMilitiaTown;
 
 // the selected sectors
-extern UINT16 sSelMapX;
-extern UINT16 sSelMapY;
+extern uint16_t sSelMapX;
+extern uint16_t sSelMapY;
 
 extern BOOLEAN fFoundTixa;
 
 void CreateDestroyMilitiaSectorButtons();
-BOOLEAN CanRedistributeMilitiaInSector(INT16 sClickedSectorX, INT16 sClickedSectorY,
-                                       INT8 bClickedTownId);
+BOOLEAN CanRedistributeMilitiaInSector(int16_t sClickedSectorX, int16_t sClickedSectorY,
+                                       int8_t bClickedTownId);
 
 #endif

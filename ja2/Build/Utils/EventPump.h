@@ -19,58 +19,58 @@ enum GameEvent {
 #define DEMAND_EVENT_DELAY 0xFFFF
 
 struct EV_S_GETNEWPATH {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sDestGridNo;
-  UINT16 usMovementAnim;
+  uint16_t usSoldierID;
+  uint32_t uiUniqueId;
+  int16_t sDestGridNo;
+  uint16_t usMovementAnim;
 };
 
 struct EV_S_SETDESIREDDIRECTION {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usDesiredDirection;
+  uint16_t usSoldierID;
+  uint32_t uiUniqueId;
+  uint16_t usDesiredDirection;
 };
 
 struct EV_S_BEGINFIREWEAPON {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sTargetGridNo;
-  INT8 bTargetLevel;
-  INT8 bTargetCubeLevel;
+  uint16_t usSoldierID;
+  uint32_t uiUniqueId;
+  int16_t sTargetGridNo;
+  int8_t bTargetLevel;
+  int8_t bTargetCubeLevel;
 };
 
 struct EV_S_FIREWEAPON {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sTargetGridNo;
-  INT8 bTargetLevel;
-  INT8 bTargetCubeLevel;
+  uint16_t usSoldierID;
+  uint32_t uiUniqueId;
+  int16_t sTargetGridNo;
+  int8_t bTargetLevel;
+  int8_t bTargetCubeLevel;
 };
 
 struct EV_S_WEAPONHIT {
-  UINT16 usSoldierID;
-  UINT16 usWeaponIndex;
-  INT16 sDamage;
-  INT16 sBreathLoss;
-  UINT16 usDirection;
-  INT16 sXPos;
-  INT16 sYPos;
-  INT16 sZPos;
-  INT16 sRange;
-  UINT8 ubAttackerID;
-  UINT8 ubSpecial;
-  UINT8 ubLocation;
+  uint16_t usSoldierID;
+  uint16_t usWeaponIndex;
+  int16_t sDamage;
+  int16_t sBreathLoss;
+  uint16_t usDirection;
+  int16_t sXPos;
+  int16_t sYPos;
+  int16_t sZPos;
+  int16_t sRange;
+  uint8_t ubAttackerID;
+  uint8_t ubSpecial;
+  uint8_t ubLocation;
 };
 
 struct EV_S_NOISE {
-  UINT8 ubNoiseMaker;
-  INT16 sGridNo;
-  UINT8 bLevel;
-  UINT8 ubVolume;
-  UINT8 ubNoiseType;
+  uint8_t ubNoiseMaker;
+  int16_t sGridNo;
+  uint8_t bLevel;
+  uint8_t ubVolume;
+  uint8_t ubNoiseType;
 };
 
-void AddGameEvent(GameEvent, UINT16 usDelay, PTR pEventData);
+void AddGameEvent(GameEvent, uint16_t usDelay, void* pEventData);
 BOOLEAN DequeAllGameEvents();
 BOOLEAN DequeueAllDemandGameEvents();
 

@@ -75,8 +75,8 @@ enum GlobalLoyaltyEventTypes {
 };
 
 struct TOWN_LOYALTY {
-  UINT8 ubRating;
-  INT16 sChange;
+  uint8_t ubRating;
+  int16_t sChange;
   BOOLEAN fStarted;  // starting loyalty of each town is initialized only when
                      // player first enters that town
   BOOLEAN fLiberatedAlready;
@@ -89,8 +89,8 @@ extern TOWN_LOYALTY gTownLoyalty[];
 extern BOOLEAN gfTownUsesLoyalty[];
 
 struct TownSectorInfo {
-  UINT8 town;
-  UINT8 sector;
+  uint8_t town;
+  uint8_t sector;
 };
 
 extern TownSectorInfo g_town_sectors[];
@@ -103,16 +103,16 @@ extern TownSectorInfo g_town_sectors[];
   else
 
 // initialize a specific town's loyalty if it hasn't already been
-void StartTownLoyaltyIfFirstTime(INT8 bTownId);
+void StartTownLoyaltyIfFirstTime(int8_t bTownId);
 
 // set a speciafied town's loyalty rating
-void SetTownLoyalty(INT8 bTownId, UINT8 ubLoyaltyValue);
+void SetTownLoyalty(int8_t bTownId, uint8_t ubLoyaltyValue);
 
 // increment the town loyalty rating (hundredths!)
-void IncrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyIncrease);
+void IncrementTownLoyalty(int8_t bTownId, uint32_t uiLoyaltyIncrease);
 
 // decrement the town loyalty rating (hundredths!)
-void DecrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyDecrease);
+void DecrementTownLoyalty(int8_t bTownId, uint32_t uiLoyaltyDecrease);
 
 // init town loyalty lists
 void InitTownLoyalty();
@@ -124,7 +124,8 @@ void HandleMurderOfCivilian(const SOLDIERTYPE *pSoldier);
 void HandleTownLoyaltyForNPCRecruitment(SOLDIERTYPE *pSoldier);
 
 // remove random item from this sector
-void RemoveRandomItemsInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 ubChance);
+void RemoveRandomItemsInSector(int16_t sSectorX, int16_t sSectorY, int16_t sSectorZ,
+                               uint8_t ubChance);
 
 // build list of town sectors
 void BuildListOfTownSectors();
@@ -135,32 +136,33 @@ void SaveStrategicTownLoyaltyToSaveGameFile(HWFILE);
 void ReduceLoyaltyForRebelsBetrayed();
 
 // how many towns under player control?
-INT32 GetNumberOfWholeTownsUnderControl();
+int32_t GetNumberOfWholeTownsUnderControl();
 
 // is all the sectors of this town under control by the player
-INT32 IsTownUnderCompleteControlByPlayer(INT8 bTownId);
+int32_t IsTownUnderCompleteControlByPlayer(int8_t bTownId);
 
 // used when monsters attack a town sector without going through tactical and
 // they win
-void AdjustLoyaltyForCivsEatenByMonsters(INT16 sSectorX, INT16 sSectorY, UINT8 ubHowMany);
+void AdjustLoyaltyForCivsEatenByMonsters(int16_t sSectorX, int16_t sSectorY, uint8_t ubHowMany);
 
 // these are used to handle global loyalty events (ones that effect EVERY town
 // on the map)
-void IncrementTownLoyaltyEverywhere(UINT32 uiLoyaltyIncrease);
-void DecrementTownLoyaltyEverywhere(UINT32 uiLoyaltyDecrease);
-void HandleGlobalLoyaltyEvent(UINT8 ubEventType, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+void IncrementTownLoyaltyEverywhere(uint32_t uiLoyaltyIncrease);
+void DecrementTownLoyaltyEverywhere(uint32_t uiLoyaltyDecrease);
+void HandleGlobalLoyaltyEvent(uint8_t ubEventType, int16_t sSectorX, int16_t sSectorY,
+                              int8_t bSectorZ);
 
 // handle a town being liberated for the first time
-void CheckIfEntireTownHasBeenLiberated(INT8 bTownId, INT16 sSectorX, INT16 sSectorY);
-void CheckIfEntireTownHasBeenLost(INT8 bTownId, INT16 sSectorX, INT16 sSectorY);
+void CheckIfEntireTownHasBeenLiberated(int8_t bTownId, int16_t sSectorX, int16_t sSectorY);
+void CheckIfEntireTownHasBeenLost(int8_t bTownId, int16_t sSectorX, int16_t sSectorY);
 
-void HandleLoyaltyChangeForNPCAction(UINT8 ubNPCProfileId);
+void HandleLoyaltyChangeForNPCAction(uint8_t ubNPCProfileId);
 
-bool DidFirstBattleTakePlaceInThisTown(INT8 town);
-void SetTheFirstBattleSector(INT16 sSectorValue);
+bool DidFirstBattleTakePlaceInThisTown(int8_t town);
+void SetTheFirstBattleSector(int16_t sSectorValue);
 
 // gte number of whole towns but exclude this one
-INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude);
+int32_t GetNumberOfWholeTownsUnderControlButExcludeCity(int8_t bCityToExclude);
 
 // Function assumes that mercs have retreated already.  Handles two cases, one
 // for general merc retreat which slightly demoralizes the mercs, the other
@@ -170,8 +172,8 @@ INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude);
 #define RETREAT_TACTICAL_TRAVERSAL 0
 #define RETREAT_PBI 1
 #define RETREAT_AUTORESOLVE 2
-void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, INT16 sSectorY,
-                                            INT16 sSectorZ);
+void HandleLoyaltyImplicationsOfMercRetreat(int8_t bRetreatCode, int16_t sSectorX, int16_t sSectorY,
+                                            int16_t sSectorZ);
 
 void MaximizeLoyaltyForDeidrannaKilled();
 

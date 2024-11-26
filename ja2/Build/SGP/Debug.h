@@ -27,15 +27,15 @@
 // you tried to access it in function A "); It'll make debugging a little
 // simpler.  In anal cases, you could build the string first, then assert with
 // it.
-extern void _FailMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile);
+extern void _FailMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFile);
 
-#define Assert(a) (a) ? (void) 0 : _FailMessage(NULL, __LINE__, __FILE__)
-#define AssertMsg(a, b) (a) ? (void) 0 : _FailMessage(b, __LINE__, __FILE__)
+#define Assert(a) (a) ? (void)0 : _FailMessage(NULL, __LINE__, __FILE__)
+#define AssertMsg(a, b) (a) ? (void)0 : _FailMessage(b, __LINE__, __FILE__)
 
 #else
 
-#define Assert(a) ((void) 0)
-#define AssertMsg(a, b) ((void) 0)
+#define Assert(a) ((void)0)
+#define AssertMsg(a, b) ((void)0)
 
 #endif
 
@@ -62,7 +62,7 @@ enum DebugLevel {
 extern void DebugMsg(TopicID TopicId, DebugLevel uiDebugLevel, const char *Str);
 #define FastDebugMsg(a) _DebugMessage(a, __LINE__, __FILE__)
 
-extern void _DebugMessage(const char *Message, UINT32 uiLineNum, const char *SourceFile);
+extern void _DebugMessage(const char *Message, uint32_t uiLineNum, const char *SourceFile);
 
 const char *String(const char *fmt, ...);
 

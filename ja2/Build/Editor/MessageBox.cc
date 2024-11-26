@@ -16,26 +16,26 @@ GUIButtonRef iMsgBoxOk;
 GUIButtonRef iMsgBoxCancel;
 
 BOOLEAN gfMessageBoxResult = FALSE;
-UINT8 gubMessageBoxStatus = MESSAGEBOX_NONE;
+uint8_t gubMessageBoxStatus = MESSAGEBOX_NONE;
 
-static void MsgBoxCnclClkCallback(GUI_BUTTON *butn, INT32 reason);
-static void MsgBoxOkClkCallback(GUI_BUTTON *butn, INT32 reason);
+static void MsgBoxCnclClkCallback(GUI_BUTTON *butn, int32_t reason);
+static void MsgBoxOkClkCallback(GUI_BUTTON *butn, int32_t reason);
 
 void CreateMessageBox(wchar_t const *const msg) {
   Font const font = gpLargeFontType1;
-  INT16 w = StringPixLength(msg, font) + 10;
-  INT16 const h = 96;
+  int16_t w = StringPixLength(msg, font) + 10;
+  int16_t const h = 96;
   if (w > 600) w = 600;
 
-  INT16 const x = (SCREEN_WIDTH - w) / 2;
-  INT16 const y = (SCREEN_HEIGHT - h) / 2;
+  int16_t const x = (SCREEN_WIDTH - w) / 2;
+  int16_t const y = (SCREEN_HEIGHT - h) / 2;
 
   // Fake button for background with text
   iMsgBoxBgrnd =
       CreateLabel(msg, font, FONT_LTKHAKI, FONT_DKKHAKI, x, y, w, h, MSYS_PRIORITY_HIGHEST - 2);
 
-  INT16 const bx = x + w / 2;
-  INT16 const by = y + 58;
+  int16_t const bx = x + w / 2;
+  int16_t const by = y + 58;
   iMsgBoxOk = QuickCreateButtonImg(EDITORDIR "/ok.sti", 0, 1, 2, 3, 4, bx - 35, by,
                                    MSYS_PRIORITY_HIGHEST - 1, MsgBoxOkClkCallback);
   iMsgBoxCancel = QuickCreateButtonImg(EDITORDIR "/cancel.sti", 0, 1, 2, 3, 4, bx + 5, by,
@@ -92,14 +92,14 @@ void RemoveMessageBox() {
   gubMessageBoxStatus = MESSAGEBOX_NONE;
 }
 
-static void MsgBoxOkClkCallback(GUI_BUTTON *butn, INT32 reason) {
+static void MsgBoxOkClkCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = MESSAGEBOX_DONE;
     gfMessageBoxResult = TRUE;
   }
 }
 
-static void MsgBoxCnclClkCallback(GUI_BUTTON *butn, INT32 reason) {
+static void MsgBoxCnclClkCallback(GUI_BUTTON *butn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = MESSAGEBOX_DONE;
     gfMessageBoxResult = FALSE;

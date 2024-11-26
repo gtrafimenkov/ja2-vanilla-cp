@@ -233,12 +233,12 @@ enum CursorSurfaceDefines {
 void InitCursors();
 void HandleAnimatedCursors();
 
-void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex);
+void UpdateAnimatedCursorFrames(uint32_t uiCursorIndex);
 
-void SetCursorSpecialFrame(UINT32 uiCursor, UINT8 ubFrame);
+void SetCursorSpecialFrame(uint32_t uiCursor, uint8_t ubFrame);
 
-void SetCursorFlags(UINT32 uiCursor, UINT8 ubFlags);
-void RemoveCursorFlags(UINT32 uiCursor, UINT8 ubFlags);
+void SetCursorFlags(uint32_t uiCursor, uint8_t ubFlags);
+void RemoveCursorFlags(uint32_t uiCursor, uint8_t ubFlags);
 
 // The string must be persistent
 void SetHitLocationText(const wchar_t *Text);

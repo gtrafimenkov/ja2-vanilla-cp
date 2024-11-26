@@ -112,23 +112,23 @@
 static SGPVObject *guiInsOrderGridImage;
 static SGPVObject *guiInsOrderBulletImage;
 
-static UINT8 gubNumberofDisplayedInsuranceGrids;
+static uint8_t gubNumberofDisplayedInsuranceGrids;
 
 static BOOLEAN gfChangeInsuranceFormButtons = FALSE;
 
 static SOLDIERTYPE *g_insurance_merc_array[20];
-static UINT g_n_insurable_mercs;
-INT16 gsCurrentInsuranceMercIndex;
+static uint32_t g_n_insurable_mercs;
+int16_t gsCurrentInsuranceMercIndex;
 
 // link to the varios pages
 static MOUSE_REGION gSelectedInsuranceContractLinkRegion[2];
 
 static BUTTON_PICS *guiInsContractPrevButtonImage;
-static void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static GUIButtonRef guiInsContractPrevBackButton;
 
 static BUTTON_PICS *guiInsContractNextButtonImage;
-static void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason);
+static void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, int32_t reason);
 static GUIButtonRef guiInsContractNextBackButton;
 
 // Graphic for Accept, Clear button for form 1
@@ -146,10 +146,11 @@ static void SetNumberOfDisplayedInsuranceMercs() {
       std::min((uint8_t)(g_n_insurable_mercs - gsCurrentInsuranceMercIndex), (uint8_t)3);
 }
 
-static GUIButtonRef MakeButtonBig(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
-                                  const GUI_CALLBACK click, const INT8 offset_x) {
-  const INT16 text_col = INS_FONT_COLOR;
-  const INT16 shadow_col = INS_FONT_SHADOW;
+static GUIButtonRef MakeButtonBig(BUTTON_PICS *const img, const wchar_t *const text,
+                                  const int16_t x, const GUI_CALLBACK click,
+                                  const int8_t offset_x) {
+  const int16_t text_col = INS_FONT_COLOR;
+  const int16_t shadow_col = INS_FONT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, INS_FONT_BIG, text_col, shadow_col, text_col, shadow_col,
                               x, INS_INFO_ARROW_BUTTON_Y, MSYS_PRIORITY_HIGH, click);
@@ -160,10 +161,10 @@ static GUIButtonRef MakeButtonBig(BUTTON_PICS *const img, const wchar_t *const t
 
 static void BuildInsuranceArray();
 static void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate);
-static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterInsuranceContract() {
-  UINT16 usPosX, i;
+  uint16_t usPosX, i;
 
   // build the list of mercs that are can be displayed
   BuildInsuranceArray();
@@ -182,7 +183,7 @@ void EnterInsuranceContract() {
   for (i = 0; i < 2; i++) {
     MSYS_DefineRegion(
         &gSelectedInsuranceContractLinkRegion[i], usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37,
-        (UINT16)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2,
+        (uint16_t)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2,
         MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
     MSYS_SetRegionUserData(&gSelectedInsuranceContractLinkRegion[i], 0, i);
 
@@ -208,7 +209,7 @@ void EnterInsuranceContract() {
 }
 
 void ExitInsuranceContract() {
-  UINT8 i;
+  uint8_t i;
 
   RemoveInsuranceDefaults();
 
@@ -256,13 +257,13 @@ void HandleInsuranceContract() {
 
 static BOOLEAN AreAnyAimMercsOnTeam();
 static void DisableInsuranceContractNextPreviousbuttons();
-static BOOLEAN DisplayOrderGrid(UINT8 ubGridNumber, SOLDIERTYPE *);
+static BOOLEAN DisplayOrderGrid(uint8_t ubGridNumber, SOLDIERTYPE *);
 static void InsContractNoMercsPopupCallBack(MessageBoxReturnValue);
 
 void RenderInsuranceContract() {
   wchar_t sText[800];
-  INT16 sNextMercID;
-  UINT16 usPosX;
+  int16_t sNextMercID;
+  uint16_t usPosX;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -276,7 +277,7 @@ void RenderInsuranceContract() {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y,
-                                (UINT16)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH),
+                                (uint16_t)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH),
                                 INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 18, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2,
                        INS_FONT_MED, INS_FONT_COLOR, pMessageStrings[MSG_HOMEPAGE],
@@ -286,7 +287,7 @@ void RenderInsuranceContract() {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y,
-                                (UINT16)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH),
+                                (uint16_t)(usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH),
                                 INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
   GetInsuranceText(INS_SNGL_HOW_DOES_INS_WORK, sText);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 12, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2,
@@ -323,8 +324,8 @@ void RenderInsuranceContract() {
                                 INS_CTRCT_RED_BAR_UNDER_INSTRUCTION_TEXT_Y);
 
   sNextMercID = gsCurrentInsuranceMercIndex;
-  const UINT count_insurance_grids = gubNumberofDisplayedInsuranceGrids;
-  for (UINT i = 0; i < count_insurance_grids; ++i) {
+  const uint32_t count_insurance_grids = gubNumberofDisplayedInsuranceGrids;
+  for (uint32_t i = 0; i < count_insurance_grids; ++i) {
     SOLDIERTYPE *const s = g_insurance_merc_array[sNextMercID++];
     DisplayOrderGrid(i, s);
   }
@@ -350,7 +351,7 @@ void RenderInsuranceContract() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gsCurrentInsuranceMercIndex > 2) gsCurrentInsuranceMercIndex -= 3;
     // signal that we want to change the number of forms on the page
@@ -358,7 +359,7 @@ static void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gsCurrentInsuranceMercIndex += 3;
     // signal that we want to change the number of forms on the page
@@ -366,13 +367,13 @@ static void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static INT32 CalculateSoldiersInsuranceContractLength(const SOLDIERTYPE *pSoldier);
+static int32_t CalculateSoldiersInsuranceContractLength(const SOLDIERTYPE *pSoldier);
 static BOOLEAN CanSoldierExtendInsuranceContract(const SOLDIERTYPE *pSoldier);
-static UINT32 GetTimeRemainingOnSoldiersContract(const SOLDIERTYPE *pSoldier);
-static UINT32 GetTimeRemainingOnSoldiersInsuranceContract(const SOLDIERTYPE *pSoldier);
+static uint32_t GetTimeRemainingOnSoldiersContract(const SOLDIERTYPE *pSoldier);
+static uint32_t GetTimeRemainingOnSoldiersInsuranceContract(const SOLDIERTYPE *pSoldier);
 
-static BOOLEAN DisplayOrderGrid(const UINT8 ubGridNumber, SOLDIERTYPE *const pSoldier) try {
-  INT32 iCostOfContract = 0;
+static BOOLEAN DisplayOrderGrid(const uint8_t ubGridNumber, SOLDIERTYPE *const pSoldier) try {
+  int32_t iCostOfContract = 0;
   wchar_t sText[800];
   BOOLEAN fDisplayMercContractStateTextColorInRed = FALSE;
 
@@ -380,8 +381,8 @@ static BOOLEAN DisplayOrderGrid(const UINT8 ubGridNumber, SOLDIERTYPE *const pSo
 
   insurance_info[ubGridNumber].soldier = pSoldier;
 
-  const INT32 dx = INS_CTRCT_ORDER_GRID_X + INS_CTRCT_ORDER_GRID_OFFSET_X * ubGridNumber;
-  const INT32 dy = INS_CTRCT_ORDER_GRID_Y;
+  const int32_t dx = INS_CTRCT_ORDER_GRID_X + INS_CTRCT_ORDER_GRID_OFFSET_X * ubGridNumber;
+  const int32_t dy = INS_CTRCT_ORDER_GRID_Y;
 
   BltVideoObject(FRAME_BUFFER, guiInsOrderGridImage, 0, dx, dy);
 
@@ -445,7 +446,7 @@ static BOOLEAN DisplayOrderGrid(const UINT8 ubGridNumber, SOLDIERTYPE *const pSo
       GetInsuranceText(INS_SNGL_NOCONTRACT, sText);
       fDisplayMercContractStateTextColorInRed = TRUE;
     }
-    const UINT8 colour =
+    const uint8_t colour =
         (fDisplayMercContractStateTextColorInRed ? INS_FONT_COLOR_RED : INS_FONT_COLOR);
     DisplayWrappedString(dx + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_X,
                          dy + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_Y,
@@ -570,9 +571,9 @@ static BOOLEAN DisplayOrderGrid(const UINT8 ubGridNumber, SOLDIERTYPE *const pSo
 
 static void HandleAcceptButton(SOLDIERTYPE *s);
 
-static void BtnInsuranceAcceptClearFormButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnInsuranceAcceptClearFormButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT const idx = btn->GetUserData();
+    uint32_t const idx = btn->GetUserData();
     SOLDIERTYPE *const s = insurance_info[idx].soldier;
 
     HandleAcceptButton(s);
@@ -582,9 +583,9 @@ static void BtnInsuranceAcceptClearFormButtonCallback(GUI_BUTTON *btn, INT32 rea
   }
 }
 
-static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    uint32_t uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -613,11 +614,11 @@ static void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate) {
     guiInsuranceAcceptClearFormButtonImage = LoadButtonImage(LAPTOPDIR "/acceptclearbox.sti", 0, 1);
 
     const wchar_t *const text = InsContractText[INS_CONTRACT_ACCEPT];
-    const INT16 text_col = INS_FONT_BTN_COLOR;
-    const INT16 shadow_col = INS_FONT_BTN_SHADOW_COLOR;
-    const INT16 y = INS_CTRCT_ORDER_GRID_Y + INS_CTRCT_ACCEPT_BTN_Y;
-    for (UINT i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
-      const INT16 x =
+    const int16_t text_col = INS_FONT_BTN_COLOR;
+    const int16_t shadow_col = INS_FONT_BTN_SHADOW_COLOR;
+    const int16_t y = INS_CTRCT_ORDER_GRID_Y + INS_CTRCT_ACCEPT_BTN_Y;
+    for (uint32_t i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
+      const int16_t x =
           INS_CTRCT_ORDER_GRID_X + INS_CTRCT_ORDER_GRID_OFFSET_X * i + INS_CTRCT_ACCEPT_BTN_X;
       GUIButtonRef const btn =
           CreateIconAndTextButton(guiInsuranceAcceptClearFormButtonImage, text, INS_FONT_MED,
@@ -635,7 +636,7 @@ static void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate) {
     // the accept image
     UnloadButtonImage(guiInsuranceAcceptClearFormButtonImage);
 
-    for (UINT i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
+    for (uint32_t i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
       RemoveButton(insurance_info[i].button);
     }
 
@@ -655,7 +656,7 @@ void DailyUpdateOfInsuredMercs() {
     // if the merc has life insurance
     if (s->usLifeInsurance) {
       // if the merc wasn't just hired
-      if ((INT16)GetWorldDay() != s->iStartOfInsuranceContract) {
+      if ((int16_t)GetWorldDay() != s->iStartOfInsuranceContract) {
         // if the contract has run out of time
         if (GetTimeRemainingOnSoldiersInsuranceContract(s) <= 0) {
           // if the soldier isn't dead
@@ -673,14 +674,14 @@ void DailyUpdateOfInsuredMercs() {
 #define MIN_INSURANCE_RATIO 0.1f
 #define MAX_INSURANCE_RATIO 10.0f
 
-static FLOAT DiffFromNormRatio(INT16 sThisValue, INT16 sNormalValue);
+static float DiffFromNormRatio(int16_t sThisValue, int16_t sNormalValue);
 
-INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
-  INT16 sTotalSkill = 0;
-  FLOAT flSkillFactor, flFitnessFactor, flExpFactor, flSurvivalFactor;
-  FLOAT flRiskFactor;
-  UINT32 uiDailyInsurancePremium;
-  UINT32 uiTotalInsurancePremium;
+int32_t CalculateInsuranceContractCost(int32_t iLength, uint8_t ubMercID) {
+  int16_t sTotalSkill = 0;
+  float flSkillFactor, flFitnessFactor, flExpFactor, flSurvivalFactor;
+  float flRiskFactor;
+  uint32_t uiDailyInsurancePremium;
+  uint32_t uiTotalInsurancePremium;
   const SOLDIERTYPE *const pSoldier = FindSoldierByProfileIDOnPlayerTeam(ubMercID);
 
   // only mercs with at least 2 days to go on their employment contract are
@@ -718,7 +719,7 @@ INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
   flExpFactor = DiffFromNormRatio(p.bExpLevel, INS_CTRCT_EXP_LEVEL_BASE);
 
   // calc player's survival rate (death rate subtracted from 100)
-  flSurvivalFactor = DiffFromNormRatio((INT16)(100 - CalcDeathRate()), INS_CTRCT_SURVIVAL_BASE);
+  flSurvivalFactor = DiffFromNormRatio((int16_t)(100 - CalcDeathRate()), INS_CTRCT_SURVIVAL_BASE);
 
   // calculate the overall insurability risk factor for this merc by combining
   // all the subfactors
@@ -733,7 +734,8 @@ INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
 
   // premium depend on merc's salary, the base insurance rate, and the
   // individual's risk factor at this time
-  uiDailyInsurancePremium = (UINT32)(p.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor / 100 + 0.5);
+  uiDailyInsurancePremium =
+      (uint32_t)(p.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor / 100 + 0.5);
   // multiply by the insurance contract length
   uiTotalInsurancePremium = uiDailyInsurancePremium * iLength;
 
@@ -742,11 +744,11 @@ INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
 
 // values passed in must be such that exceeding the normal value REDUCES
 // insurance premiums
-static FLOAT DiffFromNormRatio(INT16 sThisValue, INT16 sNormalValue) {
-  FLOAT flRatio;
+static float DiffFromNormRatio(int16_t sThisValue, int16_t sNormalValue) {
+  float flRatio;
 
   if (sThisValue > 0) {
-    flRatio = (FLOAT)sNormalValue / sThisValue;
+    flRatio = (float)sNormalValue / sThisValue;
 
     // restrict each ratio to within a reasonable range
     if (flRatio < MIN_INSURANCE_RATIO) {
@@ -783,10 +785,10 @@ static void BuildInsuranceArray() {
 }
 
 void AddLifeInsurancePayout(SOLDIERTYPE *const pSoldier) {
-  UINT8 ubPayoutID;
-  UINT32 uiTimeInMinutes;
-  UINT32 uiCostPerDay;
-  UINT32 uiDaysToPay;
+  uint8_t ubPayoutID;
+  uint32_t uiTimeInMinutes;
+  uint32_t uiCostPerDay;
+  uint32_t uiDaysToPay;
 
   Assert(pSoldier != NULL);
   Assert(pSoldier->ubProfile != NO_PROFILE);
@@ -863,9 +865,9 @@ void AddLifeInsurancePayout(SOLDIERTYPE *const pSoldier) {
   LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed++;
 }
 
-void StartInsuranceInvestigation(UINT8 ubPayoutID) {
+void StartInsuranceInvestigation(uint8_t ubPayoutID) {
   const LIFE_INSURANCE_PAYOUT *const lip = &LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID];
-  UINT8 ubDays;
+  uint8_t ubDays;
 
   // send an email telling player an investigation is taking place
   if (gStrategicStatus.ubInsuranceInvestigationsCnt == 0) {
@@ -883,8 +885,8 @@ void StartInsuranceInvestigation(UINT8 ubPayoutID) {
     ubDays = 1;
   } else {
     // calculate how many days the investigation will take
-    ubDays = (UINT8)(2 + gStrategicStatus.ubInsuranceInvestigationsCnt +
-                     Random(3));  // 2-4 days, +1 for every previous investigation
+    ubDays = (uint8_t)(2 + gStrategicStatus.ubInsuranceInvestigationsCnt +
+                       Random(3));  // 2-4 days, +1 for every previous investigation
   }
 
   // post an event to end the investigation that many days in the future (at
@@ -896,7 +898,7 @@ void StartInsuranceInvestigation(UINT8 ubPayoutID) {
   gStrategicStatus.ubInsuranceInvestigationsCnt++;
 }
 
-void EndInsuranceInvestigation(UINT8 ubPayoutID) {
+void EndInsuranceInvestigation(uint8_t ubPayoutID) {
   const LIFE_INSURANCE_PAYOUT *const lip = &LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID];
   // send an email telling player the investigation is over
   if (GetProfile(lip->ubMercID).ubSuspiciousDeath == VERY_SUSPICIOUS_DEATH) {
@@ -914,7 +916,7 @@ void EndInsuranceInvestigation(UINT8 ubPayoutID) {
 
 // void InsuranceContractPayLifeInsuranceForDeadMerc( LIFE_INSURANCE_PAYOUT
 // *pPayoutStruct )
-void InsuranceContractPayLifeInsuranceForDeadMerc(UINT8 ubPayoutID) {
+void InsuranceContractPayLifeInsuranceForDeadMerc(uint8_t ubPayoutID) {
   LIFE_INSURANCE_PAYOUT *const lip = &LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID];
   // if the mercs id number is the same what is in the soldier array
   SOLDIERTYPE &s = GetMan(lip->ubSoldierID);
@@ -974,7 +976,7 @@ static BOOLEAN MercIsInsurable(const SOLDIERTYPE *pSoldier) {
 }
 
 static void EnableDisableInsuranceContractAcceptButtons() {
-  for (UINT i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
+  for (uint32_t i = 0; i != gubNumberofDisplayedInsuranceGrids; ++i) {
     const InsuranceInfo *const ins = &insurance_info[i];
     const SOLDIERTYPE *const s = ins->soldier;
     if (s == NULL) continue;
@@ -983,11 +985,11 @@ static void EnableDisableInsuranceContractAcceptButtons() {
   }
 }
 
-static UINT32 GetTimeRemainingOnSoldiersInsuranceContract(const SOLDIERTYPE *pSoldier) {
+static uint32_t GetTimeRemainingOnSoldiersInsuranceContract(const SOLDIERTYPE *pSoldier) {
   // if the soldier has life insurance
   if (pSoldier->usLifeInsurance) {
     // if the insurance contract hasnt started yet
-    if ((INT32)GetWorldDay() < pSoldier->iStartOfInsuranceContract)
+    if ((int32_t)GetWorldDay() < pSoldier->iStartOfInsuranceContract)
       return (pSoldier->iTotalLengthOfInsuranceContract);
     else
       return ((pSoldier->iTotalLengthOfInsuranceContract -
@@ -996,8 +998,8 @@ static UINT32 GetTimeRemainingOnSoldiersInsuranceContract(const SOLDIERTYPE *pSo
     return (0);
 }
 
-static UINT32 GetTimeRemainingOnSoldiersContract(const SOLDIERTYPE *pSoldier) {
-  INT32 iDayMercLeaves = (pSoldier->iEndofContractTime / 1440) - 1;
+static uint32_t GetTimeRemainingOnSoldiersContract(const SOLDIERTYPE *pSoldier) {
+  int32_t iDayMercLeaves = (pSoldier->iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time
   // left would be different if we did the calc at 11:59 or 12:01 ( noon )
@@ -1010,14 +1012,14 @@ static UINT32 GetTimeRemainingOnSoldiersContract(const SOLDIERTYPE *pSoldier) {
     iDayMercLeaves = pSoldier->iTotalContractLength;
 
   return (iDayMercLeaves);
-  //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) /
+  //	return( ( pSoldier->iEndofContractTime - (int32_t)GetWorldTotalMin( ) ) /
   // 1440 );
 }
 
-static INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier);
+static int32_t CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier);
 
-void PurchaseOrExtendInsuranceForSoldier(SOLDIERTYPE *pSoldier, UINT32 uiInsuranceLength) {
-  INT32 iAmountOfMoneyTransfer = -1;
+void PurchaseOrExtendInsuranceForSoldier(SOLDIERTYPE *pSoldier, uint32_t uiInsuranceLength) {
+  int32_t iAmountOfMoneyTransfer = -1;
 
   AssertMsg(pSoldier != NULL, "Soldier pointer is NULL!");
 
@@ -1090,9 +1092,9 @@ static BOOLEAN CanSoldierExtendInsuranceContract(const SOLDIERTYPE *pSoldier) {
     return (FALSE);
 }
 
-static INT32 CalculateSoldiersInsuranceContractLength(const SOLDIERTYPE *pSoldier) {
-  INT32 iInsuranceContractLength = 0;
-  UINT32 uiTimeRemainingOnSoldiersContract = GetTimeRemainingOnSoldiersContract(pSoldier);
+static int32_t CalculateSoldiersInsuranceContractLength(const SOLDIERTYPE *pSoldier) {
+  int32_t iInsuranceContractLength = 0;
+  uint32_t uiTimeRemainingOnSoldiersContract = GetTimeRemainingOnSoldiersContract(pSoldier);
 
   if (IsMercDead(GetProfile(pSoldier->ubProfile))) return 0;
 
@@ -1128,15 +1130,15 @@ static INT32 CalculateSoldiersInsuranceContractLength(const SOLDIERTYPE *pSoldie
   // Is the mercs insurace contract is less then a day, set it to 0
   if (iInsuranceContractLength < 0) iInsuranceContractLength = 0;
 
-  if (pSoldier->usLifeInsurance && pSoldier->iStartOfInsuranceContract >= (INT32)GetWorldDay() &&
+  if (pSoldier->usLifeInsurance && pSoldier->iStartOfInsuranceContract >= (int32_t)GetWorldDay() &&
       iInsuranceContractLength < 2)
     iInsuranceContractLength = 0;
 
   return (iInsuranceContractLength);
 }
 
-static INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier) {
-  UINT32 uiDayToStartInsurance = 0;
+static int32_t CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier) {
+  uint32_t uiDayToStartInsurance = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
   if (pSoldier->bAssignment == IN_TRANSIT && !DidGameJustStart()) {

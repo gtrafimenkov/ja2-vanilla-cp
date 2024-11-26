@@ -4,37 +4,37 @@
 #include "JA2Types.h"
 #include "SGP/Types.h"
 
-BOOLEAN IsTreePresentAtGridno(INT16 sGridNo);
-BOOLEAN IsFencePresentAtGridno(INT16 sGridNo);
-BOOLEAN IsJumpableFencePresentAtGridno(INT16 sGridNo);
+BOOLEAN IsTreePresentAtGridno(int16_t sGridNo);
+BOOLEAN IsFencePresentAtGridno(int16_t sGridNo);
+BOOLEAN IsJumpableFencePresentAtGridno(int16_t sGridNo);
 
-BOOLEAN IsDoorVisibleAtGridNo(INT16 sGridNo);
+BOOLEAN IsDoorVisibleAtGridNo(int16_t sGridNo);
 
-BOOLEAN WallExistsOfTopLeftOrientation(INT16 sGridNo);
+BOOLEAN WallExistsOfTopLeftOrientation(int16_t sGridNo);
 
-BOOLEAN WallExistsOfTopRightOrientation(INT16 sGridNo);
+BOOLEAN WallExistsOfTopRightOrientation(int16_t sGridNo);
 
-BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation(INT16 sGridNo);
+BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation(int16_t sGridNo);
 
-BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation(INT16 sGridNo);
+BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation(int16_t sGridNo);
 
-BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(INT16 sGridNo);
-BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(INT16 sGridNo);
+BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(int16_t sGridNo);
+BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(int16_t sGridNo);
 
-STRUCTURE *GetWallStructOfSameOrientationAtGridno(GridNo, INT8 orientation);
+STRUCTURE *GetWallStructOfSameOrientationAtGridno(GridNo, int8_t orientation);
 
-BOOLEAN CutWireFence(INT16 sGridNo);
-BOOLEAN IsCuttableWireFenceAtGridNo(INT16 sGridNo);
+BOOLEAN CutWireFence(int16_t sGridNo);
+BOOLEAN IsCuttableWireFenceAtGridNo(int16_t sGridNo);
 
-BOOLEAN IsRepairableStructAtGridNo(INT16 sGridNo, SOLDIERTYPE **tgt);
-SOLDIERTYPE *GetRefuelableStructAtGridNo(INT16 sGridNo);
+BOOLEAN IsRepairableStructAtGridNo(int16_t sGridNo, SOLDIERTYPE **tgt);
+SOLDIERTYPE *GetRefuelableStructAtGridNo(int16_t sGridNo);
 
-BOOLEAN IsRoofPresentAtGridno(INT16 sGridNo);
+BOOLEAN IsRoofPresentAtGridno(int16_t sGridNo);
 
-INT16 FindDoorAtGridNoOrAdjacent(INT16 sGridNo);
+int16_t FindDoorAtGridNoOrAdjacent(int16_t sGridNo);
 
-BOOLEAN IsCorpseAtGridNo(INT16 sGridNo, UINT8 ubLevel);
+BOOLEAN IsCorpseAtGridNo(int16_t sGridNo, uint8_t ubLevel);
 
-BOOLEAN SetOpenableStructureToClosed(INT16 sGridNo, UINT8 ubLevel);
+BOOLEAN SetOpenableStructureToClosed(int16_t sGridNo, uint8_t ubLevel);
 
 #endif

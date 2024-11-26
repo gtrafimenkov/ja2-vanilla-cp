@@ -15,8 +15,8 @@
 #include "TileEngine/IsometricUtils.h"
 #include "TileEngine/RenderFun.h"
 
-static INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
-  INT8 bAction = AI_ACTION_NONE;
+static int8_t RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
+  int8_t bAction = AI_ACTION_NONE;
 
   if (gTacticalStatus.fAutoBandageMode) {
     bAction = DecideAutoBandage(pSoldier);
@@ -32,7 +32,7 @@ static INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
   return (bAction);
 }
 
-static INT8 RTDecideAction(SOLDIERTYPE *pSoldier) {
+static int8_t RTDecideAction(SOLDIERTYPE *pSoldier) {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
     return (CreatureDecideAction(pSoldier));
   } else if (pSoldier->ubBodyType == CROW) {
@@ -56,26 +56,26 @@ static INT8 RTDecideAction(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT16 RealtimeDelay(SOLDIERTYPE *pSoldier) {
+uint16_t RealtimeDelay(SOLDIERTYPE *pSoldier) {
   if (PTR_CIV_OR_MILITIA && !(pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP)) {
-    return ((UINT16)REALTIME_CIV_AI_DELAY);
+    return ((uint16_t)REALTIME_CIV_AI_DELAY);
   } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier->bHunting)) {
-    return ((UINT16)REALTIME_CREATURE_AI_DELAY);
+    return ((uint16_t)REALTIME_CREATURE_AI_DELAY);
   } else {
     if (pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) {
-      UINT8 const room = GetRoom(pSoldier->sGridNo);
+      uint8_t const room = GetRoom(pSoldier->sGridNo);
       if (IN_BROTHEL(room)) {
-        return ((UINT16)(REALTIME_AI_DELAY / 3));
+        return ((uint16_t)(REALTIME_AI_DELAY / 3));
       }
     }
 
-    return ((UINT16)REALTIME_AI_DELAY);
+    return ((uint16_t)REALTIME_AI_DELAY);
   }
 }
 
 void RTHandleAI(SOLDIERTYPE *pSoldier) {
 #ifdef AI_PROFILING
-  INT32 iLoop;
+  int32_t iLoop;
 #endif
 
   if ((pSoldier->bAction != AI_ACTION_NONE) && pSoldier->bActionInProgress) {
@@ -172,13 +172,13 @@ void RTHandleAI(SOLDIERTYPE *pSoldier) {
       // do a standard wait before doing anything else!
       pSoldier->bAction = AI_ACTION_WAIT;
       if (PTR_CIV_OR_MILITIA && !(pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP)) {
-        pSoldier->usActionData = (UINT16)REALTIME_CIV_AI_DELAY;
+        pSoldier->usActionData = (uint16_t)REALTIME_CIV_AI_DELAY;
       } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier->bHunting)) {
-        pSoldier->usActionData = (UINT16)REALTIME_CREATURE_AI_DELAY;
+        pSoldier->usActionData = (uint16_t)REALTIME_CREATURE_AI_DELAY;
       } else {
-        pSoldier->usActionData = (UINT16)REALTIME_AI_DELAY;
+        pSoldier->usActionData = (uint16_t)REALTIME_AI_DELAY;
         if (pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) {
-          UINT8 const room = GetRoom(pSoldier->sGridNo);
+          uint8_t const room = GetRoom(pSoldier->sGridNo);
           if (IN_BROTHEL(room)) {
             pSoldier->usActionData /= 3;
           }

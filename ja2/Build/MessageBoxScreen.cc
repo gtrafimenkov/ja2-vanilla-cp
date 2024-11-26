@@ -59,15 +59,15 @@ BOOLEAN gfDontOverRideSaveBuffer = TRUE;  // this variable can be unset if ur in
 wchar_t gzUserDefinedButton1[128];
 wchar_t gzUserDefinedButton2[128];
 
-static void ContractMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-static void LieMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-static void NOMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-static void NumberedMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-static void OKMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-static void YESMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
+static void ContractMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
+static void LieMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
+static void NOMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
+static void NumberedMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
+static void OKMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
+static void YESMsgBoxCallback(GUI_BUTTON *btn, int32_t reason);
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 fore_colour, INT16 shadow_colour, INT16 x,
-                               INT16 y, GUI_CALLBACK click, UINT16 cursor) {
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t fore_colour, int16_t shadow_colour,
+                               int16_t x, int16_t y, GUI_CALLBACK click, uint16_t cursor) {
   GUIButtonRef const btn =
       CreateIconAndTextButton(gMsgBox.iButtonImages, text, FONT12ARIAL, fore_colour, shadow_colour,
                               fore_colour, shadow_colour, x, y, MSYS_PRIORITY_HIGHEST, click);
@@ -80,11 +80,11 @@ struct MessageBoxStyle {
   MercPopUpBackground background;
   MercPopUpBorder border;
   char const *btn_image;
-  INT32 btn_off;
-  INT32 btn_on;
-  UINT8 font_colour;
-  UINT8 shadow_colour;
-  UINT16 cursor;
+  int32_t btn_off;
+  int32_t btn_on;
+  uint8_t font_colour;
+  uint8_t shadow_colour;
+  uint16_t cursor;
 };
 
 static MessageBoxStyle const g_msg_box_style[] = {
@@ -135,8 +135,8 @@ void DoMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
   gMsgBox.bHandled = MSG_BOX_RETURN_NONE;
 
   // Init message box
-  UINT16 usTextBoxWidth;
-  UINT16 usTextBoxHeight;
+  uint16_t usTextBoxWidth;
+  uint16_t usTextBoxHeight;
   gMsgBox.box =
       PrepareMercPopupBox(0, style.background, style.border, zString, MSGBOX_DEFAULT_WIDTH, 40, 10,
                           30, &usTextBoxWidth, &usTextBoxHeight);
@@ -173,14 +173,14 @@ void DoMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
   SGPBox const r = {gMsgBox.sX, gMsgBox.sY, usTextBoxWidth, usTextBoxHeight};
   BltVideoSurface(gMsgBox.uiSaveBuffer, FRAME_BUFFER, 0, 0, &r);
 
-  UINT16 const cursor = style.cursor;
+  uint16_t const cursor = style.cursor;
   // Create top-level mouse region
   MSYS_DefineRegion(&gMsgBox.BackRegion, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, MSYS_PRIORITY_HIGHEST,
                     cursor, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   if (!gGameSettings.fOptions[TOPTION_DONT_MOVE_MOUSE]) {
-    UINT32 x = gMsgBox.sX + usTextBoxWidth / 2;
-    UINT32 y = gMsgBox.sY + usTextBoxHeight - 4;
+    uint32_t x = gMsgBox.sX + usTextBoxWidth / 2;
+    uint32_t y = gMsgBox.sY + usTextBoxHeight - 4;
     if (usFlags == MSG_BOX_FLAG_OK) {
       x += 27;
       y -= 6;
@@ -196,21 +196,21 @@ void DoMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
     FreeMouseCursor();
   }
 
-  INT16 x = gMsgBox.sX;
-  const INT16 y = gMsgBox.sY + usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
+  int16_t x = gMsgBox.sX;
+  const int16_t y = gMsgBox.sY + usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
   gMsgBox.iButtonImages = LoadButtonImage(style.btn_image, style.btn_off, style.btn_on);
 
-  INT16 const dx = MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP;
-  UINT8 const font_colour = style.font_colour;
-  UINT8 const shadow_colour = style.shadow_colour;
+  int16_t const dx = MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP;
+  uint8_t const font_colour = style.font_colour;
+  uint8_t const shadow_colour = style.shadow_colour;
   switch (usFlags) {
     case MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS: {
       // This is exclusive of any other buttons... no ok, no cancel, no nothing
-      const INT16 dx = MSGBOX_SMALL_BUTTON_WIDTH + MSGBOX_SMALL_BUTTON_X_SEP;
+      const int16_t dx = MSGBOX_SMALL_BUTTON_WIDTH + MSGBOX_SMALL_BUTTON_X_SEP;
       x += (usTextBoxWidth - (MSGBOX_SMALL_BUTTON_WIDTH + dx * 3)) / 2;
 
-      for (UINT i = 0; i < 4; ++i) {
+      for (uint32_t i = 0; i < 4; ++i) {
         wchar_t text[] = {wchar_t('1' + i), '\0'};
         GUIButtonRef const btn = MakeButton(text, font_colour, shadow_colour, x + dx * i, y,
                                             NumberedMsgBoxCallback, cursor);
@@ -301,37 +301,37 @@ void DoMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
   gfInMsgBox = TRUE;
 }
 
-static void OKMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void OKMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = MSG_BOX_RETURN_OK;
   }
 }
 
-static void YESMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void YESMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = MSG_BOX_RETURN_YES;
   }
 }
 
-static void NOMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void NOMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = MSG_BOX_RETURN_NO;
   }
 }
 
-static void ContractMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void ContractMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = MSG_BOX_RETURN_CONTRACT;
   }
 }
 
-static void LieMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void LieMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = MSG_BOX_RETURN_LIE;
   }
 }
 
-static void NumberedMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+static void NumberedMsgBoxCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gMsgBox.bHandled = static_cast<MessageBoxReturnValue>(btn->GetUserData());
   }

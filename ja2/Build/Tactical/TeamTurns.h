@@ -3,16 +3,16 @@
 
 #include "JA2Types.h"
 
-extern UINT8 gubOutOfTurnPersons;
+extern uint8_t gubOutOfTurnPersons;
 extern BOOLEAN gfHiddenInterrupt;
 extern BOOLEAN gfHiddenTurnbased;
 
 #define INTERRUPT_QUEUED (gubOutOfTurnPersons > 0)
 
 BOOLEAN StandardInterruptConditionsMet(const SOLDIERTYPE *pSoldier, const SOLDIERTYPE *pOpponent,
-                                       INT8 bOldOppList);
-INT8 CalcInterruptDuelPts(const SOLDIERTYPE *pSoldier, const SOLDIERTYPE *opponent,
-                          BOOLEAN fUseWatchSpots);
+                                       int8_t bOldOppList);
+int8_t CalcInterruptDuelPts(const SOLDIERTYPE *pSoldier, const SOLDIERTYPE *opponent,
+                            BOOLEAN fUseWatchSpots);
 extern void EndAITurn();
 extern void DisplayHiddenInterrupt(SOLDIERTYPE *pSoldier);
 extern BOOLEAN InterruptDuel(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent);

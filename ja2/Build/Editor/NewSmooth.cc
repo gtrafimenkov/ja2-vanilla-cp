@@ -16,7 +16,7 @@
 #include "TileEngine/WorldDef.h"
 #include "TileEngine/WorldMan.h"
 
-static bool CaveAtGridNo(INT32 const map_idx) {
+static bool CaveAtGridNo(int32_t const map_idx) {
   if (map_idx < 0 || NOWHERE <= map_idx) return true;
 
   if (FindStructure(map_idx, STRUCTURE_CAVEWALL)) return true;
@@ -28,9 +28,9 @@ static bool CaveAtGridNo(INT32 const map_idx) {
   return false;
 }
 
-static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
-  UINT16 usType = FIRSTWALL;
-  UINT16 usIndex;  // HACK000E
+static uint16_t GetCaveTileIndexFromPerimeterValue(uint8_t ubTotal) {
+  uint16_t usType = FIRSTWALL;
+  uint16_t usIndex;  // HACK000E
 
   switch (ubTotal) {
     case 0x00:
@@ -69,7 +69,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xe1:
     case 0xf1:
       usType = SECONDWALL;
-      usIndex = 1 + (UINT16)Random(4);
+      usIndex = 1 + (uint16_t)Random(4);
       break;
     case 0x02:
     case 0x12:
@@ -88,7 +88,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xe2:
     case 0xf2:
       usType = SECONDWALL;
-      usIndex = 5 + (UINT16)Random(4);
+      usIndex = 5 + (uint16_t)Random(4);
       break;
     case 0x03:
     case 0x13:
@@ -117,7 +117,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xe4:
     case 0xf4:
       usType = SECONDWALL;
-      usIndex = 9 + (UINT16)Random(4);
+      usIndex = 9 + (uint16_t)Random(4);
       break;
     case 0x05:
     case 0x15:
@@ -135,7 +135,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xd5:
     case 0xe5:
     case 0xf5:
-      usIndex = 2 + (UINT16)Random(2);
+      usIndex = 2 + (uint16_t)Random(2);
       break;
     case 0x06:
     case 0x16:
@@ -170,7 +170,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xe8:
     case 0xf8:
       usType = SECONDWALL;
-      usIndex = 13 + (UINT16)Random(4);
+      usIndex = 13 + (uint16_t)Random(4);
       break;
     case 0x09:
     case 0x29:
@@ -198,7 +198,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xda:
     case 0xea:
     case 0xfa:
-      usIndex = 7 + (UINT16)Random(2);
+      usIndex = 7 + (uint16_t)Random(2);
       break;
     case 0x0b:
     case 0x4b:
@@ -239,7 +239,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xb9:
     case 0xd9:
     case 0xf9:
-      usIndex = 14 + (UINT16)Random(2);
+      usIndex = 14 + (uint16_t)Random(2);
       break;
     case 0x1b:
     case 0x5b:
@@ -264,7 +264,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xb3:
     case 0xe3:
     case 0xf3:
-      usIndex = 19 + (UINT16)Random(2);
+      usIndex = 19 + (uint16_t)Random(2);
       break;
     case 0x27:
     case 0x37:
@@ -285,7 +285,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0x7b:
     case 0xbb:
     case 0xfb:
-      usIndex = 24 + (UINT16)Random(3);
+      usIndex = 24 + (uint16_t)Random(3);
       break;
     case 0x3f:
       usIndex = 27;
@@ -298,7 +298,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xd6:
     case 0xe6:
     case 0xf6:
-      usIndex = 28 + (UINT16)Random(2);
+      usIndex = 28 + (uint16_t)Random(2);
       break;
     case 0x47:
     case 0x57:
@@ -322,13 +322,13 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0x77:
     case 0xe7:
     case 0xf7:
-      usIndex = 34 + (UINT16)Random(3);
+      usIndex = 34 + (uint16_t)Random(3);
       break;
     case 0x6f:
       usIndex = 37;
       break;
     case 0x7f:
-      usIndex = 38 + (UINT16)Random(2);
+      usIndex = 38 + (uint16_t)Random(2);
       break;
     case 0x8c:
     case 0x9c:
@@ -338,7 +338,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xdc:
     case 0xec:
     case 0xfc:
-      usIndex = 40 + (UINT16)Random(2);
+      usIndex = 40 + (uint16_t)Random(2);
       break;
     case 0x8d:
     case 0xad:
@@ -359,7 +359,7 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
     case 0xbd:
     case 0xdd:
     case 0xfd:
-      usIndex = 45 + (UINT16)Random(3);
+      usIndex = 45 + (uint16_t)Random(3);
       break;
     case 0x9f:
       usIndex = 48;
@@ -368,25 +368,25 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
       usIndex = 49;
       break;
     case 0xbf:
-      usIndex = 50 + (UINT16)Random(2);
+      usIndex = 50 + (uint16_t)Random(2);
       break;
     case 0xce:
     case 0xde:
     case 0xee:
     case 0xfe:
-      usIndex = 52 + (UINT16)Random(3);
+      usIndex = 52 + (uint16_t)Random(3);
       break;
     case 0xcf:
       usIndex = 55;
       break;
     case 0xdf:
-      usIndex = 56 + (UINT16)Random(2);
+      usIndex = 56 + (uint16_t)Random(2);
       break;
     case 0xef:
-      usIndex = 58 + (UINT16)Random(2);
+      usIndex = 58 + (uint16_t)Random(2);
       break;
     case 0xff:
-      usIndex = 60 + (UINT16)Random(6);
+      usIndex = 60 + (uint16_t)Random(6);
       break;
 
     default:
@@ -407,8 +407,8 @@ static UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal) {
 // which piece to use for all of these combinations.  In many cases,
 // up to 16 combinations can share the same graphic image, as corners
 // may not effect the look of the piece.
-static UINT8 CalcNewCavePerimeterValue(INT32 iMapIndex) {
-  UINT8 ubTotal = 0;
+static uint8_t CalcNewCavePerimeterValue(int32_t iMapIndex) {
+  uint8_t ubTotal = 0;
   if (CaveAtGridNo(iMapIndex - WORLD_COLS)) ubTotal += 0x01;      // north
   if (CaveAtGridNo(iMapIndex + 1)) ubTotal += 0x02;               // east
   if (CaveAtGridNo(iMapIndex + WORLD_COLS)) ubTotal += 0x04;      // south
@@ -420,7 +420,7 @@ static UINT8 CalcNewCavePerimeterValue(INT32 iMapIndex) {
   return ubTotal;
 }
 
-void AddCave(INT32 iMapIndex, UINT16 usIndex) {
+void AddCave(int32_t iMapIndex, uint16_t usIndex) {
   LEVELNODE *pStruct;
 
   if (iMapIndex < 0 || iMapIndex >= NOWHERE) return;
@@ -441,7 +441,7 @@ void AddCave(INT32 iMapIndex, UINT16 usIndex) {
 
 // Wall Look Up Table containing variants and indices with each row being a
 // different walltype.
-static const INT8 gbWallTileLUT[NUM_WALL_TYPES][7] = {
+static const int8_t gbWallTileLUT[NUM_WALL_TYPES][7] = {
     //  The number of variants of this tile type.
     //  |   The first relative index of the wall type (FIRSTWALL, SECONDWALL,
     //  etc. )  walltype + 10
@@ -493,10 +493,10 @@ static const INT8 gbWallTileLUT[NUM_WALL_TYPES][7] = {
 // NOTE:  passing null for wall/roof type will force the function to search for
 // the nearest
 //  existing respective type.
-static void BuildSlantRoof(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT16 usWallType,
-                           UINT16 usRoofType, BOOLEAN fVertical) {
-  INT32 i;
-  INT32 iMapIndex;
+static void BuildSlantRoof(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom,
+                           uint16_t usWallType, uint16_t usRoofType, BOOLEAN fVertical) {
+  int32_t i;
+  int32_t iMapIndex;
   if (fVertical) {
     iMapIndex = iBottom * WORLD_COLS + iLeft;
     // This happens to be the only mapindex that needs to be backed up.  The
@@ -504,7 +504,7 @@ static void BuildSlantRoof(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom,
     AddToUndoList(iMapIndex + 8);
     // Add the closest viewable pieces.  There are two aframe walls pieces, and
     // extended aframe roof pieces.
-    UINT16 usTileIndex;
+    uint16_t usTileIndex;
     usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, VWALL_LEFT);
     AddRoofToHead(iMapIndex + 4, usTileIndex);
     usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, VWALL_RIGHT);
@@ -532,7 +532,7 @@ static void BuildSlantRoof(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom,
     AddToUndoList(iMapIndex + 8 * WORLD_COLS);
     // Add the closest viewable pieces.  There are two aframe walls pieces, and
     // extended aframe roof pieces.
-    UINT16 usTileIndex;
+    uint16_t usTileIndex;
     usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, HWALL_LEFT);
     AddRoofToHead(iMapIndex + 4 * WORLD_COLS, usTileIndex);
     usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, HWALL_RIGHT);
@@ -556,10 +556,10 @@ static void BuildSlantRoof(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom,
   }
 }
 
-UINT16 PickAWallPiece(UINT16 usWallPieceType) {
-  UINT16 usVariants;
-  UINT16 usVariantChosen;
-  UINT16 usWallPieceChosen = 0;
+uint16_t PickAWallPiece(uint16_t usWallPieceType) {
+  uint16_t usVariants;
+  uint16_t usVariantChosen;
+  uint16_t usWallPieceChosen = 0;
   if (usWallPieceType < NUM_WALL_TYPES) {
     usVariants = gbWallTileLUT[usWallPieceType][0];
     usVariantChosen = (rand() % usVariants) + 1;
@@ -582,9 +582,9 @@ UINT16 PickAWallPiece(UINT16 usWallPieceType) {
 //  use that for building this new wall.  It is necessary for restructuring a
 //  building, but not for adding on to an existing building, where the type is
 //  already known.
-void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
-  INT16 sIndex;
-  UINT16 ubWallClass;  // XXX HACK000E
+void BuildWallPiece(uint32_t iMapIndex, uint8_t ubWallPiece, uint16_t usWallType) {
+  int16_t sIndex;
+  uint16_t ubWallClass;  // XXX HACK000E
   LEVELNODE *pStruct;
   if (!usWallType) {
     usWallType = SearchForWallType(iMapIndex);
@@ -599,7 +599,7 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
                                   // as it now is a bottom corner and
         // must contribute to the bottom shadow.
         AddToUndoList(iMapIndex - 1);
-        UINT16 usTileIndex =
+        uint16_t usTileIndex =
             GetTileIndexFromTypeSubIndex(usWallType, INTERIOR_BOTTOMEND_SHADOW_INDEX);
         AddExclusiveShadow(iMapIndex - 1, usTileIndex);
       }
@@ -609,13 +609,13 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
         // the vertical piece with a bottomend.
         sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
       }
       ubWallClass = EXTERIOR_L;
       if (!gfBasement) {
         // All exterior_l walls have shadows.
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, EXTERIOR_L_SHADOW_INDEX);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, EXTERIOR_L_SHADOW_INDEX);
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       break;
@@ -625,7 +625,7 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
           !GetVerticalWall(iMapIndex - 1)) {
         sIndex = PickAWallPiece(INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
       }
       break;
@@ -661,14 +661,14 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
                                       1)))) {  // Replace the piece with an extended piece.
         sIndex = PickAWallPiece(INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
         // NOTE:  Not yet checking for interior extended bottomend!
       }
       if ((pStruct = GetVerticalWall(iMapIndex))) {
         sIndex = PickAWallPiece(INTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
       }
       break;
@@ -680,19 +680,19 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
         // the vertical piece with a bottomend.
         sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
       }
       if ((pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) &&
           !GetVerticalWall(iMapIndex - 1)) {
         sIndex = PickAWallPiece(EXTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
       }
       if (!gfBasement) {
         // All exterior_l walls have shadows.
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, EXTERIOR_L_SHADOW_INDEX);
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, EXTERIOR_L_SHADOW_INDEX);
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       break;
@@ -704,7 +704,7 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
       }
       if (!gfBasement && GetHorizontalWall(iMapIndex + 1)) {
         AddToUndoList(iMapIndex);
-        UINT16 usTileIndex =
+        uint16_t usTileIndex =
             GetTileIndexFromTypeSubIndex(usWallType, INTERIOR_BOTTOMEND_SHADOW_INDEX);
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
@@ -730,7 +730,7 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
       }
       if (!gfBasement && GetHorizontalWall(iMapIndex + 1) && !GetHorizontalWall(iMapIndex) &&
           !FloorAtGridNo(iMapIndex + WORLD_COLS)) {
-        UINT16 usTileIndex =
+        uint16_t usTileIndex =
             GetTileIndexFromTypeSubIndex(usWallType, INTERIOR_BOTTOMEND_SHADOW_INDEX);
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
@@ -740,14 +740,14 @@ void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType) {
       abort();  // HACK000E
   }
   sIndex = PickAWallPiece(ubWallClass);
-  UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
+  uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
   AddToUndoList(iMapIndex);
   AddWallToStructLayer(iMapIndex, usTileIndex, FALSE);
 }
 
-static void EraseRoof(UINT32 iMapIndex);
+static void EraseRoof(uint32_t iMapIndex);
 
-void RebuildRoofUsingFloorInfo(INT32 const map_idx, UINT16 roof_type) {
+void RebuildRoofUsingFloorInfo(int32_t const map_idx, uint16_t roof_type) {
   if (roof_type == 0) roof_type = SearchForRoofType(map_idx);
   if (roof_type == 0xFFFF) return;  // No roof type around, so don't draw one.
 
@@ -761,16 +761,16 @@ void RebuildRoofUsingFloorInfo(INT32 const map_idx, UINT16 roof_type) {
   bool const left = !FloorAtGridNo(map_idx - 1);
   bool const bottom = !FloorAtGridNo(map_idx + WORLD_COLS);
   bool const right = !FloorAtGridNo(map_idx + 1);
-  UINT16 const roof_idx = top && left       ? TOPLEFT_ROOF_INDEX
-                          : top && right    ? TOPRIGHT_ROOF_INDEX
-                          : bottom && left  ? BOTTOMLEFT_ROOF_INDEX
-                          : bottom && right ? BOTTOMRIGHT_ROOF_INDEX
-                          : top             ? TOP_ROOF_INDEX
-                          : bottom          ? BOTTOM_ROOF_INDEX
-                          : left            ? LEFT_ROOF_INDEX
-                          : right           ? RIGHT_ROOF_INDEX
-                                  : CENTER_ROOF_BASE_INDEX + rand() % CENTER_ROOF_VARIANTS;
-  UINT16 const tile_idx = GetTileIndexFromTypeSubIndex(roof_type, roof_idx);
+  uint16_t const roof_idx = top && left       ? TOPLEFT_ROOF_INDEX
+                            : top && right    ? TOPRIGHT_ROOF_INDEX
+                            : bottom && left  ? BOTTOMLEFT_ROOF_INDEX
+                            : bottom && right ? BOTTOMRIGHT_ROOF_INDEX
+                            : top             ? TOP_ROOF_INDEX
+                            : bottom          ? BOTTOM_ROOF_INDEX
+                            : left            ? LEFT_ROOF_INDEX
+                            : right           ? RIGHT_ROOF_INDEX
+                                    : CENTER_ROOF_BASE_INDEX + rand() % CENTER_ROOF_VARIANTS;
+  uint16_t const tile_idx = GetTileIndexFromTypeSubIndex(roof_type, roof_idx);
   AddRoofToHead(map_idx, tile_idx);
   // If the editor view roofs is off, then the new roofs need to be hidden.
   if (!fBuildingShowRoofs) HideStructOfGivenType(map_idx, roof_type, TRUE);
@@ -782,7 +782,7 @@ void RebuildRoofUsingFloorInfo(INT32 const map_idx, UINT16 roof_type) {
  * NOTE:  passing 0 for roof_type will force the function to calculate the
  * nearest roof type, and use that for the new roof. This is needed when erasing
  * parts of multiple buildings simultaneously. */
-void RebuildRoof(UINT32 const map_idx, UINT16 roof_type) {
+void RebuildRoof(uint32_t const map_idx, uint16_t roof_type) {
   if (roof_type == 0) roof_type = SearchForRoofType(map_idx);
   if (roof_type == 0xFFFF) return;  // No roof type around, so don't draw one.
 
@@ -796,22 +796,22 @@ void RebuildRoof(UINT32 const map_idx, UINT16 roof_type) {
   bool const left = GetVerticalWall(map_idx - 1);
   bool const bottom = GetHorizontalWall(map_idx);
   bool const right = GetVerticalWall(map_idx);
-  UINT16 const roof_idx = top && left       ? TOPLEFT_ROOF_INDEX
-                          : top && right    ? TOPRIGHT_ROOF_INDEX
-                          : bottom && left  ? BOTTOMLEFT_ROOF_INDEX
-                          : bottom && right ? BOTTOMRIGHT_ROOF_INDEX
-                          : top             ? TOP_ROOF_INDEX
-                          : bottom          ? BOTTOM_ROOF_INDEX
-                          : left            ? LEFT_ROOF_INDEX
-                          : right           ? RIGHT_ROOF_INDEX
-                                  : CENTER_ROOF_BASE_INDEX + rand() % CENTER_ROOF_VARIANTS;
-  UINT16 const tile_idx = GetTileIndexFromTypeSubIndex(roof_type, roof_idx);
+  uint16_t const roof_idx = top && left       ? TOPLEFT_ROOF_INDEX
+                            : top && right    ? TOPRIGHT_ROOF_INDEX
+                            : bottom && left  ? BOTTOMLEFT_ROOF_INDEX
+                            : bottom && right ? BOTTOMRIGHT_ROOF_INDEX
+                            : top             ? TOP_ROOF_INDEX
+                            : bottom          ? BOTTOM_ROOF_INDEX
+                            : left            ? LEFT_ROOF_INDEX
+                            : right           ? RIGHT_ROOF_INDEX
+                                    : CENTER_ROOF_BASE_INDEX + rand() % CENTER_ROOF_VARIANTS;
+  uint16_t const tile_idx = GetTileIndexFromTypeSubIndex(roof_type, roof_idx);
   AddRoofToHead(map_idx, tile_idx);
   // If the editor view roofs is off, then the new roofs need to be hidden.
   if (!fBuildingShowRoofs) HideStructOfGivenType(map_idx, roof_type, TRUE);
 }
 
-static void BulldozeNature(UINT32 iMapIndex) {
+static void BulldozeNature(uint32_t iMapIndex) {
   AddToUndoList(iMapIndex);
   RemoveAllStructsOfTypeRange(iMapIndex, FIRSTISTRUCT, LASTISTRUCT);
   RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTCLIFFSHADOW, LASTCLIFFSHADOW);
@@ -823,19 +823,19 @@ static void BulldozeNature(UINT32 iMapIndex) {
   RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
 }
 
-static void EraseRoof(UINT32 iMapIndex) {
+static void EraseRoof(uint32_t iMapIndex) {
   AddToUndoList(iMapIndex);
   RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
   RemoveAllOnRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
   RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTROOF, LASTSLANTROOF);
 }
 
-static void EraseFloor(UINT32 iMapIndex) {
+static void EraseFloor(uint32_t iMapIndex) {
   AddToUndoList(iMapIndex);
   RemoveAllLandsOfTypeRange(iMapIndex, FIRSTFLOOR, LASTFLOOR);
 }
 
-void EraseWalls(UINT32 iMapIndex) {
+void EraseWalls(uint32_t iMapIndex) {
   AddToUndoList(iMapIndex);
   RemoveAllStructsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
   RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
@@ -846,7 +846,7 @@ void EraseWalls(UINT32 iMapIndex) {
   RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
 }
 
-void EraseBuilding(UINT32 iMapIndex) {
+void EraseBuilding(uint32_t iMapIndex) {
   EraseRoof(iMapIndex);
   EraseFloor(iMapIndex);
   EraseWalls(iMapIndex);
@@ -856,7 +856,7 @@ void EraseBuilding(UINT32 iMapIndex) {
 // Specialized function that will delete only the TOP_RIGHT oriented wall in the
 // gridno to the left and the TOP_LEFT oriented wall in the gridno up one as well
 // as the other building information at this gridno.
-static void EraseFloorOwnedBuildingPieces(UINT32 iMapIndex) {
+static void EraseFloorOwnedBuildingPieces(uint32_t iMapIndex) {
   LEVELNODE *pStruct = NULL;
 
   if (!gfBasement && !FloorAtGridNo(iMapIndex)) {  // We don't have ownership issues if there
@@ -869,10 +869,10 @@ static void EraseFloorOwnedBuildingPieces(UINT32 iMapIndex) {
   pStruct = gpWorldLevelData[iMapIndex - 1].pStructHead;
   while (pStruct != NULL) {
     if (pStruct->usIndex != NO_TILE) {
-      const UINT32 uiTileType = GetTileType(pStruct->usIndex);
+      const uint32_t uiTileType = GetTileType(pStruct->usIndex);
       if ((uiTileType >= FIRSTWALL && uiTileType <= LASTWALL) ||
           (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)) {
-        UINT16 usWallOrientation = GetWallOrientation(pStruct->usIndex);
+        uint16_t usWallOrientation = GetWallOrientation(pStruct->usIndex);
         if (usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) {
           AddToUndoList(iMapIndex - 1);
           RemoveStruct(iMapIndex - 1, pStruct->usIndex);
@@ -888,10 +888,10 @@ static void EraseFloorOwnedBuildingPieces(UINT32 iMapIndex) {
   pStruct = gpWorldLevelData[iMapIndex - WORLD_COLS].pStructHead;
   while (pStruct != NULL) {
     if (pStruct->usIndex != NO_TILE) {
-      const UINT32 uiTileType = GetTileType(pStruct->usIndex);
+      const uint32_t uiTileType = GetTileType(pStruct->usIndex);
       if ((uiTileType >= FIRSTWALL && uiTileType <= LASTWALL) ||
           (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)) {
-        UINT16 usWallOrientation = GetWallOrientation(pStruct->usIndex);
+        uint16_t usWallOrientation = GetWallOrientation(pStruct->usIndex);
         if (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) {
           AddToUndoList(iMapIndex - WORLD_COLS);
           RemoveStruct(iMapIndex - WORLD_COLS, pStruct->usIndex);
@@ -905,10 +905,10 @@ static void EraseFloorOwnedBuildingPieces(UINT32 iMapIndex) {
 }
 
 void RemoveCaveSectionFromWorld(SGPRect *pSelectRegion) {
-  UINT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usIndex;
-  UINT8 ubPerimeterValue;
+  uint32_t top, left, right, bottom, x, y;
+  uint32_t iMapIndex;
+  uint16_t usIndex;
+  uint8_t ubPerimeterValue;
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
   right = pSelectRegion->iRight;
@@ -938,10 +938,10 @@ void RemoveCaveSectionFromWorld(SGPRect *pSelectRegion) {
 }
 
 void AddCaveSectionToWorld(SGPRect *pSelectRegion) {
-  INT32 top, left, right, bottom, x, y;
-  UINT32 uiMapIndex;
-  UINT16 usIndex;
-  UINT8 ubPerimeterValue;
+  int32_t top, left, right, bottom, x, y;
+  uint32_t uiMapIndex;
+  uint16_t usIndex;
+  uint8_t ubPerimeterValue;
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
   right = pSelectRegion->iRight;
@@ -987,9 +987,9 @@ void AddCaveSectionToWorld(SGPRect *pSelectRegion) {
 // entire highlighted area, it'll repair the building itself so there are no
 // outside walls missing from the new building.
 void RemoveBuildingSectionFromWorld(SGPRect *pSelectRegion) {
-  UINT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usFloorType;
+  uint32_t top, left, right, bottom, x, y;
+  uint32_t iMapIndex;
+  uint16_t usFloorType;
   BOOLEAN fFloor;
 
   top = pSelectRegion->iTop;
@@ -1039,8 +1039,8 @@ void RemoveBuildingSectionFromWorld(SGPRect *pSelectRegion) {
     for (y = top; y <= bottom; y++)
       for (x = left; x <= right; x++) {
         iMapIndex = y * WORLD_COLS + x;
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
-        AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
+        AddLandToHead(iMapIndex, (uint16_t)(usTileIndex + Random(FLOOR_VARIANTS)));
       }
   }
   for (y = top - 1; y <= bottom + 1; y++)
@@ -1056,9 +1056,9 @@ void RemoveBuildingSectionFromWorld(SGPRect *pSelectRegion) {
 }
 
 void AddBuildingSectionToWorld(SGPRect *pSelectRegion) {
-  INT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usFloorType, usWallType;
+  int32_t top, left, right, bottom, x, y;
+  uint32_t iMapIndex;
+  uint16_t usFloorType, usWallType;
   BOOLEAN fNewBuilding;
   BOOLEAN fSlantRoof = FALSE;
   BOOLEAN fVertical;
@@ -1068,7 +1068,7 @@ void AddBuildingSectionToWorld(SGPRect *pSelectRegion) {
   right = pSelectRegion->iRight;
   bottom = pSelectRegion->iBottom;
 
-  UINT16 usRoofType = (UINT16)-1;  // XXX HACK000E
+  uint16_t usRoofType = (uint16_t)-1;  // XXX HACK000E
 
   // Special case scenario:
   // If the user selects a floor without walls, then it is implied that the user
@@ -1081,8 +1081,8 @@ void AddBuildingSectionToWorld(SGPRect *pSelectRegion) {
       for (x = left; x <= right; x++) {
         iMapIndex = y * WORLD_COLS + x;
         EraseFloor(iMapIndex);
-        UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
-        AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+        uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
+        AddLandToHead(iMapIndex, (uint16_t)(usTileIndex + Random(FLOOR_VARIANTS)));
       }
     // we are done!
     return;
@@ -1105,9 +1105,9 @@ void AddBuildingSectionToWorld(SGPRect *pSelectRegion) {
         // here, so it is assumed.
         pFloor = gpWorldLevelData[iMapIndex].pLandHead;
         while (pFloor) {
-          const UINT32 uiTileType = GetTileType(pFloor->usIndex);
+          const uint32_t uiTileType = GetTileType(pFloor->usIndex);
           if (uiTileType >= FIRSTFLOOR && uiTileType <= LASTFLOOR) {
-            usFloorType = (UINT16)uiTileType;
+            usFloorType = (uint16_t)uiTileType;
             break;
           }
         }
@@ -1220,8 +1220,8 @@ void AddBuildingSectionToWorld(SGPRect *pSelectRegion) {
       if (!FloorAtGridNo(iMapIndex)) {
         if (!fSlantRoof) RebuildRoof(iMapIndex, usRoofType);
         if (usFloorType != 0xffff && !gfBasement) {
-          UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
-          AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+          uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usFloorType, 1);
+          AddLandToHead(iMapIndex, (uint16_t)(usTileIndex + Random(FLOOR_VARIANTS)));
         }
       }
     }
@@ -1234,7 +1234,7 @@ void AnalyseCaveMapForStructureInfo() {
 
       if (GetTileType(k->usIndex) != FIRSTWALL) continue;
 
-      UINT16 const sub_idx = GetSubIndexFromTileIndex(k->usIndex);
+      uint16_t const sub_idx = GetSubIndexFromTileIndex(k->usIndex);
       if (sub_idx < 60 || 65 < sub_idx) continue;
 
       k->uiFlags |= LEVELNODE_CAVE;

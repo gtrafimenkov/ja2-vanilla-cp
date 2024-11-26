@@ -53,18 +53,18 @@ enum {
 };
 
 struct GAME_SETTINGS {
-  INT8 bLastSavedGameSlot;  // The last saved game number goes in here
+  int8_t bLastSavedGameSlot;  // The last saved game number goes in here
 
   // The following are set from the status of the toggle boxes in the Options
   // Screen
-  UINT8 fOptions[NUM_ALL_GAME_OPTIONS];
+  uint8_t fOptions[NUM_ALL_GAME_OPTIONS];
 
-  UINT32 uiMeanwhileScenesSeenFlags;
+  uint32_t uiMeanwhileScenesSeenFlags;
 
   BOOLEAN fHideHelpInAllScreens;
 
-  UINT8 ubSizeOfDisplayCover;
-  UINT8 ubSizeOfLOS;
+  uint8_t ubSizeOfDisplayCover;
+  uint8_t ubSizeOfLOS;
 };
 
 // Enums for the difficulty levels
@@ -79,7 +79,7 @@ enum {
 struct GAME_OPTIONS {
   BOOLEAN fGunNut;
   BOOLEAN fSciFi;
-  UINT8 ubDifficultyLevel;
+  uint8_t ubDifficultyLevel;
   BOOLEAN fTurnTimeLimit;
   BOOLEAN fIronManMode;
 };
@@ -99,8 +99,8 @@ void InitGameOptions();
 
 void DisplayGameSettings();
 
-bool MeanwhileSceneSeen(UINT8 meanwhile_id);
-void SetMeanwhileSceneSeen(UINT8 meanwhile_id);
+bool MeanwhileSceneSeen(uint8_t meanwhile_id);
+void SetMeanwhileSceneSeen(uint8_t meanwhile_id);
 
 BOOLEAN CanGameBeSaved();
 

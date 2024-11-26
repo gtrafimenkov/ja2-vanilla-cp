@@ -20,45 +20,45 @@
 #define EXTR_U8A(S, D, Size) \
   memcpy((D), (S), Size);    \
   (S) += (Size);
-#define EXTR_I16A(S, D, Size)             \
-  memcpy((D), (S), sizeof(INT16) * Size); \
-  (S) += sizeof(INT16) * (Size);
-#define EXTR_U16A(S, D, Size)              \
-  memcpy((D), (S), sizeof(UINT16) * Size); \
-  (S) += sizeof(UINT16) * (Size);
-#define EXTR_I32A(S, D, Size)             \
-  memcpy((D), (S), sizeof(INT32) * Size); \
-  (S) += sizeof(INT32) * (Size);
+#define EXTR_I16A(S, D, Size)               \
+  memcpy((D), (S), sizeof(int16_t) * Size); \
+  (S) += sizeof(int16_t) * (Size);
+#define EXTR_U16A(S, D, Size)                \
+  memcpy((D), (S), sizeof(uint16_t) * Size); \
+  (S) += sizeof(uint16_t) * (Size);
+#define EXTR_I32A(S, D, Size)               \
+  memcpy((D), (S), sizeof(int32_t) * Size); \
+  (S) += sizeof(int32_t) * (Size);
 #define EXTR_BOOL(S, D)        \
   (D) = *(const BOOLEAN *)(S); \
   (S) += sizeof(BOOLEAN);
-#define EXTR_BYTE(S, D)     \
-  (D) = *(const BYTE *)(S); \
-  (S) += sizeof(BYTE);
-#define EXTR_I8(S, D)       \
-  (D) = *(const INT8 *)(S); \
-  (S) += sizeof(INT8);
-#define EXTR_U8(S, D)        \
-  (D) = *(const UINT8 *)(S); \
-  (S) += sizeof(UINT8);
-#define EXTR_I16(S, D)       \
-  (D) = *(const INT16 *)(S); \
-  (S) += sizeof(INT16);
-#define EXTR_U16(S, D)        \
-  (D) = *(const UINT16 *)(S); \
-  (S) += sizeof(UINT16);
-#define EXTR_I32(S, D)       \
-  (D) = *(const INT32 *)(S); \
-  (S) += sizeof(INT32);
-#define EXTR_U32(S, D)        \
-  (D) = *(const UINT32 *)(S); \
-  (S) += sizeof(UINT32);
+#define EXTR_BYTE(S, D)        \
+  (D) = *(const uint8_t *)(S); \
+  (S) += sizeof(uint8_t);
+#define EXTR_I8(S, D)         \
+  (D) = *(const int8_t *)(S); \
+  (S) += sizeof(int8_t);
+#define EXTR_U8(S, D)          \
+  (D) = *(const uint8_t *)(S); \
+  (S) += sizeof(uint8_t);
+#define EXTR_I16(S, D)         \
+  (D) = *(const int16_t *)(S); \
+  (S) += sizeof(int16_t);
+#define EXTR_U16(S, D)          \
+  (D) = *(const uint16_t *)(S); \
+  (S) += sizeof(uint16_t);
+#define EXTR_I32(S, D)         \
+  (D) = *(const int32_t *)(S); \
+  (S) += sizeof(int32_t);
+#define EXTR_U32(S, D)          \
+  (D) = *(const uint32_t *)(S); \
+  (S) += sizeof(uint32_t);
 #define EXTR_FLOAT(S, D)     \
-  (D) = *(const FLOAT *)(S); \
-  (S) += sizeof(FLOAT);
+  (D) = *(const float *)(S); \
+  (S) += sizeof(float);
 #define EXTR_DOUBLE(S, D)     \
-  (D) = *(const DOUBLE *)(S); \
-  (S) += sizeof(DOUBLE);
+  (D) = *(const double *)(S); \
+  (S) += sizeof(double);
 #define EXTR_PTR(S, D) \
   (D) = NULL;          \
   (S) += 4;
@@ -166,7 +166,7 @@ class DataReader {
 
 #define INJ_WSTR(D, S, Size)        \
   wchar_to_utf16((S), (D), (Size)); \
-  (D) += (Size) * sizeof(UINT16);
+  (D) += (Size) * sizeof(uint16_t);
 #define INJ_STR(D, S, Size) \
   memcpy((D), (S), (Size)); \
   (D) += (Size);
@@ -179,45 +179,45 @@ class DataReader {
 #define INJ_U8A(D, S, Size) \
   memcpy((D), (S), (Size)); \
   (D) += (Size);
-#define INJ_I16A(D, S, Size)                \
-  memcpy((D), (S), sizeof(INT16) * (Size)); \
-  (D) += sizeof(INT16) * (Size);
-#define INJ_U16A(D, S, Size)                 \
-  memcpy((D), (S), sizeof(UINT16) * (Size)); \
-  (D) += sizeof(UINT16) * (Size);
-#define INJ_I32A(D, S, Size)                \
-  memcpy((D), (S), sizeof(INT32) * (Size)); \
-  (D) += sizeof(INT32) * (Size);
+#define INJ_I16A(D, S, Size)                  \
+  memcpy((D), (S), sizeof(int16_t) * (Size)); \
+  (D) += sizeof(int16_t) * (Size);
+#define INJ_U16A(D, S, Size)                   \
+  memcpy((D), (S), sizeof(uint16_t) * (Size)); \
+  (D) += sizeof(uint16_t) * (Size);
+#define INJ_I32A(D, S, Size)                  \
+  memcpy((D), (S), sizeof(int32_t) * (Size)); \
+  (D) += sizeof(int32_t) * (Size);
 #define INJ_BOOL(D, S)   \
   *(BOOLEAN *)(D) = (S); \
   (D) += sizeof(BOOLEAN);
-#define INJ_BYTE(D, S) \
-  *(BYTE *)(D) = (S);  \
-  (D) += sizeof(BYTE);
-#define INJ_I8(D, S)  \
-  *(INT8 *)(D) = (S); \
-  (D) += sizeof(INT8);
-#define INJ_U8(D, S)   \
-  *(UINT8 *)(D) = (S); \
-  (D) += sizeof(UINT8);
-#define INJ_I16(D, S)  \
-  *(INT16 *)(D) = (S); \
-  (D) += sizeof(INT16);
-#define INJ_U16(D, S)   \
-  *(UINT16 *)(D) = (S); \
-  (D) += sizeof(UINT16);
-#define INJ_I32(D, S)  \
-  *(INT32 *)(D) = (S); \
-  (D) += sizeof(INT32);
-#define INJ_U32(D, S)   \
-  *(UINT32 *)(D) = (S); \
-  (D) += sizeof(UINT32);
+#define INJ_BYTE(D, S)   \
+  *(uint8_t *)(D) = (S); \
+  (D) += sizeof(uint8_t);
+#define INJ_I8(D, S)    \
+  *(int8_t *)(D) = (S); \
+  (D) += sizeof(int8_t);
+#define INJ_U8(D, S)     \
+  *(uint8_t *)(D) = (S); \
+  (D) += sizeof(uint8_t);
+#define INJ_I16(D, S)    \
+  *(int16_t *)(D) = (S); \
+  (D) += sizeof(int16_t);
+#define INJ_U16(D, S)     \
+  *(uint16_t *)(D) = (S); \
+  (D) += sizeof(uint16_t);
+#define INJ_I32(D, S)    \
+  *(int32_t *)(D) = (S); \
+  (D) += sizeof(int32_t);
+#define INJ_U32(D, S)     \
+  *(uint32_t *)(D) = (S); \
+  (D) += sizeof(uint32_t);
 #define INJ_FLOAT(D, S) \
-  *(FLOAT *)(D) = (S);  \
-  (D) += sizeof(FLOAT);
+  *(float *)(D) = (S);  \
+  (D) += sizeof(float);
 #define INJ_DOUBLE(D, S) \
-  *(DOUBLE *)(D) = (S);  \
-  (D) += sizeof(DOUBLE);
+  *(double *)(D) = (S);  \
+  (D) += sizeof(double);
 #define INJ_PTR(D, S) INJ_SKIP(D, 4)
 #define INJ_SKIP(D, Size) \
   memset(D, 0, Size);     \

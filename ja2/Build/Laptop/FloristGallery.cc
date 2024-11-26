@@ -59,11 +59,11 @@
 
 static SGPVObject *guiFlowerImages[3];
 
-UINT32 guiCurrentlySelectedFlower = 0;
+uint32_t guiCurrentlySelectedFlower = 0;
 
-UINT8 gubCurFlowerIndex = 0;
-UINT8 gubCurNumberOfFlowers = 0;
-UINT8 gubPrevNumberOfFlowers = 0;
+uint8_t gubCurFlowerIndex = 0;
+uint8_t gubCurNumberOfFlowers = 0;
+uint8_t gubPrevNumberOfFlowers = 0;
 BOOLEAN gfRedrawFloristGallery = FALSE;
 
 BOOLEAN FloristGallerySubPagesVisitedFlag[4];
@@ -74,14 +74,14 @@ static GUIButtonRef guiGalleryButton[FLOR_GALLERY_NUMBER_FLORAL_BUTTONS];
 
 // Next Previous buttons
 static BUTTON_PICS *guiFloralGalleryButtonImage;
-static void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, int32_t reason);
 GUIButtonRef guiFloralGalleryButton[2];
 
 void EnterInitFloristGallery() { memset(&FloristGallerySubPagesVisitedFlag, 0, 4); }
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click) {
-  const INT16 shadow_col = FLORIST_BUTTON_TEXT_SHADOW_COLOR;
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t x, GUI_CALLBACK click) {
+  const int16_t shadow_col = FLORIST_BUTTON_TEXT_SHADOW_COLOR;
   GUIButtonRef const btn = CreateIconAndTextButton(
       guiFloralGalleryButtonImage, text, FLORIST_BUTTON_TEXT_FONT, FLORIST_BUTTON_TEXT_UP_COLOR,
       shadow_col, FLORIST_BUTTON_TEXT_DOWN_COLOR, shadow_col, x, FLOR_GALLERY_BUTTON_Y,
@@ -114,7 +114,7 @@ BOOLEAN EnterFloristGallery() {
 static void DeleteFlowerButtons();
 
 void ExitFloristGallery() {
-  UINT16 i;
+  uint16_t i;
 
   RemoveFloristDefaults();
 
@@ -159,9 +159,9 @@ void RenderFloristGallery() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void ChangingFloristGallerySubPage(UINT8 ubSubPageNumber);
+static void ChangingFloristGallerySubPage(uint8_t ubSubPageNumber);
 
-static void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurFlowerIndex + 3 <= FLOR_GALLERY_NUMBER_FLORAL_IMAGES) gubCurFlowerIndex += 3;
 
@@ -170,7 +170,7 @@ static void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurFlowerIndex != 0) {
       if (gubCurFlowerIndex >= 3)
@@ -185,7 +185,7 @@ static void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentlySelectedFlower = btn->GetUserData();
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
@@ -194,8 +194,8 @@ static void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 static void InitFlowerButtons() {
-  UINT16 i, j, count;
-  UINT16 usPosY;
+  uint16_t i, j, count;
+  uint16_t usPosY;
   char sTemp[40];
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
@@ -243,7 +243,7 @@ static void InitFlowerButtons() {
 }
 
 static void DeleteFlowerButtons() {
-  UINT16 i;
+  uint16_t i;
 
   for (i = 0; i < gubPrevNumberOfFlowers; i++) {
     DeleteVideoObject(guiFlowerImages[i]);
@@ -257,8 +257,8 @@ static void DeleteFlowerButtons() {
 }
 
 static BOOLEAN DisplayFloralDescriptions() {
-  UINT32 uiStartLoc = 0, i;
-  UINT16 usPosY, usPrice;
+  uint32_t uiStartLoc = 0, i;
+  uint16_t usPosY, usPrice;
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
     gubCurNumberOfFlowers = 3;
@@ -312,7 +312,7 @@ static BOOLEAN DisplayFloralDescriptions() {
   return (TRUE);
 }
 
-static void ChangingFloristGallerySubPage(UINT8 ubSubPageNumber) {
+static void ChangingFloristGallerySubPage(uint8_t ubSubPageNumber) {
   fLoadPendingFlag = TRUE;
 
   // there are 3 flowers per page

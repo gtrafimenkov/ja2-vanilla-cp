@@ -68,7 +68,7 @@ static BOOLEAN gfHomePageActive =
 
 // Graphic for button
 static BUTTON_PICS *guiGalleryButtonImage;
-static void BtnGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnGalleryButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static GUIButtonRef guiGalleryButton;
 
 // link to the flower home page by clicking on the flower title
@@ -115,8 +115,8 @@ void ExitFlorist() {
 }
 
 void RenderFlorist() {
-  UINT16 i, usPosY;
-  UINT8 ubTextCounter;
+  uint16_t i, usPosY;
+  uint8_t ubTextCounter;
 
   DisplayFloristDefaults();
 
@@ -164,7 +164,7 @@ void RenderFlorist() {
                    LAPTOP_SCREEN_WEB_UL_Y);
 }
 
-static void SelectFloristTitleHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectFloristTitleHomeLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitFloristDefaults() {
   // load the Florist background graphic and add it
@@ -183,8 +183,8 @@ void InitFloristDefaults() {
     // flower title homepage link
     MSYS_DefineRegion(
         &gSelectedFloristTitleHomeLinkRegion, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y,
-        (UINT16)(FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH),
-        (UINT16)(FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH,
+        (uint16_t)(FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH),
+        (uint16_t)(FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH,
         CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
   }
 }
@@ -218,13 +218,13 @@ void RemoveFloristDefaults() {
   }
 }
 
-static void BtnGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnGalleryButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_FLOWER_GALLERY;
   }
 }
 
-static void SelectFloristTitleHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectFloristTitleHomeLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST;
   }

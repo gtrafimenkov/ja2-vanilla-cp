@@ -15,7 +15,7 @@
 static BUTTON_PICS *giIMPPersonalityEntranceButtonImage[1];
 static GUIButtonRef giIMPPersonalityEntranceButton[1];
 
-static void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPPersonalityEntranceButtons();
 
@@ -65,7 +65,7 @@ static void DestroyIMPPersonalityEntranceButtons() {
   UnloadButtonImage(giIMPPersonalityEntranceButtonImage[0]);
 }
 
-static void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for IMP Begin Screen done button
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

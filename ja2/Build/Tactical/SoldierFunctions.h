@@ -5,16 +5,17 @@
 
 void ContinueMercMovement(SOLDIERTYPE *pSoldier);
 
-BOOLEAN IsValidStance(const SOLDIERTYPE *pSoldier, INT8 bNewStance);
+BOOLEAN IsValidStance(const SOLDIERTYPE *pSoldier, int8_t bNewStance);
 void SelectMoveAnimationFromStance(SOLDIERTYPE *pSoldier);
-BOOLEAN IsValidMovementMode(const SOLDIERTYPE *pSoldier, INT16 usMovementMode);
+BOOLEAN IsValidMovementMode(const SOLDIERTYPE *pSoldier, int16_t usMovementMode);
 void SoldierCollapse(SOLDIERTYPE *pSoldier);
 
-BOOLEAN ReevaluateEnemyStance(SOLDIERTYPE *pSoldier, UINT16 usAnimState);
+BOOLEAN ReevaluateEnemyStance(SOLDIERTYPE *pSoldier, uint16_t usAnimState);
 
 void HandlePlacingRoofMarker(SOLDIERTYPE &, bool set, bool force);
 
-void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);
+void PickPickupAnimation(SOLDIERTYPE *pSoldier, int32_t iItemIndex, int16_t sGridNo,
+                         int8_t bZLevel);
 
 void MercStealFromMerc(SOLDIERTYPE *pSoldier, const SOLDIERTYPE *pTarget);
 

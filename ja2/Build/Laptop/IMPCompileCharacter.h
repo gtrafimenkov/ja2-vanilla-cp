@@ -6,11 +6,11 @@
 #define PLAYER_GENERATED_CHARACTER_ID 51
 #define NUMBER_OF_PLAYER_PORTRAITS 16
 
-void AddAnAttitudeToAttitudeList(INT8 bAttitude);
+void AddAnAttitudeToAttitudeList(int8_t bAttitude);
 void CreateACharacterFromPlayerEnteredStats();
 void CreatePlayersPersonalitySkillsAndAttitude();
-void AddAPersonalityToPersonalityList(INT8 bPersonlity);
-void AddSkillToSkillList(INT8 bSkill);
+void AddAPersonalityToPersonalityList(int8_t bPersonlity);
+void AddSkillToSkillList(int8_t bSkill);
 void ResetSkillsAttributesAndPersonality();
 void HandleMercStatsForChangesInFace();
 

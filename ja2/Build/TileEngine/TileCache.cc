@@ -22,9 +22,9 @@ struct TILE_CACHE_STRUCT {
   STRUCTURE_FILE_REF *pStructureFileRef;
 };
 
-static const UINT32 guiMaxTileCacheSize = 50;
-static UINT32 guiCurTileCacheSize = 0;
-static INT32 giDefaultStructIndex = -1;
+static const uint32_t guiMaxTileCacheSize = 50;
+static uint32_t guiCurTileCacheSize = 0;
+static int32_t giDefaultStructIndex = -1;
 
 TILE_CACHE_ELEMENT *gpTileCache;
 static std::vector<TILE_CACHE_STRUCT> gpTileCacheStructInfo;
@@ -34,7 +34,7 @@ void InitTileCache() {
   guiCurTileCacheSize = 0;
 
   // Zero entries
-  for (UINT32 i = 0; i < guiMaxTileCacheSize; ++i) {
+  for (uint32_t i = 0; i < guiMaxTileCacheSize; ++i) {
     gpTileCache[i].pImagery = 0;
     gpTileCache[i].struct_file_ref = 0;
   }
@@ -49,7 +49,7 @@ void InitTileCache() {
     tc.pStructureFileRef = LoadStructureFile(file.c_str());
 
     if (strcasecmp(tc.zRootName, "l_dead1") == 0) {
-      giDefaultStructIndex = (INT32)gpTileCacheStructInfo.size();
+      giDefaultStructIndex = (int32_t)gpTileCacheStructInfo.size();
     }
 
     gpTileCacheStructInfo.push_back(tc);
@@ -57,7 +57,7 @@ void InitTileCache() {
 }
 
 void DeleteTileCache() {
-  UINT32 cnt;
+  uint32_t cnt;
 
   // Allocate entries
   if (gpTileCache != NULL) {
@@ -75,11 +75,11 @@ void DeleteTileCache() {
   guiCurTileCacheSize = 0;
 }
 
-INT32 GetCachedTile(const char *const filename) {
-  INT32 idx = -1;
+int32_t GetCachedTile(const char *const filename) {
+  int32_t idx = -1;
 
   // Check to see if surface exists already
-  for (UINT32 cnt = 0; cnt < guiCurTileCacheSize; ++cnt) {
+  for (uint32_t cnt = 0; cnt < guiCurTileCacheSize; ++cnt) {
     TILE_CACHE_ELEMENT *const i = &gpTileCache[cnt];
     if (i->pImagery == NULL) {
       if (idx == -1) idx = cnt;
@@ -90,7 +90,7 @@ INT32 GetCachedTile(const char *const filename) {
 
     // Found surface, return
     ++i->sHits;
-    return (INT32)cnt;
+    return (int32_t)cnt;
   }
 
   if (idx == -1) {
@@ -99,8 +99,8 @@ INT32 GetCachedTile(const char *const filename) {
     } else {
       // cache out least used file
       idx = 0;
-      INT16 sMostHits = gpTileCache[idx].sHits;
-      for (UINT32 cnt = 1; cnt < guiCurTileCacheSize; ++cnt) {
+      int16_t sMostHits = gpTileCache[idx].sHits;
+      for (uint32_t cnt = 1; cnt < guiCurTileCacheSize; ++cnt) {
         const TILE_CACHE_ELEMENT *const i = &gpTileCache[cnt];
         if (i->sHits < sMostHits) {
           sMostHits = i->sHits;
@@ -136,8 +136,8 @@ INT32 GetCachedTile(const char *const filename) {
   return idx;
 }
 
-void RemoveCachedTile(INT32 const cached_tile) {
-  if ((UINT32)cached_tile < guiCurTileCacheSize) {
+void RemoveCachedTile(int32_t const cached_tile) {
+  if ((uint32_t)cached_tile < guiCurTileCacheSize) {
     TILE_CACHE_ELEMENT &e = gpTileCache[cached_tile];
     if (e.pImagery) {
       if (--e.sHits != 0) return;
@@ -151,7 +151,7 @@ void RemoveCachedTile(INT32 const cached_tile) {
   throw std::logic_error("Trying to remove invalid cached tile");
 }
 
-static STRUCTURE_FILE_REF *GetCachedTileStructureRef(INT32 const idx) {
+static STRUCTURE_FILE_REF *GetCachedTileStructureRef(int32_t const idx) {
   return idx != -1 ? gpTileCache[idx].struct_file_ref : 0;
 }
 
@@ -164,8 +164,8 @@ STRUCTURE_FILE_REF *GetCachedTileStructureRefFromFilename(char const *const file
   return 0;
 }
 
-void CheckForAndAddTileCacheStructInfo(LEVELNODE *const pNode, INT16 const sGridNo,
-                                       UINT16 const usIndex, UINT16 const usSubIndex) {
+void CheckForAndAddTileCacheStructInfo(LEVELNODE *const pNode, int16_t const sGridNo,
+                                       uint16_t const usIndex, uint16_t const usSubIndex) {
   STRUCTURE_FILE_REF *const sfr = GetCachedTileStructureRef(usIndex);
   if (!sfr) return;
 
@@ -179,7 +179,7 @@ void CheckForAndAddTileCacheStructInfo(LEVELNODE *const pNode, INT16 const sGrid
   AddStructureToWorld(sGridNo, 0, &def_sfr->pDBStructureRef[usSubIndex], pNode);
 }
 
-void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, UINT16 usIndex) {
+void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, uint16_t usIndex) {
   STRUCTURE_FILE_REF *pStructureFileRef;
 
   if (usIndex >= TILE_CACHE_START_INDEX) {

@@ -59,7 +59,7 @@ enum PopupMenuID {
 #define DIR_DOWNLEFT (DNMASK + LTMASK)
 
 // These are the two main functions that outside users would call.
-void InitPopupMenu(GUIButtonRef, PopupMenuID, UINT8 ubDirection);
+void InitPopupMenu(GUIButtonRef, PopupMenuID, uint8_t ubDirection);
 BOOLEAN ProcessPopupMenuIfActive();
 
 #endif

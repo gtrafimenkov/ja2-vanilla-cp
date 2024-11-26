@@ -15,7 +15,7 @@
 
 struct AILIST {
   SOLDIERTYPE *soldier;
-  INT8 bPriority;
+  int8_t bPriority;
   AILIST *pNext;
 };
 
@@ -33,7 +33,7 @@ static void ClearAIList() {
   gpFirstAIListEntry = 0;
 }
 
-static AILIST *CreateNewAIListEntry(SOLDIERTYPE *const s, INT8 const priority) {
+static AILIST *CreateNewAIListEntry(SOLDIERTYPE *const s, int8_t const priority) {
   FOR_EACH(AILIST, i, gAIList) {
     AILIST &e = *i;
     if (e.soldier) continue;
@@ -45,7 +45,7 @@ static AILIST *CreateNewAIListEntry(SOLDIERTYPE *const s, INT8 const priority) {
   throw std::runtime_error("out of AI list entries");
 }
 
-static bool SatisfiesAIListConditions(SOLDIERTYPE &, UINT8 *n_done, bool do_random_checks);
+static bool SatisfiesAIListConditions(SOLDIERTYPE &, uint8_t *n_done, bool do_random_checks);
 
 SOLDIERTYPE *RemoveFirstAIListEntry() {
   while (AILIST *const e = gpFirstAIListEntry) {
@@ -69,7 +69,7 @@ static void RemoveAIListEntryForID(SOLDIERTYPE const *const s) {
   // none found, that's okay
 }
 
-static void InsertIntoAIList(SOLDIERTYPE *const s, INT8 const priority) {
+static void InsertIntoAIList(SOLDIERTYPE *const s, int8_t const priority) {
   AILIST *const e = CreateNewAIListEntry(s, priority);
   // Look through the list to see where to insert the entry
   for (AILIST **anchor = &gpFirstAIListEntry;; anchor = &(*anchor)->pNext) {
@@ -80,7 +80,7 @@ static void InsertIntoAIList(SOLDIERTYPE *const s, INT8 const priority) {
   }
 }
 
-static bool SatisfiesAIListConditions(SOLDIERTYPE &s, UINT8 *const n_done,
+static bool SatisfiesAIListConditions(SOLDIERTYPE &s, uint8_t *const n_done,
                                       bool const do_random_checks) {
   if (gTacticalStatus.bBoxingState == BOXING && !(s.uiStatusFlags & SOLDIER_BOXER)) return false;
   if (!s.bActive) return false;
@@ -137,29 +137,29 @@ bool MoveToFrontOfAIList(SOLDIERTYPE *const s) {
   /* We have to fake this guy's alert status (in the list) to be the same as the
    * current front of the list */
   AILIST *const head = gpFirstAIListEntry;
-  INT8 const priority = head ? head->bPriority : MAX_AI_PRIORITY;
+  int8_t const priority = head ? head->bPriority : MAX_AI_PRIORITY;
   AILIST *const e = CreateNewAIListEntry(s, priority);
   e->pNext = head;
   gpFirstAIListEntry = e;
   return true;
 }
 
-bool BuildAIListForTeam(INT8 const team) {
+bool BuildAIListForTeam(int8_t const team) {
   // This team is being given control so reset their muzzle flashes
   TurnOffTeamsMuzzleFlashes(team);
 
   ClearAIList();
 
   // Create a new list
-  UINT8 n = 0;
-  UINT8 n_done = 0;
+  uint8_t n = 0;
+  uint8_t n_done = 0;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE &s = **i;
     // non-null merc slot ensures active
     if (s.bTeam != team) continue;
     if (!SatisfiesAIListConditions(s, &n_done, true)) continue;
 
-    INT8 priority = s.bAlertStatus;
+    int8_t priority = s.bAlertStatus;
     if (s.bVisible == TRUE) priority += 3;
 
     InsertIntoAIList(&s, priority);

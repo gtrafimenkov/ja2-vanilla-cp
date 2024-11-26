@@ -31,8 +31,8 @@ void ShutdownEventManager() {
 
 static EventList *GetQueue(EventQueueID ubQueueID);
 
-void AddEvent(UINT32 const uiEvent, UINT16 const usDelay, PTR const pEventData,
-              UINT32 const uiDataSize, EventQueueID const ubQueueID) {
+void AddEvent(uint32_t const uiEvent, uint16_t const usDelay, void *const pEventData,
+              uint32_t const uiDataSize, EventQueueID const ubQueueID) {
   EVENT *pEvent = MALLOCE(EVENT, Data, uiDataSize);
   pEvent->TimeStamp = GetJA2Clock();
   pEvent->usDelay = usDelay;
@@ -46,13 +46,13 @@ void AddEvent(UINT32 const uiEvent, UINT16 const usDelay, PTR const pEventData,
   hQueue->Add(pEvent, hQueue->Size());
 }
 
-EVENT *RemoveEvent(UINT32 uiIndex, EventQueueID ubQueueID) try {
+EVENT *RemoveEvent(uint32_t uiIndex, EventQueueID ubQueueID) try {
   return GetQueue(ubQueueID)->Remove(uiIndex);
 } catch (const std::exception &) {
   return 0;
 }
 
-EVENT *PeekEvent(UINT32 uiIndex, EventQueueID ubQueueID) try {
+EVENT *PeekEvent(uint32_t uiIndex, EventQueueID ubQueueID) try {
   return GetQueue(ubQueueID)->Peek(uiIndex);
 } catch (const std::exception &) {
   return 0;
@@ -64,7 +64,7 @@ BOOLEAN FreeEvent(EVENT *pEvent) {
   return TRUE;
 }
 
-UINT32 EventQueueSize(EventQueueID ubQueueID) { return (UINT32)GetQueue(ubQueueID)->Size(); }
+uint32_t EventQueueSize(EventQueueID ubQueueID) { return (uint32_t)GetQueue(ubQueueID)->Size(); }
 
 static EventList *GetQueue(EventQueueID const ubQueueID) {
   switch (ubQueueID) {

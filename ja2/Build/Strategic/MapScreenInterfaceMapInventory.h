@@ -38,10 +38,10 @@ extern WORLDITEM *pInventoryPoolList;
 void AutoPlaceObjectInInventoryStash(OBJECTTYPE *pItemPtr);
 
 // the current inventory item
-extern INT32 iCurrentlyHighLightedItem;
+extern int32_t iCurrentlyHighLightedItem;
 extern BOOLEAN fFlashHighLightInventoryItemOnradarMap;
-extern INT16 sObjectSourceGridNo;
-extern INT32 iCurrentInventoryPoolPage;
+extern int16_t sObjectSourceGridNo;
+extern int32_t iCurrentInventoryPoolPage;
 extern BOOLEAN fMapInventoryItemCompatable[];
 
 BOOLEAN IsMapScreenWorldItemVisibleInMapInventory(const WORLDITEM *);

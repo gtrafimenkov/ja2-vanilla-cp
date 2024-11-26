@@ -33,12 +33,12 @@
 // detected.
 static MOUSE_REGION *gpRegionLastLButtonDown = NULL;
 static MOUSE_REGION *gpRegionLastLButtonUp = NULL;
-static UINT32 guiRegionLastLButtonDownTime = 0;
+static uint32_t guiRegionLastLButtonDownTime = 0;
 
-INT16 MSYS_CurrentMX = 0;
-INT16 MSYS_CurrentMY = 0;
-static INT16 MSYS_CurrentButtons = 0;
-static INT16 MSYS_Action = 0;
+int16_t MSYS_CurrentMX = 0;
+int16_t MSYS_CurrentMY = 0;
+static int16_t MSYS_CurrentButtons = 0;
+static int16_t MSYS_Action = 0;
 
 static BOOLEAN MSYS_SystemInitialized = FALSE;
 
@@ -49,7 +49,7 @@ static MOUSE_REGION *MSYS_RegList = NULL;
 static MOUSE_REGION *MSYS_PrevRegion = 0;
 static MOUSE_REGION *MSYS_CurrRegion = NULL;
 
-static const INT16 gsFastHelpDelay = 600;  // In timer ticks
+static const int16_t gsFastHelpDelay = 600;  // In timer ticks
 
 static BOOLEAN gfRefreshUpdate = FALSE;
 
@@ -84,11 +84,11 @@ void MSYS_Shutdown() {
 
 static void MSYS_UpdateMouseRegion();
 
-void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
+void MouseSystemHook(uint16_t Type, uint16_t Xcoord, uint16_t Ycoord) {
   // If the mouse system isn't initialized, get out o' here
   if (!MSYS_SystemInitialized) return;
 
-  INT16 action = MSYS_NO_ACTION;
+  int16_t action = MSYS_NO_ACTION;
   switch (Type) {
     case LEFT_BUTTON_DOWN:
       action |= MSYS_DO_LBUTTON_DWN;
@@ -318,7 +318,7 @@ static void MSYS_UpdateMouseRegion() {
 
       if (cur->ButtonCallback != NULL && MSYS_Action & MSYS_DO_BUTTONS) {
         if (cur->uiFlags & MSYS_REGION_ENABLED) {
-          UINT32 ButtonReason = MSYS_CALLBACK_REASON_NONE;
+          uint32_t ButtonReason = MSYS_CALLBACK_REASON_NONE;
           if (MSYS_Action & MSYS_DO_LBUTTON_DWN) {
             ButtonReason |= MSYS_CALLBACK_REASON_LBUTTON_DWN;
             g_clicked_region = cur;
@@ -369,7 +369,7 @@ static void MSYS_UpdateMouseRegion() {
             // Kris: Nov 31, 1999 -- Added support for double click events.
             // This is where double clicks are checked and passed down.
             if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-              UINT32 uiCurrTime = GetClock();
+              uint32_t uiCurrTime = GetClock();
               if (gpRegionLastLButtonDown == cur && gpRegionLastLButtonUp == cur &&
                   uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 /* Sequential left click on same button within the maximum time
@@ -386,7 +386,7 @@ static void MSYS_UpdateMouseRegion() {
                 guiRegionLastLButtonDownTime = GetClock();
               }
             } else if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_UP) {
-              UINT32 uiCurrTime = GetClock();
+              uint32_t uiCurrTime = GetClock();
               if (gpRegionLastLButtonDown == cur &&
                   uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 /* Double click is Left down, then left up, then left down.  We
@@ -433,8 +433,8 @@ static void MSYS_UpdateMouseRegion() {
 }
 
 /* Inits a MOUSE_REGION structure for use with the mouse system */
-void MSYS_DefineRegion(MOUSE_REGION *const r, UINT16 const tlx, UINT16 const tly, UINT16 const brx,
-                       UINT16 const bry, INT8 priority, UINT16 const crsr,
+void MSYS_DefineRegion(MOUSE_REGION *const r, uint16_t const tlx, uint16_t const tly,
+                       uint16_t const brx, uint16_t const bry, int8_t priority, uint16_t const crsr,
                        MOUSE_CALLBACK const movecallback, MOUSE_CALLBACK const buttoncallback) {
 #ifdef MOUSESYSTEM_DEBUGGING
   AssertMsg(!(r->uiFlags & MSYS_REGION_EXISTS),
@@ -466,7 +466,7 @@ void MSYS_DefineRegion(MOUSE_REGION *const r, UINT16 const tlx, UINT16 const tly
   gfRefreshUpdate = TRUE;
 }
 
-void MOUSE_REGION::ChangeCursor(UINT16 const crsr) {
+void MOUSE_REGION::ChangeCursor(uint16_t const crsr) {
   Cursor = crsr;
   if (crsr != MSYS_NO_CURSOR && uiFlags & MSYS_MOUSE_IN_AREA) {
     MSYS_SetCurrentCursor(crsr);
@@ -509,14 +509,14 @@ void MSYS_RemoveRegion(MOUSE_REGION *const r) {
 //
 //	Sets the mouse cursor to the regions defined value.
 //
-void MSYS_SetCurrentCursor(UINT16 Cursor) { SetCurrentCursorFromDatabase(Cursor); }
+void MSYS_SetCurrentCursor(uint16_t Cursor) { SetCurrentCursorFromDatabase(Cursor); }
 
-void MSYS_SetRegionUserData(MOUSE_REGION *const r, UINT32 const index, INT32 const userdata) {
+void MSYS_SetRegionUserData(MOUSE_REGION *const r, uint32_t const index, int32_t const userdata) {
   if (lengthof(r->user.data) <= index) throw std::logic_error("User data index is out of range");
   r->user.data[index] = userdata;
 }
 
-INT32 MSYS_GetRegionUserData(MOUSE_REGION const *const r, UINT32 const index) {
+int32_t MSYS_GetRegionUserData(MOUSE_REGION const *const r, uint32_t const index) {
   if (lengthof(r->user.data) <= index) throw std::logic_error("User data index is out of range");
   return r->user.data[index];
 }
@@ -555,28 +555,29 @@ void MOUSE_REGION::SetFastHelpText(wchar_t const *const text) {
   uiFlags &= ~MSYS_FASTHELP_RESET;
 }
 
-static UINT32 GetNumberOfLinesInHeight(const wchar_t *String) {
-  UINT32 Lines = 1;
+static uint32_t GetNumberOfLinesInHeight(const wchar_t *String) {
+  uint32_t Lines = 1;
   for (const wchar_t *i = String; *i != L'\0'; i++) {
     if (*i == L'\n') Lines++;
   }
   return Lines;
 }
 
-static UINT32 GetWidthOfString(const wchar_t *String);
-static void DisplayHelpTokenizedString(const wchar_t *text, INT16 sx, INT16 sy);
+static uint32_t GetWidthOfString(const wchar_t *String);
+static void DisplayHelpTokenizedString(const wchar_t *text, int16_t sx, int16_t sy);
 
 static void DisplayFastHelp(MOUSE_REGION *const r) {
   if (!(r->uiFlags & MSYS_FASTHELP)) return;
 
-  INT32 const w = GetWidthOfString(r->FastHelpText) + 10;
-  INT32 const h = GetNumberOfLinesInHeight(r->FastHelpText) * (GetFontHeight(FONT10ARIAL) + 1) + 8;
+  int32_t const w = GetWidthOfString(r->FastHelpText) + 10;
+  int32_t const h =
+      GetNumberOfLinesInHeight(r->FastHelpText) * (GetFontHeight(FONT10ARIAL) + 1) + 8;
 
-  INT32 x = r->RegionTopLeftX + 10;
+  int32_t x = r->RegionTopLeftX + 10;
   if (x < 0) x = 0;
   if (x >= SCREEN_WIDTH - w) x = SCREEN_WIDTH - w - 4;
 
-  INT32 y = r->RegionTopLeftY - h * 3 / 4;
+  int32_t y = r->RegionTopLeftY - h * 3 / 4;
   if (y < 0) y = 0;
   if (y >= SCREEN_HEIGHT - h) y = SCREEN_HEIGHT - h - 15;
 
@@ -586,7 +587,7 @@ static void DisplayFastHelp(MOUSE_REGION *const r) {
   } else {
     {
       SGPVSurface::Lock l(FRAME_BUFFER);
-      UINT16 *const buf = l.Buffer<UINT16>();
+      uint16_t *const buf = l.Buffer<uint16_t>();
       SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
       RectangleDraw(TRUE, x + 1, y + 1, x + w - 1, y + h - 1, Get16BPPColor(FROMRGB(65, 57, 15)),
                     buf);
@@ -600,11 +601,11 @@ static void DisplayFastHelp(MOUSE_REGION *const r) {
   }
 }
 
-static UINT32 GetWidthOfString(wchar_t const *const str) {
+static uint32_t GetWidthOfString(wchar_t const *const str) {
   Font const bold_font = FONT10ARIALBOLD;
   Font const normal_font = FONT10ARIAL;
-  UINT32 max_w = 0;
-  UINT32 w = 0;
+  uint32_t max_w = 0;
+  uint32_t w = 0;
   for (wchar_t const *i = str;; ++i) {
     wchar_t c = *i;
     Font font;
@@ -630,16 +631,17 @@ static UINT32 GetWidthOfString(wchar_t const *const str) {
   }
 }
 
-static void DisplayHelpTokenizedString(wchar_t const *const text, INT16 const sx, INT16 const sy) {
+static void DisplayHelpTokenizedString(wchar_t const *const text, int16_t const sx,
+                                       int16_t const sy) {
   Font const bold_font = FONT10ARIALBOLD;
   Font const normal_font = FONT10ARIAL;
-  INT32 const h = GetFontHeight(normal_font) + 1;
-  INT32 x = sx;
-  INT32 y = sy;
+  int32_t const h = GetFontHeight(normal_font) + 1;
+  int32_t x = sx;
+  int32_t y = sy;
   for (wchar_t const *i = text;; ++i) {
     wchar_t c = *i;
     Font font;
-    UINT8 foreground;
+    uint8_t foreground;
     switch (c) {
       case L'\0':
         return;
@@ -666,12 +668,12 @@ static void DisplayHelpTokenizedString(wchar_t const *const text, INT16 const sx
 }
 
 void RenderFastHelp() {
-  static UINT32 last_clock;
+  static uint32_t last_clock;
 
   if (!gfRenderHilights) return;
 
-  UINT32 const current_clock = GetClock();
-  UINT32 const time_delta = current_clock - last_clock;
+  uint32_t const current_clock = GetClock();
+  uint32_t const time_delta = current_clock - last_clock;
   last_clock = current_clock;
 
   MOUSE_REGION *const r = MSYS_CurrRegion;
@@ -702,8 +704,8 @@ void MOUSE_REGION::AllowDisabledRegionFastHelp(bool const allow) {
   }
 }
 
-MouseRegion::MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h,
-                         INT8 const priority, UINT16 const cursor,
+MouseRegion::MouseRegion(uint16_t const x, uint16_t const y, uint16_t const w, uint16_t const h,
+                         int8_t const priority, uint16_t const cursor,
                          MOUSE_CALLBACK const movecallback, MOUSE_CALLBACK const buttoncallback) {
   MOUSE_REGION *const r = this;
   memset(r, 0, sizeof(*r));

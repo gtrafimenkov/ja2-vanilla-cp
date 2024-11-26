@@ -87,10 +87,10 @@ static MOUSE_REGION gSelectedInsuranceLinkRegion[3];
 // link to the home page by clicking on the small title
 static MOUSE_REGION gSelectedInsuranceTitleLinkRegion;
 
-static void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterInsurance() {
-  UINT16 usPosX, i;
+  uint16_t usPosX, i;
 
   SetBookMark(INSURANCE_BOOKMARK);
 
@@ -105,10 +105,11 @@ void EnterInsurance() {
 
   usPosX = INSURANCE_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(
-        &gSelectedInsuranceLinkRegion[i], usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37,
-        (UINT16)(usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2,
-        MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
+    MSYS_DefineRegion(&gSelectedInsuranceLinkRegion[i], usPosX,
+                      INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37,
+                      (uint16_t)(usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH),
+                      INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW,
+                      MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
     MSYS_SetRegionUserData(&gSelectedInsuranceLinkRegion[i], 0, i);
 
     usPosX += INSURANCE_BOTTOM_LINK_RED_BAR_OFFSET;
@@ -221,7 +222,7 @@ void RenderInsurance() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitInsuranceDefaults() {
   // load the Flower Account Box graphic and add it
@@ -242,15 +243,15 @@ void InitInsuranceDefaults() {
     // create the link to the home page on the small titles
     MSYS_DefineRegion(
         &gSelectedInsuranceTitleLinkRegion, INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y,
-        (UINT16)(INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH),
-        (UINT16)(INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH,
+        (uint16_t)(INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH),
+        (uint16_t)(INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH,
         CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
   }
 }
 
 void DisplayInsuranceDefaults() {
-  UINT8 i;
-  UINT16 usPosY;
+  uint8_t i;
+  uint16_t usPosY;
 
   WebPageTileBackground(4, 4, INSURANCE_BACKGROUND_WIDTH, INSURANCE_BACKGROUND_HEIGHT,
                         guiInsuranceBackGround);
@@ -299,12 +300,13 @@ void RemoveInsuranceDefaults() {
   }
 }
 
-void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY) {
+void DisplaySmallRedLineWithShadow(uint16_t usStartX, uint16_t usStartY, uint16_t EndX,
+                                   uint16_t EndY) {
   SGPVSurface::Lock l(FRAME_BUFFER);
 
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
 
   // draw the red line
   LineDraw(FALSE, usStartX, usStartY, EndX, EndY, Get16BPPColor(FROMRGB(255, 0, 0)), pDestBuf);
@@ -314,8 +316,8 @@ void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX
            pDestBuf);
 }
 
-void GetInsuranceText(const UINT8 ubNumber, wchar_t *const pString) {
-  UINT32 uiStartLoc = 0;
+void GetInsuranceText(const uint8_t ubNumber, wchar_t *const pString) {
+  uint32_t uiStartLoc = 0;
 
   if (ubNumber < INS_MULTI_LINE_BEGINS) {
     // Get and display the card saying
@@ -330,9 +332,9 @@ void GetInsuranceText(const UINT8 ubNumber, wchar_t *const pString) {
   }
 }
 
-static void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    uint32_t uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_COMMENTS;
@@ -343,7 +345,7 @@ static void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) 
   }
 }
 
-static void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
   }

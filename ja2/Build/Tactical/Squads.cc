@@ -25,18 +25,18 @@
 SOLDIERTYPE *Squad[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
 
 // list of dead guys for squads...in id values -> -1 means no one home
-INT16 sDeadMercs[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
+int16_t sDeadMercs[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
 
 // the movement group ids
-INT8 SquadMovementGroups[NUMBER_OF_SQUADS];
+int8_t SquadMovementGroups[NUMBER_OF_SQUADS];
 
 BOOLEAN fExitingVehicleToSquad = FALSE;
 
-INT32 iCurrentTacticalSquad = FIRST_SQUAD;
+int32_t iCurrentTacticalSquad = FIRST_SQUAD;
 
 void InitSquads() {
   // init the squad lists to NULL ptrs.
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // null each list of ptrs.
   for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
@@ -48,10 +48,10 @@ void InitSquads() {
     SquadMovementGroups[iCounter] = g->ubGroupID;
   }
 
-  memset(sDeadMercs, -1, sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
+  memset(sDeadMercs, -1, sizeof(int16_t) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
 }
 
-BOOLEAN IsThisSquadFull(INT8 bSquadValue) {
+BOOLEAN IsThisSquadFull(int8_t bSquadValue) {
   // run through entries in the squad list, make sure there is a free entry
   FOR_EACH_SLOT_IN_SQUAD(i, bSquadValue) {
     if (!*i) return FALSE;
@@ -59,8 +59,8 @@ BOOLEAN IsThisSquadFull(INT8 bSquadValue) {
   return TRUE;
 }
 
-INT8 GetFirstEmptySquad() {
-  UINT8 ubCounter = 0;
+int8_t GetFirstEmptySquad() {
+  uint8_t ubCounter = 0;
 
   for (ubCounter = 0; ubCounter < NUMBER_OF_SQUADS; ubCounter++) {
     if (SquadIsEmpty(ubCounter)) return ubCounter;
@@ -70,9 +70,9 @@ INT8 GetFirstEmptySquad() {
   throw std::logic_error("Found no empty squad");
 }
 
-static BOOLEAN CopyPathOfSquadToCharacter(SOLDIERTYPE *pCharacter, INT8 bSquadValue);
+static BOOLEAN CopyPathOfSquadToCharacter(SOLDIERTYPE *pCharacter, int8_t bSquadValue);
 
-BOOLEAN AddCharacterToSquad(SOLDIERTYPE *const s, INT8 const bSquadValue) {
+BOOLEAN AddCharacterToSquad(SOLDIERTYPE *const s, int8_t const bSquadValue) {
   // add character to squad...return success or failure
   // run through list of people in squad, find first free slo
 
@@ -102,9 +102,9 @@ BOOLEAN AddCharacterToSquad(SOLDIERTYPE *const s, INT8 const bSquadValue) {
     // free slot, add here
 
     // check if squad empty, if not check sector x,y,z are the same as this guys
-    INT16 sX;
-    INT16 sY;
-    INT8 bZ;
+    int16_t sX;
+    int16_t sY;
+    int8_t bZ;
     if (SectorSquadIsIn(bSquadValue, &sX, &sY, &bZ) &&
         (s->sSectorX != sX || s->sSectorY != sY || s->bSectorZ != bZ)) {
       return FALSE;
@@ -190,8 +190,8 @@ BOOLEAN AddCharacterToSquad(SOLDIERTYPE *const s, INT8 const bSquadValue) {
 void AddCharacterToAnySquad(SOLDIERTYPE *const pCharacter) {
   // add character to any squad, if character is assigned to a squad, returns
   // TRUE
-  INT8 bCounter = 0;
-  INT8 bFirstEmptySquad = -1;
+  int8_t bCounter = 0;
+  int8_t bFirstEmptySquad = -1;
 
   // remove them from current squad
   RemoveCharacterFromSquads(pCharacter);  // REDUNDANT AddCharacterToSquad()
@@ -223,26 +223,26 @@ void AddCharacterToAnySquad(SOLDIERTYPE *const pCharacter) {
 }
 
 // find the first slot we can fit the guy in
-INT8 AddCharacterToUniqueSquad(SOLDIERTYPE *const s) {
+int8_t AddCharacterToUniqueSquad(SOLDIERTYPE *const s) {
   RemoveCharacterFromSquads(s);  // REDUNDANT AddCharacterToSquad()
-  INT8 const squad = GetFirstEmptySquad();
+  int8_t const squad = GetFirstEmptySquad();
   AddCharacterToSquad(s, squad);
   return squad;
 }
 
-BOOLEAN SquadIsEmpty(INT8 bSquadValue) {
+BOOLEAN SquadIsEmpty(int8_t bSquadValue) {
   // run through this squad's slots and find if they ALL are empty
   FOR_EACH_IN_SQUAD(i, bSquadValue) { return FALSE; }
   return TRUE;
 }
 
-static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, INT32 iSquadValue);
-static void RebuildSquad(INT8 bSquadValue);
-static void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, INT8 bSquadValue);
+static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, int32_t iSquadValue);
+static void RebuildSquad(int8_t bSquadValue);
+static void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, int8_t bSquadValue);
 
 // find and remove character from any squad
 BOOLEAN RemoveCharacterFromSquads(SOLDIERTYPE *const s) {
-  for (INT32 squad = 0; squad < NUMBER_OF_SQUADS; ++squad) {
+  for (int32_t squad = 0; squad < NUMBER_OF_SQUADS; ++squad) {
     FOR_EACH_SLOT_IN_SQUAD(i, squad) {
       if (*i != s) continue;
       *i = 0;
@@ -278,8 +278,8 @@ BOOLEAN RemoveCharacterFromSquads(SOLDIERTYPE *const s) {
   return FALSE;
 }
 
-INT8 NumberOfPeopleInSquad(INT8 bSquadValue) {
-  INT8 bSquadCount = 0;
+int8_t NumberOfPeopleInSquad(int8_t bSquadValue) {
+  int8_t bSquadCount = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
     return (0);
@@ -292,8 +292,8 @@ INT8 NumberOfPeopleInSquad(INT8 bSquadValue) {
   return (bSquadCount);
 }
 
-INT8 NumberOfNonEPCsInSquad(INT8 bSquadValue) {
-  INT8 bSquadCount = 0;
+int8_t NumberOfNonEPCsInSquad(int8_t bSquadValue) {
+  int8_t bSquadCount = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
     return (0);
@@ -309,7 +309,7 @@ INT8 NumberOfNonEPCsInSquad(INT8 bSquadValue) {
   return (bSquadCount);
 }
 
-BOOLEAN IsRobotControllerInSquad(INT8 bSquadValue) {
+BOOLEAN IsRobotControllerInSquad(int8_t bSquadValue) {
   if (bSquadValue == NO_CURRENT_SQUAD) {
     return (0);
   }
@@ -324,8 +324,8 @@ BOOLEAN IsRobotControllerInSquad(INT8 bSquadValue) {
   return (FALSE);
 }
 
-BOOLEAN SectorSquadIsIn(const INT8 bSquadValue, INT16 *const sMapX, INT16 *const sMapY,
-                        INT8 *const sMapZ) {
+BOOLEAN SectorSquadIsIn(const int8_t bSquadValue, int16_t *const sMapX, int16_t *const sMapY,
+                        int8_t *const sMapZ) {
   // returns if there is anyone on the squad and what sector ( strategic ) they
   // are in
   Assert(bSquadValue < ON_DUTY);
@@ -343,7 +343,7 @@ BOOLEAN SectorSquadIsIn(const INT8 bSquadValue, INT16 *const sMapX, INT16 *const
   return (FALSE);
 }
 
-static BOOLEAN CopyPathOfSquadToCharacter(SOLDIERTYPE *pCharacter, INT8 bSquadValue) {
+static BOOLEAN CopyPathOfSquadToCharacter(SOLDIERTYPE *pCharacter, int8_t bSquadValue) {
   // copy path from squad to character
   FOR_EACH_IN_SQUAD(i, bSquadValue) {
     SOLDIERTYPE const *const t = *i;
@@ -359,7 +359,7 @@ static BOOLEAN CopyPathOfSquadToCharacter(SOLDIERTYPE *pCharacter, INT8 bSquadVa
   return (FALSE);
 }
 
-void CopyPathOfCharacterToSquad(SOLDIERTYPE *const pCharacter, const INT8 bSquadValue) {
+void CopyPathOfCharacterToSquad(SOLDIERTYPE *const pCharacter, const int8_t bSquadValue) {
   // copy path of this character to members of squad
   FOR_EACH_IN_SQUAD(i, bSquadValue) {
     SOLDIERTYPE *const t = *i;
@@ -370,13 +370,13 @@ void CopyPathOfCharacterToSquad(SOLDIERTYPE *const pCharacter, const INT8 bSquad
   }
 }
 
-INT32 CurrentSquad() {
+int32_t CurrentSquad() {
   // returns which squad is current squad
 
   return (iCurrentTacticalSquad);
 }
 
-BOOLEAN SetCurrentSquad(INT32 iCurrentSquad, BOOLEAN fForce) {
+BOOLEAN SetCurrentSquad(int32_t iCurrentSquad, BOOLEAN fForce) {
   // set the current tactical squad
 
   // ARM: can't call SetCurrentSquad() in mapscreen, it calls SelectSoldier(),
@@ -465,8 +465,8 @@ void RebuildCurrentSquad() {
       CheckForAndAddMercToTeamPanel(*i);
     }
 
-    for (INT32 iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; ++iCounter) {
-      const INT16 dead_id = sDeadMercs[iCurrentTacticalSquad][iCounter];
+    for (int32_t iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; ++iCounter) {
+      const int16_t dead_id = sDeadMercs[iCurrentTacticalSquad][iCounter];
       if (dead_id == -1) continue;
 
       SOLDIERTYPE *const dead_soldier = FindSoldierByProfileIDOnPlayerTeam(dead_id);
@@ -486,7 +486,7 @@ void ExamineCurrentSquadLights() {
   }
 }
 
-BOOLEAN IsSquadOnCurrentTacticalMap(INT32 iCurrentSquad) {
+BOOLEAN IsSquadOnCurrentTacticalMap(int32_t iCurrentSquad) {
   // check to see if this squad is on the current map
 
   // check if valid value passed
@@ -510,7 +510,7 @@ BOOLEAN IsSquadOnCurrentTacticalMap(INT32 iCurrentSquad) {
 }
 
 void SetDefaultSquadOnSectorEntry(BOOLEAN fForce) {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
   // check if selected squad is in current sector, if so, do nothing, if
   // not...first first case that they are
 
@@ -535,10 +535,10 @@ void SetDefaultSquadOnSectorEntry(BOOLEAN fForce) {
   SetCurrentSquad(NO_CURRENT_SQUAD, FALSE);
 }
 
-INT32 GetLastSquadActive() {
+int32_t GetLastSquadActive() {
   // find id of last squad in the list with active mercs in it
-  INT32 iCounter = 0;
-  INT32 iLastSquad = 0;
+  int32_t iCounter = 0;
+  int32_t iLastSquad = 0;
 
   for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
     FOR_EACH_IN_SQUAD(i, iCounter) {
@@ -552,9 +552,9 @@ INT32 GetLastSquadActive() {
 
 void SaveSquadInfoToSavedGameFile(HWFILE const f) {
   // Save the squad info to the Saved Game File
-  BYTE data[NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD * 12];
-  BYTE *d = data;
-  for (INT32 squad = 0; squad < NUMBER_OF_SQUADS; ++squad) {
+  uint8_t data[NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD * 12];
+  uint8_t *d = data;
+  for (int32_t squad = 0; squad < NUMBER_OF_SQUADS; ++squad) {
     FOR_EACH_SLOT_IN_SQUAD(slot, squad) {
       SOLDIERTYPE const *const s = *slot;
       INJ_I16(d, s ? s->ubID : -1)
@@ -570,12 +570,12 @@ void SaveSquadInfoToSavedGameFile(HWFILE const f) {
 
 void LoadSquadInfoFromSavedGameFile(HWFILE const f) {
   // Load in the squad info
-  BYTE data[NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD * 12];
-  BYTE const *d = data;
+  uint8_t data[NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD * 12];
+  uint8_t const *d = data;
   FileRead(f, data, sizeof(data));
-  for (INT32 squad = 0; squad != NUMBER_OF_SQUADS; ++squad) {
+  for (int32_t squad = 0; squad != NUMBER_OF_SQUADS; ++squad) {
     FOR_EACH_SLOT_IN_SQUAD(slot, squad) {
-      INT16 id;
+      int16_t id;
       EXTR_I16(d, id)
       EXTR_SKIP(d, 10)
       *slot = id != -1 ? &GetMan(id) : 0;
@@ -587,14 +587,14 @@ void LoadSquadInfoFromSavedGameFile(HWFILE const f) {
   FileRead(f, SquadMovementGroups, sizeof(SquadMovementGroups));
 }
 
-BOOLEAN IsThisSquadOnTheMove(INT8 bSquadValue) {
+BOOLEAN IsThisSquadOnTheMove(int8_t bSquadValue) {
   FOR_EACH_IN_SQUAD(i, bSquadValue) { return (*i)->fBetweenSectors; }
   return FALSE;
 }
 
 // rebuild this squad after someone has been removed, to 'squeeze' together any
 // empty spots
-static void RebuildSquad(INT8 const squad_id) {
+static void RebuildSquad(int8_t const squad_id) {
   SOLDIERTYPE **const squad = Squad[squad_id];
   SOLDIERTYPE **const end = endof(Squad[squad_id]);
   SOLDIERTYPE **dst = squad;
@@ -606,7 +606,7 @@ static void RebuildSquad(INT8 const squad_id) {
 }
 
 // update current merc selected in tactical
-static void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, INT8 bSquadValue) {
+static void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, int8_t bSquadValue) {
   // if this squad is the current one and and the psoldier is the currently
   // selected soldier, get rid of 'em
   if (bSquadValue != iCurrentTacticalSquad) {
@@ -627,8 +627,8 @@ static void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, INT8 bSquadValue)
   }
 }
 
-static BOOLEAN IsDeadGuyOnSquad(const ProfileID pid, const INT8 squad) {
-  for (INT32 i = 0; i < NUMBER_OF_SOLDIERS_PER_SQUAD; ++i) {
+static BOOLEAN IsDeadGuyOnSquad(const ProfileID pid, const int8_t squad) {
+  for (int32_t i = 0; i < NUMBER_OF_SOLDIERS_PER_SQUAD; ++i) {
     if (sDeadMercs[squad][i] == pid) return TRUE;
   }
   return FALSE;
@@ -636,8 +636,8 @@ static BOOLEAN IsDeadGuyOnSquad(const ProfileID pid, const INT8 squad) {
 
 static BOOLEAN IsDeadGuyOnAnySquad(SOLDIERTYPE *pSoldier);
 
-static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, INT32 iSquadValue) {
-  INT32 iCounter = 0;
+static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, int32_t iSquadValue) {
+  int32_t iCounter = 0;
 
   // is dead guy in any squad
   if (IsDeadGuyOnAnySquad(pSoldier)) return TRUE;
@@ -646,7 +646,7 @@ static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, INT32 iSqu
 
   // now insert the guy
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
-    const INT16 dead_id = sDeadMercs[iSquadValue][iCounter];
+    const int16_t dead_id = sDeadMercs[iSquadValue][iCounter];
     if (dead_id == -1 || FindSoldierByProfileIDOnPlayerTeam(dead_id) == NULL) {
       sDeadMercs[iSquadValue][iCounter] = pSoldier->ubProfile;
     }
@@ -658,19 +658,19 @@ static BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, INT32 iSqu
 
 static BOOLEAN IsDeadGuyOnAnySquad(SOLDIERTYPE *pSoldier) {
   // squad?
-  for (INT32 iCounterA = 0; iCounterA < NUMBER_OF_SQUADS; ++iCounterA) {
+  for (int32_t iCounterA = 0; iCounterA < NUMBER_OF_SQUADS; ++iCounterA) {
     if (IsDeadGuyOnSquad(pSoldier->ubProfile, iCounterA)) return TRUE;
   }
 
   return (FALSE);
 }
 
-BOOLEAN SoldierIsDeadAndWasOnSquad(SOLDIERTYPE *pSoldier, INT8 bSquadValue) {
+BOOLEAN SoldierIsDeadAndWasOnSquad(SOLDIERTYPE *pSoldier, int8_t bSquadValue) {
   return bSquadValue != NO_CURRENT_SQUAD && IsDeadGuyOnSquad(pSoldier->ubProfile, bSquadValue);
 }
 
-void ResetDeadSquadMemberList(INT32 const iSquadValue) {
-  memset(sDeadMercs[iSquadValue], -1, sizeof(INT16) * NUMBER_OF_SOLDIERS_PER_SQUAD);
+void ResetDeadSquadMemberList(int32_t const iSquadValue) {
+  memset(sDeadMercs[iSquadValue], -1, sizeof(int16_t) * NUMBER_OF_SOLDIERS_PER_SQUAD);
 }
 
 // this passed  soldier on the current squad int he tactical map
@@ -688,8 +688,8 @@ BOOLEAN IsMercOnCurrentSquad(const SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-INT8 NumberOfPlayerControllableMercsInSquad(INT8 bSquadValue) {
-  INT8 bSquadCount = 0;
+int8_t NumberOfPlayerControllableMercsInSquad(int8_t bSquadValue) {
+  int8_t bSquadCount = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
     return (0);
@@ -710,7 +710,7 @@ INT8 NumberOfPlayerControllableMercsInSquad(INT8 bSquadValue) {
   return (bSquadCount);
 }
 
-BOOLEAN DoesVehicleExistInSquad(INT8 bSquadValue) {
+BOOLEAN DoesVehicleExistInSquad(int8_t bSquadValue) {
   if (bSquadValue == NO_CURRENT_SQUAD) {
     return (FALSE);
   }
@@ -724,7 +724,7 @@ BOOLEAN DoesVehicleExistInSquad(INT8 bSquadValue) {
 }
 
 void CheckSquadMovementGroups() {
-  FOR_EACH(INT8, i, SquadMovementGroups) {
+  FOR_EACH(int8_t, i, SquadMovementGroups) {
     if (GetGroup(*i)) continue;
 
     // recreate group

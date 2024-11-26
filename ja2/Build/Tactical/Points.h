@@ -70,7 +70,7 @@
 #define AP_READY_RIFLE 2
 #define AP_READY_SAW 0
 // JA2Gold: reduced dual AP cost from 3 to 1
-//#define AP_READY_DUAL           3
+// #define AP_READY_DUAL           3
 #define AP_READY_DUAL 1
 
 #define AP_MIN_AIM_ATTACK 0  // minimum permitted extra aiming
@@ -268,67 +268,69 @@
 #define DEFAULT_APS 20
 #define DEFAULT_AIMSKILL 80
 
-UINT8 BaseAPsToShootOrStab(INT8 bAPs, INT8 bAimSkill, OBJECTTYPE const &);
+uint8_t BaseAPsToShootOrStab(int8_t bAPs, int8_t bAimSkill, OBJECTTYPE const &);
 
-INT16 TerrainActionPoints(const SOLDIERTYPE *s, INT16 sGridno, INT8 bDir, INT8 bLevel);
-INT16 ActionPointCost(const SOLDIERTYPE *s, INT16 sGridNo, INT8 bDir, UINT16 usMovementMode);
-INT16 EstimateActionPointCost(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bDir,
-                              UINT16 usMovementMode, INT8 bPathIndex, INT8 bPathLength);
+int16_t TerrainActionPoints(const SOLDIERTYPE *s, int16_t sGridno, int8_t bDir, int8_t bLevel);
+int16_t ActionPointCost(const SOLDIERTYPE *s, int16_t sGridNo, int8_t bDir,
+                        uint16_t usMovementMode);
+int16_t EstimateActionPointCost(SOLDIERTYPE *pSoldier, int16_t sGridNo, int8_t bDir,
+                                uint16_t usMovementMode, int8_t bPathIndex, int8_t bPathLength);
 
-BOOLEAN EnoughPoints(const SOLDIERTYPE *pSoldier, INT16 sAPCost, INT16 sBPCost,
+BOOLEAN EnoughPoints(const SOLDIERTYPE *pSoldier, int16_t sAPCost, int16_t sBPCost,
                      BOOLEAN fDisplayMsg);
-void DeductPoints(SOLDIERTYPE *pSoldier, INT16 sAPCost, INT16 sBPCost);
+void DeductPoints(SOLDIERTYPE *pSoldier, int16_t sAPCost, int16_t sBPCost);
 void UnusedAPsToBreath(SOLDIERTYPE *pSold);
-INT16 TerrainBreathPoints(SOLDIERTYPE *pSoldier, INT16 sGridno, INT8 bDir, UINT16 usMovementMode);
-UINT8 MinAPsToAttack(SOLDIERTYPE *, GridNo, UINT8 add_turning_cost);
-INT8 MinPtsToMove(const SOLDIERTYPE *pSoldier);
-INT8 MinAPsToStartMovement(const SOLDIERTYPE *pSoldier, UINT16 usMovementMode);
-INT8 PtsToMoveDirection(const SOLDIERTYPE *pSoldier, INT8 bDirection);
-UINT8 MinAPsToShootOrStab(SOLDIERTYPE &, GridNo, bool add_turning_cost);
-BOOLEAN EnoughAmmo(SOLDIERTYPE *pSoldier, BOOLEAN fDisplay, INT8 bInvPos);
-void DeductAmmo(SOLDIERTYPE *pSoldier, INT8 bInvPos);
+int16_t TerrainBreathPoints(SOLDIERTYPE *pSoldier, int16_t sGridno, int8_t bDir,
+                            uint16_t usMovementMode);
+uint8_t MinAPsToAttack(SOLDIERTYPE *, GridNo, uint8_t add_turning_cost);
+int8_t MinPtsToMove(const SOLDIERTYPE *pSoldier);
+int8_t MinAPsToStartMovement(const SOLDIERTYPE *pSoldier, uint16_t usMovementMode);
+int8_t PtsToMoveDirection(const SOLDIERTYPE *pSoldier, int8_t bDirection);
+uint8_t MinAPsToShootOrStab(SOLDIERTYPE &, GridNo, bool add_turning_cost);
+BOOLEAN EnoughAmmo(SOLDIERTYPE *pSoldier, BOOLEAN fDisplay, int8_t bInvPos);
+void DeductAmmo(SOLDIERTYPE *pSoldier, int8_t bInvPos);
 
-UINT16 GetAPsToPickupItem(SOLDIERTYPE *pSoldier, UINT16 usMapPos);
-UINT8 CalcTotalAPsToAttack(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubAddTurningCost,
-                           INT8 bAimTime);
-UINT8 CalcAPsToBurst(INT8 bBaseActionPoints, OBJECTTYPE const &);
-UINT16 GetAPsToChangeStance(const SOLDIERTYPE *pSoldier, INT8 bDesiredHeight);
+uint16_t GetAPsToPickupItem(SOLDIERTYPE *pSoldier, uint16_t usMapPos);
+uint8_t CalcTotalAPsToAttack(SOLDIERTYPE *pSoldier, int16_t sGridno, uint8_t ubAddTurningCost,
+                             int8_t bAimTime);
+uint8_t CalcAPsToBurst(int8_t bBaseActionPoints, OBJECTTYPE const &);
+uint16_t GetAPsToChangeStance(const SOLDIERTYPE *pSoldier, int8_t bDesiredHeight);
 
-UINT16 GetAPsToLook(const SOLDIERTYPE *pSoldier);
-UINT16 GetAPsToGiveItem(SOLDIERTYPE *pSoldier, UINT16 usMapPos);
+uint16_t GetAPsToLook(const SOLDIERTYPE *pSoldier);
+uint16_t GetAPsToGiveItem(SOLDIERTYPE *pSoldier, uint16_t usMapPos);
 
 BOOLEAN CheckForMercContMove(SOLDIERTYPE *pSoldier);
 
-INT16 GetAPsToReadyWeapon(const SOLDIERTYPE *pSoldier, UINT16 usAnimState);
+int16_t GetAPsToReadyWeapon(const SOLDIERTYPE *pSoldier, uint16_t usAnimState);
 
-INT8 GetAPsToClimbRoof(SOLDIERTYPE *pSoldier, BOOLEAN fClimbDown);
+int8_t GetAPsToClimbRoof(SOLDIERTYPE *pSoldier, BOOLEAN fClimbDown);
 
-INT8 GetAPsToJumpFence(SOLDIERTYPE *pSoldier);
-INT8 GetBPsToJumpFence(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToJumpFence(SOLDIERTYPE *pSoldier);
+int8_t GetBPsToJumpFence(SOLDIERTYPE *pSoldier);
 
-INT8 GetAPsToCutFence(SOLDIERTYPE *pSoldier);
-INT8 GetAPsToBeginFirstAid(SOLDIERTYPE *pSoldier);
-INT8 GetAPsToBeginRepair(SOLDIERTYPE *pSoldier);
-INT8 GetAPsToRefuelVehicle(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToCutFence(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToBeginFirstAid(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToBeginRepair(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToRefuelVehicle(SOLDIERTYPE *pSoldier);
 
-INT16 MinAPsToThrow(SOLDIERTYPE const &, GridNo, bool add_turning_cost);
+int16_t MinAPsToThrow(SOLDIERTYPE const &, GridNo, bool add_turning_cost);
 
-UINT16 GetAPsToDropBomb(SOLDIERTYPE *pSoldier);
-UINT16 GetTotalAPsToDropBomb(SOLDIERTYPE *pSoldier, INT16 sGridNo);
-UINT16 GetAPsToUseRemote(SOLDIERTYPE *pSoldier);
+uint16_t GetAPsToDropBomb(SOLDIERTYPE *pSoldier);
+uint16_t GetTotalAPsToDropBomb(SOLDIERTYPE *pSoldier, int16_t sGridNo);
+uint16_t GetAPsToUseRemote(SOLDIERTYPE *pSoldier);
 
-INT8 GetAPsToStealItem(SOLDIERTYPE *pSoldier, INT16 usMapPos);
+int8_t GetAPsToStealItem(SOLDIERTYPE *pSoldier, int16_t usMapPos);
 
-INT8 GetAPsToUseJar(SOLDIERTYPE *pSoldier, INT16 usMapPos);
-INT8 GetBPsTouseJar(SOLDIERTYPE *pSoldier);
+int8_t GetAPsToUseJar(SOLDIERTYPE *pSoldier, int16_t usMapPos);
+int8_t GetBPsTouseJar(SOLDIERTYPE *pSoldier);
 
-INT8 GetAPsToJumpOver(const SOLDIERTYPE *pSoldier);
+int8_t GetAPsToJumpOver(const SOLDIERTYPE *pSoldier);
 
-void GetAPChargeForShootOrStabWRTGunRaises(SOLDIERTYPE const *, GridNo, UINT8 ubAddTurningCost,
+void GetAPChargeForShootOrStabWRTGunRaises(SOLDIERTYPE const *, GridNo, uint8_t ubAddTurningCost,
                                            BOOLEAN *charge_turning, BOOLEAN *charge_raise);
 
-UINT16 GetAPsToReloadRobot(SOLDIERTYPE *pSoldier, const SOLDIERTYPE *pRobot);
-INT8 GetAPsToReloadGunWithAmmo(OBJECTTYPE *pGun, OBJECTTYPE *pAmmo);
-INT8 GetAPsToAutoReload(SOLDIERTYPE *pSoldier);
+uint16_t GetAPsToReloadRobot(SOLDIERTYPE *pSoldier, const SOLDIERTYPE *pRobot);
+int8_t GetAPsToReloadGunWithAmmo(OBJECTTYPE *pGun, OBJECTTYPE *pAmmo);
+int8_t GetAPsToAutoReload(SOLDIERTYPE *pSoldier);
 
 #endif

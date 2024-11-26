@@ -40,7 +40,7 @@ SGPVObject::SGPVObject(SGPImage const *const img)
 
   subregion_count_ = TempETRLEData.usNumberOfObjects;
   etrle_object_ = TempETRLEData.pETRLEObject;
-  pix_data_ = static_cast<UINT8 *>(TempETRLEData.pPixData);
+  pix_data_ = static_cast<uint8_t *>(TempETRLEData.pPixData);
   pix_data_size_ = TempETRLEData.uiSizePixData;
   bit_depth_ = img->ubBitDepth;
 
@@ -72,7 +72,7 @@ SGPVObject::~SGPVObject() {
   if (etrle_object_) MemFree(etrle_object_);
 
   if (ppZStripInfo != NULL) {
-    for (UINT32 usLoop = 0; usLoop < SubregionCount(); usLoop++) {
+    for (uint32_t usLoop = 0; usLoop < SubregionCount(); usLoop++) {
       if (ppZStripInfo[usLoop] != NULL) {
         MemFree(ppZStripInfo[usLoop]->pbZChange);
         MemFree(ppZStripInfo[usLoop]);
@@ -96,13 +96,15 @@ ETRLEObject const &SGPVObject::SubregionProperties(size_t const idx) const {
   return etrle_object_[idx];
 }
 
-UINT8 const *SGPVObject::PixData(ETRLEObject const &e) const { return &pix_data_[e.uiDataOffset]; }
+uint8_t const *SGPVObject::PixData(ETRLEObject const &e) const {
+  return &pix_data_[e.uiDataOffset];
+}
 
 #define COMPRESS_TRANSPARENT 0x80
 #define COMPRESS_RUN_MASK 0x7F
 
-UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX,
-                                     UINT16 const usY) const {
+uint8_t SGPVObject::GetETRLEPixelValue(uint16_t const usETRLEIndex, uint16_t const usX,
+                                       uint16_t const usY) const {
   ETRLEObject const &pETRLEObject = SubregionProperties(usETRLEIndex);
 
   if (usX >= pETRLEObject.usWidth || usY >= pETRLEObject.usHeight) {
@@ -110,10 +112,10 @@ UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX
   }
 
   // Assuming everything's okay, go ahead and look...
-  UINT8 const *pCurrent = PixData(pETRLEObject);
+  uint8_t const *pCurrent = PixData(pETRLEObject);
 
   // Skip past all uninteresting scanlines
-  for (UINT16 usLoopY = 0; usLoopY < usY; usLoopY++) {
+  for (uint16_t usLoopY = 0; usLoopY < usY; usLoopY++) {
     while (*pCurrent != 0) {
       if (*pCurrent & COMPRESS_TRANSPARENT) {
         pCurrent++;
@@ -124,9 +126,9 @@ UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX
   }
 
   // Now look in this scanline for the appropriate byte
-  UINT16 usLoopX = 0;
+  uint16_t usLoopX = 0;
   do {
-    UINT16 ubRunLength = *pCurrent & COMPRESS_RUN_MASK;
+    uint16_t ubRunLength = *pCurrent & COMPRESS_RUN_MASK;
 
     if (*pCurrent & COMPRESS_TRANSPARENT) {
       if (usLoopX + ubRunLength >= usX) return 0;
@@ -151,16 +153,16 @@ UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX
  * the pointers set to NULL. Be careful not to try and blit this object until
  * new tables are calculated, or things WILL go boom. */
 void SGPVObject::DestroyPalettes() {
-  FOR_EACH(UINT16 *, i, pShades) {
+  FOR_EACH(uint16_t *, i, pShades) {
     if (flags_ & SHADETABLE_SHARED) continue;
-    UINT16 *const p = *i;
+    uint16_t *const p = *i;
     if (!p) continue;
     if (palette16_ == p) palette16_ = 0;
     *i = 0;
     MemFree(p);
   }
 
-  if (UINT16 *const p = palette16_) {
+  if (uint16_t *const p = palette16_) {
     palette16_ = 0;
     MemFree(p);
   }
@@ -195,14 +197,14 @@ SGPVObject *AddStandardVideoObjectFromFile(const char *const ImageFile) {
   return AddStandardVideoObjectFromHImage(hImage);
 }
 
-void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src, UINT16 const usRegionIndex,
-                    INT32 const iDestX, INT32 const iDestY) {
+void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src,
+                    uint16_t const usRegionIndex, int32_t const iDestX, int32_t const iDestY) {
   Assert(src->BPP() == 8);
   Assert(dst->BPP() == 16);
 
   SGPVSurface::Lock l(dst);
-  UINT16 *const pBuffer = l.Buffer<UINT16>();
-  UINT32 const uiPitch = l.Pitch();
+  uint16_t *const pBuffer = l.Buffer<uint16_t>();
+  uint32_t const uiPitch = l.Pitch();
 
   if (BltIsClipped(src, iDestX, iDestY, usRegionIndex, &ClippingRect)) {
     Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer, uiPitch, src, iDestX, iDestY, usRegionIndex,
@@ -213,11 +215,11 @@ void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src, UINT16 
 }
 
 void BltVideoObjectOutline(SGPVSurface *const dst, SGPVObject const *const hSrcVObject,
-                           UINT16 const usIndex, INT32 const iDestX, INT32 const iDestY,
-                           INT16 const s16BPPColor) {
+                           uint16_t const usIndex, int32_t const iDestX, int32_t const iDestY,
+                           int16_t const s16BPPColor) {
   SGPVSurface::Lock l(dst);
-  UINT16 *const pBuffer = l.Buffer<UINT16>();
-  UINT32 const uiPitch = l.Pitch();
+  uint16_t *const pBuffer = l.Buffer<uint16_t>();
+  uint32_t const uiPitch = l.Pitch();
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
     Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex,
@@ -229,10 +231,11 @@ void BltVideoObjectOutline(SGPVSurface *const dst, SGPVObject const *const hSrcV
 }
 
 void BltVideoObjectOutlineShadow(SGPVSurface *const dst, const SGPVObject *const src,
-                                 const UINT16 usIndex, const INT32 iDestX, const INT32 iDestY) {
+                                 const uint16_t usIndex, const int32_t iDestX,
+                                 const int32_t iDestY) {
   SGPVSurface::Lock l(dst);
-  UINT16 *const pBuffer = l.Buffer<UINT16>();
-  UINT32 const uiPitch = l.Pitch();
+  uint16_t *const pBuffer = l.Buffer<uint16_t>();
+  uint32_t const uiPitch = l.Pitch();
 
   if (BltIsClipped(src, iDestX, iDestY, usIndex, &ClippingRect)) {
     Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer, uiPitch, src, iDestX, iDestY, usIndex,
@@ -242,8 +245,8 @@ void BltVideoObjectOutlineShadow(SGPVSurface *const dst, const SGPVObject *const
   }
 }
 
-void BltVideoObjectOnce(SGPVSurface *const dst, char const *const filename, UINT16 const region,
-                        INT32 const x, INT32 const y) {
+void BltVideoObjectOnce(SGPVSurface *const dst, char const *const filename, uint16_t const region,
+                        int32_t const x, int32_t const y) {
   AutoSGPVObject vo(AddVideoObjectFromFile(filename));
   BltVideoObject(dst, vo, region, x, y);
 }

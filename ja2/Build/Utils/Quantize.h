@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-void QuantizeImage(UINT8 *pDest, const SGPPaletteEntry *pSrc, INT16 sWidth, INT16 sHeight,
+void QuantizeImage(uint8_t *pDest, const SGPPaletteEntry *pSrc, int16_t sWidth, int16_t sHeight,
                    SGPPaletteEntry *pPalette);
 
 #endif

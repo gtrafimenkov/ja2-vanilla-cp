@@ -37,21 +37,21 @@ enum MusicMode {
   MUSIC_LAPTOP,
 };
 
-extern UINT8 gubMusicMode;
+extern uint8_t gubMusicMode;
 extern BOOLEAN gfForceMusicToTense;
 
-void SetMusicMode(UINT8 ubMusicMode);
+void SetMusicMode(uint8_t ubMusicMode);
 
 /* Starts up one of the tunes in the music list. */
-void MusicPlay(UINT32 uiNum);
+void MusicPlay(uint32_t uiNum);
 
-void MusicSetVolume(UINT32 uiVolume);
-UINT32 MusicGetVolume();
+void MusicSetVolume(uint32_t uiVolume);
+uint32_t MusicGetVolume();
 
 /* Handles any maintenance the music system needs done. Should be polled from
  * the main loop, or somewhere with a high frequency of calls. */
 void MusicPoll();
 
-void SetMusicFadeSpeed(INT8 bFadeSpeed);
+void SetMusicFadeSpeed(int8_t bFadeSpeed);
 
 #endif

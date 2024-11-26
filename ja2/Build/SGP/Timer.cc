@@ -2,4 +2,4 @@
 
 #include "SDL_timer.h"
 
-UINT32 GetClock() { return SDL_GetTicks(); }
+uint32_t GetClock() { return SDL_GetTicks(); }

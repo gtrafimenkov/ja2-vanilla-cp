@@ -17,37 +17,37 @@ enum SmokeEffectKind {
 #define SMOKE_EFFECT_MARK_FOR_UPDATE 0x04
 
 struct SMOKEEFFECT {
-  INT16 sGridNo;  // gridno at which the tear gas cloud is centered
+  int16_t sGridNo;  // gridno at which the tear gas cloud is centered
 
-  UINT8 ubDuration;  // the number of turns gas will remain effective
-  UINT8 ubRadius;    // the current radius of the cloud in map tiles
-  UINT8 bFlags;      // 0 - outdoors (fast spread), 1 - indoors (slow)
-  INT8 bAge;         // the number of turns gas has been around
+  uint8_t ubDuration;  // the number of turns gas will remain effective
+  uint8_t ubRadius;    // the current radius of the cloud in map tiles
+  uint8_t bFlags;      // 0 - outdoors (fast spread), 1 - indoors (slow)
+  int8_t bAge;         // the number of turns gas has been around
   BOOLEAN fAllocated;
-  INT8 bType;
-  UINT16 usItem;
+  int8_t bType;
+  uint16_t usItem;
   SOLDIERTYPE *owner;
-  UINT32 uiTimeOfLastUpdate;
+  uint32_t uiTimeOfLastUpdate;
 };
 
 // Returns NO_SMOKE_EFFECT if none there...
-SmokeEffectKind GetSmokeEffectOnTile(INT16 sGridNo, INT8 bLevel);
+SmokeEffectKind GetSmokeEffectOnTile(int16_t sGridNo, int8_t bLevel);
 
 // Decays all smoke effects...
-void DecaySmokeEffects(UINT32 uiTime);
+void DecaySmokeEffects(uint32_t uiTime);
 
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
-void AddSmokeEffectToTile(SMOKEEFFECT const *, SmokeEffectKind, INT16 sGridNo, INT8 bLevel);
+void AddSmokeEffectToTile(SMOKEEFFECT const *, SmokeEffectKind, int16_t sGridNo, int8_t bLevel);
 
-void RemoveSmokeEffectFromTile(INT16 sGridNo, INT8 bLevel);
+void RemoveSmokeEffectFromTile(int16_t sGridNo, int8_t bLevel);
 
-void NewSmokeEffect(INT16 sGridNo, UINT16 usItem, INT8 bLevel, SOLDIERTYPE *owner);
+void NewSmokeEffect(int16_t sGridNo, uint16_t usItem, int8_t bLevel, SOLDIERTYPE *owner);
 
-void LoadSmokeEffectsFromLoadGameFile(HWFILE, UINT32 savegame_version);
+void LoadSmokeEffectsFromLoadGameFile(HWFILE, uint32_t savegame_version);
 
-void SaveSmokeEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-void LoadSmokeEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
+void SaveSmokeEffectsToMapTempFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
+void LoadSmokeEffectsFromMapTempFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
 
 void ResetSmokeEffects();
 

@@ -52,7 +52,7 @@ void HandleRPCDescription() {
   ts.fCountingDownForGuideDescription = FALSE;
 
   // Count how many RPC guys we have
-  UINT8 n_mercs = 0;
+  uint8_t n_mercs = 0;
   SOLDIERTYPE *mercs_in_sector[20];
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // Add guy if he's a candidate
@@ -76,9 +76,9 @@ void HandleRPCDescription() {
 }
 
 void HandleTacticalEndTurn() {
-  static UINT32 uiTimeSinceLastStrategicUpdate = 0;
+  static uint32_t uiTimeSinceLastStrategicUpdate = 0;
 
-  UINT32 const now = GetWorldTotalSeconds();
+  uint32_t const now = GetWorldTotalSeconds();
 
   if (uiTimeSinceLastStrategicUpdate - now > 1200) {
     HandleRottingCorpses();

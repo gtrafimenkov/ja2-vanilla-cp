@@ -46,8 +46,8 @@ static char const *const zMercBackgroundPopupFilenames[] = {
 
 struct MercPopUpBox {
   SGPVSurface *uiSourceBufferIndex;
-  UINT8 ubBackgroundIndex;
-  UINT8 ubBorderIndex;
+  uint8_t ubBackgroundIndex;
+  uint8_t ubBorderIndex;
   SGPVSurface *uiMercTextPopUpBackground;
   SGPVObject *uiMercTextPopUpBorder;
 };
@@ -81,7 +81,7 @@ static void RemoveTextMercPopupImages(MercPopUpBox *const box) {
   DeleteVideoObject(box->uiMercTextPopUpBorder);
 }
 
-void RenderMercPopUpBox(MercPopUpBox const *const box, INT16 const sDestX, INT16 const sDestY,
+void RenderMercPopUpBox(MercPopUpBox const *const box, int16_t const sDestX, int16_t const sDestY,
                         SGPVSurface *const buffer) {
   if (!box) return;
 
@@ -96,14 +96,15 @@ void RenderMercPopUpBox(MercPopUpBox const *const box, INT16 const sDestX, INT16
   }
 }
 
-static void GetMercPopupBoxFontColor(UINT8 ubBackgroundIndex, UINT8 *pubFontColor,
-                                     UINT8 *pubFontShadowColor);
+static void GetMercPopupBoxFontColor(uint8_t ubBackgroundIndex, uint8_t *pubFontColor,
+                                     uint8_t *pubFontShadowColor);
 
 MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const ubBackgroundIndex,
                                   MercPopUpBorder const ubBorderIndex, wchar_t const *const pString,
-                                  UINT16 usWidth, UINT16 const usMarginX, UINT16 const usMarginTopY,
-                                  UINT16 const usMarginBottomY, UINT16 *const pActualWidth,
-                                  UINT16 *const pActualHeight, MercPopupBoxFlags const flags) {
+                                  uint16_t usWidth, uint16_t const usMarginX,
+                                  uint16_t const usMarginTopY, uint16_t const usMarginBottomY,
+                                  uint16_t *const pActualWidth, uint16_t *const pActualHeight,
+                                  MercPopupBoxFlags const flags) {
   if (usWidth >= SCREEN_WIDTH) {
     throw std::logic_error("Tried to create too wide merc popup box");
   }
@@ -126,8 +127,8 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
     }
   }
 
-  UINT16 const usStringPixLength = StringPixLength(pString, TEXT_POPUP_FONT);
-  UINT16 usTextWidth;
+  uint16_t const usStringPixLength = StringPixLength(pString, TEXT_POPUP_FONT);
+  uint16_t usTextWidth;
   if (usStringPixLength < usWidth - MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2) {
     usWidth = usStringPixLength + MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2;
     usTextWidth = usWidth - MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2 + 1;
@@ -135,9 +136,9 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
     usTextWidth = usWidth - MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2 + 1 - usMarginX;
   }
 
-  UINT16 const usNumberVerticalPixels =
+  uint16_t const usNumberVerticalPixels =
       IanWrappedStringHeight(usTextWidth, 2, TEXT_POPUP_FONT, pString);
-  UINT16 usHeight = usNumberVerticalPixels + MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y * 2;
+  uint16_t usHeight = usNumberVerticalPixels + MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y * 2;
 
   // Add height for margins
   usHeight += usMarginTopY + usMarginBottomY;
@@ -178,9 +179,9 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
 
   const SGPVObject *const hImageHandle = box->uiMercTextPopUpBorder;
 
-  UINT16 usPosY = 0;
+  uint16_t usPosY = 0;
   // blit top row of images
-  for (UINT16 i = TEXT_POPUP_GAP_BN_LINES; i < usWidth - TEXT_POPUP_GAP_BN_LINES;
+  for (uint16_t i = TEXT_POPUP_GAP_BN_LINES; i < usWidth - TEXT_POPUP_GAP_BN_LINES;
        i += TEXT_POPUP_GAP_BN_LINES) {
     // TOP ROW
     BltVideoObject(vs, hImageHandle, 1, i, usPosY);
@@ -189,8 +190,8 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
   }
 
   // blit the left and right row of images
-  UINT16 usPosX = 0;
-  for (UINT16 i = TEXT_POPUP_GAP_BN_LINES; i < usHeight - TEXT_POPUP_GAP_BN_LINES;
+  uint16_t usPosX = 0;
+  for (uint16_t i = TEXT_POPUP_GAP_BN_LINES; i < usHeight - TEXT_POPUP_GAP_BN_LINES;
        i += TEXT_POPUP_GAP_BN_LINES) {
     BltVideoObject(vs, hImageHandle, 3, usPosX, i);
     BltVideoObject(vs, hImageHandle, 4, usPosX + usWidth - 4, i);
@@ -216,15 +217,15 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
   }
 
   // Get the font and shadow colors
-  UINT8 ubFontColor;
-  UINT8 ubFontShadowColor;
+  uint8_t ubFontColor;
+  uint8_t ubFontShadowColor;
   GetMercPopupBoxFontColor(ubBackgroundIndex, &ubFontColor, &ubFontShadowColor);
 
   SetFontShadow(ubFontShadowColor);
   SetFontDestBuffer(vs);
 
   // Display the text
-  INT16 sDispTextXPos = MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X + usMarginX;
+  int16_t sDispTextXPos = MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X + usMarginX;
 
   if (flags & (MERC_POPUP_PREPARE_FLAGS_STOPICON | MERC_POPUP_PREPARE_FLAGS_SKULLICON)) {
     sDispTextXPos += 30;
@@ -255,8 +256,8 @@ void RemoveMercPopupBox(MercPopUpBox *const box) {
 }
 
 // Pass in the background index, and pointers to the font and shadow color
-static void GetMercPopupBoxFontColor(UINT8 ubBackgroundIndex, UINT8 *pubFontColor,
-                                     UINT8 *pubFontShadowColor) {
+static void GetMercPopupBoxFontColor(uint8_t ubBackgroundIndex, uint8_t *pubFontColor,
+                                     uint8_t *pubFontShadowColor) {
   switch (ubBackgroundIndex) {
     case BASIC_MERC_POPUP_BACKGROUND:
       *pubFontColor = TEXT_POPUP_COLOR;

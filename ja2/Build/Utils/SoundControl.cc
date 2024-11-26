@@ -12,8 +12,8 @@
 
 #define SOUND_FAR_VOLUME_MOD 25
 
-static UINT32 guiSpeechVolume = MIDVOLUME;
-static UINT32 guiSoundEffectsVolume = MIDVOLUME;
+static uint32_t guiSpeechVolume = MIDVOLUME;
+static uint32_t guiSoundEffectsVolume = MIDVOLUME;
 
 static char const *const szSoundEffects[NUM_SAMPLES] = {
     SOUNDSDIR "/ricochet 01.wav",
@@ -389,7 +389,7 @@ static char const *const szAmbientEffects[NUM_AMBIENTS] = {
     SOUNDSDIR "/owl1.wav",           SOUNDSDIR "/owl2.wav",       SOUNDSDIR "/owl3.wav",
     SOUNDSDIR "/night_bird1.wav",    SOUNDSDIR "/night_bird3.wav"};
 
-static UINT8 const AmbientVols[NUM_AMBIENTS] = {
+static uint8_t const AmbientVols[NUM_AMBIENTS] = {
     25,  // lightning 1
     25,  // lightning 2
     10,  // rain 1
@@ -408,75 +408,77 @@ static UINT8 const AmbientVols[NUM_AMBIENTS] = {
 
 void ShutdownJA2Sound() { SoundStopAll(); }
 
-UINT32 PlayJA2Sample(SoundID const usNum, UINT32 const ubVolume, UINT32 const ubLoops,
-                     UINT32 const uiPan) {
-  UINT32 const vol = CalculateSoundEffectsVolume(ubVolume);
+uint32_t PlayJA2Sample(SoundID const usNum, uint32_t const ubVolume, uint32_t const ubLoops,
+                       uint32_t const uiPan) {
+  uint32_t const vol = CalculateSoundEffectsVolume(ubVolume);
   return SoundPlay(szSoundEffects[usNum], vol, uiPan, ubLoops, NULL, NULL);
 }
 
-UINT32 PlayJA2StreamingSample(SoundID const usNum, UINT32 const ubVolume, UINT32 const ubLoops,
-                              UINT32 const uiPan) {
-  UINT32 const vol = CalculateSoundEffectsVolume(ubVolume);
+uint32_t PlayJA2StreamingSample(SoundID const usNum, uint32_t const ubVolume,
+                                uint32_t const ubLoops, uint32_t const uiPan) {
+  uint32_t const vol = CalculateSoundEffectsVolume(ubVolume);
   return SoundPlayStreamedFile(szSoundEffects[usNum], vol, uiPan, ubLoops, NULL, NULL);
 }
 
-UINT32 PlayJA2SampleFromFile(char const *const szFileName, UINT32 const ubVolume,
-                             UINT32 const ubLoops, UINT32 const uiPan) {
+uint32_t PlayJA2SampleFromFile(char const *const szFileName, uint32_t const ubVolume,
+                               uint32_t const ubLoops, uint32_t const uiPan) {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename,
   // not the index of the sound array
-  UINT32 const vol = CalculateSoundEffectsVolume(ubVolume);
+  uint32_t const vol = CalculateSoundEffectsVolume(ubVolume);
   return SoundPlay(szFileName, vol, uiPan, ubLoops, NULL, NULL);
 }
 
-UINT32 PlayJA2StreamingSampleFromFile(char const *const szFileName, UINT32 const ubVolume,
-                                      UINT32 const ubLoops, UINT32 const uiPan,
-                                      SOUND_STOP_CALLBACK const EndsCallback) {
+uint32_t PlayJA2StreamingSampleFromFile(char const *const szFileName, uint32_t const ubVolume,
+                                        uint32_t const ubLoops, uint32_t const uiPan,
+                                        SOUND_STOP_CALLBACK const EndsCallback) {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename,
   // not the index of the sound array
-  UINT32 const vol = CalculateSoundEffectsVolume(ubVolume);
+  uint32_t const vol = CalculateSoundEffectsVolume(ubVolume);
   return SoundPlayStreamedFile(szFileName, vol, uiPan, ubLoops, EndsCallback, NULL);
 }
 
-UINT32 PlayJA2Ambient(AmbientSoundID const usNum, UINT32 const ubVolume, UINT32 const ubLoops) {
-  UINT32 const vol = CalculateSoundEffectsVolume(ubVolume);
+uint32_t PlayJA2Ambient(AmbientSoundID const usNum, uint32_t const ubVolume,
+                        uint32_t const ubLoops) {
+  uint32_t const vol = CalculateSoundEffectsVolume(ubVolume);
   return SoundPlay(szAmbientEffects[usNum], vol, MIDDLEPAN, ubLoops, NULL, NULL);
 }
 
-static UINT32 PlayJA2AmbientRandom(AmbientSoundID const usNum, UINT32 const uiTimeMin,
-                                   UINT32 const uiTimeMax) {
+static uint32_t PlayJA2AmbientRandom(AmbientSoundID const usNum, uint32_t const uiTimeMin,
+                                     uint32_t const uiTimeMax) {
   char const *const filename = szAmbientEffects[usNum];
-  UINT32 const vol = AmbientVols[usNum];
+  uint32_t const vol = AmbientVols[usNum];
   return SoundPlayRandom(filename, uiTimeMin, uiTimeMax, vol, vol, MIDDLEPAN, MIDDLEPAN, 1);
 }
 
-UINT32 PlayLocationJA2SampleFromFile(UINT16 const grid_no, char const *const filename,
-                                     UINT32 const base_vol, UINT32 const loops) {
-  UINT32 const vol = SoundVolume(base_vol, grid_no);
-  UINT32 const pan = SoundDir(grid_no);
+uint32_t PlayLocationJA2SampleFromFile(uint16_t const grid_no, char const *const filename,
+                                       uint32_t const base_vol, uint32_t const loops) {
+  uint32_t const vol = SoundVolume(base_vol, grid_no);
+  uint32_t const pan = SoundDir(grid_no);
   return PlayJA2SampleFromFile(filename, vol, loops, pan);
 }
 
-UINT32 PlayLocationJA2Sample(UINT16 const grid_no, SoundID const idx, UINT32 const base_vol,
-                             UINT32 const loops) {
-  UINT32 const vol = SoundVolume(base_vol, grid_no);
-  UINT32 const pan = SoundDir(grid_no);
+uint32_t PlayLocationJA2Sample(uint16_t const grid_no, SoundID const idx, uint32_t const base_vol,
+                               uint32_t const loops) {
+  uint32_t const vol = SoundVolume(base_vol, grid_no);
+  uint32_t const pan = SoundDir(grid_no);
   return PlayJA2Sample(idx, vol, loops, pan);
 }
 
-UINT32 PlayLocationJA2StreamingSample(UINT16 const grid_no, SoundID const idx,
-                                      UINT32 const base_vol, UINT32 const loops) {
-  UINT32 const vol = SoundVolume(base_vol, grid_no);
-  UINT32 const pan = SoundDir(grid_no);
+uint32_t PlayLocationJA2StreamingSample(uint16_t const grid_no, SoundID const idx,
+                                        uint32_t const base_vol, uint32_t const loops) {
+  uint32_t const vol = SoundVolume(base_vol, grid_no);
+  uint32_t const pan = SoundDir(grid_no);
   return PlayJA2StreamingSample(idx, vol, loops, pan);
 }
 
-UINT32 PlaySoldierJA2Sample(SOLDIERTYPE const *const s, SoundID const usNum, UINT32 const base_vol,
-                            UINT32 const ubLoops, BOOLEAN const fCheck) {
+uint32_t PlaySoldierJA2Sample(SOLDIERTYPE const *const s, SoundID const usNum,
+                              uint32_t const base_vol, uint32_t const ubLoops,
+                              BOOLEAN const fCheck) {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
     if (s->bVisible != -1 || !fCheck) {
-      UINT32 const vol = SoundVolume(base_vol, s->sGridNo);
-      UINT32 const pan = SoundDir(s->sGridNo);
+      uint32_t const vol = SoundVolume(base_vol, s->sGridNo);
+      uint32_t const pan = SoundDir(s->sGridNo);
       return PlayJA2Sample(usNum, CalculateSoundEffectsVolume(vol), ubLoops, pan);
     }
   }
@@ -484,23 +486,23 @@ UINT32 PlaySoldierJA2Sample(SOLDIERTYPE const *const s, SoundID const usNum, UIN
   return (0);
 }
 
-void SetSpeechVolume(UINT32 uiNewVolume) {
+void SetSpeechVolume(uint32_t uiNewVolume) {
   guiSpeechVolume = std::min(uiNewVolume, (uint32_t)MAXVOLUME);
 }
 
-UINT32 GetSpeechVolume() { return (guiSpeechVolume); }
+uint32_t GetSpeechVolume() { return (guiSpeechVolume); }
 
-void SetSoundEffectsVolume(UINT32 uiNewVolume) {
+void SetSoundEffectsVolume(uint32_t uiNewVolume) {
   guiSoundEffectsVolume = std::min(uiNewVolume, (uint32_t)MAXVOLUME);
 }
 
-UINT32 GetSoundEffectsVolume() { return (guiSoundEffectsVolume); }
+uint32_t GetSoundEffectsVolume() { return (guiSoundEffectsVolume); }
 
-UINT32 CalculateSpeechVolume(UINT32 uiVolume) {
+uint32_t CalculateSpeechVolume(uint32_t uiVolume) {
   return (uiVolume * guiSpeechVolume + HIGHVOLUME / 2) / HIGHVOLUME;
 }
 
-UINT32 CalculateSoundEffectsVolume(UINT32 uiVolume) {
+uint32_t CalculateSoundEffectsVolume(uint32_t uiVolume) {
   return (uiVolume * guiSoundEffectsVolume + HIGHVOLUME / 2) / HIGHVOLUME;
 }
 
@@ -539,10 +541,10 @@ int x,dif,absDif;
 }
 #endif
 
-INT8 SoundDir(INT16 sGridNo) {
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX;
-  INT16 sDif, sAbsDif;
+int8_t SoundDir(int16_t sGridNo) {
+  int16_t sScreenX, sScreenY;
+  int16_t sMiddleX;
+  int16_t sDif, sAbsDif;
 
   if (sGridNo == NOWHERE) {
     return (MIDDLEPAN);
@@ -579,11 +581,11 @@ INT8 SoundDir(INT16 sGridNo) {
     return (MIDDLE);
 }
 
-INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX, sMiddleY;
-  INT16 sDifX, sAbsDifX;
-  INT16 sDifY, sAbsDifY;
+int8_t SoundVolume(int8_t bInitialVolume, int16_t sGridNo) {
+  int16_t sScreenX, sScreenY;
+  int16_t sMiddleX, sMiddleY;
+  int16_t sDifX, sAbsDifX;
+  int16_t sDifY, sAbsDifY;
 
   if (sGridNo == NOWHERE) {
     return (bInitialVolume);
@@ -623,8 +625,8 @@ INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
 #define NUM_POSITION_SOUND_EFFECT_SLOTS 10
 
 struct POSITIONSND {
-  INT16 sGridNo;
-  INT32 iSoundSampleID;
+  int16_t sGridNo;
+  int32_t iSoundSampleID;
   SoundID iSoundToPlay;
   const SOLDIERTYPE *SoundSource;
   BOOLEAN fAllocated;
@@ -633,33 +635,33 @@ struct POSITIONSND {
 
 // GLOBAL FOR SMOKE LISTING
 static POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];
-static UINT32 guiNumPositionSnds = 0;
+static uint32_t guiNumPositionSnds = 0;
 static BOOLEAN gfPositionSoundsActive = FALSE;
 
-static INT32 GetFreePositionSnd() {
-  for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
-    if (!gPositionSndData[i].fAllocated) return (INT32)i;
+static int32_t GetFreePositionSnd() {
+  for (uint32_t i = 0; i != guiNumPositionSnds; ++i) {
+    if (!gPositionSndData[i].fAllocated) return (int32_t)i;
   }
 
-  if (guiNumPositionSnds < NUM_POSITION_SOUND_EFFECT_SLOTS) return (INT32)guiNumPositionSnds++;
+  if (guiNumPositionSnds < NUM_POSITION_SOUND_EFFECT_SLOTS) return (int32_t)guiNumPositionSnds++;
 
   return -1;
 }
 
 static void RecountPositionSnds() {
-  INT32 uiCount;
+  int32_t uiCount;
 
   for (uiCount = guiNumPositionSnds - 1; (uiCount >= 0); uiCount--) {
     if ((gPositionSndData[uiCount].fAllocated)) {
-      guiNumPositionSnds = (UINT32)(uiCount + 1);
+      guiNumPositionSnds = (uint32_t)(uiCount + 1);
       break;
     }
   }
 }
 
-INT32 NewPositionSnd(INT16 const sGridNo, SOLDIERTYPE const *const SoundSource,
-                     SoundID const iSoundToPlay) {
-  INT32 const idx = GetFreePositionSnd();
+int32_t NewPositionSnd(int16_t const sGridNo, SOLDIERTYPE const *const SoundSource,
+                       SoundID const iSoundToPlay) {
+  int32_t const idx = GetFreePositionSnd();
   if (idx == -1) return -1;
 
   POSITIONSND &p = gPositionSndData[idx];
@@ -674,7 +676,7 @@ INT32 NewPositionSnd(INT16 const sGridNo, SOLDIERTYPE const *const SoundSource,
   return idx;
 }
 
-void DeletePositionSnd(INT32 iPositionSndIndex) {
+void DeletePositionSnd(int32_t iPositionSndIndex) {
   POSITIONSND *pPositionSnd;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
@@ -694,7 +696,7 @@ void DeletePositionSnd(INT32 iPositionSndIndex) {
   }
 }
 
-void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo) {
+void SetPositionSndGridNo(int32_t iPositionSndIndex, int16_t sGridNo) {
   POSITIONSND *pPositionSnd;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
@@ -708,7 +710,7 @@ void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo) {
 
 void SetPositionSndsActive() {
   gfPositionSoundsActive = TRUE;
-  for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
+  for (uint32_t i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND &p = gPositionSndData[i];
     if (!p.fAllocated) continue;
     if (!p.fInActive) continue;
@@ -721,7 +723,7 @@ void SetPositionSndsActive() {
 
 void SetPositionSndsInActive() {
   gfPositionSoundsActive = FALSE;
-  for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
+  for (uint32_t i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND &p = gPositionSndData[i];
     if (!p.fAllocated) continue;
 
@@ -735,10 +737,10 @@ void SetPositionSndsInActive() {
   }
 }
 
-static INT8 PositionSoundDir(INT16 sGridNo) {
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX;
-  INT16 sDif, sAbsDif;
+static int8_t PositionSoundDir(int16_t sGridNo) {
+  int16_t sScreenX, sScreenY;
+  int16_t sMiddleX;
+  int16_t sDif, sAbsDif;
 
   if (sGridNo == NOWHERE) {
     return (MIDDLEPAN);
@@ -775,22 +777,22 @@ static INT8 PositionSoundDir(INT16 sGridNo) {
     return (MIDDLE);
 }
 
-static INT8 PositionSoundVolume(INT8 const initial_volume, GridNo const grid_no) {
+static int8_t PositionSoundVolume(int8_t const initial_volume, GridNo const grid_no) {
   if (grid_no == NOWHERE) return initial_volume;
 
-  INT16 sScreenX;
-  INT16 sScreenY;
+  int16_t sScreenX;
+  int16_t sScreenY;
   GetAbsoluteScreenXYFromMapPos(grid_no, &sScreenX, &sScreenY);
 
   // Get middle of where we are now
-  INT16 const sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
-  INT16 const sMiddleY = gsTopLeftWorldY + (gsBottomRightWorldY - gsTopLeftWorldY) / 2;
+  int16_t const sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
+  int16_t const sMiddleY = gsTopLeftWorldY + (gsBottomRightWorldY - gsTopLeftWorldY) / 2;
 
-  INT16 const sDifX = sMiddleX - sScreenX;
-  INT16 const sDifY = sMiddleY - sScreenY;
+  int16_t const sDifX = sMiddleX - sScreenX;
+  int16_t const sDifY = sMiddleY - sScreenY;
 
-  INT16 const sMaxDistX = (gsBottomRightWorldX - gsTopLeftWorldX) * 3 / 2;
-  INT16 const sMaxDistY = (gsBottomRightWorldY - gsTopLeftWorldY) * 3 / 2;
+  int16_t const sMaxDistX = (gsBottomRightWorldX - gsTopLeftWorldX) * 3 / 2;
+  int16_t const sMaxDistY = (gsBottomRightWorldY - gsTopLeftWorldY) * 3 / 2;
 
   double const sMaxSoundDist = sqrt((double)(sMaxDistX * sMaxDistX) + (sMaxDistY * sMaxDistY));
   double sSoundDist = sqrt((double)(sDifX * sDifX) + (sDifY * sDifY));
@@ -800,23 +802,23 @@ static INT8 PositionSoundVolume(INT8 const initial_volume, GridNo const grid_no)
   if (sSoundDist > sMaxSoundDist) sSoundDist = sMaxSoundDist;
 
   // Scale
-  return (INT8)(initial_volume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
+  return (int8_t)(initial_volume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
 void SetPositionSndsVolumeAndPanning() {
-  for (UINT32 i = 0; i != guiNumPositionSnds; ++i) {
+  for (uint32_t i = 0; i != guiNumPositionSnds; ++i) {
     POSITIONSND const &p = gPositionSndData[i];
     if (!p.fAllocated) continue;
     if (p.fInActive) continue;
     if (p.iSoundSampleID == NO_SAMPLE) continue;
 
-    INT8 volume = PositionSoundVolume(15, p.sGridNo);
+    int8_t volume = PositionSoundVolume(15, p.sGridNo);
     if (p.SoundSource && p.SoundSource->bVisible == -1) {  // Limit volume
       if (volume > 10) volume = 10;
     }
     SoundSetVolume(p.iSoundSampleID, volume);
 
-    INT8 const pan = PositionSoundDir(p.sGridNo);
+    int8_t const pan = PositionSoundDir(p.sGridNo);
     SoundSetPan(p.iSoundSampleID, pan);
   }
 }

@@ -5,10 +5,10 @@
 #include "SGP/LoadSaveData.h"
 
 void ExtractLightEffectFromFile(HWFILE const file, LIGHTEFFECT *const l) {
-  BYTE data[16];
+  uint8_t data[16];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_I16(d, l->sGridNo)
   EXTR_U8(d, l->ubDuration)
   EXTR_U8(d, l->bRadius)
@@ -23,9 +23,9 @@ void ExtractLightEffectFromFile(HWFILE const file, LIGHTEFFECT *const l) {
 }
 
 void InjectLightEffectIntoFile(HWFILE const file, const LIGHTEFFECT *const l) {
-  BYTE data[16];
+  uint8_t data[16];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_I16(d, l->sGridNo)
   INJ_U8(d, l->ubDuration)
   INJ_U8(d, l->bRadius)

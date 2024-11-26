@@ -21,8 +21,8 @@ GUIButtonRef giIMPAttributeFinishButton[2];
 // function definitions
 extern void SetGeneratedCharacterAttributes();
 
-static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateAttributeFinishButtons();
 
@@ -51,11 +51,11 @@ void ExitIMPAttributeFinish() {
 
 void HandleIMPAttributeFinish() {}
 
-static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const wchar_t *text, int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
   giIMPAttributeFinishButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col,
                               LAPTOP_SCREEN_UL_X + 130, y, MSYS_PRIORITY_HIGH, click);
@@ -66,7 +66,7 @@ static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK clic
 static void CreateAttributeFinishButtons() {
   // this procedure will create the buttons needed for the attribute finish
   // screen
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
   MakeButton(0, pImpButtonText[20], dy + 180,
              BtnIMPAttributeFinishYesCallback);  // Yes button
   MakeButton(1, pImpButtonText[21], dy + 264,
@@ -85,7 +85,7 @@ static void DestroyAttributeFinishButtons() {
   UnloadButtonImage(giIMPAttributeFinishButtonImage[1]);
 }
 
-static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // gone far enough
     iCurrentImpPage = IMP_MAIN_PAGE;
@@ -103,7 +103,7 @@ static void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if no, return to attribute
     iCurrentImpPage = IMP_ATTRIBUTE_PAGE;

@@ -44,13 +44,13 @@ ScreenID guiCurrentScreen = ERROR_SCREEN;  // XXX TODO001A had no explicit initi
 ScreenID guiPendingScreen = NO_PENDING_SCREEN;
 
 #define DONT_CHECK_FOR_FREE_SPACE 255
-static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
+static uint8_t gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 
 // The InitializeGame function is responsible for setting up all data and Gaming
 // Engine tasks which will run the game
 
 void InitializeGame() {
-  UINT32 uiIndex;
+  uint32_t uiIndex;
 
   // Initlaize mouse subsystems
   MSYS_Init();
@@ -106,9 +106,9 @@ void ShutdownGame() {
 }
 
 static void InsertCommasIntoNumber(wchar_t pString[]) {
-  INT16 sCounter = 0;
-  INT16 sZeroCount = 0;
-  INT16 sTempCounter = 0;
+  int16_t sCounter = 0;
+  int16_t sZeroCount = 0;
+  int16_t sTempCounter = 0;
 
   // go to end of dollar figure
   while (pString[sCounter] != L'\0') {
@@ -152,7 +152,7 @@ static void InsertCommasIntoNumber(wchar_t pString[]) {
   }
 }
 
-static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen);
+static void HandleNewScreenChange(uint32_t uiNewScreen, uint32_t uiOldScreen);
 
 // This is the main Gameloop. This should eventually by one big switch statement
 // which represents the state of the game (i.e. Main Menu, PC Generation, Combat
@@ -187,7 +187,7 @@ void GameLoop() try {
         if (!DoesUserHaveEnoughHardDriveSpace()) {
           wchar_t zText[512];
           wchar_t zSpaceOnDrive[512];
-          UINT32 uiSpaceOnDrive;
+          uint32_t uiSpaceOnDrive;
           wchar_t zSizeNeeded[512];
 
           swprintf(zSizeNeeded, lengthof(zSizeNeeded), L"%d",
@@ -197,7 +197,7 @@ void GameLoop() try {
           uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
           swprintf(zSpaceOnDrive, lengthof(zSpaceOnDrive), L"%.2f",
-                   uiSpaceOnDrive / (FLOAT)BYTESINMEGABYTE);
+                   uiSpaceOnDrive / (float)BYTESINMEGABYTE);
 
           swprintf(zText, lengthof(zText), pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive,
                    zSizeNeeded);
@@ -289,7 +289,7 @@ void GameLoop() try {
 void SetPendingNewScreen(ScreenID const uiNewScreen) { guiPendingScreen = uiNewScreen; }
 
 // Gets called when the screen changes, place any needed in code in here
-static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {
+static void HandleNewScreenChange(uint32_t uiNewScreen, uint32_t uiOldScreen) {
   // if we are not going into the message box screen, and we didnt just come
   // from it
   if ((uiNewScreen != MSG_BOX_SCREEN && uiOldScreen != MSG_BOX_SCREEN)) {

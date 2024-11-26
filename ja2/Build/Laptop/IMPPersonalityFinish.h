@@ -8,6 +8,6 @@ void RenderIMPPersonalityFinish();
 void ExitIMPPersonalityFinish();
 void HandleIMPPersonalityFinish();
 
-extern UINT8 bPersonalityEndState;
+extern uint8_t bPersonalityEndState;
 
 #endif

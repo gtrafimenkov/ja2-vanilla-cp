@@ -18,7 +18,7 @@ static WRAPPED_STRING *AllocWrappedString(const wchar_t *start, const wchar_t *e
   return ws;
 }
 
-WRAPPED_STRING *LineWrap(Font const font, UINT16 const usLineWidthPixels,
+WRAPPED_STRING *LineWrap(Font const font, uint16_t const usLineWidthPixels,
                          wchar_t const *const pString) {
   size_t const max_w = usLineWidthPixels;
 
@@ -77,11 +77,12 @@ WRAPPED_STRING *LineWrap(Font const font, UINT16 const usLineWidthPixels,
 // Pass in, the x,y location for the start of the string,
 //					the width of the buffer
 //					the gap in between the lines
-UINT16 DisplayWrappedString(UINT16 const x, UINT16 y, UINT16 w, UINT8 const gap, Font const font,
-                            UINT8 const foreground, const wchar_t *const string,
-                            UINT8 const background, UINT32 const flags) {
-  UINT16 total_h = 0;
-  UINT16 const h = GetFontHeight(font) + gap;
+uint16_t DisplayWrappedString(uint16_t const x, uint16_t y, uint16_t w, uint8_t const gap,
+                              Font const font, uint8_t const foreground,
+                              const wchar_t *const string, uint8_t const background,
+                              uint32_t const flags) {
+  uint16_t total_h = 0;
+  uint16_t const h = GetFontHeight(font) + gap;
   for (WRAPPED_STRING *i = LineWrap(font, w, string); i;) {
     DrawTextToScreen(i->sString, x, y, w, font, foreground, background, flags);
     WRAPPED_STRING *const del = i;
@@ -101,14 +102,14 @@ UINT16 DisplayWrappedString(UINT16 const x, UINT16 y, UINT16 w, UINT8 const gap,
 // left justified 			The font 			the color you want the font
 // the color of the background 			do you want to display it using dirty rects, TRUE or
 // FALSE 			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
-void DrawTextToScreen(wchar_t const *const str, UINT16 x, UINT16 const y, UINT16 const max_w,
-                      Font const font, UINT8 const foreground, UINT8 const background,
-                      UINT32 const flags) {
+void DrawTextToScreen(wchar_t const *const str, uint16_t x, uint16_t const y, uint16_t const max_w,
+                      Font const font, uint8_t const foreground, uint8_t const background,
+                      uint32_t const flags) {
   if (flags & DONT_DISPLAY_TEXT) return;
 
-  INT16 const w = flags & (CENTER_JUSTIFIED | RIGHT_JUSTIFIED | TEXT_SHADOWED | INVALIDATE_TEXT)
-                      ? StringPixLength(str, font)
-                      : 0;
+  int16_t const w = flags & (CENTER_JUSTIFIED | RIGHT_JUSTIFIED | TEXT_SHADOWED | INVALIDATE_TEXT)
+                        ? StringPixLength(str, font)
+                        : 0;
 
   if (flags & CENTER_JUSTIFIED) {
     x += (max_w - w) / 2;
@@ -117,7 +118,7 @@ void DrawTextToScreen(wchar_t const *const str, UINT16 x, UINT16 const y, UINT16
   }
 
   if (flags & TEXT_SHADOWED) {
-    UINT16 const h = GetFontHeight(font);
+    uint16_t const h = GetFontHeight(font);
     FRAME_BUFFER->ShadowRect(x - 1, y - 1, x + w, y + h);
   }
 
@@ -131,15 +132,15 @@ void DrawTextToScreen(wchar_t const *const str, UINT16 x, UINT16 const y, UINT16
   }
 
   if (flags & INVALIDATE_TEXT) {
-    UINT16 const h = GetFontHeight(font);
+    uint16_t const h = GetFontHeight(font);
     InvalidateRegion(x, y, x + w, y + h);
   }
 }
 
-static void IanDrawTextToScreen(wchar_t const *const str, wchar_t *const end, UINT16 const x,
-                                UINT16 const y, UINT16 const w, Font const font,
-                                UINT8 const foreground, UINT8 const background, UINT32 flags,
-                                UINT32 const ian_flags) {
+static void IanDrawTextToScreen(wchar_t const *const str, wchar_t *const end, uint16_t const x,
+                                uint16_t const y, uint16_t const w, Font const font,
+                                uint8_t const foreground, uint8_t const background, uint32_t flags,
+                                uint32_t const ian_flags) {
   *end = L'\0';
   if (ian_flags & IAN_WRAP_NO_SHADOW) SetFontShadow(NO_SHADOW);
   flags |= ian_flags & MARK_DIRTY;
@@ -150,22 +151,22 @@ static void IanDrawTextToScreen(wchar_t const *const str, wchar_t *const end, UI
 // Pass in, the x,y location for the start of the string,
 //					the width of the buffer (how many pixels wide
 // for word wrapping) 					the gap in between the lines
-UINT16 IanDisplayWrappedString(UINT16 const sx, UINT16 const sy, UINT16 const max_w,
-                               UINT8 const gap, Font const font, UINT8 const foreground,
-                               wchar_t const *const str, UINT8 const background,
-                               UINT32 const flags) {
+uint16_t IanDisplayWrappedString(uint16_t const sx, uint16_t const sy, uint16_t const max_w,
+                                 uint8_t const gap, Font const font, uint8_t const foreground,
+                                 wchar_t const *const str, uint8_t const background,
+                                 uint32_t const flags) {
   wchar_t line_buf[128];
   wchar_t *line_pos = line_buf;
   wchar_t const *i = str;
-  UINT16 cur_max_w = max_w;
-  UINT16 line_w = 0;
-  UINT16 x = sx;
-  UINT16 y = sy;
+  uint16_t cur_max_w = max_w;
+  uint16_t line_w = 0;
+  uint16_t x = sx;
+  uint16_t y = sy;
   Font cur_font = font;
-  UINT16 h = GetFontHeight(cur_font) + gap;
+  uint16_t h = GetFontHeight(cur_font) + gap;
   bool is_bold = false;
-  UINT8 cur_foreground = foreground;
-  UINT16 justification = LEFT_JUSTIFIED;
+  uint8_t cur_foreground = foreground;
+  uint16_t justification = LEFT_JUSTIFIED;
   do {
     // each character goes towards building a new word
     wchar_t const *word_start = i;
@@ -242,7 +243,7 @@ UINT16 IanDisplayWrappedString(UINT16 const sx, UINT16 const sy, UINT16 const ma
 
         // the new color value is the next character in the word
         if (word_start[1] != TEXT_SPACE && word_start[1] < 256)
-          cur_foreground = (UINT8)word_start[1];
+          cur_foreground = (uint8_t)word_start[1];
 
         cur_foreground = 184;
 
@@ -272,7 +273,7 @@ UINT16 IanDisplayWrappedString(UINT16 const sx, UINT16 const sy, UINT16 const ma
 
       default:  // not a special character
         // get the length (in pixels) of this word
-        UINT16 word_w = 0;
+        uint16_t word_w = 0;
         for (wchar_t const *k = word_start; k != i; ++k) {
           word_w += GetCharWidth(cur_font, *k);
         }
@@ -342,12 +343,12 @@ void CleanOutControlCodesFromString(wchar_t const *const src, wchar_t *const dst
 }
 
 // now variant for grabbing height
-UINT16 IanWrappedStringHeight(UINT16 const max_w, UINT8 const gap, Font const font,
-                              wchar_t const *const str) {
-  UINT16 line_w = 0;
-  UINT16 n_lines = 1;
+uint16_t IanWrappedStringHeight(uint16_t const max_w, uint8_t const gap, Font const font,
+                                wchar_t const *const str) {
+  uint16_t line_w = 0;
+  uint16_t n_lines = 1;
   Font cur_font = font;
-  UINT16 justification = LEFT_JUSTIFIED;
+  uint16_t justification = LEFT_JUSTIFIED;
   bool is_bold = FALSE;
 
   /* simply a cut and paste operation on Ian Display Wrapped, but will not write
@@ -401,7 +402,7 @@ UINT16 IanWrappedStringHeight(UINT16 const max_w, UINT8 const gap, Font const fo
 
       default:
         // get the length (in pixels) of this word
-        UINT16 word_w = 0;
+        uint16_t word_w = 0;
         for (wchar_t const *k = word_start; k != i; ++k) {
           word_w += GetCharWidth(cur_font, *k);
         }
@@ -425,17 +426,17 @@ UINT16 IanWrappedStringHeight(UINT16 const max_w, UINT8 const gap, Font const fo
   return n_lines * (GetFontHeight(font) + gap);
 }
 
-void ReduceStringLength(wchar_t *pString, size_t Length, UINT32 uiWidthToFitIn, Font const font) {
+void ReduceStringLength(wchar_t *pString, size_t Length, uint32_t uiWidthToFitIn, Font const font) {
   // if the string is wider then the loaction
   if (StringPixLength(pString, font) <= uiWidthToFitIn) return;
 
   const wchar_t *const Dots = L"...";
-  UINT32 RestWidth = uiWidthToFitIn - StringPixLength(Dots, font);
+  uint32_t RestWidth = uiWidthToFitIn - StringPixLength(Dots, font);
 
   // loop through and add each character, 1 at a time
-  UINT32 i;
+  uint32_t i;
   for (i = 0;; i++) {
-    UINT32 CharWidth = GetCharWidth(font, pString[i]);
+    uint32_t CharWidth = GetCharWidth(font, pString[i]);
     if (CharWidth > RestWidth) break;
     RestWidth -= CharWidth;
   }

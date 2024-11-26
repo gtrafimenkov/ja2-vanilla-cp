@@ -57,47 +57,47 @@ enum {
 // Struct definition for sample slots in the cache
 // Holds the regular sample data, as well as the data for the random samples
 struct SAMPLETAG {
-  CHAR8 pName[128];  // Path to sample data
-  UINT32 n_samples;
-  UINT32 uiFlags;  // Status flags
-  UINT32 uiSpeed;  // Playback frequency
-  PTR pData;       // pointer to sample data memory
-  UINT32 uiCacheHits;
+  char pName[128];  // Path to sample data
+  uint32_t n_samples;
+  uint32_t uiFlags;  // Status flags
+  uint32_t uiSpeed;  // Playback frequency
+  void *pData;       // pointer to sample data memory
+  uint32_t uiCacheHits;
 
   // Random sound data
-  UINT32 uiTimeNext;
-  UINT32 uiTimeMin;
-  UINT32 uiTimeMax;
-  UINT32 uiVolMin;
-  UINT32 uiVolMax;
-  UINT32 uiPanMin;
-  UINT32 uiPanMax;
-  UINT32 uiInstances;
-  UINT32 uiMaxInstances;
+  uint32_t uiTimeNext;
+  uint32_t uiTimeMin;
+  uint32_t uiTimeMax;
+  uint32_t uiVolMin;
+  uint32_t uiVolMax;
+  uint32_t uiPanMin;
+  uint32_t uiPanMax;
+  uint32_t uiInstances;
+  uint32_t uiMaxInstances;
 };
 
 // Structure definition for slots in the sound output
 // These are used for both the cached and double-buffered streams
 struct SOUNDTAG {
-  volatile UINT State;
+  volatile uint32_t State;
   SAMPLETAG *pSample;
-  UINT32 uiSoundID;
+  uint32_t uiSoundID;
   void (*EOSCallback)(void *);
   void *pCallbackData;
-  UINT32 uiTimeStamp;
+  uint32_t uiTimeStamp;
   HWFILE hFile;
-  UINT32 uiFadeVolume;
-  UINT32 uiFadeRate;
-  UINT32 uiFadeTime;
-  UINT32 pos;
-  UINT32 Loops;
-  UINT32 Pan;
+  uint32_t uiFadeVolume;
+  uint32_t uiFadeRate;
+  uint32_t uiFadeTime;
+  uint32_t pos;
+  uint32_t Loops;
+  uint32_t Pan;
 };
 
-static const UINT32 guiSoundDefaultVolume = MAXVOLUME;
-static const UINT32 guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY;  // Maximum memory used for sounds
-static UINT32 guiSoundMemoryUsed = 0;                            // Memory currently in use
-static const UINT32 guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
+static const uint32_t guiSoundDefaultVolume = MAXVOLUME;
+static const uint32_t guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY;  // Maximum memory used for sounds
+static uint32_t guiSoundMemoryUsed = 0;                            // Memory currently in use
+static const uint32_t guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
 
 static BOOLEAN fSoundSystemInit = FALSE;  // Startup called
 static BOOLEAN gfEnableStartup = TRUE;    // Allow hardware to start up
@@ -139,11 +139,12 @@ void ShutdownSoundManager() {
 static SOUNDTAG *SoundGetFreeChannel();
 static SAMPLETAG *SoundLoadSample(const char *pFilename);
 static BOOLEAN SoundPlayStreamed(const char *pFilename);
-static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-                               UINT32 loop, void (*end_callback)(void *), void *data);
+static uint32_t SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, uint32_t volume,
+                                 uint32_t pan, uint32_t loop, void (*end_callback)(void *),
+                                 void *data);
 
-UINT32 SoundPlay(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
-                 void (*end_callback)(void *), void *data) {
+uint32_t SoundPlay(const char *pFilename, uint32_t volume, uint32_t pan, uint32_t loop,
+                   void (*end_callback)(void *), void *data) {
   if (!fSoundSystemInit) return SOUND_ERROR;
 
 #if 0  // TODO0003 implement streaming
@@ -175,8 +176,8 @@ static BOOLEAN SoundCleanCache();
 static SAMPLETAG *SoundGetEmptySample();
 static size_t GetSampleSize(const SAMPLETAG *const s);
 
-UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
-                           void (*end_callback)(void *), void *data) {
+uint32_t SoundPlayFromBuffer(int16_t *pbuffer, uint32_t size, uint32_t volume, uint32_t pan,
+                             uint32_t loop, void (*end_callback)(void *), void *data) {
   // SoundCleanCache();
   SAMPLETAG *buffertag = SoundGetEmptySample();
   if (buffertag == NULL) {
@@ -198,11 +199,12 @@ UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pa
   return SoundStartSample(buffertag, channel, volume, pan, loop, end_callback, data);
 }
 
-static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-                               UINT32 loop, void (*end_callback)(void *), void *data);
+static uint32_t SoundStartStream(const char *pFilename, SOUNDTAG *channel, uint32_t volume,
+                                 uint32_t pan, uint32_t loop, void (*end_callback)(void *),
+                                 void *data);
 
-UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
-                             void (*end_callback)(void *), void *data) try {
+uint32_t SoundPlayStreamedFile(const char *pFilename, uint32_t volume, uint32_t pan, uint32_t loop,
+                               void (*end_callback)(void *), void *data) try {
 #if 1
   // TODO0003 implement streaming
   return SoundPlay(pFilename, volume, pan, loop, end_callback, data);
@@ -235,7 +237,7 @@ UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, U
   sprintf(pFileHandlefileName, "\\\\\\\\%d", hRealFileHandle);
 
   // Start the sound stream
-  UINT32 uiRetVal =
+  uint32_t uiRetVal =
       SoundStartStream(pFileHandlefileName, channel, volume, pan, loop, end_callback, data);
 
   // if it succeeded, record the file handle
@@ -251,8 +253,9 @@ UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, U
   return SOUND_ERROR;
 }
 
-UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
-                       UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances) {
+uint32_t SoundPlayRandom(const char *pFilename, uint32_t time_min, uint32_t time_max,
+                         uint32_t vol_min, uint32_t vol_max, uint32_t pan_min, uint32_t pan_max,
+                         uint32_t max_instances) {
   SNDDBG("RAND \"%s\"\n", pFilename);
 
   if (!fSoundSystemInit) return SOUND_ERROR;
@@ -271,12 +274,12 @@ UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, 
 
   s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
 
-  return (UINT32)(s - pSampleList);
+  return (uint32_t)(s - pSampleList);
 }
 
-static SOUNDTAG *SoundGetChannelByID(UINT32 uiSoundID);
+static SOUNDTAG *SoundGetChannelByID(uint32_t uiSoundID);
 
-BOOLEAN SoundIsPlaying(UINT32 uiSoundID) {
+BOOLEAN SoundIsPlaying(uint32_t uiSoundID) {
   if (!fSoundSystemInit) return FALSE;
 
   const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
@@ -285,7 +288,7 @@ BOOLEAN SoundIsPlaying(UINT32 uiSoundID) {
 
 static BOOLEAN SoundStopChannel(SOUNDTAG *channel);
 
-BOOLEAN SoundStop(UINT32 uiSoundID) {
+BOOLEAN SoundStop(uint32_t uiSoundID) {
   if (!fSoundSystemInit) return FALSE;
   if (!SoundIsPlaying(uiSoundID)) return FALSE;
 
@@ -312,7 +315,7 @@ void SoundStopAll() {
   SDL_PauseAudio(0);
 }
 
-BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
+BOOLEAN SoundSetVolume(uint32_t uiSoundID, uint32_t uiVolume) {
   if (!fSoundSystemInit) return FALSE;
 
   SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
@@ -322,7 +325,7 @@ BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
   return TRUE;
 }
 
-BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
+BOOLEAN SoundSetPan(uint32_t uiSoundID, uint32_t uiPan) {
   if (!fSoundSystemInit) return FALSE;
 
   SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
@@ -332,7 +335,7 @@ BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
   return TRUE;
 }
 
-UINT32 SoundGetVolume(UINT32 uiSoundID) {
+uint32_t SoundGetVolume(uint32_t uiSoundID) {
   if (!fSoundSystemInit) return SOUND_ERROR;
 
   const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
@@ -342,7 +345,7 @@ UINT32 SoundGetVolume(UINT32 uiSoundID) {
 }
 
 static BOOLEAN SoundRandomShouldPlay(const SAMPLETAG *s);
-static UINT32 SoundStartRandom(SAMPLETAG *s);
+static uint32_t SoundStartRandom(SAMPLETAG *s);
 
 void SoundServiceRandom() {
   FOR_EACH(SAMPLETAG, i, pSampleList) {
@@ -362,14 +365,14 @@ static BOOLEAN SoundRandomShouldPlay(const SAMPLETAG *s) {
  *
  * Returns: TRUE if a new random sound was created, FALSE if nothing was done.
  */
-static UINT32 SoundStartRandom(SAMPLETAG *s) {
+static uint32_t SoundStartRandom(SAMPLETAG *s) {
   SOUNDTAG *const channel = SoundGetFreeChannel();
   if (channel == NULL) return NO_SAMPLE;
 
-  const UINT32 volume = s->uiVolMin + Random(s->uiVolMax - s->uiVolMin);
-  const UINT32 pan = s->uiPanMin + Random(s->uiPanMax - s->uiPanMin);
+  const uint32_t volume = s->uiVolMin + Random(s->uiVolMax - s->uiVolMin);
+  const uint32_t pan = s->uiPanMin + Random(s->uiPanMax - s->uiPanMin);
 
-  const UINT32 uiSoundID = SoundStartSample(s, channel, volume, pan, 1, NULL, NULL);
+  const uint32_t uiSoundID = SoundStartSample(s, channel, volume, pan, 1, NULL, NULL);
   if (uiSoundID == SOUND_ERROR) return NO_SAMPLE;
 
   s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
@@ -396,7 +399,7 @@ void SoundStopAllRandom() {
 void SoundServiceStreams() {
   if (!fSoundSystemInit) return;
 
-  for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
+  for (uint32_t i = 0; i < lengthof(pSoundList); i++) {
     SOUNDTAG *Sound = &pSoundList[i];
     if (Sound->State == CHANNEL_DEAD) {
       SNDDBG("DEAD channel %u file \"%s\" (refcount %u)\n", i, Sound->pSample->pName,
@@ -411,13 +414,13 @@ void SoundServiceStreams() {
   }
 }
 
-UINT32 SoundGetPosition(UINT32 uiSoundID) {
+uint32_t SoundGetPosition(uint32_t uiSoundID) {
   if (!fSoundSystemInit) return 0;
 
   const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
   if (channel == NULL) return 0;
 
-  const UINT32 now = GetClock();
+  const uint32_t now = GetClock();
   return now - channel->uiTimeStamp;
 }
 
@@ -464,13 +467,13 @@ static size_t GetSampleSize(const SAMPLETAG *const s) {
 static BOOLEAN HalfSampleRate(SAMPLETAG *const s) {
   SNDDBG("SMPL \"%s\" from %uHz to %uHz\n", s->pName, s->uiSpeed, s->uiSpeed / 2);
 
-  UINT32 const n_samples = s->n_samples / 2;
+  uint32_t const n_samples = s->n_samples / 2;
   void *const ndata = malloc(n_samples * GetSampleSize(s));
   if (ndata == NULL) return FALSE;
   void *const odata = s->pData;
   if (s->uiFlags & SAMPLE_16BIT) {
-    INT16 *const dst = (INT16 *)ndata;
-    const INT16 *const src = (const INT16 *)odata;
+    int16_t *const dst = (int16_t *)ndata;
+    const int16_t *const src = (const int16_t *)odata;
     if (s->uiFlags & SAMPLE_STEREO) {
       for (size_t i = 0; i < n_samples; ++i) {
         dst[2 * i + 0] = (src[4 * i + 0] + src[4 * i + 2]) / 2;
@@ -482,8 +485,8 @@ static BOOLEAN HalfSampleRate(SAMPLETAG *const s) {
       }
     }
   } else {
-    UINT8 *const dst = (UINT8 *)ndata;
-    const UINT8 *const src = (const UINT8 *)odata;
+    uint8_t *const dst = (uint8_t *)ndata;
+    const uint8_t *const src = (const uint8_t *)odata;
     if (s->uiFlags & SAMPLE_STEREO) {
       for (size_t i = 0; i < n_samples; ++i) {
         dst[2 * i + 0] = (src[4 * i + 0] + src[4 * i + 2]) / 2;
@@ -503,7 +506,8 @@ static BOOLEAN HalfSampleRate(SAMPLETAG *const s) {
   return TRUE;
 }
 
-#define FOURCC(a, b, c, d) ((UINT8)(d) << 24 | (UINT8)(c) << 16 | (UINT8)(b) << 8 | (UINT8)(a))
+#define FOURCC(a, b, c, d) \
+  ((uint8_t)(d) << 24 | (uint8_t)(c) << 16 | (uint8_t)(b) << 8 | (uint8_t)(a))
 
 enum WaveFormatTag {
   WAVE_FORMAT_UNKNOWN = 0x0000,
@@ -511,8 +515,8 @@ enum WaveFormatTag {
   WAVE_FORMAT_DVI_ADPCM = 0x0011
 };
 
-static void LoadPCM(SAMPLETAG *const s, HWFILE const file, UINT32 const size) {
-  SGP::Buffer<UINT8> data(size);
+static void LoadPCM(SAMPLETAG *const s, HWFILE const file, uint32_t const size) {
+  SGP::Buffer<uint8_t> data(size);
   FileRead(file, data, size);
 
   s->n_samples = size / GetSampleSize(s);
@@ -525,24 +529,24 @@ static inline int Clamp(int min, int x, int max) {
   return x;
 }
 
-static void LoadDVIADPCM(SAMPLETAG *const s, HWFILE const file, UINT16 const block_align) {
+static void LoadDVIADPCM(SAMPLETAG *const s, HWFILE const file, uint16_t const block_align) {
   s->uiFlags |= SAMPLE_16BIT;
 
   size_t CountSamples = s->n_samples;
-  INT16 *const Data = (INT16 *)malloc(CountSamples * GetSampleSize(s));
-  INT16 *D = Data;
+  int16_t *const Data = (int16_t *)malloc(CountSamples * GetSampleSize(s));
+  int16_t *D = Data;
 
   for (;;) {
-    INT16 CurSample_;
+    int16_t CurSample_;
     FileRead(file, &CurSample_, sizeof(CurSample_));
 
-    UINT8 StepIndex_;
+    uint8_t StepIndex_;
     FileRead(file, &StepIndex_, sizeof(StepIndex_));
 
     FileSeek(file, 1, FILE_SEEK_FROM_CURRENT);  // reserved byte
 
-    INT32 CurSample = CurSample_;
-    INT32 StepIndex = StepIndex_;
+    int32_t CurSample = CurSample_;
+    int32_t StepIndex = StepIndex_;
 
     *D++ = CurSample;
     if (--CountSamples == 0) {
@@ -550,12 +554,12 @@ static void LoadDVIADPCM(SAMPLETAG *const s, HWFILE const file, UINT16 const blo
       return;
     }
 
-    UINT DataCount = block_align / 4;
+    uint32_t DataCount = block_align / 4;
     while (--DataCount != 0) {
-      UINT32 DataWord;
+      uint32_t DataWord;
       FileRead(file, &DataWord, sizeof(DataWord));
-      for (UINT i = 0; i < 8; i++) {
-        static const INT16 StepTable[] = {
+      for (uint32_t i = 0; i < 8; i++) {
+        static const int16_t StepTable[] = {
             7,     8,     9,     10,    11,    12,    13,    14,    16,    17,    19,    21,
             23,    25,    28,    31,    34,    37,    41,    45,    50,    55,    60,    66,
             73,    80,    88,    97,    107,   118,   130,   143,   157,   173,   190,   209,
@@ -565,12 +569,12 @@ static void LoadDVIADPCM(SAMPLETAG *const s, HWFILE const file, UINT16 const blo
             7132,  7845,  8630,  9493,  10442, 11487, 12635, 13899, 15289, 16818, 18500, 20350,
             22385, 24623, 27086, 29794, 32767};
 
-        static const INT8 IndexTable[] = {-1, -1, -1, -1, 2, 4, 6, 8};
+        static const int8_t IndexTable[] = {-1, -1, -1, -1, 2, 4, 6, 8};
 
 #if 1
-        INT32 Diff = ((DataWord & 7) * 2 + 1) * StepTable[StepIndex] >> 3;
+        int32_t Diff = ((DataWord & 7) * 2 + 1) * StepTable[StepIndex] >> 3;
 #else
-        INT32 Diff = 0;
+        int32_t Diff = 0;
         if (DataWord & 4) Diff += StepTable[StepIndex];
         if (DataWord & 2) Diff += StepTable[StepIndex] >> 1;
         if (DataWord & 1) Diff += StepTable[StepIndex] >> 2;
@@ -601,7 +605,7 @@ static SAMPLETAG *SoundLoadDisk(const char *pFilename) try {
 
   AutoSGPFile hFile(FileMan::openForReadingSmart(pFilename, true));
 
-  UINT32 uiSize = FileGetSize(hFile);
+  uint32_t uiSize = FileGetSize(hFile);
 
   // if insufficient memory, start unloading old samples until either
   // there's nothing left to unload, or we fit
@@ -633,20 +637,20 @@ static SAMPLETAG *SoundLoadDisk(const char *pFilename) try {
 
   FileSeek(hFile, 12, FILE_SEEK_FROM_CURRENT);
 
-  UINT16 FormatTag = WAVE_FORMAT_UNKNOWN;
-  UINT16 BlockAlign = 0;
+  uint16_t FormatTag = WAVE_FORMAT_UNKNOWN;
+  uint16_t BlockAlign = 0;
   for (;;) {
-    UINT32 Tag;
-    UINT32 Size;
+    uint32_t Tag;
+    uint32_t Size;
 
     FileRead(hFile, &Tag, sizeof(Tag));
     FileRead(hFile, &Size, sizeof(Size));
 
     switch (Tag) {
       case FOURCC('f', 'm', 't', ' '): {
-        UINT16 Channels;
-        UINT32 Rate;
-        UINT16 BitsPerSample;
+        uint16_t Channels;
+        uint32_t Rate;
+        uint16_t BitsPerSample;
 
         FileRead(hFile, &FormatTag, sizeof(FormatTag));
         FileRead(hFile, &Channels, sizeof(Channels));
@@ -675,7 +679,7 @@ static SAMPLETAG *SoundLoadDisk(const char *pFilename) try {
       }
 
       case FOURCC('f', 'a', 'c', 't'): {
-        UINT32 Samples;
+        uint32_t Samples;
         FileRead(hFile, &Samples, sizeof(Samples));
         s->n_samples = Samples;
         break;
@@ -770,7 +774,7 @@ static void SoundFreeSample(SAMPLETAG *s) {
  *
  * Returns: If the instance was found, the pointer to the channel.  NULL
  *          otherwise. */
-static SOUNDTAG *SoundGetChannelByID(UINT32 uiSoundID) {
+static SOUNDTAG *SoundGetChannelByID(uint32_t uiSoundID) {
   FOR_EACH(SOUNDTAG, i, pSoundList) {
     if (i->uiSoundID == uiSoundID) return i;
   }
@@ -781,10 +785,10 @@ static SOUNDTAG *SoundGetChannelByID(UINT32 uiSoundID) {
 static void SoundCallback(void *userdata, Uint8 *stream, int len) {
   SDL_memset(stream, 0, len);
 
-  UINT16 *Stream = (UINT16 *)stream;
+  uint16_t *Stream = (uint16_t *)stream;
 
   // XXX TODO proper mixing, mainly clipping
-  for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
+  for (uint32_t i = 0; i < lengthof(pSoundList); i++) {
     SOUNDTAG *Sound = &pSoundList[i];
 
     switch (Sound->State) {
@@ -799,8 +803,8 @@ static void SoundCallback(void *userdata, Uint8 *stream, int len) {
 
       case CHANNEL_PLAY: {
         const SAMPLETAG *const s = Sound->pSample;
-        const INT vol_l = Sound->uiFadeVolume * (127 - Sound->Pan) / MAXVOLUME;
-        const INT vol_r = Sound->uiFadeVolume * (0 + Sound->Pan) / MAXVOLUME;
+        const int32_t vol_l = Sound->uiFadeVolume * (127 - Sound->Pan) / MAXVOLUME;
+        const int32_t vol_r = Sound->uiFadeVolume * (0 + Sound->Pan) / MAXVOLUME;
         size_t samples = len / 4;
         size_t amount;
 
@@ -808,30 +812,30 @@ static void SoundCallback(void *userdata, Uint8 *stream, int len) {
         amount = std::min(samples, (size_t)(s->n_samples - Sound->pos));
         if (s->uiFlags & SAMPLE_16BIT) {
           if (s->uiFlags & SAMPLE_STEREO) {
-            const INT16 *const src = (const INT16 *)s->pData + Sound->pos * 2;
-            for (UINT32 i = 0; i < amount; ++i) {
+            const int16_t *const src = (const int16_t *)s->pData + Sound->pos * 2;
+            for (uint32_t i = 0; i < amount; ++i) {
               Stream[2 * i + 0] += src[2 * i + 0] * vol_l >> 7;
               Stream[2 * i + 1] += src[2 * i + 1] * vol_r >> 7;
             }
           } else {
-            const INT16 *const src = (const INT16 *)s->pData + Sound->pos;
-            for (UINT32 i = 0; i < amount; i++) {
-              const INT data = src[i];
+            const int16_t *const src = (const int16_t *)s->pData + Sound->pos;
+            for (uint32_t i = 0; i < amount; i++) {
+              const int32_t data = src[i];
               Stream[2 * i + 0] += data * vol_l >> 7;
               Stream[2 * i + 1] += data * vol_r >> 7;
             }
           }
         } else {
           if (s->uiFlags & SAMPLE_STEREO) {
-            const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos * 2;
-            for (UINT32 i = 0; i < amount; ++i) {
+            const uint8_t *const src = (const uint8_t *)s->pData + Sound->pos * 2;
+            for (uint32_t i = 0; i < amount; ++i) {
               Stream[2 * i + 0] += (src[2 * i + 0] - 128) * vol_l << 1;
               Stream[2 * i + 1] += (src[2 * i + 1] - 128) * vol_r << 1;
             }
           } else {
-            const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos;
-            for (UINT32 i = 0; i < amount; ++i) {
-              const INT data = (src[i] - 128) << 1;
+            const uint8_t *const src = (const uint8_t *)s->pData + Sound->pos;
+            for (uint32_t i = 0; i < amount; ++i) {
+              const int32_t data = (src[i] - 128) << 1;
               Stream[2 * i + 0] += data * vol_l;
               Stream[2 * i + 1] += data * vol_r;
             }
@@ -885,15 +889,16 @@ static SOUNDTAG *SoundGetFreeChannel() {
   return NULL;
 }
 
-static UINT32 SoundGetUniqueID();
+static uint32_t SoundGetUniqueID();
 
 /* Starts up a sample on the specified channel. Override parameters are passed
  * in through the structure pointer pParms. Any entry with a value of 0xffffffff
  * will be filled in by the system.
  *
  * Returns: Unique sound ID if successful, SOUND_ERROR if not. */
-static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-                               UINT32 loop, void (*end_callback)(void *), void *data) {
+static uint32_t SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, uint32_t volume,
+                                 uint32_t pan, uint32_t loop, void (*end_callback)(void *),
+                                 void *data) {
   SNDDBG("PLAY channel %u sample %u file \"%s\"\n", channel - pSoundList, sample - pSampleList,
          sample->pName);
 
@@ -905,7 +910,7 @@ static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volu
   channel->EOSCallback = end_callback;
   channel->pCallbackData = data;
 
-  UINT32 uiSoundID = SoundGetUniqueID();
+  uint32_t uiSoundID = SoundGetUniqueID();
   channel->uiSoundID = uiSoundID;
   channel->pSample = sample;
   channel->uiTimeStamp = GetClock();
@@ -923,8 +928,9 @@ static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volu
  * will be filled in by the system.
  *
  * Returns: Unique sound ID if successful, SOUND_ERROR if not. */
-static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-                               UINT32 loop, void (*end_callback)(void *), void *data) {
+static uint32_t SoundStartStream(const char *pFilename, SOUNDTAG *channel, uint32_t volume,
+                                 uint32_t pan, uint32_t loop, void (*end_callback)(void *),
+                                 void *data) {
 #if 1  // XXX TODO
   FIXME
   return SOUND_ERROR;
@@ -950,7 +956,7 @@ static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 
 
   AIL_start_stream(channel->hMSSStream);
 
-  UINT32 uiSoundID = SoundGetUniqueID();
+  uint32_t uiSoundID = SoundGetUniqueID();
   channel->uiSoundID = uiSoundID;
 
   channel->EOSCallback = end_callback;
@@ -965,8 +971,8 @@ static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 
 
 /* Returns a unique ID number with every call. Basically it's just a 32-bit
  * static value that is incremented each time. */
-static UINT32 SoundGetUniqueID() {
-  static UINT32 uiNextID = 0;
+static uint32_t SoundGetUniqueID() {
+  static uint32_t uiNextID = 0;
 
   if (uiNextID == SOUND_ERROR) uiNextID++;
 
@@ -1001,7 +1007,7 @@ static BOOLEAN SoundStopChannel(SOUNDTAG *channel) {
   return TRUE;
 }
 
-void SoundStopRandom(UINT32 uiSample) {
+void SoundStopRandom(uint32_t uiSample) {
   // CHECK FOR VALID SAMPLE
   SAMPLETAG *const s = &pSampleList[uiSample];
   if (s->uiFlags & SAMPLE_ALLOCATED) {

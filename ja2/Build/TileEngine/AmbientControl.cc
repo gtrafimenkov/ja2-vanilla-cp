@@ -13,18 +13,18 @@
 #include "Utils/SoundControl.h"
 
 AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
-INT16 gsNumAmbData = 0;
+int16_t gsNumAmbData = 0;
 
-static BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID) try {
+static BOOLEAN LoadAmbientControlFile(uint8_t ubAmbientID) try {
   std::string zFilename = FormattedString(AMBIENTDIR "/%d.bad", ubAmbientID);
 
   AutoSGPFile hFile(FileMan::openForReadingSmart(zFilename.c_str(), true));
 
   // READ #
-  FileRead(hFile, &gsNumAmbData, sizeof(INT16));
+  FileRead(hFile, &gsNumAmbData, sizeof(int16_t));
 
   // LOOP FOR OTHERS
-  for (INT32 cnt = 0; cnt < gsNumAmbData; cnt++) {
+  for (int32_t cnt = 0; cnt < gsNumAmbData; cnt++) {
     FileRead(hFile, &gAmbData[cnt], sizeof(AMBIENTDATA_STRUCT));
     std::string filename = FormattedString(AMBIENTDIR "/%s", gAmbData[cnt].zFilename);
     strcpy(gAmbData[cnt].zFilename, filename.c_str());
@@ -37,7 +37,7 @@ static BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID) try {
 
 void StopAmbients() { SoundStopAllRandom(); }
 
-void HandleNewSectorAmbience(UINT8 ubAmbientID) {
+void HandleNewSectorAmbience(uint8_t ubAmbientID) {
   // OK, we could have just loaded a sector, erase all ambient sounds from
   // queue, shutdown all ambient groupings
   SoundStopAllRandom();
@@ -61,9 +61,9 @@ void DeleteAllAmbients() {
   DeleteAllStrategicEventsOfType(EVENT_AMBIENT);
 }
 
-UINT32 SetupNewAmbientSound(UINT32 uiAmbientID) {
+uint32_t SetupNewAmbientSound(uint32_t uiAmbientID) {
   const AMBIENTDATA_STRUCT *const a = &gAmbData[uiAmbientID];
-  const UINT32 vol = CalculateSoundEffectsVolume(a->uiVol);
+  const uint32_t vol = CalculateSoundEffectsVolume(a->uiVol);
   return SoundPlayRandom(a->zFilename, a->uiMinTime, a->uiMaxTime, vol, vol, MIDDLEPAN, MIDDLEPAN,
                          1);
 }

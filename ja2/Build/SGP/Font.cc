@@ -16,30 +16,30 @@
 
 #include "SDL_pixels.h"
 
-typedef UINT8 GlyphIdx;
+typedef uint8_t GlyphIdx;
 
 // Destination printing parameters
 Font FontDefault = 0;
 static SGPVSurface *FontDestBuffer;
 static SGPRect FontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-static UINT16 FontForeground16 = 0;
-static UINT16 FontBackground16 = 0;
-static UINT16 FontShadow16 = DEFAULT_SHADOW;
+static uint16_t FontForeground16 = 0;
+static uint16_t FontBackground16 = 0;
+static uint16_t FontShadow16 = DEFAULT_SHADOW;
 
 // Temp, for saving printing parameters
 static Font SaveFontDefault = 0;
 static SGPVSurface *SaveFontDestBuffer = NULL;
 static SGPRect SaveFontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-static UINT16 SaveFontForeground16 = 0;
-static UINT16 SaveFontShadow16 = 0;
-static UINT16 SaveFontBackground16 = 0;
+static uint16_t SaveFontForeground16 = 0;
+static uint16_t SaveFontShadow16 = 0;
+static uint16_t SaveFontBackground16 = 0;
 
 /* Sets both the foreground and the background colors of the current font. The
  * top byte of the parameter word is the background color, and the bottom byte
  * is the foreground. */
-void SetFontColors(UINT16 usColors) {
-  UINT8 ubForeground = usColors & 0xFF;
-  UINT8 ubBackground = (usColors >> 8) & 0xFF;
+void SetFontColors(uint16_t usColors) {
+  uint8_t ubForeground = usColors & 0xFF;
+  uint8_t ubBackground = (usColors >> 8) & 0xFF;
 
   SetFontForeground(ubForeground);
   SetFontBackground(ubBackground);
@@ -50,13 +50,13 @@ void SetFontColors(UINT16 usColors) {
  * palette are used to create the pixel color. Note that if you change fonts,
  * the selected foreground/background colors will stay at what they are
  * currently set to. */
-void SetFontForeground(UINT8 ubForeground) {
+void SetFontForeground(uint8_t ubForeground) {
   if (!FontDefault) return;
   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubForeground];
   FontForeground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
 }
 
-void SetFontShadow(UINT8 ubShadow) {
+void SetFontShadow(uint8_t ubShadow) {
   if (!FontDefault) return;
   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubShadow];
   FontShadow16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
@@ -70,7 +70,7 @@ void SetFontShadow(UINT8 ubShadow) {
  * the background of the font will be transparent.  Note that if you change
  * fonts, the selected foreground/background colors will stay at what they are
  * currently set to. */
-void SetFontBackground(UINT8 ubBackground) {
+void SetFontBackground(uint8_t ubBackground) {
   if (!FontDefault) return;
   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubBackground];
   FontBackground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
@@ -91,17 +91,17 @@ void UnloadFont(Font const font) {
 }
 
 /* Returns the width of a given character in the font. */
-static UINT32 GetWidth(HVOBJECT const hSrcVObject, GlyphIdx const ssIndex) {
+static uint32_t GetWidth(HVOBJECT const hSrcVObject, GlyphIdx const ssIndex) {
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
   return pTrav.usWidth + pTrav.sOffsetX;
 }
 
 /* Returns the length of a string in pixels, depending on the font given. */
-INT16 StringPixLength(wchar_t const *const string, Font const font) {
+int16_t StringPixLength(wchar_t const *const string, Font const font) {
   if (!string) return 0;
 
-  UINT32 w = 0;
+  uint32_t w = 0;
   for (wchar_t const *c = string; *c != L'\0'; ++c) {
     w += GetCharWidth(font, *c);
   }
@@ -129,14 +129,14 @@ void RestoreFontSettings() {
 }
 
 /* Returns the height of a given character in the font. */
-static UINT32 GetHeight(HVOBJECT hSrcVObject, INT16 ssIndex) {
+static uint32_t GetHeight(HVOBJECT hSrcVObject, int16_t ssIndex) {
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
   return pTrav.usHeight + pTrav.sOffsetY;
 }
 
 /* Returns the height of the first character in a font. */
-UINT16 GetFontHeight(Font const font) { return GetHeight(font, 0); }
+uint16_t GetFontHeight(Font const font) { return GetHeight(font, 0); }
 
 bool IsPrintableChar(wchar_t const c) {
   if (TRANSLATION_TABLE_SIZE <= c) return false;
@@ -154,7 +154,7 @@ static GlyphIdx GetGlyphIndex(wchar_t const c) {
   return TranslationTable[L'?'];
 }
 
-UINT32 GetCharWidth(HVOBJECT Font, wchar_t c) { return GetWidth(Font, GetGlyphIndex(c)); }
+uint32_t GetCharWidth(HVOBJECT Font, wchar_t c) { return GetWidth(Font, GetGlyphIndex(c)); }
 
 /* Sets the current font number. */
 void SetFont(Font const font) {
@@ -162,16 +162,16 @@ void SetFont(Font const font) {
   FontDefault = font;
 }
 
-void SetFontAttributes(Font const font, UINT8 const foreground, UINT8 const shadow,
-                       UINT8 const background) {
+void SetFontAttributes(Font const font, uint8_t const foreground, uint8_t const shadow,
+                       uint8_t const background) {
   SetFont(font);
   SetFontForeground(foreground);
   SetFontShadow(shadow);
   SetFontBackground(background);
 }
 
-void SetFontDestBuffer(SGPVSurface *const dst, const INT32 x1, const INT32 y1, const INT32 x2,
-                       const INT32 y2) {
+void SetFontDestBuffer(SGPVSurface *const dst, const int32_t x1, const int32_t y1, const int32_t x2,
+                       const int32_t y2) {
   Assert(x2 > x1);
   Assert(y2 > y1);
 
@@ -197,27 +197,29 @@ void ReplaceFontBackBuffer(SGPVSurface *oldBackbuffer, SGPVSurface *newBackbuffe
   }
 }
 
-void FindFontRightCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
-                              const wchar_t *pStr, Font const font, INT16 *psNewX, INT16 *psNewY) {
+void FindFontRightCoordinates(int16_t sLeft, int16_t sTop, int16_t sWidth, int16_t sHeight,
+                              const wchar_t *pStr, Font const font, int16_t *psNewX,
+                              int16_t *psNewY) {
   // Compute the coordinates to right justify the text
-  INT16 xp = sWidth - StringPixLength(pStr, font) + sLeft;
-  INT16 yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
+  int16_t xp = sWidth - StringPixLength(pStr, font) + sLeft;
+  int16_t yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
 
   *psNewX = xp;
   *psNewY = yp;
 }
 
-void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
-                               const wchar_t *pStr, Font const font, INT16 *psNewX, INT16 *psNewY) {
+void FindFontCenterCoordinates(int16_t sLeft, int16_t sTop, int16_t sWidth, int16_t sHeight,
+                               const wchar_t *pStr, Font const font, int16_t *psNewX,
+                               int16_t *psNewY) {
   // Compute the coordinates to center the text
-  INT16 xp = (sWidth - StringPixLength(pStr, font) + 1) / 2 + sLeft;
-  INT16 yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
+  int16_t xp = (sWidth - StringPixLength(pStr, font) + 1) / 2 + sLeft;
+  int16_t yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
 
   *psNewX = xp;
   *psNewY = yp;
 }
 
-void gprintf(INT32 x, INT32 const y, wchar_t const *fmt, ...) {
+void gprintf(int32_t x, int32_t const y, wchar_t const *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
   wchar_t string[512];
@@ -225,8 +227,8 @@ void gprintf(INT32 x, INT32 const y, wchar_t const *fmt, ...) {
   va_end(ap);
 
   SGPVSurface::Lock l(FontDestBuffer);
-  UINT16 *const buf = l.Buffer<UINT16>();
-  UINT32 const pitch = l.Pitch();
+  uint16_t *const buf = l.Buffer<uint16_t>();
+  uint32_t const pitch = l.Pitch();
   Font const font = FontDefault;
   for (wchar_t const *i = string; *i != L'\0'; ++i) {
     GlyphIdx const glyph = GetGlyphIndex(*i);
@@ -235,20 +237,20 @@ void gprintf(INT32 x, INT32 const y, wchar_t const *fmt, ...) {
   }
 }
 
-UINT32 MPrintChar(INT32 const x, INT32 const y, wchar_t const c) {
+uint32_t MPrintChar(int32_t const x, int32_t const y, wchar_t const c) {
   GlyphIdx const glyph = GetGlyphIndex(c);
   Font const font = FontDefault;
   {
     SGPVSurface::Lock l(FontDestBuffer);
-    Blt8BPPDataTo16BPPBufferMonoShadowClip(l.Buffer<UINT16>(), l.Pitch(), font, x, y, glyph,
+    Blt8BPPDataTo16BPPBufferMonoShadowClip(l.Buffer<uint16_t>(), l.Pitch(), font, x, y, glyph,
                                            &FontDestRegion, FontForeground16, FontBackground16,
                                            FontShadow16);
   }
   return GetWidth(font, glyph);
 }
 
-void MPrintBuffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 x, INT32 const y,
-                  wchar_t const *str) {
+void MPrintBuffer(uint16_t *const pDestBuf, uint32_t const uiDestPitchBYTES, int32_t x,
+                  int32_t const y, wchar_t const *str) {
   Font const font = FontDefault;
   for (; *str != L'\0'; ++str) {
     GlyphIdx const glyph = GetGlyphIndex(*str);
@@ -259,16 +261,16 @@ void MPrintBuffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 x
   }
 }
 
-void MPrint(INT32 const x, INT32 const y, wchar_t const *const str) {
+void MPrint(int32_t const x, int32_t const y, wchar_t const *const str) {
   SGPVSurface::Lock l(FontDestBuffer);
-  MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), x, y, str);
+  MPrintBuffer(l.Buffer<uint16_t>(), l.Pitch(), x, y, str);
 }
 
 /* Prints to the currently selected destination buffer, at the X/Y coordinates
  * specified, using the currently selected font. Other than the X/Y coordinates,
  * the parameters are identical to printf. The resulting string may be no longer
  * than 512 word-characters. Uses monochrome font color settings */
-void mprintf(INT32 const x, INT32 const y, wchar_t const *const fmt, ...) {
+void mprintf(int32_t const x, int32_t const y, wchar_t const *const fmt, ...) {
   wchar_t str[512];
   va_list ap;
   va_start(ap, fmt);
@@ -277,8 +279,8 @@ void mprintf(INT32 const x, INT32 const y, wchar_t const *const fmt, ...) {
   MPrint(x, y, str);
 }
 
-void mprintf_buffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 const x,
-                    INT32 const y, wchar_t const *const fmt, ...) {
+void mprintf_buffer(uint16_t *const pDestBuf, uint32_t const uiDestPitchBYTES, int32_t const x,
+                    int32_t const y, wchar_t const *const fmt, ...) {
   wchar_t str[512];
   va_list ap;
   va_start(ap, fmt);

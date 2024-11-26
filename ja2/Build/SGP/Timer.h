@@ -3,6 +3,6 @@
 
 #include "SGP/Types.h"
 
-UINT32 GetClock();
+uint32_t GetClock();
 
 #endif

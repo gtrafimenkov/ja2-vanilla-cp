@@ -80,7 +80,7 @@ MoraleEvent gbMoraleEvent[NUM_MORALE_EVENTS] = {
 
 BOOLEAN gfSomeoneSaidMoraleQuote = FALSE;
 
-INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier) {
+int8_t GetMoraleModifier(SOLDIERTYPE *pSoldier) {
   if (pSoldier->uiStatusFlags & SOLDIER_PC) {
     if (pSoldier->bMorale > 50) {
       // give +1 at 55, +3 at 65, up to +5 at 95 and above
@@ -215,7 +215,7 @@ static void DecayStrategicMoraleModifiers() {
 }
 
 void RefreshSoldierMorale(SOLDIERTYPE *pSoldier) {
-  INT32 iActualMorale;
+  int32_t iActualMorale;
 
   if (pSoldier->fMercAsleep) {
     // delay this till later!
@@ -223,9 +223,9 @@ void RefreshSoldierMorale(SOLDIERTYPE *pSoldier) {
   }
 
   // CJC, April 19, 1999: added up to 20% morale boost according to progress
-  iActualMorale = DEFAULT_MORALE + (INT32)pSoldier->bTeamMoraleMod +
-                  (INT32)pSoldier->bTacticalMoraleMod + (INT32)pSoldier->bStrategicMoraleMod +
-                  (INT32)(CurrentPlayerProgressPercentage() / 5);
+  iActualMorale = DEFAULT_MORALE + (int32_t)pSoldier->bTeamMoraleMod +
+                  (int32_t)pSoldier->bTacticalMoraleMod + (int32_t)pSoldier->bStrategicMoraleMod +
+                  (int32_t)(CurrentPlayerProgressPercentage() / 5);
 
   // ATE: Modify morale based on drugs....
   iActualMorale += ((pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
@@ -233,14 +233,14 @@ void RefreshSoldierMorale(SOLDIERTYPE *pSoldier) {
 
   iActualMorale = std::min(100, iActualMorale);
   iActualMorale = std::max(0, iActualMorale);
-  pSoldier->bMorale = (INT8)iActualMorale;
+  pSoldier->bMorale = (int8_t)iActualMorale;
 
   // update mapscreen as needed
   fCharacterInfoPanelDirty = TRUE;
 }
 
-static void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, UINT8 ubType, INT8 bMoraleMod) {
-  INT32 iMoraleModTotal;
+static void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, uint8_t ubType, int8_t bMoraleMod) {
+  int32_t iMoraleModTotal;
 
   if (!pSoldier->bActive) return;
   if (pSoldier->bLife < CONSCIOUSNESS) return;
@@ -299,22 +299,22 @@ static void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, UINT8 ubType, INT8 bMoral
   }
   // apply change!
   if (ubType == TACTICAL_MORALE_EVENT) {
-    iMoraleModTotal = (INT32)pSoldier->bTacticalMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = (int32_t)pSoldier->bTacticalMoraleMod + (int32_t)bMoraleMod;
     iMoraleModTotal = std::min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = std::max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bTacticalMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bTacticalMoraleMod = (int8_t)iMoraleModTotal;
   } else if (gTacticalStatus.fEnemyInSector && !pSoldier->bInSector)  // delayed strategic
   {
-    iMoraleModTotal = (INT32)pSoldier->bDelayedStrategicMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = (int32_t)pSoldier->bDelayedStrategicMoraleMod + (int32_t)bMoraleMod;
     iMoraleModTotal = std::min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = std::max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bDelayedStrategicMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bDelayedStrategicMoraleMod = (int8_t)iMoraleModTotal;
   } else  // strategic
   {
-    iMoraleModTotal = (INT32)pSoldier->bStrategicMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = (int32_t)pSoldier->bStrategicMoraleMod + (int32_t)bMoraleMod;
     iMoraleModTotal = std::min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = std::max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bStrategicMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bStrategicMoraleMod = (int8_t)iMoraleModTotal;
   }
 
   RefreshSoldierMorale(pSoldier);
@@ -342,13 +342,13 @@ static void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, UINT8 ubType, INT8 bMoral
   }
 }
 
-static void HandleMoraleEventForSoldier(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent) {
+static void HandleMoraleEventForSoldier(SOLDIERTYPE *pSoldier, int8_t bMoraleEvent) {
   UpdateSoldierMorale(pSoldier, gbMoraleEvent[bMoraleEvent].ubType,
                       gbMoraleEvent[bMoraleEvent].bChange);
 }
 
-void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, INT16 sMapY,
-                       INT8 bMapZ) {
+void HandleMoraleEvent(SOLDIERTYPE *pSoldier, int8_t bMoraleEvent, int16_t sMapX, int16_t sMapY,
+                       int8_t bMapZ) {
   gfSomeoneSaidMoraleQuote = FALSE;
 
   // NOTE: Many morale events are NOT attached to a specific player soldier at
@@ -562,11 +562,11 @@ void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, IN
       break;
     case MORALE_TEAMMATE_DIED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((UINT8)(pSoldier->bExpLevel * REPUTATION_SOLDIER_DIED));
+      ModifyPlayerReputation((uint8_t)(pSoldier->bExpLevel * REPUTATION_SOLDIER_DIED));
       break;
     case MORALE_MERC_CAPTURED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((UINT8)(pSoldier->bExpLevel * REPUTATION_SOLDIER_CAPTURED));
+      ModifyPlayerReputation((uint8_t)(pSoldier->bExpLevel * REPUTATION_SOLDIER_CAPTURED));
       break;
     case MORALE_KILLED_CIVILIAN:
       ModifyPlayerReputation(REPUTATION_KILLED_CIVILIAN);
@@ -585,7 +585,7 @@ void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, IN
 }
 
 void HourlyMoraleUpdate() {
-  static INT8 strategic_morale_update_counter = 0;
+  static int8_t strategic_morale_update_counter = 0;
 
   // loop through all mercs to calculate their morale
   FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -604,11 +604,11 @@ void HourlyMoraleUpdate() {
     bool found_hated = false;
 
     // Counts to calculate average opinion
-    INT32 sum_opinions = 0;
-    INT8 n_team_members = 0;
+    int32_t sum_opinions = 0;
+    int8_t n_team_members = 0;
 
     // Let people with high leadership affect their own morale
-    INT8 highest_team_leadership = EffectiveLeadership(s);
+    int8_t highest_team_leadership = EffectiveLeadership(s);
 
     // loop through all other mercs
     CFOR_EACH_IN_TEAM(other, OUR_TEAM) {
@@ -632,9 +632,9 @@ void HourlyMoraleUpdate() {
         if (other->ubGroupID != 0 && PlayerIDGroupInMotion(other->ubGroupID)) continue;
       }
 
-      INT8 opinion = p.bMercOpinion[other->ubProfile];
+      int8_t opinion = p.bMercOpinion[other->ubProfile];
       if (opinion == HATED_OPINION) {
-        INT8 const hated = WhichHated(s->ubProfile, other->ubProfile);
+        int8_t const hated = WhichHated(s->ubProfile, other->ubProfile);
         if (hated >= 2 ||  // Learn to hate which has become full-blown hatred,
                            // full strength
             p.bHatedCount[hated] <=
@@ -647,18 +647,18 @@ void HourlyMoraleUpdate() {
 
         // Scale according to how close to we are to snapping
         // KM : Divide by 0 error found.  Wrapped into an if statement.
-        INT8 const hated_time = p.bHatedTime[hated];
+        int8_t const hated_time = p.bHatedTime[hated];
         if (hated_time != 0) {
-          opinion = (INT32)opinion * (hated_time - p.bHatedCount[hated]) / hated_time;
+          opinion = (int32_t)opinion * (hated_time - p.bHatedCount[hated]) / hated_time;
         }
       }
       sum_opinions += opinion;
       ++n_team_members;
-      INT8 const other_leadership = EffectiveLeadership(other);
+      int8_t const other_leadership = EffectiveLeadership(other);
       if (highest_team_leadership < other_leadership) highest_team_leadership = other_leadership;
     }
 
-    INT8 actual_team_opinion;
+    int8_t actual_team_opinion;
     if (found_hated) {
       // If teamed with someone we hated, team opinion is automatically minimum
       actual_team_opinion = HATED_OPINION;
@@ -681,10 +681,11 @@ void HourlyMoraleUpdate() {
     // Shift morale from team by ~10%
 
     // This should range between -75 and +75
-    INT8 const team_morale_mod_diff = actual_team_opinion - s->bTeamMoraleMod;
-    INT8 const team_morale_mod_change = team_morale_mod_diff > 0   ? 1 + team_morale_mod_diff / 10
-                                        : team_morale_mod_diff < 0 ? -1 + team_morale_mod_diff / 10
-                                                                   : 0;
+    int8_t const team_morale_mod_diff = actual_team_opinion - s->bTeamMoraleMod;
+    int8_t const team_morale_mod_change = team_morale_mod_diff > 0 ? 1 + team_morale_mod_diff / 10
+                                          : team_morale_mod_diff < 0
+                                              ? -1 + team_morale_mod_diff / 10
+                                              : 0;
     s->bTeamMoraleMod += team_morale_mod_change;
     s->bTeamMoraleMod = std::min(s->bTeamMoraleMod, (int8_t)MORALE_MOD_MAX);
     s->bTeamMoraleMod = std::max(s->bTeamMoraleMod, (int8_t)(-MORALE_MOD_MAX));

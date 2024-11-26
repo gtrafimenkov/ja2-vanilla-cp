@@ -15,11 +15,11 @@
 
 struct PopUpString {
   wchar_t *pString;
-  UINT8 ubForegroundColor;
-  UINT8 ubBackgroundColor;
-  UINT8 ubHighLight;
-  UINT8 ubShade;
-  UINT8 ubSecondaryShade;
+  uint8_t ubForegroundColor;
+  uint8_t ubBackgroundColor;
+  uint8_t ubHighLight;
+  uint8_t ubShade;
+  uint8_t ubSecondaryShade;
   BOOLEAN fHighLightFlag;
   BOOLEAN fShadeFlag;
   BOOLEAN fSecondaryShadeFlag;
@@ -27,18 +27,18 @@ struct PopUpString {
 
 struct PopUpBox {
   SGPBox pos;
-  UINT32 uiLeftMargin;
-  UINT32 uiRightMargin;
-  UINT32 uiBottomMargin;
-  UINT32 uiTopMargin;
-  UINT32 uiLineSpace;
+  uint32_t uiLeftMargin;
+  uint32_t uiRightMargin;
+  uint32_t uiBottomMargin;
+  uint32_t uiTopMargin;
+  uint32_t uiLineSpace;
   const SGPVObject *iBorderObjectIndex;
   SGPVSurface *iBackGroundSurface;
-  UINT32 uiFlags;
+  uint32_t uiFlags;
   SGPVSurface *uiBuffer;
-  UINT32 uiSecondColumnMinimunOffset;
-  UINT32 uiSecondColumnCurrentOffset;
-  UINT32 uiBoxMinWidth;
+  uint32_t uiSecondColumnMinimunOffset;
+  uint32_t uiSecondColumnCurrentOffset;
+  uint32_t uiBoxMinWidth;
   BOOLEAN fUpdated;
   BOOLEAN fShowBox;
   Font font;
@@ -65,22 +65,22 @@ static PopUpBox *PopUpBoxList[MAX_POPUP_BOX_COUNT];
 #define BOTTOM_EDGE 4
 #define BOTTOM_RIGHT_CORNER 3
 
-UINT32 GetLineSpace(const PopUpBox *const box) {
+uint32_t GetLineSpace(const PopUpBox *const box) {
   // return number of pixels between lines for this box
   return box->uiLineSpace;
 }
 
-void SpecifyBoxMinWidth(PopUpBox *const box, INT32 iMinWidth) {
+void SpecifyBoxMinWidth(PopUpBox *const box, int32_t iMinWidth) {
   box->uiBoxMinWidth = iMinWidth;
 
   // check if the box is currently too small
   if (box->pos.w < iMinWidth) box->pos.w = iMinWidth;
 }
 
-PopUpBox *CreatePopUpBox(const SGPPoint Position, const UINT32 uiFlags, SGPVSurface *const buffer,
+PopUpBox *CreatePopUpBox(const SGPPoint Position, const uint32_t uiFlags, SGPVSurface *const buffer,
                          const SGPVObject *const border, SGPVSurface *const background,
-                         const UINT32 margin_l, const UINT32 margin_t, const UINT32 margin_b,
-                         const UINT32 margin_r, const UINT32 line_space) {
+                         const uint32_t margin_l, const uint32_t margin_t, const uint32_t margin_b,
+                         const uint32_t margin_r, const uint32_t line_space) {
   // find first free box
   FOR_EACH(PopUpBox *, i, PopUpBoxList) {
     if (*i == NULL) {
@@ -105,17 +105,17 @@ PopUpBox *CreatePopUpBox(const SGPPoint Position, const UINT32 uiFlags, SGPVSurf
   throw std::runtime_error("Out of popup box slots");
 }
 
-UINT32 GetTopMarginSize(const PopUpBox *const box) {
+uint32_t GetTopMarginSize(const PopUpBox *const box) {
   // return size of top margin, for mouse region offsets
   return box->uiTopMargin;
 }
 
-void ShadeStringInBox(PopUpBox *const box, INT32 const line, bool const shade) {
+void ShadeStringInBox(PopUpBox *const box, int32_t const line, bool const shade) {
   PopUpString *const s = box->Text[line];
   if (s) s->fShadeFlag = shade;
 }
 
-void ShadeStringInBox(PopUpBox *const box, INT32 const line, PopUpShade const shade) {
+void ShadeStringInBox(PopUpBox *const box, int32_t const line, PopUpShade const shade) {
   PopUpString *const s = box->Text[line];
   if (!s) return;
 
@@ -123,18 +123,18 @@ void ShadeStringInBox(PopUpBox *const box, INT32 const line, PopUpShade const sh
   s->fSecondaryShadeFlag = shade == POPUP_SHADE_SECONDARY;
 }
 
-void SetBoxXY(PopUpBox *const box, const INT16 x, const INT16 y) {
+void SetBoxXY(PopUpBox *const box, const int16_t x, const int16_t y) {
   box->pos.x = x;
   box->pos.y = y;
   box->fUpdated = FALSE;
 }
 
-void SetBoxX(PopUpBox *const box, const INT16 x) {
+void SetBoxX(PopUpBox *const box, const int16_t x) {
   box->pos.x = x;
   box->fUpdated = FALSE;
 }
 
-void SetBoxY(PopUpBox *const box, const INT16 y) {
+void SetBoxY(PopUpBox *const box, const int16_t y) {
   box->pos.y = y;
   box->fUpdated = FALSE;
 }
@@ -143,7 +143,7 @@ SGPBox const &GetBoxArea(PopUpBox const *const box) { return box->pos; }
 
 // adds a FIRST column string to the CURRENT popup box
 void AddMonoString(PopUpBox *const box, const wchar_t *pString) {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // find first free slot in list
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT && box->Text[iCounter] != NULL;
@@ -169,10 +169,10 @@ void AddMonoString(PopUpBox *const box, const wchar_t *pString) {
   box->fUpdated = FALSE;
 }
 
-static void RemoveBoxSecondaryText(PopUpBox *, INT32 hStringHandle);
+static void RemoveBoxSecondaryText(PopUpBox *, int32_t hStringHandle);
 
 void AddSecondColumnMonoString(PopUpBox *const box, const wchar_t *const pString) {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // find the LAST USED text string index
   for (iCounter = 0; iCounter + 1 < MAX_POPUP_BOX_STRING_COUNT && box->Text[iCounter + 1] != NULL;
@@ -197,8 +197,8 @@ void AddSecondColumnMonoString(PopUpBox *const box, const wchar_t *const pString
   box->pSecondColumnString[iCounter]->fHighLightFlag = FALSE;
 }
 
-UINT32 GetNumberOfLinesOfTextInBox(const PopUpBox *const box) {
-  INT32 iCounter = 0;
+uint32_t GetNumberOfLinesOfTextInBox(const PopUpBox *const box) {
+  int32_t iCounter = 0;
 
   // count number of lines
   // check string size
@@ -214,81 +214,81 @@ void SetBoxFont(PopUpBox *const box, Font const font) {
   box->fUpdated = FALSE;
 }
 
-void SetBoxSecondColumnMinimumOffset(PopUpBox *const box, const UINT32 uiWidth) {
+void SetBoxSecondColumnMinimumOffset(PopUpBox *const box, const uint32_t uiWidth) {
   box->uiSecondColumnMinimunOffset = uiWidth;
 }
 
 Font GetBoxFont(const PopUpBox *const box) { return box->font; }
 
 // set the foreground color of this string in this pop up box
-void SetBoxLineForeground(PopUpBox *const box, const INT32 iStringValue, const UINT8 ubColor) {
+void SetBoxLineForeground(PopUpBox *const box, const int32_t iStringValue, const uint8_t ubColor) {
   box->Text[iStringValue]->ubForegroundColor = ubColor;
 }
 
-void SetBoxSecondaryShade(PopUpBox *const box, UINT8 const colour) {
+void SetBoxSecondaryShade(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->Text) {
     PopUpString *const p = *i;
     if (p) p->ubSecondaryShade = colour;
   }
 }
 
-void SetBoxForeground(PopUpBox *const box, UINT8 const colour) {
+void SetBoxForeground(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->Text) {
     PopUpString *const p = *i;
     if (p) p->ubForegroundColor = colour;
   }
 }
 
-void SetBoxBackground(PopUpBox *const box, UINT8 const colour) {
+void SetBoxBackground(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->Text) {
     PopUpString *const p = *i;
     if (p) p->ubBackgroundColor = colour;
   }
 }
 
-void SetBoxHighLight(PopUpBox *const box, UINT8 const colour) {
+void SetBoxHighLight(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->Text) {
     PopUpString *const p = *i;
     if (p) p->ubHighLight = colour;
   }
 }
 
-void SetBoxShade(PopUpBox *const box, UINT8 const colour) {
+void SetBoxShade(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->Text) {
     PopUpString *const p = *i;
     if (p) p->ubShade = colour;
   }
 }
 
-void SetBoxSecondColumnForeground(PopUpBox *const box, UINT8 const colour) {
+void SetBoxSecondColumnForeground(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->pSecondColumnString) {
     PopUpString *const p = *i;
     if (p) p->ubForegroundColor = colour;
   }
 }
 
-void SetBoxSecondColumnBackground(PopUpBox *const box, UINT8 const colour) {
+void SetBoxSecondColumnBackground(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->pSecondColumnString) {
     PopUpString *const p = *i;
     if (p) p->ubBackgroundColor = colour;
   }
 }
 
-void SetBoxSecondColumnHighLight(PopUpBox *const box, UINT8 const colour) {
+void SetBoxSecondColumnHighLight(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->pSecondColumnString) {
     PopUpString *const p = *i;
     if (p) p->ubHighLight = colour;
   }
 }
 
-void SetBoxSecondColumnShade(PopUpBox *const box, UINT8 const colour) {
+void SetBoxSecondColumnShade(PopUpBox *const box, uint8_t const colour) {
   FOR_EACH(PopUpString *, i, box->pSecondColumnString) {
     PopUpString *const p = *i;
     if (p) p->ubShade = colour;
   }
 }
 
-void HighLightBoxLine(PopUpBox *const box, const INT32 iLineNumber) {
+void HighLightBoxLine(PopUpBox *const box, const int32_t iLineNumber) {
   // highlight iLineNumber Line in box
   PopUpString *const line = box->Text[iLineNumber];
   if (line != NULL) {
@@ -296,7 +296,7 @@ void HighLightBoxLine(PopUpBox *const box, const INT32 iLineNumber) {
   }
 }
 
-BOOLEAN GetBoxShadeFlag(const PopUpBox *const box, const INT32 iLineNumber) {
+BOOLEAN GetBoxShadeFlag(const PopUpBox *const box, const int32_t iLineNumber) {
   if (box->Text[iLineNumber] != NULL) {
     return box->Text[iLineNumber]->fShadeFlag;
   }
@@ -310,10 +310,10 @@ void UnHighLightBox(PopUpBox *const box) {
   }
 }
 
-static void RemoveBoxPrimaryText(PopUpBox *, INT32 hStringHandle);
+static void RemoveBoxPrimaryText(PopUpBox *, int32_t hStringHandle);
 
 void RemoveAllBoxStrings(PopUpBox *const box) {
-  for (UINT32 i = 0; i < MAX_POPUP_BOX_STRING_COUNT; ++i) {
+  for (uint32_t i = 0; i < MAX_POPUP_BOX_STRING_COUNT; ++i) {
     RemoveBoxPrimaryText(box, i);
     RemoveBoxSecondaryText(box, i);
   }
@@ -365,18 +365,18 @@ void DisplayOnePopupBox(PopUpBox *const box, SGPVSurface *const uiBuffer) {
 void ForceUpDateOfBox(PopUpBox *const box) { box->fUpdated = FALSE; }
 
 static void DrawBox(const PopUpBox *const box) {
-  const UINT16 x = box->pos.x;
-  const UINT16 y = box->pos.y;
-  UINT16 w = box->pos.w;
-  const UINT16 h = box->pos.h;
+  const uint16_t x = box->pos.x;
+  const uint16_t y = box->pos.y;
+  uint16_t w = box->pos.w;
+  const uint16_t h = box->pos.h;
 
   // make sure it will fit on screen!
   Assert(x + w <= SCREEN_WIDTH);
   Assert(y + h <= SCREEN_HEIGHT);
 
   // subtract 4 because the 2 2-pixel corners are handled separately
-  const UINT32 uiNumTilesWide = (w - 4) / BORDER_WIDTH;
-  const UINT32 uiNumTilesHigh = (h - 4) / BORDER_HEIGHT;
+  const uint32_t uiNumTilesWide = (w - 4) / BORDER_WIDTH;
+  const uint32_t uiNumTilesHigh = (h - 4) / BORDER_HEIGHT;
 
   SGPVSurface *const dst = box->uiBuffer;
 
@@ -395,27 +395,27 @@ static void DrawBox(const PopUpBox *const box) {
   // blit in edges
   if (uiNumTilesWide > 0) {
     // full pieces
-    for (UINT32 i = 0; i < uiNumTilesWide; ++i) {
-      const INT32 lx = x + 2 + i * BORDER_WIDTH;
+    for (uint32_t i = 0; i < uiNumTilesWide; ++i) {
+      const int32_t lx = x + 2 + i * BORDER_WIDTH;
       BltVideoObject(dst, border, TOP_EDGE, lx, y);
       BltVideoObject(dst, border, BOTTOM_EDGE, lx, y + h - 2);
     }
 
     // partial pieces
-    const INT32 lx = x + w - 2 - BORDER_WIDTH;
+    const int32_t lx = x + w - 2 - BORDER_WIDTH;
     BltVideoObject(dst, border, TOP_EDGE, lx, y);
     BltVideoObject(dst, border, BOTTOM_EDGE, lx, y + h - 2);
   }
   if (uiNumTilesHigh > 0) {
     // full pieces
-    for (UINT32 i = 0; i < uiNumTilesHigh; ++i) {
-      const INT32 ly = y + 2 + i * BORDER_HEIGHT;
+    for (uint32_t i = 0; i < uiNumTilesHigh; ++i) {
+      const int32_t ly = y + 2 + i * BORDER_HEIGHT;
       BltVideoObject(dst, border, SIDE_EDGE, x, ly);
       BltVideoObject(dst, border, SIDE_EDGE, x + w - 2, ly);
     }
 
     // partial pieces
-    const INT32 ly = y + h - 2 - BORDER_HEIGHT;
+    const int32_t ly = y + h - 2 - BORDER_HEIGHT;
     BltVideoObject(dst, border, SIDE_EDGE, x, ly);
     BltVideoObject(dst, border, SIDE_EDGE, x + w - 2, ly);
   }
@@ -425,17 +425,17 @@ static void DrawBox(const PopUpBox *const box) {
 
 static void DrawBoxText(const PopUpBox *const box) {
   Font const font = box->font;
-  INT32 const tlx = box->pos.x + box->uiLeftMargin;
-  INT32 const tly = box->pos.y + box->uiTopMargin;
-  INT32 const brx = box->pos.x + box->pos.w - box->uiRightMargin;
-  INT32 const bry = box->pos.y + box->pos.h - box->uiBottomMargin;
-  INT32 const w = box->pos.w - (box->uiRightMargin + box->uiLeftMargin + 2);
-  INT32 const h = GetFontHeight(font);
+  int32_t const tlx = box->pos.x + box->uiLeftMargin;
+  int32_t const tly = box->pos.y + box->uiTopMargin;
+  int32_t const brx = box->pos.x + box->pos.w - box->uiRightMargin;
+  int32_t const bry = box->pos.y + box->pos.h - box->uiBottomMargin;
+  int32_t const w = box->pos.w - (box->uiRightMargin + box->uiLeftMargin + 2);
+  int32_t const h = GetFontHeight(font);
 
   SetFont(font);
   SetFontDestBuffer(box->uiBuffer, tlx - 1, tly, brx, bry);
 
-  for (UINT32 i = 0; i < MAX_POPUP_BOX_STRING_COUNT; ++i) {
+  for (uint32_t i = 0; i < MAX_POPUP_BOX_STRING_COUNT; ++i) {
     // there is text in this line?
     const PopUpString *const text = box->Text[i];
     if (text) {
@@ -452,9 +452,9 @@ static void DrawBoxText(const PopUpBox *const box) {
 
       SetFontBackground(text->ubBackgroundColor);
 
-      const INT32 y = tly + i * (h + box->uiLineSpace);
-      INT16 uX;
-      INT16 uY;
+      const int32_t y = tly + i * (h + box->uiLineSpace);
+      int16_t uX;
+      int16_t uY;
       if (box->uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
         FindFontCenterCoordinates(tlx, y, w, h, text->pString, font, &uX, &uY);
       } else {
@@ -478,9 +478,9 @@ static void DrawBoxText(const PopUpBox *const box) {
 
       SetFontBackground(second->ubBackgroundColor);
 
-      const INT32 y = tly + i * (h + box->uiLineSpace);
-      INT16 uX;
-      INT16 uY;
+      const int32_t y = tly + i * (h + box->uiLineSpace);
+      int16_t uX;
+      int16_t uY;
       if (box->uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
         FindFontCenterCoordinates(tlx, y, w, h, second->pString, font, &uX, &uY);
       } else {
@@ -500,27 +500,27 @@ static void DrawBoxText(const PopUpBox *const box) {
 
 void ResizeBoxToText(PopUpBox *const box) {
   Font const font = box->font;
-  UINT32 max_lw = 0;  // width of left  column
-  UINT32 max_rw = 0;  // width of right column
-  UINT i;
+  uint32_t max_lw = 0;  // width of left  column
+  uint32_t max_rw = 0;  // width of right column
+  uint32_t i;
   for (i = 0; i < MAX_POPUP_BOX_STRING_COUNT; ++i) {
     const PopUpString *const l = box->Text[i];
     if (l == NULL) break;
 
-    const UINT32 lw = StringPixLength(l->pString, font);
+    const uint32_t lw = StringPixLength(l->pString, font);
     if (lw > max_lw) max_lw = lw;
 
     const PopUpString *const r = box->pSecondColumnString[i];
     if (r != NULL) {
-      const UINT32 rw = StringPixLength(r->pString, font);
+      const uint32_t rw = StringPixLength(r->pString, font);
       if (rw > max_rw) max_rw = rw;
     }
   }
 
-  const UINT32 r_off = max_lw + box->uiSecondColumnMinimunOffset;
+  const uint32_t r_off = max_lw + box->uiSecondColumnMinimunOffset;
   box->uiSecondColumnCurrentOffset = r_off;
 
-  UINT32 w = box->uiLeftMargin + r_off + max_rw + box->uiRightMargin;
+  uint32_t w = box->uiLeftMargin + r_off + max_rw + box->uiRightMargin;
   if (w < box->uiBoxMinWidth) w = box->uiBoxMinWidth;
   box->pos.w = w;
 
@@ -541,7 +541,7 @@ void HideAllBoxes() {
   FOR_EACH_POPUP_BOX(i) { HideBox(*i); }
 }
 
-static void RemoveBoxPrimaryText(PopUpBox *const Box, const INT32 hStringHandle) {
+static void RemoveBoxPrimaryText(PopUpBox *const Box, const int32_t hStringHandle) {
   Assert(Box != NULL);
   Assert(hStringHandle < MAX_POPUP_BOX_STRING_COUNT);
 
@@ -556,7 +556,7 @@ static void RemoveBoxPrimaryText(PopUpBox *const Box, const INT32 hStringHandle)
   }
 }
 
-static void RemoveBoxSecondaryText(PopUpBox *const Box, const INT32 hStringHandle) {
+static void RemoveBoxSecondaryText(PopUpBox *const Box, const int32_t hStringHandle) {
   Assert(Box != NULL);
   Assert(hStringHandle < MAX_POPUP_BOX_STRING_COUNT);
 

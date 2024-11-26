@@ -2,7 +2,7 @@
 
 #include "GameRes.h"
 
-UINT8 gubCheatLevel;
+uint8_t gubCheatLevel;
 
 /** Reset cheat level to initial value. */
 void resetCheatLevelToInitialValue() {

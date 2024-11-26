@@ -9,16 +9,16 @@
 #include "SysGlobals.h"
 #include "TileEngine/Environment.h"
 
-void ExtractLightSprite(HWFILE const f, UINT32 const light_time) {
-  INT16 x;
-  INT16 y;
-  UINT32 flags;
-  UINT8 str_len;
+void ExtractLightSprite(HWFILE const f, uint32_t const light_time) {
+  int16_t x;
+  int16_t y;
+  uint32_t flags;
+  uint8_t str_len;
 
-  BYTE data[25];
+  uint8_t data[25];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_I16(d, x)
   EXTR_I16(d, y)
   EXTR_SKIP(d, 12)
@@ -51,9 +51,9 @@ void ExtractLightSprite(HWFILE const f, UINT32 const light_time) {
 }
 
 void InjectLightSpriteIntoFile(HWFILE const file, LIGHT_SPRITE const *const l) {
-  BYTE data[24];
+  uint8_t data[24];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_I16(d, l->iX)
   INJ_I16(d, l->iY)
   INJ_SKIP(d, 12)
@@ -64,7 +64,7 @@ void InjectLightSpriteIntoFile(HWFILE const file, LIGHT_SPRITE const *const l) {
   FileWrite(file, data, sizeof(data));
 
   const char *const light_name = LightSpriteGetTypeName(l);
-  const UINT8 str_len = strlen(light_name) + 1;
+  const uint8_t str_len = strlen(light_name) + 1;
   FileWrite(file, &str_len, sizeof(str_len));
   FileWrite(file, light_name, str_len);
 }

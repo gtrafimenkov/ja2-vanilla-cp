@@ -41,9 +41,9 @@
 #define STRUCTURE_ON_GROUND_MAX PROFILE_Z_SIZE
 #define STRUCTURE_ON_ROOF_MAX PROFILE_Z_SIZE * 2
 
-typedef UINT8 PROFILE[PROFILE_X_SIZE][PROFILE_Y_SIZE];
+typedef uint8_t PROFILE[PROFILE_X_SIZE][PROFILE_Y_SIZE];
 
-extern UINT8 AtHeight[PROFILE_Z_SIZE];
+extern uint8_t AtHeight[PROFILE_Z_SIZE];
 
 // MAP_ELEMENT may get later:
 // PROFILE *		CombinedLOSProfile;
@@ -124,73 +124,73 @@ ENUM_BITSET(StructureFlags)
 #define TILE_PASSABLE 0x02
 
 struct DB_STRUCTURE_TILE {
-  INT16 sPosRelToBase;  // "single-axis"
-  INT8 bXPosRelToBase;
-  INT8 bYPosRelToBase;
+  int16_t sPosRelToBase;  // "single-axis"
+  int8_t bXPosRelToBase;
+  int8_t bYPosRelToBase;
   PROFILE Shape;  // 25 bytes
-  UINT8 fFlags;
-  UINT8 ubVehicleHitLocation;
-  BYTE bUnused[1];  // XXX HACK000B
-};                  // 32 bytes
+  uint8_t fFlags;
+  uint8_t ubVehicleHitLocation;
+  uint8_t bUnused[1];  // XXX HACK000B
+};  // 32 bytes
 
 #define BASE_TILE 0
 
 #define NO_PARTNER_STRUCTURE 0
 
 struct DB_STRUCTURE {
-  UINT8 ubArmour;
-  UINT8 ubHitPoints;
-  UINT8 ubDensity;
-  UINT8 ubNumberOfTiles;
-  UINT32 fFlags;
-  UINT16 usStructureNumber;
-  UINT8 ubWallOrientation;
-  INT8 bDestructionPartner;  // >0 = debris number (bDP - 1), <0 = partner graphic
-  INT8 bPartnerDelta;        // opened/closed version, etc... 0 for unused
-  INT8 bZTileOffsetX;
-  INT8 bZTileOffsetY;
-  BYTE bUnused[1];  // XXX HACK000B
-};                  // 16 bytes
+  uint8_t ubArmour;
+  uint8_t ubHitPoints;
+  uint8_t ubDensity;
+  uint8_t ubNumberOfTiles;
+  uint32_t fFlags;
+  uint16_t usStructureNumber;
+  uint8_t ubWallOrientation;
+  int8_t bDestructionPartner;  // >0 = debris number (bDP - 1), <0 = partner graphic
+  int8_t bPartnerDelta;        // opened/closed version, etc... 0 for unused
+  int8_t bZTileOffsetX;
+  int8_t bZTileOffsetY;
+  uint8_t bUnused[1];  // XXX HACK000B
+};  // 16 bytes
 
 struct DB_STRUCTURE_REF {
   DB_STRUCTURE *pDBStructure;
   DB_STRUCTURE_TILE **ppTile;  // dynamic array
-};                             // 8 bytes
+};  // 8 bytes
 
 struct STRUCTURE {
   STRUCTURE *pPrev;
   STRUCTURE *pNext;
-  INT16 sGridNo;
-  UINT16 usStructureID;
+  int16_t sGridNo;
+  uint16_t usStructureID;
   const DB_STRUCTURE_REF *pDBStructureRef;
   union {
     struct {
-      UINT8 ubHitPoints;
-      UINT8 ubLockStrength;
+      uint8_t ubHitPoints;
+      uint8_t ubLockStrength;
     };
     struct {
-      INT16 sBaseGridNo;
+      int16_t sBaseGridNo;
     };
-  };                  // 2 bytes
-  INT16 sCubeOffset;  // height of bottom of object in profile "cubes"
-  UINT32 fFlags;      // need to have something to indicate base tile/not
+  };  // 2 bytes
+  int16_t sCubeOffset;  // height of bottom of object in profile "cubes"
+  uint32_t fFlags;      // need to have something to indicate base tile/not
   PROFILE *pShape;
-  UINT8 ubWallOrientation;
-  UINT8 ubVehicleHitLocation;
-  UINT8 ubStructureHeight;  // if 0, then unset; otherwise stores height of
-                            // structure when last calculated
-  UINT8 ubUnused[1];        // XXX HACK000B
-};                          // 32 bytes
+  uint8_t ubWallOrientation;
+  uint8_t ubVehicleHitLocation;
+  uint8_t ubStructureHeight;  // if 0, then unset; otherwise stores height of
+                              // structure when last calculated
+  uint8_t ubUnused[1];        // XXX HACK000B
+};  // 32 bytes
 
 struct STRUCTURE_FILE_REF {
   STRUCTURE_FILE_REF *pPrev;
   STRUCTURE_FILE_REF *pNext;
   AuxObjectData *pAuxData;
   RelTileLoc *pTileLocData;
-  UINT8 *pubStructureData;
+  uint8_t *pubStructureData;
   DB_STRUCTURE_REF *pDBStructureRef;  // dynamic array
-  UINT16 usNumberOfStructures;
-  UINT16 usNumberOfStructuresStored;
+  uint16_t usNumberOfStructures;
+  uint16_t usNumberOfStructuresStored;
 };  // 24 bytes
 
 #define STRUCTURE_FILE_EXTENSION "JSD"

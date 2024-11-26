@@ -32,10 +32,10 @@
 
 struct MOUSE_REGION;
 
-typedef void (*MOUSE_CALLBACK)(MOUSE_REGION *, INT32);
+typedef void (*MOUSE_CALLBACK)(MOUSE_REGION *, int32_t);
 
 struct MOUSE_REGION {
-  void ChangeCursor(UINT16 crsr);
+  void ChangeCursor(uint16_t crsr);
 
   void Enable() { uiFlags |= MSYS_REGION_ENABLED; }
   void Disable() { uiFlags &= ~MSYS_REGION_ENABLED; }
@@ -51,37 +51,37 @@ struct MOUSE_REGION {
     return static_cast<T *>(user.ptr);
   }
 
-  INT16 X() const { return RegionTopLeftX; }
-  INT16 Y() const { return RegionTopLeftY; }
-  INT16 W() const { return RegionBottomRightX - RegionTopLeftX; }
-  INT16 H() const { return RegionBottomRightY - RegionTopLeftY; }
+  int16_t X() const { return RegionTopLeftX; }
+  int16_t Y() const { return RegionTopLeftY; }
+  int16_t W() const { return RegionBottomRightX - RegionTopLeftX; }
+  int16_t H() const { return RegionBottomRightY - RegionTopLeftY; }
 
-  INT8 PriorityLevel;    // Region's Priority, set by system and/or caller
-  UINT32 uiFlags;        // Region's state flags
-  INT16 RegionTopLeftX;  // Screen area affected by this region (absolute
-                         // coordinates)
-  INT16 RegionTopLeftY;
-  INT16 RegionBottomRightX;
-  INT16 RegionBottomRightY;
-  INT16 MouseXPos;  // Mouse's Coordinates in absolute screen coordinates
-  INT16 MouseYPos;
-  INT16 RelativeXPos;  // Mouse's Coordinates relative to the Top-Left corner of
-                       // the region
-  INT16 RelativeYPos;
-  UINT16 ButtonState;               // Current state of the mouse buttons
-  UINT16 Cursor;                    // Cursor to use when mouse in this region (see flags)
+  int8_t PriorityLevel;    // Region's Priority, set by system and/or caller
+  uint32_t uiFlags;        // Region's state flags
+  int16_t RegionTopLeftX;  // Screen area affected by this region (absolute
+                           // coordinates)
+  int16_t RegionTopLeftY;
+  int16_t RegionBottomRightX;
+  int16_t RegionBottomRightY;
+  int16_t MouseXPos;  // Mouse's Coordinates in absolute screen coordinates
+  int16_t MouseYPos;
+  int16_t RelativeXPos;  // Mouse's Coordinates relative to the Top-Left corner of
+                         // the region
+  int16_t RelativeYPos;
+  uint16_t ButtonState;             // Current state of the mouse buttons
+  uint16_t Cursor;                  // Cursor to use when mouse in this region (see flags)
   MOUSE_CALLBACK MovementCallback;  // Pointer to callback function if movement
                                     // occured in this region
   MOUSE_CALLBACK ButtonCallback;    // Pointer to callback function if button
                                     // action occured in this region
   union                             // User Data, can be set to anything!
   {
-    INT32 data[4];
+    int32_t data[4];
     void *ptr;
   } user;
 
   // Fast help vars.
-  INT16 FastHelpTimer;    // Countdown timer for FastHelp text
+  int16_t FastHelpTimer;  // Countdown timer for FastHelp text
   wchar_t *FastHelpText;  // Text string for the FastHelp (describes buttons if
                           // left there a while)
   BACKGROUND_SAVE *FastHelpRect;
@@ -150,21 +150,21 @@ struct MOUSE_REGION {
 #define MSYS_CALLBACK_REASON_WHEEL_DOWN 0x1000
 
 // Internal Functions
-void MSYS_SetCurrentCursor(UINT16 Cursor);
+void MSYS_SetCurrentCursor(uint16_t Cursor);
 
 // External
 void MSYS_Init();
 void MSYS_Shutdown();
-void MSYS_DefineRegion(MOUSE_REGION *region, UINT16 tlx, UINT16 tly, UINT16 brx, UINT16 bry,
-                       INT8 priority, UINT16 crsr, MOUSE_CALLBACK movecallback,
+void MSYS_DefineRegion(MOUSE_REGION *region, uint16_t tlx, uint16_t tly, uint16_t brx, uint16_t bry,
+                       int8_t priority, uint16_t crsr, MOUSE_CALLBACK movecallback,
                        MOUSE_CALLBACK buttoncallback);
 void MSYS_RemoveRegion(MOUSE_REGION *region);
 
 /* Set one of the user data entries in a mouse region */
-void MSYS_SetRegionUserData(MOUSE_REGION *, UINT32 index, INT32 userdata);
+void MSYS_SetRegionUserData(MOUSE_REGION *, uint32_t index, int32_t userdata);
 
 /* Retrieve one of the user data entries in a mouse region */
-INT32 MSYS_GetRegionUserData(MOUSE_REGION const *, UINT32 index);
+int32_t MSYS_GetRegionUserData(MOUSE_REGION const *, uint32_t index);
 
 // This function will force a re-evaluation of mous regions
 // Usually used to force change of mouse cursor if panels switch, etc
@@ -174,12 +174,12 @@ void RefreshMouseRegions();
 void RenderFastHelp();
 
 // Hook to the SGP's mouse handler
-void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord);
+void MouseSystemHook(uint16_t Type, uint16_t Xcoord, uint16_t Ycoord);
 
 class MouseRegion : private MOUSE_REGION {
  public:
-  MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h, INT8 const priority,
-              UINT16 const cursor, MOUSE_CALLBACK const movecallback,
+  MouseRegion(uint16_t const x, uint16_t const y, uint16_t const w, uint16_t const h,
+              int8_t const priority, uint16_t const cursor, MOUSE_CALLBACK const movecallback,
               MOUSE_CALLBACK const buttoncallback);
 
   ~MouseRegion() { MSYS_RemoveRegion(this); }

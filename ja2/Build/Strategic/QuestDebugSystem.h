@@ -4,9 +4,9 @@
 #include "ScreenIDs.h"
 #include "TacticalAI/NPC.h"
 
-extern INT16 gsQdsEnteringGridNo;
+extern int16_t gsQdsEnteringGridNo;
 
-void NpcRecordLoggingInit(ProfileID npc_id, ProfileID merc_id, UINT8 quote_id, Approach);
+void NpcRecordLoggingInit(ProfileID npc_id, ProfileID merc_id, uint8_t quote_id, Approach);
 void NpcRecordLogging(Approach, char const *fmt, ...);
 
 void QuestDebugScreenInit();

@@ -26,12 +26,12 @@ extern BOOLEAN gfAutoBandageFailed;
 #define NOT_GOING_TO_DIE -1
 #define NOT_GOING_TO_COLLAPSE -1
 
-static BOOLEAN FindAutobandageClimbPoint(INT16 sDesiredGridNo, BOOLEAN fClimbUp) {
+static BOOLEAN FindAutobandageClimbPoint(int16_t sDesiredGridNo, BOOLEAN fClimbUp) {
   // checks for existance of location to climb up to building, not occupied by a
   // medic
   BUILDING *pBuilding;
-  UINT8 ubNumClimbSpots;
-  UINT8 ubLoop;
+  uint8_t ubNumClimbSpots;
+  uint8_t ubLoop;
 
   pBuilding = FindBuilding(sDesiredGridNo);
   if (!pBuilding) {
@@ -86,7 +86,7 @@ BOOLEAN CanAutoBandage(BOOLEAN fDoFullCheck) {
   static const SOLDIERTYPE *soldier_for_full_check = NULL;
 
   // returns false if we should stop being in auto-bandage mode
-  UINT8 ubMedics = 0, ubPatients = 0;
+  uint8_t ubMedics = 0, ubPatients = 0;
 
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // can this character help out?
@@ -168,13 +168,13 @@ CanCharacterBeAutoBandagedByTeammate(const SOLDIERTYPE *const pSoldier) {
   return (FALSE);
 }
 
-static INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
-  INT16 bBestPriority = 0;
-  INT16 sPatientGridNo;
-  INT16 sShortestPath = 1000, sPathCost, sOtherMedicPathCost;
+static int8_t FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
+  int16_t bBestPriority = 0;
+  int16_t sPatientGridNo;
+  int16_t sShortestPath = 1000, sPathCost, sOtherMedicPathCost;
   SOLDIERTYPE *pBestPatient = NULL;
-  INT8 bPatientPriority;
-  INT16 sClimbGridNo, sBestClimbGridNo = NOWHERE, sShortestClimbPath = 1000;
+  int8_t bPatientPriority;
+  int16_t sClimbGridNo, sBestClimbGridNo = NOWHERE, sShortestClimbPath = 1000;
   BOOLEAN fClimbingNecessary;
 
   GridNo sBestAdjGridNo = NOWHERE;      // XXX HACK000E
@@ -200,13 +200,13 @@ static INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
       if (bPatientPriority >= bBestPriority) {
         if (!ClimbingNecessary(pSoldier, pPatient->sGridNo, pPatient->bLevel)) {
           sPatientGridNo = pPatient->sGridNo;
-          INT16 sAdjacentGridNo =
+          int16_t sAdjacentGridNo =
               FindAdjacentGridEx(pSoldier, sPatientGridNo, NULL, NULL, FALSE, FALSE);
           if (sAdjacentGridNo == -1 &&
               gAnimControl[pPatient->usAnimState].ubEndHeight == ANIM_PRONE) {
             // prone; could be the base tile is inaccessible but the rest
             // isn't...
-            for (UINT8 cnt2 = 0; cnt2 < NUM_WORLD_DIRECTIONS; ++cnt2) {
+            for (uint8_t cnt2 = 0; cnt2 < NUM_WORLD_DIRECTIONS; ++cnt2) {
               sPatientGridNo = pPatient->sGridNo + DirectionInc(cnt2);
               if (WhoIsThere2(sPatientGridNo, pPatient->bLevel) == pPatient) {
                 // patient is also here, try this location
@@ -232,7 +232,7 @@ static INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
               if (pOtherMedic != NULL && pOtherMedic != pSoldier) {
                 // only switch to this patient if our distance is closer than
                 // the other medic's
-                const INT16 sOtherAdjacentGridNo =
+                const int16_t sOtherAdjacentGridNo =
                     FindAdjacentGridEx(pOtherMedic, sPatientGridNo, NULL, NULL, FALSE, FALSE);
                 if (sOtherAdjacentGridNo != -1) {
                   if (sOtherAdjacentGridNo == pOtherMedic->sGridNo) {
@@ -305,8 +305,8 @@ static INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
   }
 }
 
-INT8 DecideAutoBandage(SOLDIERTYPE *pSoldier) {
-  INT8 bSlot;
+int8_t DecideAutoBandage(SOLDIERTYPE *pSoldier) {
+  int8_t bSlot;
   BOOLEAN fDoClimb;
 
   if (pSoldier->bMedical == 0 || pSoldier->service_partner != NULL) {

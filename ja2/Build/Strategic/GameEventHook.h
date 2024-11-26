@@ -79,12 +79,12 @@ enum StrategicEventKind {
 // processed once, and deleted.  The first prototype requires the actual world
 // time in minutes included the current day, and the additional ones are wrappers
 // which calculate the actual world time for you.
-BOOLEAN AddStrategicEvent(StrategicEventKind, UINT32 uiMinStamp, UINT32 uiParam);
-BOOLEAN AddSameDayStrategicEvent(StrategicEventKind, UINT32 uiMinStamp, UINT32 uiParam);
-BOOLEAN AddFutureDayStrategicEvent(StrategicEventKind, UINT32 uiMinStamp, UINT32 uiParam,
-                                   UINT32 uiNumDaysFromPresent);
+BOOLEAN AddStrategicEvent(StrategicEventKind, uint32_t uiMinStamp, uint32_t uiParam);
+BOOLEAN AddSameDayStrategicEvent(StrategicEventKind, uint32_t uiMinStamp, uint32_t uiParam);
+BOOLEAN AddFutureDayStrategicEvent(StrategicEventKind, uint32_t uiMinStamp, uint32_t uiParam,
+                                   uint32_t uiNumDaysFromPresent);
 // Same but uses seconds instead of minutes.
-BOOLEAN AddStrategicEventUsingSeconds(StrategicEventKind, UINT32 uiSecondStamp, UINT32 uiParam);
+BOOLEAN AddStrategicEventUsingSeconds(StrategicEventKind, uint32_t uiSecondStamp, uint32_t uiParam);
 
 // Ranged Events
 // In certain cases, you may wish to create an event that has a start time and
@@ -94,8 +94,8 @@ BOOLEAN AddStrategicEventUsingSeconds(StrategicEventKind, UINT32 uiSecondStamp, 
 // process it separately.  An example use of ranged events would be for ambient
 // sounds.  The start time would be called to define the sounds for use within
 // the game.  The end time would be used to remove the sound from the system.
-BOOLEAN AddSameDayRangedStrategicEvent(StrategicEventKind, UINT32 uiStartMin, UINT32 uiLengthMin,
-                                       UINT32 uiParam);
+BOOLEAN AddSameDayRangedStrategicEvent(StrategicEventKind, uint32_t uiStartMin,
+                                       uint32_t uiLengthMin, uint32_t uiParam);
 
 // EveryDay Events
 // A second special case event, this event will get processed automatically at
@@ -103,21 +103,21 @@ BOOLEAN AddSameDayRangedStrategicEvent(StrategicEventKind, UINT32 uiStartMin, UI
 // events such as checking for quests, can also be automated using this system.
 // NOTE: Only specify the time of day in minutes (don't add the actual day to
 // this value)
-BOOLEAN AddEveryDayStrategicEvent(StrategicEventKind, UINT32 uiStartMin, UINT32 uiParam);
+BOOLEAN AddEveryDayStrategicEvent(StrategicEventKind, uint32_t uiStartMin, uint32_t uiParam);
 
 // Periodic Events
 // Event will get processed automatically once every X minutes.  The period is
 // added to the current time for the time stamp.
-BOOLEAN AddPeriodStrategicEvent(StrategicEventKind, UINT32 uiOnceEveryXMinutes, UINT32 uiParam);
+BOOLEAN AddPeriodStrategicEvent(StrategicEventKind, uint32_t uiOnceEveryXMinutes, uint32_t uiParam);
 // Hybrids that aren't based from the current time.  They are offsetted from the
 // current time first.
-BOOLEAN AddPeriodStrategicEventWithOffset(StrategicEventKind, UINT32 uiOnceEveryXMinutes,
-                                          UINT32 uiOffsetFromCurrent, UINT32 uiParam);
+BOOLEAN AddPeriodStrategicEventWithOffset(StrategicEventKind, uint32_t uiOnceEveryXMinutes,
+                                          uint32_t uiOffsetFromCurrent, uint32_t uiParam);
 
 /* Search for and remove the first event matching the supplied information.
  * There may very well be a need for more specific event removal, so let me know
  * (Kris), of any support needs. */
-void DeleteStrategicEvent(StrategicEventKind, UINT32 param);
+void DeleteStrategicEvent(StrategicEventKind, uint32_t param);
 void DeleteAllStrategicEventsOfType(StrategicEventKind);
 void DeleteAllStrategicEvents();
 

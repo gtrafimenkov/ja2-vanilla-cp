@@ -106,7 +106,7 @@ const IEncodingCorrector *getDataFilesEncodingCorrector() {
 }
 
 /** Get major map version. */
-FLOAT getMajorMapVersion() {
+float getMajorMapVersion() {
   // Don't mess with this value, unless you want to force update all maps in the
   // game!
   return (s_gameVersion == GV_RUSSIAN) ? 6.00 : 5.00;

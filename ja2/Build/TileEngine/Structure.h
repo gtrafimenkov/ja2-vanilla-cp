@@ -33,14 +33,14 @@ void FreeStructureFile(STRUCTURE_FILE_REF *);
 //
 // functions at the structure instance level
 //
-BOOLEAN OkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel,
-                                  const DB_STRUCTURE_REF *pDBStructureRef, INT16 sExclusionID);
+BOOLEAN OkayToAddStructureToWorld(int16_t sBaseGridNo, int8_t bLevel,
+                                  const DB_STRUCTURE_REF *pDBStructureRef, int16_t sExclusionID);
 BOOLEAN
-InternalOkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel,
-                                  const DB_STRUCTURE_REF *pDBStructureRef, INT16 sExclusionID,
+InternalOkayToAddStructureToWorld(int16_t sBaseGridNo, int8_t bLevel,
+                                  const DB_STRUCTURE_REF *pDBStructureRef, int16_t sExclusionID,
                                   BOOLEAN fIgnorePeople);
 
-STRUCTURE *AddStructureToWorld(INT16 base_grid_no, INT8 level, DB_STRUCTURE_REF const *,
+STRUCTURE *AddStructureToWorld(int16_t base_grid_no, int8_t level, DB_STRUCTURE_REF const *,
                                LEVELNODE *);
 BOOLEAN DeleteStructureFromWorld(STRUCTURE *pStructure);
 
@@ -49,10 +49,10 @@ BOOLEAN DeleteStructureFromWorld(STRUCTURE *pStructure);
 //
 
 // Finds a structure that matches any of the given flags
-STRUCTURE *FindStructure(INT16 sGridNo, StructureFlags);
+STRUCTURE *FindStructure(int16_t sGridNo, StructureFlags);
 
 STRUCTURE *FindNextStructure(const STRUCTURE *s, StructureFlags);
-STRUCTURE *FindStructureByID(INT16 sGridNo, UINT16 structure_id);
+STRUCTURE *FindStructureByID(int16_t sGridNo, uint16_t structure_id);
 
 #define FOR_EACH_STRUCTURE(iter, grid_no, flags)                  \
   for (STRUCTURE *iter = FindStructure((grid_no), (flags)); iter; \
@@ -69,15 +69,15 @@ STRUCTURE *SwapStructureForPartnerAndStoreChangeInMap(STRUCTURE *);
 //
 // functions useful for AI that return info about heights
 //
-INT8 StructureHeight(STRUCTURE *pStructure);
-INT8 StructureBottomLevel(STRUCTURE *pStructure);
-INT8 GetTallestStructureHeight(INT16 sGridNo, BOOLEAN fOnRoof);
-INT8 GetStructureTargetHeight(INT16 sGridNo, BOOLEAN fOnRoof);
+int8_t StructureHeight(STRUCTURE *pStructure);
+int8_t StructureBottomLevel(STRUCTURE *pStructure);
+int8_t GetTallestStructureHeight(int16_t sGridNo, BOOLEAN fOnRoof);
+int8_t GetStructureTargetHeight(int16_t sGridNo, BOOLEAN fOnRoof);
 
-BOOLEAN StructureDensity(STRUCTURE *pStructure, UINT8 *pubLevel0, UINT8 *pubLevel1,
-                         UINT8 *pubLevel2, UINT8 *pubLevel3);
+BOOLEAN StructureDensity(STRUCTURE *pStructure, uint8_t *pubLevel0, uint8_t *pubLevel1,
+                         uint8_t *pubLevel2, uint8_t *pubLevel3);
 
-BOOLEAN FindAndSwapStructure(INT16 sGridNo);
+BOOLEAN FindAndSwapStructure(int16_t sGridNo);
 //
 // functions to work with the editor undo code
 //
@@ -85,15 +85,15 @@ BOOLEAN FindAndSwapStructure(INT16 sGridNo);
 void DebugStructurePage1();
 
 void AddZStripInfoToVObject(HVOBJECT, STRUCTURE_FILE_REF const *, BOOLEAN fFromAnimation,
-                            INT16 sSTIStartIndex);
+                            int16_t sSTIStartIndex);
 
 // FUNCTIONS FOR DETERMINING STUFF THAT BLOCKS VIEW FOR TILE_bASED LOS
-INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLevel,
-                              INT8 *pStructHeight, STRUCTURE **ppTallestStructure,
-                              BOOLEAN fWallsBlock);
+int8_t GetBlockingStructureInfo(int16_t sGridNo, int8_t bDir, int8_t bNextDir, int8_t bLevel,
+                                int8_t *pStructHeight, STRUCTURE **ppTallestStructure,
+                                BOOLEAN fWallsBlock);
 
-BOOLEAN DamageStructure(STRUCTURE *, UINT8 damage, StructureDamageReason, GridNo, INT16 x, INT16 y,
-                        SOLDIERTYPE *owner);
+BOOLEAN DamageStructure(STRUCTURE *, uint8_t damage, StructureDamageReason, GridNo, int16_t x,
+                        int16_t y, SOLDIERTYPE *owner);
 
 // Material armour type enumeration
 enum {
@@ -129,12 +129,12 @@ enum {
   NUM_MATERIAL_TYPES
 };
 
-STRUCTURE *FindStructureBySavedInfo(GridNo, UINT8 type, UINT8 wall_orientation, INT8 level);
-UINT8 StructureFlagToType(UINT32 uiFlag);
+STRUCTURE *FindStructureBySavedInfo(GridNo, uint8_t type, uint8_t wall_orientation, int8_t level);
+uint8_t StructureFlagToType(uint32_t uiFlag);
 
 SoundID GetStructureOpenSound(STRUCTURE const *, bool closing);
 
-extern const UINT8 gubMaterialArmour[];
+extern const uint8_t gubMaterialArmour[];
 
 typedef SGP::AutoObj<STRUCTURE_FILE_REF, FreeStructureFile> AutoStructureFileRef;
 

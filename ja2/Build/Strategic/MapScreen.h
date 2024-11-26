@@ -46,24 +46,24 @@ void ReBuildCharactersList();
 void HandlePreloadOfMapGraphics();
 void HandleRemovalOfPreLoadedMapGraphics();
 
-void ChangeSelectedMapSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
+void ChangeSelectedMapSector(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
 
 BOOLEAN CanExtendContractForSoldier(const SOLDIERTYPE *s);
 
 void TellPlayerWhyHeCantCompressTime();
 
 // the info character
-extern INT8 bSelectedInfoChar;
+extern int8_t bSelectedInfoChar;
 
 SOLDIERTYPE *GetSelectedInfoChar();
-void ChangeSelectedInfoChar(INT8 bCharNumber, BOOLEAN fResetSelectedList);
+void ChangeSelectedInfoChar(int8_t bCharNumber, BOOLEAN fResetSelectedList);
 
 void MAPEndItemPointer();
 
 void CopyPathToAllSelectedCharacters(PathSt *pPath);
 void CancelPathsOfAllSelectedCharacters();
 
-INT32 GetPathTravelTimeDuringPlotting(PathSt *pPath);
+int32_t GetPathTravelTimeDuringPlotting(PathSt *pPath);
 
 void AbortMovementPlottingMode();
 
@@ -75,10 +75,10 @@ wchar_t const *GetMapscreenMercAssignmentString(SOLDIERTYPE const &);
 void GetMapscreenMercLocationString(SOLDIERTYPE const &, wchar_t *buf, size_t n);
 void GetMapscreenMercDestinationString(SOLDIERTYPE const &, wchar_t *buf, size_t n);
 void GetMapscreenMercDepartureString(SOLDIERTYPE const &, wchar_t *buf, size_t n,
-                                     UINT8 *text_colour);
+                                     uint8_t *text_colour);
 
 // mapscreen wrapper to init the item description box
-void MAPInternalInitItemDescriptionBox(OBJECTTYPE *pObject, UINT8 ubStatusIndex,
+void MAPInternalInitItemDescriptionBox(OBJECTTYPE *pObject, uint8_t ubStatusIndex,
                                        SOLDIERTYPE *pSoldier);
 
 // rebuild contract box this character
@@ -86,7 +86,7 @@ void RebuildContractBoxForMerc(const SOLDIERTYPE *s);
 
 void InternalMAPBeginItemPointer(SOLDIERTYPE *pSoldier);
 BOOLEAN ContinueDialogue(SOLDIERTYPE *pSoldier, BOOLEAN fDone);
-BOOLEAN GetMouseMapXY(INT16 *psMapWorldX, INT16 *psMapWorldY);
+BOOLEAN GetMouseMapXY(int16_t *psMapWorldX, int16_t *psMapWorldY);
 void EndConfirmMapMoveMode();
 BOOLEAN CanDrawSectorCursor();
 void RememberPreviousPathForAllSelectedChars();

@@ -3,57 +3,57 @@
 #include "TileEngine/TileDef.h"
 #include "TileEngine/WorldDef.h"
 
-INT16 const gOpenDoorList[] = {
+int16_t const gOpenDoorList[] = {
     FIRSTDOOR1,  SECONDDOOR1,  THIRDDOOR1,  FOURTHDOOR1,  FIRSTDOOR6,  SECONDDOOR6,
     THIRDDOOR6,  FOURTHDOOR6,  FIRSTDOOR11, SECONDDOOR11, THIRDDOOR11, FOURTHDOOR11,
     FIRSTDOOR16, SECONDDOOR16, THIRDDOOR16, FOURTHDOOR16, -1};
 
-static INT16 const gOpenDoorShadowList[] = {FIRSTDOORSH1,
-                                            SECONDDOORSH1,
-                                            THIRDDOORSH1,
-                                            FOURTHDOORSH1,
-                                            FIRSTDOORSH6,
-                                            SECONDDOORSH6,
-                                            THIRDDOORSH6,
-                                            FOURTHDOORSH6,
-                                            FIRSTDOORSH11,
-                                            SECONDDOORSH11,
-                                            THIRDDOORSH11,
-                                            FOURTHDOORSH11,
-                                            FIRSTDOORSH16,
-                                            SECONDDOORSH16,
-                                            THIRDDOORSH16,
-                                            FOURTHDOORSH16,
-                                            -1};
+static int16_t const gOpenDoorShadowList[] = {FIRSTDOORSH1,
+                                              SECONDDOORSH1,
+                                              THIRDDOORSH1,
+                                              FOURTHDOORSH1,
+                                              FIRSTDOORSH6,
+                                              SECONDDOORSH6,
+                                              THIRDDOORSH6,
+                                              FOURTHDOORSH6,
+                                              FIRSTDOORSH11,
+                                              SECONDDOORSH11,
+                                              THIRDDOORSH11,
+                                              FOURTHDOORSH11,
+                                              FIRSTDOORSH16,
+                                              SECONDDOORSH16,
+                                              THIRDDOORSH16,
+                                              FOURTHDOORSH16,
+                                              -1};
 
-INT16 const gClosedDoorList[] = {
+int16_t const gClosedDoorList[] = {
     FIRSTDOOR5,  SECONDDOOR5,  THIRDDOOR5,  FOURTHDOOR5,  FIRSTDOOR10, SECONDDOOR10,
     THIRDDOOR10, FOURTHDOOR10, FIRSTDOOR15, SECONDDOOR15, THIRDDOOR15, FOURTHDOOR15,
     FIRSTDOOR20, SECONDDOOR20, THIRDDOOR20, FOURTHDOOR20, -1};
 
-static INT16 const gClosedDoorShadowList[] = {FIRSTDOORSH5,
-                                              SECONDDOORSH5,
-                                              THIRDDOORSH5,
-                                              FOURTHDOORSH5,
-                                              FIRSTDOORSH10,
-                                              SECONDDOORSH10,
-                                              THIRDDOORSH10,
-                                              FOURTHDOORSH10,
-                                              FIRSTDOORSH15,
-                                              SECONDDOORSH15,
-                                              THIRDDOORSH15,
-                                              FOURTHDOORSH15,
-                                              FIRSTDOORSH20,
-                                              SECONDDOORSH20,
-                                              THIRDDOORSH20,
-                                              FOURTHDOORSH20,
-                                              -1};
+static int16_t const gClosedDoorShadowList[] = {FIRSTDOORSH5,
+                                                SECONDDOORSH5,
+                                                THIRDDOORSH5,
+                                                FOURTHDOORSH5,
+                                                FIRSTDOORSH10,
+                                                SECONDDOORSH10,
+                                                THIRDDOORSH10,
+                                                FOURTHDOORSH10,
+                                                FIRSTDOORSH15,
+                                                SECONDDOORSH15,
+                                                THIRDDOORSH15,
+                                                FOURTHDOORSH15,
+                                                FIRSTDOORSH20,
+                                                SECONDDOORSH20,
+                                                THIRDDOORSH20,
+                                                FOURTHDOORSH20,
+                                                -1};
 
 struct ShadowBuddies {
-  INT16 structure;
-  INT16 shadow;
-  INT16 first_structure;
-  INT16 first_shadow;
+  int16_t structure;
+  int16_t shadow;
+  int16_t first_structure;
+  int16_t first_shadow;
 };
 
 // Bidirectional mapping between structs and shadows
@@ -100,7 +100,7 @@ static ShadowBuddies const g_shadow_buddies[] = {
 };
 
 // Global variable used to initialize tile database with full tile spec
-static UINT8 const gFullBaseTileValues[] = {
+static uint8_t const gFullBaseTileValues[] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // First Texture
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // Second Texture
@@ -180,7 +180,7 @@ char const *const gTileSurfaceName[NUMBEROFTILETYPES] = {
     "BADMARKER", "GRING", "ROTATINGKEY", "SELRING", "SPECIAL", "BULLET", "MISS1", "MISS2", "MISS3",
     "WIREFRAME"};
 
-UINT16 const gNumTilesPerType[NUMBEROFTILETYPES] = {
+uint16_t const gNumTilesPerType[NUMBEROFTILETYPES] = {
     FIRSTTEXTURE35 - FIRSTTEXTURE1 + 1, SECONDTEXTURE35 - SECONDTEXTURE1 + 1,
     THIRDTEXTURE35 - THIRDTEXTURE1 + 1, FOURTHTEXTURE35 - FOURTHTEXTURE1 + 1,
     FIFTHTEXTURE35 - FIFTHTEXTURE1 + 1, SIXTHTEXTURE37 - SIXTHTEXTURE1 + 1,
@@ -298,7 +298,7 @@ UINT16 const gNumTilesPerType[NUMBEROFTILETYPES] = {
     FIRSTMISS5 - FIRSTMISS1 + 1, SECONDMISS5 - SECONDMISS1 + 1, THIRDMISS14 - THIRDMISS1 + 1,
     WIREFRAMES15 - WIREFRAMES1 + 1};
 
-UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
+uint8_t gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
     2,   // First texture
     2,   // Second texture
     2,   // Third texture
@@ -310,26 +310,26 @@ UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
     10   // Second water
 };
 
-static void SetAnimData(UINT16 const database_elem, TILE_ELEMENT &te, const bool minus_plus) {
+static void SetAnimData(uint16_t const database_elem, TILE_ELEMENT &te, const bool minus_plus) {
   AllocateAnimTileData(&te, 5);
 
   TILE_ANIMATION_DATA &a = *te.pAnimData;
   a.bCurrentFrame = 0;
-  for (UINT8 k = 0; k != a.ubNumFrames; ++k) {
+  for (uint8_t k = 0; k != a.ubNumFrames; ++k) {
     a.pusFrames[k] = minus_plus ? database_elem + k : database_elem - k;
   }
 }
 
-static void SetAnimDataIfInList(INT16 const *const list, UINT16 const database_elem,
+static void SetAnimDataIfInList(int16_t const *const list, uint16_t const database_elem,
                                 TILE_ELEMENT &te, const bool minus_plus) {
-  for (INT16 const *i = list; *i != -1; ++i) {
+  for (int16_t const *i = list; *i != -1; ++i) {
     // If we are a shadow type
     if (database_elem != *i) continue;
     SetAnimData(database_elem, te, minus_plus);
   }
 }
 
-void SetSpecificDatabaseValues(UINT16 const type, UINT16 const database_elem, TILE_ELEMENT &te,
+void SetSpecificDatabaseValues(uint16_t const type, uint16_t const database_elem, TILE_ELEMENT &te,
                                bool const use_raised_object_type) {
   // Setup buddies for structures and shadows
   FOR_EACH(ShadowBuddies const, i, g_shadow_buddies) {
@@ -384,7 +384,7 @@ void SetSpecificDatabaseValues(UINT16 const type, UINT16 const database_elem, TI
 
   // Set flag for full 3d tiles, as well as the dynamic flag for the folliage
   if (FIRSTFULLSTRUCT1 <= database_elem && database_elem <= SECONDFULLSTRUCT12) {
-    INT16 const idx_diff = database_elem - gTileTypeStartIndex[type];
+    int16_t const idx_diff = database_elem - gTileTypeStartIndex[type];
     switch (idx_diff % 3) {
       case 0:
         te.uiFlags |= FULL3D_TILE;
@@ -408,7 +408,7 @@ void SetSpecificDatabaseValues(UINT16 const type, UINT16 const database_elem, TI
   // Set a-frames heigher!
   if (FIRSTWALL1 <= database_elem &&
       database_elem <= FOURTHWALL47) {  // Set these ones higher (for roof pieces)
-    UINT16 const start = gTileTypeStartIndex[type];
+    uint16_t const start = gTileTypeStartIndex[type];
     if (start + WALL_AFRAME_START <= database_elem && database_elem <= start + WALL_AFRAME_END) {
       te.uiFlags |= AFRAME_TILE;
     }

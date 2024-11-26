@@ -18,7 +18,7 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
-UINT8 AimMercArray[MAX_NUMBER_MERCS];
+uint8_t AimMercArray[MAX_NUMBER_MERCS];
 
 static LaptopMode const gCurrentAimPage[NUM_AIM_SCREENS] = {LAPTOP_MODE_AIM,
                                                             LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES,
@@ -139,7 +139,7 @@ static SGPVObject *guiInsuranceAdImages;
 static SGPVObject *guiFuneralAdImages;
 static SGPVObject *guiBobbyRAdImages;
 
-static UINT8 gubCurrentAdvertisment;
+static uint8_t gubCurrentAdvertisment;
 
 static BOOLEAN gfInitAdArea;
 
@@ -171,11 +171,11 @@ static void LaptopInitAim();
 
 void GameInitAIM() { LaptopInitAim(); }
 
-static void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectHistoryRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectLinksRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectMemberCardRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectPoliciesRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectHistoryRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectLinksRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectMemberCardRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectPoliciesRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterAIM() {
   gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
@@ -287,7 +287,7 @@ void HandleAIM() {
 }
 
 void RenderAIM() {
-  //	UINT16	x,y, uiPosX, uiPosY;
+  //	uint16_t	x,y, uiPosX, uiPosY;
 
   DrawAimDefaults();
 
@@ -323,31 +323,31 @@ void RenderAIM() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectMemberCardRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectMemberCardRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (!fFirstTimeIn) guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   }
 }
 
-static void SelectPoliciesRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectPoliciesRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_POLICIES;
   }
 }
 
-static void SelectHistoryRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectHistoryRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_HISTORY;
   }
 }
 
-static void SelectLinksRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectLinksRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_LINKS;
   }
 }
 
-static void SelectAimLogoRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectAimLogoRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitAimDefaults() {
   // load the Rust bacground graphic and add it
@@ -370,7 +370,7 @@ void RemoveAimDefaults() {
 }
 
 void DrawAimDefaults() {
-  UINT16 x, y, uiPosX, uiPosY;
+  uint16_t x, y, uiPosX, uiPosY;
 
   uiPosY = RUSTBACKGROUND_1_Y;
   for (y = 0; y < 4; y++) {
@@ -385,13 +385,13 @@ void DrawAimDefaults() {
   BltVideoObject(FRAME_BUFFER, guiAimSymbol, 0, AIM_SYMBOL_X, AIM_SYMBOL_Y);
 }
 
-static void SelectAimLogoRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectAimLogoRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM;
   }
 }
 
-static void LoadAIMText(wchar_t buf[], UINT32 entry) {
+static void LoadAIMText(wchar_t buf[], uint32_t entry) {
   LoadEncryptedDataFromFile(AIMHISTORYFILE, buf, AIM_HISTORY_LINE_SIZE * entry,
                             AIM_HISTORY_LINE_SIZE);
 }
@@ -424,14 +424,14 @@ void DisplayAimCopyright() {
                    CENTER_JUSTIFIED);
 }
 
-static void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, int32_t reason);
 
 void InitAimMenuBar() {
   BUTTON_PICS *const gfx = LoadButtonImage(LAPTOPDIR "/bottombuttons2.sti", 0, 1);
   guiBottomButtonImage = gfx;
 
-  UINT16 x = BOTTOM_BUTTON_START_X;
-  UINT16 const y = BOTTOM_BUTTON_START_Y;
+  uint16_t x = BOTTOM_BUTTON_START_X;
+  uint16_t const y = BOTTOM_BUTTON_START_Y;
   const StrPointer *text = AimBottomMenuText;
   LaptopMode const *page = gCurrentAimPage;
   FOR_EACHX(GUIButtonRef, i, guiBottomButtons, x += BOTTOM_BUTTON_START_WIDTH) {
@@ -449,9 +449,9 @@ void ExitAimMenuBar() {
   UnloadButtonImage(guiBottomButtonImage);
 }
 
-static void ResetAimButtons(GUIButtonRef *Buttons, UINT16 uNumberOfButtons);
+static void ResetAimButtons(GUIButtonRef *Buttons, uint16_t uNumberOfButtons);
 
-static void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ResetAimButtons(guiBottomButtons, NUM_AIM_BOTTOMBUTTONS);
     guiCurrentLaptopMode = static_cast<LaptopMode>(btn->GetUserData());
@@ -459,8 +459,8 @@ static void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, INT32 reason) {
   DisableAimButton();
 }
 
-static void ResetAimButtons(GUIButtonRef *const Buttons, UINT16 const uNumberOfButtons) {
-  UINT32 cnt;
+static void ResetAimButtons(GUIButtonRef *const Buttons, uint16_t const uNumberOfButtons) {
+  uint32_t cnt;
 
   for (cnt = 0; cnt < uNumberOfButtons; cnt++) {
     Buttons[cnt]->uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -476,15 +476,15 @@ void DisableAimButton() {
   }
 }
 
-static BOOLEAN DisplayAd(BOOLEAN fInit, BOOLEAN fRedraw, UINT16 usDelay, UINT16 usNumberOfSubImages,
-                         const SGPVObject *ad_image);
+static BOOLEAN DisplayAd(BOOLEAN fInit, BOOLEAN fRedraw, uint16_t usDelay,
+                         uint16_t usNumberOfSubImages, const SGPVObject *ad_image);
 static BOOLEAN DisplayBobbyRAd(BOOLEAN fInit, BOOLEAN fRedraw);
 static BOOLEAN DisplayFlowerAd(BOOLEAN fInit, BOOLEAN fRedraw);
 static BOOLEAN DrawWarningBox(BOOLEAN fInit, BOOLEAN fRedraw);
-static UINT8 GetNextAimAd(UINT8 ubCurrentAd);
+static uint8_t GetNextAimAd(uint8_t ubCurrentAd);
 
 static void HandleAdAndWarningArea(BOOLEAN fInit, BOOLEAN fRedraw) {
-  static UINT8 ubPreviousAdvertisment;
+  static uint8_t ubPreviousAdvertisment;
 
   if (fInit)
     gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
@@ -495,7 +495,7 @@ static void HandleAdAndWarningArea(BOOLEAN fInit, BOOLEAN fRedraw) {
       fInit = TRUE;
 
       /*
-                              UINT32	uiDay = GetWorldDay();
+                              uint32_t	uiDay = GetWorldDay();
                               BOOLEAN	fSkip=FALSE;
                               gubCurrentAdvertisment++;
 
@@ -589,10 +589,10 @@ static void HandleAdAndWarningArea(BOOLEAN fInit, BOOLEAN fRedraw) {
 }
 
 static BOOLEAN DisplayFlowerAd(BOOLEAN fInit, BOOLEAN fRedraw) {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
+  static uint32_t uiLastTime;
+  static uint8_t ubSubImage = 0;
+  static uint8_t ubCount = 0;
+  uint32_t uiCurTime = GetJA2Clock();
 
   if (fInit) {
     uiLastTime = 0;
@@ -650,8 +650,8 @@ static BOOLEAN DisplayFlowerAd(BOOLEAN fInit, BOOLEAN fRedraw) {
 }
 
 static BOOLEAN DrawWarningBox(BOOLEAN fInit, BOOLEAN fRedraw) {
-  static UINT32 uiLastTime;
-  UINT32 uiCurTime = GetJA2Clock();
+  static uint32_t uiLastTime;
+  uint32_t uiCurTime = GetJA2Clock();
 
   if (fInit || fRedraw) {
     BltVideoObject(FRAME_BUFFER, guiWarning, 0, WARNING_X, WARNING_Y);
@@ -678,7 +678,7 @@ static BOOLEAN DrawWarningBox(BOOLEAN fInit, BOOLEAN fRedraw) {
   }
 }
 
-static void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentAdvertisment == AIM_AD_FLOWER_SHOP)
       GoToWebPage(FLORIST_BOOKMARK);
@@ -691,15 +691,15 @@ static void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void HandleTextOnAimAdd(UINT8 ubCurSubImage);
+static void HandleTextOnAimAdd(uint8_t ubCurSubImage);
 
-static BOOLEAN DisplayAd(const BOOLEAN fInit, const BOOLEAN fRedraw, const UINT16 usDelay,
-                         const UINT16 usNumberOfSubImages, const SGPVObject *const ad_image) {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  UINT8 ubRetVal = 0;
+static BOOLEAN DisplayAd(const BOOLEAN fInit, const BOOLEAN fRedraw, const uint16_t usDelay,
+                         const uint16_t usNumberOfSubImages, const SGPVObject *const ad_image) {
+  static uint32_t uiLastTime;
+  static uint8_t ubSubImage = 0;
+  static uint8_t ubCount = 0;
+  uint32_t uiCurTime = GetJA2Clock();
+  uint8_t ubRetVal = 0;
 
   if (fInit) {
     uiLastTime = 0;
@@ -769,7 +769,7 @@ static BOOLEAN DisplayAd(const BOOLEAN fInit, const BOOLEAN fRedraw, const UINT1
   return (ubRetVal);
 }
 
-static void HandleTextOnAimAdd(UINT8 ubCurSubImage) {
+static void HandleTextOnAimAdd(uint8_t ubCurSubImage) {
   switch (gubCurrentAdvertisment) {
     case AIM_AD_WARNING_BOX:
       break;
@@ -825,13 +825,13 @@ static void HandleTextOnAimAdd(UINT8 ubCurSubImage) {
 }
 
 static BOOLEAN DisplayBobbyRAd(BOOLEAN fInit, BOOLEAN fRedraw) {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubDuckCount = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  UINT8 ubRetVal = 0;
-  UINT16 usDelay = AIM_AD_BOBBYR_AD_DELAY;
+  static uint32_t uiLastTime;
+  static uint8_t ubSubImage = 0;
+  static uint8_t ubDuckCount = 0;
+  static uint8_t ubCount = 0;
+  uint32_t uiCurTime = GetJA2Clock();
+  uint8_t ubRetVal = 0;
+  uint16_t usDelay = AIM_AD_BOBBYR_AD_DELAY;
 
   if (fInit) {
     ubDuckCount = 0;
@@ -893,9 +893,9 @@ static BOOLEAN DisplayBobbyRAd(BOOLEAN fInit, BOOLEAN fRedraw) {
   return (ubRetVal);
 }
 
-static UINT8 GetNextAimAd(UINT8 ubCurrentAd) {
-  UINT8 ubNextAd;
-  UINT32 uiDay = GetWorldDay();
+static uint8_t GetNextAimAd(uint8_t ubCurrentAd) {
+  uint8_t ubNextAd;
+  uint32_t uiDay = GetWorldDay();
 
   if (ubCurrentAd == AIM_AD_WARNING_BOX) {
     if (uiDay < AIM_AD_BOBBYR_AD_STARTS) {

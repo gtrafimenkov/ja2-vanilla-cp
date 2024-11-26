@@ -7,8 +7,8 @@
 
 #define INTTILE_DOOR_OPENSPEED 70
 
-void StartInteractiveObject(GridNo, STRUCTURE const &, SOLDIERTYPE &, UINT8 direction);
-BOOLEAN StartInteractiveObjectFromMouse(SOLDIERTYPE *pSoldier, UINT8 ubDirection);
+void StartInteractiveObject(GridNo, STRUCTURE const &, SOLDIERTYPE &, uint8_t direction);
+BOOLEAN StartInteractiveObjectFromMouse(SOLDIERTYPE *pSoldier, uint8_t ubDirection);
 UICursorID GetInteractiveTileCursor(UICursorID old_cursor, BOOLEAN fConfirm);
 bool SoldierHandleInteractiveObject(SOLDIERTYPE &);
 
@@ -16,20 +16,20 @@ void HandleStructChangeFromGridNo(SOLDIERTYPE *, GridNo);
 
 void BeginCurInteractiveTileCheck();
 void EndCurInteractiveTileCheck();
-void LogMouseOverInteractiveTile(INT16 sGridNo);
+void LogMouseOverInteractiveTile(int16_t sGridNo);
 BOOLEAN ShouldCheckForMouseDetections();
 
-void CycleIntTileFindStack(UINT16 usMapPos);
+void CycleIntTileFindStack(uint16_t usMapPos);
 void SetActionModeDoorCursorText();
 
 LEVELNODE *GetCurInteractiveTile();
-LEVELNODE *GetCurInteractiveTileGridNo(INT16 *psGridNo);
-LEVELNODE *GetCurInteractiveTileGridNoAndStructure(INT16 *psGridNo, STRUCTURE **ppStructure);
-LEVELNODE *ConditionalGetCurInteractiveTileGridNoAndStructure(INT16 *psGridNo,
+LEVELNODE *GetCurInteractiveTileGridNo(int16_t *psGridNo);
+LEVELNODE *GetCurInteractiveTileGridNoAndStructure(int16_t *psGridNo, STRUCTURE **ppStructure);
+LEVELNODE *ConditionalGetCurInteractiveTileGridNoAndStructure(int16_t *psGridNo,
                                                               STRUCTURE **ppStructure,
                                                               BOOLEAN fRejectOnTopItems);
 
-BOOLEAN CheckVideoObjectScreenCoordinateInData(HVOBJECT hSrcVObject, UINT16 usIndex, INT32 iTestX,
-                                               INT32 iTestY);
+BOOLEAN CheckVideoObjectScreenCoordinateInData(HVOBJECT hSrcVObject, uint16_t usIndex,
+                                               int32_t iTestX, int32_t iTestY);
 
 #endif

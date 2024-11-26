@@ -14,103 +14,103 @@ class FailedToAddNode : public std::exception {
 };
 
 // Object manipulation functions
-BOOLEAN RemoveObject(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddObjectToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddObjectToHead(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *FindTypeInObjectLayer(UINT32 map_idx, UINT32 type);
-BOOLEAN RemoveAllObjectsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-LEVELNODE *TypeRangeExistsInObjectLayer(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
+BOOLEAN RemoveObject(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddObjectToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddObjectToHead(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *FindTypeInObjectLayer(uint32_t map_idx, uint32_t type);
+BOOLEAN RemoveAllObjectsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+LEVELNODE *TypeRangeExistsInObjectLayer(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
 
 // Roof manipulation functions
-BOOLEAN RemoveRoof(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddRoofToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddRoofToHead(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *FindTypeInRoofLayer(UINT32 map_idx, UINT32 type);
-BOOLEAN RemoveAllRoofsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-void RemoveRoofIndexFlagsFromTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType,
+BOOLEAN RemoveRoof(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddRoofToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddRoofToHead(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *FindTypeInRoofLayer(uint32_t map_idx, uint32_t type);
+BOOLEAN RemoveAllRoofsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+void RemoveRoofIndexFlagsFromTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType,
                                        LevelnodeFlags);
-void SetRoofIndexFlagsFromTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType,
+void SetRoofIndexFlagsFromTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType,
                                     LevelnodeFlags);
-LEVELNODE *TypeRangeExistsInRoofLayer(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-void SetWallLevelnodeFlags(UINT16 sGridNo, LevelnodeFlags);
-void RemoveWallLevelnodeFlags(UINT16 sGridNo, LevelnodeFlags);
-BOOLEAN IndexExistsInRoofLayer(INT16 sGridNo, UINT16 usIndex);
+LEVELNODE *TypeRangeExistsInRoofLayer(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+void SetWallLevelnodeFlags(uint16_t sGridNo, LevelnodeFlags);
+void RemoveWallLevelnodeFlags(uint16_t sGridNo, LevelnodeFlags);
+BOOLEAN IndexExistsInRoofLayer(int16_t sGridNo, uint16_t usIndex);
 
 // OnRoof manipulation functions
-BOOLEAN RemoveOnRoof(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddOnRoofToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddOnRoofToHead(UINT32 iMapIndex, UINT16 usIndex);
-BOOLEAN RemoveAllOnRoofsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-BOOLEAN RemoveOnRoofFromLevelNode(UINT32 iMapIndex, LEVELNODE *pNode);
+BOOLEAN RemoveOnRoof(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddOnRoofToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddOnRoofToHead(uint32_t iMapIndex, uint16_t usIndex);
+BOOLEAN RemoveAllOnRoofsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+BOOLEAN RemoveOnRoofFromLevelNode(uint32_t iMapIndex, LEVELNODE *pNode);
 
 // Land manipulation functions
-void RemoveLand(UINT32 map_idx, UINT16 idx);
-LEVELNODE *AddLandToTail(UINT32 iMapIndex, UINT16 usIndex);
-void AddLandToHead(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *FindTypeInLandLayer(UINT32 map_idx, UINT32 type);
-BOOLEAN RemoveAllLandsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-BOOLEAN TypeRangeExistsInLandLayer(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-void ReplaceLandIndex(UINT32 iMapIndex, UINT16 usOldIndex, UINT16 usNewIndex);
-void DeleteAllLandLayers(UINT32 iMapIndex);
-void InsertLandIndexAtLevel(UINT32 iMapIndex, UINT16 usIndex, UINT8 ubLevel);
-void RemoveHigherLandLevels(UINT32 map_idx, UINT32 src_type, UINT32 *&higher_types,
-                            UINT8 &n_higher_types);
+void RemoveLand(uint32_t map_idx, uint16_t idx);
+LEVELNODE *AddLandToTail(uint32_t iMapIndex, uint16_t usIndex);
+void AddLandToHead(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *FindTypeInLandLayer(uint32_t map_idx, uint32_t type);
+BOOLEAN RemoveAllLandsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+BOOLEAN TypeRangeExistsInLandLayer(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+void ReplaceLandIndex(uint32_t iMapIndex, uint16_t usOldIndex, uint16_t usNewIndex);
+void DeleteAllLandLayers(uint32_t iMapIndex);
+void InsertLandIndexAtLevel(uint32_t iMapIndex, uint16_t usIndex, uint8_t ubLevel);
+void RemoveHigherLandLevels(uint32_t map_idx, uint32_t src_type, uint32_t *&higher_types,
+                            uint8_t &n_higher_types);
 
-UINT8 GetTerrainType(GridNo);
+uint8_t GetTerrainType(GridNo);
 bool Water(GridNo);
 bool DeepWater(GridNo);
 bool WaterTooDeepForAttacks(GridNo);
 
 // Structure manipulation routines
-void RemoveStruct(UINT32 map_idx, UINT16 usIndex);
-LEVELNODE *AddStructToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *ForceStructToTail(UINT32 iMapIndex, UINT16 usIndex);
+void RemoveStruct(uint32_t map_idx, uint16_t usIndex);
+LEVELNODE *AddStructToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *ForceStructToTail(uint32_t iMapIndex, uint16_t usIndex);
 
-void AddStructToHead(UINT32 iMapIndex, UINT16 usIndex);
-BOOLEAN RemoveAllStructsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-bool AddWallToStructLayer(INT32 map_idx, UINT16 idx, bool replace);
-BOOLEAN ReplaceStructIndex(UINT32 iMapIndex, UINT16 usOldIndex, UINT16 usNewIndex);
-void HideStructOfGivenType(UINT32 iMapIndex, UINT32 fType, BOOLEAN fHide);
-void SetStructAframeFlags(UINT32 iMapIndex, LevelnodeFlags);
-void RemoveStructFromLevelNode(UINT32 map_idx, LEVELNODE *);
-BOOLEAN IndexExistsInStructLayer(GridNo, UINT16 tile_index);
+void AddStructToHead(uint32_t iMapIndex, uint16_t usIndex);
+BOOLEAN RemoveAllStructsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+bool AddWallToStructLayer(int32_t map_idx, uint16_t idx, bool replace);
+BOOLEAN ReplaceStructIndex(uint32_t iMapIndex, uint16_t usOldIndex, uint16_t usNewIndex);
+void HideStructOfGivenType(uint32_t iMapIndex, uint32_t fType, BOOLEAN fHide);
+void SetStructAframeFlags(uint32_t iMapIndex, LevelnodeFlags);
+void RemoveStructFromLevelNode(uint32_t map_idx, LEVELNODE *);
+BOOLEAN IndexExistsInStructLayer(GridNo, uint16_t tile_index);
 
-void ForceRemoveStructFromTail(UINT32 iMapIndex);
+void ForceRemoveStructFromTail(uint32_t iMapIndex);
 
 // Shadow manipulation routines
-void AddShadowToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddShadowToHead(UINT32 iMapIndex, UINT16 usIndex);
-void AddExclusiveShadow(UINT32 iMapIndex, UINT16 usIndex);
-BOOLEAN RemoveAllShadowsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-BOOLEAN RemoveAllShadows(UINT32 iMapIndex);
-BOOLEAN RemoveShadowFromLevelNode(UINT32 iMapIndex, LEVELNODE *pNode);
+void AddShadowToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddShadowToHead(uint32_t iMapIndex, uint16_t usIndex);
+void AddExclusiveShadow(uint32_t iMapIndex, uint16_t usIndex);
+BOOLEAN RemoveAllShadowsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+BOOLEAN RemoveAllShadows(uint32_t iMapIndex);
+BOOLEAN RemoveShadowFromLevelNode(uint32_t iMapIndex, LEVELNODE *pNode);
 
 // Merc manipulation routines
 // #################################################################
 
-LEVELNODE *AddMercToHead(UINT32 iMapIndex, SOLDIERTYPE &, BOOLEAN fAddStructInfo);
-void RemoveMerc(UINT32 map_idx, SOLDIERTYPE &, bool placeholder);
-SOLDIERTYPE *WhoIsThere2(INT16 sGridNo, INT8 bLevel);
-BOOLEAN AddMercStructureInfoFromAnimSurface(INT16 sGridNo, SOLDIERTYPE *pSoldier,
-                                            UINT16 usAnimSurface, UINT16 usAnimState);
+LEVELNODE *AddMercToHead(uint32_t iMapIndex, SOLDIERTYPE &, BOOLEAN fAddStructInfo);
+void RemoveMerc(uint32_t map_idx, SOLDIERTYPE &, bool placeholder);
+SOLDIERTYPE *WhoIsThere2(int16_t sGridNo, int8_t bLevel);
+BOOLEAN AddMercStructureInfoFromAnimSurface(int16_t sGridNo, SOLDIERTYPE *pSoldier,
+                                            uint16_t usAnimSurface, uint16_t usAnimState);
 BOOLEAN UpdateMercStructureInfo(SOLDIERTYPE *pSoldier);
-BOOLEAN OKToAddMercToWorld(SOLDIERTYPE *pSoldier, INT8 bDirection);
+BOOLEAN OKToAddMercToWorld(SOLDIERTYPE *pSoldier, int8_t bDirection);
 
 // TOPMOST manipulation functions
-LEVELNODE *AddTopmostToTail(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *AddTopmostToHead(UINT32 iMapIndex, UINT16 usIndex);
-BOOLEAN RemoveTopmost(UINT32 iMapIndex, UINT16 usIndex);
-LEVELNODE *FindTypeInTopmostLayer(UINT32 map_idx, UINT32 type);
-BOOLEAN RemoveAllTopmostsOfTypeRange(UINT32 iMapIndex, UINT32 fStartType, UINT32 fEndType);
-LEVELNODE *AddUIElem(UINT32 iMapIndex, UINT16 usIndex, INT8 sRelativeX, INT8 sRelativeY);
-BOOLEAN RemoveTopmostFromLevelNode(UINT32 iMapIndex, LEVELNODE *pNode);
+LEVELNODE *AddTopmostToTail(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *AddTopmostToHead(uint32_t iMapIndex, uint16_t usIndex);
+BOOLEAN RemoveTopmost(uint32_t iMapIndex, uint16_t usIndex);
+LEVELNODE *FindTypeInTopmostLayer(uint32_t map_idx, uint32_t type);
+BOOLEAN RemoveAllTopmostsOfTypeRange(uint32_t iMapIndex, uint32_t fStartType, uint32_t fEndType);
+LEVELNODE *AddUIElem(uint32_t iMapIndex, uint16_t usIndex, int8_t sRelativeX, int8_t sRelativeY);
+BOOLEAN RemoveTopmostFromLevelNode(uint32_t iMapIndex, LEVELNODE *pNode);
 
-BOOLEAN IsHeigherLevel(INT16 sGridNo);
-BOOLEAN IsRoofVisible(INT16 sMapPos);
-BOOLEAN IsRoofVisible2(INT16 sMapPos);
+BOOLEAN IsHeigherLevel(int16_t sGridNo);
+BOOLEAN IsRoofVisible(int16_t sMapPos);
+BOOLEAN IsRoofVisible2(int16_t sMapPos);
 
 LEVELNODE *FindLevelNodeBasedOnStructure(STRUCTURE const *);
-LEVELNODE *FindShadow(INT16 sGridNo, UINT16 usStructIndex);
+LEVELNODE *FindShadow(int16_t sGridNo, uint16_t usStructIndex);
 
 void WorldHideTrees();
 void WorldShowTrees();
@@ -119,7 +119,7 @@ void WorldShowTrees();
 // Andrew, you had worldman.c checked out at the time, so I stuck it here.
 // The best thing to do is toast it here, and include editscreen.h in
 // worldman.c.
-extern UINT32 gCurrentBackground;
+extern uint32_t gCurrentBackground;
 
 void SetTreeTopStateForMap();
 

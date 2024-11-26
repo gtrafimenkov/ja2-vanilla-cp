@@ -25,9 +25,10 @@ void DeleteBobbyRWoodBackground();
 void InitBobbyRWoodBackground();
 void DailyUpdateOfBobbyRaysNewInventory();
 void DailyUpdateOfBobbyRaysUsedInventory();
-void AddFreshBobbyRayInventory(UINT16 usItemIndex);
+void AddFreshBobbyRayInventory(uint16_t usItemIndex);
 void InitBobbyRayInventory();
 void CancelAllPendingBRPurchaseOrders();
-INT16 GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, UINT16 usItemIndex, BOOLEAN fUsed);
+int16_t GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, uint16_t usItemIndex,
+                                BOOLEAN fUsed);
 
 #endif

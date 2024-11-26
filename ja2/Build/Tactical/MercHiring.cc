@@ -55,9 +55,9 @@ extern BOOLEAN gfFirstHeliRun;
 // ATE: Globals that dictate where the mercs will land once being hired
 // Default to start sector
 // Saved in general saved game structure
-INT16 g_merc_arrive_sector = START_SECTOR;
+int16_t g_merc_arrive_sector = START_SECTOR;
 
-INT8 HireMerc(MERC_HIRE_STRUCT &h) {
+int8_t HireMerc(MERC_HIRE_STRUCT &h) {
   ProfileID const pid = h.ubProfileID;
   MERCPROFILESTRUCT &p = GetProfile(pid);
 
@@ -108,7 +108,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT &h) {
       o.ubNumberOfObjects = 1;
       o.bStatus[0] = 100;
       const BOOLEAN fReturn = AutoPlaceObject(s, &o, FALSE);
-      (void) fReturn;
+      (void)fReturn;
       Assert(fReturn);
     }
 
@@ -117,7 +117,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT &h) {
   }
 
   // Record how long the merc will be gone for
-  p.bMercStatus = (UINT8)h.iTotalContractLength;
+  p.bMercStatus = (uint8_t)h.iTotalContractLength;
 
   // Copy over insertion data
   s->ubStrategicInsertionCode = h.ubInsertionCode;
@@ -218,7 +218,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT &h) {
 static void CheckForValidArrivalSector();
 
 void MercArrivesCallback(SOLDIERTYPE &s) {
-  UINT32 uiTimeOfPost;
+  uint32_t uiTimeOfPost;
 
   if (!DidGameJustStart() &&
       g_merc_arrive_sector == START_SECTOR) { /* Mercs arriving in start sector. This sector has
@@ -299,7 +299,7 @@ void MercArrivesCallback(SOLDIERTYPE &s) {
   }
 
   // record how long the merc will be gone for
-  p.bMercStatus = (UINT8)s.iTotalContractLength;
+  p.bMercStatus = (uint8_t)s.iTotalContractLength;
 
   // remember when excatly he ARRIVED in Arulco, in case he gets fired early
   s.uiTimeOfLastContractUpdate = GetWorldTotalMin();
@@ -326,7 +326,7 @@ void MercArrivesCallback(SOLDIERTYPE &s) {
   fTeamPanelDirty = TRUE;
 
   // if the currently selected sector has no one in it, select this one instead
-  if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ)) {
+  if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (uint8_t)iCurrentMapSectorZ)) {
     ChangeSelectedMapSector(s.sSectorX, s.sSectorY, 0);
   }
 }
@@ -370,9 +370,9 @@ void HandleMercArrivesQuotes(SOLDIERTYPE &s) {
   }
 }
 
-UINT32 GetMercArrivalTimeOfDay() {
-  UINT32 uiCurrHour;
-  UINT32 uiMinHour;
+uint32_t GetMercArrivalTimeOfDay() {
+  uint32_t uiCurrHour;
+  uint32_t uiMinHour;
 
   // Pick a time...
 
@@ -411,15 +411,15 @@ void UpdateAnyInTransitMercsWithGlobalArrivalSector() {
   }
 }
 
-static INT16 StrategicPythSpacesAway(INT16 sOrigin, INT16 sDest) {
-  INT16 sRows, sCols, sResult;
+static int16_t StrategicPythSpacesAway(int16_t sOrigin, int16_t sDest) {
+  int16_t sRows, sCols, sResult;
 
   sRows = abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
   sCols = abs((sOrigin % MAP_WORLD_X) - (sDest % MAP_WORLD_X));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = (INT16)sqrt((double)((sRows * sRows) + (sCols * sCols)));
+  sResult = (int16_t)sqrt((double)((sRows * sRows) + (sCols * sCols)));
 
   return (sResult);
 }
@@ -429,13 +429,13 @@ static INT16 StrategicPythSpacesAway(INT16 sOrigin, INT16 sDest) {
 // if there are enemies present, it's invalid
 // if so, search around for nearest non-occupied sector.
 static void CheckForValidArrivalSector() {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  UINT8 ubRadius = 4;
-  INT32 leftmost;
-  INT16 sSectorGridNo, sSectorGridNo2;
-  INT32 uiRange, uiLowestRange = 999999;
+  int16_t sTop, sBottom;
+  int16_t sLeft, sRight;
+  int16_t cnt1, cnt2;
+  uint8_t ubRadius = 4;
+  int32_t leftmost;
+  int16_t sSectorGridNo, sSectorGridNo2;
+  int32_t uiRange, uiLowestRange = 999999;
   BOOLEAN fFound = FALSE;
   wchar_t sString[1024];
   wchar_t zShortTownIDString1[50];
@@ -457,8 +457,8 @@ static void CheckForValidArrivalSector() {
   sLeft = -ubRadius;
   sRight = ubRadius;
 
-  INT16 sGoodX = 0;  // XXX HACK000E
-  INT16 sGoodY = 0;  // XXX HACK000E
+  int16_t sGoodX = 0;  // XXX HACK000E
+  int16_t sGoodY = 0;  // XXX HACK000E
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
     leftmost = ((sSectorGridNo + (MAP_WORLD_X * cnt1)) / MAP_WORLD_X) * MAP_WORLD_X;
 

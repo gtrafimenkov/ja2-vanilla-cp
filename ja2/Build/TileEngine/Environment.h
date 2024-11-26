@@ -27,14 +27,14 @@ void EnvironmentController(BOOLEAN fCheckForLights);
 
 void BuildDayAmbientSounds();
 void BuildDayLightLevels();
-UINT8 GetTimeOfDayAmbientLightLevel();
+uint8_t GetTimeOfDayAmbientLightLevel();
 
-void EnvBeginRainStorm(UINT8 ubIntensity);
+void EnvBeginRainStorm(uint8_t ubIntensity);
 void EnvEndRainStorm();
 
-extern UINT8 gubEnvLightValue;
+extern uint8_t gubEnvLightValue;
 extern BOOLEAN gfDoLighting;
-extern UINT32 guiEnvWeather;
+extern uint32_t guiEnvWeather;
 
 void TurnOnNightLights();
 void TurnOffNightLights();
@@ -47,8 +47,9 @@ void TurnOffPrimeLights();
 extern BOOLEAN gfCaves;
 extern BOOLEAN gfBasement;
 
-extern INT8 SectorTemperature(UINT32 uiTime, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+extern int8_t SectorTemperature(uint32_t uiTime, int16_t sSectorX, int16_t sSectorY,
+                                int8_t bSectorZ);
 
-extern void UpdateTemperature(UINT8 ubTemperatureCode);
+extern void UpdateTemperature(uint8_t ubTemperatureCode);
 
 #endif

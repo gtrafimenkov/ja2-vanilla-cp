@@ -9,12 +9,14 @@
 #include "Strategic/StrategicMovement.h"
 
 // build main facilities strings for sector
-void GetSectorFacilitiesFlags(INT16 sMapX, INT16 sMapY, wchar_t *sFacilitiesString, size_t Length);
+void GetSectorFacilitiesFlags(int16_t sMapX, int16_t sMapY, wchar_t *sFacilitiesString,
+                              size_t Length);
 
 // set sector as enemy controlled
-BOOLEAN SetThisSectorAsEnemyControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
+BOOLEAN SetThisSectorAsEnemyControlled(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
 
 // set sector as player controlled
-BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOOLEAN fContested);
+BOOLEAN SetThisSectorAsPlayerControlled(int16_t sMapX, int16_t sMapY, int8_t bMapZ,
+                                        BOOLEAN fContested);
 
 #endif

@@ -11,10 +11,10 @@
 #include "Utils/EventManager.h"
 #include "Utils/TimerControl.h"
 
-static void AddGameEventToQueue(UINT32 uiEvent, UINT16 usDelay, PTR pEventData,
+static void AddGameEventToQueue(uint32_t uiEvent, uint16_t usDelay, void *pEventData,
                                 EventQueueID ubQueueID);
 
-void AddGameEvent(GameEvent const uiEvent, UINT16 const usDelay, PTR const pEventData) {
+void AddGameEvent(GameEvent const uiEvent, uint16_t const usDelay, void *const pEventData) {
   if (usDelay == DEMAND_EVENT_DELAY) {
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local
     // #%d", uiEvent));
@@ -26,10 +26,10 @@ void AddGameEvent(GameEvent const uiEvent, UINT16 const usDelay, PTR const pEven
   }
 }
 
-static void AddGameEventToQueue(UINT32 const uiEvent, UINT16 const usDelay, PTR const pEventData,
-                                EventQueueID const ubQueueID) {
+static void AddGameEventToQueue(uint32_t const uiEvent, uint16_t const usDelay,
+                                void *const pEventData, EventQueueID const ubQueueID) {
   // Switch on event type and set size accordingly
-  UINT32 uiDataSize;
+  uint32_t uiDataSize;
   switch (uiEvent) {
     case S_SETDESIREDDIRECTION:
       uiDataSize = sizeof(EV_S_SETDESIREDDIRECTION);
@@ -60,8 +60,8 @@ static void AddGameEventToQueue(UINT32 const uiEvent, UINT16 const usDelay, PTR 
 static BOOLEAN ExecuteGameEvent(EVENT *pEvent);
 
 BOOLEAN DequeAllGameEvents() {
-  UINT32 uiQueueSize;
-  UINT32 cnt;
+  uint32_t uiQueueSize;
+  uint32_t cnt;
 
   // First dequeue all primary events
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
@@ -132,7 +132,7 @@ BOOLEAN DequeueAllDemandGameEvents() {
   return TRUE;
 }
 
-static SOLDIERTYPE *GetSoldier(const UINT16 soldier_idx) {
+static SOLDIERTYPE *GetSoldier(const uint16_t soldier_idx) {
   if (soldier_idx >= TOTAL_SOLDIERS) return NULL;  // XXX assert?
   SOLDIERTYPE &s = GetMan(soldier_idx);
   return s.bActive ? &s : 0;

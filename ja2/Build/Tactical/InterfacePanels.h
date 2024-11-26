@@ -53,7 +53,7 @@ void SetSMPanelCurrentMerc(SOLDIERTYPE *s);
 void SetTEAMPanelCurrentMerc();
 
 void InitTEAMSlots();
-SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(UINT8 ubPanelSlot);
+SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(uint8_t ubPanelSlot);
 void RemoveAllPlayersFromSlot();
 BOOLEAN RemovePlayerFromTeamSlot(const SOLDIERTYPE *s);
 void CheckForAndAddMercToTeamPanel(SOLDIERTYPE *s);
@@ -61,10 +61,10 @@ void CheckForAndAddMercToTeamPanel(SOLDIERTYPE *s);
 void DisableTacticalTeamPanelButtons(BOOLEAN fDisable);
 void RenderTownIDString();
 
-void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
+void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, int32_t iReason);
+void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
-void ShowRadioLocator(SOLDIERTYPE *s, UINT8 ubLocatorSpeed);
+void ShowRadioLocator(SOLDIERTYPE *s, uint8_t ubLocatorSpeed);
 void EndRadioLocator(SOLDIERTYPE *s);
 
 extern MOUSE_REGION gSMPanelRegion;
@@ -83,8 +83,8 @@ void HandlePanelFaceAnimations(SOLDIERTYPE *s);
 
 void GoToMapScreenFromTactical();
 
-void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *s, UINT32 uiInvPos, UINT16 usOldItem,
-                                            UINT16 usNewItem);
+void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *s, uint32_t uiInvPos, uint16_t usOldItem,
+                                            uint16_t usNewItem);
 
 void FinishAnySkullPanelAnimations();
 
@@ -96,7 +96,8 @@ void UpdateForContOverPortrait(SOLDIERTYPE *s, BOOLEAN fOn);
 
 void HandleLocateSelectMerc(SOLDIERTYPE *, bool force_select);
 
-BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *pSoldier, UINT32 uiHandPos, UINT16 usReplaceItem);
+BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *pSoldier, uint32_t uiHandPos,
+                              uint16_t usReplaceItem);
 
 extern SOLDIERTYPE *gpSMCurrentMerc;
 extern GUIButtonRef iSMPanelButtons[NUM_SM_BUTTONS];
@@ -104,9 +105,9 @@ extern GUIButtonRef iTEAMPanelButtons[NUM_TEAM_BUTTONS];
 extern GUIButtonRef giSMStealthButton;
 extern SOLDIERTYPE *gSelectSMPanelToMerc;
 extern MOUSE_REGION gSM_SELMERCMoneyRegion;
-extern UINT8 gubHandPos;
-extern UINT16 gusOldItemIndex;
-extern UINT16 gusNewItemIndex;
+extern uint8_t gubHandPos;
+extern uint16_t gusOldItemIndex;
+extern uint16_t gusNewItemIndex;
 extern BOOLEAN gfDeductPoints;
 extern BOOLEAN gfSMDisableForItems;
 

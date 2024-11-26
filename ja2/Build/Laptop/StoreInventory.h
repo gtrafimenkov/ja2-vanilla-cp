@@ -4,10 +4,10 @@
 #include "Tactical/ItemTypes.h"
 
 struct STORE_INVENTORY {
-  UINT16 usItemIndex;  // Index into the item table
-  UINT8 ubQtyOnHand;
-  UINT8 ubQtyOnOrder;           // The number of items on order
-  UINT8 ubItemQuality;          // the % damaged listed from 0 to 100
+  uint16_t usItemIndex;  // Index into the item table
+  uint8_t ubQtyOnHand;
+  uint8_t ubQtyOnOrder;         // The number of items on order
+  uint8_t ubItemQuality;        // the % damaged listed from 0 to 100
   BOOLEAN fPreviouslyEligible;  // whether or not dealer has been eligible to
                                 // sell this item in days prior to today
 };
@@ -20,8 +20,8 @@ enum {
   BOBBY_RAY_LISTS,
 };
 
-extern UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS];
-extern INT16 WeaponROF[MAX_WEAPONS];
+extern uint8_t StoreInventory[MAXITEMS][BOBBY_RAY_LISTS];
+extern int16_t WeaponROF[MAX_WEAPONS];
 
 void SetupStoreInventory(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed);
 

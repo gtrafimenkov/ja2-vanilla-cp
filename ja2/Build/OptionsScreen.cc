@@ -125,10 +125,10 @@ ScreenID guiPreviousOptionScreen = OPTIONS_SCREEN;
 static BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
 static BOOLEAN gfExitOptionsAfterMessageBox = FALSE;
 
-static UINT32 guiSoundFxSliderMoving = 0xFFFFFFFF;
-static UINT32 guiSpeechSliderMoving = 0xFFFFFFFF;
+static uint32_t guiSoundFxSliderMoving = 0xFFFFFFFF;
+static uint32_t guiSpeechSliderMoving = 0xFFFFFFFF;
 
-static INT8 gbHighLightedOptionText = -1;
+static int8_t gbHighLightedOptionText = -1;
 
 static BOOLEAN gfSettingOfTreeTopStatusOnEnterOfOptionScreen;
 static BOOLEAN gfSettingOfItemGlowStatusOnEnterOfOptionScreen;
@@ -142,7 +142,7 @@ static GUIButtonRef guiDoneButton;
 
 // checkbox to toggle tracking mode on or off
 static GUIButtonRef guiOptionsToggles[NUM_GAME_OPTIONS];
-static void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnOptionsTogglesCallback(GUI_BUTTON *btn, int32_t reason);
 
 // Mouse regions for the name of the option
 static MOUSE_REGION gSelectedOptionTextRegion[NUM_GAME_OPTIONS];
@@ -208,23 +208,23 @@ ScreenID OptionsScreenHandle() {
   return (guiOptionsScreen);
 }
 
-static GUIButtonRef MakeButton(INT16 x, GUI_CALLBACK click, const wchar_t *text) {
+static GUIButtonRef MakeButton(int16_t x, GUI_CALLBACK click, const wchar_t *text) {
   return CreateIconAndTextButton(giOptionsButtonImages, text, OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR,
                                  DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, x, OPT_BTN_Y,
                                  MSYS_PRIORITY_HIGH, click);
 }
 
-static void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnDoneCallback(GUI_BUTTON *btn, INT32 reason);
-static void MusicSliderChangeCallBack(INT32 iNewValue);
-static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
-static void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
+static void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnOptQuitCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnDoneCallback(GUI_BUTTON *btn, int32_t reason);
+static void MusicSliderChangeCallBack(int32_t iNewValue);
+static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason);
+static void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason);
 static void SetOptionsScreenToggleBoxes();
-static void SoundFXSliderChangeCallBack(INT32 iNewValue);
-static void SpeechSliderChangeCallBack(INT32 iNewValue);
+static void SoundFXSliderChangeCallBack(int32_t iNewValue);
+static void SpeechSliderChangeCallBack(int32_t iNewValue);
 
 static void EnterOptionsScreen() {
   // Stop ambients...
@@ -266,12 +266,12 @@ static void EnterOptionsScreen() {
   guiDoneButton = MakeButton(OPT_DONE_BTN_X, BtnDoneCallback, zOptionsText[OPT_DONE]);
 
   // Toggle Boxes
-  UINT16 usTextHeight = GetFontHeight(OPT_MAIN_FONT);
+  uint16_t usTextHeight = GetFontHeight(OPT_MAIN_FONT);
 
   // Create the first column of check boxes
-  UINT32 pos_x = OPT_TOGGLE_BOX_FIRST_COLUMN_X;
-  UINT16 pos_y = OPT_TOGGLE_BOX_START_Y;
-  for (UINT8 cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
+  uint32_t pos_x = OPT_TOGGLE_BOX_FIRST_COLUMN_X;
+  uint16_t pos_y = OPT_TOGGLE_BOX_START_Y;
+  for (uint8_t cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     // if this is the blood and gore option, and we are to hide the option
     if (cnt == OPT_FIRST_COLUMN_TOGGLE_CUT_OFF) {
       pos_y = OPT_TOGGLE_BOX_START_Y;
@@ -285,8 +285,8 @@ static void EnterOptionsScreen() {
     guiOptionsToggles[cnt] = check;
     check->SetUserData(cnt);
 
-    UINT32 height;
-    UINT16 usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    uint32_t height;
+    uint16_t usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without
       // displaying the string
@@ -363,7 +363,7 @@ static void EnterOptionsScreen() {
 static void GetOptionsScreenToggleBoxes();
 
 static void ExitOptionsScreen() {
-  UINT8 cnt;
+  uint8_t cnt;
 
   if (gfExitOptionsDueToMessageBox) {
     gfOptionsScreenExit = FALSE;
@@ -448,15 +448,15 @@ static void RenderOptionsScreen() {
   // Text for the toggle boxes
   //
 
-  UINT32 pos_x = OPT_TOGGLE_BOX_FIRST_COL_TEXT_X;
-  UINT16 pos_y = OPT_TOGGLE_BOX_START_Y + OPT_TOGGLE_TEXT_OFFSET_Y;
-  for (UINT8 cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
+  uint32_t pos_x = OPT_TOGGLE_BOX_FIRST_COL_TEXT_X;
+  uint16_t pos_y = OPT_TOGGLE_BOX_START_Y + OPT_TOGGLE_TEXT_OFFSET_Y;
+  for (uint8_t cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     if (cnt == OPT_FIRST_COLUMN_TOGGLE_CUT_OFF) {
       pos_x = OPT_TOGGLE_BOX_SECOND_TEXT_X;
       pos_y = OPT_TOGGLE_BOX_START_Y + OPT_TOGGLE_TEXT_OFFSET_Y;
     }
 
-    UINT16 usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    uint16_t usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH)
@@ -533,14 +533,14 @@ static void SetOptionsExitScreen(ScreenID const uiExitScreen) {
   gfOptionsScreenExit = TRUE;
 }
 
-static void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetOptionsExitScreen(SAVE_LOAD_SCREEN);
     gfSaveGame = TRUE;
   }
 }
 
-static void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetOptionsExitScreen(SAVE_LOAD_SCREEN);
     gfSaveGame = FALSE;
@@ -551,7 +551,7 @@ static void ConfirmQuitToMainMenuMessageBoxCallBack(MessageBoxReturnValue);
 static void DoOptionsMessageBox(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,
                                 MSGBOX_CALLBACK ReturnCallback);
 
-static void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptQuitCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Confirm the Exit to the main menu screen
     DoOptionsMessageBox(zOptionsText[OPT_RETURN_TO_MAIN], OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO,
@@ -559,15 +559,15 @@ static void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetOptionsExitScreen(guiPreviousOptionScreen);
   }
 }
 
-static void HandleOptionToggle(UINT8 button_id, bool state, bool down, bool play_sound);
+static void HandleOptionToggle(uint8_t button_id, bool state, bool down, bool play_sound);
 
-static void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptionsTogglesCallback(GUI_BUTTON *btn, int32_t reason) {
   bool down;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     down = false;
@@ -577,11 +577,11 @@ static void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
     return;
   }
   bool const clicked = btn->Clicked();
-  UINT8 const ubButton = btn->GetUserData();
+  uint8_t const ubButton = btn->GetUserData();
   HandleOptionToggle(ubButton, clicked, down, false);
 }
 
-static void HandleOptionToggle(UINT8 const button_id, bool const state, bool const down,
+static void HandleOptionToggle(uint8_t const button_id, bool const state, bool const down,
                                bool const play_sound) {
   gGameSettings.fOptions[button_id] = state;
 
@@ -609,19 +609,19 @@ static void HandleOptionToggle(UINT8 const button_id, bool const state, bool con
   }
 }
 
-static void SoundFXSliderChangeCallBack(INT32 iNewValue) {
+static void SoundFXSliderChangeCallBack(int32_t iNewValue) {
   SetSoundEffectsVolume(iNewValue);
 
   guiSoundFxSliderMoving = GetJA2Clock();
 }
 
-static void SpeechSliderChangeCallBack(INT32 iNewValue) {
+static void SpeechSliderChangeCallBack(int32_t iNewValue) {
   SetSpeechVolume(iNewValue);
 
   guiSpeechSliderMoving = GetJA2Clock();
 }
 
-static void MusicSliderChangeCallBack(INT32 iNewValue) { MusicSetVolume(iNewValue); }
+static void MusicSliderChangeCallBack(int32_t iNewValue) { MusicSetVolume(iNewValue); }
 
 void DoOptionsMessageBoxWithRect(wchar_t const *const zString, ScreenID const uiExitScreen,
                                  MessageBoxFlags const usFlags,
@@ -655,7 +655,7 @@ static void ConfirmQuitToMainMenuMessageBoxCallBack(MessageBoxReturnValue const 
 }
 
 static void SetOptionsScreenToggleBoxes() {
-  UINT8 cnt;
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     if (gGameSettings.fOptions[cnt])
@@ -666,7 +666,7 @@ static void SetOptionsScreenToggleBoxes() {
 }
 
 static void GetOptionsScreenToggleBoxes() {
-  UINT8 cnt;
+  uint8_t cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     gGameSettings.fOptions[cnt] = guiOptionsToggles[cnt]->Clicked();
@@ -674,10 +674,10 @@ static void GetOptionsScreenToggleBoxes() {
 }
 
 static void HandleSliderBarMovementSounds() {
-  static UINT32 uiLastSoundFxTime = 0;
-  static UINT32 uiLastSpeechTime = 0;
-  static UINT32 uiLastPlayingSoundID = NO_SAMPLE;
-  static UINT32 uiLastPlayingSpeechID = NO_SAMPLE;
+  static uint32_t uiLastSoundFxTime = 0;
+  static uint32_t uiLastSpeechTime = 0;
+  static uint32_t uiLastPlayingSoundID = NO_SAMPLE;
+  static uint32_t uiLastPlayingSpeechID = NO_SAMPLE;
 
   if ((uiLastSoundFxTime - OPT_MUSIC_SLIDER_PLAY_SOUND_DELAY) > guiSoundFxSliderMoving) {
     guiSoundFxSliderMoving = 0xffffffff;
@@ -702,8 +702,8 @@ static void HandleSliderBarMovementSounds() {
     uiLastSpeechTime = GetJA2Clock();
 }
 
-static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT8 ubButton = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint8_t ubButton = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandleOptionToggle(ubButton, !gGameSettings.fOptions[ubButton], FALSE, true);
@@ -714,8 +714,8 @@ static void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReaso
   }
 }
 
-static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
-  INT8 bButton = (INT8)MSYS_GetRegionUserData(pRegion, 0);
+static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason) {
+  int8_t bButton = (int8_t)MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     HandleHighLightedText(FALSE);
@@ -733,13 +733,13 @@ static void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT3
 }
 
 static void HandleHighLightedText(BOOLEAN fHighLight) {
-  UINT16 usPosX = 0;
-  UINT16 usPosY = 0;
-  UINT8 ubCnt;
-  INT8 bHighLight = -1;
-  UINT16 usWidth;
+  uint16_t usPosX = 0;
+  uint16_t usPosY = 0;
+  uint8_t ubCnt;
+  int8_t bHighLight = -1;
+  uint16_t usWidth;
 
-  static INT8 bLastRegion = -1;
+  static int8_t bLastRegion = -1;
 
   if (gbHighLightedOptionText == -1) fHighLight = FALSE;
 
@@ -778,7 +778,7 @@ static void HandleHighLightedText(BOOLEAN fHighLight) {
     usWidth = StringPixLength(zOptionsToggleText[bHighLight], OPT_MAIN_FONT);
 
     // if the string is going to wrap, move the string up a bit
-    UINT8 color = fHighLight ? OPT_HIGHLIGHT_COLOR : OPT_MAIN_COLOR;
+    uint8_t color = fHighLight ? OPT_HIGHLIGHT_COLOR : OPT_MAIN_COLOR;
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, color,
                            zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK,
@@ -790,9 +790,9 @@ static void HandleHighLightedText(BOOLEAN fHighLight) {
   }
 }
 
-static void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+static void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    UINT8 ubCnt;
+    uint8_t ubCnt;
 
     // loop through all the toggle box's and remove the in area flag
     for (ubCnt = 0; ubCnt < NUM_GAME_OPTIONS; ubCnt++) {

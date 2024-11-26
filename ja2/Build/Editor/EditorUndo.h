@@ -3,8 +3,8 @@
 
 #include "SGP/Types.h"
 
-BOOLEAN AddToUndoList(INT32 iMapIndex);
-void AddLightToUndoList(INT32 iMapIndex, INT32 iLightRadius);
+BOOLEAN AddToUndoList(int32_t iMapIndex);
+void AddLightToUndoList(int32_t iMapIndex, int32_t iLightRadius);
 
 void RemoveAllFromUndoList();
 BOOLEAN ExecuteUndoList();

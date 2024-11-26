@@ -20,6 +20,6 @@ void AddCharacterToDeadList(SOLDIERTYPE *pSoldier);
 // simply fired...but alive
 void AddCharacterToFiredList(SOLDIERTYPE *pSoldier);
 
-BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile);
+BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(uint8_t ubProfile);
 
 #endif

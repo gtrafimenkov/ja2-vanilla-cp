@@ -10,26 +10,26 @@ enum {
 };
 
 struct LIGHTEFFECT {
-  INT16 sGridNo;  // gridno at which the tear gas cloud is centered
+  int16_t sGridNo;  // gridno at which the tear gas cloud is centered
 
-  UINT8 ubDuration;  // the number of turns will remain effective
-  UINT8 bRadius;     // the current radius
-  INT8 bAge;         // the number of turns light has been around
+  uint8_t ubDuration;  // the number of turns will remain effective
+  uint8_t bRadius;     // the current radius
+  int8_t bAge;         // the number of turns light has been around
   BOOLEAN fAllocated;
-  INT8 bType;
+  int8_t bType;
   LIGHT_SPRITE *light;
-  UINT32 uiTimeOfLastUpdate;
+  uint32_t uiTimeOfLastUpdate;
 };
 
 // Decays all light effects...
-void DecayLightEffects(UINT32 uiTime);
+void DecayLightEffects(uint32_t uiTime);
 
-LIGHTEFFECT *NewLightEffect(INT16 sGridNo, INT8 bType);
+LIGHTEFFECT *NewLightEffect(int16_t sGridNo, int8_t bType);
 
 void LoadLightEffectsFromLoadGameFile(HWFILE);
 
-void SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-void LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
+void SaveLightEffectsToMapTempFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
+void LoadLightEffectsFromMapTempFile(int16_t sMapX, int16_t sMapY, int8_t bMapZ);
 void ResetLightEffects();
 
 #endif

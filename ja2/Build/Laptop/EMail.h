@@ -134,12 +134,12 @@
 
 struct Email {
   wchar_t pSubject[128];
-  UINT16 usOffset;
-  UINT16 usLength;
-  UINT8 ubSender;
-  UINT32 iDate;
-  INT32 iFirstData;
-  UINT32 uiSecondData;
+  uint16_t usOffset;
+  uint16_t usLength;
+  uint8_t ubSender;
+  uint32_t iDate;
+  int32_t iFirstData;
+  uint32_t uiSecondData;
   BOOLEAN fRead;
 
   Email *Next;
@@ -180,16 +180,18 @@ void RenderEmail();
 
 // message manipulation
 void LookForUnread();
-void AddEmailMessage(INT32 iMessageOffset, INT32 iMessageLength, INT32 iDate, UINT8 ubSender,
-                     BOOLEAN fAlreadyRead, INT32 uiFirstData, UINT32 uiSecondData);
-void AddEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate);
-void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate);
+void AddEmailMessage(int32_t iMessageOffset, int32_t iMessageLength, int32_t iDate,
+                     uint8_t ubSender, BOOLEAN fAlreadyRead, int32_t uiFirstData,
+                     uint32_t uiSecondData);
+void AddEmail(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender, int32_t iDate);
+void AddPreReadEmail(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender,
+                     int32_t iDate);
 void DisplayNewMailBox();
 void CreateDestroyNewMailButton();
 void CreateDestroyDeleteNoticeMailButton();
 void ReDrawNewMailBox();
 void ShutDownEmailList();
-void AddEmailWithSpecialData(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender,
-                             INT32 iDate, INT32 iFirstData, UINT32 uiSecondData);
+void AddEmailWithSpecialData(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender,
+                             int32_t iDate, int32_t iFirstData, uint32_t uiSecondData);
 
 #endif

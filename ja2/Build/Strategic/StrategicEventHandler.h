@@ -11,22 +11,22 @@
 #define HOSPITAL_SECTOR_Y MAP_ROW_F
 #define HOSPITAL_SECTOR_Z 0
 
-extern UINT8 gubCambriaMedicalObjects;
+extern uint8_t gubCambriaMedicalObjects;
 
 void CheckForKingpinsMoneyMissing(BOOLEAN fFirstCheck);
 void CheckForMissingHospitalSupplies();
 
-void BobbyRayPurchaseEventCallback(UINT8 ubOrderID);
+void BobbyRayPurchaseEventCallback(uint8_t ubOrderID);
 
 void HandleStolenItemsReturned();
 
 void AddSecondAirportAttendant();
 
-void HandleNPCSystemEvent(UINT32 uiEvent);
+void HandleNPCSystemEvent(uint32_t uiEvent);
 void HandleEarlyMorningEvents();
 
-void MakeCivGroupHostileOnNextSectorEntrance(UINT8 ubCivGroup);
+void MakeCivGroupHostileOnNextSectorEntrance(uint8_t ubCivGroup);
 
-void RemoveAssassin(UINT8 ubProfile);
+void RemoveAssassin(uint8_t ubProfile);
 
 #endif

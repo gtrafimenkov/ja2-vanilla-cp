@@ -47,14 +47,14 @@
 #define MAX_DEBUG_PAGES 4
 
 // GLOBAL FOR PAL EDITOR
-UINT8 CurrentPalette = 0;
+uint8_t CurrentPalette = 0;
 static BACKGROUND_SAVE *guiBackgroundRect = NO_BGND_RECT;
 BOOLEAN gfExitPalEditScreen = FALSE;
 BOOLEAN gfExitDebugScreen = FALSE;
 static BOOLEAN FirstTime = TRUE;
 BOOLEAN gfDoneWithSplashScreen = FALSE;
 
-INT8 gCurDebugPage = 0;
+int8_t gCurDebugPage = 0;
 
 static void DefaultDebugPage1();
 static void DefaultDebugPage2();
@@ -65,8 +65,8 @@ RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {DefaultDebugPage1, DefaultD
                                                      DefaultDebugPage3, DefaultDebugPage4};
 
 void DisplayFrameRate() {
-  static UINT32 uiFPS = 0;
-  static UINT32 uiFrameCount = 0;
+  static uint32_t uiFPS = 0;
+  static uint32_t uiFrameCount = 0;
 
   // Increment frame count
   uiFrameCount++;
@@ -125,8 +125,8 @@ ScreenID ErrorScreenHandle() {
 }
 
 ScreenID InitScreenHandle() {
-  static UINT32 splashDisplayedMoment = 0;
-  static UINT8 ubCurrentScreen = 255;
+  static uint32_t splashDisplayedMoment = 0;
+  static uint8_t ubCurrentScreen = 255;
 
   if (ubCurrentScreen == 255) {
     if (isEnglishVersion()) {
@@ -148,8 +148,8 @@ ScreenID InitScreenHandle() {
 
     SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
 
-    const INT32 x = 10;
-    const INT32 y = SCREEN_HEIGHT;
+    const int32_t x = 10;
+    const int32_t y = SCREEN_HEIGHT;
 
     mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
 
@@ -233,18 +233,18 @@ static void PalEditRenderHook() {
 }
 
 static void CyclePaletteReplacement(SOLDIERTYPE &s, PaletteRepID pal) {
-  UINT8 ubPaletteRep = GetPaletteRepIndexFromID(pal);
-  const UINT8 ubType = gpPalRep[ubPaletteRep].ubType;
+  uint8_t ubPaletteRep = GetPaletteRepIndexFromID(pal);
+  const uint8_t ubType = gpPalRep[ubPaletteRep].ubType;
 
   ubPaletteRep++;
 
   // Count start and end index
-  UINT8 ubStartRep = 0;
-  for (UINT32 cnt = 0; cnt < ubType; ++cnt) {
+  uint8_t ubStartRep = 0;
+  for (uint32_t cnt = 0; cnt < ubType; ++cnt) {
     ubStartRep = ubStartRep + gubpNumReplacementsPerRange[cnt];
   }
 
-  const UINT8 ubEndRep = ubStartRep + gubpNumReplacementsPerRange[ubType];
+  const uint8_t ubEndRep = ubStartRep + gubpNumReplacementsPerRange[ubType];
 
   if (ubPaletteRep == ubEndRep) ubPaletteRep = ubStartRep;
   SET_PALETTEREP_ID(pal, gpPalRep[ubPaletteRep].ID);
@@ -349,7 +349,7 @@ static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
   return FALSE;
 }
 
-void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage) {
+void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, int8_t ubPage) {
   gDebugRenderOverride[ubPage] = pDebugRenderOverride;
 }
 
@@ -377,10 +377,10 @@ static void DefaultDebugPage4() {
 #define SMILY_END_DELAY 1000
 
 ScreenID SexScreenHandle() {
-  static UINT8 ubCurrentScreen = 0;
+  static uint8_t ubCurrentScreen = 0;
   static SGPVObject *guiSMILY;
-  static INT8 bCurFrame = 0;
-  static UINT32 uiTimeOfLastUpdate = 0, uiTime;
+  static int8_t bCurFrame = 0;
+  static uint32_t uiTimeOfLastUpdate = 0, uiTime;
 
   // OK, Clear screen and show smily face....
   FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -441,8 +441,8 @@ ScreenID SexScreenHandle() {
 
   // Calculate smily face positions...
   ETRLEObject const &pTrav = guiSMILY->SubregionProperties(0);
-  INT16 const sX = (SCREEN_WIDTH - pTrav.usWidth) / 2;
-  INT16 const sY = (SCREEN_HEIGHT - pTrav.usHeight) / 2;
+  int16_t const sX = (SCREEN_WIDTH - pTrav.usWidth) / 2;
+  int16_t const sY = (SCREEN_HEIGHT - pTrav.usHeight) / 2;
 
   BltVideoObject(FRAME_BUFFER, guiSMILY, bCurFrame < 24 ? 0 : bCurFrame % 8, sX, sY);
 

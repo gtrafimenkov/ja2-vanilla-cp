@@ -39,92 +39,96 @@ bool IsItemPoolVisible(ITEM_POOL const *);
 
 struct ITEM_POOL {
   ITEM_POOL *pNext;
-  INT32 iItemIndex;
+  int32_t iItemIndex;
   LEVELNODE *pLevelNode;
 };
 
-ItemHandleResult HandleItem(SOLDIERTYPE *pSoldier, INT16 usGridNo, INT8 bLevel, UINT16 usHandItem,
-                            BOOLEAN fFromUI);
+ItemHandleResult HandleItem(SOLDIERTYPE *pSoldier, int16_t usGridNo, int8_t bLevel,
+                            uint16_t usHandItem, BOOLEAN fFromUI);
 
 /* iItemIndex is ignored for player soldiers */
-void SoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);
+void SoldierPickupItem(SOLDIERTYPE *pSoldier, int32_t iItemIndex, int16_t sGridNo, int8_t bZLevel);
 
-void HandleSoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);
+void HandleSoldierPickupItem(SOLDIERTYPE *pSoldier, int32_t iItemIndex, int16_t sGridNo,
+                             int8_t bZLevel);
 void HandleFlashingItems();
 
 void SoldierDropItem(SOLDIERTYPE *, OBJECTTYPE *);
 
-void HandleSoldierThrowItem(SOLDIERTYPE *pSoldier, INT16 sGridNo);
+void HandleSoldierThrowItem(SOLDIERTYPE *pSoldier, int16_t sGridNo);
 SOLDIERTYPE *VerifyGiveItem(SOLDIERTYPE *pSoldier);
 void SoldierGiveItemFromAnimation(SOLDIERTYPE *pSoldier);
 void SoldierGiveItem(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, OBJECTTYPE *pObject,
-                     INT8 bInvPos);
+                     int8_t bInvPos);
 
 void NotifySoldiersToLookforItems();
 void AllSoldiersLookforItems();
 
-void SoldierGetItemFromWorld(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel,
-                             const BOOLEAN *pfSelectionList);
+void SoldierGetItemFromWorld(SOLDIERTYPE *pSoldier, int32_t iItemIndex, int16_t sGridNo,
+                             int8_t bZLevel, const BOOLEAN *pfSelectionList);
 
-INT32 AddItemToPool(INT16 sGridNo, OBJECTTYPE *pObject, Visibility, UINT8 ubLevel, UINT16 usFlags,
-                    INT8 bRenderZHeightAboveLevel);
-INT32 InternalAddItemToPool(INT16 *psGridNo, OBJECTTYPE *pObject, Visibility, UINT8 ubLevel,
-                            UINT16 usFlags, INT8 bRenderZHeightAboveLevel);
+int32_t AddItemToPool(int16_t sGridNo, OBJECTTYPE *pObject, Visibility, uint8_t ubLevel,
+                      uint16_t usFlags, int8_t bRenderZHeightAboveLevel);
+int32_t InternalAddItemToPool(int16_t *psGridNo, OBJECTTYPE *pObject, Visibility, uint8_t ubLevel,
+                              uint16_t usFlags, int8_t bRenderZHeightAboveLevel);
 
 GridNo AdjustGridNoForItemPlacement(SOLDIERTYPE *, GridNo);
-ITEM_POOL *GetItemPool(UINT16 usMapPos, UINT8 ubLevel);
-void DrawItemPoolList(const ITEM_POOL *pItemPool, INT8 bZLevel, INT16 sXPos, INT16 sYPos);
+ITEM_POOL *GetItemPool(uint16_t usMapPos, uint8_t ubLevel);
+void DrawItemPoolList(const ITEM_POOL *pItemPool, int8_t bZLevel, int16_t sXPos, int16_t sYPos);
 void RemoveItemFromPool(WORLDITEM *);
-void MoveItemPools(INT16 sStartPos, INT16 sEndPos);
+void MoveItemPools(int16_t sStartPos, int16_t sEndPos);
 
-BOOLEAN SetItemsVisibilityOn(GridNo, UINT8 level, Visibility bAllGreaterThan, BOOLEAN fSetLocator);
+BOOLEAN SetItemsVisibilityOn(GridNo, uint8_t level, Visibility bAllGreaterThan,
+                             BOOLEAN fSetLocator);
 
-void SetItemsVisibilityHidden(GridNo, UINT8 level);
+void SetItemsVisibilityHidden(GridNo, uint8_t level);
 
 void RenderTopmostFlashingItems();
 
-void RemoveAllUnburiedItems(INT16 sGridNo, UINT8 ubLevel);
+void RemoveAllUnburiedItems(int16_t sGridNo, uint8_t ubLevel);
 
 BOOLEAN DoesItemPoolContainAnyHiddenItems(const ITEM_POOL *pItemPool);
 
-void HandleSoldierDropBomb(SOLDIERTYPE *pSoldier, INT16 sGridNo);
-void HandleSoldierUseRemote(SOLDIERTYPE *pSoldier, INT16 sGridNo);
+void HandleSoldierDropBomb(SOLDIERTYPE *pSoldier, int16_t sGridNo);
+void HandleSoldierUseRemote(SOLDIERTYPE *pSoldier, int16_t sGridNo);
 
-BOOLEAN ItemPoolOKForDisplay(const ITEM_POOL *pItemPool, INT8 bZLevel);
+BOOLEAN ItemPoolOKForDisplay(const ITEM_POOL *pItemPool, int8_t bZLevel);
 
 void SoldierHandleDropItem(SOLDIERTYPE *pSoldier);
 
-INT8 GetZLevelOfItemPoolGivenStructure(INT16 sGridNo, UINT8 ubLevel, const STRUCTURE *pStructure);
+int8_t GetZLevelOfItemPoolGivenStructure(int16_t sGridNo, uint8_t ubLevel,
+                                         const STRUCTURE *pStructure);
 
-INT8 GetLargestZLevelOfItemPool(const ITEM_POOL *pItemPool);
+int8_t GetLargestZLevelOfItemPool(const ITEM_POOL *pItemPool);
 
-BOOLEAN NearbyGroundSeemsWrong(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckAroundGridno,
-                               INT16 *psProblemGridNo);
+BOOLEAN NearbyGroundSeemsWrong(SOLDIERTYPE *pSoldier, int16_t sGridNo, BOOLEAN fCheckAroundGridno,
+                               int16_t *psProblemGridNo);
 void MineSpottedDialogueCallBack();
 
-extern INT16 gsBoobyTrapGridNo;
+extern int16_t gsBoobyTrapGridNo;
 extern SOLDIERTYPE *gpBoobyTrapSoldier;
-void RemoveBlueFlag(INT16 sGridNo, INT8 bLevel);
+void RemoveBlueFlag(int16_t sGridNo, int8_t bLevel);
 
 // check if item is booby trapped
 BOOLEAN ContinuePastBoobyTrapInMapScreen(OBJECTTYPE *pObject, SOLDIERTYPE *pSoldier);
 
-void RefreshItemPools(const WORLDITEM *pItemList, INT32 iNumberOfItems);
+void RefreshItemPools(const WORLDITEM *pItemList, int32_t iNumberOfItems);
 
-BOOLEAN ItemTypeExistsAtLocation(INT16 sGridNo, UINT16 usItem, UINT8 ubLevel, INT32 *piItemIndex);
+BOOLEAN ItemTypeExistsAtLocation(int16_t sGridNo, uint16_t usItem, uint8_t ubLevel,
+                                 int32_t *piItemIndex);
 
-INT16 FindNearestAvailableGridNoForItem(INT16 sSweetGridNo, INT8 ubRadius);
+int16_t FindNearestAvailableGridNoForItem(int16_t sSweetGridNo, int8_t ubRadius);
 
 void MakeNPCGrumpyForMinorOffense(SOLDIERTYPE *pSoldier, const SOLDIERTYPE *pOffendingSoldier);
 
-BOOLEAN AnyItemsVisibleOnLevel(const ITEM_POOL *pItemPool, INT8 bZLevel);
+BOOLEAN AnyItemsVisibleOnLevel(const ITEM_POOL *pItemPool, int8_t bZLevel);
 
 void RemoveFlashItemSlot(ITEM_POOL const *);
 
 void ToggleItemGlow(BOOLEAN fOn);
 
 BOOLEAN HandleCheckForBadChangeToGetThrough(SOLDIERTYPE *pSoldier,
-                                            const SOLDIERTYPE *pTargetSoldier, INT16 sTargetGridNo,
-                                            INT8 bLevel);
+                                            const SOLDIERTYPE *pTargetSoldier,
+                                            int16_t sTargetGridNo, int8_t bLevel);
 
 #endif

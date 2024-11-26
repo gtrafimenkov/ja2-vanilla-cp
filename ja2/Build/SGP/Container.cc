@@ -8,21 +8,21 @@
 #include "SGP/Types.h"
 
 struct ListHeader {
-  UINT32 uiTotal_items;
-  UINT32 uiSiz_of_elem;
-  UINT32 uiMax_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  BYTE data[];
+  uint32_t uiTotal_items;
+  uint32_t uiSiz_of_elem;
+  uint32_t uiMax_size;
+  uint32_t uiHead;
+  uint32_t uiTail;
+  uint8_t data[];
 };
 
 struct QueueHeader {
-  UINT32 uiTotal_items;
-  UINT32 uiSiz_of_elem;
-  UINT32 uiMax_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  BYTE data[];
+  uint32_t uiTotal_items;
+  uint32_t uiSiz_of_elem;
+  uint32_t uiMax_size;
+  uint32_t uiHead;
+  uint32_t uiTail;
+  uint8_t data[];
 };
 
 // Parameter List : num_items - estimated number of items in queue
@@ -31,12 +31,12 @@ struct QueueHeader {
 // Return Value	NULL if unsuccesful
 //							 pointer to allocated
 // memory
-HQUEUE CreateQueue(UINT32 const uiNum_items, UINT32 const uiSiz_each) {
+HQUEUE CreateQueue(uint32_t const uiNum_items, uint32_t const uiSiz_each) {
   if (uiNum_items == 0 || uiSiz_each == 0) {
     throw std::logic_error("Requested queue items and size have to be >0");
   }
 
-  UINT32 const uiAmount = uiNum_items * uiSiz_each;
+  uint32_t const uiAmount = uiNum_items * uiSiz_each;
   HQUEUE const q = MALLOCE(QueueHeader, data, uiAmount);
   q->uiMax_size = uiAmount + sizeof(QueueHeader);
   q->uiTotal_items = 0;
@@ -52,12 +52,12 @@ HQUEUE CreateQueue(UINT32 const uiNum_items, UINT32 const uiSiz_each) {
 // Return Value	NULL if unsuccesful
 //							 pointer to allocated
 // memory
-HLIST CreateList(UINT32 const uiNum_items, UINT32 const uiSiz_each) {
+HLIST CreateList(uint32_t const uiNum_items, uint32_t const uiSiz_each) {
   if (uiNum_items == 0 || uiSiz_each == 0) {
     throw std::logic_error("Requested queue items and size have to be >0");
   }
 
-  UINT32 const uiAmount = uiNum_items * uiSiz_each;
+  uint32_t const uiAmount = uiNum_items * uiSiz_each;
   HLIST const l = MALLOCE(ListHeader, data, uiAmount);
   l->uiMax_size = uiAmount + sizeof(ListHeader);
   l->uiTotal_items = 0;
@@ -90,16 +90,16 @@ BOOLEAN DeleteList(HLIST hList) {
 // Parameter List : hList - pointer to list container
 //									data - data where list
 // element is stored
-void PeekList(HLIST const l, void *const data, UINT32 const pos) {
+void PeekList(HLIST const l, void *const data, uint32_t const pos) {
   if (pos >= l->uiTotal_items) {
     throw std::logic_error("Tried to peek at non-existent element in list");
   }
 
-  UINT32 uiOffsetSrc = l->uiHead + pos * l->uiSiz_of_elem;
+  uint32_t uiOffsetSrc = l->uiHead + pos * l->uiSiz_of_elem;
   if (uiOffsetSrc >= l->uiMax_size)
     uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - l->uiMax_size);
 
-  BYTE const *const pbyte = (BYTE *)l + uiOffsetSrc;
+  uint8_t const *const pbyte = (uint8_t *)l + uiOffsetSrc;
   memmove(data, pbyte, l->uiSiz_of_elem);
 }
 
@@ -113,7 +113,7 @@ void RemfromQueue(HQUEUE const q, void *const data) {
 
   // remove the element pointed to by uiHead
 
-  BYTE *const pbyte = (BYTE *)q + q->uiHead;
+  uint8_t *const pbyte = (uint8_t *)q + q->uiHead;
   memmove(data, pbyte, q->uiSiz_of_elem);
   q->uiTotal_items--;
   q->uiHead += q->uiSiz_of_elem;
@@ -139,52 +139,52 @@ HQUEUE AddtoQueue(HQUEUE q, void const *const pdata) {
   if (!pdata) throw std::logic_error("Data to be added onto queue is NULL");
 
   BOOLEAN fresize = FALSE;
-  UINT32 const uiSize_of_each = q->uiSiz_of_elem;
-  UINT32 const uiMax_size = q->uiMax_size;
-  UINT32 const uiHead = q->uiHead;
-  UINT32 uiTail = q->uiTail;
+  uint32_t const uiSize_of_each = q->uiSiz_of_elem;
+  uint32_t const uiMax_size = q->uiMax_size;
+  uint32_t const uiHead = q->uiHead;
+  uint32_t uiTail = q->uiTail;
   if (uiTail + uiSize_of_each > uiMax_size) {
     uiTail = q->uiTail = sizeof(QueueHeader);
     fresize = TRUE;
   }
   if (uiHead == uiTail && (uiHead >= sizeof(QueueHeader) + uiSize_of_each || fresize)) {
-    UINT32 const uiNew_size = 2 * uiMax_size - sizeof(QueueHeader);
+    uint32_t const uiNew_size = 2 * uiMax_size - sizeof(QueueHeader);
     q->uiMax_size = uiNew_size;
     q = (HQUEUE)MemRealloc(q, uiNew_size);
     // copy memory from beginning of container to end of container
     // so that all the data is in one continuous block
 
     if (uiHead > sizeof(QueueHeader)) {
-      BYTE *const presize = (BYTE *)q + sizeof(QueueHeader);
-      BYTE *const pmaxsize = (BYTE *)q + uiMax_size;
+      uint8_t *const presize = (uint8_t *)q + sizeof(QueueHeader);
+      uint8_t *const pmaxsize = (uint8_t *)q + uiMax_size;
       memmove(pmaxsize, presize, uiHead - sizeof(QueueHeader));
     }
     q->uiTail = uiMax_size + uiHead - sizeof(QueueHeader);
   }
-  BYTE *const pbyte = (BYTE *)q + q->uiTail;
+  uint8_t *const pbyte = (uint8_t *)q + q->uiTail;
   memmove(pbyte, pdata, uiSize_of_each);
   q->uiTotal_items++;
   q->uiTail += uiSize_of_each;
   return q;
 }
 
-static void do_copy(void *const pmem_void, UINT32 const uiSourceOfst, UINT32 const uiDestOfst,
-                    UINT32 const uiSize) {
-  BYTE *pOffsetSrc = (BYTE *)pmem_void + uiSourceOfst;
-  BYTE *pOffsetDst = (BYTE *)pmem_void + uiDestOfst;
+static void do_copy(void *const pmem_void, uint32_t const uiSourceOfst, uint32_t const uiDestOfst,
+                    uint32_t const uiSize) {
+  uint8_t *pOffsetSrc = (uint8_t *)pmem_void + uiSourceOfst;
+  uint8_t *pOffsetDst = (uint8_t *)pmem_void + uiDestOfst;
   memmove(pOffsetDst, pOffsetSrc, uiSize);
 }
 
-static void do_copy_data(void *const pmem_void, void *const data, UINT32 const uiSrcOfst,
-                         UINT32 const uiSize) {
-  BYTE *pOffsetSrc = (BYTE *)pmem_void + uiSrcOfst;
+static void do_copy_data(void *const pmem_void, void *const data, uint32_t const uiSrcOfst,
+                         uint32_t const uiSize) {
+  uint8_t *pOffsetSrc = (uint8_t *)pmem_void + uiSrcOfst;
   memmove(data, pOffsetSrc, uiSize);
 }
 
 // Parameter List : pointer to queue
 //
-// Return Value	UINT32 queue size
-UINT32 QueueSize(HQUEUE hQueue) {
+// Return Value	uint32_t queue size
+uint32_t QueueSize(HQUEUE hQueue) {
   if (hQueue == NULL) {
     DebugMsg(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
     return 0;
@@ -194,8 +194,8 @@ UINT32 QueueSize(HQUEUE hQueue) {
 
 // Parameter List : pointer to queue
 //
-// Return Value	UINT32 list size
-UINT32 ListSize(HLIST hList) {
+// Return Value	uint32_t list size
+uint32_t ListSize(HLIST hList) {
   if (hList == NULL) {
     DebugMsg(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
     return 0;
@@ -207,9 +207,9 @@ UINT32 ListSize(HLIST hList) {
 //									data - data to add to
 // queue 									position - position
 // after which data is to added
-HLIST AddtoList(HLIST l, void const *pdata, UINT32 const uiPos) {
-  UINT32 uiOffsetDst;
-  UINT32 uiFinalLoc = 0;
+HLIST AddtoList(HLIST l, void const *pdata, uint32_t const uiPos) {
+  uint32_t uiOffsetDst;
+  uint32_t uiFinalLoc = 0;
 
   // check for invalid handle = 0
   if (!l) {
@@ -228,11 +228,11 @@ HLIST AddtoList(HLIST l, void const *pdata, UINT32 const uiPos) {
     return NULL;
   }
 
-  UINT32 const uiSize_of_each = l->uiSiz_of_elem;
-  UINT32 const uiMax_size = l->uiMax_size;
-  UINT32 const uiHead = l->uiHead;
-  UINT32 const uiTail = l->uiTail;
-  UINT32 uiOffsetSrc = l->uiHead + uiPos * uiSize_of_each;
+  uint32_t const uiSize_of_each = l->uiSiz_of_elem;
+  uint32_t const uiMax_size = l->uiMax_size;
+  uint32_t const uiHead = l->uiHead;
+  uint32_t const uiTail = l->uiTail;
+  uint32_t uiOffsetSrc = l->uiHead + uiPos * uiSize_of_each;
   if (uiOffsetSrc >= uiMax_size) uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - uiMax_size);
   bool const fTail_check = uiTail == uiOffsetSrc;
   // copy appropriate blocks
@@ -275,7 +275,7 @@ HLIST AddtoList(HLIST l, void const *pdata, UINT32 const uiPos) {
        uiHead >= sizeof(ListHeader) + uiSize_of_each) ||
       (uiTail + uiSize_of_each > uiMax_size && uiHead == sizeof(ListHeader))) {
     // need to resize the container
-    UINT32 const uiNew_size = uiMax_size + (uiMax_size - sizeof(ListHeader));
+    uint32_t const uiNew_size = uiMax_size + (uiMax_size - sizeof(ListHeader));
     l->uiMax_size = uiNew_size;
     l = (HLIST)MemRealloc(l, uiNew_size);
     do_copy(l, sizeof(ListHeader), uiMax_size, uiHead - sizeof(ListHeader));
@@ -295,7 +295,7 @@ HLIST AddtoList(HLIST l, void const *pdata, UINT32 const uiPos) {
     return NULL;
   }
 
-  BYTE *const pbyte = (BYTE *)l + uiFinalLoc;
+  uint8_t *const pbyte = (uint8_t *)l + uiFinalLoc;
   memmove(pbyte, pdata, uiSize_of_each);
   l->uiTotal_items++;
   if (fTail_check) l->uiTail += uiSize_of_each;
@@ -306,20 +306,20 @@ HLIST AddtoList(HLIST l, void const *pdata, UINT32 const uiPos) {
 //									data - data to remove
 // from list 									position - position
 // after which data is to added
-void RemfromList(HLIST const l, void *const data, UINT32 const pos) {
+void RemfromList(HLIST const l, void *const data, uint32_t const pos) {
   if (pos >= l->uiTotal_items) {
     throw std::logic_error("Tried to remove non-existent element from list");
   }
 
-  UINT32 const uiSize_of_each = l->uiSiz_of_elem;
-  UINT32 const uiMax_size = l->uiMax_size;
-  UINT32 const uiHead = l->uiHead;
-  UINT32 const uiTail = l->uiTail;
+  uint32_t const uiSize_of_each = l->uiSiz_of_elem;
+  uint32_t const uiMax_size = l->uiMax_size;
+  uint32_t const uiHead = l->uiHead;
+  uint32_t const uiTail = l->uiTail;
 
   // copy appropriate blocks
   if (uiTail > uiHead || (uiTail == uiHead && uiHead == sizeof(ListHeader))) {
-    UINT32 const uiOffsetSrc = l->uiHead + (pos * l->uiSiz_of_elem);
-    UINT32 const uiOffsetDst = uiOffsetSrc + l->uiSiz_of_elem;
+    uint32_t const uiOffsetSrc = l->uiHead + (pos * l->uiSiz_of_elem);
+    uint32_t const uiOffsetDst = uiOffsetSrc + l->uiSiz_of_elem;
     do_copy_data(l, data, uiOffsetSrc, uiSize_of_each);
     do_copy(l, uiOffsetDst, uiOffsetSrc, uiTail - uiOffsetSrc);
     l->uiTail -= uiSize_of_each;
@@ -327,15 +327,15 @@ void RemfromList(HLIST const l, void *const data, UINT32 const pos) {
   }
 
   if (uiTail < uiHead || (uiTail == uiHead && uiHead <= sizeof(ListHeader) + uiSize_of_each)) {
-    UINT32 uiOffsetSrc = l->uiHead + (pos * l->uiSiz_of_elem);
+    uint32_t uiOffsetSrc = l->uiHead + (pos * l->uiSiz_of_elem);
     if (uiOffsetSrc >= uiMax_size) {
       uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - uiMax_size);
-      UINT32 uiOffsetDst = uiOffsetSrc + uiSize_of_each;
+      uint32_t uiOffsetDst = uiOffsetSrc + uiSize_of_each;
       do_copy_data(l, data, uiOffsetSrc, uiSize_of_each);
       do_copy(l, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc);
     } else {
-      UINT32 uiOffsetSrc = sizeof(ListHeader);
-      UINT32 uiOffsetDst = uiOffsetSrc + uiSize_of_each;
+      uint32_t uiOffsetSrc = sizeof(ListHeader);
+      uint32_t uiOffsetDst = uiOffsetSrc + uiSize_of_each;
       do_copy(l, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc);
 
       uiOffsetSrc = uiMax_size - uiSize_of_each;

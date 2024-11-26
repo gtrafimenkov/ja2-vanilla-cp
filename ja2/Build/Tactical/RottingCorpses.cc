@@ -185,7 +185,7 @@ static const char *const zNoBloodCorpseFilenames[NUM_CORPSES] = {
     ANIMSDIR "/corpses/s_expld.sti",
 };
 
-UINT8 gb4DirectionsFrom8[8] = {
+uint8_t gb4DirectionsFrom8[8] = {
     0,  // NORTH
     0,  // NE
     0,  // E
@@ -196,7 +196,7 @@ UINT8 gb4DirectionsFrom8[8] = {
     0   // NW
 };
 
-static const UINT8 gb2DirectionsFrom8[8] = {
+static const uint8_t gb2DirectionsFrom8[8] = {
     0,  // NORTH
     7,  // NE
     7,  // E
@@ -269,7 +269,7 @@ static const BOOLEAN gbCorpseValidForDecapitation[NUM_CORPSES] = {
     0,
 };
 
-static const INT8 gDecapitatedCorpse[NUM_CORPSES] = {
+static const int8_t gDecapitatedCorpse[NUM_CORPSES] = {
     0,
     SMERC_JFK,
     SMERC_JFK,
@@ -332,7 +332,7 @@ static const INT8 gDecapitatedCorpse[NUM_CORPSES] = {
 };
 
 ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
-INT32 giNumRottingCorpse = 0;
+int32_t giNumRottingCorpse = 0;
 
 static ROTTING_CORPSE *GetFreeRottingCorpse() {
   for (ROTTING_CORPSE *c = gRottingCorpse; c != gRottingCorpse + giNumRottingCorpse; ++c) {
@@ -344,8 +344,8 @@ static ROTTING_CORPSE *GetFreeRottingCorpse() {
   return NULL;
 }
 
-UINT16 GetCorpseStructIndex(const ROTTING_CORPSE_DEFINITION *pCorpseDef, BOOLEAN fForImage) {
-  INT8 bDirection;
+uint16_t GetCorpseStructIndex(const ROTTING_CORPSE_DEFINITION *pCorpseDef, BOOLEAN fForImage) {
+  int8_t bDirection;
 
   switch (pCorpseDef->ubType) {
     case QUEEN_MONSTER_DEAD:
@@ -493,12 +493,12 @@ ROTTING_CORPSE *AddRottingCorpse(ROTTING_CORPSE_DEFINITION *const pCorpseDef) tr
   const STRUCTURE_FILE_REF *const pStructureFileRef =
       GetCachedTileStructureRefFromFilename(zFilename);
   if (pStructureFileRef != NULL) {
-    const UINT16 usStructIndex = GetCorpseStructIndex(pCorpseDef, TRUE);
+    const uint16_t usStructIndex = GetCorpseStructIndex(pCorpseDef, TRUE);
     const DB_STRUCTURE_REF *const pDBStructureRef =
         &pStructureFileRef->pDBStructureRef[usStructIndex];
-    for (UINT8 ubLoop = 0; ubLoop < pDBStructureRef->pDBStructure->ubNumberOfTiles; ++ubLoop) {
+    for (uint8_t ubLoop = 0; ubLoop < pDBStructureRef->pDBStructure->ubNumberOfTiles; ++ubLoop) {
       DB_STRUCTURE_TILE *const *const ppTile = pDBStructureRef->ppTile;
-      const INT16 sTileGridNo = pCorpseDef->sGridNo + ppTile[ubLoop]->sPosRelToBase;
+      const int16_t sTileGridNo = pCorpseDef->sGridNo + ppTile[ubLoop]->sPosRelToBase;
       RemoveBlood(sTileGridNo, pCorpseDef->bLevel);
     }
   }
@@ -509,7 +509,7 @@ ROTTING_CORPSE *AddRottingCorpse(ROTTING_CORPSE_DEFINITION *const pCorpseDef) tr
 }
 
 static void FreeCorpsePalettes(ROTTING_CORPSE *pCorpse) {
-  INT32 cnt;
+  int32_t cnt;
 
   for (cnt = 0; cnt < NUM_CORPSE_SHADES; cnt++) {
     if (pCorpse->pShades[cnt] != NULL) {
@@ -564,10 +564,10 @@ static void CreateCorpsePalette(ROTTING_CORPSE *const c) {
 
 BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE &s) {
   ROTTING_CORPSE_DEFINITION Corpse;
-  UINT8 ubType;
-  UINT16 usItemFlags = 0;  // WORLD_ITEM_DONTRENDER;
-  UINT8 ubNumGoo;
-  INT16 sNewGridNo;
+  uint8_t ubType;
+  uint16_t usItemFlags = 0;  // WORLD_ITEM_DONTRENDER;
+  uint8_t ubNumGoo;
+  int16_t sNewGridNo;
   OBJECTTYPE ItemObject;
 
   if (s.sGridNo == NOWHERE) {
@@ -647,7 +647,7 @@ BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE &s) {
 
     sNewGridNo = s.sGridNo + WORLD_COLS * 2;
 
-    for (INT32 cnt = 0; cnt < ubNumGoo; ++cnt) {
+    for (int32_t cnt = 0; cnt < ubNumGoo; ++cnt) {
       CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, &ItemObject);
 
       AddItemToPool(sNewGridNo, &ItemObject, bVisible, s.bLevel, usItemFlags, -1);
@@ -698,15 +698,15 @@ BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE &s) {
   return (TRUE);
 }
 
-INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier) {
-  INT32 uiLowestRange = 999999;
-  INT16 sLowestGridNo = NOWHERE;
+int16_t FindNearestRottingCorpse(SOLDIERTYPE *pSoldier) {
+  int32_t uiLowestRange = 999999;
+  int16_t sLowestGridNo = NOWHERE;
 
   // OK, loop through our current listing of bodies
   CFOR_EACH_ROTTING_CORPSE(c) {
     // Check rotting state
     if (c->def.ubType == ROTTING_STAGE2) {
-      const INT32 uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, c->def.sGridNo);
+      const int32_t uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, c->def.sGridNo);
       if (uiRange < uiLowestRange) {
         sLowestGridNo = c->def.sGridNo;
         uiLowestRange = uiRange;
@@ -719,7 +719,7 @@ INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier) {
 
 static void AddCrowToCorpse(ROTTING_CORPSE *pCorpse) {
   SOLDIERCREATE_STRUCT MercCreateStruct;
-  INT8 bBodyType = CROW;
+  int8_t bBodyType = CROW;
 
   // No crows inside :(
   if (GetRoom(pCorpse->def.sGridNo) != NO_ROOM) return;
@@ -738,7 +738,7 @@ static void AddCrowToCorpse(ROTTING_CORPSE *pCorpse) {
 
   SOLDIERTYPE *const pSoldier = TacticalCreateSoldier(MercCreateStruct);
   if (pSoldier != NULL) {
-    const INT16 sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse->def.sGridNo, 2);
+    const int16_t sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse->def.sGridNo, 2);
     if (sGridNo != NOWHERE) {
       pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
       pSoldier->usStrategicInsertionData = sGridNo;
@@ -783,15 +783,15 @@ void HandleCrowFlyAway(SOLDIERTYPE *pSoldier) {
   pSoldier->sDesiredHeight = 100;
 
   // Change to fly animation
-  const INT16 sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier->sGridNo, 5);
+  const int16_t sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier->sGridNo, 5);
   pSoldier->usUIMovementMode = CROW_FLY;
   SendGetNewSoldierPathEvent(pSoldier, sGridNo);
 }
 
 void HandleRottingCorpses() {
   ROTTING_CORPSE *pCorpse;
-  INT8 bNumCrows = 0;
-  UINT32 uiChosenCorpseID;
+  int8_t bNumCrows = 0;
+  uint32_t uiChosenCorpseID;
 
   // ATE: If it's too late, don't!
   if (NightTime()) {
@@ -860,12 +860,12 @@ static ROTTING_CORPSE *FindCorpseBasedOnStructure(GridNo const grid_no,
   return 0;
 }
 
-void CorpseHit(INT16 sGridNo, UINT16 usStructureID) {}
+void CorpseHit(int16_t sGridNo, uint16_t usStructureID) {}
 
-void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
+void VaporizeCorpse(int16_t sGridNo, uint16_t usStructureID) {
   STRUCTURE *pStructure, *pBaseStructure;
   ROTTING_CORPSE *pCorpse = NULL;
-  INT16 sBaseGridNo;
+  int16_t sBaseGridNo;
   ANITILE_PARAMS AniParams;
 
   pStructure = FindStructureByID(sGridNo, usStructureID);
@@ -892,12 +892,12 @@ void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
     memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
     AniParams.sGridNo = sBaseGridNo;
     AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-    AniParams.sDelay = (INT16)(80);
+    AniParams.sDelay = (int16_t)(80);
     AniParams.sStartFrame = 0;
     AniParams.uiFlags = ANITILE_FORWARD;
     AniParams.sX = CenterX(sBaseGridNo);
     AniParams.sY = CenterY(sBaseGridNo);
-    AniParams.sZ = (INT16)pCorpse->def.sHeightAdjustment;
+    AniParams.sZ = (int16_t)pCorpse->def.sHeightAdjustment;
     AniParams.zCachedFile = TILECACHEDIR "/gen_blow.sti";
     CreateAnimationTile(&AniParams);
 
@@ -914,21 +914,21 @@ void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
   PlayLocationJA2Sample(sGridNo, BODY_EXPLODE_1, HIGHVOLUME, 1);
 }
 
-INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pDef, INT8 ubRadius) {
-  INT16 sSweetGridNo;
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = 0;
-  INT32 leftmost;
+int16_t FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pDef, int8_t ubRadius) {
+  int16_t sSweetGridNo;
+  int16_t sTop, sBottom;
+  int16_t sLeft, sRight;
+  int16_t cnt1, cnt2, cnt3;
+  int16_t sGridNo;
+  int32_t uiRange, uiLowestRange = 999999;
+  int16_t sLowestGridNo = 0;
+  int32_t leftmost;
   BOOLEAN fFound = FALSE;
   SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
+  uint8_t ubSaveNPCAPBudget;
+  uint8_t ubSaveNPCDistLimit;
   STRUCTURE_FILE_REF *pStructureFileRef = NULL;
-  UINT8 ubBestDirection = 0;
+  uint8_t ubBestDirection = 0;
   BOOLEAN fSetDirection = FALSE;
 
   cnt3 = 0;
@@ -1011,7 +1011,7 @@ INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pDef, INT8 
 
             if (uiRange < uiLowestRange) {
               if (fCanSetDirection) {
-                ubBestDirection = (UINT8)cnt3;
+                ubBestDirection = (uint8_t)cnt3;
                 fSetDirection = TRUE;
               }
               sLowestGridNo = sGridNo;
@@ -1040,9 +1040,9 @@ BOOLEAN IsValidDecapitationCorpse(const ROTTING_CORPSE *const c) {
   return gbCorpseValidForDecapitation[c->def.ubType];
 }
 
-ROTTING_CORPSE *GetCorpseAtGridNo(INT16 sGridNo, INT8 bLevel) {
+ROTTING_CORPSE *GetCorpseAtGridNo(int16_t sGridNo, int8_t bLevel) {
   STRUCTURE *pStructure, *pBaseStructure;
-  INT16 sBaseGridNo;
+  int16_t sBaseGridNo;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_CORPSE);
 
@@ -1061,7 +1061,7 @@ ROTTING_CORPSE *GetCorpseAtGridNo(INT16 sGridNo, INT8 bLevel) {
   return (NULL);
 }
 
-void DecapitateCorpse(const INT16 sGridNo, const INT8 bLevel) {
+void DecapitateCorpse(const int16_t sGridNo, const int8_t bLevel) {
   OBJECTTYPE Object;
   ROTTING_CORPSE *pCorpse;
   ROTTING_CORPSE_DEFINITION CorpseDef;
@@ -1090,7 +1090,7 @@ void DecapitateCorpse(const INT16 sGridNo, const INT8 bLevel) {
     // Add head item.....
 
     // Pick the head based on profile type...
-    UINT16 head_index;
+    uint16_t head_index;
     switch (pCorpse->def.ubProfile) {
       case CHRIS:
         head_index = HEAD_2;
@@ -1125,7 +1125,7 @@ void DecapitateCorpse(const INT16 sGridNo, const INT8 bLevel) {
 
 void GetBloodFromCorpse(SOLDIERTYPE *pSoldier) {
   const ROTTING_CORPSE *const pCorpse = ID2CORPSE(pSoldier->uiPendingActionData4);
-  INT8 bObjSlot;
+  int8_t bObjSlot;
   OBJECTTYPE Object;
 
   bObjSlot = FindObj(pSoldier, JAR);
@@ -1164,9 +1164,9 @@ void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE const &s, OBJECTTYPE &o) {
   o.ubWeight = CalculateObjectWeight(&o);
 }
 
-void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubLevel) {
+void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, int16_t sGridNo, uint8_t ubLevel) {
   ROTTING_CORPSE *pCorpse;
-  INT8 bToleranceThreshold = 0;
+  int8_t bToleranceThreshold = 0;
 
   if (QuoteExp_HeadShotOnly[pSoldier->ubProfile] == 1) {
     return;
@@ -1195,7 +1195,7 @@ void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UI
     BeginMultiPurposeLocator(sGridNo, ubLevel);
 
     // Reset values....
-    pSoldier->bCorpseQuoteTolerance = (INT8)(Random(3) + 1);
+    pSoldier->bCorpseQuoteTolerance = (int8_t)(Random(3) + 1);
 
     // 50% chance of adding 1 to other mercs....
     if (Random(2) == 1) {
@@ -1209,7 +1209,7 @@ void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UI
   }
 }
 
-INT16 GetGridNoOfCorpseGivenProfileID(const UINT8 ubProfileID) {
+int16_t GetGridNoOfCorpseGivenProfileID(const uint8_t ubProfileID) {
   // Loop through all corpses....
   CFOR_EACH_ROTTING_CORPSE(c) {
     if (c->def.ubProfile == ubProfileID) return c->def.sGridNo;
@@ -1223,8 +1223,8 @@ void DecayRottingCorpseAIWarnings() {
   }
 }
 
-UINT8 GetNearestRottingCorpseAIWarning(const INT16 sGridNo) {
-  UINT8 ubHighestWarning = 0;
+uint8_t GetNearestRottingCorpseAIWarning(const int16_t sGridNo) {
+  uint8_t ubHighestWarning = 0;
   CFOR_EACH_ROTTING_CORPSE(c) {
     if (c->def.ubAIWarningValue > 0 &&
         PythSpacesAway(sGridNo, c->def.sGridNo) <= CORPSE_WARNING_DIST &&

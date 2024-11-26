@@ -23,7 +23,7 @@ void InitEngineTilesets() try {
   AutoSGPFile f(FileMan::openForReadingSmart(BINARYDATADIR "/ja2set.dat", true));
 
   // READ # TILESETS and compare
-  UINT8 ubNumSets;
+  uint8_t ubNumSets;
   FileRead(f, &ubNumSets, sizeof(ubNumSets));
   if (ubNumSets != NUM_TILESETS) {
     SET_ERROR("Number of tilesets in code does not match data file");
@@ -31,7 +31,7 @@ void InitEngineTilesets() try {
   }
 
   // READ #files
-  UINT32 uiNumFiles;
+  uint32_t uiNumFiles;
   FileRead(f, &uiNumFiles, sizeof(uiNumFiles));
   if (uiNumFiles != NUMBEROFTILETYPES) {
     SET_ERROR("Number of tilesets slots in code does not match data file");
@@ -47,10 +47,10 @@ void InitEngineTilesets() try {
     swprintf(ts->zName, lengthof(ts->zName), L"%hs", zName);
 
     // Read ambience value
-    FileRead(f, &ts->ubAmbientID, sizeof(UINT8));
+    FileRead(f, &ts->ubAmbientID, sizeof(uint8_t));
 
     // Loop for files
-    for (UINT32 cnt2 = 0; cnt2 < uiNumFiles; ++cnt2) {
+    for (uint32_t cnt2 = 0; cnt2 < uiNumFiles; ++cnt2) {
       // Read file name
       FileRead(f, ts->TileSurfaceFilenames[cnt2], sizeof(ts->TileSurfaceFilenames[cnt2]));
     }

@@ -6,7 +6,7 @@
 void ResetHeliSeats();
 void AddMercToHeli(SOLDIERTYPE *s);
 
-void StartHelicopterRun(INT16 sGridNoSweetSpot);
+void StartHelicopterRun(int16_t sGridNoSweetSpot);
 
 void HandleHeliDrop();
 

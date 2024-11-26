@@ -28,7 +28,7 @@
 #define WT WATER
 #define X TOWN
 
-static const UINT8 g_traverse_we[][17] = {
+static const uint8_t g_traverse_we[][17] = {
     /*          1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16  */
     /* A */ {E, P, P, E, E, E, P, H, P, X, P, D, D, P, P, E, E},
     /* B */ {E, P, P, S, P, P, P, P, P, R, R, R, R, P, P, P, E},
@@ -49,7 +49,7 @@ static const UINT8 g_traverse_we[][17] = {
     /*        ^------------------ always E -------------------^ */
 };
 
-static const UINT8 g_traverse_ns[][16] = {
+static const uint8_t g_traverse_ns[][16] = {
     /*         1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 */
     /* A  */ {E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E},  // always E
     /* AB */ {P, X, P, E, E, P, P, P, R, P, P, D, P, P, P, E},
@@ -70,7 +70,7 @@ static const UINT8 g_traverse_ns[][16] = {
     /*  P */ {E, E, E, E, E, E, E, E, E, E, E, E, E, E, E, E}  // always E
 };
 
-static const UINT8 g_traverse_through[][16] = {
+static const uint8_t g_traverse_through[][16] = {
     /*         1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16 */
     /* A */ {T, X, P, E, E, H, H, H, X, X, F, D, S, P, D, E},
     /* B */ {T, X, S, S, F, F, P, F, PR, SR, SR, FR, X, WT, W, D},
@@ -89,7 +89,7 @@ static const UINT8 g_traverse_through[][16] = {
     /* O */ {G, G, X, X, G, G, G, T, T, G, G, G, G, E, E, E},
     /* P */ {G, G, X, G, G, G, G, G, G, G, G, G, G, E, E, E}};
 
-static const UINT8 g_travel_rating[][16] = {
+static const uint8_t g_travel_rating[][16] = {
     /*         1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16 */
     /* A */ {10, 60, 9, 0, 0, 5, 4, 14, 70, 70, 18, 4, 14, 10, 8, 0},
     /* B */ {10, 60, 6, 4, 15, 15, 10, 20, 70, 50, 50, 50, 85, 15, 10, 0},
@@ -134,8 +134,8 @@ static const UINT8 g_travel_rating[][16] = {
 #undef X
 
 void InitStrategicMovementCosts() {
-  for (INT32 y = 0; y < 16; ++y) {
-    for (INT32 x = 0; x < 16; ++x) {
+  for (int32_t y = 0; y < 16; ++y) {
+    for (int32_t x = 0; x < 16; ++x) {
       SECTORINFO &s = SectorInfo[SECTOR(x + 1, y + 1)];
       s.ubTravelRating = g_travel_rating[y][x];
       s.ubTraversability[WEST_STRATEGIC_MOVE] = g_traverse_we[y][x];
@@ -147,9 +147,9 @@ void InitStrategicMovementCosts() {
   }
 }
 
-UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector) {
-  UINT8 ubDirection = 0;
-  INT16 sDifference = 0;
+uint8_t GetTraversability(int16_t sStartSector, int16_t sEndSector) {
+  uint8_t ubDirection = 0;
+  int16_t sDifference = 0;
 
   // given start and end sectors
   sDifference = sEndSector - sStartSector;
@@ -167,9 +167,9 @@ UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector) {
   return (SectorInfo[sStartSector].ubTraversability[ubDirection]);
 }
 
-bool SectorIsPassable(INT16 const sSector) {
+bool SectorIsPassable(int16_t const sSector) {
   // returns true if the sector is impassable in all directions
-  const UINT8 t = SectorInfo[sSector].ubTraversability[THROUGH_STRATEGIC_MOVE];
+  const uint8_t t = SectorInfo[sSector].ubTraversability[THROUGH_STRATEGIC_MOVE];
   return t != GROUNDBARRIER && t != EDGEOFWORLD;
 }
 

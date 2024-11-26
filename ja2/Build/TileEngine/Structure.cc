@@ -33,10 +33,10 @@
 #include "TileEngine/TileAnimation.h"
 
 #ifdef COUNT_PATHS
-extern UINT32 guiSuccessfulPathChecks;
-extern UINT32 guiTotalPathChecks;
-extern UINT32 guiFailedPathChecks;
-extern UINT32 guiUnsuccessfulPathChecks;
+extern uint32_t guiSuccessfulPathChecks;
+extern uint32_t guiTotalPathChecks;
+extern uint32_t guiFailedPathChecks;
+extern uint32_t guiUnsuccessfulPathChecks;
 #endif
 
 /*
@@ -49,11 +49,11 @@ extern UINT32 guiUnsuccessfulPathChecks;
  * deleted if starting with the deletion of a MULTI SPECIAL structure
  */
 
-UINT8 AtHeight[PROFILE_Z_SIZE] = {0x01, 0x02, 0x04, 0x08};
+uint8_t AtHeight[PROFILE_Z_SIZE] = {0x01, 0x02, 0x04, 0x08};
 
 #define FIRST_AVAILABLE_STRUCTURE_ID (INVALID_STRUCTURE_ID + 2)
 
-static UINT16 gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
+static uint16_t gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
 
 static STRUCTURE_FILE_REF *gpStructureFileRefs;
 
@@ -106,7 +106,7 @@ index 23, really heavy metal
 index 24, indestructable stone
 index 25, indestructable metal
 */
-UINT8 const gubMaterialArmour[] = {
+uint8_t const gubMaterialArmour[] = {
     // note: must increase; r.c. should block *AP* 7.62mm rounds
     0,   // nothing
     25,  // dry timber; wood wall +1/2
@@ -136,13 +136,13 @@ UINT8 const gubMaterialArmour[] = {
 };
 
 // Function operating on a structure tile
-static UINT8 FilledTilePositions(DB_STRUCTURE_TILE const *const t) {
+static uint8_t FilledTilePositions(DB_STRUCTURE_TILE const *const t) {
   // Loop through all parts of a structure and add up the number of filled spots
-  UINT8 filled = 0;
-  for (INT8 x = 0; x != PROFILE_X_SIZE; ++x) {
-    for (INT8 y = 0; y != PROFILE_Y_SIZE; ++y) {
-      UINT8 const shape_value = t->Shape[x][y];
-      for (INT8 z = 0; z != PROFILE_Z_SIZE; ++z) {
+  uint8_t filled = 0;
+  for (int8_t x = 0; x != PROFILE_X_SIZE; ++x) {
+    for (int8_t y = 0; y != PROFILE_Y_SIZE; ++y) {
+      uint8_t const shape_value = t->Shape[x][y];
+      for (int8_t z = 0; z != PROFILE_Z_SIZE; ++z) {
         if (shape_value & AtHeight[z]) ++filled;
       }
     }
@@ -207,20 +207,20 @@ void FreeStructureFile(STRUCTURE_FILE_REF *const sfr) {
 
 // Loads a structure file's data as a honking chunk o' memory
 static void LoadStructureData(char const *const filename, STRUCTURE_FILE_REF *const sfr,
-                              UINT32 *const structure_data_size) {
+                              uint32_t *const structure_data_size) {
   AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
 
-  BYTE data[16];
+  uint8_t data[16];
   FileRead(f, data, sizeof(data));
 
   char id[4];
-  UINT16 n_structures;
-  UINT16 n_structures_stored;
-  UINT16 data_size;
-  UINT8 flags;
-  UINT16 n_tile_locs_stored;
+  uint16_t n_structures;
+  uint16_t n_structures_stored;
+  uint16_t data_size;
+  uint8_t flags;
+  uint16_t n_tile_locs_stored;
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_STR(d, id, lengthof(id))
   EXTR_U16(d, n_structures);
   EXTR_U16(d, n_structures_stored)
@@ -247,7 +247,7 @@ static void LoadStructureData(char const *const filename, STRUCTURE_FILE_REF *co
     }
   }
 
-  SGP::Buffer<UINT8> structure_data;
+  SGP::Buffer<uint8_t> structure_data;
   if (flags & STRUCTURE_FILE_CONTAINS_STRUCTUREDATA) {
     sfr->usNumberOfStructuresStored = n_structures_stored;
     structure_data.Allocate(data_size);
@@ -263,13 +263,13 @@ static void LoadStructureData(char const *const filename, STRUCTURE_FILE_REF *co
 
 static void CreateFileStructureArrays(
     STRUCTURE_FILE_REF *const pFileRef,
-    UINT32 uiDataSize) { /* Based on a file chunk, creates all the dynamic arrays
-                          * for the structure definitions contained within */
-  UINT8 *pCurrent = pFileRef->pubStructureData;
+    uint32_t uiDataSize) { /* Based on a file chunk, creates all the dynamic arrays
+                            * for the structure definitions contained within */
+  uint8_t *pCurrent = pFileRef->pubStructureData;
   DB_STRUCTURE_REF *const pDBStructureRef =
       MALLOCNZ(DB_STRUCTURE_REF, pFileRef->usNumberOfStructures);
   pFileRef->pDBStructureRef = pDBStructureRef;
-  for (UINT16 usLoop = 0; usLoop < pFileRef->usNumberOfStructuresStored; ++usLoop) {
+  for (uint16_t usLoop = 0; usLoop < pFileRef->usNumberOfStructuresStored; ++usLoop) {
     if (uiDataSize < sizeof(DB_STRUCTURE)) {  // gone past end of file block?!
       // freeing of memory will occur outside of the function
       throw std::runtime_error(
@@ -280,13 +280,13 @@ static void CreateFileStructureArrays(
     uiDataSize -= sizeof(DB_STRUCTURE);
 
     DB_STRUCTURE_TILE **const tiles = MALLOCN(DB_STRUCTURE_TILE *, dbs->ubNumberOfTiles);
-    UINT16 const usIndex = dbs->usStructureNumber;
+    uint16_t const usIndex = dbs->usStructureNumber;
     pDBStructureRef[usIndex].pDBStructure = dbs;
     pDBStructureRef[usIndex].ppTile = tiles;
 
     // Set things up to calculate hit points
-    UINT32 uiHitPoints = 0;
-    for (UINT16 usTileLoop = 0; usTileLoop < dbs->ubNumberOfTiles; ++usTileLoop) {
+    uint32_t uiHitPoints = 0;
+    for (uint16_t usTileLoop = 0; usTileLoop < dbs->ubNumberOfTiles; ++usTileLoop) {
       if (uiDataSize < sizeof(DB_STRUCTURE_TILE)) {  // gone past end of file block?!
         // freeing of memory will occur outside of the function
         throw std::runtime_error(
@@ -305,7 +305,7 @@ static void CreateFileStructureArrays(
     }
     // scale hit points down to something reasonable...
     uiHitPoints = uiHitPoints * 100 / 255;
-    dbs->ubHitPoints = (UINT8)uiHitPoints;
+    dbs->ubHitPoints = (uint8_t)uiHitPoints;
   }
 }
 
@@ -313,7 +313,7 @@ STRUCTURE_FILE_REF *LoadStructureFile(
     char const *const filename) {  // NB should be passed in expected number of
                                    // structures so we can check equality
   SGP::AutoObj<STRUCTURE_FILE_REF, FreeStructureFileRef> sfr(MALLOCZ(STRUCTURE_FILE_REF));
-  UINT32 data_size = 0;
+  uint32_t data_size = 0;
   LoadStructureData(filename, sfr, &data_size);
   if (sfr->pubStructureData) CreateFileStructureArrays(sfr, data_size);
   // Add the file reference to the master list, at the head for convenience
@@ -328,8 +328,8 @@ STRUCTURE_FILE_REF *LoadStructureFile(
 //
 
 static STRUCTURE *CreateStructureFromDB(DB_STRUCTURE_REF const *const pDBStructureRef,
-                                        UINT8 const ubTileNum) {  // Creates a STRUCTURE struct for
-                                                                  // one tile of a structure
+                                        uint8_t const ubTileNum) {  // Creates a STRUCTURE struct
+                                                                    // for one tile of a structure
   DB_STRUCTURE const *const pDBStructure = pDBStructureRef->pDBStructure;
   DB_STRUCTURE_TILE *const pTile = pDBStructureRef->ppTile[ubTileNum];
 
@@ -355,12 +355,12 @@ static STRUCTURE *CreateStructureFromDB(DB_STRUCTURE_REF const *const pDBStructu
 }
 
 static BOOLEAN OkayToAddStructureToTile(
-    INT16 const sBaseGridNo, INT16 const sCubeOffset, DB_STRUCTURE_REF const *const pDBStructureRef,
-    UINT8 ubTileIndex, INT16 const sExclusionID,
+    int16_t const sBaseGridNo, int16_t const sCubeOffset,
+    DB_STRUCTURE_REF const *const pDBStructureRef, uint8_t ubTileIndex, int16_t const sExclusionID,
     BOOLEAN const fIgnorePeople) {  // Verifies whether a structure is blocked from being
                                     // added to the map at a particular point
   DB_STRUCTURE_TILE const *const *const ppTile = pDBStructureRef->ppTile;
-  INT16 const sGridNo = sBaseGridNo + ppTile[ubTileIndex]->sPosRelToBase;
+  int16_t const sGridNo = sBaseGridNo + ppTile[ubTileIndex]->sPosRelToBase;
   if (sGridNo < 0 || WORLD_MAX < sGridNo) return FALSE;
 
   if (gpWorldLevelData[sBaseGridNo].sHeight != gpWorldLevelData[sGridNo].sHeight) {
@@ -416,12 +416,12 @@ static BOOLEAN OkayToAddStructureToTile(
           // we could be trying to place a multi-tile obstacle on top of a wall;
           // we shouldn't allow this if the structure is going to be on both
           // sides of the wall
-          for (INT8 bLoop = 1; bLoop < 4; ++bLoop) {
-            INT16 sOtherGridNo;
+          for (int8_t bLoop = 1; bLoop < 4; ++bLoop) {
+            int16_t sOtherGridNo;
             switch (pExistingStructure->ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
               case INSIDE_TOP_LEFT:
-                sOtherGridNo = NewGridNo(sGridNo, DirectionInc((INT8)(bLoop + 2)));
+                sOtherGridNo = NewGridNo(sGridNo, DirectionInc((int8_t)(bLoop + 2)));
                 break;
 
               case OUTSIDE_TOP_RIGHT:
@@ -434,7 +434,7 @@ static BOOLEAN OkayToAddStructureToTile(
                 sOtherGridNo = NewGridNo(sGridNo, DirectionInc(SOUTHEAST));
                 break;
             }
-            for (INT8 bLoop2 = 0; bLoop2 < pDBStructure->ubNumberOfTiles; ++bLoop2) {
+            for (int8_t bLoop2 = 0; bLoop2 < pDBStructure->ubNumberOfTiles; ++bLoop2) {
               if (sBaseGridNo + ppTile[bLoop2]->sPosRelToBase != sOtherGridNo) continue;
 
               // obstacle will straddle wall!
@@ -451,12 +451,12 @@ static BOOLEAN OkayToAddStructureToTile(
       } else if (!(pExistingStructure->fFlags & (STRUCTURE_CORPSE | STRUCTURE_PERSON))) {
         // it's possible we're trying to insert this wall on top of a multitile
         // obstacle
-        for (INT8 bLoop = 1; bLoop < 4; ++bLoop) {
-          INT16 sOtherGridNo;
+        for (int8_t bLoop = 1; bLoop < 4; ++bLoop) {
+          int16_t sOtherGridNo;
           switch (pDBStructure->ubWallOrientation) {
             case OUTSIDE_TOP_LEFT:
             case INSIDE_TOP_LEFT:
-              sOtherGridNo = NewGridNo(sGridNo, DirectionInc((INT8)(bLoop + 2)));
+              sOtherGridNo = NewGridNo(sGridNo, DirectionInc((int8_t)(bLoop + 2)));
               break;
 
             case OUTSIDE_TOP_RIGHT:
@@ -526,18 +526,18 @@ static BOOLEAN OkayToAddStructureToTile(
 }
 
 BOOLEAN
-InternalOkayToAddStructureToWorld(INT16 const sBaseGridNo, INT8 const bLevel,
+InternalOkayToAddStructureToWorld(int16_t const sBaseGridNo, int8_t const bLevel,
                                   DB_STRUCTURE_REF const *const pDBStructureRef,
-                                  INT16 const sExclusionID, BOOLEAN const fIgnorePeople) {
+                                  int16_t const sExclusionID, BOOLEAN const fIgnorePeople) {
   CHECKF(pDBStructureRef);
   CHECKF(pDBStructureRef->pDBStructure);
-  UINT8 const n_tiles = pDBStructureRef->pDBStructure->ubNumberOfTiles;
+  uint8_t const n_tiles = pDBStructureRef->pDBStructure->ubNumberOfTiles;
   CHECKF(n_tiles > 0);
   DB_STRUCTURE_TILE const *const *const tiles = pDBStructureRef->ppTile;
   CHECKF(tiles);
 
-  for (UINT8 i = 0; i < n_tiles; ++i) {
-    INT16 cube_offset;
+  for (uint8_t i = 0; i < n_tiles; ++i) {
+    int16_t cube_offset;
     if (!(tiles[i]->fFlags & TILE_ON_ROOF)) {
       cube_offset = bLevel * PROFILE_Z_SIZE;
     } else if (bLevel == 0) {
@@ -554,17 +554,17 @@ InternalOkayToAddStructureToWorld(INT16 const sBaseGridNo, INT8 const bLevel,
   return TRUE;
 }
 
-BOOLEAN OkayToAddStructureToWorld(const INT16 sBaseGridNo, const INT8 bLevel,
+BOOLEAN OkayToAddStructureToWorld(const int16_t sBaseGridNo, const int8_t bLevel,
                                   const DB_STRUCTURE_REF *const pDBStructureRef,
-                                  const INT16 sExclusionID) {
+                                  const int16_t sExclusionID) {
   return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID,
                                            sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID);
 }
 
 static void AddStructureToTile(
     MAP_ELEMENT *const me, STRUCTURE *const s,
-    UINT16 const structure_id) {  // Add a STRUCTURE to a MAP_ELEMENT (Add part
-                                  // of a structure to a location on the map)
+    uint16_t const structure_id) {  // Add a STRUCTURE to a MAP_ELEMENT (Add part
+                                    // of a structure to a location on the map)
   STRUCTURE *const tail = me->pStructureTail;
   s->usStructureID = structure_id;
   s->pPrev = tail;
@@ -576,7 +576,7 @@ static void AddStructureToTile(
 static void DeleteStructureFromTile(MAP_ELEMENT *pMapElement, STRUCTURE *pStructure);
 
 STRUCTURE *AddStructureToWorld(
-    INT16 const sBaseGridNo, INT8 const bLevel, DB_STRUCTURE_REF const *const pDBStructureRef,
+    int16_t const sBaseGridNo, int8_t const bLevel, DB_STRUCTURE_REF const *const pDBStructureRef,
     LEVELNODE *const pLevelNode) try {  // Adds a complete structure to the world
                                         // at a location plus all other locations
                                         // covered by the structure
@@ -604,7 +604,7 @@ STRUCTURE *AddStructureToWorld(
    * world quickly */
   SGP::Buffer<STRUCTURE *> structures(pDBStructure->ubNumberOfTiles);
 
-  for (UINT8 i = BASE_TILE; i < pDBStructure->ubNumberOfTiles;
+  for (uint8_t i = BASE_TILE; i < pDBStructure->ubNumberOfTiles;
        ++i) {  // for each tile, create the appropriate STRUCTURE struct
     STRUCTURE *s;
     try {
@@ -612,7 +612,7 @@ STRUCTURE *AddStructureToWorld(
       structures[i] = s;
     } catch (...) {
       // Free allocated memory and abort!
-      for (UINT8 k = 0; k < i; ++k) {
+      for (uint8_t k = 0; k < i; ++k) {
         MemFree(structures[k]);
       }
       return 0;
@@ -650,13 +650,13 @@ STRUCTURE *AddStructureToWorld(
     }
   }
 
-  UINT16 usStructureID;
+  uint16_t usStructureID;
   if (pLevelNode->uiFlags & LEVELNODE_SOLDIER) {
     // use the merc's ID as the structure ID for his/her structure
     usStructureID = pLevelNode->pSoldier->ubID;
   } else if (pLevelNode->uiFlags & LEVELNODE_ROTTINGCORPSE) {
     // ATE: Offset IDs so they don't collide with soldiers
-    usStructureID = (UINT16)(TOTAL_SOLDIERS + pLevelNode->pAniTile->v.user.uiData);
+    usStructureID = (uint16_t)(TOTAL_SOLDIERS + pLevelNode->pAniTile->v.user.uiData);
   } else {
     gusNextAvailableStructureID++;
     if (gusNextAvailableStructureID == 0) {
@@ -666,15 +666,15 @@ STRUCTURE *AddStructureToWorld(
     usStructureID = gusNextAvailableStructureID;
   }
   // now add all these to the world!
-  INT16 sBaseTileHeight = -1;
-  for (UINT8 i = BASE_TILE; i < pDBStructure->ubNumberOfTiles; ++i) {
+  int16_t sBaseTileHeight = -1;
+  for (uint8_t i = BASE_TILE; i < pDBStructure->ubNumberOfTiles; ++i) {
     STRUCTURE *const s = structures[i];
     MAP_ELEMENT *const me = &gpWorldLevelData[s->sGridNo];
     if (i == BASE_TILE) {
       sBaseTileHeight = me->sHeight;
     } else if (me->sHeight != sBaseTileHeight) {
       // not level ground! abort!
-      for (UINT8 k = BASE_TILE; k < i; ++k) {
+      for (uint8_t k = BASE_TILE; k < i; ++k) {
         STRUCTURE *const s = structures[k];
         DeleteStructureFromTile(&gpWorldLevelData[s->sGridNo], s);
       }
@@ -719,7 +719,7 @@ BOOLEAN DeleteStructureFromWorld(
   STRUCTURE *const base = FindBaseStructure(structure);
   CHECKF(base);
 
-  UINT16 const structure_id = base->usStructureID;
+  uint16_t const structure_id = base->usStructureID;
   bool const recompile_mps = gsRecompileAreaLeft != 0 && !(base->fFlags & STRUCTURE_MOBILE);
   bool const recompile_extra_radius =
       recompile_mps && base->fFlags & STRUCTURE_WALLSTUFF;  // For doors, yuck
@@ -742,7 +742,7 @@ BOOLEAN DeleteStructureFromWorld(
     if (!recompile_extra_radius) continue;
 
     // Add adjacent tiles too
-    for (UINT8 k = 0; k != NUM_WORLD_DIRECTIONS; ++k) {
+    for (uint8_t k = 0; k != NUM_WORLD_DIRECTIONS; ++k) {
       GridNo const check_grid_no = NewGridNo(grid_no, DirectionInc(k));
       if (check_grid_no == grid_no) continue;
       AddTileToRecompileArea(check_grid_no);
@@ -757,7 +757,7 @@ static STRUCTURE *InternalSwapStructureForPartner(STRUCTURE *const s, bool const
   STRUCTURE *const base = FindBaseStructure(s);
   CHECKN(base);
 
-  INT8 const delta = base->pDBStructureRef->pDBStructure->bPartnerDelta;
+  int8_t const delta = base->pDBStructureRef->pDBStructure->bPartnerDelta;
   if (delta == NO_PARTNER_STRUCTURE) return 0;
 
   // Record values, base is deleted
@@ -766,14 +766,14 @@ static STRUCTURE *InternalSwapStructureForPartner(STRUCTURE *const s, bool const
   LEVELNODE *const shadow = FindShadow(grid_no, node->usIndex);
   bool const is_door = base->fFlags & STRUCTURE_ANYDOOR;
   DB_STRUCTURE_REF const *const partner = base->pDBStructureRef + delta;
-  UINT8 const hit_points = base->ubHitPoints;
-  INT16 const cube_offset = base->sCubeOffset;
+  uint8_t const hit_points = base->ubHitPoints;
+  int16_t const cube_offset = base->sCubeOffset;
 
   // Delete the old structure and add the new one
   if (!DeleteStructureFromWorld(base)) return 0;
 
   STRUCTURE *const new_base =
-      AddStructureToWorld(grid_no, (INT8)(cube_offset / PROFILE_Z_SIZE), partner, node);
+      AddStructureToWorld(grid_no, (int8_t)(cube_offset / PROFILE_Z_SIZE), partner, node);
   if (!new_base) return 0;
 
   // Set values in the new structure
@@ -806,7 +806,7 @@ STRUCTURE *SwapStructureForPartnerAndStoreChangeInMap(STRUCTURE *const s) {
   return InternalSwapStructureForPartner(s, true);
 }
 
-STRUCTURE *FindStructure(INT16 const sGridNo, StructureFlags const flags) {
+STRUCTURE *FindStructure(int16_t const sGridNo, StructureFlags const flags) {
   Assert(flags != 0);
   for (STRUCTURE *i = gpWorldLevelData[sGridNo].pStructureHead;; i = i->pNext) {
     if (i == NULL || i->fFlags & flags) return i;
@@ -821,7 +821,7 @@ STRUCTURE *FindNextStructure(STRUCTURE const *const s, StructureFlags const flag
   }
 }
 
-STRUCTURE *FindStructureByID(const INT16 sGridNo, const UINT16 structure_id) {
+STRUCTURE *FindStructureByID(const int16_t sGridNo, const uint16_t structure_id) {
   for (STRUCTURE *i = gpWorldLevelData[sGridNo].pStructureHead;; i = i->pNext) {
     if (i == NULL || i->usStructureID == structure_id) return i;
   }
@@ -833,12 +833,12 @@ STRUCTURE *FindBaseStructure(STRUCTURE *const s) {
   return FindStructureByID(s->sBaseGridNo, s->usStructureID);
 }
 
-INT8 StructureHeight(STRUCTURE *pStructure) {  // return the height of an object from 1-4
-  UINT8 ubLoopX, ubLoopY;
+int8_t StructureHeight(STRUCTURE *pStructure) {  // return the height of an object from 1-4
+  uint8_t ubLoopX, ubLoopY;
   PROFILE *pShape;
-  UINT8 ubShapeValue;
-  INT8 bLoopZ;
-  INT8 bGreatestHeight = -1;
+  uint8_t ubShapeValue;
+  int8_t bLoopZ;
+  int8_t bGreatestHeight = -1;
 
   if (pStructure == NULL || pStructure->pShape == NULL) {
     return (0);
@@ -874,11 +874,11 @@ INT8 StructureHeight(STRUCTURE *pStructure) {  // return the height of an object
   return (bGreatestHeight + 1);
 }
 
-INT8 GetTallestStructureHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
+int8_t GetTallestStructureHeight(int16_t sGridNo, BOOLEAN fOnRoof) {
   STRUCTURE *pCurrent;
-  INT8 iHeight;
-  INT8 iTallest = 0;
-  INT16 sDesiredHeight;
+  int8_t iHeight;
+  int8_t iTallest = 0;
+  int16_t sDesiredHeight;
 
   if (fOnRoof) {
     sDesiredHeight = STRUCTURE_ON_ROOF;
@@ -898,11 +898,11 @@ INT8 GetTallestStructureHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
   return (iTallest);
 }
 
-INT8 GetStructureTargetHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
+int8_t GetStructureTargetHeight(int16_t sGridNo, BOOLEAN fOnRoof) {
   STRUCTURE *pCurrent;
-  INT8 iHeight;
-  INT8 iTallest = 0;
-  INT16 sDesiredHeight;
+  int8_t iHeight;
+  int8_t iTallest = 0;
+  int16_t sDesiredHeight;
 
   if (fOnRoof) {
     sDesiredHeight = STRUCTURE_ON_ROOF;
@@ -935,13 +935,13 @@ INT8 GetStructureTargetHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
   return (iTallest);
 }
 
-INT8 StructureBottomLevel(
+int8_t StructureBottomLevel(
     STRUCTURE *pStructure) {  // return the bottom level of an object, from 1-4
-  UINT8 ubLoopX, ubLoopY;
+  uint8_t ubLoopX, ubLoopY;
   PROFILE *pShape;
-  UINT8 ubShapeValue;
-  INT8 bLoopZ;
-  INT8 bLowestHeight = PROFILE_Z_SIZE;
+  uint8_t ubShapeValue;
+  int8_t bLoopZ;
+  int8_t bLowestHeight = PROFILE_Z_SIZE;
 
   if (pStructure == NULL || pStructure->pShape == NULL) {
     return (0);
@@ -968,10 +968,10 @@ INT8 StructureBottomLevel(
   return (bLowestHeight + 1);
 }
 
-BOOLEAN StructureDensity(STRUCTURE *pStructure, UINT8 *pubLevel0, UINT8 *pubLevel1,
-                         UINT8 *pubLevel2, UINT8 *pubLevel3) {
-  UINT8 ubLoopX, ubLoopY;
-  UINT8 ubShapeValue;
+BOOLEAN StructureDensity(STRUCTURE *pStructure, uint8_t *pubLevel0, uint8_t *pubLevel1,
+                         uint8_t *pubLevel2, uint8_t *pubLevel3) {
+  uint8_t ubLoopX, ubLoopY;
+  uint8_t ubShapeValue;
   PROFILE *pShape;
 
   CHECKF(pStructure);
@@ -1011,8 +1011,8 @@ BOOLEAN StructureDensity(STRUCTURE *pStructure, UINT8 *pubLevel0, UINT8 *pubLeve
   return (TRUE);
 }
 
-BOOLEAN DamageStructure(STRUCTURE *const s, UINT8 damage, StructureDamageReason const reason,
-                        GridNo const grid_no, INT16 const x, INT16 const y,
+BOOLEAN DamageStructure(STRUCTURE *const s, uint8_t damage, StructureDamageReason const reason,
+                        GridNo const grid_no, int16_t const x, int16_t const y,
                         SOLDIERTYPE *const owner) {  // Do damage to a structure; returns TRUE if
                                                      // the structure should be removed
   CHECKF(s);
@@ -1022,14 +1022,14 @@ BOOLEAN DamageStructure(STRUCTURE *const s, UINT8 damage, StructureDamageReason 
     return FALSE;
   }
 
-  UINT8 const armour_kind = s->pDBStructureRef->pDBStructure->ubArmour;
+  uint8_t const armour_kind = s->pDBStructureRef->pDBStructure->ubArmour;
   if (armour_kind == MATERIAL_INDESTRUCTABLE_METAL) return FALSE;
   if (armour_kind == MATERIAL_INDESTRUCTABLE_STONE) return FALSE;
 
   if (reason == STRUCTURE_DAMAGE_EXPLOSION) {
     // Account for armour!
-    UINT8 const base_armour = gubMaterialArmour[armour_kind];
-    UINT8 const armour = s->fFlags & STRUCTURE_EXPLOSIVE ? base_armour / 3 : base_armour / 2;
+    uint8_t const base_armour = gubMaterialArmour[armour_kind];
+    uint8_t const armour = s->fFlags & STRUCTURE_EXPLOSIVE ? base_armour / 3 : base_armour / 2;
     if (damage < armour) return FALSE;  // Didn't even scratch the paint
     // Did some damage to the structure
     damage -= armour;
@@ -1090,7 +1090,7 @@ void DebugStructurePage1() {
 
   gprintf(320, 0, L"Building %d", gubBuildingInfo[grid_no]);
 
-  INT16 const desired_level =
+  int16_t const desired_level =
       gsInterfaceLevel == I_GROUND_LEVEL ? STRUCTURE_ON_GROUND : STRUCTURE_ON_ROOF;
   for (STRUCTURE *s = gpWorldLevelData[grid_no].pStructureHead; s; s = s->pNext) {
     if (s->sCubeOffset != desired_level) continue;
@@ -1129,16 +1129,16 @@ void DebugStructurePage1() {
       gprintf(0, LINE_HEIGHT * 1, L"UNKNOWN STRUCTURE! (0x%X)", s->fFlags);
     }
 
-    INT8 const height = StructureHeight(s);
+    int8_t const height = StructureHeight(s);
     STRUCTURE const *const base = FindBaseStructure(s);
-    UINT8 const armour = gubMaterialArmour[s->pDBStructureRef->pDBStructure->ubArmour];
+    uint8_t const armour = gubMaterialArmour[s->pDBStructureRef->pDBStructure->ubArmour];
     gprintf(0, LINE_HEIGHT * 2, L"Structure height %d, cube offset %d, armour %d, HP %d", height,
             s->sCubeOffset, armour, base->ubHitPoints);
 
-    UINT8 dens0;
-    UINT8 dens1;
-    UINT8 dens2;
-    UINT8 dens3;
+    uint8_t dens0;
+    uint8_t dens1;
+    uint8_t dens2;
+    uint8_t dens3;
     if (StructureDensity(s, &dens0, &dens1, &dens2, &dens3)) {
       gprintf(0, LINE_HEIGHT * 3, L"Structure fill %d%%/%d%%/%d%%/%d%% density %d", dens0, dens1,
               dens2, dens3, s->pDBStructureRef->pDBStructure->ubDensity);
@@ -1148,7 +1148,7 @@ void DebugStructurePage1() {
     gprintf(0, LINE_HEIGHT * 4, L"Structure ID %d", s->usStructureID);
 #endif
 
-    INT8 n_structures = 0;
+    int8_t n_structures = 0;
     for (STRUCTURE const *i = gpWorldLevelData[grid_no].pStructureHead; i; i = i->pNext) {
       ++n_structures;
     }
@@ -1207,18 +1207,18 @@ void DebugStructurePage1() {
 
 void AddZStripInfoToVObject(HVOBJECT const hVObject,
                             STRUCTURE_FILE_REF const *const pStructureFileRef,
-                            BOOLEAN const fFromAnimation, INT16 sSTIStartIndex) {
+                            BOOLEAN const fFromAnimation, int16_t sSTIStartIndex) {
   if (pStructureFileRef->usNumberOfStructuresStored == 0) return;
 
   BOOLEAN fFound = FALSE;
   const DB_STRUCTURE *pDBStructure = NULL;
-  for (UINT32 uiLoop = 0; uiLoop < pStructureFileRef->usNumberOfStructures; ++uiLoop) {
+  for (uint32_t uiLoop = 0; uiLoop < pStructureFileRef->usNumberOfStructures; ++uiLoop) {
     const DB_STRUCTURE_REF *const pDBStructureRef = &pStructureFileRef->pDBStructureRef[uiLoop];
     pDBStructure = pDBStructureRef->pDBStructure;
     // if (pDBStructure != NULL && pDBStructure->ubNumberOfTiles > 1 &&
     // !(pDBStructure->fFlags & STRUCTURE_WALLSTUFF) )
     if (pDBStructure != NULL && pDBStructure->ubNumberOfTiles > 1) {
-      for (UINT8 ubLoop2 = 1; ubLoop2 < pDBStructure->ubNumberOfTiles; ++ubLoop2) {
+      for (uint8_t ubLoop2 = 1; ubLoop2 < pDBStructure->ubNumberOfTiles; ++ubLoop2) {
         if (pDBStructureRef->ppTile[ubLoop2]->sPosRelToBase != 0) {
           // spans multiple tiles! (could be two levels high in one tile)
           fFound = TRUE;
@@ -1236,10 +1236,10 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
   // if no multi-tile images in this vobject, that's okay... return!
   if (!fFound) return;
 
-  UINT const zcount = hVObject->SubregionCount();
+  uint32_t const zcount = hVObject->SubregionCount();
   ZStripInfo **const zinfo = MALLOCNZ(ZStripInfo *, zcount);
 
-  INT16 sSTIStep;
+  int16_t sSTIStep;
   if (fFromAnimation) {
     // Determine step index for STI
     if (sSTIStartIndex == -1) {
@@ -1253,17 +1253,17 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
     sSTIStep = 1;
   }
 
-  INT16 sLeftHalfWidth;
-  INT16 sRightHalfWidth;
-  INT16 sStructIndex = 0;
-  INT16 sNext = sSTIStartIndex + sSTIStep;
+  int16_t sLeftHalfWidth;
+  int16_t sRightHalfWidth;
+  int16_t sStructIndex = 0;
+  int16_t sNext = sSTIStartIndex + sSTIStep;
   BOOLEAN fFirstTime = TRUE;
-  for (UINT32 uiLoop = sSTIStartIndex; uiLoop < zcount; ++uiLoop) try {
+  for (uint32_t uiLoop = sSTIStartIndex; uiLoop < zcount; ++uiLoop) try {
       // Defualt to true
       BOOLEAN fCopyIntoVo = TRUE;
 
       // Increment struct index....
-      if (uiLoop == (UINT32)sNext) {
+      if (uiLoop == (uint32_t)sNext) {
         sNext = uiLoop + sSTIStep;
         sStructIndex++;
       } else {
@@ -1274,7 +1274,7 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
         }
       }
 
-      const UINT32 uiDestVoIndex = (fFromAnimation ? sStructIndex : uiLoop);
+      const uint32_t uiDestVoIndex = (fFromAnimation ? sStructIndex : uiLoop);
 
       if (fCopyIntoVo && sStructIndex < pStructureFileRef->usNumberOfStructures) {
         const DB_STRUCTURE *const pDBStructure =
@@ -1290,15 +1290,15 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
             Assert(uiDestVoIndex < zcount);
             zinfo[uiDestVoIndex] = pCurr;
 
-            UINT8 ubNumIncreasing = 0;
-            UINT8 ubNumStable = 0;
-            UINT8 ubNumDecreasing = 0;
+            uint8_t ubNumIncreasing = 0;
+            uint8_t ubNumStable = 0;
+            uint8_t ubNumDecreasing = 0;
 
             // time to do our calculations!
             ETRLEObject const &e = hVObject->SubregionProperties(uiLoop);
-            INT16 sOffsetX = e.sOffsetX;
-            INT16 sOffsetY = e.sOffsetY;
-            UINT16 const usWidth = e.usWidth;
+            int16_t sOffsetX = e.sOffsetX;
+            int16_t sOffsetY = e.sOffsetY;
+            uint16_t const usWidth = e.usWidth;
             if (pDBStructure->fFlags & (STRUCTURE_MOBILE | STRUCTURE_CORPSE)) {
               // adjust for the difference between the animation and structure
               // base tile
@@ -1390,9 +1390,9 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
 
             // now create the array!
             pCurr->ubNumberOfZChanges = ubNumIncreasing + ubNumStable + ubNumDecreasing;
-            pCurr->pbZChange = MALLOCN(INT8, pCurr->ubNumberOfZChanges);
+            pCurr->pbZChange = MALLOCN(int8_t, pCurr->ubNumberOfZChanges);
 
-            UINT8 ubLoop2;
+            uint8_t ubLoop2;
             for (ubLoop2 = 0; ubLoop2 < ubNumIncreasing; ubLoop2++) {
               pCurr->pbZChange[ubLoop2] = 1;
             }
@@ -1413,7 +1413,7 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
         }
       }
     } catch (...) {
-      for (UINT ubLoop2 = 0; ubLoop2 < uiLoop; ++ubLoop2) {
+      for (uint32_t ubLoop2 = 0; ubLoop2 < uiLoop; ++ubLoop2) {
         if (zinfo[ubLoop2] != NULL) {
           MemFree(zinfo[uiLoop]);
         }
@@ -1425,12 +1425,12 @@ void AddZStripInfoToVObject(HVOBJECT const hVObject,
   hVObject->ppZStripInfo = zinfo;
 }
 
-INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLevel,
-                              INT8 *pStructHeight, STRUCTURE **ppTallestStructure,
-                              BOOLEAN fWallsBlock) {
+int8_t GetBlockingStructureInfo(int16_t sGridNo, int8_t bDir, int8_t bNextDir, int8_t bLevel,
+                                int8_t *pStructHeight, STRUCTURE **ppTallestStructure,
+                                BOOLEAN fWallsBlock) {
   STRUCTURE *pStructure = NULL;  // XXX HACK000E
   STRUCTURE *pCurrent;
-  INT16 sDesiredLevel;
+  int16_t sDesiredLevel;
   BOOLEAN fOKStructOnLevel = FALSE;
   BOOLEAN fMinimumBlockingFound = FALSE;
 
@@ -1552,9 +1552,9 @@ INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLev
   }
 }
 
-UINT8 StructureFlagToType(UINT32 uiFlag) {
-  UINT8 ubLoop;
-  UINT32 uiBit = STRUCTURE_GENERIC;
+uint8_t StructureFlagToType(uint32_t uiFlag) {
+  uint8_t ubLoop;
+  uint32_t uiBit = STRUCTURE_GENERIC;
 
   for (ubLoop = 8; ubLoop < 32; ubLoop++) {
     if ((uiFlag & uiBit) != 0) {
@@ -1565,8 +1565,8 @@ UINT8 StructureFlagToType(UINT32 uiFlag) {
   return (0);
 }
 
-STRUCTURE *FindStructureBySavedInfo(INT16 const grid_no, UINT8 const type,
-                                    UINT8 const wall_orientation, INT8 const level) {
+STRUCTURE *FindStructureBySavedInfo(int16_t const grid_no, uint8_t const type,
+                                    uint8_t const wall_orientation, int8_t const level) {
   for (STRUCTURE *i = gpWorldLevelData[grid_no].pStructureHead; i; i = i->pNext) {
     if (!(i->fFlags & 1U << type)) continue;
     if (i->ubWallOrientation != wall_orientation) continue;

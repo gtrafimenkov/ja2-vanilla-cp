@@ -17,11 +17,11 @@ enum BloodKind { HUMAN = 0, CREATURE_ON_FLOOR = 1, CREATURE_ON_ROOF = 2 };
 #define BLOODDIVISOR 10
 
 void DecaySmells();
-void DecayBloodAndSmells(UINT32 uiTime);
+void DecayBloodAndSmells(uint32_t uiTime);
 void DropSmell(SOLDIERTYPE &);
-void DropBlood(SOLDIERTYPE const &, UINT8 strength);
-void UpdateBloodGraphics(GridNo, INT8 level);
-void RemoveBlood(GridNo, INT8 level);
-void InternalDropBlood(GridNo, INT8 level, BloodKind, UINT8 strength, INT8 visible);
+void DropBlood(SOLDIERTYPE const &, uint8_t strength);
+void UpdateBloodGraphics(GridNo, int8_t level);
+void RemoveBlood(GridNo, int8_t level);
+void InternalDropBlood(GridNo, int8_t level, BloodKind, uint8_t strength, int8_t visible);
 
 #endif

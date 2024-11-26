@@ -81,7 +81,7 @@ enum {
 
 struct TOWN_TRAINER_TYPE {
   SOLDIERTYPE *pSoldier;
-  INT16 sTrainingPts;
+  int16_t sTrainingPts;
 };
 
 // can character train militia?
@@ -107,7 +107,7 @@ void InitSectorsWithSoldiersList();
 
 // is there a soldier in this sector?..only use after
 // BuildSectorsWithSoldiersList is called
-BOOLEAN IsThereASoldierInThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
+BOOLEAN IsThereASoldierInThisSector(int16_t sSectorX, int16_t sSectorY, int8_t bSectorZ);
 
 void CheckIfSoldierUnassigned(SOLDIERTYPE *pSoldier);
 
@@ -118,28 +118,28 @@ void DetermineBoxPositions();
 void SetTacticalPopUpAssignmentBoxXY();
 
 // get number of pts that are being used this strategic turn
-INT16 GetTownTrainPtsForCharacter(const SOLDIERTYPE *pTrainer, UINT16 *pusMaxPts);
+int16_t GetTownTrainPtsForCharacter(const SOLDIERTYPE *pTrainer, uint16_t *pusMaxPts);
 
 // find number of healing pts
-UINT16 CalculateHealingPointsForDoctor(SOLDIERTYPE *pSoldier, UINT16 *pusMaxPts,
-                                       BOOLEAN fMakeSureKitIsInHand);
+uint16_t CalculateHealingPointsForDoctor(SOLDIERTYPE *pSoldier, uint16_t *pusMaxPts,
+                                         BOOLEAN fMakeSureKitIsInHand);
 
 // find number of repair pts repairman has available
-UINT8 CalculateRepairPointsForRepairman(SOLDIERTYPE *pSoldier, UINT16 *pusMaxPts,
-                                        BOOLEAN fMakeSureKitIsInHand);
+uint8_t CalculateRepairPointsForRepairman(SOLDIERTYPE *pSoldier, uint16_t *pusMaxPts,
+                                          BOOLEAN fMakeSureKitIsInHand);
 
 // get bonus tarining pts due to an instructor for this student
-INT16 GetBonusTrainingPtsDueToInstructor(const SOLDIERTYPE *pInstructor,
-                                         const SOLDIERTYPE *pStudent, INT8 bTrainStat,
-                                         BOOLEAN fAtGunRange, UINT16 *pusMaxPts);
+int16_t GetBonusTrainingPtsDueToInstructor(const SOLDIERTYPE *pInstructor,
+                                           const SOLDIERTYPE *pStudent, int8_t bTrainStat,
+                                           BOOLEAN fAtGunRange, uint16_t *pusMaxPts);
 
 // get training pts for this soldier
-INT16 GetSoldierTrainingPts(const SOLDIERTYPE *s, INT8 bTrainStat, BOOLEAN fAtGunRange,
-                            UINT16 *pusMaxPts);
+int16_t GetSoldierTrainingPts(const SOLDIERTYPE *s, int8_t bTrainStat, BOOLEAN fAtGunRange,
+                              uint16_t *pusMaxPts);
 
 // pts for being a student for this soldier
-INT16 GetSoldierStudentPts(const SOLDIERTYPE *s, INT8 bTrainStat, BOOLEAN fAtGunRange,
-                           UINT16 *pusMaxPts);
+int16_t GetSoldierStudentPts(const SOLDIERTYPE *s, int8_t bTrainStat, BOOLEAN fAtGunRange,
+                             uint16_t *pusMaxPts);
 
 // Handle assignment done
 void AssignmentDone(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote, BOOLEAN fMeToo);
@@ -168,7 +168,7 @@ void CreateDestroyScreenMaskForAssignmentAndContractMenus();
 
 void CreateDestroyAssignmentPopUpBoxes();
 void SetSoldierAssignmentHospital(SOLDIERTYPE &);
-void SetSoldierAssignmentRepair(SOLDIERTYPE &, BOOLEAN sam, BOOLEAN robot, INT8 vehicle_id);
+void SetSoldierAssignmentRepair(SOLDIERTYPE &, BOOLEAN sam, BOOLEAN robot, int8_t vehicle_id);
 
 // set merc asleep and awake under the new sleep system implemented June 29,
 // 1998 if give warning is false, the function can be used as an internal
@@ -188,7 +188,7 @@ BOOLEAN AnyMercInGroupCantContinueMoving(GROUP const &);
 BOOLEAN HandleSelectedMercsBeingPutAsleep(BOOLEAN fWakeUp, BOOLEAN fDisplayWarning);
 
 // is any one on the team on this assignment?
-BOOLEAN IsAnyOneOnPlayersTeamOnThisAssignment(INT8 bAssignment);
+BOOLEAN IsAnyOneOnPlayersTeamOnThisAssignment(int8_t bAssignment);
 
 // rebuild assignments box
 void RebuildAssignmentsBox();
@@ -198,11 +198,11 @@ void BandageBleedingDyingPatientsBeingTreated();
 void ReEvaluateEveryonesNothingToDo();
 
 // set assignment for list of characters
-void SetAssignmentForList(INT8 bAssignment, INT8 bParam);
+void SetAssignmentForList(int8_t bAssignment, int8_t bParam);
 
 // function where we actually set someone's assignment so we can trap certain
 // situations
-void ChangeSoldiersAssignment(SOLDIERTYPE *pSoldier, INT8 bAssignment);
+void ChangeSoldiersAssignment(SOLDIERTYPE *pSoldier, int8_t bAssignment);
 
 void UnEscortEPC(SOLDIERTYPE *pSoldier);
 

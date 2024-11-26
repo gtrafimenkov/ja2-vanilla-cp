@@ -20,28 +20,28 @@
 // 30)		// 7:30 am
 
 struct MERC_HIRE_STRUCT {
-  UINT8 ubProfileID;
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bSectorZ;
-  INT16 iTotalContractLength;
+  uint8_t ubProfileID;
+  int16_t sSectorX;
+  int16_t sSectorY;
+  int8_t bSectorZ;
+  int16_t iTotalContractLength;
   BOOLEAN fCopyProfileItemsOver;
-  UINT32 uiTimeTillMercArrives;
-  UINT8 ubInsertionCode;
-  UINT16 usInsertionData;
+  uint32_t uiTimeTillMercArrives;
+  uint8_t ubInsertionCode;
+  uint16_t usInsertionData;
   BOOLEAN fUseLandingZoneForArrival;
 };
 
 // ATE: Global that dictates where the mercs will land once being hired
-extern INT16 g_merc_arrive_sector;
+extern int16_t g_merc_arrive_sector;
 
-INT8 HireMerc(MERC_HIRE_STRUCT &);
+int8_t HireMerc(MERC_HIRE_STRUCT &);
 void MercArrivesCallback(SOLDIERTYPE &);
 bool IsMercHireable(MERCPROFILESTRUCT const &);
 bool IsMercDead(MERCPROFILESTRUCT const &);
 void HandleMercArrivesQuotes(SOLDIERTYPE &);
 void UpdateAnyInTransitMercsWithGlobalArrivalSector();
 
-UINT32 GetMercArrivalTimeOfDay();
+uint32_t GetMercArrivalTimeOfDay();
 
 #endif

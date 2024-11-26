@@ -6,8 +6,8 @@
 #include "Tactical/Overhead.h"
 
 void ExtractExplosionTypeFromFile(HWFILE const file, EXPLOSIONTYPE *const e) {
-  BYTE src[36];
-  const BYTE *s = src;
+  uint8_t src[36];
+  const uint8_t *s = src;
 
   FileRead(file, src, sizeof(src));
 
@@ -32,8 +32,8 @@ void ExtractExplosionTypeFromFile(HWFILE const file, EXPLOSIONTYPE *const e) {
 }
 
 void InjectExplosionTypeIntoFile(HWFILE const file, EXPLOSIONTYPE const *e) {
-  BYTE dst[36];
-  BYTE *d = dst;
+  uint8_t dst[36];
+  uint8_t *d = dst;
 
   INJ_SKIP(d, 4)
   INJ_SOLDIER(d, e->owner)

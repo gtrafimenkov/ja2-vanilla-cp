@@ -54,34 +54,34 @@
 #define ALPHA_MASK 0
 
 static BOOLEAN gfVideoCapture = FALSE;
-static UINT32 guiFramePeriod = 1000 / 15;
-static UINT32 guiLastFrame;
-static UINT16 *gpFrameData[MAX_NUM_FRAMES];
-static INT32 giNumFrames = 0;
+static uint32_t guiFramePeriod = 1000 / 15;
+static uint32_t guiLastFrame;
+static uint16_t *gpFrameData[MAX_NUM_FRAMES];
+static int32_t giNumFrames = 0;
 
 // Globals for mouse cursor
-static UINT16 gusMouseCursorWidth;
-static UINT16 gusMouseCursorHeight;
-static INT16 gsMouseCursorXOffset;
-static INT16 gsMouseCursorYOffset;
+static uint16_t gusMouseCursorWidth;
+static uint16_t gusMouseCursorHeight;
+static int16_t gsMouseCursorXOffset;
+static int16_t gsMouseCursorYOffset;
 
 static SDL_Rect MouseBackground = {0, 0, 0, 0};
 
 // Refresh thread based variables
-static UINT32 guiFrameBufferState;   // BUFFER_READY, BUFFER_DIRTY
-static UINT32 guiVideoManagerState;  // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED
+static uint32_t guiFrameBufferState;   // BUFFER_READY, BUFFER_DIRTY
+static uint32_t guiVideoManagerState;  // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED
 
 // Dirty rectangle management variables
 static SDL_Rect DirtyRegions[MAX_DIRTY_REGIONS];
-static UINT32 guiDirtyRegionCount;
+static uint32_t guiDirtyRegionCount;
 static BOOLEAN gfForceFullScreenRefresh;
 
 static SDL_Rect DirtyRegionsEx[MAX_DIRTY_REGIONS];
-static UINT32 guiDirtyRegionExCount;
+static uint32_t guiDirtyRegionExCount;
 
 // Screen output stuff
 static BOOLEAN gfPrintFrameBuffer;
-static UINT32 guiPrintFrameBufferIndex;
+static uint32_t guiPrintFrameBufferIndex;
 
 static SDL_Surface *MouseCursor;
 static SDL_Surface *FrameBuffer;
@@ -210,7 +210,7 @@ BOOLEAN RestoreVideoManager() {
 #endif
 }
 
-void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+void InvalidateRegion(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom) {
   if (gfForceFullScreenRefresh) {
     // There's no point in going on since we are forcing a full screen refresh
     return;
@@ -244,9 +244,9 @@ void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   }
 }
 
-static void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom);
+static void AddRegionEx(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom);
 
-void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+void InvalidateRegionEx(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom) {
   // Check if we are spanning the rectangle - if so slit it up!
   if (iTop <= gsVIEWPORT_WINDOW_END_Y && iBottom > gsVIEWPORT_WINDOW_END_Y) {
     // Add new top region
@@ -259,7 +259,7 @@ void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   }
 }
 
-static void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+static void AddRegionEx(int32_t iLeft, int32_t iTop, int32_t iRight, int32_t iBottom) {
   if (guiDirtyRegionExCount < MAX_DIRTY_REGIONS) {
     // DO SOME PRELIMINARY CHECKS FOR VALID RECTS
     if (iLeft < 0) iLeft = 0;
@@ -299,7 +299,7 @@ void InvalidateScreen() {
 
 // #define SCROLL_TEST
 
-static void ScrollJA2Background(INT16 sScrollXIncrement, INT16 sScrollYIncrement) {
+static void ScrollJA2Background(int16_t sScrollXIncrement, int16_t sScrollYIncrement) {
   SDL_Surface *Frame = FrameBuffer;
   SDL_Surface *Source = SDL_CreateRGBSurface(0, ScreenBuffer->w, ScreenBuffer->h, PIXEL_DEPTH,
                                              RED_MASK, GREEN_MASK, BLUE_MASK, ALPHA_MASK);
@@ -307,10 +307,10 @@ static void ScrollJA2Background(INT16 sScrollXIncrement, INT16 sScrollYIncrement
   SDL_Rect SrcRect;
   SDL_Rect DstRect;
   SDL_Rect StripRegions[2];
-  UINT16 NumStrips = 0;
+  uint16_t NumStrips = 0;
 
-  const UINT16 usWidth = SCREEN_WIDTH;
-  const UINT16 usHeight = gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y;
+  const uint16_t usWidth = SCREEN_WIDTH;
+  const uint16_t usHeight = gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y;
 
   SDL_BlitSurface(ScreenBuffer, NULL, Source, NULL);
 
@@ -371,12 +371,12 @@ static void ScrollJA2Background(INT16 sScrollXIncrement, INT16 sScrollYIncrement
   SDL_FillRect(Dest, NULL, 0);
 #endif
 
-  for (UINT i = 0; i < NumStrips; i++) {
-    UINT x = StripRegions[i].x;
-    UINT y = StripRegions[i].y;
-    UINT w = StripRegions[i].w;
-    UINT h = StripRegions[i].h;
-    for (UINT j = y; j < y + h; ++j) {
+  for (uint32_t i = 0; i < NumStrips; i++) {
+    uint32_t x = StripRegions[i].x;
+    uint32_t y = StripRegions[i].y;
+    uint32_t w = StripRegions[i].w;
+    uint32_t h = StripRegions[i].h;
+    for (uint32_t j = y; j < y + h; ++j) {
       memset(gpZBuffer + j * SCREEN_WIDTH + x, 0, w * sizeof(*gpZBuffer));
     }
 
@@ -421,24 +421,24 @@ static void WriteTGAHeader(FILE *const f) {
    * 16 byte bits per pixel
    * 17 byte image descriptor
    */
-  static const BYTE data[] = {0,
-                              0,
-                              2,
-                              0,
-                              0,
-                              0,
-                              0,
-                              0,
-                              0,
-                              0,
-                              0,
-                              0,
-                              SCREEN_WIDTH % 256,
-                              SCREEN_WIDTH / 256,
-                              SCREEN_HEIGHT % 256,
-                              SCREEN_HEIGHT / 256,
-                              PIXEL_DEPTH,
-                              0};
+  static const uint8_t data[] = {0,
+                                 0,
+                                 2,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 SCREEN_WIDTH % 256,
+                                 SCREEN_WIDTH / 256,
+                                 SCREEN_HEIGHT % 256,
+                                 SCREEN_HEIGHT / 256,
+                                 PIXEL_DEPTH,
+                                 0};
   fwrite(data, sizeof(data), 1, f);
 }
 
@@ -468,13 +468,13 @@ static void TakeScreenshot() {
   WriteTGAHeader(f);
 
   // If not 5/5/5, create buffer
-  UINT16 *buf = 0;
+  uint16_t *buf = 0;
   if (gusRedMask != 0x7C00 || gusGreenMask != 0x03E0 || gusBlueMask != 0x001F) {
-    buf = MALLOCN(UINT16, SCREEN_WIDTH);
+    buf = MALLOCN(uint16_t, SCREEN_WIDTH);
   }
 
-  UINT16 const *src = static_cast<UINT16 const *>(ScreenBuffer->pixels);
-  for (INT32 y = SCREEN_HEIGHT - 1; y >= 0; --y) {
+  uint16_t const *src = static_cast<uint16_t const *>(ScreenBuffer->pixels);
+  for (int32_t y = SCREEN_HEIGHT - 1; y >= 0; --y) {
     if (buf) {  // ATE: Fix this such that it converts pixel format to 5/5/5
       memcpy(buf, src + y * SCREEN_WIDTH, SCREEN_WIDTH * sizeof(*buf));
       ConvertRGBDistribution565To555(buf, SCREEN_WIDTH);
@@ -541,11 +541,11 @@ void RefreshScreen() {
       if (gfForceFullScreenRefresh) {
         SDL_BlitSurface(FrameBuffer, NULL, ScreenBuffer, NULL);
       } else {
-        for (UINT32 i = 0; i < guiDirtyRegionCount; i++) {
+        for (uint32_t i = 0; i < guiDirtyRegionCount; i++) {
           SDL_BlitSurface(FrameBuffer, &DirtyRegions[i], ScreenBuffer, &DirtyRegions[i]);
         }
 
-        for (UINT32 i = 0; i < guiDirtyRegionExCount; i++) {
+        for (uint32_t i = 0; i < guiDirtyRegionExCount; i++) {
           SDL_Rect *r = &DirtyRegionsEx[i];
           if (scrolling) {
             // Check if we are completely out of bounds
@@ -567,7 +567,7 @@ void RefreshScreen() {
   }
 
   if (gfVideoCapture) {
-    UINT32 uiTime = GetClock();
+    uint32_t uiTime = GetClock();
     if (uiTime < guiLastFrame || uiTime > guiLastFrame + guiFramePeriod) {
       SnapshotSmall();
       guiLastFrame = uiTime;
@@ -606,9 +606,9 @@ void RefreshScreen() {
 static void GetRGBDistribution() {
   SDL_PixelFormat const &f = *ScreenBuffer->format;
 
-  UINT32 const r = f.Rmask;
-  UINT32 const g = f.Gmask;
-  UINT32 const b = f.Bmask;
+  uint32_t const r = f.Rmask;
+  uint32_t const g = f.Gmask;
+  uint32_t const b = f.Bmask;
 
   /* Mask the highest bit of each component. This is used for alpha blending. */
   guiTranslucentMask = (r & r >> 1) | (g & g >> 1) | (b & b >> 1);
@@ -622,15 +622,15 @@ static void GetRGBDistribution() {
   gusBlueShift = f.Bshift - f.Bloss;
 }
 
-void GetPrimaryRGBDistributionMasks(UINT32 *const RedBitMask, UINT32 *const GreenBitMask,
-                                    UINT32 *const BlueBitMask) {
+void GetPrimaryRGBDistributionMasks(uint32_t *const RedBitMask, uint32_t *const GreenBitMask,
+                                    uint32_t *const BlueBitMask) {
   *RedBitMask = gusRedMask;
   *GreenBitMask = gusGreenMask;
   *BlueBitMask = gusBlueMask;
 }
 
-void SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHeight,
-                              UINT16 usCursorWidth) {
+void SetMouseCursorProperties(int16_t sOffsetX, int16_t sOffsetY, uint16_t usCursorHeight,
+                              uint16_t usCursorWidth) {
   gsMouseCursorXOffset = sOffsetX;
   gsMouseCursorYOffset = sOffsetY;
   gusMouseCursorWidth = usCursorWidth;
@@ -655,12 +655,12 @@ static void RefreshMovieCache();
 
 static void SnapshotSmall() {
   // Get the write pointer
-  const UINT16 *pVideo = (UINT16 *)ScreenBuffer->pixels;
+  const uint16_t *pVideo = (uint16_t *)ScreenBuffer->pixels;
 
-  UINT16 *pDest = gpFrameData[giNumFrames];
+  uint16_t *pDest = gpFrameData[giNumFrames];
 
-  for (INT32 iCountY = SCREEN_HEIGHT - 1; iCountY >= 0; iCountY--) {
-    for (INT32 iCountX = 0; iCountX < SCREEN_WIDTH; iCountX++) {
+  for (int32_t iCountY = SCREEN_HEIGHT - 1; iCountY >= 0; iCountY--) {
+    for (int32_t iCountX = 0; iCountX < SCREEN_WIDTH; iCountX++) {
       pDest[iCountY * SCREEN_WIDTH + iCountX] = pVideo[iCountY * SCREEN_WIDTH + iCountX];
     }
   }
@@ -673,14 +673,14 @@ static void SnapshotSmall() {
 void VideoCaptureToggle() {}
 
 static void RefreshMovieCache() {
-  static UINT32 uiPicNum = 0;
+  static uint32_t uiPicNum = 0;
 
   PauseTime(TRUE);
 
   const char *ExecDir = FileMan::getExeFolderPath().c_str();
 
-  for (INT32 cnt = 0; cnt < giNumFrames; cnt++) {
-    CHAR8 cFilename[2048];
+  for (int32_t cnt = 0; cnt < giNumFrames; cnt++) {
+    char cFilename[2048];
     sprintf(cFilename, "%s/JA%5.5d.TGA", ExecDir, uiPicNum++);
 
     FILE *disk = fopen(cFilename, "wb");
@@ -688,11 +688,11 @@ static void RefreshMovieCache() {
 
     WriteTGAHeader(disk);
 
-    UINT16 *pDest = gpFrameData[cnt];
+    uint16_t *pDest = gpFrameData[cnt];
 
-    for (INT32 iCountY = SCREEN_HEIGHT - 1; iCountY >= 0; iCountY -= 1) {
-      for (INT32 iCountX = 0; iCountX < SCREEN_WIDTH; iCountX++) {
-        fwrite(pDest + iCountY * SCREEN_WIDTH + iCountX, sizeof(UINT16), 1, disk);
+    for (int32_t iCountY = SCREEN_HEIGHT - 1; iCountY >= 0; iCountY -= 1) {
+      for (int32_t iCountX = 0; iCountX < SCREEN_WIDTH; iCountX++) {
+        fwrite(pDest + iCountY * SCREEN_WIDTH + iCountX, sizeof(uint16_t), 1, disk);
       }
     }
 

@@ -34,31 +34,31 @@
 #define DC__MAX_SIZE 11
 
 struct BEST_COVER_STRUCT {
-  INT16 sGridNo;
-  INT8 bCover;  //% chance that the gridno is fully covered.  ie 100 if safe, 0
-                // is has no cover
+  int16_t sGridNo;
+  int8_t bCover;  //% chance that the gridno is fully covered.  ie 100 if safe, 0
+                  // is has no cover
 };
 
 struct VISIBLE_TO_SOLDIER_STRUCT {
-  INT16 sGridNo;
-  INT8 bVisibleToSoldier;
+  int16_t sGridNo;
+  int8_t bVisibleToSoldier;
   BOOLEAN fRoof;
 };
 
 enum { DC__SEE_NO_STANCES, DC__SEE_1_STANCE, DC__SEE_2_STANCE, DC__SEE_3_STANCE };
 
 static BEST_COVER_STRUCT gCoverRadius[DC_MAX_COVER_RANGE][DC_MAX_COVER_RANGE];
-static INT16 gsLastCoverGridNo = NOWHERE;
-static INT16 gsLastSoldierGridNo = NOWHERE;
-static INT8 gbLastStance = -1;
+static int16_t gsLastCoverGridNo = NOWHERE;
+static int16_t gsLastSoldierGridNo = NOWHERE;
+static int8_t gbLastStance = -1;
 
 static VISIBLE_TO_SOLDIER_STRUCT gVisibleToSoldierStruct[DC__SOLDIER_VISIBLE_RANGE]
                                                         [DC__SOLDIER_VISIBLE_RANGE];
-static INT16 gsLastVisibleToSoldierGridNo = NOWHERE;
+static int16_t gsLastVisibleToSoldierGridNo = NOWHERE;
 
 static void AddCoverTileToEachGridNo();
-static void CalculateCoverInRadiusAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange);
-static INT8 GetCurrentMercForDisplayCoverStance();
+static void CalculateCoverInRadiusAroundGridno(int16_t sTargetGridNo, int8_t bSearchRange);
+static int8_t GetCurrentMercForDisplayCoverStance();
 
 void DisplayCoverOfSelectedGridNo() {
   SOLDIERTYPE const *const sel = GetSelectedMan();
@@ -69,7 +69,7 @@ void DisplayCoverOfSelectedGridNo() {
   GridNo const sGridNo = GetMouseMapPos();
   if (sGridNo == NOWHERE) return;
 
-  INT8 const bStance = GetCurrentMercForDisplayCoverStance();
+  int8_t const bStance = GetCurrentMercForDisplayCoverStance();
 
   // if the gridno is different then the last one that was displayed
   if (gsLastCoverGridNo == sGridNo && gbLastStance == bStance &&
@@ -102,45 +102,45 @@ void DisplayCoverOfSelectedGridNo() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-static void AddCoverObjectToWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof);
+static void AddCoverObjectToWorld(int16_t sGridNo, uint16_t usGraphic, BOOLEAN fRoof);
 
 static void AddCoverTileToEachGridNo() {
   BOOLEAN const roof = gsInterfaceLevel != I_GROUND_LEVEL;
-  for (UINT32 y = 0; y < DC_MAX_COVER_RANGE; ++y) {
-    for (UINT32 x = 0; x < DC_MAX_COVER_RANGE; ++x) {
+  for (uint32_t y = 0; y < DC_MAX_COVER_RANGE; ++y) {
+    for (uint32_t x = 0; x < DC_MAX_COVER_RANGE; ++x) {
       BEST_COVER_STRUCT const &cr = gCoverRadius[x][y];
-      INT8 const cover = cr.bCover;
+      int8_t const cover = cr.bCover;
       if (cover == -1) continue;  // Valid cover?
       Assert(0 <= cover && cover <= 100);
 
-      UINT16 const gfx = cover <= 20   ? SPECIALTILE_COVER_1
-                         : cover <= 40 ? SPECIALTILE_COVER_2
-                         : cover <= 60 ? SPECIALTILE_COVER_3
-                         : cover <= 80 ? SPECIALTILE_COVER_4
-                                       : SPECIALTILE_COVER_5;
+      uint16_t const gfx = cover <= 20   ? SPECIALTILE_COVER_1
+                           : cover <= 40 ? SPECIALTILE_COVER_2
+                           : cover <= 60 ? SPECIALTILE_COVER_3
+                           : cover <= 80 ? SPECIALTILE_COVER_4
+                                         : SPECIALTILE_COVER_5;
       AddCoverObjectToWorld(cr.sGridNo, gfx, roof);
     }
   }
 }
 
-static void RemoveCoverObjectFromWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof);
+static void RemoveCoverObjectFromWorld(int16_t sGridNo, uint16_t usGraphic, BOOLEAN fRoof);
 
 void RemoveCoverOfSelectedGridNo() {
   if (gsLastCoverGridNo == NOWHERE) return;
 
   BOOLEAN const roof = gsInterfaceLevel != I_GROUND_LEVEL;
-  for (UINT32 y = 0; y < DC_MAX_COVER_RANGE; ++y) {
-    for (UINT32 x = 0; x < DC_MAX_COVER_RANGE; ++x) {
+  for (uint32_t y = 0; y < DC_MAX_COVER_RANGE; ++y) {
+    for (uint32_t x = 0; x < DC_MAX_COVER_RANGE; ++x) {
       BEST_COVER_STRUCT const &cr = gCoverRadius[x][y];
-      INT8 const cover = cr.bCover;
+      int8_t const cover = cr.bCover;
       if (cover == -1) continue;  // Valid cover?
       Assert(0 <= cover && cover <= 100);
 
-      UINT16 const gfx = cover <= 20   ? SPECIALTILE_COVER_1
-                         : cover <= 40 ? SPECIALTILE_COVER_2
-                         : cover <= 60 ? SPECIALTILE_COVER_3
-                         : cover <= 80 ? SPECIALTILE_COVER_4
-                                       : SPECIALTILE_COVER_5;
+      uint16_t const gfx = cover <= 20   ? SPECIALTILE_COVER_1
+                           : cover <= 40 ? SPECIALTILE_COVER_2
+                           : cover <= 60 ? SPECIALTILE_COVER_3
+                           : cover <= 80 ? SPECIALTILE_COVER_4
+                                         : SPECIALTILE_COVER_5;
       RemoveCoverObjectFromWorld(cr.sGridNo, gfx, roof);
     }
   }
@@ -153,14 +153,14 @@ void RemoveCoverOfSelectedGridNo() {
   gsLastSoldierGridNo = NOWHERE;
 }
 
-static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(const SOLDIERTYPE *pSoldier,
-                                                      INT16 sTargetGridNo, INT8 bStance);
+static int8_t CalcCoverForGridNoBasedOnTeamKnownEnemies(const SOLDIERTYPE *pSoldier,
+                                                        int16_t sTargetGridNo, int8_t bStance);
 static SOLDIERTYPE *GetCurrentMercForDisplayCover();
 
-static void CalculateCoverInRadiusAroundGridno(INT16 const sTargetGridNo, INT8 search_range) {
+static void CalculateCoverInRadiusAroundGridno(int16_t const sTargetGridNo, int8_t search_range) {
   // clear out the array first
-  for (INT16 y = 0; y < DC_MAX_COVER_RANGE; ++y) {
-    for (INT16 x = 0; x < DC_MAX_COVER_RANGE; ++x) {
+  for (int16_t y = 0; y < DC_MAX_COVER_RANGE; ++y) {
+    for (int16_t x = 0; x < DC_MAX_COVER_RANGE; ++x) {
       BEST_COVER_STRUCT &cr = gCoverRadius[x][y];
       cr.sGridNo = -1;
       cr.bCover = -1;
@@ -170,11 +170,11 @@ static void CalculateCoverInRadiusAroundGridno(INT16 const sTargetGridNo, INT8 s
   if (search_range > DC_MAX_COVER_RANGE / 2) search_range = DC_MAX_COVER_RANGE / 2;
 
   // Determine maximum horizontal and vertical limits
-  INT16 const max_left = std::min((int16_t)search_range, (int16_t)(sTargetGridNo % MAXCOL));
-  INT16 const max_right =
+  int16_t const max_left = std::min((int16_t)search_range, (int16_t)(sTargetGridNo % MAXCOL));
+  int16_t const max_right =
       std::min((int16_t)search_range, (int16_t)(MAXCOL - 1 - sTargetGridNo % MAXCOL));
-  INT16 const max_up = std::min((int16_t)search_range, (int16_t)(sTargetGridNo / MAXROW));
-  INT16 const max_down =
+  int16_t const max_up = std::min((int16_t)search_range, (int16_t)(sTargetGridNo / MAXROW));
+  int16_t const max_down =
       std::min((int16_t)search_range, (int16_t)(MAXROW - 1 - sTargetGridNo / MAXROW));
 
   // Find out which tiles around the location are reachable
@@ -182,16 +182,16 @@ static void CalculateCoverInRadiusAroundGridno(INT16 const sTargetGridNo, INT8 s
 
   SOLDIERTYPE const *const pSoldier = GetCurrentMercForDisplayCover();
 
-  INT16 x = 0;
-  INT16 y = 0;
+  int16_t x = 0;
+  int16_t y = 0;
 
   // Determine the stance to use
-  INT8 const stance = GetCurrentMercForDisplayCoverStance();
+  int8_t const stance = GetCurrentMercForDisplayCoverStance();
 
   // loop through all the gridnos that we are interested in
-  for (INT16 sYOffset = -max_up; sYOffset <= max_down; ++sYOffset) {
-    for (INT16 sXOffset = -max_left; sXOffset <= max_right; ++sXOffset) {
-      INT16 const sGridNo = sTargetGridNo + sXOffset + (MAXCOL * sYOffset);
+  for (int16_t sYOffset = -max_up; sYOffset <= max_down; ++sYOffset) {
+    for (int16_t sXOffset = -max_left; sXOffset <= max_right; ++sXOffset) {
+      int16_t const sGridNo = sTargetGridNo + sXOffset + (MAXCOL * sYOffset);
 
       gCoverRadius[x][y].sGridNo = sGridNo;
 
@@ -227,13 +227,13 @@ static void CalculateCoverInRadiusAroundGridno(INT16 const sTargetGridNo, INT8 s
   }
 }
 
-static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const pSoldier,
-                                                      INT16 const sTargetGridNo,
-                                                      INT8 const bStance) {
+static int8_t CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const pSoldier,
+                                                        int16_t const sTargetGridNo,
+                                                        int8_t const bStance) {
   // loop through all the enemies and determine the cover
-  INT32 iTotalCoverPoints = 0;
-  INT8 bNumEnemies = 0;
-  INT32 iHighestValue = 0;
+  int32_t iTotalCoverPoints = 0;
+  int8_t bNumEnemies = 0;
+  int32_t iHighestValue = 0;
   FOR_EACH_MERC(i) {
     SOLDIERTYPE *const pOpponent = *i;
 
@@ -243,8 +243,8 @@ static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const p
     if (CONSIDERED_NEUTRAL(pSoldier, pOpponent)) continue;
     if (pSoldier->bSide == pOpponent->bSide) continue;
 
-    INT8 const *const pbPersOL = pSoldier->bOppList + pOpponent->ubID;
-    INT8 const *const pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent->ubID;
+    int8_t const *const pbPersOL = pSoldier->bOppList + pOpponent->ubID;
+    int8_t const *const pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent->ubID;
 
     // if this opponent is unknown personally and publicly
     if (*pbPersOL != SEEN_CURRENTLY && *pbPersOL != SEEN_THIS_TURN && *pbPublOL != SEEN_CURRENTLY &&
@@ -252,8 +252,8 @@ static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const p
       continue;
     }
 
-    UINT16 const usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent->sGridNo, sTargetGridNo);
-    UINT16 const usSightLimit = DistanceVisible(
+    uint16_t const usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent->sGridNo, sTargetGridNo);
+    uint16_t const usSightLimit = DistanceVisible(
         pOpponent, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier->bLevel);
 
     if (usRange > usSightLimit * CELL_X_SIZE) continue;
@@ -264,14 +264,14 @@ static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const p
       continue;
     }
 
-    INT32 const iGetThrough = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo,
-                                                                  pSoldier->bLevel, bStance, NULL);
-    UINT16 const usMaxRange =
+    int32_t const iGetThrough = SoldierToLocationChanceToGetThrough(
+        pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, NULL);
+    uint16_t const usMaxRange =
         WeaponInHand(pOpponent) ? GunRange(pOpponent->inv[HANDPOS]) : Weapon[GLOCK_18].usRange;
-    INT32 const iBulletGetThrough = std::min(
-        std::max((INT32)(((usMaxRange - usRange) / (FLOAT)usMaxRange + .3) * 100), 0), 100);
+    int32_t const iBulletGetThrough = std::min(
+        std::max((int32_t)(((usMaxRange - usRange) / (float)usMaxRange + .3) * 100), 0), 100);
     if (iBulletGetThrough > 5 && iGetThrough > 0) {
-      INT32 const iCover = iGetThrough * iBulletGetThrough / 100;
+      int32_t const iCover = iGetThrough * iBulletGetThrough / 100;
       if (iHighestValue < iCover) iHighestValue = iCover;
 
       iTotalCoverPoints += iCover;
@@ -279,18 +279,18 @@ static INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE const *const p
     }
   }
 
-  INT8 bPercentCoverForGridno;
+  int8_t bPercentCoverForGridno;
   if (bNumEnemies == 0) {
     bPercentCoverForGridno = 100;
   } else {
     bPercentCoverForGridno = iTotalCoverPoints / bNumEnemies;
-    INT32 const iTemp = bPercentCoverForGridno - (iHighestValue / bNumEnemies) + iHighestValue;
+    int32_t const iTemp = bPercentCoverForGridno - (iHighestValue / bNumEnemies) + iHighestValue;
     bPercentCoverForGridno = 100 - std::min(iTemp, 100);
   }
   return bPercentCoverForGridno;
 }
 
-static void AddCoverObjectToWorld(INT16 const sGridNo, UINT16 const usGraphic,
+static void AddCoverObjectToWorld(int16_t const sGridNo, uint16_t const usGraphic,
                                   BOOLEAN const fRoof) {
   LEVELNODE *const n =
       fRoof ? AddOnRoofToHead(sGridNo, usGraphic) : AddObjectToHead(sGridNo, usGraphic);
@@ -303,7 +303,7 @@ static void AddCoverObjectToWorld(INT16 const sGridNo, UINT16 const usGraphic,
   }
 }
 
-static void RemoveCoverObjectFromWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof) {
+static void RemoveCoverObjectFromWorld(int16_t sGridNo, uint16_t usGraphic, BOOLEAN fRoof) {
   if (fRoof) {
     RemoveOnRoof(sGridNo, usGraphic);
   } else {
@@ -313,9 +313,9 @@ static void RemoveCoverObjectFromWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN 
 
 static SOLDIERTYPE *GetCurrentMercForDisplayCover() { return GetSelectedMan(); }
 
-static INT8 GetCurrentMercForDisplayCoverStance() {
+static int8_t GetCurrentMercForDisplayCoverStance() {
   const SOLDIERTYPE *const pSoldier = GetCurrentMercForDisplayCover();
-  INT8 bStance;
+  int8_t bStance;
 
   switch (pSoldier->usUIMovementMode) {
     case PRONE:
@@ -343,11 +343,11 @@ static INT8 GetCurrentMercForDisplayCoverStance() {
   return (bStance);
 }
 
-void DisplayRangeToTarget(SOLDIERTYPE const *const s, INT16 const sTargetGridNo) {
+void DisplayRangeToTarget(SOLDIERTYPE const *const s, int16_t const sTargetGridNo) {
   if (sTargetGridNo == NOWHERE || sTargetGridNo == 0) return;
 
   // Get the range to the target location
-  UINT16 const usRange = GetRangeInCellCoordsFromGridNoDiff(s->sGridNo, sTargetGridNo) / 10;
+  uint16_t const usRange = GetRangeInCellCoordsFromGridNoDiff(s->sGridNo, sTargetGridNo) / 10;
 
   if (WeaponInHand(s)) {
     // display a string with the weapons range, then range to target
@@ -362,7 +362,7 @@ void DisplayRangeToTarget(SOLDIERTYPE const *const s, INT16 const sTargetGridNo)
 
   // if the target is out of the mercs gun range or knife
   if (!InRange(s, sTargetGridNo)) {
-    UINT16 const item_class = Item[s->inv[HANDPOS].usItem].usItemClass;
+    uint16_t const item_class = Item[s->inv[HANDPOS].usItem].usItemClass;
     if (item_class == IC_GUN || item_class == IC_THROWING_KNIFE) {
       // Display a warning saying so
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[OUT_OF_RANGE_STRING]);
@@ -371,10 +371,10 @@ void DisplayRangeToTarget(SOLDIERTYPE const *const s, INT16 const sTargetGridNo)
 }
 
 static void AddVisibleToSoldierToEachGridNo();
-static void CalculateVisibleToSoldierAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange);
+static void CalculateVisibleToSoldierAroundGridno(int16_t sTargetGridNo, int8_t bSearchRange);
 
 void DisplayGridNoVisibleToSoldierGrid() {
-  //	INT8	bStance;
+  //	int8_t	bStance;
 
   const SOLDIERTYPE *const sel = GetSelectedMan();
   // Only allowed in if there is someone selected
@@ -411,14 +411,14 @@ void DisplayGridNoVisibleToSoldierGrid() {
   }
 }
 
-static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTargetGridNo,
-                                      BOOLEAN fRoof);
-static BOOLEAN IsTheRoofVisible(INT16 sGridNo);
+static int8_t CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, int16_t sTargetGridNo,
+                                        BOOLEAN fRoof);
+static BOOLEAN IsTheRoofVisible(int16_t sGridNo);
 
-static void CalculateVisibleToSoldierAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange) {
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sGridNo;
-  INT16 sCounterX, sCounterY;
+static void CalculateVisibleToSoldierAroundGridno(int16_t sTargetGridNo, int8_t bSearchRange) {
+  int16_t sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
+  int16_t sGridNo;
+  int16_t sCounterX, sCounterY;
   BOOLEAN fRoof = FALSE;
 
   // clear out the struct
@@ -506,10 +506,10 @@ static void CalculateVisibleToSoldierAroundGridno(INT16 sTargetGridNo, INT8 bSea
 }
 
 static void AddVisibleToSoldierToEachGridNo() {
-  UINT32 uiCntX, uiCntY;
-  INT8 bVisibleToSoldier = 0;
+  uint32_t uiCntX, uiCntY;
+  int8_t bVisibleToSoldier = 0;
   BOOLEAN fRoof;
-  INT16 sGridNo;
+  int16_t sGridNo;
 
   // loop through all the gridnos
   for (uiCntY = 0; uiCntY < DC_MAX_COVER_RANGE; uiCntY++) {
@@ -553,8 +553,8 @@ static void AddVisibleToSoldierToEachGridNo() {
 }
 
 void RemoveVisibleGridNoAtSelectedGridNo() {
-  UINT32 uiCntX, uiCntY;
-  INT8 bVisibleToSoldier;
+  uint32_t uiCntX, uiCntY;
+  int8_t bVisibleToSoldier;
   BOOLEAN fRoof;
 
   // make sure to only remove it when its right
@@ -605,17 +605,17 @@ void RemoveVisibleGridNoAtSelectedGridNo() {
   gsLastSoldierGridNo = NOWHERE;
 }
 
-static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTargetGridNo,
-                                      BOOLEAN fRoof) {
-  INT8 bRetVal = 0;
-  INT32 iLosForGridNo = 0;
-  UINT16 usSightLimit = 0;
+static int8_t CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, int16_t sTargetGridNo,
+                                        BOOLEAN fRoof) {
+  int8_t bRetVal = 0;
+  int32_t iLosForGridNo = 0;
+  uint16_t usSightLimit = 0;
   BOOLEAN bAware = FALSE;
 
   const SOLDIERTYPE *const tgt = WhoIsThere2(sTargetGridNo, fRoof ? 1 : 0);
   if (tgt != NULL) {
-    const INT8 *const pPersOL = &pSoldier->bOppList[tgt->ubID];
-    const INT8 *const pbPublOL = &gbPublicOpplist[pSoldier->bTeam][tgt->ubID];
+    const int8_t *const pPersOL = &pSoldier->bOppList[tgt->ubID];
+    const int8_t *const pbPublOL = &gbPublicOpplist[pSoldier->bTeam][tgt->ubID];
 
     // if soldier is known about (SEEN or HEARD within last few turns)
     if (*pPersOL || *pbPublOL) {
@@ -630,7 +630,7 @@ static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTarget
   // Prone
   //
   iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_PRONE,
-                                                         (UINT8)usSightLimit, bAware);
+                                                         (uint8_t)usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -638,8 +638,8 @@ static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTarget
   //
   // Crouch
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof,
-                                                         ANIM_CROUCH, (UINT8)usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(
+      pSoldier, sTargetGridNo, fRoof, ANIM_CROUCH, (uint8_t)usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -648,7 +648,7 @@ static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTarget
   // Standing
   //
   iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_STAND,
-                                                         (UINT8)usSightLimit, bAware);
+                                                         (uint8_t)usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -656,7 +656,7 @@ static INT8 CalcIfSoldierCanSeeGridNo(const SOLDIERTYPE *pSoldier, INT16 sTarget
   return (bRetVal);
 }
 
-static BOOLEAN IsTheRoofVisible(INT16 sGridNo) {
+static BOOLEAN IsTheRoofVisible(int16_t sGridNo) {
   if (GetRoom(sGridNo) == NO_ROOM) return FALSE;
 
   if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
@@ -669,7 +669,7 @@ static BOOLEAN IsTheRoofVisible(INT16 sGridNo) {
   }
 }
 
-void ChangeSizeOfDisplayCover(INT32 iNewSize) {
+void ChangeSizeOfDisplayCover(int32_t iNewSize) {
   // if the new size is smaller or greater, scale it
   if (iNewSize < DC__MIN_SIZE) {
     iNewSize = DC__MIN_SIZE;
@@ -678,14 +678,14 @@ void ChangeSizeOfDisplayCover(INT32 iNewSize) {
   }
 
   // Set new size
-  gGameSettings.ubSizeOfDisplayCover = (UINT8)iNewSize;
+  gGameSettings.ubSizeOfDisplayCover = (uint8_t)iNewSize;
 
   // redisplay the cover
   RemoveCoverOfSelectedGridNo();
   DisplayCoverOfSelectedGridNo();
 }
 
-void ChangeSizeOfLOS(INT32 iNewSize) {
+void ChangeSizeOfLOS(int32_t iNewSize) {
   // if the new size is smaller or greater, scale it
   if (iNewSize < DC__MIN_SIZE) {
     iNewSize = DC__MIN_SIZE;
@@ -694,7 +694,7 @@ void ChangeSizeOfLOS(INT32 iNewSize) {
   }
 
   // Set new size
-  gGameSettings.ubSizeOfLOS = (UINT8)iNewSize;
+  gGameSettings.ubSizeOfLOS = (uint8_t)iNewSize;
 
   // ReDisplay the los
   RemoveVisibleGridNoAtSelectedGridNo();

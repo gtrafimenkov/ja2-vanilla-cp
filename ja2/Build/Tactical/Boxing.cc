@@ -26,12 +26,12 @@
 #include "Utils/MusicControl.h"
 #include "Utils/TimerControl.h"
 
-INT16 gsBoxerGridNo[NUM_BOXERS] = {11393, 11233, 11073};
+int16_t gsBoxerGridNo[NUM_BOXERS] = {11393, 11233, 11073};
 SOLDIERTYPE *gBoxer[NUM_BOXERS];
 BOOLEAN gfBoxerFought[NUM_BOXERS] = {FALSE, FALSE, FALSE};
 BOOLEAN gfLastBoxingMatchWonByPlayer = FALSE;
-UINT8 gubBoxingMatchesWon = 0;
-UINT8 gubBoxersRests = 0;
+uint8_t gubBoxingMatchesWon = 0;
+uint8_t gubBoxersRests = 0;
 BOOLEAN gfBoxersResting = FALSE;
 
 void ExitBoxing() {
@@ -39,7 +39,7 @@ void ExitBoxing() {
 
   // first time through loop, look for AI guy, then for PC guy.... for stupid
   // oppcnt/alert status reasons
-  for (UINT8 ubPass = 0; ubPass < 2; ++ubPass) {
+  for (uint8_t ubPass = 0; ubPass < 2; ++ubPass) {
     // because boxer could die, loop through all soldier ptrs
     FOR_EACH_SOLDIER(s) {
       if (!(s->uiStatusFlags & SOLDIER_BOXER)) continue;
@@ -95,7 +95,7 @@ void EndBoxingMatch(SOLDIERTYPE *pLoser) {
   TriggerNPCRecord(DARREN, 22);
 }
 
-void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, INT8 bReason) {
+void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, int8_t bReason) {
   if (bReason == BOXER_OUT_OF_RING || bReason == NON_BOXER_IN_RING) {
     EVENT_StopMerc(pOffender);
   }
@@ -131,8 +131,8 @@ void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSoldier) {
   SetBoxingState(NOT_BOXING);
 }
 
-UINT8 CountPeopleInBoxingRing() {
-  UINT8 ubTotalInRing = 0;
+uint8_t CountPeopleInBoxingRing() {
+  uint8_t ubTotalInRing = 0;
 
   FOR_EACH_MERC(i) {
     if (GetRoom((*i)->sGridNo) == BOXING_RING) {
@@ -146,8 +146,8 @@ UINT8 CountPeopleInBoxingRing() {
 static void PickABoxer();
 
 static void CountPeopleInBoxingRingAndDoActions() {
-  UINT8 ubTotalInRing = 0;
-  UINT8 ubPlayersInRing = 0;
+  uint8_t ubTotalInRing = 0;
+  uint8_t ubPlayersInRing = 0;
   SOLDIERTYPE *pInRing[2] = {NULL, NULL};
   SOLDIERTYPE *pNonBoxingPlayer = NULL;
 
@@ -190,7 +190,7 @@ static void CountPeopleInBoxingRingAndDoActions() {
     if (gTacticalStatus.bBoxingState == PRE_BOXING) {
       if (ubTotalInRing == 2 && ubPlayersInRing == 1) {
         // ladieees and gennleman, we have a fight!
-        for (UINT32 uiLoop = 0; uiLoop < 2; ++uiLoop) {
+        for (uint32_t uiLoop = 0; uiLoop < 2; ++uiLoop) {
           if (!(pInRing[uiLoop]->uiStatusFlags & SOLDIER_BOXER)) {
             // set as boxer!
             pInRing[uiLoop]->uiStatusFlags |= SOLDIER_BOXER;
@@ -222,7 +222,7 @@ bool CheckOnBoxers() {
   // repick boxer IDs every time
   if (!gBoxer[0]) {
     // get boxer soldier IDs!
-    for (UINT32 i = 0; i != NUM_BOXERS; ++i) {
+    for (uint32_t i = 0; i != NUM_BOXERS; ++i) {
       SOLDIERTYPE *const s = WhoIsThere2(gsBoxerGridNo[i], 0);
       if (!s || FindObjClass(s, IC_WEAPON) != NO_SLOT) continue;
       // No weapon so this guy is a boxer
@@ -241,7 +241,7 @@ bool BoxerExists() {
 }
 
 static void PickABoxer() {
-  for (UINT32 i = 0; i != NUM_BOXERS; ++i) {
+  for (uint32_t i = 0; i != NUM_BOXERS; ++i) {
     SOLDIERTYPE *const boxer = gBoxer[i];
     if (!boxer) continue;
 
@@ -273,7 +273,7 @@ bool BoxerAvailable() {
   // aren't set.
   if (!CheckOnBoxers()) return false;
 
-  for (UINT8 i = 0; i != NUM_BOXERS; ++i) {
+  for (uint8_t i = 0; i != NUM_BOXERS; ++i) {
     if (gBoxer[i] && !gfBoxerFought[i]) return true;
   }
   return false;
@@ -281,9 +281,9 @@ bool BoxerAvailable() {
 
 // NOTE THIS IS NOW BROKEN BECAUSE NPC.C ASSUMES THAT BOXERSAVAILABLE < 3 IS A
 // SEQUEL FIGHT.   Maybe we could check Kingpin's location instead!
-static UINT8 BoxersAvailable() {
-  UINT8 ubLoop;
-  UINT8 ubCount = 0;
+static uint8_t BoxersAvailable() {
+  uint8_t ubLoop;
+  uint8_t ubCount = 0;
 
   for (ubLoop = 0; ubLoop < NUM_BOXERS; ubLoop++) {
     if (gBoxer[ubLoop] != NULL && !gfBoxerFought[ubLoop]) ubCount++;
@@ -297,7 +297,7 @@ BOOLEAN AnotherFightPossible() {
   // a player has at least OKLIFE + 5 life
 
   // and at least one fight HAS occurred
-  UINT8 ubAvailable;
+  uint8_t ubAvailable;
 
   ubAvailable = BoxersAvailable();
 
@@ -331,7 +331,7 @@ void BoxingMovementCheck(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SetBoxingState(INT8 bNewState) {
+void SetBoxingState(int8_t bNewState) {
   if (gTacticalStatus.bBoxingState == NOT_BOXING) {
     if (bNewState != NOT_BOXING) {
       // pause time

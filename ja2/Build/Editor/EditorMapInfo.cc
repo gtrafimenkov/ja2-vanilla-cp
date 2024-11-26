@@ -43,7 +43,7 @@
 #include "SDL_keycode.h"
 #include "SDL_pixels.h"
 
-INT8 gbDefaultLightType = PRIMETIME_LIGHT;
+int8_t gbDefaultLightType = PRIMETIME_LIGHT;
 
 SGPPaletteEntry gEditorLightColor;
 
@@ -147,23 +147,23 @@ void UpdateMapInfoFields() {
 }
 
 void ExtractAndUpdateMapInfo() {
-  INT32 temp;
+  int32_t temp;
   BOOLEAN fUpdateLight1 = FALSE;
   // extract light1 colors
   temp = std::min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1 && temp != gEditorLightColor.r) {
     fUpdateLight1 = TRUE;
-    gEditorLightColor.r = (UINT8)temp;
+    gEditorLightColor.r = (uint8_t)temp;
   }
   temp = std::min(GetNumericStrictValueFromField(2), 255);
   if (temp != -1 && temp != gEditorLightColor.g) {
     fUpdateLight1 = TRUE;
-    gEditorLightColor.g = (UINT8)temp;
+    gEditorLightColor.g = (uint8_t)temp;
   }
   temp = std::min(GetNumericStrictValueFromField(3), 255);
   if (temp != -1 && temp != gEditorLightColor.b) {
     fUpdateLight1 = TRUE;
-    gEditorLightColor.b = (UINT8)temp;
+    gEditorLightColor.b = (uint8_t)temp;
   }
   if (fUpdateLight1) {
     gfEditorForceShadeTableRebuild = TRUE;
@@ -173,17 +173,17 @@ void ExtractAndUpdateMapInfo() {
 
   // extract radius
   temp = std::max(std::min(GetNumericStrictValueFromField(4), 8), 1);
-  if (temp != -1) gsLightRadius = (INT16)temp;
+  if (temp != -1) gsLightRadius = (int16_t)temp;
   temp = std::max(std::min(GetNumericStrictValueFromField(5), 15), 1);
   if (temp != -1 && temp != gusLightLevel) {
-    gusLightLevel = (UINT16)temp;
+    gusLightLevel = (uint16_t)temp;
     gfRenderWorld = TRUE;
-    ubAmbientLightLevel = (UINT8)(EDITOR_LIGHT_MAX - gusLightLevel);
+    ubAmbientLightLevel = (uint8_t)(EDITOR_LIGHT_MAX - gusLightLevel);
     LightSetBaseLevel(ubAmbientLightLevel);
     LightSpriteRenderAll();
   }
 
-  temp = (INT8)GetNumericStrictValueFromField(6);
+  temp = (int8_t)GetNumericStrictValueFromField(6);
   gMapInformation.ubRestrictedScrollID = temp != -1 ? temp : 0;
 
   // set up fields for exitgrid information
@@ -192,17 +192,17 @@ void ExtractAndUpdateMapInfo() {
   if ('a' <= row && row <= 'z') row -= 32;  // uppercase it!
   if ('A' <= row && row <= 'Z' && '0' <= str[1] &&
       str[1] <= '9') {  // only update, if coordinate is valid.
-    gExitGrid.ubGotoSectorY = (UINT8)(row - 'A' + 1);
-    gExitGrid.ubGotoSectorX = (UINT8)(str[1] - '0');
+    gExitGrid.ubGotoSectorY = (uint8_t)(row - 'A' + 1);
+    gExitGrid.ubGotoSectorX = (uint8_t)(str[1] - '0');
     if (str[2] >= '0' && str[2] <= '9')
-      gExitGrid.ubGotoSectorX = (UINT8)(gExitGrid.ubGotoSectorX * 10 + str[2] - '0');
+      gExitGrid.ubGotoSectorX = (uint8_t)(gExitGrid.ubGotoSectorX * 10 + str[2] - '0');
     gExitGrid.ubGotoSectorX =
-        (UINT8)std::max(std::min(gExitGrid.ubGotoSectorX, (uint8_t)16), (uint8_t)1);
+        (uint8_t)std::max(std::min(gExitGrid.ubGotoSectorX, (uint8_t)16), (uint8_t)1);
     gExitGrid.ubGotoSectorY =
-        (UINT8)std::max(std::min(gExitGrid.ubGotoSectorY, (uint8_t)16), (uint8_t)1);
+        (uint8_t)std::max(std::min(gExitGrid.ubGotoSectorY, (uint8_t)16), (uint8_t)1);
   }
-  gExitGrid.ubGotoSectorZ = (UINT8)std::max(std::min(GetNumericStrictValueFromField(8), 3), 0);
-  gExitGrid.usGridNo = (UINT16)std::max(std::min(GetNumericStrictValueFromField(9), 25600), 0);
+  gExitGrid.ubGotoSectorZ = (uint8_t)std::max(std::min(GetNumericStrictValueFromField(8), 3), 0);
+  gExitGrid.usGridNo = (uint16_t)std::max(std::min(GetNumericStrictValueFromField(9), 25600), 0);
 
   UpdateMapInfoFields();
 }
@@ -222,10 +222,10 @@ BOOLEAN ApplyNewExitGridValuesToTextFields() {
 }
 
 void LocateNextExitGrid() {
-  static UINT16 usCurrentExitGridNo = 0;
+  static uint16_t usCurrentExitGridNo = 0;
 
   EXITGRID ExitGrid;
-  UINT16 i;
+  uint16_t i;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
     if (GetExitGrid(i, &ExitGrid)) {
       usCurrentExitGridNo = i;
@@ -242,7 +242,7 @@ void LocateNextExitGrid() {
   }
 }
 
-void ChangeLightDefault(INT8 bLightType) {
+void ChangeLightDefault(int8_t bLightType) {
   UnclickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
   gbDefaultLightType = bLightType;
   ClickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);

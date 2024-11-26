@@ -55,21 +55,21 @@ enum TerrainTypeDefines {
 // These structures are placed in a list and used for all tile imagery
 struct TILE_IMAGERY {
   HVOBJECT vo;
-  UINT32 fType;
+  uint32_t fType;
   AuxObjectData *pAuxData;
   RelTileLoc *pTileLocData;
   STRUCTURE_FILE_REF *pStructureFileRef;
-  UINT8 ubTerrainID;
-  BYTE bRaisedObjectType;
+  uint8_t ubTerrainID;
+  uint8_t bRaisedObjectType;
 
   // Reserved for added room and 32-byte boundaries
-  BYTE bReserved[2];
+  uint8_t bReserved[2];
 };
 
 struct TILE_ANIMATION_DATA {
-  UINT16 *pusFrames;
-  INT8 bCurrentFrame;
-  UINT8 ubNumFrames;
+  uint16_t *pusFrames;
+  int8_t bCurrentFrame;
+  uint8_t ubNumFrames;
 };
 
 // Tile data element
@@ -78,15 +78,15 @@ struct TILE_ELEMENT {
   DB_STRUCTURE_REF *pDBStructureRef;
   RelTileLoc *pTileLocData;
   TileElementFlags uiFlags;
-  UINT16 fType;
-  UINT16 usRegionIndex;
-  INT16 sBuddyNum;
-  UINT8 ubTerrainID;
-  UINT8 ubNumberOfTiles;
+  uint16_t fType;
+  uint16_t usRegionIndex;
+  int16_t sBuddyNum;
+  uint8_t ubTerrainID;
+  uint8_t ubNumberOfTiles;
 
   // Land and overlay type
-  UINT16 usWallOrientation;
-  UINT8 ubFullTile;
+  uint16_t usWallOrientation;
+  uint8_t ubFullTile;
 
   // For animated tiles
   TILE_ANIMATION_DATA *pAnimData;
@@ -94,41 +94,41 @@ struct TILE_ELEMENT {
 
 // Globals used
 extern TILE_ELEMENT gTileDatabase[NUMBEROFTILES];
-extern UINT16 gTileTypeStartIndex[NUMBEROFTILETYPES];
+extern uint16_t gTileTypeStartIndex[NUMBEROFTILETYPES];
 
-static inline const TILE_ELEMENT *TileElemFromTileType(const UINT16 tile_type) {
+static inline const TILE_ELEMENT *TileElemFromTileType(const uint16_t tile_type) {
   return &gTileDatabase[gTileTypeStartIndex[tile_type]];
 }
 
-extern UINT16 gusNumAnimatedTiles;
-extern UINT16 gusAnimatedTiles[MAX_ANIMATED_TILES];
-extern UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES];
+extern uint16_t gusNumAnimatedTiles;
+extern uint16_t gusAnimatedTiles[MAX_ANIMATED_TILES];
+extern uint8_t gTileTypeMovementCost[NUM_TERRAIN_TYPES];
 
 void CreateTileDatabase();
 
 // Land level manipulation functions
 
-void SetLandIndex(INT32 iMapIndex, UINT16 usIndex, UINT32 uiNewType);
+void SetLandIndex(int32_t iMapIndex, uint16_t usIndex, uint32_t uiNewType);
 
-bool GetTypeLandLevel(UINT32 map_idx, UINT32 new_type, UINT8 *out_level);
+bool GetTypeLandLevel(uint32_t map_idx, uint32_t new_type, uint8_t *out_level);
 
 // Database access functions
-UINT16 GetSubIndexFromTileIndex(UINT16 usIndex);
+uint16_t GetSubIndexFromTileIndex(uint16_t usIndex);
 
-UINT16 GetTypeSubIndexFromTileIndex(UINT32 uiCheckType, UINT16 usIndex);
+uint16_t GetTypeSubIndexFromTileIndex(uint32_t uiCheckType, uint16_t usIndex);
 
-UINT16 GetTileIndexFromTypeSubIndex(UINT32 uiCheckType, UINT16 usSubIndex);
-UINT32 GetTileType(UINT16 usIndex);
-UINT32 GetTileFlags(UINT16 usIndex);
+uint16_t GetTileIndexFromTypeSubIndex(uint32_t uiCheckType, uint16_t usSubIndex);
+uint32_t GetTileType(uint16_t usIndex);
+uint32_t GetTileFlags(uint16_t usIndex);
 
-UINT8 GetTileTypeLogicalHeight(UINT32 type);
-bool AnyHeigherLand(UINT32 map_idx, UINT32 src_type, UINT8 *out_last_level);
-UINT16 GetWallOrientation(UINT16 usIndex);
+uint8_t GetTileTypeLogicalHeight(uint32_t type);
+bool AnyHeigherLand(uint32_t map_idx, uint32_t src_type, uint8_t *out_last_level);
+uint16_t GetWallOrientation(uint16_t usIndex);
 
-void SetSpecificDatabaseValues(UINT16 type, UINT16 database_elem, TILE_ELEMENT &,
+void SetSpecificDatabaseValues(uint16_t type, uint16_t database_elem, TILE_ELEMENT &,
                                bool use_raised_object_type);
 
-void AllocateAnimTileData(TILE_ELEMENT *pTileElem, UINT8 ubNumFrames);
+void AllocateAnimTileData(TILE_ELEMENT *pTileElem, uint8_t ubNumFrames);
 void DeallocateTileDatabase();
 
 #endif

@@ -17,12 +17,12 @@
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *const pal, const char *const col_file) try {
   AutoSGPFile f(FileMan::openForReadingSmart(col_file, true));
 
-  BYTE data[776];
+  uint8_t data[776];
   FileRead(f, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_SKIP(d, 8);  // skip header
-  for (UINT i = 0; i != 256; ++i) {
+  for (uint32_t i = 0; i != 256; ++i) {
     EXTR_U8(d, pal[i].r)
     EXTR_U8(d, pal[i].g)
     EXTR_U8(d, pal[i].b)
@@ -34,23 +34,23 @@ BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *const pal, const char *cons
   return FALSE;
 }
 
-void DisplayPaletteRep(const PaletteRepID aPalRep, const UINT8 ubXPos, const UINT8 ubYPos,
+void DisplayPaletteRep(const PaletteRepID aPalRep, const uint8_t ubXPos, const uint8_t ubYPos,
                        SGPVSurface *const dst) {
-  UINT16 us16BPPColor;
-  UINT32 cnt1;
-  UINT8 ubSize;
-  INT16 sTLX, sTLY, sBRX, sBRY;
+  uint16_t us16BPPColor;
+  uint32_t cnt1;
+  uint8_t ubSize;
+  int16_t sTLX, sTLY, sBRX, sBRY;
 
   // Create 16BPP Palette
-  const UINT8 ubPaletteRep = GetPaletteRepIndexFromID(aPalRep);
+  const uint8_t ubPaletteRep = GetPaletteRepIndexFromID(aPalRep);
 
   SetFont(LARGEFONT1);
 
   ubSize = gpPalRep[ubPaletteRep].ubPaletteSize;
 
   for (cnt1 = 0; cnt1 < ubSize; cnt1++) {
-    sTLX = ubXPos + (UINT16)((cnt1 % 16) * 20);
-    sTLY = ubYPos + (UINT16)((cnt1 / 16) * 20);
+    sTLX = ubXPos + (uint16_t)((cnt1 % 16) * 20);
+    sTLY = ubYPos + (uint16_t)((cnt1 / 16) * 20);
     sBRX = sTLX + 20;
     sBRY = sTLY + 20;
 

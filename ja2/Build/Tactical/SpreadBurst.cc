@@ -15,20 +15,20 @@
 #define MAX_BURST_LOCATIONS 50
 
 struct BURST_LOCATIONS {
-  INT16 sX;
-  INT16 sY;
-  INT16 sGridNo;
+  int16_t sX;
+  int16_t sY;
+  int16_t sGridNo;
 };
 
 static BURST_LOCATIONS gsBurstLocations[MAX_BURST_LOCATIONS];
-static INT8 gbNumBurstLocations = 0;
+static int8_t gbNumBurstLocations = 0;
 
 static SGPVObject *guiBURSTACCUM;
 
 void ResetBurstLocations() { gbNumBurstLocations = 0; }
 
-void AccumulateBurstLocation(INT16 sGridNo) {
-  INT32 cnt;
+void AccumulateBurstLocation(int16_t sGridNo) {
+  int32_t cnt;
 
   if (gbNumBurstLocations < MAX_BURST_LOCATIONS) {
     // Check if it already exists!
@@ -49,11 +49,11 @@ void AccumulateBurstLocation(INT16 sGridNo) {
 }
 
 void PickBurstLocations(SOLDIERTYPE *pSoldier) {
-  UINT8 ubShotsPerBurst;
-  FLOAT dAccululator = 0;
-  FLOAT dStep = 0;
-  INT32 cnt;
-  UINT8 ubLocationNum;
+  uint8_t ubShotsPerBurst;
+  float dAccululator = 0;
+  float dStep = 0;
+  int32_t cnt;
+  uint8_t ubLocationNum;
 
   // OK, using the # of locations, spread them evenly between our current weapon
   // shots per burst value
@@ -62,12 +62,12 @@ void PickBurstLocations(SOLDIERTYPE *pSoldier) {
   ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
-  dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
+  dStep = gbNumBurstLocations / (float)ubShotsPerBurst;
 
   // Loop through our shots!
   for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
     // Get index into list
-    ubLocationNum = (UINT8)(dAccululator);
+    ubLocationNum = (uint8_t)(dAccululator);
 
     // Add to merc location
     pSoldier->sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
@@ -79,12 +79,12 @@ void PickBurstLocations(SOLDIERTYPE *pSoldier) {
   // OK, they have been added
 }
 
-void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTargets[5]) {
-  UINT8 ubShotsPerBurst;
-  FLOAT dAccululator = 0;
-  FLOAT dStep = 0;
-  INT32 cnt;
-  UINT8 ubLocationNum;
+void AIPickBurstLocations(SOLDIERTYPE *pSoldier, int8_t bTargets, SOLDIERTYPE *pTargets[5]) {
+  uint8_t ubShotsPerBurst;
+  float dAccululator = 0;
+  float dStep = 0;
+  int32_t cnt;
+  uint8_t ubLocationNum;
 
   // OK, using the # of locations, spread them evenly between our current weapon
   // shots per burst value
@@ -93,14 +93,14 @@ void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTa
   ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
-  // dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
+  // dStep = gbNumBurstLocations / (float)ubShotsPerBurst;
   // CJC: tweak!
-  dStep = bTargets / (FLOAT)ubShotsPerBurst;
+  dStep = bTargets / (float)ubShotsPerBurst;
 
   // Loop through our shots!
   for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
     // Get index into list
-    ubLocationNum = (UINT8)(dAccululator);
+    ubLocationNum = (uint8_t)(dAccululator);
 
     // Add to merc location
     pSoldier->sSpreadLocations[cnt] = pTargets[ubLocationNum]->sGridNo;
@@ -113,8 +113,8 @@ void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTa
 }
 
 void RenderAccumulatedBurstLocations() {
-  INT32 cnt;
-  INT16 sGridNo;
+  int32_t cnt;
+  int16_t sGridNo;
 
   if (!gfBeginBurstSpreadTracking) {
     return;
@@ -133,18 +133,18 @@ void RenderAccumulatedBurstLocations() {
     sGridNo = gsBurstLocations[cnt].sGridNo;
 
     if (GridNoOnScreen(sGridNo)) {
-      FLOAT dOffsetX, dOffsetY;
-      FLOAT dTempX_S, dTempY_S;
-      INT16 sXPos, sYPos;
+      float dOffsetX, dOffsetY;
+      float dTempX_S, dTempY_S;
+      int16_t sXPos, sYPos;
 
-      dOffsetX = (FLOAT)(gsBurstLocations[cnt].sX - gsRenderCenterX);
-      dOffsetY = (FLOAT)(gsBurstLocations[cnt].sY - gsRenderCenterY);
+      dOffsetX = (float)(gsBurstLocations[cnt].sX - gsRenderCenterX);
+      dOffsetY = (float)(gsBurstLocations[cnt].sY - gsRenderCenterY);
 
       // Calculate guy's position
       FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S -
+      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (int16_t)dTempX_S;
+      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (int16_t)dTempY_S -
               gpWorldLevelData[sGridNo].sHeight;
 
       // Adjust for offset position on screen

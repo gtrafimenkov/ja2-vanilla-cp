@@ -51,13 +51,13 @@ struct Record {
 struct EmailPageInfoStruct {
   Record *pFirstRecord;
   Record *pLastRecord;
-  INT32 iPageNumber;
+  int32_t iPageNumber;
 };
 
 Email *pEmailList;
 static Page *pPageList;
-static INT32 iLastPage = -1;
-static INT32 iCurrentPage = 0;
+static int32_t iLastPage = -1;
+static int32_t iCurrentPage = 0;
 Email *MailToDelete;
 BOOLEAN fUnReadMailFlag = FALSE;
 BOOLEAN fNewMailFlag = FALSE;
@@ -66,12 +66,12 @@ BOOLEAN fDisplayMessageFlag = FALSE;
 static BOOLEAN fOldDisplayMessageFlag = FALSE;
 static BOOLEAN fReDrawMessageFlag = FALSE;
 BOOLEAN fOpenMostRecentUnReadFlag = FALSE;
-static INT32 iViewerPositionY = 0;
+static int32_t iViewerPositionY = 0;
 
 static Email *CurrentMail;
 static Email *PreviousMail;
-static INT32 giMessagePage = -1;
-static INT32 giNumberOfPagesToCurrentEmail = -1;
+static int32_t giMessagePage = -1;
+static int32_t giNumberOfPagesToCurrentEmail = -1;
 SGPVObject *guiEmailWarning;
 
 #define EMAIL_TOP_BAR_HEIGHT 22
@@ -213,18 +213,18 @@ enum {
 
 // whther or not we need to redraw the new mail box
 BOOLEAN fReDrawNewMailFlag = FALSE;
-static INT32 iTotalHeight = 0;
+static int32_t iTotalHeight = 0;
 
 static void CreateNextPreviousEmailPageButtons();
-static void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void EmailBtnCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void InitializeMouseRegions() {
   // init mouseregions
-  for (INT32 i = 0; i < MAX_MESSAGES_PAGE; ++i) {
-    const UINT16 x = MIDDLE_X;
-    const UINT16 y = MIDDLE_Y + MIDDLE_WIDTH * i;
-    const UINT16 w = LINE_WIDTH;
-    const UINT16 h = MIDDLE_WIDTH;
+  for (int32_t i = 0; i < MAX_MESSAGES_PAGE; ++i) {
+    const uint16_t x = MIDDLE_X;
+    const uint16_t y = MIDDLE_Y + MIDDLE_WIDTH * i;
+    const uint16_t w = LINE_WIDTH;
+    const uint16_t h = MIDDLE_WIDTH;
     MOUSE_REGION *const r = &pEmailRegions[i];
     MSYS_DefineRegion(r, x, y, x + w, y + h, MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, NULL,
                       EmailBtnCallBack);
@@ -293,7 +293,7 @@ void EnterEmail() {
   RenderEmail();
 }
 
-static void AddDeleteRegionsToMessageRegion(INT32 iViewerY);
+static void AddDeleteRegionsToMessageRegion(int32_t iViewerY);
 static void ClearOutEmailMessageRecordsList();
 static void DestroyMailScreenButtons();
 
@@ -335,14 +335,14 @@ void ExitEmail() {
 
 static BOOLEAN DisplayDeleteNotice(Email *pMail);
 static void DisplayEmailList();
-static INT32 DisplayEmailMessage(Email *pMail);
+static int32_t DisplayEmailMessage(Email *pMail);
 static void HandleEmailViewerButtonStates();
 static void OpenMostRecentUnreadEmail();
 static void UpDateMessageRecordList();
 static void UpdateStatusOfNextPreviousButtons();
 
 void HandleEmail() {
-  INT32 iViewerY = 0;
+  int32_t iViewerY = 0;
   static BOOLEAN fEmailListBeenDrawAlready = FALSE;
 
   // check if email message record list needs to be updated
@@ -431,20 +431,21 @@ void RenderEmail() {
   InvalidateScreen();
 }
 
-void AddEmailWithSpecialData(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender,
-                             INT32 iDate, INT32 iFirstData, UINT32 uiSecondData) {
+void AddEmailWithSpecialData(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender,
+                             int32_t iDate, int32_t iFirstData, uint32_t uiSecondData) {
   AddEmailMessage(iMessageOffset, iMessageLength, iDate, ubSender, FALSE, iFirstData, uiSecondData);
 }
 
-void AddEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate) {
+void AddEmail(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender, int32_t iDate) {
   AddEmailMessage(iMessageOffset, iMessageLength, iDate, ubSender, FALSE, 0, 0);
 }
 
-void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate) {
+void AddPreReadEmail(int32_t iMessageOffset, int32_t iMessageLength, uint8_t ubSender,
+                     int32_t iDate) {
   AddEmailMessage(iMessageOffset, iMessageLength, iDate, ubSender, TRUE, 0, 0);
 }
 
-static void LoadEMailText(wchar_t buf[], UINT32 entry) {
+static void LoadEMailText(wchar_t buf[], uint32_t entry) {
   LoadEncryptedDataFromFile(BINARYDATADIR "/email.edt", buf, MAIL_STRING_SIZE * entry,
                             MAIL_STRING_SIZE);
 }
@@ -452,16 +453,17 @@ static void LoadEMailText(wchar_t buf[], UINT32 entry) {
 static void AddMessageToPages(Email *Mail);
 static void ReplaceMercNameAndAmountWithProperData(wchar_t *pFinishedString, const Email *pMail);
 
-void AddEmailMessage(INT32 iMessageOffset, INT32 iMessageLength, INT32 iDate, UINT8 ubSender,
-                     BOOLEAN fAlreadyRead, INT32 iFirstData, UINT32 uiSecondData) {
+void AddEmailMessage(int32_t iMessageOffset, int32_t iMessageLength, int32_t iDate,
+                     uint8_t ubSender, BOOLEAN fAlreadyRead, int32_t iFirstData,
+                     uint32_t uiSecondData) {
   // will add a message to the list of messages
 
   // add new element onto list
   Email *const pTempEmail = MALLOC(Email);
 
   // copy offset and length of the actual message in email.edt
-  pTempEmail->usOffset = (UINT16)iMessageOffset;
-  pTempEmail->usLength = (UINT16)iMessageLength;
+  pTempEmail->usOffset = (uint16_t)iMessageOffset;
+  pTempEmail->usLength = (uint16_t)iMessageLength;
 
   // copy date and sender id's
   pTempEmail->iDate = iDate;
@@ -533,7 +535,7 @@ static void AddEmailPage() {
 static void AddMessageToPages(Email *Mail) {
   // go to end of page list
   Page *pPage = pPageList;
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
   if (!pPage) AddEmailPage();
   pPage = pPageList;
   while (pPage->Next != NULL && pPage->Mail[MAX_MESSAGES_PAGE - 1] != NULL) pPage = pPage->Next;
@@ -559,7 +561,7 @@ static void SortMessages(EMailSortCriteria Criterium) {
 
     Email *InsAfter = NULL;
     for (Email *Other = NewList; Other != NULL; Other = Other->Next) {
-      INT Order;  // XXX HACK000E
+      int32_t Order;  // XXX HACK000E
       switch (Criterium) {
         case RECEIVED:
           Order = Mail->iDate - Other->iDate;
@@ -625,7 +627,7 @@ static void PlaceMessagesinPages() {
 }
 
 // Draw the icon, sender, date, subject
-static void DrawEmailSummary(INT32 y, const Email *e) {
+static void DrawEmailSummary(int32_t y, const Email *e) {
   const BOOLEAN read = e->fRead;
   const Font font = read ? MESSAGE_FONT : FONT10ARIALBOLD;
 
@@ -649,7 +651,7 @@ static Page *GetCurrentPage() {
   Page *i = pPageList;
   if (i == NULL) return i;
 
-  INT32 PageID = 0;
+  int32_t PageID = 0;
   while (i->Next != NULL && PageID++ != iCurrentPage) i = i->Next;
   return i;
 }
@@ -669,7 +671,7 @@ static void DisplayEmailList() {
   SetFontShadow(NO_SHADOW);
 
   // draw each line of the list for this page
-  INT32 y = MIDDLE_Y;
+  int32_t y = MIDDLE_Y;
   FOR_EACH(Email *const, e, p->Mail) {
     if (!*e) break;
     DrawEmailSummary(y, *e);
@@ -719,8 +721,8 @@ static void NextListPage() {
   MarkButtonsDirty();
 }
 
-static void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
-  INT32 iCount;
+static void EmailBtnCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
+  int32_t iCount;
   if (fDisplayMessageFlag) return;
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     Page *pPage = GetCurrentPage();
@@ -767,7 +769,7 @@ static void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void BtnMessageXCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMessageXCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP || reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // X button has been pressed and let up, this means to stop displaying the
     // currently displayed message
@@ -783,13 +785,13 @@ static void BtnMessageXCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static Record *GetFirstRecordOnThisPage(Record *const RecordList, INT32 const iPage) {
+static Record *GetFirstRecordOnThisPage(Record *const RecordList, int32_t const iPage) {
   // get the first record on this page - build pages up until this point
 
   Record *CurrentRecord = NULL;
 
-  INT32 iCurrentPositionOnThisPage = 0;
-  INT32 iCurrentPage = 0;
+  int32_t iCurrentPositionOnThisPage = 0;
+  int32_t iCurrentPage = 0;
 
   // null record list, nothing to do
   if (RecordList == NULL) {
@@ -803,7 +805,7 @@ static Record *GetFirstRecordOnThisPage(Record *const RecordList, INT32 const iP
   while (iCurrentPage < iPage) {
     // build record list to this point
     for (;;) {
-      UINT16 const h =
+      uint16_t const h =
           IanWrappedStringHeight(MESSAGE_WIDTH, MESSAGE_GAP, font, CurrentRecord->pRecord);
       if (iCurrentPositionOnThisPage + h > MAX_EMAIL_MESSAGE_PAGE_SIZE) break;
 
@@ -829,14 +831,14 @@ static Record *GetFirstRecordOnThisPage(Record *const RecordList, INT32 const iP
   return (CurrentRecord);
 }
 
-static void DisplayEmailMessageSubjectDateFromLines(Email *pMail, INT32 iViewerY);
-static void DisplayNumberOfPagesToThisEmail(INT32 iViewerY);
-static void DrawEmailMessageDisplayTitleText(INT32 iViewerY);
-static void HandleAnySpecialEmailMessageEvents(INT32 iMessageId);
-static void HandleMailSpecialMessages(UINT16 usMessageId, Email *pMail);
+static void DisplayEmailMessageSubjectDateFromLines(Email *pMail, int32_t iViewerY);
+static void DisplayNumberOfPagesToThisEmail(int32_t iViewerY);
+static void DrawEmailMessageDisplayTitleText(int32_t iViewerY);
+static void HandleAnySpecialEmailMessageEvents(int32_t iMessageId);
+static void HandleMailSpecialMessages(uint16_t usMessageId, Email *pMail);
 static void PreProcessEmail(Email *pMail);
 
-static INT32 DisplayEmailMessage(Email *const m) {
+static int32_t DisplayEmailMessage(Email *const m) {
   if (!m) return 0;
 
   // reset redraw email message flag
@@ -845,13 +847,13 @@ static INT32 DisplayEmailMessage(Email *const m) {
   // we KNOW the player is going to "read" this, so mark it as so
   m->fRead = TRUE;
 
-  INT32 const offset = m->usOffset;
+  int32_t const offset = m->usOffset;
   HandleAnySpecialEmailMessageEvents(offset);
   HandleMailSpecialMessages(offset, m);
 
   PreProcessEmail(m);
 
-  INT32 const by = iViewerPositionY;
+  int32_t const by = iViewerPositionY;
 
   BltVideoObject(FRAME_BUFFER, guiEmailMessage, 0, VIEWER_X, VIEWER_Y + by);
   BltVideoObject(FRAME_BUFFER, guiTITLEBARICONS, 0, VIEWER_X + 5, VIEWER_Y + by + 2);
@@ -859,14 +861,14 @@ static INT32 DisplayEmailMessage(Email *const m) {
   DisplayEmailMessageSubjectDateFromLines(m, by);
   DrawEmailMessageDisplayTitleText(by);
 
-  UINT16 const h = GetFontHeight(MESSAGE_FONT);
-  INT32 y = VIEWER_MESSAGE_BODY_START_Y + by;
+  uint16_t const h = GetFontHeight(MESSAGE_FONT);
+  int32_t y = VIEWER_MESSAGE_BODY_START_Y + by;
 
   BltVideoObject(FRAME_BUFFER, guiEmailMessage, 1, VIEWER_X, y);
   y += h;
 
   // Blit the text background based on height
-  for (INT32 i = 1; i < iTotalHeight / h; ++i) {
+  for (int32_t i = 1; i < iTotalHeight / h; ++i) {
     BltVideoObject(FRAME_BUFFER, guiEmailMessage, 1, VIEWER_X, y);
     y += h;
   }
@@ -878,7 +880,7 @@ static INT32 DisplayEmailMessage(Email *const m) {
    * "record" in the email file. Draw each record (length is number of records)
    */
   if (Record const *i = pEmailPageInfo[giMessagePage].pFirstRecord) {
-    for (INT32 y = VIEWER_MESSAGE_BODY_START_Y + by + h;;) {
+    for (int32_t y = VIEWER_MESSAGE_BODY_START_Y + by + h;;) {
       y += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, y, MESSAGE_WIDTH, MESSAGE_GAP,
                                    MESSAGE_FONT, MESSAGE_COLOR, i->pRecord, 0, IAN_WRAP_NO_SHADOW);
 
@@ -897,13 +899,13 @@ static INT32 DisplayEmailMessage(Email *const m) {
   return by;
 }
 
-static void BtnNewOkback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnNewOkback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fNewMailFlag = FALSE;
   }
 }
 
-static GUIButtonRef MakeButtonNewMail(INT32 image, INT16 x, INT16 y, GUI_CALLBACK click) {
+static GUIButtonRef MakeButtonNewMail(int32_t image, int16_t x, int16_t y, GUI_CALLBACK click) {
   GUIButtonRef const btn = QuickCreateButtonImg(LAPTOPDIR "/newmailbuttons.sti", image, image + 3,
                                                 x, y, MSYS_PRIORITY_HIGHEST - 1, click);
   btn->SetCursor(CURSOR_LAPTOP_SCREEN);
@@ -924,7 +926,7 @@ static void NextMailPage() {
   fReDrawScreenFlag = TRUE;
 }
 
-static void MailScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
+static void MailScrollRegionCallback(MOUSE_REGION *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     PrevMailPage();
   } else if (reason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -932,11 +934,11 @@ static void MailScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   }
 }
 
-static void BtnDeleteCallback(GUI_BUTTON *btn, INT32 iReason);
-static void BtnNextEmailPageCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnDeleteCallback(GUI_BUTTON *btn, int32_t iReason);
+static void BtnNextEmailPageCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void AddDeleteRegionsToMessageRegion(INT32 iViewerY) {
+static void AddDeleteRegionsToMessageRegion(int32_t iViewerY) {
   // will create/destroy mouse region for message display
 
   if ((fDisplayMessageFlag) && (!fOldDisplayMessageFlag)) {
@@ -952,17 +954,17 @@ static void AddDeleteRegionsToMessageRegion(INT32 iViewerY) {
     if (giNumberOfPagesToCurrentEmail > 2) {
       // add next and previous mail page buttons
       {
-        INT16 const y = LOWER_BUTTON_Y + iViewerY + 2;
+        int16_t const y = LOWER_BUTTON_Y + iViewerY + 2;
         giMailMessageButtons[0] =
             MakeButtonNewMail(0, PREVIOUS_PAGE_BUTTON_X, y, BtnPreviousEmailPageCallback);
         giMailMessageButtons[1] =
             MakeButtonNewMail(1, NEXT_PAGE_BUTTON_X, y, BtnNextEmailPageCallback);
       }
       {
-        UINT16 const x = VIEWER_X + MESSAGE_X + 1;
-        UINT16 const y = VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY;
-        UINT16 const w = MESSAGE_WIDTH + 3;
-        UINT16 const h = 227;
+        uint16_t const x = VIEWER_X + MESSAGE_X + 1;
+        uint16_t const y = VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY;
+        uint16_t const w = MESSAGE_WIDTH + 3;
+        uint16_t const h = 227;
         MSYS_DefineRegion(&g_mail_scroll_region, x, y, x + w, y + h, MSYS_PRIORITY_HIGHEST - 2,
                           MSYS_NO_CURSOR, NULL, MailScrollRegionCallback);
       }
@@ -992,7 +994,7 @@ static void AddDeleteRegionsToMessageRegion(INT32 iViewerY) {
   }
 }
 
-static GUIButtonRef MakeButtonYesNo(INT32 image, INT16 x, GUI_CALLBACK click) {
+static GUIButtonRef MakeButtonYesNo(int32_t image, int16_t x, GUI_CALLBACK click) {
   GUIButtonRef const btn = QuickCreateButtonImg(LAPTOPDIR "/yesnobuttons.sti", image, image + 1, x,
                                                 NEW_BTN_Y, MSYS_PRIORITY_HIGHEST - 2, click);
   btn->SetCursor(CURSOR_LAPTOP_SCREEN);
@@ -1074,31 +1076,31 @@ void ReDrawNewMailBox() {  // check to see if the new mail region needs to be re
   DisplayNewMailBox();
 }
 
-static void NextRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void NextRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     NextListPage();
   }
 }
 
-static void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     PrevMailPage();
   }
 }
 
-static void BtnNextEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnNextEmailPageCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     NextMailPage();
   }
 }
 
-static void PreviousRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void PreviousRegionButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     PrevListPage();
   }
 }
 
-static void BtnDeleteNoback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnDeleteNoback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     MailToDelete = NULL;
     fReDrawScreenFlag = TRUE;
@@ -1107,7 +1109,7 @@ static void BtnDeleteNoback(GUI_BUTTON *btn, INT32 reason) {
 
 static void DeleteEmail();
 
-static void BtnDeleteYesback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnDeleteYesback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fReDrawScreenFlag = TRUE;
     DeleteEmail();
@@ -1215,7 +1217,7 @@ static void DeleteEmail() {
   InvalidateScreen();
 }
 
-static void FromCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void FromCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort messages based on sender name, then replace into pages of email
     fSortSenderUpwards = !fSortSenderUpwards;
@@ -1224,7 +1226,7 @@ static void FromCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-static void SubjectCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void SubjectCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort message on subject and reorder list
     fSortSubjectUpwards = !fSortSubjectUpwards;
@@ -1233,13 +1235,13 @@ static void SubjectCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-static void BtnDeleteCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void BtnDeleteCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     MailToDelete = CurrentMail;
   }
 }
 
-static void DateCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void DateCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort messages based on date recieved and reorder lsit
     fSortDateUpwards = !fSortDateUpwards;
@@ -1248,7 +1250,7 @@ static void DateCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-static void ReadCallback(GUI_BUTTON *btn, INT32 iReason) {
+static void ReadCallback(GUI_BUTTON *btn, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort messages based on date recieved and reorder lsit
     SortMessages(READ);
@@ -1272,7 +1274,7 @@ static void DestroyMailScreenButtons() {
   RemoveButton(giSortButton[3]);
 }
 
-static void MakeButton(UINT idx, INT16 x, GUI_CALLBACK click, const wchar_t *text) {
+static void MakeButton(uint32_t idx, int16_t x, GUI_CALLBACK click, const wchar_t *text) {
   GUIButtonRef const btn = QuickCreateButtonImg(LAPTOPDIR "/mailbuttons.sti", idx, idx + 4, x,
                                                 FROM_BOX_Y, MSYS_PRIORITY_HIGHEST - 1, click);
   giSortButton[idx] = btn;
@@ -1290,15 +1292,15 @@ static void CreateMailScreenButtons() {
   MakeButton(3, DATE_BOX_X, DateCallback, pEmailHeaders[RECD_HEADER]);
 }
 
-static void DisplayEmailMessageSubjectDateFromLines(Email *pMail, INT32 iViewerY) {
+static void DisplayEmailMessageSubjectDateFromLines(Email *pMail, int32_t iViewerY) {
   // this procedure will draw the title/headers to From, Subject, Date fields in
   // the display message box
 
   SetFontAttributes(MESSAGE_FONT, FONT_BLACK, NO_SHADOW);
 
   // all headers, but not info are right justified
-  INT16 usX;
-  INT16 usY;
+  int16_t usX;
+  int16_t usY;
 
   // print from
   FindFontRightCoordinates(MESSAGE_HEADER_X - 20, MESSAGE_FROM_Y + iViewerY, MESSAGE_HEADER_WIDTH,
@@ -1333,7 +1335,7 @@ static void DisplayEmailMessageSubjectDateFromLines(Email *pMail, INT32 iViewerY
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void DrawEmailMessageDisplayTitleText(INT32 iViewerY) {
+static void DrawEmailMessageDisplayTitleText(int32_t iViewerY) {
   // this procedure will display the title of the email message display box
   SetFontAttributes(EMAIL_HEADER_FONT, FONT_WHITE);
   MPrint(VIEWER_X + 30, VIEWER_Y + 8 + iViewerY, pEmailTitleText);
@@ -1341,7 +1343,7 @@ static void DrawEmailMessageDisplayTitleText(INT32 iViewerY) {
 
 static void DrawLineDividers() {
   // this function draws divider lines between lines of text
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   for (iCounter = 1; iCounter < 19; iCounter++) {
     BltVideoObject(FRAME_BUFFER, guiMAILDIVIDER, 0, INDIC_X - 10,
@@ -1351,7 +1353,7 @@ static void DrawLineDividers() {
 
 static void ClearOutEmailMessageRecordsList() {
   Record *pTempRecord;
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   // runt hrough list freeing records up
   while (pMessageRecordList) {
@@ -1398,7 +1400,7 @@ static void UpDateMessageRecordList() {
   }
 }
 
-static void HandleAnySpecialEmailMessageEvents(INT32 iMessageId) {
+static void HandleAnySpecialEmailMessageEvents(int32_t iMessageId) {
   // handles any special message events
   switch (iMessageId) {
     case (IMP_EMAIL_AGAIN):
@@ -1426,9 +1428,9 @@ static void ReDisplayBoxes() {
 }
 
 static void HandleIMPCharProfileResultsMessage();
-static void ModifyInsuranceEmails(UINT16 usMessageId, Email *pMail, UINT8 ubNumberOfRecords);
+static void ModifyInsuranceEmails(uint16_t usMessageId, Email *pMail, uint8_t ubNumberOfRecords);
 
-static void HandleMailSpecialMessages(UINT16 usMessageId, Email *pMail) {
+static void HandleMailSpecialMessages(uint16_t usMessageId, Email *pMail) {
   // this procedure will handle special cases of email messages that are not
   // stored in email.edt, or need special processing
   switch (usMessageId) {
@@ -1606,28 +1608,28 @@ enum PhysicalBits {
 };
 ENUM_BITSET(PhysicalBits)
 
-static void LoadIMPResultText(wchar_t *Text, UINT32 Offset) {
+static void LoadIMPResultText(wchar_t *Text, uint32_t Offset) {
   LoadEncryptedDataFromFile(BINARYDATADIR "/impass.edt", Text, MAIL_STRING_SIZE * Offset,
                             MAIL_STRING_SIZE);
 }
 
-static void AddIMPResultText(UINT32 Offset) {
+static void AddIMPResultText(uint32_t Offset) {
   wchar_t Text[MAIL_STRING_SIZE];
   LoadIMPResultText(Text, Offset);
   AddEmailRecordToList(Text);
 }
 
 static void AddSkillTraitText(MERCPROFILESTRUCT const &imp, SkillTrait const Skill,
-                              UINT32 const Offset) {
+                              uint32_t const Offset) {
   if (HasSkillTrait(imp, Skill)) AddIMPResultText(Offset);
 }
 
 static void HandleIMPCharProfileResultsMessage() {
   // special case, IMP profile return
-  INT32 iOffSet;
-  INT32 iEndOfSection;
+  int32_t iOffSet;
+  int32_t iEndOfSection;
 
-  INT32 iRand = Random(32767);
+  int32_t iRand = Random(32767);
 
   if (pMessageRecordList != NULL) return;
   // list doesn't exist, reload
@@ -1637,7 +1639,7 @@ static void HandleIMPCharProfileResultsMessage() {
 
   // load intro
   iEndOfSection = IMP_RESULTS_INTRO_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) {
+  for (int32_t i = 0; i < iEndOfSection; ++i) {
     wchar_t pString[MAIL_STRING_SIZE];
     LoadIMPResultText(pString, i);
 
@@ -1654,7 +1656,7 @@ static void HandleIMPCharProfileResultsMessage() {
   // now the personality intro
   iOffSet = IMP_RESULTS_PERSONALITY_INTRO;
   iEndOfSection = IMP_RESULTS_PERSONALITY_INTRO_LENGTH + 1;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   // personality itself
   switch (imp.bPersonalityTrait) {
@@ -1705,7 +1707,7 @@ static void HandleIMPCharProfileResultsMessage() {
   // now the personality intro
   iOffSet = IMP_RESULTS_ATTITUDE_INTRO;
   iEndOfSection = IMP_RESULTS_ATTITUDE_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   // personality itself
   switch (imp.bAttitude) {
@@ -1761,7 +1763,7 @@ static void HandleIMPCharProfileResultsMessage() {
   // now the skills intro
   iOffSet = IMP_RESULTS_SKILLS;
   iEndOfSection = IMP_RESULTS_SKILLS_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   SkillBits Skill;
 
@@ -1817,7 +1819,7 @@ static void HandleIMPCharProfileResultsMessage() {
   // imperial skills
   iOffSet = IMP_SKILLS_SPECIAL_INTRO;
   iEndOfSection = IMP_SKILLS_SPECIAL_INTRO_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   AddSkillTraitText(imp, KNIFING, IMP_SKILLS_SPECIAL_KNIFE);
   AddSkillTraitText(imp, LOCKPICKING, IMP_SKILLS_SPECIAL_LOCK);
@@ -1837,7 +1839,7 @@ static void HandleIMPCharProfileResultsMessage() {
   // imperial physical
   iOffSet = IMP_RESULTS_PHYSICAL;
   iEndOfSection = IMP_RESULTS_PHYSICAL_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   PhysicalBits Phys;
 
@@ -1903,7 +1905,7 @@ static void HandleIMPCharProfileResultsMessage() {
 
   iOffSet = IMP_RESULTS_PORTRAIT;
   iEndOfSection = IMP_RESULTS_PORTRAIT_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   switch (iPortraitNumber) {
     case 0:
@@ -1948,11 +1950,11 @@ static void HandleIMPCharProfileResultsMessage() {
   if (iRand % 2 == 0) iOffSet += 2;
 
   iEndOfSection = 2;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   iOffSet = IMP_RESULTS_END;
   iEndOfSection = IMP_RESULTS_END_LENGTH;
-  for (INT32 i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
+  for (int32_t i = 0; i < iEndOfSection; ++i) AddIMPResultText(iOffSet + i);
 
   PreviousMail = CurrentMail;
 }
@@ -1991,8 +1993,8 @@ static void DisplayWhichPageOfEmailProgramIsDisplayed() {
   SetFontAttributes(MESSAGE_FONT, FONT_BLACK, NO_SHADOW);
 
   // page number
-  INT32 CPage;
-  INT32 LPage;
+  int32_t CPage;
+  int32_t LPage;
   if (iLastPage < 0) {
     CPage = 1;
     LPage = 1;
@@ -2010,7 +2012,7 @@ static void OpenMostRecentUnreadEmail() {
   // will open the most recent email the player has recieved and not read
   Email *MostRecentMail = NULL;
   Email *pB = pEmailList;
-  UINT32 iLowestDate = 9999999;
+  uint32_t iLowestDate = 9999999;
 
   while (pB) {
     // if date is lesser and unread , swap
@@ -2029,15 +2031,15 @@ static void OpenMostRecentUnreadEmail() {
   if (MostRecentMail != NULL) fDisplayMessageFlag = TRUE;
 }
 
-static void DisplayNumberOfPagesToThisEmail(INT32 const iViewerY) {
+static void DisplayNumberOfPagesToThisEmail(int32_t const iViewerY) {
   // display the indent for the display of pages to this email..along with the
   // current page/number of pages
   SetFontAttributes(FONT12ARIAL, FONT_BLACK, NO_SHADOW);
 
   wchar_t str[32];
   swprintf(str, lengthof(str), L"%d / %d", giMessagePage + 1, giNumberOfPagesToCurrentEmail - 1);
-  INT16 sX;
-  INT16 sY;
+  int16_t sX;
+  int16_t sY;
   FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, str, FONT12ARIAL, &sX,
                             &sY);
   MPrint(sX, VIEWER_Y + iViewerY + INDENT_Y_OFFSET - 2, str);
@@ -2045,9 +2047,9 @@ static void DisplayNumberOfPagesToThisEmail(INT32 const iViewerY) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static INT32 GetNumberOfPagesToEmail() {
+static int32_t GetNumberOfPagesToEmail() {
   Record *pTempRecord;
-  INT32 iNumberOfPagesToEmail = 0;
+  int32_t iNumberOfPagesToEmail = 0;
 
   // set temp record to head of list
   pTempRecord = pMessageRecordList;
@@ -2078,8 +2080,8 @@ static void PreProcessEmail(Email *const m) {
   if (pEmailPageInfo[0].pFirstRecord) return;
 
   if (!pMessageRecordList) {  // List doesn't exist, reload
-    INT32 const offset = m->usOffset;
-    for (INT32 i = 0; i != m->usLength; ++i) {
+    int32_t const offset = m->usOffset;
+    for (int32_t i = 0; i != m->usLength; ++i) {
       // read one record from email file
       wchar_t str[MAIL_STRING_SIZE];
       LoadEMailText(str, offset + i);
@@ -2096,7 +2098,7 @@ static void PreProcessEmail(Email *const m) {
   // get number of pages to this email
   giNumberOfPagesToCurrentEmail = GetNumberOfPagesToEmail();
 
-  INT32 h = 0;
+  int32_t h = 0;
   for (Record const *i = start; i; i = i->Next) {
     // get the height of the string, ONLY!...must redisplay ON TOP OF background
     // graphic
@@ -2107,7 +2109,7 @@ static void PreProcessEmail(Email *const m) {
   iViewerPositionY = (LAPTOP_SCREEN_LR_Y - 2 * VIEWER_Y - 2 * VIEWER_MESSAGE_BODY_START_Y - h) / 2;
   if (iViewerPositionY < 0) iViewerPositionY = 0;
 
-  UINT16 const line_h = GetFontHeight(MESSAGE_FONT);
+  uint16_t const line_h = GetFontHeight(MESSAGE_FONT);
   if (h < line_h * MIN_MESSAGE_HEIGHT_IN_LINES) {  // Use minimum height
     h = line_h * MIN_MESSAGE_HEIGHT_IN_LINES;
   } else if (h > MAX_EMAIL_MESSAGE_PAGE_SIZE) {  // Message to big to fit on page
@@ -2117,7 +2119,7 @@ static void PreProcessEmail(Email *const m) {
   // set total height to height of records displayed
   iTotalHeight = h + 10;
 
-  INT32 page = 0;
+  int32_t page = 0;
   if (iTotalHeight < MAX_EMAIL_MESSAGE_PAGE_SIZE) {
     EmailPageInfoStruct &info = pEmailPageInfo[page];
     info.pFirstRecord = start;
@@ -2140,9 +2142,9 @@ static void PreProcessEmail(Email *const m) {
 
       // go to the right record
       Record *last_record = 0;
-      INT32 y = 0;
+      int32_t y = 0;
       for (; i; i = last_record = i->Next) {
-        UINT16 const h =
+        uint16_t const h =
             IanWrappedStringHeight(MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, i->pRecord);
         // Gonna get cut off?  End now
         if (y + h > MAX_EMAIL_MESSAGE_PAGE_SIZE) break;
@@ -2159,8 +2161,8 @@ static void PreProcessEmail(Email *const m) {
   info.iPageNumber = page;
 }
 
-static void ModifyInsuranceEmails(UINT16 usMessageId, Email *pMail, UINT8 ubNumberOfRecords) {
-  UINT8 ubCnt;
+static void ModifyInsuranceEmails(uint16_t usMessageId, Email *pMail, uint8_t ubNumberOfRecords) {
+  uint8_t ubCnt;
 
   for (ubCnt = 0; ubCnt < ubNumberOfRecords; ubCnt++) {
     // read one record from email file
@@ -2187,9 +2189,9 @@ static void ReplaceMercNameAndAmountWithProperData(wchar_t *pFinishedString, con
                                               // will be replaced by a dollar amount
 
   wchar_t pTempString[MAIL_STRING_SIZE];
-  INT32 iCurLocInSourceString = 0;
-  INT32 iLengthOfSourceString =
-      (INT32)wcslen(pFinishedString);  // Get the length of the source string
+  int32_t iCurLocInSourceString = 0;
+  int32_t iLengthOfSourceString =
+      (int32_t)wcslen(pFinishedString);  // Get the length of the source string
   BOOLEAN fReplacingMercName = TRUE;
 
   // Copy the original string over to the temp string
@@ -2231,7 +2233,7 @@ static void ReplaceMercNameAndAmountWithProperData(wchar_t *pFinishedString, con
 
     // if there is a substring
     if (pSubString != NULL) {
-      INT32 iLength = (INT32)(pSubString - &pTempString[iCurLocInSourceString]);
+      int32_t iLength = (int32_t)(pSubString - &pTempString[iCurLocInSourceString]);
 
       // Copy the part of the source string upto the keyword
       wcsncat(pFinishedString, &pTempString[iCurLocInSourceString], iLength);

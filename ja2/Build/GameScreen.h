@@ -22,7 +22,7 @@ void UpdateTeamPanelAssignments();
 
 extern MODAL_HOOK gModalDoneCallback;
 
-void EnterModalTactical(INT8 bMode);
+void EnterModalTactical(int8_t bMode);
 void EndModalTactical();
 
 // handle the entrance of the mercs at the beginning of the game

@@ -19,22 +19,22 @@
 // are in a map, what they are, what team they are on, personality traits, etc.
 // The Merc section of the editor is what is used to define these values.
 struct BASIC_SOLDIERCREATE_STRUCT {
-  UINT16 usStartingGridNo;     // Where the placement position is.
+  uint16_t usStartingGridNo;   // Where the placement position is.
   BOOLEAN fDetailedPlacement;  // Specialized information.  Has a counterpart
                                // containing all info.
-  INT8 bTeam;                  // The team this individual is part of.
-  INT8 bRelativeAttributeLevel;
-  INT8 bRelativeEquipmentLevel;
-  INT8 bDirection;  // 1 of 8 values (always mandatory)
-  INT8 bOrders;
-  INT8 bAttitude;
-  INT8 bBodyType;                     // up to 128 body types, -1 means random
-  INT16 sPatrolGrid[MAXPATROLGRIDS];  // possible locations to visit, patrol,
-                                      // etc.
-  INT8 bPatrolCnt;
+  int8_t bTeam;                // The team this individual is part of.
+  int8_t bRelativeAttributeLevel;
+  int8_t bRelativeEquipmentLevel;
+  int8_t bDirection;  // 1 of 8 values (always mandatory)
+  int8_t bOrders;
+  int8_t bAttitude;
+  int8_t bBodyType;                     // up to 128 body types, -1 means random
+  int16_t sPatrolGrid[MAXPATROLGRIDS];  // possible locations to visit, patrol,
+                                        // etc.
+  int8_t bPatrolCnt;
   BOOLEAN fOnRoof;
-  UINT8 ubSoldierClass;  // army, administrator, elite
-  UINT8 ubCivilianGroup;
+  uint8_t ubSoldierClass;  // army, administrator, elite
+  uint8_t ubCivilianGroup;
   BOOLEAN fPriorityExistance;  // These slots are used first
   BOOLEAN fHasKeys;
 };
@@ -45,38 +45,38 @@ struct SOLDIERCREATE_STRUCT {
   BOOLEAN fStatic;
 
   // Profile information used for special NPCs and player mercs.
-  UINT8 ubProfile;
+  uint8_t ubProfile;
   BOOLEAN fCopyProfileItemsOver;
 
   // Location information
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bDirection;
-  INT16 sInsertionGridNo;
+  int16_t sSectorX;
+  int16_t sSectorY;
+  int8_t bDirection;
+  int16_t sInsertionGridNo;
 
   // Can force a team, but needs flag set
-  INT8 bTeam;
-  INT8 bBodyType;
+  int8_t bTeam;
+  int8_t bBodyType;
 
   // Orders and attitude settings
-  INT8 bAttitude;
-  INT8 bOrders;
+  int8_t bAttitude;
+  int8_t bOrders;
 
   // Attributes
-  INT8 bLifeMax;
-  INT8 bLife;
-  INT8 bAgility;
-  INT8 bDexterity;
+  int8_t bLifeMax;
+  int8_t bLife;
+  int8_t bAgility;
+  int8_t bDexterity;
   int8_t bExpLevel;
-  INT8 bMarksmanship;
-  INT8 bMedical;
-  INT8 bMechanical;
-  INT8 bExplosive;
-  INT8 bLeadership;
-  INT8 bStrength;
-  INT8 bWisdom;
-  INT8 bMorale;
-  INT8 bAIMorale;
+  int8_t bMarksmanship;
+  int8_t bMedical;
+  int8_t bMechanical;
+  int8_t bExplosive;
+  int8_t bLeadership;
+  int8_t bStrength;
+  int8_t bWisdom;
+  int8_t bMorale;
+  int8_t bAIMorale;
 
   // Inventory
   OBJECTTYPE Inv[NUM_INV_SLOTS];
@@ -88,32 +88,32 @@ struct SOLDIERCREATE_STRUCT {
   PaletteRepID SkinPal;
 
   // Waypoint information for patrolling
-  INT16 sPatrolGrid[MAXPATROLGRIDS];
-  INT8 bPatrolCnt;
+  int16_t sPatrolGrid[MAXPATROLGRIDS];
+  int8_t bPatrolCnt;
 
   // Kris:  Additions November 16, 1997 (padding down to 129 from 150)
   BOOLEAN fVisible;
   wchar_t name[10];
 
-  UINT8 ubSoldierClass;  // army, administrator, elite
+  uint8_t ubSoldierClass;  // army, administrator, elite
 
   BOOLEAN fOnRoof;
 
-  INT8 bSectorZ;
+  int8_t bSectorZ;
 
-  UINT8 ubCivilianGroup;
+  uint8_t ubCivilianGroup;
 
-  UINT8 ubScheduleID;
+  uint8_t ubScheduleID;
 
   BOOLEAN fUseGivenVehicle;
-  INT8 bUseGivenVehicleID;
+  int8_t bUseGivenVehicleID;
   BOOLEAN fHasKeys;
 };
 
 // Original functions currently used throughout the game.
 void TacticalRemoveSoldier(SOLDIERTYPE &);
 
-INT8 CalcDifficultyModifier(UINT8 ubSoldierClass);
+int8_t CalcDifficultyModifier(uint8_t ubSoldierClass);
 
 void RandomizeNewSoldierStats(SOLDIERCREATE_STRUCT *pCreateStruct);
 
@@ -124,14 +124,14 @@ SOLDIERTYPE *TacticalCreateSoldierFromExisting(const SOLDIERTYPE *);
 
 // Randomly generated enemies used by strategic AI.
 SOLDIERTYPE *TacticalCreateEnemySoldier(SoldierClass);
-SOLDIERTYPE *TacticalCreateMilitia(UINT8 ubMilitiaClass);
-SOLDIERTYPE *TacticalCreateCreature(INT8 bCreatureBodyType);
+SOLDIERTYPE *TacticalCreateMilitia(uint8_t ubMilitiaClass);
+SOLDIERTYPE *TacticalCreateCreature(int8_t bCreatureBodyType);
 
 // randomly generates a relative level rating (attributes or equipment)
-void RandomizeRelativeLevel(INT8 *pbRelLevel, UINT8 ubSoldierClass);
+void RandomizeRelativeLevel(int8_t *pbRelLevel, uint8_t ubSoldierClass);
 
 // get the pythag. distance from the passed sector to the palace..
-UINT8 GetPythDistanceFromPalace(INT16 sSectorX, INT16 sSectorY);
+uint8_t GetPythDistanceFromPalace(int16_t sSectorX, int16_t sSectorY);
 
 // These following functions are currently used exclusively by the editor.
 // Now, this will be useful for the strategic AI.
@@ -196,12 +196,12 @@ void UpdateSoldierWithStaticDetailedInformation(SOLDIERTYPE *s, SOLDIERCREATE_ST
 
 // When the editor modifies the soldier's relative attribute level,
 // this function is called to update that information.
-void ModifySoldierAttributesWithNewRelativeLevel(SOLDIERTYPE *s, INT8 bLevel);
+void ModifySoldierAttributesWithNewRelativeLevel(SOLDIERTYPE *s, int8_t bLevel);
 
 // Force the soldier to be a different ID
-void ForceSoldierProfileID(SOLDIERTYPE *pSoldier, UINT8 ubProfileID);
+void ForceSoldierProfileID(SOLDIERTYPE *pSoldier, uint8_t ubProfileID);
 
-void QuickCreateProfileMerc(INT8 bTeam, UINT8 ubProfileID);
+void QuickCreateProfileMerc(int8_t bTeam, uint8_t ubProfileID);
 
 void InternalTacticalRemoveSoldier(SOLDIERTYPE &, BOOLEAN fRemoveVehicle);
 

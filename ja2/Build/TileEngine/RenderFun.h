@@ -6,20 +6,20 @@
 #define NO_ROOM 0
 #define MAX_ROOMS 250
 
-extern UINT8 gubWorldRoomHidden[MAX_ROOMS];
-extern UINT8 gubWorldRoomInfo[WORLD_MAX];
+extern uint8_t gubWorldRoomHidden[MAX_ROOMS];
+extern uint8_t gubWorldRoomInfo[WORLD_MAX];
 
 void InitRoomDatabase();
 
-void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier);
+void RemoveRoomRoof(uint16_t sGridNo, uint8_t bRoomNum, SOLDIERTYPE *pSoldier);
 
-UINT8 GetRoom(UINT16 gridno);
-BOOLEAN InAHiddenRoom(UINT16 sGridNo, UINT8 *pubRoomNo);
+uint8_t GetRoom(uint16_t gridno);
+BOOLEAN InAHiddenRoom(uint16_t sGridNo, uint8_t *pubRoomNo);
 
-void SetGridNoRevealedFlag(UINT16 sGridNo);
+void SetGridNoRevealedFlag(uint16_t sGridNo);
 
 void ExamineGridNoForSlantRoofExtraGraphic(GridNo);
 
-void SetRecalculateWireFrameFlagRadius(GridNo pos, INT16 sRadius);
+void SetRecalculateWireFrameFlagRadius(GridNo pos, int16_t sRadius);
 
 #endif

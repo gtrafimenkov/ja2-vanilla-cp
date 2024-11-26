@@ -16,11 +16,11 @@ typedef uint16_t CHAR16;
 typedef struct {
   BOOLEAN fGunNut;
   BOOLEAN fSciFi;
-  UINT8 ubDifficultyLevel;
+  uint8_t ubDifficultyLevel;
   BOOLEAN fTurnTimeLimit;
   BOOLEAN fIronManMode;
 
-  UINT8 ubFiller[7];
+  uint8_t ubFiller[7];
 
 } GAME_OPTIONS;
 
@@ -33,43 +33,43 @@ typedef struct {
 #define GAME_VERSION_LENGTH 16
 
 typedef struct {
-  UINT32 uiSavedGameVersion;
-  INT8 zGameVersionNumber[GAME_VERSION_LENGTH];
+  uint32_t uiSavedGameVersion;
+  int8_t zGameVersionNumber[GAME_VERSION_LENGTH];
 
   CHAR16 sSavedGameDesc[SIZE_OF_SAVE_GAME_DESC];
 
-  UINT32 uiFlags;
+  uint32_t uiFlags;
 
 #ifdef CRIPPLED_VERSION
-  UINT8 ubCrippleFiller[20];
+  uint8_t ubCrippleFiller[20];
 #endif
 
   // The following will be used to quickly access info to display in the
   // save/load screen
-  UINT32 uiDay;
-  UINT8 ubHour;
-  UINT8 ubMin;
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bSectorZ;
-  UINT8 ubNumOfMercsOnPlayersTeam;
-  INT32 iCurrentBalance;
+  uint32_t uiDay;
+  uint8_t ubHour;
+  uint8_t ubMin;
+  int16_t sSectorX;
+  int16_t sSectorY;
+  int8_t bSectorZ;
+  uint8_t ubNumOfMercsOnPlayersTeam;
+  int32_t iCurrentBalance;
 
-  UINT32 uiCurrentScreen;
+  uint32_t uiCurrentScreen;
 
   BOOLEAN fAlternateSector;
 
   BOOLEAN fWorldLoaded;
 
-  UINT8 ubLoadScreenID;  // The load screen that should be used when loading the
-                         // saved game
+  uint8_t ubLoadScreenID;  // The load screen that should be used when loading the
+                           // saved game
 
   GAME_OPTIONS sInitialGameOptions;  // need these in the header so we can get
                                      // the info from it on the save load screen.
 
-  UINT32 uiRandom;
+  uint32_t uiRandom;
 
-  UINT8 ubFiller[110];
+  uint8_t ubFiller[110];
 
 } SAVED_GAME_HEADER;
 

@@ -102,16 +102,16 @@ TEST(SaveLoadGameTest, structParsers) {
     EXPECT_EQ(header.bSectorZ, 0);
     EXPECT_EQ(header.ubNumOfMercsOnPlayersTeam, 6);
     EXPECT_EQ(header.iCurrentBalance, 13030);
-    // UINT32   uiCurrentScreen;
+    // uint32_t   uiCurrentScreen;
     // BOOLEAN  fAlternateSector;
     // BOOLEAN  fWorldLoaded;
-    // UINT8    ubLoadScreenID;
+    // uint8_t    ubLoadScreenID;
     EXPECT_EQ(header.sInitialGameOptions.fGunNut, 1);
     EXPECT_EQ(header.sInitialGameOptions.fSciFi, 1);
     EXPECT_EQ(header.sInitialGameOptions.ubDifficultyLevel, 1);
     EXPECT_EQ(header.sInitialGameOptions.fTurnTimeLimit, 0);
     EXPECT_EQ(header.sInitialGameOptions.fIronManMode, 0);
-    // UINT32 uiRandom;
+    // uint32_t uiRandom;
   }
 
   // Stracciatella Linux header
@@ -129,16 +129,16 @@ TEST(SaveLoadGameTest, structParsers) {
     EXPECT_EQ(header.bSectorZ, 0);
     EXPECT_EQ(header.ubNumOfMercsOnPlayersTeam, 1);
     EXPECT_EQ(header.iCurrentBalance, 42000);
-    // UINT32   uiCurrentScreen;
+    // uint32_t   uiCurrentScreen;
     // BOOLEAN  fAlternateSector;
     // BOOLEAN  fWorldLoaded;
-    // UINT8    ubLoadScreenID;
+    // uint8_t    ubLoadScreenID;
     EXPECT_EQ(header.sInitialGameOptions.fGunNut, 1);
     EXPECT_EQ(header.sInitialGameOptions.fSciFi, 1);
     EXPECT_EQ(header.sInitialGameOptions.ubDifficultyLevel, 1);
     EXPECT_EQ(header.sInitialGameOptions.fTurnTimeLimit, 0);
     EXPECT_EQ(header.sInitialGameOptions.fIronManMode, 0);
-    // UINT32 uiRandom;
+    // uint32_t uiRandom;
   }
 }
 

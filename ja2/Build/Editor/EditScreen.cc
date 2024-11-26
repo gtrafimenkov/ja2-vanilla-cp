@@ -91,8 +91,8 @@ BOOLEAN gfProfileDataLoaded = FALSE;
 
 // These are global variables used by the main game loop
 
-static UINT32 guiSaveTacticalStatusFlags;  // saves the tactical status flags
-                                           // when entering the editor.
+static uint32_t guiSaveTacticalStatusFlags;  // saves the tactical status flags
+                                             // when entering the editor.
 
 BOOLEAN gfAutoLoadA9 = FALSE;
 // new vars added by Kris
@@ -111,17 +111,17 @@ static BOOLEAN gfConfirmExitPending = FALSE;
 BOOLEAN gfIntendOnEnteringEditor = FALSE;
 
 // original
-static FLOAT gShadePercent = 0.65f;
+static float gShadePercent = 0.65f;
 
-UINT16 gusLightLevel = 0;
-static UINT16 gusGameLightLevel = 0;
-static UINT16 gusSavedLightLevel = 0;
+uint16_t gusLightLevel = 0;
+static uint16_t gusGameLightLevel = 0;
+static uint16_t gusSavedLightLevel = 0;
 BOOLEAN gfFakeLights = FALSE;
 
-INT16 gsLightRadius = 5;
+int16_t gsLightRadius = 5;
 
-static BOOLEAN gfOldDoVideoScroll;    // Saved for returning to previous settings
-static UINT8 gubOldCurScrollSpeedID;  // Saved for returning to previous settings
+static BOOLEAN gfOldDoVideoScroll;      // Saved for returning to previous settings
+static uint8_t gubOldCurScrollSpeedID;  // Saved for returning to previous settings
 
 TaskMode iOldTaskMode = TASK_OPTIONS;
 TaskMode iCurrentTaskbar = TASK_NONE;
@@ -135,15 +135,15 @@ BOOLEAN fDontUseRandom = FALSE;
 
 static LEVELNODE *gCursorNode = NULL;
 
-static INT32 giMusicID = 0;
+static int32_t giMusicID = 0;
 
-INT32 iDrawMode = DRAW_MODE_NOTHING;
-INT32 iCurrentAction, iActionParam;
+int32_t iDrawMode = DRAW_MODE_NOTHING;
+int32_t iCurrentAction, iActionParam;
 
 GUIButtonRef iEditorButton[NUMBER_EDITOR_BUTTONS];
 ToolbarMode iEditorToolbarState = TBAR_MODE_NONE;
 
-static UINT16 iCurBankMapIndex;
+static uint16_t iCurBankMapIndex;
 
 static InputAtom EditorInputEvent;
 static BOOLEAN fBeenWarned = FALSE;
@@ -154,14 +154,14 @@ static BOOLEAN gfRealGunNut = TRUE;
 
 static BOOLEAN fNewMap = FALSE;
 
-static INT32 iPrevDrawMode = DRAW_MODE_NOTHING;
-static UINT16 PrevCurrentPaste = FIRSTTEXTURE;
-static INT32 gPrevCurrentBackground = FIRSTTEXTURE;
+static int32_t iPrevDrawMode = DRAW_MODE_NOTHING;
+static uint16_t PrevCurrentPaste = FIRSTTEXTURE;
+static int32_t gPrevCurrentBackground = FIRSTTEXTURE;
 static ToolbarMode iPrevJA2ToolbarState = TBAR_MODE_NONE;
 
-UINT16 gusEditorTaskbarColor;
-UINT16 gusEditorTaskbarHiColor;
-UINT16 gusEditorTaskbarLoColor;
+uint16_t gusEditorTaskbarColor;
+uint16_t gusEditorTaskbarHiColor;
+uint16_t gusEditorTaskbarLoColor;
 
 BOOLEAN gfGotoGridNoUI = FALSE;
 static GUIButtonRef guiGotoGridNoUIButtonID;
@@ -205,7 +205,7 @@ void EditScreenShutdown() {
 
 //	Editor's Init code. Called each time we enter edit mode from the game.
 static void EditModeInit() {
-  UINT32 x;
+  uint32_t x;
 
   DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "Entering editor mode...");
 
@@ -274,9 +274,9 @@ static void EditModeInit() {
 
   gusGameLightLevel = LightGetAmbient();
   if (!gfBasement && !gfCaves)
-    gusLightLevel = 12;  // EDITOR_LIGHT_MAX - (UINT16)LightGetAmbient();
+    gusLightLevel = 12;  // EDITOR_LIGHT_MAX - (uint16_t)LightGetAmbient();
   else
-    gusLightLevel = EDITOR_LIGHT_MAX - (UINT16)LightGetAmbient();
+    gusLightLevel = EDITOR_LIGHT_MAX - (uint16_t)LightGetAmbient();
 
   if (gfFakeLights) {
     gusSavedLightLevel = gusLightLevel;
@@ -324,7 +324,7 @@ static void EditModeInit() {
       AddAllPits();
     }
 
-    LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+    LightSetBaseLevel((uint8_t)(EDITOR_LIGHT_MAX - gusLightLevel));
     ShowLightPositionHandles();
     LightSpriteRenderAll();
   } else {
@@ -436,7 +436,7 @@ static BOOLEAN EditModeShutdown() {
                  WARPTIME_PROCESS_EVENTS_NORMALLY);  // to avoid helicopter setup
     gfNeedToInitGame = FALSE;
   } else {
-    if (!gfBasement && !gfCaves) LightSetBaseLevel((UINT8)gusGameLightLevel);
+    if (!gfBasement && !gfCaves) LightSetBaseLevel((uint8_t)gusGameLightLevel);
     UpdateMercsInSector();
   }
 
@@ -454,14 +454,14 @@ static BOOLEAN EditModeShutdown() {
 //	Forces all land on the map to have the same ground texture.
 static void SetBackgroundTexture() {
   int cnt;
-  UINT16 usIndex;
+  uint16_t usIndex;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Erase old layers
     RemoveAllLandsOfTypeRange(cnt, FIRSTTEXTURE, DEEPWATERTEXTURE);
 
     // Add level
-    usIndex = (UINT16)(rand() % 10);
+    usIndex = (uint16_t)(rand() % 10);
 
     // Adjust for type
     usIndex += gTileTypeStartIndex[gCurrentBackground];
@@ -522,8 +522,8 @@ static void RemoveTempMouseCursorObject() {
 // temporarily attach it to the mouse cursor, to indicate what is about to be
 // drawn.
 static BOOLEAN DrawTempMouseCursorObject() {
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
+  uint16_t usUseIndex;
+  uint16_t usUseObjIndex;
 
   switch (iDrawMode) {
     case DRAW_MODE_ROOM:
@@ -638,7 +638,7 @@ static BOOLEAN DrawTempMouseCursorObject() {
       break;
   }
   gCursorNode = ForceStructToTail(iCurBankMapIndex,
-                                  (UINT16)(gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
+                                  (uint16_t)(gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
   // ATE: Set this levelnode as dynamic!
   gCursorNode->uiFlags |= LEVELNODE_DYNAMIC;
   return TRUE;
@@ -648,15 +648,15 @@ static BOOLEAN DrawTempMouseCursorObject() {
 // editor's toolbar.
 void ShowCurrentDrawingMode() {
   SGPRect ClipRect, NewRect;
-  INT32 iShowMode;
-  UINT16 usUseIndex;
-  UINT16 usObjIndex;
-  INT32 iIndexToUse;
+  int32_t iShowMode;
+  uint16_t usUseIndex;
+  uint16_t usObjIndex;
+  int32_t iIndexToUse;
 
-  INT32 const x = 0;
-  INT32 const y = 40 + TASKBAR_Y;
-  INT32 const w = 100;
-  INT32 const h = 58;
+  int32_t const x = 0;
+  int32_t const y = 40 + TASKBAR_Y;
+  int32_t const w = 100;
+  int32_t const h = 58;
 
   // Set up a clipping rectangle for the display window.
   NewRect.iLeft = x;
@@ -684,7 +684,7 @@ void ShowCurrentDrawingMode() {
     case DRAW_MODE_SLANTED_ROOF:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelRoom[0].usIndex;
-        usObjIndex = (UINT16)SelRoom[0].uiObject;
+        usObjIndex = (uint16_t)SelRoom[0].uiObject;
       }
       break;
 
@@ -697,103 +697,103 @@ void ShowCurrentDrawingMode() {
     case DRAW_MODE_OSTRUCTS:
       if (iNumOStructsSelected > 0) {
         usUseIndex = SelOStructs[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs[iIndexToUse].uiObject;
+        usObjIndex = (uint16_t)SelOStructs[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_OSTRUCTS1:
       if (iNumOStructs1Selected > 0) {
         usUseIndex = SelOStructs1[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs1[iIndexToUse].uiObject;
+        usObjIndex = (uint16_t)SelOStructs1[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_OSTRUCTS2:
       if (iNumOStructs2Selected > 0) {
         usUseIndex = SelOStructs2[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs2[iIndexToUse].uiObject;
+        usObjIndex = (uint16_t)SelOStructs2[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_DEBRIS:
       if (iNumDebrisSelected > 0) {
         usUseIndex = SelDebris[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelDebris[iIndexToUse].uiObject;
+        usObjIndex = (uint16_t)SelDebris[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_BANKS:
       if (iNumBanksSelected > 0) {
         usUseIndex = SelBanks[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelBanks[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelBanks[iCurBank].uiObject;
       }
       break;
 
     case DRAW_MODE_ROADS:
       if (iNumRoadsSelected > 0) {
         usUseIndex = SelRoads[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelRoads[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelRoads[iCurBank].uiObject;
       }
       break;
 
     case DRAW_MODE_WALLS:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelSingleWall[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleWall[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleWall[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DOORS:
       if (iNumDoorsSelected > 0) {
         usUseIndex = SelSingleDoor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDoor[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleDoor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_WINDOWS:
       if (iNumWindowsSelected > 0) {
         usUseIndex = SelSingleWindow[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleWindow[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleWindow[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_ROOFS:
       if (iNumRoofsSelected > 0) {
         usUseIndex = SelSingleRoof[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleRoof[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleRoof[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_NEWROOF:
       if (iNumNewRoofsSelected > 0) {
         usUseIndex = SelSingleNewRoof[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleNewRoof[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleNewRoof[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_BROKEN_WALLS:
       if (iNumBrokenWallsSelected > 0) {
         usUseIndex = SelSingleBrokenWall[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleBrokenWall[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleBrokenWall[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DECOR:
       if (iNumDecorSelected > 0) {
         usUseIndex = SelSingleDecor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDecor[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleDecor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DECALS:
       if (iNumDecalsSelected > 0) {
         usUseIndex = SelSingleDecal[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDecal[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleDecal[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_FLOORS:
       if (iNumFloorsSelected > 0) {
         usUseIndex = SelSingleFloor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleFloor[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleFloor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_TOILET:
       if (iNumToiletsSelected > 0) {
         usUseIndex = SelSingleToilet[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleToilet[iCurBank].uiObject;
+        usObjIndex = (uint16_t)SelSingleToilet[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_SMART_WALLS: {
@@ -839,8 +839,8 @@ void ShowCurrentDrawingMode() {
     ETRLEObject const &e = ts->SubregionProperties(usUseIndex);
 
     // Center the picture in the display window.
-    INT32 const iStartX = (w - e.usWidth) / 2 - e.sOffsetX;
-    INT32 const iStartY = (h - e.usHeight) / 2 - e.sOffsetY;
+    int32_t const iStartX = (w - e.usWidth) / 2 - e.sOffsetX;
+    int32_t const iStartY = (h - e.usHeight) / 2 - e.sOffsetY;
 
     ts->CurrentShade(DEFAULT_SHADE_LEVEL);
     BltVideoObject(FRAME_BUFFER, ts, usUseIndex, x + iStartX, y + iStartY);
@@ -848,11 +848,11 @@ void ShowCurrentDrawingMode() {
 
   // Set the color for the window's border. Blueish color = Normal, Red = Fake
   // lighting is turned on
-  UINT16 usFillColor = GetGenericButtonFillColor();
+  uint16_t usFillColor = GetGenericButtonFillColor();
 
   {
     SGPVSurface::Lock l(FRAME_BUFFER);
-    RectangleDraw(FALSE, x, y, x + w - 1, y + h, usFillColor, l.Buffer<UINT16>());
+    RectangleDraw(FALSE, x, y, x + w - 1, y + h, usFillColor, l.Buffer<uint16_t>());
   }
 
   InvalidateRegion(x, y, x + w, y + h);
@@ -894,7 +894,7 @@ static void HandleJA2ToolbarSelection() {
         gusLightLevel = EDITOR_LIGHT_FAKE;
       } else
         gusLightLevel = gusSavedLightLevel;
-      LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+      LightSetBaseLevel((uint8_t)(EDITOR_LIGHT_MAX - gusLightLevel));
       LightSpriteRenderAll();
       break;
 
@@ -1105,7 +1105,7 @@ static void HandleJA2ToolbarSelection() {
   iEditorToolbarState = TBAR_MODE_NONE;
 }
 
-extern INT8 gbCurrSelect;
+extern int8_t gbCurrSelect;
 
 static BOOLEAN CheckForSlantRoofs();
 static void CreateGotoGridNoUI();
@@ -1149,7 +1149,7 @@ static void HandleKeyboardShortcuts() {
               gusLightLevel = gusSavedLightLevel;
               UnclickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
             }
-            LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+            LightSetBaseLevel((uint8_t)(EDITOR_LIGHT_MAX - gusLightLevel));
             LightSpriteRenderAll();
             break;
 
@@ -1333,8 +1333,8 @@ static void HandleKeyboardShortcuts() {
 
           case SDLK_F7:
             if (gfBasement) {
-              INT32 i;
-              UINT16 usRoofIndex, usRoofType;
+              int32_t i;
+              uint16_t usRoofIndex, usRoofType;
               pSelList = SelSingleRoof;
               pNumSelList = &iNumRoofsSelected;
               usRoofType = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
@@ -1346,7 +1346,7 @@ static void HandleKeyboardShortcuts() {
                   RemoveAllOnRoofsOfTypeRange(i, FIRSTTEXTURE, LASTITEM);
                   RemoveAllShadowsOfTypeRange(i, FIRSTROOF, LASTSLANTROOF);
                   usRoofIndex = 9 + (rand() % 3);
-                  UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
+                  uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
                   AddRoofToHead(i, usTileIndex);
                 }
               }
@@ -1674,7 +1674,7 @@ static ScreenID PerformSelectedAction() {
 
     case ACTION_QUICK_ERASE:
       if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-        const UINT32 pos = GetMouseMapPos();
+        const uint32_t pos = GetMouseMapPos();
         if (pos != NOWHERE && pos < 0x8000) {
           QuickEraseMapTile(pos);
         }
@@ -1959,26 +1959,26 @@ static ScreenID PerformSelectedAction() {
 
     case ACTION_SHADE_UP:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
-        gShadePercent += (FLOAT).05;
+        gShadePercent += (float).05;
       } else {
-        gShadePercent += (FLOAT).01;
+        gShadePercent += (float).01;
       }
 
       if (gShadePercent > 1) {
-        gShadePercent = (FLOAT)0;
+        gShadePercent = (float)0;
       }
       SetShadeTablePercent(gShadePercent);
       break;
 
     case ACTION_SHADE_DWN:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
-        gShadePercent -= (FLOAT).05;
+        gShadePercent -= (float).05;
       } else {
-        gShadePercent -= (FLOAT).01;
+        gShadePercent -= (float).01;
       }
 
       if (gShadePercent < 0) {
-        gShadePercent = (FLOAT)1;
+        gShadePercent = (float)1;
       }
       SetShadeTablePercent(gShadePercent);
       break;
@@ -2030,18 +2030,18 @@ static void CreateNewMap() {
   LightReset();
   NewWorld();
   if (gfPendingBasement) {
-    UINT32 i;
+    uint32_t i;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
-      UINT16 usIndex = GetTileIndexFromTypeSubIndex(FIRSTROOF, 9 + Random(3));
+      uint16_t usIndex = GetTileIndexFromTypeSubIndex(FIRSTROOF, 9 + Random(3));
       AddRoofToHead(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_BASEMENT);
   } else if (gfPendingCaves) {
-    UINT32 i;
+    uint32_t i;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
-      UINT16 usIndex = GetTileIndexFromTypeSubIndex(FIRSTWALL, 60 + Random(6));
+      uint16_t usIndex = GetTileIndexFromTypeSubIndex(FIRSTWALL, 60 + Random(6));
       AddCave(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_CAVES);
@@ -2073,13 +2073,13 @@ static ScreenID ProcessEditscreenMessageBoxResponse() {
   }
   if (!gfMessageBoxResult) return EDIT_SCREEN;
   if (gfRemoveLightsPending) {
-    INT32 i;
+    int32_t i;
     LightReset();
     for (i = 0; i < WORLD_MAX; i++) {
       RemoveAllObjectsOfTypeRange(i, GOODRING, GOODRING);
     }
     MarkWorldDirty();
-    LightSetBaseLevel((UINT8)(15 - ubAmbientLightLevel));
+    LightSetBaseLevel((uint8_t)(15 - ubAmbientLightLevel));
     gfRemoveLightsPending = FALSE;
   }
   if (gfScheduleReversalPending) {
@@ -2254,7 +2254,7 @@ static ScreenID WaitForSelectionWindowResponse() {
   return (EDIT_SCREEN);
 }
 
-BOOLEAN PlaceLight(INT16 const radius, GridNo const pos) try {
+BOOLEAN PlaceLight(int16_t const radius, GridNo const pos) try {
   STRING512 filename;
   sprintf(filename, "L-R%02d.LHT", radius);
 
@@ -2262,7 +2262,7 @@ BOOLEAN PlaceLight(INT16 const radius, GridNo const pos) try {
   LIGHT_SPRITE *l = LightSpriteCreate(filename);
   if (!l) {
     // Couldn't load file because it doesn't exist. So let's make the file
-    UINT8 const intensity = radius / LIGHT_DECAY;
+    uint8_t const intensity = radius / LIGHT_DECAY;
     LightTemplate *const t = LightCreateOmni(intensity, radius);
 
     LightSave(t, filename);
@@ -2277,8 +2277,8 @@ BOOLEAN PlaceLight(INT16 const radius, GridNo const pos) try {
   }
 
   LightSpritePower(l, TRUE);
-  INT16 x;
-  INT16 y;
+  int16_t x;
+  int16_t y;
   ConvertGridNoToXY(pos, &x, &y);
   LightSpritePosition(l, x, y);
 
@@ -2333,7 +2333,7 @@ BOOLEAN RemoveLight(const GridNo pos) {
    * following conversion should work.  Basically, the radius values aren't
    * stored in the lights, so I have pull the radius out of the filename.
    * Ex:  L-RO5.LHT */
-  const UINT16 usRadius = pLastLightName[4] - 0x30;
+  const uint16_t usRadius = pLastLightName[4] - 0x30;
   AddLightToUndoList(pos, usRadius);
   return TRUE;
 }
@@ -2342,7 +2342,7 @@ void ShowLightPositionHandles() {
   CFOR_EACH_LIGHT_SPRITE(l) {
     if (IsSoldierLight(l)) continue;
 
-    INT32 const iMapIndex = (INT32)l->iY * WORLD_COLS + (INT32)l->iX;
+    int32_t const iMapIndex = (int32_t)l->iY * WORLD_COLS + (int32_t)l->iX;
     if (FindTypeInObjectLayer(iMapIndex, GOODRING)) continue;
 
     LEVELNODE *const n = AddObjectToHead(iMapIndex, GOODRING1);
@@ -2356,7 +2356,7 @@ static void RemoveLightPositionHandles() {
   CFOR_EACH_LIGHT_SPRITE(l) {
     if (IsSoldierLight(l)) continue;
 
-    INT32 const iMapIndex = (INT32)l->iY * WORLD_COLS + (INT32)l->iX;
+    int32_t const iMapIndex = (int32_t)l->iY * WORLD_COLS + (int32_t)l->iX;
     RemoveAllObjectsOfTypeRange(iMapIndex, GOODRING, GOODRING);
   }
 }
@@ -2379,7 +2379,7 @@ static void RemoveLightPositionHandles() {
 // 8 tiles wide)
 //
 static BOOLEAN CheckForSlantRoofs() {
-  UINT16 usCheck;
+  uint16_t usCheck;
 
   pSelList = SelRoom;
   pNumSelList = &iNumRoomsSelected;
@@ -2402,7 +2402,7 @@ static BOOLEAN CheckForSlantRoofs() {
 // Deletion of non-viewable 	land pieces alone gained us about 600 K of memory.
 static void MapOptimize() {
 #if 0
-	INT16 gridno;
+	int16_t gridno;
 	LEVELNODE *start, *head, *end, *node, *temp;
 	MAP_ELEMENT		*pMapTile;
 	BOOLEAN fFound, fChangedHead, fChangedTail;
@@ -2486,7 +2486,7 @@ static void MapOptimize() {
 // we want to keep 	random selections.
 //
 static BOOLEAN CheckForFences() {
-  UINT16 usCheck;
+  uint16_t usCheck;
   BOOLEAN fFence;
 
   pSelList = SelOStructs2;
@@ -2555,8 +2555,8 @@ static void HandleMouseClicksInGameScreen() {
     // Are we trying to erase something?
     if (iDrawMode >= DRAW_MODE_ERASE) {
       // Erasing can have a brush size larger than 1 tile
-      for (INT16 y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; ++y) {
-        for (INT16 x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; ++x) {
+      for (int16_t y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; ++y) {
+        for (int16_t x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; ++x) {
           GridNo const pos = MAPROWCOLTOPOS(y, x);
           if (iDrawMode == DRAW_MODE_LIGHT + DRAW_MODE_ERASE) {
             RemoveLight(pos);
@@ -2879,37 +2879,37 @@ static void HideEntryPoints() {  // Remove entry point indicators
     RemoveAllTopmostsOfTypeRange(m.sWestGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
 }
 
-void TaskOptionsCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskOptionsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_OPTIONS;
   }
 }
 
-void TaskTerrainCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskTerrainCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_TERRAIN;
   }
 }
 
-void TaskBuildingCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskBuildingCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_BUILDINGS;
   }
 }
 
-void TaskItemsCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskItemsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_ITEMS;
   }
 }
 
-void TaskMercsCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskMercsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_MERCS;
   }
 }
 
-void TaskMapInfoCallback(GUI_BUTTON *btn, INT32 reason) {
+void TaskMapInfoCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_MAPINFO;
   }
@@ -2967,7 +2967,7 @@ void ProcessAreaSelection(BOOLEAN fWithLeftButton) {
 // cursor.  This is not used for functions that rely completely on selection
 // areas, such as buildings.
 static void DrawObjectsBasedOnSelectionRegion() {
-  INT32 x, y, iMapIndex;
+  int32_t x, y, iMapIndex;
   BOOLEAN fSkipTest;
 
   // Certain drawing modes are placed with 100% density.  Those cases are
@@ -2985,14 +2985,14 @@ static void DrawObjectsBasedOnSelectionRegion() {
   // cursor area
   for (x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; x++) {
     // process the region from
-    for (y = gSelectRegion.iTop; y <= (INT16)gSelectRegion.iBottom; y++) {
+    for (y = gSelectRegion.iTop; y <= (int16_t)gSelectRegion.iBottom; y++) {
       if (fSkipTest || PerformDensityTest()) {
         iMapIndex = MAPROWCOLTOPOS(y, x);
         switch (iDrawMode) {
           case DRAW_MODE_EXITGRID:
             AddToUndoList(iMapIndex);
             AddExitGridToWorld(iMapIndex, &gExitGrid);
-            AddTopmostToTail((UINT16)iMapIndex, FIRSTPOINTERS8);
+            AddTopmostToTail((uint16_t)iMapIndex, FIRSTPOINTERS8);
             break;
           case DRAW_MODE_DEBRIS:
             PasteDebris(iMapIndex);
@@ -3169,7 +3169,7 @@ static void CreateGotoGridNoUI() {
 }
 
 static void RemoveGotoGridNoUI() {
-  INT32 iMapIndex;
+  int32_t iMapIndex;
   gfGotoGridNoUI = FALSE;
   // Enable the rest of the editor
   EnableEditorTaskbar();

@@ -1,5 +1,4 @@
 ﻿#include "Utils/Text.h"
-
 #include "gtest/gtest.h"
 
 /*
@@ -1815,7 +1814,7 @@ static const wchar_t
 };
 
 static const wchar_t *s_pl_pPersonnelTeamStatsStrings[pPersonnelTeamStatsStrings_SIZE] = {
-    L"ZDR", L"ZWN", L"ZRCZ", L"SIŁA", L"DOW", L"INT", L"DOŚW", L"STRZ", L"MECH", L"WYB", L"MED",
+    L"ZDR", L"ZWN", L"ZRCZ", L"SIŁA", L"DOW", L"int32_t", L"DOŚW", L"STRZ", L"MECH", L"WYB", L"MED",
 };
 
 // horizontal and vertical indices on the map screen

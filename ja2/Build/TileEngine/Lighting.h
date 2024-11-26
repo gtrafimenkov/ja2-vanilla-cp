@@ -62,9 +62,9 @@ struct LightTemplate;
 
 // structure of light instance, or sprite (a copy of the template)
 struct LIGHT_SPRITE {
-  INT16 iX, iY;
+  int16_t iX, iY;
   LightTemplate *light_template;
-  UINT32 uiFlags;
+  uint32_t uiFlags;
 };
 
 // Initializes the lighting system
@@ -80,13 +80,13 @@ void SetDefaultWorldLightingColors();
 // Low-Level Template Interface
 
 // Sets the normal light level for all tiles in the world
-void LightSetBaseLevel(UINT8 iIntensity);
+void LightSetBaseLevel(uint8_t iIntensity);
 // Adds a light value to all tiles in the world
-void LightAddBaseLevel(UINT8 iIntensity);
+void LightAddBaseLevel(uint8_t iIntensity);
 // Subtracts a light value from all tiles
-void LightSubtractBaseLevel(UINT8 iIntensity);
+void LightSubtractBaseLevel(uint8_t iIntensity);
 // Creates an omni (circular) light
-LightTemplate *LightCreateOmni(UINT8 ubIntensity, INT16 iRadius);
+LightTemplate *LightCreateOmni(uint8_t ubIntensity, int16_t iRadius);
 // Draws a light into the scene at X,Y
 BOOLEAN LightDraw(const LIGHT_SPRITE *l);
 // Save a light list into a file
@@ -106,7 +106,7 @@ LIGHT_SPRITE *LightSpriteCreate(const char *const pName);
 // Removes an instance of a light. If it was on, it is erased from the scene.
 BOOLEAN LightSpriteDestroy(LIGHT_SPRITE *l);
 // Sets the X,Y position (IN TILES) of a light instance.
-void LightSpritePosition(LIGHT_SPRITE *l, INT16 iX, INT16 iY);
+void LightSpritePosition(LIGHT_SPRITE *l, int16_t iX, int16_t iY);
 // Sets the flag of a light sprite to "fake" (in game for merc navig purposes)
 BOOLEAN LightSpriteFake(LIGHT_SPRITE *l);
 
@@ -119,13 +119,13 @@ void LightSpritePower(LIGHT_SPRITE *l, BOOLEAN fOn);
 // Moves light to/from roof position
 BOOLEAN LightSpriteRoofStatus(LIGHT_SPRITE *l, BOOLEAN fOnRoof);
 
-BOOLEAN ApplyTranslucencyToWalls(INT16 iX, INT16 iY);
+BOOLEAN ApplyTranslucencyToWalls(int16_t iX, int16_t iY);
 
 // makes the 16-bit palettes
 void CreateTilePaletteTables(HVOBJECT pObj);
 
 // returns the true light value at a tile (ignoring fake/merc lights)
-UINT8 LightTrueLevel(INT16 sGridNo, INT8 bLevel);
+uint8_t LightTrueLevel(int16_t sGridNo, int8_t bLevel);
 
 // Sprite data
 extern LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
@@ -139,7 +139,7 @@ extern LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
 #define CFOR_EACH_LIGHT_SPRITE(iter) BASE_FOR_EACH_LIGHT_SPRITE(const LIGHT_SPRITE, iter)
 
 // Lighting system general data
-extern UINT8 ubAmbientLightLevel;
+extern uint8_t ubAmbientLightLevel;
 
 // Lighting color
 extern SGPPaletteEntry g_light_color;
@@ -149,7 +149,7 @@ extern SGPPaletteEntry g_light_color;
 
 const char *LightSpriteGetTypeName(const LIGHT_SPRITE *);
 
-void CreateBiasedShadedPalettes(UINT16 *Shades[16], const SGPPaletteEntry ShadePal[256]);
+void CreateBiasedShadedPalettes(uint16_t *Shades[16], const SGPPaletteEntry ShadePal[256]);
 
 void LoadShadeTablesFromTextFile();
 

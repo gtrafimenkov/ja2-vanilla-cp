@@ -4,8 +4,8 @@
 #include "Tactical/Faces.h"
 
 void AudioGapListDone(AudioGapList *pGapList);
-BOOLEAN PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList);
-UINT32 PlayJA2GapSample(const char *zSoundFile, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan,
-                        AudioGapList *pData);
+BOOLEAN PollAudioGap(uint32_t uiSampleNum, AudioGapList *pGapList);
+uint32_t PlayJA2GapSample(const char *zSoundFile, uint32_t ubVolume, uint32_t ubLoops,
+                          uint32_t uiPan, AudioGapList *pData);
 
 #endif

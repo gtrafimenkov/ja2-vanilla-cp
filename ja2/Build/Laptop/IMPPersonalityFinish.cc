@@ -17,7 +17,7 @@
 // this is the amount of time, the player waits until booted back to main
 // profileing screen
 
-UINT8 bPersonalityEndState = 0;
+uint8_t bPersonalityEndState = 0;
 
 #define PERSONALITY_CONFIRM_FINISH_DELAY 2500
 
@@ -32,9 +32,9 @@ static BOOLEAN fCreateFinishOkButton = FALSE;
 static BUTTON_PICS *giIMPPersonalityFinishButtonImage[2];
 static GUIButtonRef giIMPPersonalityFinishButton[2];
 
-static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPPersonalityFinishButtons();
 
@@ -118,11 +118,11 @@ static void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed() {
   }
 }
 
-static void MakeButton(UINT idx, const wchar_t *text, INT16 x, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const wchar_t *text, int16_t x, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/button_5.sti", 0, 1);
   giIMPPersonalityFinishButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               LAPTOP_SCREEN_UL_X + 224, MSYS_PRIORITY_HIGH, click);
@@ -152,7 +152,7 @@ static void DestroyIMPersonalityFinishButtons() {
   UnloadButtonImage(giIMPPersonalityFinishButtonImage[1]);
 }
 
-static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for IMP personality quiz answer button
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -176,7 +176,7 @@ static void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for IMP personality quiz answer button
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -210,7 +210,7 @@ static void DestroyPersonalityFinishOkButton() {
   UnloadButtonImage(giIMPPersonalityFinishButtonImage[0]);
 }
 
-static void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for IMP personality quiz answer button
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

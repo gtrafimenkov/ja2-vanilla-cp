@@ -7,12 +7,12 @@
 
 struct STRATEGICEVENT {
   STRATEGICEVENT *next;
-  UINT32 uiTimeStamp;
-  UINT32 uiParam;
-  UINT32 uiTimeOffset;
-  UINT8 ubEventType;
-  UINT8 ubCallbackID;
-  UINT8 ubFlags;
+  uint32_t uiTimeStamp;
+  uint32_t uiParam;
+  uint32_t uiTimeOffset;
+  uint8_t ubEventType;
+  uint8_t ubCallbackID;
+  uint8_t ubFlags;
 };
 
 enum StrategicEventFrequency {
@@ -29,7 +29,7 @@ void SaveStrategicEventsToSavedGame(HWFILE);
 void LoadStrategicEventsFromSavedGame(HWFILE);
 
 STRATEGICEVENT *AddAdvancedStrategicEvent(StrategicEventFrequency, StrategicEventKind,
-                                          UINT32 uiTimeStamp, UINT32 uiParam);
+                                          uint32_t uiTimeStamp, uint32_t uiParam);
 
 BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent);
 
@@ -37,11 +37,11 @@ extern STRATEGICEVENT *gpEventList;
 
 /* Determines if there are any events that will be processed between the current
  * global time, and the beginning of the next global time. */
-bool GameEventsPending(UINT32 adjustment);
+bool GameEventsPending(uint32_t adjustment);
 
 /* If there are any events pending, they are processed, until the time limit is
  * reached, or a major event is processed (one that requires the player's
  * attention). */
-void ProcessPendingGameEvents(UINT32 uiAdjustment, UINT8 ubWarpCode);
+void ProcessPendingGameEvents(uint32_t uiAdjustment, uint8_t ubWarpCode);
 
 #endif

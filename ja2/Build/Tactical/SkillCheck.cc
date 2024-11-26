@@ -13,42 +13,44 @@
 #include "Tactical/SoldierProfile.h"
 #include "TileEngine/IsometricUtils.h"
 
-INT8 EffectiveStrength(const SOLDIERTYPE *s) {
+int8_t EffectiveStrength(const SOLDIERTYPE *s) {
   // Effective strength is:
   // 1/2 full strength
   // plus 1/2 strength scaled according to how hurt we are
-  const INT8 bBandaged = s->bLifeMax - s->bLife - s->bBleeding;
-  INT32 iEffStrength = s->bStrength / 2;
+  const int8_t bBandaged = s->bLifeMax - s->bLife - s->bBleeding;
+  int32_t iEffStrength = s->bStrength / 2;
   iEffStrength += (s->bStrength / 2) * (s->bLife + bBandaged / 2) / (s->bLifeMax);
 
   // ATE: Make sure at least 2...
   iEffStrength = std::max(iEffStrength, 2);
 
-  return ((INT8)iEffStrength);
+  return ((int8_t)iEffStrength);
 }
 
-INT8 EffectiveWisdom(const SOLDIERTYPE *s) { return EffectStatForBeingDrunk(s, s->bWisdom); }
+int8_t EffectiveWisdom(const SOLDIERTYPE *s) { return EffectStatForBeingDrunk(s, s->bWisdom); }
 
-INT8 EffectiveAgility(const SOLDIERTYPE *s) {
-  INT32 iEffAgility = EffectStatForBeingDrunk(s, s->bAgility);
+int8_t EffectiveAgility(const SOLDIERTYPE *s) {
+  int32_t iEffAgility = EffectStatForBeingDrunk(s, s->bAgility);
   if (s->sWeightCarriedAtTurnStart > 100) {
     iEffAgility = (iEffAgility * 100) / s->sWeightCarriedAtTurnStart;
   }
 
-  return ((INT8)iEffAgility);
+  return ((int8_t)iEffAgility);
 }
 
-INT8 EffectiveMechanical(const SOLDIERTYPE *s) {
+int8_t EffectiveMechanical(const SOLDIERTYPE *s) {
   return EffectStatForBeingDrunk(s, s->bMechanical);
 }
 
-INT8 EffectiveExplosive(const SOLDIERTYPE *s) { return EffectStatForBeingDrunk(s, s->bExplosive); }
+int8_t EffectiveExplosive(const SOLDIERTYPE *s) {
+  return EffectStatForBeingDrunk(s, s->bExplosive);
+}
 
-INT8 EffectiveMedical(const SOLDIERTYPE *s) { return EffectStatForBeingDrunk(s, s->bMedical); }
+int8_t EffectiveMedical(const SOLDIERTYPE *s) { return EffectStatForBeingDrunk(s, s->bMedical); }
 
-INT8 EffectiveLeadership(const SOLDIERTYPE *s) {
-  INT32 iEffLeadership;
-  INT8 bDrunkLevel;
+int8_t EffectiveLeadership(const SOLDIERTYPE *s) {
+  int32_t iEffLeadership;
+  int8_t bDrunkLevel;
 
   iEffLeadership = s->bLeadership;
 
@@ -59,13 +61,13 @@ INT8 EffectiveLeadership(const SOLDIERTYPE *s) {
     iEffLeadership = (iEffLeadership * 120 / 100);
   }
 
-  return ((INT8)iEffLeadership);
+  return ((int8_t)iEffLeadership);
 }
 
-INT8 EffectiveExpLevel(const SOLDIERTYPE *s) {
-  INT32 iEffExpLevel;
-  INT8 bDrunkLevel;
-  INT32 iExpModifier[] = {
+int8_t EffectiveExpLevel(const SOLDIERTYPE *s) {
+  int32_t iEffExpLevel;
+  int8_t bDrunkLevel;
+  int32_t iExpModifier[] = {
       0,   // SOBER
       0,   // Feeling good
       -1,  // Borderline
@@ -91,32 +93,32 @@ INT8 EffectiveExpLevel(const SOLDIERTYPE *s) {
     // can't go below 1
     return (1);
   } else {
-    return ((INT8)iEffExpLevel);
+    return ((int8_t)iEffExpLevel);
   }
 }
 
-INT8 EffectiveMarksmanship(const SOLDIERTYPE *s) {
-  INT32 iEffMarksmanship;
+int8_t EffectiveMarksmanship(const SOLDIERTYPE *s) {
+  int32_t iEffMarksmanship;
 
   iEffMarksmanship = s->bMarksmanship;
 
   iEffMarksmanship = EffectStatForBeingDrunk(s, iEffMarksmanship);
 
-  return ((INT8)iEffMarksmanship);
+  return ((int8_t)iEffMarksmanship);
 }
 
-INT8 EffectiveDexterity(const SOLDIERTYPE *s) {
-  INT32 iEffDexterity;
+int8_t EffectiveDexterity(const SOLDIERTYPE *s) {
+  int32_t iEffDexterity;
 
   iEffDexterity = s->bDexterity;
 
   iEffDexterity = EffectStatForBeingDrunk(s, iEffDexterity);
 
-  return ((INT8)iEffDexterity);
+  return ((int8_t)iEffDexterity);
 }
 
-static UINT8 GetPenaltyForFatigue(const SOLDIERTYPE *s) {
-  UINT8 ubPercentPenalty;
+static uint8_t GetPenaltyForFatigue(const SOLDIERTYPE *s) {
+  uint8_t ubPercentPenalty;
 
   if (s->bBreathMax >= 85)
     ubPercentPenalty = 0;
@@ -136,20 +138,20 @@ static UINT8 GetPenaltyForFatigue(const SOLDIERTYPE *s) {
   return (ubPercentPenalty);
 }
 
-void ReducePointsForFatigue(const SOLDIERTYPE *s, UINT16 *pusPoints) {
+void ReducePointsForFatigue(const SOLDIERTYPE *s, uint16_t *pusPoints) {
   *pusPoints -= *pusPoints * GetPenaltyForFatigue(s) / 100;
 }
 
-INT32 GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, INT32 iSkill) {
+int32_t GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, int32_t iSkill) {
   // use only half the full effect of fatigue for skill checks
   return (((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2);
 }
 
-INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
-  INT32 iSkill;
-  INT32 iChance;
-  INT32 iRoll, iMadeItBy;
-  INT8 bSlot;
+int32_t SkillCheck(SOLDIERTYPE *pSoldier, int8_t bReason, int8_t bChanceMod) {
+  int32_t iSkill;
+  int32_t iChance;
+  int32_t iRoll, iMadeItBy;
+  int8_t bSlot;
   BOOLEAN fForceDamnSound = FALSE;
 
   switch (bReason) {
@@ -369,7 +371,7 @@ INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
       FOR_EACH_IN_TEAM(s, OUR_TEAM) {
         if (!OkControllableMerc(s)) continue;
 
-        const INT8 bBuddyIndex = WhichBuddy(s->ubProfile, pSoldier->ubProfile);
+        const int8_t bBuddyIndex = WhichBuddy(s->ubProfile, pSoldier->ubProfile);
         if (bBuddyIndex >= 0 && SpacesAway(pSoldier->sGridNo, s->sGridNo) < 15) {
           switch (bBuddyIndex) {
             case 0:
@@ -394,10 +396,10 @@ INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
   return (iMadeItBy);
 }
 
-INT8 CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining) {
+int8_t CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining) {
   // return the level of trap which the guy is able to detect
 
-  INT8 bDetectLevel;
+  int8_t bDetectLevel;
 
   // formula: 1 pt for every exp_level
   //     plus 1 pt for every 40 explosives
@@ -410,12 +412,12 @@ INT8 CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining) {
   // if the examining flag is true, this isn't just a casual glance
   // and the merc should have a higher chance
   if (fExamining) {
-    bDetectLevel += (INT8)PreRandom(bDetectLevel / 3 + 2);
+    bDetectLevel += (int8_t)PreRandom(bDetectLevel / 3 + 2);
   }
 
   // if substantially bleeding, or still in serious shock, randomly lower value
   if ((pSoldier->bBleeding > 20) || (pSoldier->bShock > 1)) {
-    bDetectLevel -= (INT8)PreRandom(3);
+    bDetectLevel -= (int8_t)PreRandom(3);
   }
 
   if (bDetectLevel < 1) {

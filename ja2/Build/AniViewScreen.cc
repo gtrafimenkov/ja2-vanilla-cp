@@ -27,22 +27,22 @@
 #include "SDL_keycode.h"
 
 BOOLEAN gfAniEditMode = FALSE;
-static UINT16 usStartAnim = 0;
-static UINT8 ubStartHeight = 0;
+static uint16_t usStartAnim = 0;
+static uint8_t ubStartHeight = 0;
 static SOLDIERTYPE *pSoldier;
 
 static BOOLEAN fOKFiles = FALSE;
-static UINT8 ubNumStates = 0;
-static UINT16 *pusStates = NULL;
-static INT8 ubCurLoadedState = 0;
+static uint8_t ubNumStates = 0;
+static uint16_t *pusStates = NULL;
+static int8_t ubCurLoadedState = 0;
 
 static void CycleAnimations() {
-  INT32 cnt;
+  int32_t cnt;
 
   // FInd the next animation with start height the same...
   for (cnt = usStartAnim + 1; cnt < NUMANIMATIONSTATES; cnt++) {
     if (gAnimControl[cnt].ubHeight == ubStartHeight) {
-      usStartAnim = (UINT8)cnt;
+      usStartAnim = (uint8_t)cnt;
       EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
       return;
     }
@@ -57,7 +57,7 @@ static void BuildListFile();
 ScreenID AniEditScreenHandle() {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = TRUE;
-  static UINT16 usOldState;
+  static uint16_t usOldState;
   static BOOLEAN fToggle = FALSE;
   static BOOLEAN fToggle2 = FALSE;
 
@@ -139,7 +139,7 @@ ScreenID AniEditScreenHandle() {
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 's')) {
       if (!fToggle) {
-        UINT16 usAnim = 0;
+        uint16_t usAnim = 0;
         usOldState = usStartAnim;
 
         switch (ubStartHeight) {
@@ -223,8 +223,8 @@ ScreenID AniEditScreenHandle() {
   return (ANIEDIT_SCREEN);
 }
 
-static UINT16 GetAnimStateFromName(const char *zName) {
-  INT32 cnt;
+static uint16_t GetAnimStateFromName(const char *zName) {
+  int32_t cnt;
 
   // FInd the next animation with start height the same...
   for (cnt = 0; cnt < NUMANIMATIONSTATES; cnt++) {
@@ -239,7 +239,7 @@ static void BuildListFile() {
   char currFilename[128];
   int numEntries = 0;
   int cnt;
-  UINT16 usState;
+  uint16_t usState;
   wchar_t zError[128];
 
   // Verify the existance of the header text file.
@@ -257,7 +257,7 @@ static void BuildListFile() {
   fseek(infoFile, 0, SEEK_SET);  // reset header file
 
   // Allocate array
-  pusStates = MALLOCN(UINT16, numEntries);
+  pusStates = MALLOCN(uint16_t, numEntries);
 
   fOKFiles = TRUE;
 
@@ -273,7 +273,7 @@ static void BuildListFile() {
 
     if (usState != 5555) {
       cnt++;
-      ubNumStates = (UINT8)cnt;
+      ubNumStates = (uint8_t)cnt;
       pusStates[cnt] = usState;
     } else {
       swprintf(zError, lengthof(zError), L"Animation str %hs is not known: ", currFilename);

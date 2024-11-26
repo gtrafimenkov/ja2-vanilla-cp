@@ -23,7 +23,7 @@
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
 
-extern UINT8 gbCurrentIndex;
+extern uint8_t gbCurrentIndex;
 
 static SGPVObject *guiMugShotBorder;
 static SGPVObject *guiAimFiFace[MAX_NUMBER_MERCS];
@@ -60,13 +60,13 @@ static MOUSE_REGION gMercFaceMouseRegions[MAX_NUMBER_MERCS];
 // Screen region, used to right click to go back to previous page
 static MOUSE_REGION gScreenMouseRegions;
 
-static void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 reason);
-static void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, int32_t reason);
+static void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterAimFacialIndex() {
-  UINT8 i;
-  UINT16 usPosX, usPosY, x, y;
+  uint8_t i;
+  uint16_t usPosX, usPosY, x, y;
 
   // load the Portait graphic and add it
   guiMugShotBorder = AddVideoObjectFromFile(LAPTOPDIR "/mugshotborder3.sti");
@@ -77,8 +77,8 @@ void EnterAimFacialIndex() {
   for (y = 0; y < AIM_FI_NUM_MUHSHOTS_Y; y++) {
     for (x = 0; x < AIM_FI_NUM_MUHSHOTS_X; x++) {
       MSYS_DefineRegion(&gMercFaceMouseRegions[i], usPosX, usPosY,
-                        (INT16)(usPosX + AIM_FI_PORTRAIT_WIDTH),
-                        (INT16)(usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW,
+                        (int16_t)(usPosX + AIM_FI_PORTRAIT_WIDTH),
+                        (int16_t)(usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW,
                         SelectMercFaceMoveRegionCallBack, SelectMercFaceRegionCallBack);
       MSYS_SetRegionUserData(&gMercFaceMouseRegions[i], 0, i);
 
@@ -113,12 +113,13 @@ void ExitAimFacialIndex() {
   MSYS_RemoveRegion(&gScreenMouseRegions);
 }
 
-static void DrawMercsFaceToScreen(UINT8 ubMercID, UINT16 usPosX, UINT16 usPosY, UINT8 ubImage);
+static void DrawMercsFaceToScreen(uint8_t ubMercID, uint16_t usPosX, uint16_t usPosY,
+                                  uint8_t ubImage);
 
 void RenderAimFacialIndex() {
-  UINT16 usPosX, usPosY, x, y;
+  uint16_t usPosX, usPosY, x, y;
   wchar_t sString[150];
-  UINT8 i;
+  uint8_t i;
 
   DrawAimDefaults();
 
@@ -179,26 +180,26 @@ void RenderAimFacialIndex() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS;
-    gbCurrentIndex = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gbCurrentIndex = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   }
 }
 
-static void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   }
 }
 
-static void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 reason) {
-  UINT8 ubMercNum;
-  UINT16 usPosX, usPosY;
+static void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, int32_t reason) {
+  uint8_t ubMercNum;
+  uint16_t usPosX, usPosY;
 
-  ubMercNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+  ubMercNum = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
   usPosY = ubMercNum / AIM_FI_NUM_MUHSHOTS_X;
   usPosY = AIM_FI_FIRST_MUGSHOT_Y + (AIM_FI_PORTRAIT_HEIGHT + AIM_FI_MUGSHOT_GAP_Y) * usPosY;
@@ -219,8 +220,8 @@ static void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 reason
   }
 }
 
-static void DrawMercsFaceToScreen(const UINT8 ubMercID, const UINT16 usPosX, const UINT16 usPosY,
-                                  const UINT8 ubImage) {
+static void DrawMercsFaceToScreen(const uint8_t ubMercID, const uint16_t usPosX,
+                                  const uint16_t usPosY, const uint8_t ubImage) {
   const ProfileID id = AimMercArray[ubMercID];
   const SOLDIERTYPE *const s = FindSoldierByProfileIDOnPlayerTeam(id);
 

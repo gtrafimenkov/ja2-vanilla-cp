@@ -33,14 +33,14 @@ enum MercPopUpBorder {
 
 // create a pop up box if needed, return null pointer on failure
 MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *, MercPopUpBackground, MercPopUpBorder,
-                                  wchar_t const *pString, UINT16 usWidth, UINT16 usMarginX,
-                                  UINT16 usMarginTopY, UINT16 usMarginBottomY, UINT16 *pActualWidth,
-                                  UINT16 *pActualHeight,
+                                  wchar_t const *pString, uint16_t usWidth, uint16_t usMarginX,
+                                  uint16_t usMarginTopY, uint16_t usMarginBottomY,
+                                  uint16_t *pActualWidth, uint16_t *pActualHeight,
                                   MercPopupBoxFlags flags = MERC_POPUP_PREPARE_FLAGS_NONE);
 
 void RemoveMercPopupBox(MercPopUpBox *);
 
-void RenderMercPopUpBox(MercPopUpBox const *, INT16 sDestX, INT16 sDestY, SGPVSurface *buffer);
+void RenderMercPopUpBox(MercPopUpBox const *, int16_t sDestX, int16_t sDestY, SGPVSurface *buffer);
 
 typedef SGP::AutoObj<MercPopUpBox, RemoveMercPopupBox> AutoMercPopUpBox;
 

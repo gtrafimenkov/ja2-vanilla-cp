@@ -38,20 +38,20 @@ extern void ScrollSelWinDown();
 #define MAX_SELECTIONS 120
 
 struct Selections {
-  UINT32 uiObject;
-  UINT16 usIndex;
-  INT16 sCount;
+  uint32_t uiObject;
+  uint16_t usIndex;
+  int16_t sCount;
 };
 
-INT32 GetRandomSelection();
+int32_t GetRandomSelection();
 void RestoreSelectionList();
 BOOLEAN ClearSelectionList();
 
 void DisplaySelectionWindowGraphicalInformation();
 
-extern INT32 iCurBank;
+extern int32_t iCurBank;
 extern Selections *pSelList;
-extern INT32 *pNumSelList;
+extern int32_t *pNumSelList;
 
 extern Selections SelOStructs[MAX_SELECTIONS];
 extern Selections SelOStructs1[MAX_SELECTIONS];
@@ -73,24 +73,24 @@ extern Selections SelSingleToilet[MAX_SELECTIONS];
 
 extern Selections SelRoom[MAX_SELECTIONS];
 
-extern INT32 iNumOStructsSelected;
-extern INT32 iNumOStructs1Selected;
-extern INT32 iNumOStructs2Selected;
-extern INT32 iNumBanksSelected;
-extern INT32 iNumRoadsSelected;
-extern INT32 iNumDebrisSelected;
-extern INT32 iNumWallsSelected;
-extern INT32 iNumDoorsSelected;
-extern INT32 iNumWindowsSelected;
-extern INT32 iNumDecorSelected;
-extern INT32 iNumDecalsSelected;
-extern INT32 iNumBrokenWallsSelected;
-extern INT32 iNumFloorsSelected;
-extern INT32 iNumToiletsSelected;
-extern INT32 iNumRoofsSelected;
-extern INT32 iNumNewRoofsSelected;
-extern INT32 iNumRoomsSelected;
+extern int32_t iNumOStructsSelected;
+extern int32_t iNumOStructs1Selected;
+extern int32_t iNumOStructs2Selected;
+extern int32_t iNumBanksSelected;
+extern int32_t iNumRoadsSelected;
+extern int32_t iNumDebrisSelected;
+extern int32_t iNumWallsSelected;
+extern int32_t iNumDoorsSelected;
+extern int32_t iNumWindowsSelected;
+extern int32_t iNumDecorSelected;
+extern int32_t iNumDecalsSelected;
+extern int32_t iNumBrokenWallsSelected;
+extern int32_t iNumFloorsSelected;
+extern int32_t iNumToiletsSelected;
+extern int32_t iNumRoofsSelected;
+extern int32_t iNumNewRoofsSelected;
+extern int32_t iNumRoomsSelected;
 
-extern INT32 iDrawMode;
+extern int32_t iDrawMode;
 
 #endif

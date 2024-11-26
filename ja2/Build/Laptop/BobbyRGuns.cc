@@ -148,26 +148,26 @@ static SGPVObject *guiGunBackground;
 static SGPVObject *guiGunsGrid;
 static SGPVObject *guiBrTitle;
 
-UINT16 gusCurWeaponIndex;
-static UINT8 gubCurPage;
+uint16_t gusCurWeaponIndex;
+static uint8_t gubCurPage;
 static LaptopMode const ubCatalogueButtonValues[] = {
     LAPTOP_MODE_BOBBY_R_GUNS, LAPTOP_MODE_BOBBY_R_AMMO, LAPTOP_MODE_BOBBY_R_ARMOR,
     LAPTOP_MODE_BOBBY_R_MISC, LAPTOP_MODE_BOBBY_R_USED};
 
-static UINT16 gusLastItemIndex = 0;
-static UINT16 gusFirstItemIndex = 0;
-static UINT8 gubNumItemsOnScreen;
-static UINT8 gubNumPages;
+static uint16_t gusLastItemIndex = 0;
+static uint16_t gusFirstItemIndex = 0;
+static uint8_t gubNumItemsOnScreen;
+static uint8_t gubNumPages;
 
 static BOOLEAN gfBigImageMouseRegionCreated;
-static UINT16 gusItemNumberForItemsOnScreen[BOBBYR_NUM_WEAPONS_ON_PAGE];
+static uint16_t gusItemNumberForItemsOnScreen[BOBBYR_NUM_WEAPONS_ON_PAGE];
 
 static BOOLEAN gfOnUsedPage;
 
-static UINT16 gusOldItemNumOnTopOfPage = 65535;
+static uint16_t gusOldItemNumOnTopOfPage = 65535;
 
 // The menu bar at the bottom that changes to different pages
-static void BtnBobbyRPageMenuCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRPageMenuCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRPageMenuImage;
 static GUIButtonRef guiBobbyRPageMenu[NUM_CATALOGUE_BUTTONS];
 
@@ -184,12 +184,12 @@ static MOUSE_REGION g_scroll_region;
 static MOUSE_REGION gSelectedBigImageRegion[BOBBYR_NUM_WEAPONS_ON_PAGE];
 
 // The order form button
-static void BtnBobbyROrderFormCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyROrderFormCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyROrderFormImage;
 static GUIButtonRef guiBobbyROrderForm;
 
 // The Home button
-static void BtnBobbyRHomeButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRHomeButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRHomeImage;
 static GUIButtonRef guiBobbyRHome;
 
@@ -267,7 +267,7 @@ void DisplayBobbyRBrTitle() {
                        BobbyRText[BOBBYR_GUNS_CLICK_ON_ITEMS], FONT_MCOLOR_BLACK, LEFT_JUSTIFIED);
 }
 
-static void SelectTitleImageLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectTitleImageLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitBobbyBrTitle() {
   // load the br title graphic and add it
@@ -276,7 +276,7 @@ void InitBobbyBrTitle() {
   // initialize the link to the homepage by clicking on the title
   MSYS_DefineRegion(&gSelectedTitleImageLinkRegion, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y,
                     (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH),
-                    (UINT16)(BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH,
+                    (uint16_t)(BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH,
                     CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);
 
   gusOldItemNumOnTopOfPage = 65535;
@@ -288,15 +288,15 @@ void DeleteBobbyBrTitle() {
   DeleteMouseRegionForBigImage();
 }
 
-static void SelectTitleImageLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectTitleImageLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
   }
 }
 
-static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
-                               const INT16 y, const GUI_CALLBACK click) {
-  const INT16 shadow_col = BOBBYR_GUNS_SHADOW_COLOR;
+static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const int16_t x,
+                               const int16_t y, const GUI_CALLBACK click) {
+  const int16_t shadow_col = BOBBYR_GUNS_SHADOW_COLOR;
   GUIButtonRef const btn = CreateIconAndTextButton(
       img, text, BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, shadow_col,
       BOBBYR_GUNS_TEXT_COLOR_OFF, shadow_col, x, y, MSYS_PRIORITY_HIGH, click);
@@ -304,8 +304,8 @@ static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text
   return btn;
 }
 
-static void BtnBobbyRNextPageCallback(GUI_BUTTON *, INT32 reason);
-static void BtnBobbyRPreviousPageCallback(GUI_BUTTON *, INT32 reason);
+static void BtnBobbyRNextPageCallback(GUI_BUTTON *, int32_t reason);
+static void BtnBobbyRPreviousPageCallback(GUI_BUTTON *, int32_t reason);
 
 void InitBobbyMenuBar() {
   // Previous button
@@ -325,8 +325,8 @@ void InitBobbyMenuBar() {
   BUTTON_PICS *const gfx = LoadButtonImage(LAPTOPDIR "/cataloguebutton1.sti", 0, 1);
   guiBobbyRPageMenuImage = gfx;
 
-  UINT16 x = BOBBYR_CATALOGUE_BUTTON_START_X;
-  UINT16 const y = BOBBYR_CATALOGUE_BUTTON_Y;
+  uint16_t x = BOBBYR_CATALOGUE_BUTTON_START_X;
+  uint16_t const y = BOBBYR_CATALOGUE_BUTTON_Y;
   const StrPointer *text = BobbyRText + BOBBYR_GUNS_GUNS;
   LaptopMode const *mode = ubCatalogueButtonValues;
   FOR_EACHX(GUIButtonRef, i, guiBobbyRPageMenu,
@@ -365,7 +365,7 @@ void DeleteBobbyMenuBar() {
   UnloadButtonImage(guiBobbyRHomeImage);
 }
 
-static void BtnBobbyRPageMenuCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRPageMenuCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UpdateButtonText(guiCurrentLaptopMode);
     guiCurrentLaptopMode = static_cast<LaptopMode>(btn->GetUserData());
@@ -380,7 +380,7 @@ static void NextPage() {
   fPausedReDrawScreenFlag = TRUE;
 }
 
-static void BtnBobbyRNextPageCallback(GUI_BUTTON *const btn, INT32 const reason) {
+static void BtnBobbyRNextPageCallback(GUI_BUTTON *const btn, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     NextPage();
   }
@@ -394,33 +394,36 @@ static void PrevPage() {
   fPausedReDrawScreenFlag = TRUE;
 }
 
-static void BtnBobbyRPreviousPageCallback(GUI_BUTTON *const btn, INT32 const reason) {
+static void BtnBobbyRPreviousPageCallback(GUI_BUTTON *const btn, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     PrevPage();
   }
 }
 
-static void CalcFirstIndexForPage(STORE_INVENTORY *pInv, UINT32 uiItemClass);
-static UINT32 CalculateTotalPurchasePrice();
-static void CreateMouseRegionForBigImage(UINT16 usPosY, UINT8 ubCount,
+static void CalcFirstIndexForPage(STORE_INVENTORY *pInv, uint32_t uiItemClass);
+static uint32_t CalculateTotalPurchasePrice();
+static void CreateMouseRegionForBigImage(uint16_t usPosY, uint8_t ubCount,
                                          const INVTYPE *const items[]);
 static void DisableBobbyRButtons();
-static void DisplayAmmoInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-static void DisplayArmourInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
-                              UINT16 usBobbyIndex);
-static void DisplayBigItemImage(const INVTYPE *item, UINT16 PosY);
-static void DisplayGunInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobbyIndex,
+static void DisplayAmmoInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                            uint16_t usBobbyIndex);
+static void DisplayArmourInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                              uint16_t usBobbyIndex);
+static void DisplayBigItemImage(const INVTYPE *item, uint16_t PosY);
+static void DisplayGunInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                           uint16_t usBobbyIndex);
+static void DisplayItemNameAndInfo(uint16_t usPosY, uint16_t usIndex, uint16_t usBobbyIndex,
                                    BOOLEAN fUsed);
-static void DisplayMiscInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-static void DisplayNonGunWeaponInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
-                                    UINT16 usBobbyIndex);
+static void DisplayMiscInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                            uint16_t usBobbyIndex);
+static void DisplayNonGunWeaponInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                                    uint16_t usBobbyIndex);
 
-void DisplayItemInfo(UINT32 uiItemClass) {
-  UINT16 i;
-  UINT8 ubCount = 0;
-  UINT16 PosY, usTextPosY;
-  UINT16 usItemIndex;
+void DisplayItemInfo(uint32_t uiItemClass) {
+  uint16_t i;
+  uint8_t ubCount = 0;
+  uint16_t PosY, usTextPosY;
+  uint16_t usItemIndex;
   wchar_t sDollarTemp[60];
   wchar_t sTemp[60];
 
@@ -578,17 +581,18 @@ void DisplayItemInfo(UINT32 uiItemClass) {
   }
 }
 
-static UINT16 DisplayCaliber(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-static UINT16 DisplayCostAndQty(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight,
-                                UINT16 usBobbyIndex, BOOLEAN fUsed);
-static UINT16 DisplayDamage(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-static UINT16 DisplayMagazine(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-static UINT16 DisplayRange(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-static UINT16 DisplayRof(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
+static uint16_t DisplayCaliber(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight);
+static uint16_t DisplayCostAndQty(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight,
+                                  uint16_t usBobbyIndex, BOOLEAN fUsed);
+static uint16_t DisplayDamage(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight);
+static uint16_t DisplayMagazine(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight);
+static uint16_t DisplayRange(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight);
+static uint16_t DisplayRof(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight);
 
-static void DisplayGunInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex) {
-  UINT16 usHeight;
-  UINT16 usFontHeight;
+static void DisplayGunInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                           uint16_t usBobbyIndex) {
+  uint16_t usHeight;
+  uint16_t usFontHeight;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -616,10 +620,10 @@ static void DisplayGunInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UIN
   usHeight = DisplayCostAndQty(usTextPosY, usIndex, usFontHeight, usBobbyIndex, fUsed);
 }
 
-static void DisplayNonGunWeaponInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
-                                    UINT16 usBobbyIndex) {
-  UINT16 usHeight;
-  UINT16 usFontHeight;
+static void DisplayNonGunWeaponInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                                    uint16_t usBobbyIndex) {
+  uint16_t usHeight;
+  uint16_t usFontHeight;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -635,9 +639,10 @@ static void DisplayNonGunWeaponInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN f
   usHeight = DisplayCostAndQty(usTextPosY, usIndex, usFontHeight, usBobbyIndex, fUsed);
 }
 
-static void DisplayAmmoInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex) {
-  UINT16 usHeight;
-  UINT16 usFontHeight;
+static void DisplayAmmoInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                            uint16_t usBobbyIndex) {
+  uint16_t usHeight;
+  uint16_t usFontHeight;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -656,16 +661,16 @@ static void DisplayAmmoInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UI
   usHeight = DisplayCostAndQty(usTextPosY, usIndex, usFontHeight, usBobbyIndex, fUsed);
 }
 
-static void DisplayBigItemImage(const INVTYPE *const item, const UINT16 PosY) {
-  INT16 PosX = BOBBYR_GRID_PIC_X;
+static void DisplayBigItemImage(const INVTYPE *const item, const uint16_t PosY) {
+  int16_t PosX = BOBBYR_GRID_PIC_X;
 
   AutoSGPVObject uiImage(LoadTileGraphicForItem(*item));
 
   // center picture in frame
   ETRLEObject const &pTrav = uiImage->SubregionProperties(0);
-  UINT32 const usWidth = pTrav.usWidth;
-  INT16 const sCenX = PosX + abs(int(BOBBYR_GRID_PIC_WIDTH - usWidth)) / 2 - pTrav.sOffsetX;
-  INT16 const sCenY = PosY + 8;
+  uint32_t const usWidth = pTrav.usWidth;
+  int16_t const sCenX = PosX + abs(int(BOBBYR_GRID_PIC_WIDTH - usWidth)) / 2 - pTrav.sOffsetX;
+  int16_t const sCenY = PosY + 8;
 
   // blt the shadow of the item
   BltVideoObjectOutlineShadow(FRAME_BUFFER, uiImage, 0, sCenX - 2, sCenY + 2);
@@ -673,10 +678,10 @@ static void DisplayBigItemImage(const INVTYPE *const item, const UINT16 PosY) {
   BltVideoObject(FRAME_BUFFER, uiImage, 0, sCenX, sCenY);
 }
 
-static void DisplayArmourInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
-                              UINT16 usBobbyIndex) {
-  UINT16 usHeight;
-  UINT16 usFontHeight;
+static void DisplayArmourInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                              uint16_t usBobbyIndex) {
+  uint16_t usHeight;
+  uint16_t usFontHeight;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -689,8 +694,9 @@ static void DisplayArmourInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed,
   usHeight = DisplayCostAndQty(usTextPosY, usIndex, usFontHeight, usBobbyIndex, fUsed);
 }
 
-static void DisplayMiscInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex) {
-  UINT16 usFontHeight;
+static void DisplayMiscInfo(uint16_t usIndex, uint16_t usTextPosY, BOOLEAN fUsed,
+                            uint16_t usBobbyIndex) {
+  uint16_t usFontHeight;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -700,12 +706,12 @@ static void DisplayMiscInfo(UINT16 usIndex, UINT16 usTextPosY, BOOLEAN fUsed, UI
   DisplayCostAndQty(usTextPosY, usIndex, usFontHeight, usBobbyIndex, fUsed);
 }
 
-static UINT8 CheckIfItemIsPurchased(UINT16 usItemNumber);
+static uint8_t CheckIfItemIsPurchased(uint16_t usItemNumber);
 
-static UINT16 DisplayCostAndQty(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight,
-                                UINT16 usBobbyIndex, BOOLEAN fUsed) {
+static uint16_t DisplayCostAndQty(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight,
+                                  uint16_t usBobbyIndex, BOOLEAN fUsed) {
   wchar_t sTemp[20];
-  //	UINT8	ubPurchaseNumber;
+  //	uint8_t	ubPurchaseNumber;
 
   //
   // Display the cost and the qty
@@ -757,7 +763,7 @@ static UINT16 DisplayCostAndQty(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeig
   return (usPosY);
 }
 
-static UINT16 DisplayRof(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
+static uint16_t DisplayRof(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight) {
   wchar_t sTemp[20];
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_ROF], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0,
@@ -777,7 +783,7 @@ static UINT16 DisplayRof(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
   return (usPosY);
 }
 
-static UINT16 DisplayDamage(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
+static uint16_t DisplayDamage(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight) {
   wchar_t sTemp[20];
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_DAMAGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0,
@@ -791,7 +797,7 @@ static UINT16 DisplayDamage(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) 
   return (usPosY);
 }
 
-static UINT16 DisplayRange(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
+static uint16_t DisplayRange(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight) {
   wchar_t sTemp[20];
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_RANGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0,
@@ -806,7 +812,7 @@ static UINT16 DisplayRange(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
   return (usPosY);
 }
 
-static UINT16 DisplayMagazine(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
+static uint16_t DisplayMagazine(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight) {
   wchar_t sTemp[20];
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_MAGAZINE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0,
@@ -821,7 +827,7 @@ static UINT16 DisplayMagazine(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight
   return (usPosY);
 }
 
-static UINT16 DisplayCaliber(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight) {
+static uint16_t DisplayCaliber(uint16_t usPosY, uint16_t usIndex, uint16_t usFontHeight) {
   const INVTYPE *const item = &Item[usIndex];
   wchar_t zTemp[128];
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_CALIBRE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0,
@@ -842,11 +848,11 @@ static UINT16 DisplayCaliber(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight)
   return (usPosY);
 }
 
-static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobbyIndex,
+static void DisplayItemNameAndInfo(uint16_t usPosY, uint16_t usIndex, uint16_t usBobbyIndex,
                                    BOOLEAN fUsed) {
   wchar_t sTemp[20];
-  UINT32 uiStartLoc;
-  UINT8 ubPurchaseNumber;
+  uint32_t uiStartLoc;
+  uint8_t ubPurchaseNumber;
 
   {
     // Display Items Name
@@ -897,11 +903,11 @@ static void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobby
 }
 
 // Loops through Bobby Rays Inventory to find the first and last index
-void SetFirstLastPagesForNew(UINT32 uiClassMask) {
-  UINT16 i;
-  INT16 sFirst = -1;
-  INT16 sLast = -1;
-  UINT8 ubNumItems = 0;
+void SetFirstLastPagesForNew(uint32_t uiClassMask) {
+  uint16_t i;
+  int16_t sFirst = -1;
+  int16_t sLast = -1;
+  uint8_t ubNumItems = 0;
 
   gubCurPage = 0;
 
@@ -925,18 +931,18 @@ void SetFirstLastPagesForNew(UINT32 uiClassMask) {
     return;
   }
 
-  gusFirstItemIndex = (UINT16)sFirst;
-  gusLastItemIndex = (UINT16)sLast;
-  gubNumPages = (UINT8)(ubNumItems / (FLOAT)BOBBYR_NUM_WEAPONS_ON_PAGE);
+  gusFirstItemIndex = (uint16_t)sFirst;
+  gusLastItemIndex = (uint16_t)sLast;
+  gubNumPages = (uint8_t)(ubNumItems / (float)BOBBYR_NUM_WEAPONS_ON_PAGE);
   if ((ubNumItems % BOBBYR_NUM_WEAPONS_ON_PAGE) != 0) gubNumPages += 1;
 }
 
 // Loops through Bobby Rays Used Inventory to find the first and last index
 void SetFirstLastPagesForUsed() {
-  UINT16 i;
-  INT16 sFirst = -1;
-  INT16 sLast = -1;
-  UINT8 ubNumItems = 0;
+  uint16_t i;
+  int16_t sFirst = -1;
+  int16_t sLast = -1;
+  uint8_t ubNumItems = 0;
 
   gubCurPage = 0;
 
@@ -957,13 +963,13 @@ void SetFirstLastPagesForUsed() {
     return;
   }
 
-  gusFirstItemIndex = (UINT16)sFirst;
-  gusLastItemIndex = (UINT16)sLast;
-  gubNumPages = (UINT8)(ubNumItems / (FLOAT)BOBBYR_NUM_WEAPONS_ON_PAGE);
+  gusFirstItemIndex = (uint16_t)sFirst;
+  gusLastItemIndex = (uint16_t)sLast;
+  gubNumPages = (uint8_t)(ubNumItems / (float)BOBBYR_NUM_WEAPONS_ON_PAGE);
   if ((ubNumItems % BOBBYR_NUM_WEAPONS_ON_PAGE) != 0) gubNumPages += 1;
 }
 
-static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
+static void ScrollRegionCallback(MOUSE_REGION *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     PrevPage();
   } else if (reason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -971,26 +977,26 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   }
 }
 
-static UINT8 CheckPlayersInventoryForGunMatchingGivenAmmoID(const INVTYPE *ammo);
-static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static uint8_t CheckPlayersInventoryForGunMatchingGivenAmmoID(const INVTYPE *ammo);
+static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
-static void CreateMouseRegionForBigImage(UINT16 y, const UINT8 n_regions,
+static void CreateMouseRegionForBigImage(uint16_t y, const uint8_t n_regions,
                                          const INVTYPE *const items[]) {
   if (gfBigImageMouseRegionCreated) return;
 
   {
-    UINT16 const x = BOBBYR_GRIDLOC_X;
-    UINT16 const y = BOBBYR_GRIDLOC_Y;
-    UINT16 const w = 493;
-    UINT16 const h = 290;
+    uint16_t const x = BOBBYR_GRIDLOC_X;
+    uint16_t const y = BOBBYR_GRIDLOC_Y;
+    uint16_t const w = 493;
+    uint16_t const h = 290;
     MSYS_DefineRegion(&g_scroll_region, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, ScrollRegionCallback);
   }
 
-  UINT16 const x = BOBBYR_GRID_PIC_X;
-  UINT16 const w = BOBBYR_GRID_PIC_WIDTH;
-  UINT16 const h = BOBBYR_GRID_PIC_HEIGHT;
-  for (UINT8 i = 0; i != n_regions; y += BOBBYR_GRID_OFFSET, ++i) {
+  uint16_t const x = BOBBYR_GRID_PIC_X;
+  uint16_t const w = BOBBYR_GRID_PIC_WIDTH;
+  uint16_t const h = BOBBYR_GRID_PIC_HEIGHT;
+  for (uint8_t i = 0; i != n_regions; y += BOBBYR_GRID_OFFSET, ++i) {
     // Mouse region for the Big Item Image
     MOUSE_REGION &r = gSelectedBigImageRegion[i];
     MSYS_DefineRegion(&r, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK,
@@ -1001,7 +1007,7 @@ static void CreateMouseRegionForBigImage(UINT16 y, const UINT8 n_regions,
     INVTYPE const *const item = items[i];
     if (item->usItemClass != IC_AMMO) continue;
     // And only if the user has an item that can use the particular type of ammo
-    UINT8 const n_guns = CheckPlayersInventoryForGunMatchingGivenAmmoID(item);
+    uint8_t const n_guns = CheckPlayersInventoryForGunMatchingGivenAmmoID(item);
     if (n_guns == 0) continue;
 
     wchar_t buf[SIZE_ITEM_NAME];
@@ -1018,7 +1024,7 @@ void DeleteMouseRegionForBigImage() {
 
   MSYS_RemoveRegion(&g_scroll_region);
 
-  for (UINT8 i = 0; i != gubNumItemsOnScreen; ++i) {
+  for (uint8_t i = 0; i != gubNumItemsOnScreen; ++i) {
     MSYS_RemoveRegion(&gSelectedBigImageRegion[i]);
   }
 
@@ -1027,31 +1033,31 @@ void DeleteMouseRegionForBigImage() {
   gubNumItemsOnScreen = 0;
 }
 
-static void PurchaseBobbyRayItem(UINT16 usItemNumber);
-static void UnPurchaseBobbyRayItem(UINT16 usItemNumber);
+static void PurchaseBobbyRayItem(uint16_t usItemNumber);
+static void UnPurchaseBobbyRayItem(uint16_t usItemNumber);
 
-static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    uint16_t usItemNum = (uint16_t)MSYS_GetRegionUserData(pRegion, 0);
 
     PurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
 
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    uint16_t usItemNum = (uint16_t)MSYS_GetRegionUserData(pRegion, 0);
 
     UnPurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    uint16_t usItemNum = (uint16_t)MSYS_GetRegionUserData(pRegion, 0);
 
     PurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_REPEAT) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    uint16_t usItemNum = (uint16_t)MSYS_GetRegionUserData(pRegion, 0);
 
     UnPurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
@@ -1063,10 +1069,10 @@ static void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static UINT8 GetNextPurchaseNumber();
+static uint8_t GetNextPurchaseNumber();
 
-static void PurchaseBobbyRayItem(UINT16 usItemNumber) {
-  UINT8 ubPurchaseNumber;
+static void PurchaseBobbyRayItem(uint16_t usItemNumber) {
+  uint8_t ubPurchaseNumber;
 
   ubPurchaseNumber = CheckIfItemIsPurchased(usItemNumber);
 
@@ -1146,8 +1152,8 @@ static void PurchaseBobbyRayItem(UINT16 usItemNumber) {
 }
 
 // Checks to see if the clicked item is already bought or not.
-static UINT8 CheckIfItemIsPurchased(UINT16 usItemNumber) {
-  UINT8 i;
+static uint8_t CheckIfItemIsPurchased(uint16_t usItemNumber) {
+  uint8_t i;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     if ((usItemNumber == BobbyRayPurchases[i].usBobbyItemIndex) &&
@@ -1158,8 +1164,8 @@ static UINT8 CheckIfItemIsPurchased(UINT16 usItemNumber) {
   return (BOBBY_RAY_NOT_PURCHASED);
 }
 
-static UINT8 GetNextPurchaseNumber() {
-  UINT8 i;
+static uint8_t GetNextPurchaseNumber() {
+  uint8_t i;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     if ((BobbyRayPurchases[i].usBobbyItemIndex == 0) &&
@@ -1169,8 +1175,8 @@ static UINT8 GetNextPurchaseNumber() {
   return (BOBBY_RAY_NOT_PURCHASED);
 }
 
-static void UnPurchaseBobbyRayItem(UINT16 usItemNumber) {
-  UINT8 ubPurchaseNumber;
+static void UnPurchaseBobbyRayItem(uint16_t usItemNumber) {
+  uint8_t ubPurchaseNumber;
 
   ubPurchaseNumber = CheckIfItemIsPurchased(usItemNumber);
 
@@ -1184,19 +1190,19 @@ static void UnPurchaseBobbyRayItem(UINT16 usItemNumber) {
   }
 }
 
-static void BtnBobbyROrderFormCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyROrderFormCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R_MAILORDER;
   }
 }
 
-static void BtnBobbyRHomeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRHomeButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
   }
 }
 
-void UpdateButtonText(UINT32 uiCurPage) {
+void UpdateButtonText(uint32_t uiCurPage) {
   switch (uiCurPage) {
     case LAPTOP_MODE_BOBBY_R_GUNS:
       DisableButton(guiBobbyRPageMenu[0]);
@@ -1220,8 +1226,8 @@ void UpdateButtonText(UINT32 uiCurPage) {
   }
 }
 
-UINT16 CalcBobbyRayCost(UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed) {
-  DOUBLE value;
+uint16_t CalcBobbyRayCost(uint16_t usIndex, uint16_t usBobbyIndex, BOOLEAN fUsed) {
+  double value;
   if (fUsed)
     value =
         Item[LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].usItemIndex].usPrice *
@@ -1230,11 +1236,11 @@ UINT16 CalcBobbyRayCost(UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed) {
   else
     value = Item[LaptopSaveInfo.BobbyRayInventory[usBobbyIndex].usItemIndex].usPrice;
 
-  return ((UINT16)value);
+  return ((uint16_t)value);
 }
 
-static UINT32 CalculateTotalPurchasePrice() {
-  UINT32 total = 0;
+static uint32_t CalculateTotalPurchasePrice() {
+  uint32_t total = 0;
   FOR_EACH(BobbyRayPurchaseStruct const, i, BobbyRayPurchases) {
     BobbyRayPurchaseStruct const &p = *i;
     if (p.ubNumberPurchased == 0) continue;
@@ -1251,13 +1257,13 @@ static void DisableBobbyRButtons() {
   EnableButton(guiBobbyRPreviousPage, gubCurPage != 0);
 }
 
-static void CalcFirstIndexForPage(STORE_INVENTORY *const pInv, UINT32 const item_class) {
+static void CalcFirstIndexForPage(STORE_INVENTORY *const pInv, uint32_t const item_class) {
   // Reset the Current weapon Index
   gusCurWeaponIndex = 0;
 
   // Get to the first index on the page
-  UINT16 inv_idx = 0;
-  for (UINT16 i = gusFirstItemIndex; i <= gusLastItemIndex; ++i) {
+  uint16_t inv_idx = 0;
+  for (uint16_t i = gusFirstItemIndex; i <= gusLastItemIndex; ++i) {
     if (!(Item[pInv[i].usItemIndex].usItemClass & item_class)) continue;
     // If we have some of the inventory on hand
     if (pInv[i].ubQtyOnHand == 0) continue;
@@ -1267,8 +1273,8 @@ static void CalcFirstIndexForPage(STORE_INVENTORY *const pInv, UINT32 const item
   }
 }
 
-static UINT8 CheckPlayersInventoryForGunMatchingGivenAmmoID(INVTYPE const *const ammo) {
-  UINT8 n_items = 0;
+static uint8_t CheckPlayersInventoryForGunMatchingGivenAmmoID(INVTYPE const *const ammo) {
+  uint8_t n_items = 0;
   AmmoKind const calibre = Magazine[ammo->ubClassIndex].ubCalibre;
   CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
     // Loop through all the pockets on the merc

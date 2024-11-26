@@ -12,9 +12,9 @@
 #include "TileEngine/IsometricUtils.h"
 
 void MakeClosestEnemyChosenOne() {
-  INT16 sPathCost, sShortestPath = 1000;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
+  int16_t sPathCost, sShortestPath = 1000;
+  int8_t bPanicTrigger;
+  int16_t sPanicTriggerGridNo;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE)) {
 #ifdef BETAVERSION
@@ -82,7 +82,7 @@ void MakeClosestEnemyChosenOne() {
     }
 
     // remember whether this guy had keys before
-    // const INT8 bOldKeys = pSoldier->bHasKeys;
+    // const int8_t bOldKeys = pSoldier->bHasKeys;
 
     // give him keys to see if with them he can get to the panic trigger
     pSoldier->bHasKeys = (pSoldier->bHasKeys << 1) | 1;
@@ -147,11 +147,11 @@ void MakeClosestEnemyChosenOne() {
 }
 
 void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
-  INT32 iAPCost, iPathCost;
-  // INT8		bOldKeys;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
-  UINT32 uiPercentEnemiesKilled;
+  int32_t iAPCost, iPathCost;
+  // int8_t		bOldKeys;
+  int8_t bPanicTrigger;
+  int16_t sPanicTriggerGridNo;
+  uint32_t uiPercentEnemiesKilled;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE)) {
     return;
@@ -169,9 +169,9 @@ void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
 
   sPanicTriggerGridNo = gTacticalStatus.sPanicTriggerGridNo[bPanicTrigger];
 
-  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
-                                             gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (uint32_t)(100 * (uint32_t)(gTacticalStatus.ubArmyGuysKilled) /
+                                      (uint32_t)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                                 gTacticalStatus.ubArmyGuysKilled));
   if (gTacticalStatus.ubPanicTolerance[bPanicTrigger] > uiPercentEnemiesKilled) {
     // not yet... not yet
     return;
@@ -202,12 +202,12 @@ void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
   pSoldier->bHasKeys = (pSoldier->bHasKeys >> 1);
 }
 
-INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
+int8_t PanicAI(SOLDIERTYPE *pSoldier, uint8_t ubCanMove) {
   BOOLEAN fFoundRoute = FALSE;
-  INT8 bSlot;
-  INT32 iPathCost;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
+  int8_t bSlot;
+  int32_t iPathCost;
+  int8_t bPanicTrigger;
+  int16_t sPanicTriggerGridNo;
 
   // if there are panic bombs here
   if (gTacticalStatus.fPanicFlags & PANIC_BOMBS_HERE) {
@@ -341,16 +341,16 @@ void InitPanicSystem() {
   FindPanicBombsAndTriggers();
 }
 
-INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
-  INT8 bLoop;
-  INT16 sDistance;
-  INT16 sClosestDistance = 1000;
-  INT8 bClosestTrigger = -1;
-  UINT32 uiPercentEnemiesKilled;
+int8_t ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
+  int8_t bLoop;
+  int16_t sDistance;
+  int16_t sClosestDistance = 1000;
+  int8_t bClosestTrigger = -1;
+  uint32_t uiPercentEnemiesKilled;
 
-  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
-                                             gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (uint32_t)(100 * (uint32_t)(gTacticalStatus.ubArmyGuysKilled) /
+                                      (uint32_t)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                                 gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     if (gTacticalStatus.sPanicTriggerGridNo[bLoop] != NOWHERE) {
@@ -385,8 +385,8 @@ INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
 }
 
 BOOLEAN NeedToRadioAboutPanicTrigger() {
-  UINT32 uiPercentEnemiesKilled;
-  INT8 bLoop;
+  uint32_t uiPercentEnemiesKilled;
+  int8_t bLoop;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE) ||
       gTacticalStatus.the_chosen_one != NULL) {
@@ -403,9 +403,9 @@ BOOLEAN NeedToRadioAboutPanicTrigger() {
     }
   }
 
-  uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) /
-                                    (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
-                                             gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = (uint32_t)(100 * (uint32_t)(gTacticalStatus.ubArmyGuysKilled) /
+                                      (uint32_t)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector +
+                                                 gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     // if the bomb exists and its tolerance has been exceeded
@@ -421,7 +421,7 @@ BOOLEAN NeedToRadioAboutPanicTrigger() {
 #define STAIRCASE_GRIDNO 12067
 #define STAIRCASE_DIRECTION 0
 
-INT8 HeadForTheStairCase(SOLDIERTYPE *pSoldier) {
+int8_t HeadForTheStairCase(SOLDIERTYPE *pSoldier) {
   UNDERGROUND_SECTORINFO *pBasementInfo;
 
   pBasementInfo = FindUnderGroundSector(3, MAP_ROW_P, 1);

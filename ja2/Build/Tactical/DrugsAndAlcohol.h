@@ -22,12 +22,12 @@
 BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject);
 
 void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier);
-void HandleAPEffectDueToDrugs(const SOLDIERTYPE *pSoldier, UINT8 *pubPoints);
-void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, INT16 *psPoints);
+void HandleAPEffectDueToDrugs(const SOLDIERTYPE *pSoldier, uint8_t *pubPoints);
+void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, int16_t *psPoints);
 
-INT8 GetDrugEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType);
-INT8 GetDrunkLevel(const SOLDIERTYPE *pSoldier);
-INT32 EffectStatForBeingDrunk(const SOLDIERTYPE *pSoldier, INT32 iStat);
+int8_t GetDrugEffect(SOLDIERTYPE *pSoldier, uint8_t ubDrugType);
+int8_t GetDrunkLevel(const SOLDIERTYPE *pSoldier);
+int32_t EffectStatForBeingDrunk(const SOLDIERTYPE *pSoldier, int32_t iStat);
 BOOLEAN MercUnderTheInfluence(const SOLDIERTYPE *pSoldier);
 
 #endif

@@ -63,7 +63,7 @@
 #include "Utils/Message.h"
 #include "Utils/TimerControl.h"
 
-UINT8 gubScreenCount = 0;
+uint8_t gubScreenCount = 0;
 
 static void InitNPCs() {
   {  // add the pilot at a random location!
@@ -195,7 +195,7 @@ static void InitNPCs() {
 }
 
 void InitBloodCatSectors() {
-  INT32 i;
+  int32_t i;
   // Hard coded table of bloodcat populations.  We don't have
   // access to the real population (if different) until we physically
   // load the map.  If the real population is different, then an error
@@ -331,7 +331,7 @@ void InitNewGame() {
     // This is for the "mercs climbing down from a rope" animation, NOT Skyrider
     ResetHeliSeats();
 
-    UINT32 const now = GetWorldTotalMin();
+    uint32_t const now = GetWorldTotalMin();
     AddPreReadEmail(OLD_ENRICO_1, OLD_ENRICO_1_LENGTH, MAIL_ENRICO, now);
     AddPreReadEmail(OLD_ENRICO_2, OLD_ENRICO_2_LENGTH, MAIL_ENRICO, now);
     AddPreReadEmail(RIS_REPORT, RIS_REPORT_LENGTH, RIS_EMAIL, now);
@@ -339,7 +339,7 @@ void InitNewGame() {
     AddEmail(IMP_EMAIL_INTRO, IMP_EMAIL_INTRO_LENGTH, CHAR_PROFILE_SITE, now);
 
     // ATE: Set starting cash
-    INT32 starting_cash;
+    int32_t starting_cash;
     switch (gGameOptions.ubDifficultyLevel) {
       case DIF_LEVEL_EASY:
         starting_cash = 45000;
@@ -356,7 +356,7 @@ void InitNewGame() {
     AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, now, starting_cash);
 
     // Schedule email for message from Speck at 7am 1 to 2 days in the future
-    UINT32 const days_time_merc_site_available = Random(2) + 1;
+    uint32_t const days_time_merc_site_available = Random(2) + 1;
     AddFutureDayStrategicEvent(EVENT_DAY3_ADD_EMAIL_FROM_SPECK, 60 * 7, 0,
                                days_time_merc_site_available);
 
@@ -376,51 +376,51 @@ BOOLEAN AnyMercsHired() {
   return FALSE;
 }
 
-static BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier);
-static void QuickSetupOfMercProfileItems(UINT32 uiCount, UINT8 ubProfileIndex);
+static BOOLEAN QuickGameMemberHireMerc(uint8_t ubCurrentSoldier);
+static void QuickSetupOfMercProfileItems(uint32_t uiCount, uint8_t ubProfileIndex);
 
 static void QuickStartGame() {
-  INT32 cnt;
-  UINT16 usVal;
-  UINT8 ub1 = 0, ub2 = 0;
+  int32_t cnt;
+  uint16_t usVal;
+  uint8_t ub1 = 0, ub2 = 0;
 
   for (cnt = 0; cnt < 3; cnt++) {
     if (cnt == 0) {
-      usVal = (UINT16)Random(40);
+      usVal = (uint16_t)Random(40);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, (uint8_t)usVal);
+      QuickGameMemberHireMerc((uint8_t)usVal);
     } else if (cnt == 1) {
       do {
-        usVal = (UINT16)Random(40);
+        usVal = (uint16_t)Random(40);
       } while (usVal != ub1);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, (uint8_t)usVal);
+      QuickGameMemberHireMerc((uint8_t)usVal);
     } else if (cnt == 2) {
       do {
-        usVal = (UINT16)Random(40);
+        usVal = (uint16_t)Random(40);
       } while (usVal != ub1 && usVal != ub2);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, (uint8_t)usVal);
+      QuickGameMemberHireMerc((uint8_t)usVal);
     }
   }
 }
 
-static void GiveItemN(MERCPROFILESTRUCT &p, const UINT pos, const UINT16 item_id,
-                      const UINT8 status, const UINT8 count) {
+static void GiveItemN(MERCPROFILESTRUCT &p, const uint32_t pos, const uint16_t item_id,
+                      const uint8_t status, const uint8_t count) {
   p.inv[pos] = item_id;
   p.bInvStatus[pos] = status;
   p.bInvNumber[pos] = count;
 }
 
-static void GiveItem(MERCPROFILESTRUCT &p, const UINT pos, const UINT16 item_id) {
+static void GiveItem(MERCPROFILESTRUCT &p, const uint32_t pos, const uint16_t item_id) {
   GiveItemN(p, pos, item_id, 100, 1);
 }
 
 // TEMP FUNCTION!
-static void QuickSetupOfMercProfileItems(const UINT32 uiCount, const UINT8 ubProfileIndex) {
+static void QuickSetupOfMercProfileItems(const uint32_t uiCount, const uint8_t ubProfileIndex) {
   MERCPROFILESTRUCT &p = GetProfile(ubProfileIndex);
   // Quickly give some guys we hire some items
   switch (uiCount) {
@@ -470,7 +470,7 @@ static void QuickSetupOfMercProfileItems(const UINT32 uiCount, const UINT8 ubPro
   // GiveItem(GetProfile(CARMEN), SMALLPOCK4POS, TERRORIST_INFO);
 }
 
-static BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier) {
+static BOOLEAN QuickGameMemberHireMerc(uint8_t ubCurrentSoldier) {
   MERC_HIRE_STRUCT HireMercStruct;
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
@@ -496,7 +496,7 @@ static BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier) {
 
   // add an entry in the finacial page for the hiring of the merc
   AddTransactionToPlayersBook(HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(),
-                              -(INT32)gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
+                              -(int32_t)gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
 
   if (gMercProfiles[ubCurrentSoldier].bMedicalDeposit) {
     // add an entry in the finacial page for the medical deposit

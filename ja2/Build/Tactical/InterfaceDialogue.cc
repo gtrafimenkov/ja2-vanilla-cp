@@ -93,8 +93,8 @@
 #include "Tactical/SoldierCreate.h"
 #include "Utils/SoundControl.h"
 
-static const INT16 sBasementEnterGridNos[] = {13362, 13363, 13364, 13365, 13525, 13524};
-static const INT16 sBasementExitGridNos[] = {8047, 8207, 8208, 8048, 7888, 7728, 7727, 7567};
+static const int16_t sBasementEnterGridNos[] = {13362, 13363, 13364, 13365, 13525, 13524};
+static const int16_t sBasementExitGridNos[] = {8047, 8207, 8208, 8048, 7888, 7728, 7727, 7567};
 
 #define TALK_PANEL_FACE_X 6
 #define TALK_PANEL_FACE_Y 9
@@ -142,29 +142,29 @@ NPC_DIALOGUE_TYPE gTalkPanel;
 BOOLEAN gfInTalkPanel = FALSE;
 SOLDIERTYPE *gpSrcSoldier = NULL;
 SOLDIERTYPE *gpDestSoldier = NULL;
-UINT8 gubSrcSoldierProfile;
-static UINT8 gubNiceNPCProfile = NO_PROFILE;
-static UINT8 gubNastyNPCProfile = NO_PROFILE;
+uint8_t gubSrcSoldierProfile;
+static uint8_t gubNiceNPCProfile = NO_PROFILE;
+static uint8_t gubNastyNPCProfile = NO_PROFILE;
 
-static UINT8 gubTargetNPC;
-static UINT8 gubTargetRecord;
+static uint8_t gubTargetNPC;
+static uint8_t gubTargetRecord;
 static Approach gubTargetApproach;
 static BOOLEAN gfShowDialogueMenu;
 BOOLEAN gfWaitingForTriggerTimer;
-static UINT32 guiWaitingForTriggerTime;
+static uint32_t guiWaitingForTriggerTime;
 MercPopUpBox *g_interface_dialogue_box;
-static UINT8 ubRecordThatTriggeredLiePrompt;
+static uint8_t ubRecordThatTriggeredLiePrompt;
 static BOOLEAN gfConversationPending = FALSE;
 static SOLDIERTYPE *gpPendingDestSoldier;
 static SOLDIERTYPE *gpPendingSrcSoldier;
 static Approach gbPendingApproach;
-static UINT8 g_pending_approach_record;
+static uint8_t g_pending_approach_record;
 static OBJECTTYPE *g_pending_approach_object;
 
-INT32 giHospitalTempBalance;   // stores amount of money for current doctoring
-INT32 giHospitalRefund;        // stores amount of money given to hospital for
-                               // doctoring that wasn't used
-INT8 gbHospitalPriceModifier;  // stores discount being offered
+int32_t giHospitalTempBalance;   // stores amount of money for current doctoring
+int32_t giHospitalRefund;        // stores amount of money given to hospital for
+                                 // doctoring that wasn't used
+int8_t gbHospitalPriceModifier;  // stores discount being offered
 
 enum {
   HOSPITAL_UNSET = 0,
@@ -176,11 +176,11 @@ enum {
 };
 
 static void InternalInitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier,
-                                         Approach, UINT8 approach_record,
+                                         Approach, uint8_t approach_record,
                                          OBJECTTYPE *approach_object);
 
 BOOLEAN InitiateConversationFull(SOLDIERTYPE *const pDestSoldier, SOLDIERTYPE *const pSrcSoldier,
-                                 Approach const bApproach, UINT8 const approach_record,
+                                 Approach const bApproach, uint8_t const approach_record,
                                  OBJECTTYPE *const approach_object) try {
   // ATE: OK, let's check the status of the Q
   // If it has something in it....delay this until after....
@@ -231,11 +231,11 @@ void HandlePendingInitConv() {
   }
 }
 
-static void InitTalkingMenu(UINT8 ubCharacterNum, INT16 sGridNo);
+static void InitTalkingMenu(uint8_t ubCharacterNum, int16_t sGridNo);
 
 static void InternalInitiateConversation(SOLDIERTYPE *const pDestSoldier,
                                          SOLDIERTYPE *const pSrcSoldier, Approach const bApproach,
-                                         UINT8 const approach_record,
+                                         uint8_t const approach_record,
                                          OBJECTTYPE *const approach_object) {
   // OK, init talking menu
   BOOLEAN fFromPending;
@@ -303,9 +303,9 @@ static void InternalInitiateConversation(SOLDIERTYPE *const pDestSoldier,
 
 // This fuction will allocate and setup an NPCDiaogue structure. Loads the face
 // for the character..
-static void InitTalkingMenu(UINT8 const ubCharacterNum, INT16 const sGridNo) {
-  INT16 sXMapPos, sYMapPos, sScreenX, sScreenY;
-  INT16 sX, sY;
+static void InitTalkingMenu(uint8_t const ubCharacterNum, int16_t const sGridNo) {
+  int16_t sXMapPos, sYMapPos, sScreenX, sScreenY;
+  int16_t sX, sY;
 
   // Get XY values
   {
@@ -314,7 +314,7 @@ static void InitTalkingMenu(UINT8 const ubCharacterNum, INT16 const sGridNo) {
 
     // Get screen XY pos from map XY
     // Be carefull to convert to cell cords
-    CellXYToScreenXY((INT16)((sXMapPos * CELL_X_SIZE)), (INT16)((sYMapPos * CELL_Y_SIZE)),
+    CellXYToScreenXY((int16_t)((sXMapPos * CELL_X_SIZE)), (int16_t)((sYMapPos * CELL_Y_SIZE)),
                      &sScreenX, &sScreenY);
 
     // First get mouse xy screen location
@@ -325,16 +325,16 @@ static void InitTalkingMenu(UINT8 const ubCharacterNum, INT16 const sGridNo) {
   }
 }
 
-static void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight);
-static void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason);
+static void CalculatePopupTextOrientation(int16_t sWidth, int16_t sHeight);
+static void TalkPanelMoveCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TalkPanelClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, int32_t reason);
 
-void InternalInitTalkingMenu(UINT8 const ubCharacterNum, INT16 sX, INT16 sY) {
-  INT16 sCenterYVal, sCenterXVal;
+void InternalInitTalkingMenu(uint8_t const ubCharacterNum, int16_t sX, int16_t sY) {
+  int16_t sCenterYVal, sCenterXVal;
 
   // disable scroll messages
   HideMessagesDuringNPCDialogue();
@@ -404,25 +404,25 @@ void InternalInitTalkingMenu(UINT8 const ubCharacterNum, INT16 sX, INT16 sY) {
                     MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   // Define main region
-  MSYS_DefineRegion(&(gTalkPanel.BackRegion), (INT16)(gTalkPanel.sX), (INT16)(gTalkPanel.sY),
-                    (INT16)(gTalkPanel.sX + gTalkPanel.usWidth),
-                    (INT16)(gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST,
+  MSYS_DefineRegion(&(gTalkPanel.BackRegion), (int16_t)(gTalkPanel.sX), (int16_t)(gTalkPanel.sY),
+                    (int16_t)(gTalkPanel.sX + gTalkPanel.usWidth),
+                    (int16_t)(gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST,
                     CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
 
   // Define name region
-  MSYS_DefineRegion(&(gTalkPanel.NameRegion), (INT16)(gTalkPanel.sX + TALK_PANEL_NAME_X),
-                    (INT16)(gTalkPanel.sY + TALK_PANEL_NAME_Y),
-                    (INT16)(gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X),
-                    (INT16)(gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y),
+  MSYS_DefineRegion(&(gTalkPanel.NameRegion), (int16_t)(gTalkPanel.sX + TALK_PANEL_NAME_X),
+                    (int16_t)(gTalkPanel.sY + TALK_PANEL_NAME_Y),
+                    (int16_t)(gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X),
+                    (int16_t)(gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y),
                     MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelNameRegionMoveCallback,
                     TalkPanelNameRegionClickCallback);
 
-  for (INT32 cnt = 0; cnt < 6; ++cnt) {
+  for (int32_t cnt = 0; cnt < 6; ++cnt) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(&(gTalkPanel.Regions[cnt]), (INT16)(sX), (INT16)(sY),
-                      (INT16)(sX + TALK_PANEL_REGION_WIDTH), (INT16)(sY + TALK_PANEL_REGION_HEIGHT),
-                      MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelMoveCallback,
-                      TalkPanelClickCallback);
+    MSYS_DefineRegion(&(gTalkPanel.Regions[cnt]), (int16_t)(sX), (int16_t)(sY),
+                      (int16_t)(sX + TALK_PANEL_REGION_WIDTH),
+                      (int16_t)(sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST,
+                      CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
     MSYS_SetRegionUserData(&(gTalkPanel.Regions[cnt]), 0, cnt);
 
     sY += TALK_PANEL_REGION_SPACEY;
@@ -458,7 +458,7 @@ void InternalInitTalkingMenu(UINT8 const ubCharacterNum, INT16 sX, INT16 sY) {
   gfIgnoreScrolling = TRUE;
 }
 
-static void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason) {
+static void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // OK, pickup item....
     gTalkPanel.fHandled = TRUE;
@@ -468,7 +468,7 @@ static void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 void DeleteTalkingMenu() {
-  INT32 cnt;
+  int32_t cnt;
 
   if (!gfInTalkPanel) return;
 
@@ -532,7 +532,7 @@ void DeleteTalkingMenu() {
 
   if (CheckFact(FACT_NEED_TO_SAY_SOMETHING, 0)) {
     if (DialogueQueueIsEmpty() && !gfWaitingForTriggerTimer) {
-      UINT8 ubNPC;
+      uint8_t ubNPC;
       BOOLEAN fNice = FALSE;
 
       if (gubNiceNPCProfile != NO_PROFILE) {
@@ -566,8 +566,8 @@ void DeleteTalkingMenu() {
   }
 }
 
-static void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight);
-static void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void CalculatePopupTextPosition(int16_t sWidth, int16_t sHeight);
+static void TextRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 void RenderTalkingMenu() {
   NPC_DIALOGUE_TYPE *const tp = &gTalkPanel;
@@ -581,8 +581,8 @@ void RenderTalkingMenu() {
   // Render name
   SetFontAttributes(MILITARYFONT1, tp->fOnName ? FONT_WHITE : 33);
   wchar_t const *const name = GetProfile(pid).zNickname;
-  INT16 sFontX;
-  INT16 sFontY;
+  int16_t sFontX;
+  int16_t sFontY;
   FindFontCenterCoordinates(tp->sX + TALK_PANEL_NAME_X, tp->sY + TALK_PANEL_NAME_Y,
                             TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, name, MILITARYFONT1,
                             &sFontX, &sFontY);
@@ -597,13 +597,13 @@ void RenderTalkingMenu() {
 
   // If guy is talking.... shadow area
   if (tp->face->fTalking || !DialogueQueueIsEmpty()) {
-    INT32 const x = tp->sX + TALK_PANEL_SHADOW_AREA_X;
-    INT32 const y = tp->sY + TALK_PANEL_SHADOW_AREA_Y;
+    int32_t const x = tp->sX + TALK_PANEL_SHADOW_AREA_X;
+    int32_t const y = tp->sY + TALK_PANEL_SHADOW_AREA_Y;
     FRAME_BUFFER->ShadowRect(x, y, x + TALK_PANEL_SHADOW_AREA_WIDTH,
                              y + TALK_PANEL_SHADOW_AREA_HEIGHT);
 
     // Disable mouse regions....
-    for (INT32 cnt = 0; cnt < 6; ++cnt) {
+    for (int32_t cnt = 0; cnt < 6; ++cnt) {
       tp->Regions[cnt].Disable();
     }
 
@@ -612,7 +612,7 @@ void RenderTalkingMenu() {
     tp->bCurSelect = -1;
   } else {
     // Enable mouse regions....
-    for (INT32 cnt = 0; cnt < 6; ++cnt) {
+    for (int32_t cnt = 0; cnt < 6; ++cnt) {
       tp->Regions[cnt].Enable();
     }
 
@@ -631,8 +631,8 @@ void RenderTalkingMenu() {
       g_interface_dialogue_box = 0;
     }
 
-    UINT16 usTextBoxWidth;
-    UINT16 usTextBoxHeight;
+    uint16_t usTextBoxWidth;
+    uint16_t usTextBoxHeight;
     g_interface_dialogue_box = PrepareMercPopupBox(
         0, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, tp->zQuoteStr,
         TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, &usTextBoxWidth, &usTextBoxHeight);
@@ -650,8 +650,8 @@ void RenderTalkingMenu() {
       tp->fTextRegionOn = FALSE;
     }
 
-    UINT16 const x = tp->sPopupX;
-    UINT16 const y = tp->sPopupY;
+    uint16_t const x = tp->sPopupX;
+    uint16_t const y = tp->sPopupY;
     MSYS_DefineRegion(&tp->TextRegion, x, y, x + usTextBoxWidth, y + usTextBoxHeight,
                       MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK,
                       TextRegionClickCallback);
@@ -664,9 +664,9 @@ void RenderTalkingMenu() {
   }
 
   // Create menu selections....
-  INT16 const x = tp->sX + TALK_PANEL_MENUTEXT_STARTX;
-  INT16 y = tp->sY + TALK_PANEL_MENUTEXT_STARTY;
-  for (INT32 cnt = 0; cnt < 6; cnt++) {
+  int16_t const x = tp->sX + TALK_PANEL_MENUTEXT_STARTX;
+  int16_t y = tp->sY + TALK_PANEL_MENUTEXT_STARTY;
+  for (int32_t cnt = 0; cnt < 6; cnt++) {
     if (tp->bCurSelect == cnt) {
       SetFontForeground(FONT_WHITE);
       SetFontShadow(DEFAULT_SHADOW);
@@ -684,14 +684,15 @@ void RenderTalkingMenu() {
                CHEATER_CHEAT_LEVEL() &&
 #endif
                gubSrcSoldierProfile != NO_PROFILE && pid != NO_PROFILE) {
-      UINT8 const desire = CalcDesireToTalk(pid, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]);
+      uint8_t const desire =
+          CalcDesireToTalk(pid, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]);
       swprintf(buf, lengthof(buf), L"%ls (%d)", zTalkMenuStrings[cnt], desire);
       str = buf;
     } else {
       str = zTalkMenuStrings[cnt];
     }
-    INT16 sFontX;
-    INT16 sFontY;
+    int16_t sFontX;
+    int16_t sFontY;
     FindFontCenterCoordinates(x, y, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, str,
                               MILITARYFONT1, &sFontX, &sFontY);
     MPrint(sFontX, sFontY, str);
@@ -702,14 +703,14 @@ void RenderTalkingMenu() {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT32 uiItemPos;
+static void TalkPanelMoveCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint32_t uiItemPos;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     // Set current selected guy....
-    gTalkPanel.bCurSelect = (INT8)uiItemPos;
+    gTalkPanel.bCurSelect = (int8_t)uiItemPos;
     gTalkPanel.bOldCurSelect = gTalkPanel.bCurSelect;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gTalkPanel.bCurSelect = -1;
@@ -717,8 +718,8 @@ static void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT32 uiItemPos;
+static void TalkPanelClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint32_t uiItemPos;
   BOOLEAN fDoConverse = TRUE;
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -776,7 +777,7 @@ static void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -796,7 +797,7 @@ static void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReaso
   }
 }
 
-static void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Donot do this if we are talking already
     if (!gTalkPanel.face->fTalking) {
@@ -806,7 +807,7 @@ static void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReaso
   }
 }
 
-static void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   // Donot do this if we are talking already
   if (gTalkPanel.face->fTalking) return;
 
@@ -830,7 +831,7 @@ BOOLEAN HandleTalkingMenu() {
   return (FALSE);
 }
 
-void TalkingMenuDialogue(UINT16 const usQuoteNum) {
+void TalkingMenuDialogue(uint16_t const usQuoteNum) {
   // Set back current select....
   gTalkPanel.bCurSelect = -1;
   gTalkPanel.fOnName = FALSE;
@@ -839,7 +840,7 @@ void TalkingMenuDialogue(UINT16 const usQuoteNum) {
   CharacterDialogue(gTalkPanel.ubCharNum, usQuoteNum, gTalkPanel.face, DIALOGUE_NPC_UI, FALSE);
 }
 
-bool ProfileCurrentlyTalkingInDialoguePanel(UINT8 const ubProfile) {
+bool ProfileCurrentlyTalkingInDialoguePanel(uint8_t const ubProfile) {
   return gfInTalkPanel && gpDestSoldier && gpDestSoldier->ubProfile == ubProfile;
 }
 
@@ -918,9 +919,9 @@ void HandleTalkingMenuBackspace() {
   if (pFace->fTalking) ShutupaYoFace(gTalkPanel.face);
 }
 
-static void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight) {
+static void CalculatePopupTextOrientation(int16_t sWidth, int16_t sHeight) {
   BOOLEAN fOKLeft = FALSE, fOKTop = FALSE, fOKBottom = FALSE, fOK = FALSE;
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   // Check Left
   sX = gTalkPanel.sX - sWidth;
@@ -983,7 +984,7 @@ static void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight) {
   // DebugMsg
 }
 
-static void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight) {
+static void CalculatePopupTextPosition(int16_t sWidth, int16_t sHeight) {
   switch (gTalkPanel.ubPopupOrientation) {
     case TALK_PANEL_POPUP_LEFT:
 
@@ -1016,12 +1017,13 @@ static void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight) {
   }
 }
 
-static void HandleNPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum);
+static void HandleNPCGotoGridNo(uint8_t ubTargetNPC, uint16_t usGridNo, uint8_t ubQuoteNum);
 
-void NPCGotoGridNo(ProfileID const ubTargetNPC, UINT16 const usGridNo, UINT8 const ubRecordNum) {
+void NPCGotoGridNo(ProfileID const ubTargetNPC, uint16_t const usGridNo,
+                   uint8_t const ubRecordNum) {
   class DialogueEventGotoGridno : public DialogueEvent {
    public:
-    DialogueEventGotoGridno(ProfileID const npc, GridNo const gridno, UINT8 const record)
+    DialogueEventGotoGridno(ProfileID const npc, GridNo const gridno, uint8_t const record)
         : gridno_(gridno), npc_(npc), record_(record) {}
 
     bool Execute() {
@@ -1032,16 +1034,16 @@ void NPCGotoGridNo(ProfileID const ubTargetNPC, UINT16 const usGridNo, UINT8 con
    private:
     GridNo const gridno_;
     ProfileID const npc_;
-    UINT8 const record_;
+    uint8_t const record_;
   };
 
   DialogueEvent::Add(new DialogueEventGotoGridno(ubTargetNPC, usGridNo, ubRecordNum));
 }
 
-void NPCDoAction(UINT8 const ubTargetNPC, UINT16 const usActionCode, UINT8 const ubQuoteNum) {
+void NPCDoAction(uint8_t const ubTargetNPC, uint16_t const usActionCode, uint8_t const ubQuoteNum) {
   class DialogueEventDoAction : public DialogueEvent {
    public:
-    DialogueEventDoAction(ProfileID npc, UINT16 const action, UINT8 const quote)
+    DialogueEventDoAction(ProfileID npc, uint16_t const action, uint8_t const quote)
         : action_(action), npc_(npc), quote_(quote) {}
 
     bool Execute() {
@@ -1050,16 +1052,16 @@ void NPCDoAction(UINT8 const ubTargetNPC, UINT16 const usActionCode, UINT8 const
     }
 
    private:
-    UINT16 const action_;
+    uint16_t const action_;
     ProfileID const npc_;
-    UINT8 const quote_;
+    uint8_t const quote_;
   };
 
   DialogueEvent::Add(new DialogueEventDoAction(ubTargetNPC, usActionCode, ubQuoteNum));
 }
 
 static BOOLEAN SourceSoldierPointerIsValidAndReachableForGive(SOLDIERTYPE *pGiver) {
-  INT16 sAdjGridNo;
+  int16_t sAdjGridNo;
 
   if (!gpSrcSoldier) {
     return (FALSE);
@@ -1089,7 +1091,7 @@ static BOOLEAN SourceSoldierPointerIsValidAndReachableForGive(SOLDIERTYPE *pGive
   return (TRUE);
 }
 
-void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
+void HandleNPCItemGiven(uint8_t ubNPC, OBJECTTYPE *pObject, int8_t bInvPos) {
   // Give it to the NPC soldier
   //	AutoPlaceObject( gpDestSoldier, pObject, FALSE );
 
@@ -1114,7 +1116,7 @@ void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
 
 static void HandleNPCTrigger();
 
-void HandleNPCTriggerNPC(UINT8 const ubTargetNPC, UINT8 const ubTargetRecord,
+void HandleNPCTriggerNPC(uint8_t const ubTargetNPC, uint8_t const ubTargetRecord,
                          BOOLEAN const fShowDialogueMenu, Approach const ubTargetApproach) {
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
   if (pSoldier == NULL) {
@@ -1174,7 +1176,7 @@ void HandleNPCTriggerNPC(UINT8 const ubTargetNPC, UINT8 const ubTargetRecord,
 }
 
 static void HandleNPCTrigger() {
-  INT16 sPlayerGridNo;
+  int16_t sPlayerGridNo;
 
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(gubTargetNPC);
   if (!pSoldier) {
@@ -1233,8 +1235,8 @@ void HandleWaitTimerForNPCTrigger() {
   }
 }
 
-static void HandleNPCGotoGridNo(UINT8 const ubTargetNPC, UINT16 const usGridNo,
-                                UINT8 const ubQuoteNum) {
+static void HandleNPCGotoGridNo(uint8_t const ubTargetNPC, uint16_t const usGridNo,
+                                uint8_t const ubQuoteNum) {
   // OK, Move to gridNo!
 
   // Shotdown any panel we had up...
@@ -1282,7 +1284,7 @@ static void HandleNPCGotoGridNo(UINT8 const ubTargetNPC, UINT16 const usGridNo,
   pSoldier->fAIFlags |= AI_HANDLE_EVERY_FRAME;
 }
 
-static void HandleStuffForNPCEscorted(UINT8 ubNPC) {
+static void HandleStuffForNPCEscorted(uint8_t ubNPC) {
   switch (ubNPC) {
     case MARIA:
       break;
@@ -1328,13 +1330,13 @@ static void HandleStuffForNPCEscorted(UINT8 ubNPC) {
   }
 }
 
-static void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType);
+static void StartDialogueMessageBox(uint8_t ubProfileID, uint16_t usMessageBoxType);
 static BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor);
 static void DoneFadeOutActionBasement();
 static void DoneFadeOutActionLeaveBasement();
 static void CarmenLeavesSectorCallback();
 
-void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum) {
+void HandleNPCDoAction(uint8_t ubTargetNPC, uint16_t usActionCode, uint8_t ubQuoteNum) {
   // ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Handling %ls, action %d at
   // %ld", gMercProfiles[ubTargetNPC].zNickname, usActionCode, GetJA2Clock());
 
@@ -1343,10 +1345,10 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       usActionCode < NPC_ACTION_LAST_TURN_TO_FACE_PROFILE) {
     SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
     SOLDIERTYPE *const pSoldier2 =
-        FindSoldierByProfileID((UINT8)(usActionCode - NPC_ACTION_TURN_TO_FACE_NEAREST_MERC));
+        FindSoldierByProfileID((uint8_t)(usActionCode - NPC_ACTION_TURN_TO_FACE_NEAREST_MERC));
     if (pSoldier && pSoldier2) {
       // see if we are facing this person
-      const UINT8 ubDesiredMercDir =
+      const uint8_t ubDesiredMercDir =
           GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pSoldier2->sGridNo);
       // if not already facing in that direction,
       if (pSoldier->bDirection != ubDesiredMercDir) {
@@ -1379,7 +1381,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         // current
         // Squad here to search for...
 
-        INT8 bNumDone = 0;
+        int8_t bNumDone = 0;
         FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM) {
           // Are we in this sector, On the current squad?
           if (pSoldier->bLife >= OKLIFE && pSoldier->bInSector &&
@@ -1426,7 +1428,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
         // Look for letter....
         {
-          INT8 bInvPos = FindObj(pSoldier, LETTER);
+          int8_t bInvPos = FindObj(pSoldier, LETTER);
 
           AssertMsg(bInvPos != NO_SLOT, "Interface Dialogue.C:  Gift item does not exist in NPC.");
 
@@ -1474,8 +1476,8 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         }
 
         if (pSoldier->inv[HANDPOS].usItem != NOTHING) {
-          UINT16 usGun;
-          INT8 bNewSlot;
+          uint16_t usGun;
+          int8_t bNewSlot;
 
           usGun = pSoldier->inv[HANDPOS].usItem;
 
@@ -1489,7 +1491,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
             if (p.inv[bNewSlot] == NOTHING) {
               // find where the gun is stored in the profile data and
               // move it to the new location
-              INT8 const bOldSlot = FindObjectInSoldierProfile(p, usGun);
+              int8_t const bOldSlot = FindObjectInSoldierProfile(p, usGun);
               if (bOldSlot != NO_SLOT) {
                 // rearrange profile... NB # of guns can only be 1 so this is easy
                 p.inv[bOldSlot] = NOTHING;
@@ -1508,7 +1510,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         // Get pointer for player
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
         if (pSoldier && pSoldier->inv[HANDPOS].usItem != NOTHING) {
-          const INT16 sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
+          const int16_t sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
           SoldierReadyWeapon(pSoldier, sGridNo, FALSE);
         }
         break;
@@ -1565,7 +1567,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         if (pSoldier) {
           // screen NORTHEAST corresponds to in-game NORTH
           SendSoldierSetDesiredDirectionEvent(
-              pSoldier, (UINT16)(NORTH + (usActionCode - NPC_ACTION_FACE_NORTH_EAST)));
+              pSoldier, (uint16_t)(NORTH + (usActionCode - NPC_ACTION_FACE_NORTH_EAST)));
         }
         break;
       }
@@ -1629,7 +1631,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
         // OK, we want to goto the basement level!
         // For one, loop through our current squad and move them over
-        INT8 bNumDone = 0;
+        int8_t bNumDone = 0;
         FOR_EACH_IN_TEAM(pSoldier, OUR_TEAM) {
           // Are we in this sector, On the current squad?
           if (pSoldier->bLife >= OKLIFE && pSoldier->bInSector) {
@@ -1748,10 +1750,10 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
           return;
         }
 
-        const INT8 bItemIn = FindAIUsableObjClass(pSoldier, IC_GUN);
+        const int8_t bItemIn = FindAIUsableObjClass(pSoldier, IC_GUN);
         if (bItemIn != NO_SLOT && bItemIn != HANDPOS) {
           SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[bItemIn]));
-          const INT16 sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
+          const int16_t sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
           SoldierReadyWeapon(pSoldier, sGridNo, FALSE);
         }
         // fall through so that the person faces the nearest merc!
@@ -1760,10 +1762,10 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       case NPC_ACTION_TURN_TO_FACE_NEAREST_MERC: {
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
         if (pSoldier) {
-          const INT16 sGridNo = ClosestPC(pSoldier, NULL);
+          const int16_t sGridNo = ClosestPC(pSoldier, NULL);
           if (sGridNo != NOWHERE) {
             // see if we are facing this person
-            const UINT8 ubDesiredMercDir =
+            const uint8_t ubDesiredMercDir =
                 GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sGridNo);
             // if not already facing in that direction,
             if (pSoldier->bDirection != ubDesiredMercDir) {
@@ -1776,13 +1778,13 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
       case NPC_ACTION_SEND_PACOS_INTO_HIDING: {
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(PACOS);
-        const INT16 sGridNo = 16028;
+        const int16_t sGridNo = 16028;
         if (pSoldier) {
           if (NewOKDestination(pSoldier, sGridNo, TRUE, 0)) {
             // go for it!
             NPCGotoGridNo(PACOS, sGridNo, ubQuoteNum);
           } else {
-            const INT16 sAdjustedGridNo =
+            const int16_t sAdjustedGridNo =
                 FindAdjacentGridEx(pSoldier, sGridNo, NULL, NULL, FALSE, FALSE);
             if (sAdjustedGridNo != -1) {
               NPCGotoGridNo(PACOS, sAdjustedGridNo, ubQuoteNum);
@@ -1794,13 +1796,13 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
       case NPC_ACTION_HAVE_PACOS_FOLLOW: {
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(PACOS);
-        const INT16 sGridNo = 18193;
+        const int16_t sGridNo = 18193;
         if (pSoldier) {
           if (NewOKDestination(pSoldier, sGridNo, TRUE, 0)) {
             // go for it!
             NPCGotoGridNo(PACOS, sGridNo, ubQuoteNum);
           } else {
-            const INT16 sAdjustedGridNo =
+            const int16_t sAdjustedGridNo =
                 FindAdjacentGridEx(pSoldier, sGridNo, NULL, NULL, FALSE, FALSE);
             if (sAdjustedGridNo != -1) {
               NPCGotoGridNo(PACOS, sAdjustedGridNo, ubQuoteNum);
@@ -1823,7 +1825,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
       case NPC_ACTION_ENABLE_CAMBRIA_DOCTOR_BONUS: {
         // add event in a
-        const INT32 iRandom = Random(24);
+        const int32_t iRandom = Random(24);
         AddFutureDayStrategicEvent(
             EVENT_SET_BY_NPC_SYSTEM, (GetWorldMinutesInDay() + ((24 + iRandom) * 60)),
             NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + NPC_ACTION_ENABLE_CAMBRIA_DOCTOR_BONUS, 1);
@@ -1893,12 +1895,12 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         // and then have him pick it up
         {
           OBJECTTYPE Object;
-          INT16 sGridNo = 14952;
+          int16_t sGridNo = 14952;
 
           SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
           if (pSoldier) {
             CreateMoney(10000, &Object);
-            INT32 const iWorldItem =
+            int32_t const iWorldItem =
                 AddItemToPool(sGridNo, &Object, INVISIBLE, pSoldier->bLevel, 0, 0);
 
             // shouldn't have any current action but make sure everything
@@ -1966,7 +1968,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         break;
 
         {
-          INT16 sGridNo;
+          int16_t sGridNo;
           case NPC_ACTION_OPEN_CARLAS_DOOR:
             sGridNo = 12290;
             goto unlock;
@@ -2195,7 +2197,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       case NPC_ACTION_ANGEL_LEAVES_DEED: {
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
         if (pSoldier) {
-          const INT8 bItemIn = FindObj(pSoldier, DEED);
+          const int8_t bItemIn = FindObj(pSoldier, DEED);
           if (bItemIn != NO_SLOT) {
             AddItemToPool(12541, &pSoldier->inv[bItemIn], INVISIBLE, 0, 0, 0);
             DeleteObj(&(pSoldier->inv[bItemIn]));
@@ -2409,7 +2411,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         break;
 
       case NPC_ACTION_START_MINE: {
-        const UINT8 ubMineIndex = GetHeadMinersMineIndex(ubTargetNPC);
+        const uint8_t ubMineIndex = GetHeadMinersMineIndex(ubTargetNPC);
 
         // record the fact that player has spoken with this head miner so he can
         // now get production from that mine
@@ -2422,7 +2424,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       }
 
       case NPC_ACTION_STOP_MINE: {
-        const UINT8 ubMineIndex = GetHeadMinersMineIndex(ubTargetNPC);
+        const uint8_t ubMineIndex = GetHeadMinersMineIndex(ubTargetNPC);
 
         if (!IsMineShutDown(ubMineIndex)) {
           ShutOffMineProduction(ubMineIndex);
@@ -2474,7 +2476,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         SOLDIERTYPE *const pSoldier2 = FindSoldierByProfileID(ROBOT);
         if (pSoldier && pSoldier2) {
           // Give weapon to robot
-          INT8 bSlot;
+          int8_t bSlot;
 
           bSlot = FindObjClass(pSoldier, IC_GUN);
           if (bSlot != NO_SLOT) {
@@ -2513,9 +2515,9 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         // should change to split up cash
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
         if (pSoldier) {
-          INT16 sNearestPC;
-          INT8 bMoneySlot;
-          INT8 bEmptySlot;
+          int16_t sNearestPC;
+          int8_t bMoneySlot;
+          int8_t bEmptySlot;
 
           sNearestPC = ClosestPC(pSoldier, NULL);
           SOLDIERTYPE *const pSoldier2 =
@@ -2546,7 +2548,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       case NPC_ACTION_TRIGGER_SPIKE_OR_DARREN: {
         const SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(KINGPIN);
         if (pSoldier) {
-          UINT8 const room = GetRoom(pSoldier->sGridNo);
+          uint8_t const room = GetRoom(pSoldier->sGridNo);
           if (1 <= room && room <= 3) {  // Kingpin is in the club
             TriggerNPCRecord(DARREN, 31);
             break;
@@ -2585,7 +2587,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
           pSoldier->fInNonintAnim = FALSE;
           pSoldier->fRTInNonintAnim = FALSE;
 
-          INT16 sGridNo;
+          int16_t sGridNo;
           if (pSoldier->ubProfile == ARMAND) {
             sGridNo = 6968;
           } else {
@@ -2618,7 +2620,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       }
 
         {
-          INT16 sGridNo;
+          int16_t sGridNo;
           Approach approach;
 
           case NPC_ACTION_PUNCH_PC_SLOT_0:
@@ -2682,7 +2684,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
             pSoldier->bAimShotLocation = AIM_SHOT_HEAD;
 
             // Add gun to inventory.....
-            CreateItem((UINT16)(DESERTEAGLE), 100, &(pSoldier->inv[HANDPOS]));
+            CreateItem((uint16_t)(DESERTEAGLE), 100, &(pSoldier->inv[HANDPOS]));
 
             // Make shoot
             pSoldier->bNextAction = AI_ACTION_FIRE_GUN;
@@ -2711,7 +2713,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
         SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
         if (pSoldier) {
-          INT32 cnt;
+          int32_t cnt;
           BOOLEAN fGoodTarget = FALSE;
 
           for (cnt = 0; cnt < 3; cnt++) {
@@ -2849,7 +2851,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
             gbHospitalPriceModifier = HOSPITAL_BREAK;
             TriggerNPCRecord(ubTargetNPC, 17);
           } else {
-            const INT32 iRandom = PreRandom(100);
+            const int32_t iRandom = PreRandom(100);
             if (ubTargetNPC == VINCE) {
               if (gbHospitalPriceModifier == HOSPITAL_RANDOM_FREEBIE ||
                   gbHospitalPriceModifier == HOSPITAL_FREEBIE ||
@@ -3055,7 +3057,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
 
       case NPC_ACTION_INVOKE_CONVERSATION_MODE:
         if (!gfInTalkPanel) {
-          INT16 sNearestPC;
+          int16_t sNearestPC;
 
           SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubTargetNPC);
           if (pSoldier) {
@@ -3343,7 +3345,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       }
 
         {
-          UINT8 code;
+          uint8_t code;
           case NPC_ACTION_HISTORY_GOT_ROCKET_RIFLES:
             code = HISTORY_GOT_ROCKET_RIFLES;
             goto add_log;
@@ -3469,7 +3471,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
       case NPC_ACTION_TRIGGER_BREWSTER_BY_WARDEN_PROXIMITY: {
         const SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(BREWSTER);
         if (pSoldier) {
-          const INT16 sGridNo = GetGridNoOfCorpseGivenProfileID(WARDEN);
+          const int16_t sGridNo = GetGridNoOfCorpseGivenProfileID(WARDEN);
           if (sGridNo != NOWHERE && PythSpacesAway(pSoldier->sGridNo, sGridNo) <= 10) {
             TriggerNPCRecord(BREWSTER, 16);
           } else {
@@ -3521,8 +3523,8 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
   }
 }
 
-UINT32 CalcPatientMedicalCost(const SOLDIERTYPE *const pSoldier) {
-  UINT32 uiCost;
+uint32_t CalcPatientMedicalCost(const SOLDIERTYPE *const pSoldier) {
+  uint32_t uiCost;
 
   if (!pSoldier) {
     return (0);
@@ -3563,9 +3565,9 @@ UINT32 CalcPatientMedicalCost(const SOLDIERTYPE *const pSoldier) {
   return (uiCost);
 }
 
-UINT32 CalcMedicalCost(UINT8 ubId) {
-  UINT32 uiCostSoFar;
-  INT16 sGridNo = 0;
+uint32_t CalcMedicalCost(uint8_t ubId) {
+  uint32_t uiCostSoFar;
+  int16_t sGridNo = 0;
 
   uiCostSoFar = 0;
 
@@ -3595,12 +3597,12 @@ UINT32 CalcMedicalCost(UINT8 ubId) {
   return (uiCostSoFar);
 }
 
-static UINT16 gusDialogueMessageBoxType;
+static uint16_t gusDialogueMessageBoxType;
 
 static void DialogueMessageBoxCallBack(MessageBoxReturnValue);
 
-static void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType) {
-  INT32 iTemp;
+static void StartDialogueMessageBox(uint8_t ubProfileID, uint16_t usMessageBoxType) {
+  int32_t iTemp;
   wchar_t zTemp[256], zTemp2[256];
 
   gusDialogueMessageBoxType = usMessageBoxType;
@@ -3646,7 +3648,7 @@ static void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType) 
                    MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_MEDICAL_REQUESTOR:
-      iTemp = (INT32)CalcMedicalCost(ubProfileID);
+      iTemp = (int32_t)CalcMedicalCost(ubProfileID);
       if (giHospitalRefund > iTemp) {
         iTemp = 10;
       } else {
@@ -3677,7 +3679,7 @@ static void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType) 
 }
 
 static void DialogueMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) {
-  UINT8 ubProfile;
+  uint8_t ubProfile;
   SOLDIERTYPE *pSoldier;
 
   ubProfile = gpDestSoldier->ubProfile;
@@ -3760,9 +3762,9 @@ static void DialogueMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) 
       break;
     case NPC_ACTION_PROMPT_PLAYER_TO_LIE:
       if (ubExitValue == MSG_BOX_RETURN_YES) {
-        TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 1));
+        TriggerNPCRecord(ubProfile, (uint8_t)(ubRecordThatTriggeredLiePrompt + 1));
       } else if (ubExitValue == MSG_BOX_RETURN_NO) {
-        TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 2));
+        TriggerNPCRecord(ubProfile, (uint8_t)(ubRecordThatTriggeredLiePrompt + 2));
       } else {
         // He tried to lie.....
         // Find the best conscious merc with a chance....
@@ -3777,10 +3779,10 @@ static void DialogueMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) 
 
         if (pLier && SkillCheck(pLier, LIE_TO_QUEEN_CHECK, 0) >= 0) {
           // SUCCESS..
-          TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 4));
+          TriggerNPCRecord(ubProfile, (uint8_t)(ubRecordThatTriggeredLiePrompt + 4));
         } else {
           // NAUGHY BOY
-          TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 3));
+          TriggerNPCRecord(ubProfile, (uint8_t)(ubRecordThatTriggeredLiePrompt + 3));
         }
       }
       break;
@@ -3858,7 +3860,7 @@ static void DialogueMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) 
     case NPC_ACTION_TRIGGER_MARRY_DARYL_PROMPT:
       gMercProfiles[gpSrcSoldier->ubProfile].ubMiscFlags2 |= PROFILE_MISC_FLAG2_ASKED_BY_HICKS;
       if (ubExitValue == MSG_BOX_RETURN_YES) {
-        gMercProfiles[DARYL].bNPCData = (INT8)gpSrcSoldier->ubProfile;
+        gMercProfiles[DARYL].bNPCData = (int8_t)gpSrcSoldier->ubProfile;
 
         // create key for Daryl to give to player
         pSoldier = FindSoldierByProfileID(DARYL);
@@ -3944,10 +3946,10 @@ static void DoneFadeInActionLeaveBasement() {
 
 static BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor) {
   STRUCTURE *pStructure;
-  INT16 sStructGridNo;
-  INT16 sActionGridNo;
-  UINT8 ubDirection;
-  INT16 sGridNo;
+  int16_t sStructGridNo;
+  int16_t sActionGridNo;
+  uint8_t ubDirection;
+  int16_t sGridNo;
   DOOR *pDoor;
 
   // Find closest door and get struct data for it!
@@ -4013,7 +4015,7 @@ static BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor) {
   return (TRUE);
 }
 
-static void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TextRegionClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {

@@ -76,20 +76,20 @@ static GUI_BUTTON *gpAnchoredButton;
 static GUI_BUTTON *gpPrevAnchoredButton;
 static BOOLEAN gfAnchoredState;
 
-static INT8 gbDisabledButtonStyle;
+static int8_t gbDisabledButtonStyle;
 
 BOOLEAN gfRenderHilights = TRUE;
 
 // Struct definition for the QuickButton pictures.
 struct BUTTON_PICS {
   HVOBJECT vobj;         // The Image itself
-  INT32 Grayed;          // Index to use for a "Grayed-out" button
-  INT32 OffNormal;       // Index to use when button is OFF
-  INT32 OffHilite;       // Index to use when button is OFF w/ hilite on it
-  INT32 OnNormal;        // Index to use when button is ON
-  INT32 OnHilite;        // Index to use when button is ON w/ hilite on it
+  int32_t Grayed;        // Index to use for a "Grayed-out" button
+  int32_t OffNormal;     // Index to use when button is OFF
+  int32_t OffHilite;     // Index to use when button is OFF w/ hilite on it
+  int32_t OnNormal;      // Index to use when button is ON
+  int32_t OnHilite;      // Index to use when button is ON w/ hilite on it
   ButtonDimensions max;  // width/height of largest image in use
-  UINT32 fFlags;         // Special image flags
+  uint32_t fFlags;       // Special image flags
 };
 
 static BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
@@ -106,7 +106,7 @@ static HVOBJECT GenericButtonOffNormal;
 static HVOBJECT GenericButtonOffHilite;
 static HVOBJECT GenericButtonOnNormal;
 static HVOBJECT GenericButtonOnHilite;
-static UINT16 GenericButtonFillColors;
+static uint16_t GenericButtonFillColors;
 
 static HVOBJECT GenericButtonIcons[MAX_BUTTON_ICONS];
 
@@ -124,18 +124,18 @@ static BUTTON_PICS *FindFreeButtonSlot() {
   throw std::runtime_error("Out of button image slots");
 }
 
-static void SetMaxSize(BUTTON_PICS *const pics, const INT32 img_idx) {
+static void SetMaxSize(BUTTON_PICS *const pics, const int32_t img_idx) {
   if (img_idx == BUTTON_NO_IMAGE) return;
   ETRLEObject const &e = pics->vobj->SubregionProperties(img_idx);
-  UINT32 const w = e.sOffsetX + e.usWidth;
-  UINT32 const h = e.sOffsetY + e.usHeight;
+  uint32_t const w = e.sOffsetX + e.usWidth;
+  uint32_t const h = e.sOffsetY + e.usHeight;
   if (pics->max.w < w) pics->max.w = w;
   if (pics->max.h < h) pics->max.h = h;
 }
 
-static void InitButtonImage(BUTTON_PICS *const pics, const HVOBJECT VObj, const UINT32 Flags,
-                            const INT32 Grayed, const INT32 OffNormal, const INT32 OffHilite,
-                            const INT32 OnNormal, const INT32 OnHilite) {
+static void InitButtonImage(BUTTON_PICS *const pics, const HVOBJECT VObj, const uint32_t Flags,
+                            const int32_t Grayed, const int32_t OffNormal, const int32_t OffHilite,
+                            const int32_t OnNormal, const int32_t OnHilite) {
   pics->vobj = VObj;
 
   // Init the QuickButton image structure with indexes to use
@@ -156,8 +156,8 @@ static void InitButtonImage(BUTTON_PICS *const pics, const HVOBJECT VObj, const 
   SetMaxSize(pics, OnHilite);
 }
 
-BUTTON_PICS *LoadButtonImage(const char *filename, INT32 Grayed, INT32 OffNormal, INT32 OffHilite,
-                             INT32 OnNormal, INT32 OnHilite) {
+BUTTON_PICS *LoadButtonImage(const char *filename, int32_t Grayed, int32_t OffNormal,
+                             int32_t OffHilite, int32_t OnNormal, int32_t OnHilite) {
   AssertMsg(filename != NULL, "Attempting to LoadButtonImage() with null filename.");
 
   if (Grayed == BUTTON_NO_IMAGE && OffNormal == BUTTON_NO_IMAGE && OffHilite == BUTTON_NO_IMAGE &&
@@ -171,14 +171,14 @@ BUTTON_PICS *LoadButtonImage(const char *filename, INT32 Grayed, INT32 OffNormal
   return UseSlot;
 }
 
-BUTTON_PICS *LoadButtonImage(char const *const filename, INT32 const off_normal,
-                             INT32 const on_normal) {
+BUTTON_PICS *LoadButtonImage(char const *const filename, int32_t const off_normal,
+                             int32_t const on_normal) {
   return LoadButtonImage(filename, -1, off_normal, -1, on_normal, -1);
 }
 
-BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *const LoadedImg, const INT32 Grayed,
-                                  const INT32 OffNormal, const INT32 OffHilite,
-                                  const INT32 OnNormal, const INT32 OnHilite) {
+BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *const LoadedImg, const int32_t Grayed,
+                                  const int32_t OffNormal, const int32_t OffHilite,
+                                  const int32_t OnNormal, const int32_t OnHilite) {
   if (Grayed == BUTTON_NO_IMAGE && OffNormal == BUTTON_NO_IMAGE && OffHilite == BUTTON_NO_IMAGE &&
       OnNormal == BUTTON_NO_IMAGE && OnHilite == BUTTON_NO_IMAGE) {
     throw std::logic_error("No button pictures selected for pre-loaded button image");
@@ -196,8 +196,8 @@ BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *const LoadedImg, const INT32 Gray
   return UseSlot;
 }
 
-BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *const img, INT32 const off_normal,
-                                  INT32 const on_normal) {
+BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *const img, int32_t const off_normal,
+                                  int32_t const on_normal) {
   return UseLoadedButtonImage(img, -1, off_normal, -1, on_normal, -1);
 }
 
@@ -293,23 +293,23 @@ static void InitializeButtonImageManager() {
   } catch (...) { /* see comment above */
   }
 
-  UINT8 const Pix = GenericButtonOffNormal->GetETRLEPixelValue(8, 0, 0);
+  uint8_t const Pix = GenericButtonOffNormal->GetETRLEPixelValue(8, 0, 0);
   GenericButtonFillColors = GenericButtonOffNormal->Palette16()[Pix];
 }
 
 // Finds the next available slot for button icon images.
-static INT16 FindFreeIconSlot() {
-  for (INT16 x = 0; x < MAX_BUTTON_ICONS; ++x) {
+static int16_t FindFreeIconSlot() {
+  for (int16_t x = 0; x < MAX_BUTTON_ICONS; ++x) {
     if (GenericButtonIcons[x] == NULL) return x;
   }
   throw std::runtime_error("Out of generic button icon slots");
 }
 
-INT16 LoadGenericButtonIcon(const char *filename) {
+int16_t LoadGenericButtonIcon(const char *filename) {
   AssertMsg(filename != NULL, "Attempting to LoadGenericButtonIcon() with null filename.");
 
   // Get slot for icon image
-  INT16 const ImgSlot = FindFreeIconSlot();
+  int16_t const ImgSlot = FindFreeIconSlot();
 
   // Load the icon
   GenericButtonIcons[ImgSlot] = AddVideoObjectFromFile(filename);
@@ -318,7 +318,7 @@ INT16 LoadGenericButtonIcon(const char *filename) {
   return ImgSlot;
 }
 
-void UnloadGenericButtonIcon(INT16 GenImg) {
+void UnloadGenericButtonIcon(int16_t GenImg) {
   AssertMsg(0 <= GenImg && GenImg < MAX_BUTTON_ICONS,
             String("Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg));
 
@@ -389,7 +389,7 @@ static void RemoveButtonsMarkedForDeletion() {
 }
 
 void RemoveButton(GUIButtonRef &btn) {
-  INT32 const btn_id = btn.ID();
+  int32_t const btn_id = btn.ID();
   btn.Reset();
 
   CHECKV(0 < btn_id && btn_id < MAX_BUTTONS);  // XXX HACK000C
@@ -412,20 +412,20 @@ void RemoveButton(GUIButtonRef &btn) {
 }
 
 // Finds the next available button slot.
-static INT32 GetNextButtonNumber() {
+static int32_t GetNextButtonNumber() {
   /* Never hand out ID 0.  Slot 0 is always a null pointer */
-  for (INT32 x = 1; x < MAX_BUTTONS; x++) {
+  for (int32_t x = 1; x < MAX_BUTTONS; x++) {
     if (ButtonList[x] == NULL) return x;
   }
   throw std::runtime_error("No more button slots");
 }
 
-static void QuickButtonCallbackMButn(MOUSE_REGION *reg, INT32 reason);
-static void QuickButtonCallbackMMove(MOUSE_REGION *reg, INT32 reason);
+static void QuickButtonCallbackMButn(MOUSE_REGION *reg, int32_t reason);
+static void QuickButtonCallbackMMove(MOUSE_REGION *reg, int32_t reason);
 
-GUI_BUTTON::GUI_BUTTON(UINT32 const flags, INT16 const left, INT16 const top, INT16 const width,
-                       INT16 const height, INT8 const priority, GUI_CALLBACK const click,
-                       GUI_CALLBACK const move)
+GUI_BUTTON::GUI_BUTTON(uint32_t const flags, int16_t const left, int16_t const top,
+                       int16_t const width, int16_t const height, int8_t const priority,
+                       GUI_CALLBACK const click, GUI_CALLBACK const move)
     : IDNum(GetNextButtonNumber()),
       image(0),
       Area(left, top, width, height, priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove,
@@ -498,10 +498,10 @@ static void CopyButtonText(GUI_BUTTON *b, const wchar_t *text) {
   b->string = Buf;
 }
 
-static void DefaultMoveCallback(GUI_BUTTON *btn, INT32 reason);
+static void DefaultMoveCallback(GUI_BUTTON *btn, int32_t reason);
 
-GUIButtonRef CreateIconButton(INT16 Icon, INT16 IconIndex, INT16 xloc, INT16 yloc, INT16 w, INT16 h,
-                              INT16 Priority, GUI_CALLBACK ClickCallback) {
+GUIButtonRef CreateIconButton(int16_t Icon, int16_t IconIndex, int16_t xloc, int16_t yloc,
+                              int16_t w, int16_t h, int16_t Priority, GUI_CALLBACK ClickCallback) {
   // if button size is too small, adjust it.
   if (w < 4) w = 4;
   if (h < 3) h = 3;
@@ -513,9 +513,9 @@ GUIButtonRef CreateIconButton(INT16 Icon, INT16 IconIndex, INT16 xloc, INT16 ylo
   return b;
 }
 
-GUIButtonRef CreateTextButton(const wchar_t *string, Font const font, INT16 sForeColor,
-                              INT16 sShadowColor, INT16 xloc, INT16 yloc, INT16 w, INT16 h,
-                              INT16 Priority, GUI_CALLBACK ClickCallback) {
+GUIButtonRef CreateTextButton(const wchar_t *string, Font const font, int16_t sForeColor,
+                              int16_t sShadowColor, int16_t xloc, int16_t yloc, int16_t w,
+                              int16_t h, int16_t Priority, GUI_CALLBACK ClickCallback) {
   // if button size is too small, adjust it.
   if (w < 4) w = 4;
   if (h < 3) h = 3;
@@ -529,15 +529,16 @@ GUIButtonRef CreateTextButton(const wchar_t *string, Font const font, INT16 sFor
   return b;
 }
 
-GUIButtonRef CreateHotSpot(INT16 xloc, INT16 yloc, INT16 Width, INT16 Height, INT16 Priority,
-                           GUI_CALLBACK ClickCallback) {
+GUIButtonRef CreateHotSpot(int16_t xloc, int16_t yloc, int16_t Width, int16_t Height,
+                           int16_t Priority, GUI_CALLBACK ClickCallback) {
   return new GUI_BUTTON(BUTTON_HOT_SPOT, xloc, yloc, Width, Height, Priority, ClickCallback,
                         DefaultMoveCallback);
 }
 
-static GUIButtonRef QuickCreateButtonInternal(BUTTON_PICS *const pics, const INT16 xloc,
-                                              const INT16 yloc, const INT32 Type,
-                                              const INT16 Priority, const GUI_CALLBACK MoveCallback,
+static GUIButtonRef QuickCreateButtonInternal(BUTTON_PICS *const pics, const int16_t xloc,
+                                              const int16_t yloc, const int32_t Type,
+                                              const int16_t Priority,
+                                              const GUI_CALLBACK MoveCallback,
                                               const GUI_CALLBACK ClickCallback) {
   // Is there a QuickButton image in the given image slot?
   if (!pics->vobj) {
@@ -551,26 +552,26 @@ static GUIButtonRef QuickCreateButtonInternal(BUTTON_PICS *const pics, const INT
   return b;
 }
 
-GUIButtonRef QuickCreateButton(BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                               const INT16 priority, const GUI_CALLBACK click) {
+GUIButtonRef QuickCreateButton(BUTTON_PICS *const image, const int16_t x, const int16_t y,
+                               const int16_t priority, const GUI_CALLBACK click) {
   return QuickCreateButtonInternal(image, x, y, BUTTON_TOGGLE, priority, DefaultMoveCallback,
                                    click);
 }
 
-GUIButtonRef QuickCreateButtonNoMove(BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                                     const INT16 priority, const GUI_CALLBACK click) {
+GUIButtonRef QuickCreateButtonNoMove(BUTTON_PICS *const image, const int16_t x, const int16_t y,
+                                     const int16_t priority, const GUI_CALLBACK click) {
   return QuickCreateButtonInternal(image, x, y, BUTTON_TOGGLE, priority, MSYS_NO_CALLBACK, click);
 }
 
-GUIButtonRef QuickCreateButtonToggle(BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                                     const INT16 priority, const GUI_CALLBACK click) {
+GUIButtonRef QuickCreateButtonToggle(BUTTON_PICS *const image, const int16_t x, const int16_t y,
+                                     const int16_t priority, const GUI_CALLBACK click) {
   return QuickCreateButtonInternal(image, x, y, BUTTON_NEWTOGGLE, priority, MSYS_NO_CALLBACK,
                                    click);
 }
 
-GUIButtonRef QuickCreateButtonImg(const char *gfx, INT32 grayed, INT32 off_normal, INT32 off_hilite,
-                                  INT32 on_normal, INT32 on_hilite, INT16 x, INT16 y,
-                                  INT16 priority, GUI_CALLBACK click) {
+GUIButtonRef QuickCreateButtonImg(const char *gfx, int32_t grayed, int32_t off_normal,
+                                  int32_t off_hilite, int32_t on_normal, int32_t on_hilite,
+                                  int16_t x, int16_t y, int16_t priority, GUI_CALLBACK click) {
   BUTTON_PICS *const img =
       LoadButtonImage(gfx, grayed, off_normal, off_hilite, on_normal, on_hilite);
   GUIButtonRef const btn = QuickCreateButton(img, x, y, priority, click);
@@ -578,17 +579,17 @@ GUIButtonRef QuickCreateButtonImg(const char *gfx, INT32 grayed, INT32 off_norma
   return btn;
 }
 
-GUIButtonRef QuickCreateButtonImg(char const *const gfx, INT32 const off_normal,
-                                  INT32 const on_normal, INT16 const x, INT16 const y,
-                                  INT16 const priority, GUI_CALLBACK const click) {
+GUIButtonRef QuickCreateButtonImg(char const *const gfx, int32_t const off_normal,
+                                  int32_t const on_normal, int16_t const x, int16_t const y,
+                                  int16_t const priority, GUI_CALLBACK const click) {
   return QuickCreateButtonImg(gfx, -1, off_normal, -1, on_normal, -1, x, y, priority, click);
 }
 
 GUIButtonRef CreateIconAndTextButton(BUTTON_PICS *const Image, const wchar_t *const string,
-                                     Font const font, const INT16 sForeColor,
-                                     const INT16 sShadowColor, const INT16 sForeColorDown,
-                                     const INT16 sShadowColorDown, const INT16 xloc,
-                                     const INT16 yloc, const INT16 Priority,
+                                     Font const font, const int16_t sForeColor,
+                                     const int16_t sShadowColor, const int16_t sForeColorDown,
+                                     const int16_t sShadowColorDown, const int16_t xloc,
+                                     const int16_t yloc, const int16_t Priority,
                                      const GUI_CALLBACK ClickCallback) {
   GUIButtonRef const b = QuickCreateButton(Image, xloc, yloc, Priority, ClickCallback);
   CopyButtonText(b, string);
@@ -600,8 +601,9 @@ GUIButtonRef CreateIconAndTextButton(BUTTON_PICS *const Image, const wchar_t *co
   return b;
 }
 
-GUIButtonRef CreateLabel(const wchar_t *text, Font const font, INT16 forecolor, INT16 shadowcolor,
-                         INT16 x, INT16 y, INT16 w, INT16 h, INT16 priority) {
+GUIButtonRef CreateLabel(const wchar_t *text, Font const font, int16_t forecolor,
+                         int16_t shadowcolor, int16_t x, int16_t y, int16_t w, int16_t h,
+                         int16_t priority) {
   GUIButtonRef const btn =
       CreateTextButton(text, font, forecolor, shadowcolor, x, y, w, h, priority, NULL);
   btn->SpecifyDisabledStyle(GUI_BUTTON::DISABLED_STYLE_NONE);
@@ -618,15 +620,15 @@ void GUI_BUTTON::SpecifyText(wchar_t const *const text) {
   uiFlags |= BUTTON_DIRTY;
 }
 
-void GUI_BUTTON::SpecifyDownTextColors(INT16 const fore_colour_down,
-                                       INT16 const shadow_colour_down) {
+void GUI_BUTTON::SpecifyDownTextColors(int16_t const fore_colour_down,
+                                       int16_t const shadow_colour_down) {
   sForeColorDown = fore_colour_down;
   sShadowColorDown = shadow_colour_down;
   uiFlags |= BUTTON_DIRTY;
 }
 
-void GUI_BUTTON::SpecifyHilitedTextColors(INT16 const fore_colour_highlighted,
-                                          INT16 const shadow_colour_highlighted) {
+void GUI_BUTTON::SpecifyHilitedTextColors(int16_t const fore_colour_highlighted,
+                                          int16_t const shadow_colour_highlighted) {
   sForeColorHilited = fore_colour_highlighted;
   sShadowColorHilited = shadow_colour_highlighted;
   uiFlags |= BUTTON_DIRTY;
@@ -638,7 +640,8 @@ void GUI_BUTTON::SpecifyTextJustification(Justification const j) {
 }
 
 void GUI_BUTTON::SpecifyGeneralTextAttributes(wchar_t const *const string, Font const font,
-                                              INT16 const fore_colour, INT16 const shadow_colour) {
+                                              int16_t const fore_colour,
+                                              int16_t const shadow_colour) {
   SpecifyText(string);
   usFont = font;
   sForeColor = fore_colour;
@@ -646,28 +649,28 @@ void GUI_BUTTON::SpecifyGeneralTextAttributes(wchar_t const *const string, Font 
   uiFlags |= BUTTON_DIRTY;
 }
 
-void GUI_BUTTON::SpecifyTextOffsets(INT8 const text_x_offset, INT8 const text_y_offset,
+void GUI_BUTTON::SpecifyTextOffsets(int8_t const text_x_offset, int8_t const text_y_offset,
                                     BOOLEAN const shift_text) {
   bTextXOffset = text_x_offset;
   bTextYOffset = text_y_offset;
   fShiftText = shift_text;
 }
 
-void GUI_BUTTON::SpecifyTextSubOffsets(INT8 const text_x_offset, INT8 const text_y_offset,
+void GUI_BUTTON::SpecifyTextSubOffsets(int8_t const text_x_offset, int8_t const text_y_offset,
                                        BOOLEAN const shift_text) {
   bTextXSubOffSet = text_x_offset;
   bTextYSubOffSet = text_y_offset;
   fShiftText = shift_text;
 }
 
-void GUI_BUTTON::SpecifyTextWrappedWidth(INT16 const wrapped_width) {
+void GUI_BUTTON::SpecifyTextWrappedWidth(int16_t const wrapped_width) {
   sWrappedWidth = wrapped_width;
 }
 
 void GUI_BUTTON::SpecifyDisabledStyle(DisabledStyle const style) { bDisabledStyle = style; }
 
-void GUI_BUTTON::SpecifyIcon(SGPVObject const *const icon_, UINT16 const usVideoObjectIndex,
-                             INT8 const bXOffset, INT8 const bYOffset, BOOLEAN const) {
+void GUI_BUTTON::SpecifyIcon(SGPVObject const *const icon_, uint16_t const usVideoObjectIndex,
+                             int8_t const bXOffset, int8_t const bYOffset, BOOLEAN const) {
   icon = icon_;
   usIconIndex = usVideoObjectIndex;
 
@@ -687,7 +690,7 @@ void GUI_BUTTON::SetFastHelpText(const wchar_t *const text) { Area.SetFastHelpTe
 /* Dispatches all button callbacks for mouse movement. This function gets
  * called by the Mouse System. *DO NOT CALL DIRECTLY*
  */
-static void QuickButtonCallbackMMove(MOUSE_REGION *reg, INT32 reason) {
+static void QuickButtonCallbackMMove(MOUSE_REGION *reg, int32_t reason) {
   Assert(reg != NULL);
   GUI_BUTTON *const b = reg->GetUserPtr<GUI_BUTTON>();
 
@@ -710,7 +713,7 @@ static void QuickButtonCallbackMMove(MOUSE_REGION *reg, INT32 reason) {
 /* Dispatches all button callbacks for button presses. This function is called
  * by the Mouse System. *DO NOT CALL DIRECTLY*
  */
-static void QuickButtonCallbackMButn(MOUSE_REGION *reg, INT32 reason) {
+static void QuickButtonCallbackMButn(MOUSE_REGION *reg, int32_t reason) {
   Assert(reg != NULL);
   GUI_BUTTON *const b = reg->GetUserPtr<GUI_BUTTON>();
 
@@ -936,7 +939,7 @@ static void DrawButtonFromPtr(GUI_BUTTON *b) {
 static void DrawQuickButton(const GUI_BUTTON *b) {
   const BUTTON_PICS *const pics = b->image;
 
-  INT32 UseImage = 0;
+  int32_t UseImage = 0;
   if (b->Enabled()) {
     if (b->Clicked()) {
       // Is the mouse over this area, and we have a hilite image?
@@ -981,7 +984,7 @@ static void DrawHatchOnButton(const GUI_BUTTON *b) {
   ClipRect.iTop = b->Y();
   ClipRect.iBottom = b->BottomRightY() - 1;
   SGPVSurface::Lock l(ButtonDestBuffer);
-  Blt16BPPBufferHatchRect(l.Buffer<UINT16>(), l.Pitch(), &ClipRect);
+  Blt16BPPBufferHatchRect(l.Buffer<uint16_t>(), l.Pitch(), &ClipRect);
 }
 
 static void DrawShadeOnButton(const GUI_BUTTON *b) {
@@ -1001,7 +1004,7 @@ void GUI_BUTTON::DrawCheckBoxOnOff(BOOLEAN const on) {
 static void DrawCheckBoxButton(const GUI_BUTTON *b) {
   const BUTTON_PICS *const pics = b->image;
 
-  INT32 UseImage = 0;
+  int32_t UseImage = 0;
   if (b->Enabled()) {
     if (b->Clicked()) {
       // Is the mouse over this area, and we have a hilite image?
@@ -1049,8 +1052,8 @@ static void DrawIconOnButton(const GUI_BUTTON *b) {
   if (!b->icon) return;
 
   // Get width and height of button area
-  INT32 const width = b->W();
-  INT32 const height = b->H();
+  int32_t const width = b->W();
+  int32_t const height = b->H();
 
   // Compute viewable area (inside borders)
   SGPRect NewClip;
@@ -1060,8 +1063,8 @@ static void DrawIconOnButton(const GUI_BUTTON *b) {
   NewClip.iBottom = b->Y() + height - 2;
 
   // Get Icon's blit start coordinates
-  INT32 IconX = NewClip.iLeft;
-  INT32 IconY = NewClip.iTop;
+  int32_t IconX = NewClip.iLeft;
+  int32_t IconY = NewClip.iTop;
 
   // Get current clip area
   SGPRect OldClip;
@@ -1098,17 +1101,17 @@ static void DrawIconOnButton(const GUI_BUTTON *b) {
   /* Compute coordinates for centering the icon on the button or use the offset
    * system.
    */
-  INT32 xp;
+  int32_t xp;
   if (b->bIconXOffset == -1) {
-    const INT32 IconW = pTrav.usWidth + pTrav.sOffsetX;
+    const int32_t IconW = pTrav.usWidth + pTrav.sOffsetX;
     xp = IconX + (width - 6 - IconW) / 2;
   } else {
     xp = b->X() + b->bIconXOffset;
   }
 
-  INT32 yp;
+  int32_t yp;
   if (b->bIconYOffset == -1) {
-    const INT32 IconH = pTrav.usHeight + pTrav.sOffsetY;
+    const int32_t IconH = pTrav.usHeight + pTrav.sOffsetY;
     yp = IconY + (height - 4 - IconH) / 2;
   } else {
     yp = b->Y() + b->bIconYOffset;
@@ -1137,8 +1140,8 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
   if (b->string == NULL) return;
 
   // Get the width and height of this button
-  INT32 const width = b->W();
-  INT32 const height = b->H();
+  int32_t const width = b->W();
+  int32_t const height = b->H();
 
   // Compute the viewable area on this button
   SGPRect NewClip;
@@ -1148,8 +1151,8 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
   NewClip.iBottom = b->Y() + height - 2;
 
   // Get the starting coordinates to print
-  const INT32 TextX = NewClip.iLeft;
-  const INT32 TextY = NewClip.iTop;
+  const int32_t TextX = NewClip.iLeft;
+  const int32_t TextY = NewClip.iTop;
 
   // Get the current clipping area
   SGPRect OldClip;
@@ -1183,14 +1186,14 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
   SetFontDestBuffer(ButtonDestBuffer, NewClip.iLeft, NewClip.iTop, NewClip.iRight, NewClip.iBottom);
 
   // Compute the coordinates to center the text
-  INT32 yp;
+  int32_t yp;
   if (b->bTextYOffset == -1) {
     yp = TextY + (height - GetFontHeight(b->usFont)) / 2 - 1;
   } else {
     yp = b->Y() + b->bTextYOffset;
   }
 
-  INT32 xp;
+  int32_t xp;
   if (b->bTextXOffset == -1) {
     switch (b->bJustification) {
       case GUI_BUTTON::TEXT_LEFT:
@@ -1211,7 +1214,7 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
   // print the text
 
   // Override the colors if necessary.
-  INT16 sForeColor;
+  int16_t sForeColor;
   if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sForeColorHilited != -1) {
     sForeColor = b->sForeColorHilited;
   } else if (b->Clicked() && b->sForeColorDown != -1) {
@@ -1220,7 +1223,7 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
     sForeColor = b->sForeColor;
   }
 
-  UINT8 shadow;
+  uint8_t shadow;
   if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sShadowColorHilited != -1) {
     shadow = b->sShadowColorHilited;
   } else if (b->Clicked() && b->sShadowColorDown != -1) {
@@ -1241,7 +1244,7 @@ static void DrawTextOnButton(const GUI_BUTTON *b) {
   }
 
   if (b->sWrappedWidth != -1) {
-    UINT8 bJustified = 0;
+    uint8_t bJustified = 0;
     switch (b->bJustification) {
       case GUI_BUTTON::TEXT_LEFT:
         bJustified = LEFT_JUSTIFIED;
@@ -1329,37 +1332,37 @@ static void DrawGenericButton(const GUI_BUTTON *b) {
     }
   }
 
-  const INT32 iBorderWidth = 3;
-  const INT32 iBorderHeight = 2;
+  const int32_t iBorderWidth = 3;
+  const int32_t iBorderHeight = 2;
 
   // Compute the number of button "chunks" needed to be blitted
-  INT32 const width = b->W();
-  INT32 const height = b->H();
-  const INT32 NumChunksWide = width / iBorderWidth;
-  INT32 NumChunksHigh = height / iBorderHeight;
-  const INT32 hremain = height % iBorderHeight;
-  const INT32 wremain = width % iBorderWidth;
+  int32_t const width = b->W();
+  int32_t const height = b->H();
+  const int32_t NumChunksWide = width / iBorderWidth;
+  int32_t NumChunksHigh = height / iBorderHeight;
+  const int32_t hremain = height % iBorderHeight;
+  const int32_t wremain = width % iBorderWidth;
 
-  INT32 const bx = b->X();
-  INT32 const by = b->Y();
-  INT32 const cx = bx + (NumChunksWide - 1) * iBorderWidth + wremain;
-  INT32 const cy = by + (NumChunksHigh - 1) * iBorderHeight + hremain;
+  int32_t const bx = b->X();
+  int32_t const by = b->Y();
+  int32_t const cx = bx + (NumChunksWide - 1) * iBorderWidth + wremain;
+  int32_t const cy = by + (NumChunksHigh - 1) * iBorderHeight + hremain;
 
   // Fill the button's area with the button's background color
   ColorFillVideoSurfaceArea(ButtonDestBuffer, b->X(), b->Y(), b->BottomRightX(), b->BottomRightY(),
                             GenericButtonFillColors);
 
   SGPVSurface::Lock l(ButtonDestBuffer);
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
-  UINT32 const uiDestPitchBYTES = l.Pitch();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
+  uint32_t const uiDestPitchBYTES = l.Pitch();
 
   SGPRect ClipRect;
   GetClippingRect(&ClipRect);
 
   // Draw the button's borders and corners (horizontally)
-  for (INT32 q = 0; q < NumChunksWide; q++) {
-    INT32 const ImgNum = (q == 0 ? 0 : 1);
-    INT32 const x = bx + q * iBorderWidth;
+  for (int32_t q = 0; q < NumChunksWide; q++) {
+    int32_t const ImgNum = (q == 0 ? 0 : 1);
+    int32_t const x = bx + q * iBorderWidth;
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, by, ImgNum,
                                             &ClipRect);
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, cy, ImgNum + 5,
@@ -1372,19 +1375,19 @@ static void DrawGenericButton(const GUI_BUTTON *b) {
   NumChunksHigh--;
 
   if (hremain != 0) {
-    INT32 const y = by + NumChunksHigh * iBorderHeight - iBorderHeight + hremain;
+    int32_t const y = by + NumChunksHigh * iBorderHeight - iBorderHeight + hremain;
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
   }
 
-  for (INT32 q = 1; q < NumChunksHigh; q++) {
-    INT32 const y = by + q * iBorderHeight;
+  for (int32_t q = 1; q < NumChunksHigh; q++) {
+    int32_t const y = by + q * iBorderHeight;
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
   }
 }
 
-GUIButtonRef CreateCheckBoxButton(INT16 x, INT16 y, const char *filename, INT16 Priority,
+GUIButtonRef CreateCheckBoxButton(int16_t x, int16_t y, const char *filename, int16_t Priority,
                                   GUI_CALLBACK ClickCallback) {
   Assert(filename != NULL);
   BUTTON_PICS *const ButPic = LoadButtonImage(filename, -1, 0, 1, 2, 3);
@@ -1401,7 +1404,7 @@ GUIButtonRef CreateCheckBoxButton(INT16 x, INT16 y, const char *filename, INT16 
 /* Generic Button Movement Callback to reset the mouse button if the mouse is no
  * longer in the button region.
  */
-static void DefaultMoveCallback(GUI_BUTTON *btn, INT32 reason) {
+static void DefaultMoveCallback(GUI_BUTTON *btn, int32_t reason) {
   // If the button isn't the anchored button, then we don't want to modify the
   // button state.
   if (btn != gpAnchoredButton) return;
@@ -1463,4 +1466,4 @@ void ShowButton(GUIButtonRef const b) {
   b->Show();
 }
 
-UINT16 GetGenericButtonFillColor() { return GenericButtonFillColors; }
+uint16_t GetGenericButtonFillColor() { return GenericButtonFillColors; }

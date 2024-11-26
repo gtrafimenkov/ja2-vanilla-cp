@@ -5,10 +5,10 @@
 #include "SGP/LoadSaveData.h"
 
 void ExtractRottingCorpseFromFile(HWFILE const file, ROTTING_CORPSE_DEFINITION *const c) {
-  BYTE data[160];
+  uint8_t data[160];
   FileRead(file, data, sizeof(data));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_U8(d, c->ubType)
   EXTR_U8(d, c->ubBodyType)
   EXTR_I16(d, c->sGridNo)
@@ -33,9 +33,9 @@ void ExtractRottingCorpseFromFile(HWFILE const file, ROTTING_CORPSE_DEFINITION *
 }
 
 void InjectRottingCorpseIntoFile(HWFILE const file, ROTTING_CORPSE_DEFINITION const *const c) {
-  BYTE data[160];
+  uint8_t data[160];
 
-  BYTE *d = data;
+  uint8_t *d = data;
   INJ_U8(d, c->ubType)
   INJ_U8(d, c->ubBodyType)
   INJ_I16(d, c->sGridNo)

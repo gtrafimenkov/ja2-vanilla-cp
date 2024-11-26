@@ -9,17 +9,17 @@
 #include "Tactical/TeamTurns.h"
 
 static inline bool RPC_RECRUITED(SOLDIERTYPE const *const s) {
-  UINT8 const pid = s->ubProfile;
+  uint8_t const pid = s->ubProfile;
   return pid != NO_PROFILE && GetProfile(pid).ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED;
 }
 
 static inline bool AM_AN_EPC(SOLDIERTYPE const *const s) {
-  UINT8 const pid = s->ubProfile;
+  uint8_t const pid = s->ubProfile;
   return pid != NO_PROFILE && GetProfile(pid).ubMiscFlags & PROFILE_MISC_FLAG_EPCACTIVE;
 }
 
 static inline bool AM_A_ROBOT(SOLDIERTYPE const *const s) {
-  UINT8 const pid = s->ubProfile;
+  uint8_t const pid = s->ubProfile;
   return pid != NO_PROFILE && GetProfile(pid).ubBodyType == ROBOTNOWEAPON;
 }
 

@@ -49,7 +49,7 @@ static const wchar_t *const gzJA2ScreenNames[] = {
 static size_t guiMemTotal = 0;
 static size_t guiMemAlloced = 0;
 static size_t guiMemFreed = 0;
-static UINT32 MemDebugCounter = 0;
+static uint32_t MemDebugCounter = 0;
 static BOOLEAN fMemManagerInit = FALSE;
 
 void InitializeMemoryManager() {

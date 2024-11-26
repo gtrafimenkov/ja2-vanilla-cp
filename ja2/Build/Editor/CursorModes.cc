@@ -23,12 +23,12 @@ SGPRect gSelectRegion;
 static BOOLEAN fValidCursor = FALSE;
 static BOOLEAN fAnchored = FALSE;
 static BOOLEAN gfBrushEnabled = TRUE;
-UINT16 gusSelectionWidth = 1, gusPreserveSelectionWidth = 1;
-UINT16 gusSelectionType = SMALLSELECTION;
-UINT16 gusSelectionDensity = 2;
-UINT16 gusSavedSelectionType = SMALLSELECTION;
-UINT16 gusSavedBuildingSelectionType = AREASELECTION;
-static INT16 sBadMarker = -1;
+uint16_t gusSelectionWidth = 1, gusPreserveSelectionWidth = 1;
+uint16_t gusSelectionType = SMALLSELECTION;
+uint16_t gusSelectionDensity = 2;
+uint16_t gusSavedSelectionType = SMALLSELECTION;
+uint16_t gusSavedBuildingSelectionType = AREASELECTION;
+static int16_t sBadMarker = -1;
 
 wchar_t SelTypeWidth[] = L"Width: xx";
 const wchar_t *const wszSelType[6] = {L"Small",  L"Medium",    L"Large",
@@ -85,7 +85,7 @@ void DecreaseSelectionDensity() {
 }
 
 void RemoveCursors() {
-  INT32 x, y, iMapIndex;
+  int32_t x, y, iMapIndex;
   if (gpBuildingLayoutList) {
     RemoveBuildingLayout();
   }
@@ -124,22 +124,22 @@ static void RemoveBadMarker() {
   }
 }
 
-static void DrawBuildingLayout(INT32 iMapIndex);
+static void DrawBuildingLayout(int32_t iMapIndex);
 static void EnsureSelectionType();
-static void ForceAreaSelectionWidth(INT16 sGridX, INT16 sGridY);
-static BOOLEAN HandleAreaSelection(INT16 sGridX, INT16 sGridY);
+static void ForceAreaSelectionWidth(int16_t sGridX, int16_t sGridY);
+static BOOLEAN HandleAreaSelection(int16_t sGridX, int16_t sGridY);
 static void ValidateSelectionRegionBoundaries();
 
 void UpdateCursorAreas() {
-  INT32 x, y, iMapIndex;
+  int32_t x, y, iMapIndex;
 
   RemoveCursors();
 
   EnsureSelectionType();
 
   // Determine if the mouse is currently in the world.
-  INT16 sGridX;
-  INT16 sGridY;
+  int16_t sGridX;
+  int16_t sGridY;
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA && GetMouseXY(&sGridX, &sGridY)) {
     iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
     if (gpBuildingLayoutList) {
@@ -189,10 +189,10 @@ void UpdateCursorAreas() {
           RemoveBadMarker();
           if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
             AddTopmostToTail(iMapIndex + ROOF_OFFSET, BADMARKER1);
-            sBadMarker = (INT16)(iMapIndex + ROOF_OFFSET);
+            sBadMarker = (int16_t)(iMapIndex + ROOF_OFFSET);
           } else {
             AddTopmostToTail((iMapIndex), BADMARKER1);
-            sBadMarker = (INT16)(iMapIndex);
+            sBadMarker = (int16_t)(iMapIndex);
           }
         }
       } else {
@@ -215,8 +215,8 @@ void UpdateCursorAreas() {
 
 static SGPPoint gSelectAnchor;
 
-static void ForceAreaSelectionWidth(const INT16 sGridX, const INT16 sGridY) {
-  UINT16 gusDecSelWidth;
+static void ForceAreaSelectionWidth(const int16_t sGridX, const int16_t sGridY) {
+  uint16_t gusDecSelWidth;
 
   // If the anchor isn't set, we don't want to force the size yet.
   if (!fAnchored) return;
@@ -244,7 +244,7 @@ static void ForceAreaSelectionWidth(const INT16 sGridX, const INT16 sGridY) {
   }
 }
 
-static BOOLEAN HandleAreaSelection(const INT16 sGridX, const INT16 sGridY) {
+static BOOLEAN HandleAreaSelection(const int16_t sGridX, const int16_t sGridY) {
   // When the user releases the left button, then clear and process the area.
   if (fAnchored) {
     if ((!gfLeftButtonState && !gfCurrentSelectionWithRightButton) ||
@@ -362,9 +362,9 @@ static void EnsureSelectionType() {
   }
 }
 
-static void DrawBuildingLayout(INT32 iMapIndex) {
+static void DrawBuildingLayout(int32_t iMapIndex) {
   BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
+  int32_t iOffset;
   LEVELNODE *pNode;
   BOOLEAN fAdd;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
@@ -389,8 +389,8 @@ static void DrawBuildingLayout(INT32 iMapIndex) {
 
 void RemoveBuildingLayout() {
   BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
-  INT32 iMapIndex;
+  int32_t iOffset;
+  int32_t iMapIndex;
   iMapIndex = gSelectRegion.iLeft + gSelectRegion.iTop * WORLD_COLS;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;

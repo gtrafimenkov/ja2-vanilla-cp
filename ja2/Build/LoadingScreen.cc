@@ -19,7 +19,7 @@ LoadingScreenID gubLastLoadingScreenID = LOADINGSCREEN_NOTHING;
 
 LoadingScreenID GetLoadScreenID(uint16_t x, uint16_t y, uint8_t z) {
   bool const night = NightTime();
-  UINT8 const sector_id = SECTOR(x, y);
+  uint8_t const sector_id = SECTOR(x, y);
   switch (z) {
     case 0:
       if (DidGameJustStart()) return LOADINGSCREEN_HELI;

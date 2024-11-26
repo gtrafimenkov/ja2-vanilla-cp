@@ -37,10 +37,10 @@ static BUTTON_PICS *giIMPConfirmButtonImage[2];
 GUIButtonRef giIMPConfirmButton[2];
 
 struct FacePosInfo {
-  UINT8 eye_x;
-  UINT8 eye_y;
-  UINT8 mouth_x;
-  UINT8 mouth_y;
+  uint8_t eye_x;
+  uint8_t eye_y;
+  uint8_t mouth_x;
+  uint8_t mouth_y;
 };
 
 static const FacePosInfo g_face_info[] = {
@@ -50,8 +50,8 @@ static const FacePosInfo g_face_info[] = {
 
 BOOLEAN fLoadingCharacterForPreviousImpProfile = FALSE;
 
-static void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPConfirmNo(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPConfirmYes(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateConfirmButtons();
 
@@ -80,11 +80,11 @@ void ExitIMPConfirm() {
 
 void HandleIMPConfirm() {}
 
-static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const wchar_t *text, int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(LAPTOPDIR "/button_2.sti", 0, 1);
   giIMPConfirmButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col,
                               LAPTOP_SCREEN_UL_X + 136, y, MSYS_PRIORITY_HIGH, click);
@@ -94,7 +94,7 @@ static void MakeButton(UINT idx, const wchar_t *text, INT16 y, GUI_CALLBACK clic
 
 static void CreateConfirmButtons() {
   // create buttons for confirm screen
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
   MakeButton(0, pImpButtonText[16], dy + 254, BtnIMPConfirmYes);
   MakeButton(1, pImpButtonText[17], dy + 314, BtnIMPConfirmNo);
 }
@@ -109,7 +109,7 @@ static void DestroyConfirmButtons() {
   UnloadButtonImage(giIMPConfirmButtonImage[1]);
 }
 
-static void GiveItemsToPC(UINT8 ubProfileId);
+static void GiveItemsToPC(uint8_t ubProfileId);
 
 static BOOLEAN AddCharacterToPlayersTeam() {
   MERC_HIRE_STRUCT HireMercStruct;
@@ -122,7 +122,7 @@ static BOOLEAN AddCharacterToPlayersTeam() {
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
 
-  HireMercStruct.ubProfileID = (UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
+  HireMercStruct.ubProfileID = (uint8_t)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
   if (!fLoadingCharacterForPreviousImpProfile) {
     // give them items
@@ -153,9 +153,9 @@ static BOOLEAN AddCharacterToPlayersTeam() {
   }
 }
 
-static void WriteOutCurrentImpCharacter(INT32 iProfileId);
+static void WriteOutCurrentImpCharacter(int32_t iProfileId);
 
-static void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPConfirmYes(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (LaptopSaveInfo.fIMPCompletedFlag) {
       // already here, leave
@@ -172,13 +172,13 @@ static void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason) {
 
     // charge the player
     AddTransactionToPlayersBook(IMP_PROFILE,
-                                (UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId),
+                                (uint8_t)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId),
                                 GetWorldTotalMin(), -COST_OF_PROFILE);
     AddHistoryToPlayersLog(HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
     AddCharacterToPlayersTeam();
 
     // write the created imp merc
-    WriteOutCurrentImpCharacter((UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
+    WriteOutCurrentImpCharacter((uint8_t)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
 
     fButtonPendingFlag = TRUE;
     iCurrentImpPage = IMP_HOME_PAGE;
@@ -202,7 +202,7 @@ static void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // fixed? by CJC Nov 28 2002
-static void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPConfirmNo(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_FINISH;
 
@@ -216,12 +216,12 @@ static void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT &, UINT16 usItem, UINT8 ubStatus,
-                                      UINT8 ubHowMany);
-static void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT &, UINT32 uiPos, UINT16 usItem,
-                                       UINT8 ubStatus, UINT8 ubHowMany);
+static void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT &, uint16_t usItem, uint8_t ubStatus,
+                                      uint8_t ubHowMany);
+static void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT &, uint32_t uiPos, uint16_t usItem,
+                                       uint8_t ubStatus, uint8_t ubHowMany);
 
-static void GiveItemsToPC(UINT8 ubProfileId) {
+static void GiveItemsToPC(uint8_t ubProfileId) {
   // gives starting items to merc
   // NOTE: Any guns should probably be from those available in regular gun set
 
@@ -231,7 +231,7 @@ static void GiveItemsToPC(UINT8 ubProfileId) {
 
   // kevlar vest, leggings, & helmet
   MakeProfileInvItemThisSlot(p, VESTPOS, FLAK_JACKET, 100, 1);
-  if (PreRandom(100) < (UINT32)p.bWisdom) {
+  if (PreRandom(100) < (uint32_t)p.bWisdom) {
     MakeProfileInvItemThisSlot(p, HELMETPOS, STEEL_HELMET, 100, 1);
   }
 
@@ -303,11 +303,11 @@ static void GiveItemsToPC(UINT8 ubProfileId) {
   }
 }
 
-static INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const &, UINT16 usItem);
+static int32_t FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const &, uint16_t usItem);
 
-static void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT &p, UINT16 const usItem,
-                                      UINT8 const ubStatus, UINT8 const ubHowMany) {
-  INT32 const iSlot = FirstFreeBigEnoughPocket(p, usItem);
+static void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT &p, uint16_t const usItem,
+                                      uint8_t const ubStatus, uint8_t const ubHowMany) {
+  int32_t const iSlot = FirstFreeBigEnoughPocket(p, usItem);
   if (iSlot == -1) {
     // no room, item not received
     return;
@@ -317,16 +317,16 @@ static void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT &p, UINT16 const usItem,
   MakeProfileInvItemThisSlot(p, iSlot, usItem, ubStatus, ubHowMany);
 }
 
-static void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT &p, UINT32 const uiPos,
-                                       UINT16 const usItem, UINT8 const ubStatus,
-                                       UINT8 const ubHowMany) {
+static void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT &p, uint32_t const uiPos,
+                                       uint16_t const usItem, uint8_t const ubStatus,
+                                       uint8_t const ubHowMany) {
   p.inv[uiPos] = usItem;
   p.bInvStatus[uiPos] = ubStatus;
   p.bInvNumber[uiPos] = ubHowMany;
 }
 
-static INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const &p, UINT16 const usItem) {
-  UINT32 uiPos;
+static int32_t FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const &p, uint16_t const usItem) {
+  uint32_t uiPos;
 
   // if it fits into a small pocket
   if (Item[usItem].ubPerPocket != 0) {
@@ -348,18 +348,18 @@ static INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT const &p, UINT16 const u
   return (-1);
 }
 
-static void WriteOutCurrentImpCharacter(INT32 iProfileId) {
+static void WriteOutCurrentImpCharacter(int32_t iProfileId) {
   // grab the profile number and write out what is contained there in
   AutoSGPFile hFile(FileMan::openForWriting(IMP_MERC_FILE));
 
   // Write the profile id, portrait id and the profile itself. Abort on error
-  FileWrite(hFile, &iProfileId, sizeof(INT32));
-  FileWrite(hFile, &iPortraitNumber, sizeof(INT32));
+  FileWrite(hFile, &iProfileId, sizeof(int32_t));
+  FileWrite(hFile, &iPortraitNumber, sizeof(int32_t));
   InjectMercProfileIntoFile(hFile, gMercProfiles[iProfileId]);
 }
 
 static void LoadInCurrentImpCharacter() {
-  INT32 iProfileId = 0;
+  int32_t iProfileId = 0;
 
   MERCPROFILESTRUCT p;
   ExtractImpProfileFromFile(IMP_MERC_FILE, &iProfileId, &iPortraitNumber, p);
@@ -384,7 +384,7 @@ static void LoadInCurrentImpCharacter() {
   fLoadingCharacterForPreviousImpProfile = FALSE;
 }
 
-void ResetIMPCharactersEyesAndMouthOffsets(const UINT8 ubMercProfileID) {
+void ResetIMPCharactersEyesAndMouthOffsets(const uint8_t ubMercProfileID) {
   // ATE: Check boundary conditions!
   MERCPROFILESTRUCT &p = GetProfile(ubMercProfileID);
   if (p.ubFaceIndex - 200 > 16 || ubMercProfileID >= PROF_HUMMER) return;

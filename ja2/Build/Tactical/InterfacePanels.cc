@@ -271,14 +271,14 @@ BOOLEAN gfSMDisableForItems = FALSE;
 BOOLEAN gfDisableTacticalPanelButtons = FALSE;
 
 BOOLEAN gfCheckForMouseOverItem = FALSE;
-UINT32 guiMouseOverItemTime = 0;
-INT8 gbCheckForMouseOverItemPos = 0;
+uint32_t guiMouseOverItemTime = 0;
+int8_t gbCheckForMouseOverItemPos = 0;
 SOLDIERTYPE *gSelectSMPanelToMerc = NULL;
 static BOOLEAN gfReEvaluateDisabledINVPanelButtons = FALSE;
 
-UINT8 gubHandPos;
-UINT16 gusOldItemIndex;
-UINT16 gusNewItemIndex;
+uint8_t gubHandPos;
+uint16_t gusOldItemIndex;
+uint16_t gusNewItemIndex;
 BOOLEAN gfDeductPoints;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS
@@ -349,7 +349,7 @@ static TeamPanelSlot gTeamPanel[NUM_TEAM_SLOTS];
 #define FOR_EACH_TEAM_PANEL_SLOT(iter) FOR_EACH(TeamPanelSlot, iter, gTeamPanel)
 
 // Wraps up check for AP-s get from a different soldier for in a vehicle...
-static INT8 GetUIApsToDisplay(SOLDIERTYPE const *s) {
+static int8_t GetUIApsToDisplay(SOLDIERTYPE const *s) {
   if (s->uiStatusFlags & SOLDIER_DRIVER) {
     return GetSoldierStructureForVehicle(GetVehicle(s->iVehicleId)).bActionPoints;
   }
@@ -373,9 +373,9 @@ void CheckForDisabledForGiveItem() {
     // Go through each merc and see if there is one closeby....
     CFOR_EACH_IN_TEAM(s, OUR_TEAM) {
       if (s->bLife >= OKLIFE && !IsMechanical(*s) && s->bInSector && IsMercOnCurrentSquad(s)) {
-        const INT16 sDist = PythSpacesAway(cur->sGridNo, s->sGridNo);
-        const INT16 sDistVisible = DistanceVisible(s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT,
-                                                   cur->sGridNo, cur->bLevel);
+        const int16_t sDist = PythSpacesAway(cur->sGridNo, s->sGridNo);
+        const int16_t sDistVisible = DistanceVisible(s, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT,
+                                                     cur->sGridNo, cur->bLevel);
 
         // Check LOS....
         if (SoldierTo3DLocationLineOfSightTest(s, cur->sGridNo, cur->bLevel, 3, sDistVisible,
@@ -404,14 +404,14 @@ void CheckForDisabledForGiveItem() {
       return;
     }
 
-    const INT16 sDestGridNo = cur->sGridNo;
-    const INT8 bDestLevel = cur->bLevel;
+    const int16_t sDestGridNo = cur->sGridNo;
+    const int8_t bDestLevel = cur->bLevel;
 
     // Get distance....
-    const INT16 sDist = PythSpacesAway(src->sGridNo, sDestGridNo);
+    const int16_t sDist = PythSpacesAway(src->sGridNo, sDestGridNo);
 
     // is he close enough to see that gridno if he turns his head?
-    const INT16 sDistVisible =
+    const int16_t sDistVisible =
         DistanceVisible(src, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
 
     // Check LOS....
@@ -494,26 +494,26 @@ void UpdateForContOverPortrait(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
   }
 }
 
-static void SetButtonState(UINT const idx, bool const clicked) {
+static void SetButtonState(uint32_t const idx, bool const clicked) {
   GUI_BUTTON &b = *iSMPanelButtons[idx];
   if (b.ubToggleButtonActivated) return;
   b.uiFlags &= ~BUTTON_CLICKED_ON;
   b.uiFlags |= clicked ? BUTTON_CLICKED_ON : 0;
 }
 
-static void BtnStealthModeCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnStealthModeCallback(GUI_BUTTON *btn, int32_t reason);
 static void CheckForReEvaluateDisabledINVPanelButtons();
 
 static void UpdateSMPanel() {
   SOLDIERTYPE &s = *gpSMCurrentMerc;
   if (s.sGridNo == NOWHERE) return;
 
-  UINT8 stance_state = s.ubDesiredHeight;
+  uint8_t stance_state = s.ubDesiredHeight;
   if (stance_state == NO_DESIRED_HEIGHT) {
     stance_state = gAnimControl[s.usAnimState].ubEndHeight;
   }
 
-  INT32 stance_gfx;  // XXX HACK000E
+  int32_t stance_gfx;  // XXX HACK000E
   switch (stance_state) {
     case ANIM_STAND:
       stance_gfx = 11;
@@ -620,7 +620,7 @@ static void UpdateSMPanel() {
 }
 
 void ReevaluateItemHatches(SOLDIERTYPE *pSoldier, BOOLEAN fAllValid) {
-  INT32 cnt;
+  int32_t cnt;
 
   // if there's an item in the cursor and we're not supposed to just make them
   // all valid
@@ -629,7 +629,7 @@ void ReevaluateItemHatches(SOLDIERTYPE *pSoldier, BOOLEAN fAllValid) {
     // fit as invalid
     for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
       gbInvalidPlacementSlot[cnt] =
-          !CanItemFitInPosition(pSoldier, gpItemPointer, (INT8)cnt, FALSE);
+          !CanItemFitInPosition(pSoldier, gpItemPointer, (int8_t)cnt, FALSE);
 
       // !!! ATTACHING/MERGING ITEMS IN MAP SCREEN IS NOT SUPPORTED !!!
       // CJC: seems to be supported now...
@@ -754,14 +754,14 @@ void EnableSMPanelButtons(BOOLEAN fEnable, BOOLEAN fFromItemPickup) {
   }
 }
 
-static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SMInvClickCamoCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SMInvMoneyButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SMInvMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SMInvMoveCamoCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void SMInvClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SMInvClickCamoCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SMInvMoneyButtonCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SMInvMoveCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SMInvMoveCamoCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitializeSMPanel() {
   guiSMPanel = AddVideoObjectFromFile(INTERFACEDIR "/inventory_bottom_panel.sti");
@@ -777,15 +777,15 @@ void InitializeSMPanel() {
   // Create buttons
   CreateSMPanelButtons();
 
-  const INT32 dy = INV_INTERFACE_START_Y;
+  const int32_t dy = INV_INTERFACE_START_Y;
 
   // Set viewports
   // Define region for panel
   MSYS_DefineRegion(&gSMPanelRegion, 0, dy, SCREEN_WIDTH, SCREEN_HEIGHT, MSYS_PRIORITY_NORMAL,
                     CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-  INT32 x;
-  INT32 y;
+  int32_t x;
+  int32_t y;
 
   x = SM_SELMERC_FACE_X;
   y = dy + SM_SELMERC_FACE_Y;
@@ -833,8 +833,8 @@ void InitializeSMPanel() {
   }
 }
 
-static void MakeButtonN(const UINT idx, BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                        const GUI_CALLBACK click, const wchar_t *const help) try {
+static void MakeButtonN(const uint32_t idx, BUTTON_PICS *const image, const int16_t x,
+                        const int16_t y, const GUI_CALLBACK click, const wchar_t *const help) try {
   GUIButtonRef const btn = QuickCreateButtonToggle(image, x, y, MSYS_PRIORITY_HIGH - 1, click);
   iSMPanelButtons[idx] = btn;
   btn->SetFastHelpText(help);
@@ -843,8 +843,8 @@ static void MakeButtonN(const UINT idx, BUTTON_PICS *const image, const INT16 x,
   throw;
 }
 
-static void MakeButtonT(const UINT idx, BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                        const GUI_CALLBACK click, const wchar_t *const help) try {
+static void MakeButtonT(const uint32_t idx, BUTTON_PICS *const image, const int16_t x,
+                        const int16_t y, const GUI_CALLBACK click, const wchar_t *const help) try {
   GUIButtonRef const btn = QuickCreateButton(image, x, y, MSYS_PRIORITY_HIGH - 1, click);
   iSMPanelButtons[idx] = btn;
   btn->SetFastHelpText(help);
@@ -853,20 +853,20 @@ static void MakeButtonT(const UINT idx, BUTTON_PICS *const image, const INT16 x,
   throw;
 }
 
-static void BtnBurstModeCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnClimbCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnHandCursorCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnLookCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnMuteCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnNextMercCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnOptionsCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnPrevMercCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnSMDoneCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnStanceDownCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnStanceUpCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnTalkCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnUpdownCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBurstModeCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnClimbCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnHandCursorCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnLookCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnMuteCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnNextMercCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnOptionsCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnPrevMercCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnSMDoneCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnStanceDownCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnStanceUpCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnTalkCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnUpdownCallback(GUI_BUTTON *btn, int32_t reason);
 
 void CreateSMPanelButtons() {
   giSMStealthImages = NULL;
@@ -903,7 +903,7 @@ void CreateSMPanelButtons() {
   // SET BUTTONS TO -1
   memset(iSMPanelButtons, -1, sizeof(iSMPanelButtons));
 
-  const INT32 dy = INV_INTERFACE_START_Y;
+  const int32_t dy = INV_INTERFACE_START_Y;
 
   MakeButtonT(SM_MAP_SCREEN_BUTTON, iSMPanelImages[MAPSCREEN_IMAGES], SM_MAPSCREEN_X,
               dy + SM_MAPSCREEN_Y, BtnMapScreenCallback, TacticalStr[MAPSCREEN_POPUPTEXT]);
@@ -940,11 +940,11 @@ void CreateSMPanelButtons() {
 }
 
 void RemoveSMPanelButtons() {
-  for (UINT32 cnt = 0; cnt < NUM_SM_BUTTONS; ++cnt) {
+  for (uint32_t cnt = 0; cnt < NUM_SM_BUTTONS; ++cnt) {
     if (iSMPanelButtons[cnt]) RemoveButton(iSMPanelButtons[cnt]);
   }
 
-  for (UINT32 cnt = 0; cnt < NUM_SM_BUTTON_IMAGES; ++cnt) {
+  for (uint32_t cnt = 0; cnt < NUM_SM_BUTTON_IMAGES; ++cnt) {
     UnloadButtonImage(iSMPanelImages[cnt]);
   }
 
@@ -990,26 +990,26 @@ void ShutdownSMPanel() {
   RemoveSMPanelButtons();
 }
 
-static void PrintAP(SOLDIERTYPE *const s, INT16 const x, INT16 const y, INT16 const w,
-                    INT16 const h) {
+static void PrintAP(SOLDIERTYPE *const s, int16_t const x, int16_t const y, int16_t const w,
+                    int16_t const h) {
   if (!(gTacticalStatus.uiFlags & TURNBASED)) return;
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) return;
   if (s->bLife < OKLIFE) return;
 
-  INT8 const ap = GetUIApsToDisplay(s);
-  UINT8 const min_ap = MinAPsToAttack(s, s->sLastTarget, TRUE);
-  UINT8 const foreground = !EnoughPoints(s, min_ap, 0, FALSE) ? FONT_MCOLOR_DKRED
-                           : ap < 0                           ? FONT_MCOLOR_DKRED
-                           : MercUnderTheInfluence(s)         ? FONT_MCOLOR_LTBLUE
-                           : s->bStealthMode                  ? FONT_MCOLOR_LTYELLOW
-                                                              : FONT_MCOLOR_LTGRAY;
+  int8_t const ap = GetUIApsToDisplay(s);
+  uint8_t const min_ap = MinAPsToAttack(s, s->sLastTarget, TRUE);
+  uint8_t const foreground = !EnoughPoints(s, min_ap, 0, FALSE) ? FONT_MCOLOR_DKRED
+                             : ap < 0                           ? FONT_MCOLOR_DKRED
+                             : MercUnderTheInfluence(s)         ? FONT_MCOLOR_LTBLUE
+                             : s->bStealthMode                  ? FONT_MCOLOR_LTYELLOW
+                                                                : FONT_MCOLOR_LTGRAY;
   SetFontAttributes(TINYFONT1, foreground);
 
   RestoreExternBackgroundRect(x, y, w, h);
   wchar_t buf[16];
   swprintf(buf, lengthof(buf), L"%d", ap);
-  INT16 sFontX;
-  INT16 sFontY;
+  int16_t sFontX;
+  int16_t sFontY;
   FindFontCenterCoordinates(x, y, w, h, buf, TINYFONT1, &sFontX, &sFontY);
   MPrint(sFontX, sFontY, buf);
 }
@@ -1033,20 +1033,21 @@ static void SetStatsHelp(MOUSE_REGION &r, SOLDIERTYPE const &s) {
   r.SetFastHelpText(help);
 }
 
-static void PrintStat(UINT32 change_time, UINT16 stat_bit, INT8 stat_val, INT16 x, INT16 y) {
+static void PrintStat(uint32_t change_time, uint16_t stat_bit, int8_t stat_val, int16_t x,
+                      int16_t y) {
   SOLDIERTYPE const &s = *gpSMCurrentMerc;
-  UINT8 const fg = s.bLife < OKLIFE ? FONT_MCOLOR_DKGRAY
-                   : GetJA2Clock() >= CHANGE_STAT_RECENTLY_DURATION + change_time
-                       ? STATS_TEXT_FONT_COLOR
-                   : change_time == 0           ? STATS_TEXT_FONT_COLOR
-                   : s.usValueGoneUp & stat_bit ? FONT_LTGREEN
-                                                : FONT_RED;
+  uint8_t const fg = s.bLife < OKLIFE ? FONT_MCOLOR_DKGRAY
+                     : GetJA2Clock() >= CHANGE_STAT_RECENTLY_DURATION + change_time
+                         ? STATS_TEXT_FONT_COLOR
+                     : change_time == 0           ? STATS_TEXT_FONT_COLOR
+                     : s.usValueGoneUp & stat_bit ? FONT_LTGREEN
+                                                  : FONT_RED;
   SetFontForeground(fg);
 
   wchar_t str[9];
   swprintf(str, lengthof(str), L"%2d", stat_val);
-  INT16 usX;
-  INT16 usY;
+  int16_t usX;
+  int16_t usY;
   FindFontRightCoordinates(x, y, SM_STATS_WIDTH, SM_STATS_HEIGHT, str, BLOCKFONT2, &usX, &usY);
   MPrint(usX, usY, str);
 }
@@ -1063,7 +1064,7 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
   SOLDIERTYPE &s = *gpSMCurrentMerc;
 
   if (gfCheckForMouseOverItem && GetJA2Clock() - guiMouseOverItemTime > 100) {
-    if (HandleCompatibleAmmoUI(&s, (INT8)gbCheckForMouseOverItemPos, TRUE)) {
+    if (HandleCompatibleAmmoUI(&s, (int8_t)gbCheckForMouseOverItemPos, TRUE)) {
       *dirty_level = DIRTYLEVEL2;
     }
 
@@ -1074,7 +1075,7 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
 
   if (InItemDescriptionBox()) HandleItemDescriptionBox(dirty_level);
 
-  INT32 const dy = INV_INTERFACE_START_Y;
+  int32_t const dy = INV_INTERFACE_START_Y;
 
   if (*dirty_level == DIRTYLEVEL2) {
     BltVideoObject(guiSAVEBUFFER, guiSMPanel, 0, INTERFACE_START_X, dy);
@@ -1089,8 +1090,8 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
       } else {
         goto no_plate;
       }
-      INT32 const x = SM_SELMERC_PLATE_X;
-      INT32 const y = SM_SELMERC_PLATE_Y + dy;
+      int32_t const x = SM_SELMERC_PLATE_X;
+      int32_t const y = SM_SELMERC_PLATE_Y + dy;
       BltVideoObject(guiSAVEBUFFER, gfx, 0, x, y);
       RestoreExternBackgroundRect(x, y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
     }
@@ -1106,8 +1107,8 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
       // Render Values for stats
       SetFontDestBuffer(guiSAVEBUFFER);
       SetFontAttributes(BLOCKFONT2, STATS_TITLE_FONT_COLOR);
-      for (UINT32 i = 0; i != 5; ++i) {
-        INT32 const y = dy + 7 + i * 10;
+      for (uint32_t i = 0; i != 5; ++i) {
+        int32_t const y = dy + 7 + i * 10;
         MPrint(92, y, pShortAttributeStrings[i]);
         MPrint(137, y, pShortAttributeStrings[i + 5]);
       }
@@ -1138,8 +1139,8 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
 
       SetFontForeground(s.bLife >= OKLIFE ? STATS_TEXT_FONT_COLOR : FONT_MCOLOR_DKGRAY);
 
-      INT16 usX;
-      INT16 usY;
+      int16_t usX;
+      int16_t usY;
       wchar_t sString[9];
 
       // Display armour value
@@ -1168,16 +1169,16 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
     }
 
     // Render name
-    UINT8 const fg = s.bStealthMode ? FONT_MCOLOR_LTYELLOW : FONT_MCOLOR_LTGRAY;
+    uint8_t const fg = s.bStealthMode ? FONT_MCOLOR_LTYELLOW : FONT_MCOLOR_LTGRAY;
     SetFontAttributes(BLOCKFONT2, fg);
 
-    INT32 const x = SM_SELMERCNAME_X;
-    INT32 const y = SM_SELMERCNAME_Y + dy;
-    INT32 const w = SM_SELMERCNAME_WIDTH;
-    INT32 const h = SM_SELMERCNAME_HEIGHT;
+    int32_t const x = SM_SELMERCNAME_X;
+    int32_t const y = SM_SELMERCNAME_Y + dy;
+    int32_t const w = SM_SELMERCNAME_WIDTH;
+    int32_t const h = SM_SELMERCNAME_HEIGHT;
     RestoreExternBackgroundRect(x, y, w, h);
-    INT16 sFontX;
-    INT16 sFontY;
+    int16_t sFontX;
+    int16_t sFontY;
     FindFontCenterCoordinates(x, y, w, h, s.name, BLOCKFONT2, &sFontX, &sFontY);
     MPrint(sFontX, sFontY, s.name);
   }
@@ -1204,12 +1205,12 @@ void RenderSMPanel(DirtyLevel *const dirty_level) {
     ClipRect.iTop = INV_INTERFACE_START_Y;
     ClipRect.iBottom = SCREEN_HEIGHT;
     SGPVSurface::Lock l(FRAME_BUFFER);
-    Blt16BPPBufferHatchRect(l.Buffer<UINT16>(), l.Pitch(), &ClipRect);
+    Blt16BPPBufferHatchRect(l.Buffer<uint16_t>(), l.Pitch(), &ClipRect);
   }
 }
 
-static void SMInvMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT32 uiHandPos;
+static void SMInvMoveCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint32_t uiHandPos;
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1220,19 +1221,19 @@ static void SMInvMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
       // Setup a timer....
       guiMouseOverItemTime = GetJA2Clock();
       gfCheckForMouseOverItem = TRUE;
-      gbCheckForMouseOverItemPos = (INT8)uiHandPos;
+      gbCheckForMouseOverItemPos = (int8_t)uiHandPos;
     }
   }
   if (iReason == MSYS_CALLBACK_REASON_LOST_MOUSE) {
     if (gpItemPointer == NULL) {
-      HandleCompatibleAmmoUI(gpSMCurrentMerc, (INT8)uiHandPos, FALSE);
+      HandleCompatibleAmmoUI(gpSMCurrentMerc, (int8_t)uiHandPos, FALSE);
       gfCheckForMouseOverItem = FALSE;
       fInterfacePanelDirty = DIRTYLEVEL2;
     }
   }
 }
 
-static void SMInvMoveCamoCallback(MOUSE_REGION *const pRegion, const INT32 iReason) {
+static void SMInvMoveCamoCallback(MOUSE_REGION *const pRegion, const int32_t iReason) {
   if (iReason == MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // Setup a timer....
     guiMouseOverItemTime = GetJA2Clock();
@@ -1240,12 +1241,12 @@ static void SMInvMoveCamoCallback(MOUSE_REGION *const pRegion, const INT32 iReas
     gbCheckForMouseOverItemPos = NO_SLOT;
   }
   if (iReason == MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    HandleCompatibleAmmoUI(gpSMCurrentMerc, (INT8)NO_SLOT, FALSE);
+    HandleCompatibleAmmoUI(gpSMCurrentMerc, (int8_t)NO_SLOT, FALSE);
     gfCheckForMouseOverItem = FALSE;
   }
 }
 
-static void SMInvClickCamoCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SMInvClickCamoCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // Apply camo (if we have something in cursor...)
     // If we do not have an item in hand, start moving it
@@ -1287,8 +1288,8 @@ static void SMInvClickCamoCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *const s, const UINT32 uiHandPos,
-                              const UINT16 usReplaceItem) {
+BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *const s, const uint32_t uiHandPos,
+                              const uint16_t usReplaceItem) {
   if (s->ubProfile != NAILS) return FALSE;
   if (uiHandPos != VESTPOS) return FALSE;
 
@@ -1307,8 +1308,8 @@ BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *const s, const UINT32 uiHandPos
   }
 }
 
-static BOOLEAN UIHandleItemPlacement(UINT8 ubHandPos, UINT16 usOldItemIndex, UINT16 usNewItemIndex,
-                                     BOOLEAN fDeductPoints) {
+static BOOLEAN UIHandleItemPlacement(uint8_t ubHandPos, uint16_t usOldItemIndex,
+                                     uint16_t usNewItemIndex, BOOLEAN fDeductPoints) {
   if (IsKeyDown(CTRL)) {
     CleanUpStack(&(gpSMCurrentMerc->inv[ubHandPos]), gpItemPointer);
     if (gpItemPointer->ubNumberOfObjects == 0) {
@@ -1364,11 +1365,11 @@ static BOOLEAN UIHandleItemPlacement(UINT8 ubHandPos, UINT16 usOldItemIndex, UIN
 
 static void MergeMessageBoxCallBack(MessageBoxReturnValue);
 
-static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT32 uiHandPos;
+static void SMInvClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint32_t uiHandPos;
   // Copyies of values
-  UINT16 usOldItemIndex, usNewItemIndex;
-  UINT16 usItemPrevInItemPointer;
+  uint16_t usOldItemIndex, usNewItemIndex;
+  uint16_t usItemPrevInItemPointer;
   BOOLEAN fNewItem = FALSE;
   static BOOLEAN fRightDown = FALSE;
   static BOOLEAN fLeftDown = FALSE;
@@ -1380,7 +1381,7 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   // if we are in the shop keeper interface
   if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
     // and this inventory slot is hatched out
-    if (ShouldSoldierDisplayHatchOnItem(gpSMCurrentMerc->ubProfile, (INT16)uiHandPos)) {
+    if (ShouldSoldierDisplayHatchOnItem(gpSMCurrentMerc->ubProfile, (int16_t)uiHandPos)) {
       // it means that item is a copy of one in the player's offer area, so we
       // treat it as if the slot was empty (ignore) if the cursor has an item in
       // it, we still ignore the click, because handling swaps in this situation
@@ -1422,18 +1423,18 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
       usOldItemIndex = gpSMCurrentMerc->inv[uiHandPos].usItem;
 
       // move item into the mouse cursor
-      BeginItemPointer(gpSMCurrentMerc, (UINT8)uiHandPos);
+      BeginItemPointer(gpSMCurrentMerc, (uint8_t)uiHandPos);
 
       // if we are in the shopkeeper interface
       if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
         // pick up item from regular inventory slot into cursor OR try to sell
         // it ( unless CTRL is held down )
-        BeginSkiItemPointer(PLAYERS_INVENTORY, (INT8)uiHandPos, !IsKeyDown(CTRL));
+        BeginSkiItemPointer(PLAYERS_INVENTORY, (int8_t)uiHandPos, !IsKeyDown(CTRL));
       }
 
       HandleTacticalEffectsOfEquipmentChange(gpSMCurrentMerc, uiHandPos, usOldItemIndex, NOTHING);
 
-      // HandleCompatibleAmmoUI( gpSMCurrentMerc, (INT8)uiHandPos, FALSE );
+      // HandleCompatibleAmmoUI( gpSMCurrentMerc, (int8_t)uiHandPos, FALSE );
     } else  // item in cursor
     {
       BOOLEAN fOKToGo = FALSE;
@@ -1485,13 +1486,13 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
           if (ValidAttachment(usNewItemIndex, usOldItemIndex)) {
             // it's an attempt to attach; bring up the inventory panel
             if (!InItemDescriptionBox()) {
-              InitItemDescriptionBox(gpSMCurrentMerc, (UINT8)uiHandPos, SM_ITEMDESC_START_X,
+              InitItemDescriptionBox(gpSMCurrentMerc, (uint8_t)uiHandPos, SM_ITEMDESC_START_X,
                                      SM_ITEMDESC_START_Y, 0);
             }
             return;
           } else if (ValidMerge(usNewItemIndex, usOldItemIndex)) {
             // bring up merge requestor
-            gubHandPos = (UINT8)uiHandPos;
+            gubHandPos = (uint8_t)uiHandPos;
             gusOldItemIndex = usOldItemIndex;
             gusNewItemIndex = usNewItemIndex;
             gfDeductPoints = fDeductPoints;
@@ -1522,11 +1523,11 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         }
 
         // try to place the item in the cursor into this inventory slot
-        if (UIHandleItemPlacement((UINT8)uiHandPos, usOldItemIndex, usNewItemIndex,
+        if (UIHandleItemPlacement((uint8_t)uiHandPos, usOldItemIndex, usNewItemIndex,
                                   fDeductPoints)) {
           // it worked!  if we're in the SKI...
           if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
-            SetNewItem(gpSMCurrentMerc, (UINT8)uiHandPos, fNewItem);
+            SetNewItem(gpSMCurrentMerc, (uint8_t)uiHandPos, fNewItem);
 
             // and the cursor is now empty
             if (gpItemPointer == NULL) {
@@ -1551,12 +1552,12 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
           // Setup a timer....
           // guiMouseOverItemTime = GetJA2Clock( );
           // gfCheckForMouseOverItem = TRUE;
-          // gbCheckForMouseOverItemPos = (INT8)uiHandPos;
+          // gbCheckForMouseOverItemPos = (int8_t)uiHandPos;
         }
 
         /*
         // Try to place here
-        if ( PlaceObject( gpSMCurrentMerc, (UINT8)uiHandPos, gpItemPointer ) )
+        if ( PlaceObject( gpSMCurrentMerc, (uint8_t)uiHandPos, gpItemPointer ) )
         {
 
                 if ( fDeductPoints )
@@ -1587,7 +1588,7 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
                 // Setup a timer....
                 guiMouseOverItemTime = GetJA2Clock( );
                 gfCheckForMouseOverItem = TRUE;
-                gbCheckForMouseOverItemPos = (INT8)uiHandPos;
+                gbCheckForMouseOverItemPos = (int8_t)uiHandPos;
 
         }
         */
@@ -1607,16 +1608,16 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     // Some global stuff here - for esc, etc
     // Check for # of slots in item
     if ((gpSMCurrentMerc->inv[uiHandPos].ubNumberOfObjects > 1 &&
-         ItemSlotLimit(gpSMCurrentMerc->inv[uiHandPos].usItem, (UINT8)uiHandPos) > 0) &&
+         ItemSlotLimit(gpSMCurrentMerc->inv[uiHandPos].usItem, (uint8_t)uiHandPos) > 0) &&
         (guiCurrentScreen != MAP_SCREEN)) {
       if (!InItemStackPopup()) {
-        InitItemStackPopup(gpSMCurrentMerc, (UINT8)uiHandPos, SM_ITEMDESC_START_X,
+        InitItemStackPopup(gpSMCurrentMerc, (uint8_t)uiHandPos, SM_ITEMDESC_START_X,
                            INV_INTERFACE_START_Y, SM_ITEMDESC_WIDTH,
                            SCREEN_HEIGHT - INV_INTERFACE_START_Y);
       }
     } else {
       if (!InItemDescriptionBox()) {
-        InitItemDescriptionBox(gpSMCurrentMerc, (UINT8)uiHandPos, SM_ITEMDESC_START_X,
+        InitItemDescriptionBox(gpSMCurrentMerc, (uint8_t)uiHandPos, SM_ITEMDESC_START_X,
                                SM_ITEMDESC_START_Y, 0);
       }
     }
@@ -1644,7 +1645,7 @@ static void MergeMessageBoxCallBack(MessageBoxReturnValue const ubExitValue) {
 }
 
 static void HandleMouseOverSoldierFaceForContMove(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
-  INT16 sGridNo;
+  int16_t sGridNo;
 
   if (pSoldier == NULL) {
     return;
@@ -1684,7 +1685,7 @@ static void HandleMouseOverSoldierFaceForContMove(SOLDIERTYPE *pSoldier, BOOLEAN
   fInterfacePanelDirty = DIRTYLEVEL2;
 }
 
-static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (gpSMCurrentMerc == NULL) {
     return;
   }
@@ -1696,7 +1697,7 @@ static void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, INT32 iReason)
   }
 }
 
-static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (gpSMCurrentMerc == NULL) {
     return;
   }
@@ -1738,7 +1739,7 @@ static void SelectedMercButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (gpSMCurrentMerc == NULL) {
     return;
   }
@@ -1761,9 +1762,9 @@ static void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, INT32 iRea
   }
 }
 
-static void BtnStanceUpCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnStanceUpCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT8 bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
+    int8_t bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
     switch (bNewStance) {
       case ANIM_CROUCH:
         bNewStance = ANIM_STAND;
@@ -1776,14 +1777,14 @@ static void BtnStanceUpCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnUpdownCallback(GUI_BUTTON *btn, INT32 reason) {
+void BtnUpdownCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Change interface level via HandleUI handler
     UIHandleChangeLevel(NULL);
   }
 }
 
-static void BtnClimbCallback(GUI_BUTTON *const btn, INT32 const reason) {
+static void BtnClimbCallback(GUI_BUTTON *const btn, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SOLDIERTYPE *const s = gpSMCurrentMerc;
     if (FindLowerLevel(s)) {
@@ -1796,9 +1797,9 @@ static void BtnClimbCallback(GUI_BUTTON *const btn, INT32 const reason) {
   }
 }
 
-static void BtnStanceDownCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnStanceDownCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT8 bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
+    int8_t bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
     switch (bNewStance) {
       case ANIM_STAND:
         bNewStance = ANIM_CROUCH;
@@ -1811,7 +1812,7 @@ static void BtnStanceDownCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnStealthModeCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnStealthModeCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpSMCurrentMerc->bStealthMode = !gpSMCurrentMerc->bStealthMode;
     gfUIStanceDifferent = TRUE;
@@ -1820,19 +1821,19 @@ static void BtnStealthModeCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnHandCursorCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnHandCursorCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ToggleHandCursorMode(&guiCurrentEvent);
   }
 }
 
-static void BtnTalkCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnTalkCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ToggleTalkCursorMode(&guiCurrentEvent);
   }
 }
 
-static void BtnMuteCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMuteCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpSMCurrentMerc->uiStatusFlags ^= SOLDIER_MUTE;
     const wchar_t *msg =
@@ -1864,32 +1865,32 @@ static void SelectMerc(SOLDIERTYPE *const s) {
   }
 }
 
-static void BtnPrevMercCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnPrevMercCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectMerc(FindPrevActiveAndAliveMerc(gpSMCurrentMerc, TRUE, TRUE));
   }
 }
 
-static void BtnNextMercCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnNextMercCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SelectMerc(FindNextActiveAndAliveMerc(gpSMCurrentMerc, TRUE, TRUE));
   }
 }
 
-static void BtnOptionsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptionsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiPreviousOptionScreen = guiCurrentScreen;
     LeaveTacticalScreen(OPTIONS_SCREEN);
   }
 }
 
-static void BtnSMDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnSMDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfBeginEndTurn = TRUE;
   }
 }
 
-static void BtnMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Enter mapscreen...
     // gfEnteringMapScreen = TRUE;
@@ -1897,30 +1898,30 @@ static void BtnMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnBurstModeCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBurstModeCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ChangeWeaponMode(gpSMCurrentMerc);
   }
 }
 
-static void BtnLookCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnLookCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ToggleLookCursorMode();
   }
 }
 
-static void MakeRegion(TeamPanelSlot &tp, MOUSE_REGION &r, INT32 const x, INT32 const y,
-                       INT32 const w, INT32 const h, MOUSE_CALLBACK const move,
+static void MakeRegion(TeamPanelSlot &tp, MOUSE_REGION &r, int32_t const x, int32_t const y,
+                       int32_t const w, int32_t const h, MOUSE_CALLBACK const move,
                        MOUSE_CALLBACK const click) {
   MSYS_DefineRegion(&r, x, y, x + w, y + h, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, move, click);
   r.SetUserPtr(&tp);
 }
 
-static void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void MercFacePanelCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
-static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void MercFacePanelCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, int32_t iReason);
+static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 void InitializeTEAMPanel() {
   // INit viewport region
@@ -1941,13 +1942,13 @@ void InitializeTEAMPanel() {
   MSYS_DefineRegion(&gTEAM_PanelRegion, 0, gsVIEWPORT_END_Y, SCREEN_WIDTH, SCREEN_HEIGHT,
                     MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-  INT32 dx = 0;
-  INT32 const dy = INTERFACE_START_Y;
+  int32_t dx = 0;
+  int32_t const dy = INTERFACE_START_Y;
   FOR_EACH_TEAM_PANEL_SLOT(i) {
     TeamPanelSlot &tp = *i;
 
-    INT32 const face_x = dx + TM_FACE_X;
-    INT32 const face_y = dy + TM_FACE_Y;
+    int32_t const face_x = dx + TM_FACE_X;
+    int32_t const face_y = dy + TM_FACE_Y;
     MakeRegion(tp, tp.face, face_x, face_y, TM_FACE_WIDTH, TM_FACE_HEIGHT,
                MercFacePanelMoveCallback, MercFacePanelCallback);
     MakeRegion(tp, tp.enemy_indicator, face_x + 1, face_y + 1, INDICATOR_BOX_WIDTH - 1,
@@ -1963,8 +1964,8 @@ void InitializeTEAMPanel() {
     MakeRegion(tp, tp.left_bars, dx + TM_FACE_X - 8, dy + TM_FACE_Y, 8, TM_BARS_HEIGHT,
                MSYS_NO_CALLBACK, MercFacePanelCallback);
 
-    INT32 const hand_x = dx + TM_INV_HAND1STARTX;
-    INT32 const hand_y = dy + TM_INV_HAND1STARTY;
+    int32_t const hand_x = dx + TM_INV_HAND1STARTX;
+    int32_t const hand_y = dy + TM_INV_HAND1STARTY;
     MakeRegion(tp, tp.first_hand, hand_x, hand_y, TM_INV_WIDTH, TM_INV_HEIGHT, MSYS_NO_CALLBACK,
                TMClickFirstHandInvCallback);
     MakeRegion(tp, tp.second_hand, hand_x, hand_y + TM_INV_HAND_SEPY, TM_INV_WIDTH, TM_INV_HEIGHT,
@@ -2003,8 +2004,8 @@ void ShutdownTEAMPanel() {
   fRenderRadarScreen = TRUE;
 }
 
-static void RenderTeamSlotBorder(const SOLDIERTYPE *const s, const INT32 dx, const INT32 dy) {
-  UINT16 region;
+static void RenderTeamSlotBorder(const SOLDIERTYPE *const s, const int32_t dx, const int32_t dy) {
+  uint16_t region;
   if (gTacticalStatus.ubCurrentTeam != OUR_TEAM)
     region = 1;  // Hatch out
   else if (INTERRUPT_QUEUED && (!s || s->bMoved))
@@ -2013,12 +2014,12 @@ static void RenderTeamSlotBorder(const SOLDIERTYPE *const s, const INT32 dx, con
     region = 0;  // Active border
   else
     return;
-  const INT32 x = dx + TM_FACEHIGHTL_X;
-  const INT32 y = dy + TM_FACEHIGHTL_Y;
+  const int32_t x = dx + TM_FACEHIGHTL_X;
+  const int32_t y = dy + TM_FACEHIGHTL_Y;
   BltVideoObject(guiSAVEBUFFER, guiTEAMObjects, region, x, y);
 }
 
-static void RenderSoldierTeamInv(SOLDIERTYPE const &, INT16 x, INT16 y, DirtyLevel);
+static void RenderSoldierTeamInv(SOLDIERTYPE const &, int16_t x, int16_t y, DirtyLevel);
 static void UpdateTEAMPanel();
 
 void RenderTEAMPanel(DirtyLevel const dirty_level) {
@@ -2030,8 +2031,8 @@ void RenderTEAMPanel(DirtyLevel const dirty_level) {
     BltVideoObject(guiSAVEBUFFER, guiTEAMPanel, 0, INTERFACE_START_X, INTERFACE_START_Y);
 
     // LOOP THROUGH ALL MERCS ON TEAM PANEL
-    INT32 dx = 0;
-    INT32 const dy = INTERFACE_START_Y;
+    int32_t dx = 0;
+    int32_t const dy = INTERFACE_START_Y;
     FOR_EACH_TEAM_PANEL_SLOT(i) {
       SOLDIERTYPE const *const s = i->merc;
       if (s) {
@@ -2076,13 +2077,13 @@ void RenderTEAMPanel(DirtyLevel const dirty_level) {
         // Restore AP/LIFE POSIITONS
 
         // Render name!
-        UINT8 const foreground = s->bStealthMode ? FONT_MCOLOR_LTYELLOW : FONT_MCOLOR_LTGRAY;
+        uint8_t const foreground = s->bStealthMode ? FONT_MCOLOR_LTYELLOW : FONT_MCOLOR_LTGRAY;
         SetFontAttributes(BLOCKFONT2, foreground);
 
         // RENDER ON SAVE BUFFER!
         SetFontDestBuffer(guiSAVEBUFFER);
-        INT16 sFontX;
-        INT16 sFontY;
+        int16_t sFontX;
+        int16_t sFontY;
         FindFontCenterCoordinates(dx + TM_NAME_X, dy + TM_NAME_Y, TM_NAME_WIDTH, TM_NAME_HEIGHT,
                                   s->name, BLOCKFONT2, &sFontX, &sFontY);
         MPrint(sFontX, sFontY, s->name);
@@ -2101,8 +2102,8 @@ void RenderTEAMPanel(DirtyLevel const dirty_level) {
   }
 
   // Loop through all mercs and make go
-  INT32 dx = 0;
-  INT32 const dy = INTERFACE_START_Y;
+  int32_t dx = 0;
+  int32_t const dy = INTERFACE_START_Y;
   FOR_EACH_TEAM_PANEL_SLOT(i) {
     SOLDIERTYPE *const s = i->merc;
     if (s) {
@@ -2116,10 +2117,10 @@ void RenderTEAMPanel(DirtyLevel const dirty_level) {
         // Update stats!
         if (dirty_level == DIRTYLEVEL2) SetStatsHelp(i->bars, *s);
 
-        const INT32 x = dx + TM_AP_X;
-        const INT32 y = dy + TM_AP_Y;
-        const INT32 w = TM_AP_WIDTH;
-        const INT32 h = TM_AP_HEIGHT;
+        const int32_t x = dx + TM_AP_X;
+        const int32_t y = dy + TM_AP_Y;
+        const int32_t w = TM_AP_WIDTH;
+        const int32_t h = TM_AP_HEIGHT;
         if (!(s->uiStatusFlags & SOLDIER_DEAD)) {
           PrintAP(s, x, y, w, h);
           DrawSoldierUIBars(*s, dx + TM_BARS_X + 2, dy + TM_BARS_Y + 2 + TM_LIFEBAR_HEIGHT, TRUE,
@@ -2143,8 +2144,9 @@ void RenderTEAMPanel(DirtyLevel const dirty_level) {
   }
 }
 
-static void MakeButtonTeam(const UINT idx, BUTTON_PICS *const image, const INT16 x, const INT16 y,
-                           const GUI_CALLBACK click, const wchar_t *const help) try {
+static void MakeButtonTeam(const uint32_t idx, BUTTON_PICS *const image, const int16_t x,
+                           const int16_t y, const GUI_CALLBACK click,
+                           const wchar_t *const help) try {
   GUIButtonRef const btn = QuickCreateButton(image, x, y, MSYS_PRIORITY_HIGH - 1, click);
   iTEAMPanelButtons[idx] = btn;
   btn->SetFastHelpText(help);
@@ -2153,9 +2155,9 @@ static void MakeButtonTeam(const UINT idx, BUTTON_PICS *const image, const INT16
   throw;
 }
 
-static void BtnEndTurnCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnRostermodeCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnSquadCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnEndTurnCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnRostermodeCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnSquadCallback(GUI_BUTTON *btn, int32_t reason);
 
 void CreateTEAMPanelButtons() {
   // Load button Graphics
@@ -2164,7 +2166,7 @@ void CreateTEAMPanelButtons() {
       UseLoadedButtonImage(iTEAMPanelImages[ENDTURN_IMAGES], 1, 4);
   iTEAMPanelImages[DISK_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[ENDTURN_IMAGES], 2, 5);
 
-  const INT32 dy = INTERFACE_START_Y;
+  const int32_t dy = INTERFACE_START_Y;
   MakeButtonTeam(TEAM_DONE_BUTTON, iTEAMPanelImages[ENDTURN_IMAGES], TM_ENDTURN_X,
                  dy + TM_ENDTURN_Y, BtnEndTurnCallback, TacticalStr[END_TURN_POPUPTEXT]);
   MakeButtonTeam(TEAM_MAP_SCREEN_BUTTON, iTEAMPanelImages[ROSTERMODE_IMAGES], TM_ROSTERMODE_X,
@@ -2174,26 +2176,26 @@ void CreateTEAMPanelButtons() {
 }
 
 void RemoveTEAMPanelButtons() {
-  for (UINT32 i = 0; i < NUM_TEAM_BUTTONS; ++i) {
+  for (uint32_t i = 0; i < NUM_TEAM_BUTTONS; ++i) {
     RemoveButton(iTEAMPanelButtons[i]);
     UnloadButtonImage(iTEAMPanelImages[i]);
   }
 }
 
-static void BtnEndTurnCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnEndTurnCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UIHandleEndTurn(NULL);
   }
 }
 
-static void BtnRostermodeCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnRostermodeCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (guiCurrentScreen == GAME_SCREEN) GoToMapScreenFromTactical();
   }
 }
 
 // callback to handle squad switching callback
-static void BtnSquadCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnSquadCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ToggleRadarScreenRender();
   }
@@ -2240,7 +2242,7 @@ static void UpdateTEAMPanel() {
   }
 }
 
-static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   // If our flags are set to do this, gofoit!
   if (fInMapMode) return;  // XXX necessary?
 
@@ -2254,7 +2256,7 @@ static void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   SOLDIERTYPE *const s = pRegion->GetUserPtr<TeamPanelSlot>()->merc;
   if (!s || !s->bActive) return;
 
@@ -2269,7 +2271,7 @@ static void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void MercFacePanelCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void MercFacePanelCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   SOLDIERTYPE *const s = pRegion->GetUserPtr<TeamPanelSlot>()->merc;
   if (!s || !s->bActive) return;
 
@@ -2382,7 +2384,7 @@ void HandleLocateSelectMerc(SOLDIERTYPE *const s, bool const force_select) {
   HandleMouseOverSoldierFaceForContMove(s, TRUE);
 }
 
-void ShowRadioLocator(SOLDIERTYPE *s, UINT8 ubLocatorSpeed) {
+void ShowRadioLocator(SOLDIERTYPE *s, uint8_t ubLocatorSpeed) {
   // LocateSoldier(s, FALSE); // IC - this is already being done outside of this
   // function :)
   s->fFlashLocator = TRUE;
@@ -2524,13 +2526,13 @@ void HandlePanelFaceAnimations(SOLDIERTYPE *pSoldier) {
   }
 }
 
-static void RenderSoldierTeamInv(SOLDIERTYPE const &s, INT16 const x, INT16 y,
+static void RenderSoldierTeamInv(SOLDIERTYPE const &s, int16_t const x, int16_t y,
                                  DirtyLevel const dirty_level) {
   if (s.uiStatusFlags & SOLDIER_DEAD) return;
 
   SGPVSurface *const buf = guiSAVEBUFFER;
-  INT16 const w = TM_INV_WIDTH;
-  INT16 const h = TM_INV_HEIGHT;
+  int16_t const w = TM_INV_WIDTH;
+  int16_t const h = TM_INV_HEIGHT;
   if (s.uiStatusFlags & SOLDIER_DRIVER) {
     BltVideoObject(buf, guiVEHINV, 0, x, y);
     RestoreExternBackgroundRect(x, y, w, h);
@@ -2547,7 +2549,7 @@ static void RenderSoldierTeamInv(SOLDIERTYPE const &s, INT16 const x, INT16 y,
   }
 }
 
-static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   SOLDIERTYPE *const s = pRegion->GetUserPtr<TeamPanelSlot>()->merc;
   if (!s) return;
 
@@ -2558,7 +2560,7 @@ static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 
   if (iReason == MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (!AM_A_ROBOT(s)) {
-      const UINT16 usOldHandItem = s->inv[HANDPOS].usItem;
+      const uint16_t usOldHandItem = s->inv[HANDPOS].usItem;
       SwapHandItems(s);
       ReLoadSoldierAnimationDueToHandItemChange(s, usOldHandItem, s->inv[HANDPOS].usItem);
       fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2566,7 +2568,7 @@ static void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   SOLDIERTYPE *const s = pRegion->GetUserPtr<TeamPanelSlot>()->merc;
   if (!s) return;
 
@@ -2580,7 +2582,7 @@ static void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     if (s->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
     } else {
       if (!AM_A_ROBOT(s)) {
-        const UINT16 usOldHandItem = s->inv[HANDPOS].usItem;
+        const uint16_t usOldHandItem = s->inv[HANDPOS].usItem;
         SwapHandItems(s);
         ReLoadSoldierAnimationDueToHandItemChange(s, usOldHandItem, s->inv[HANDPOS].usItem);
         fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2621,7 +2623,7 @@ static void AddPlayerToInterfaceTeamSlot(SOLDIERTYPE *const s) {
 
 void InitTEAMSlots() { FOR_EACH_TEAM_PANEL_SLOT(i) i->merc = 0; }
 
-SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(UINT8 ubPanelSlot) {
+SOLDIERTYPE *GetPlayerFromInterfaceTeamSlot(uint8_t ubPanelSlot) {
   if (ubPanelSlot >= NUM_TEAM_SLOTS) return NULL;
   return gTeamPanel[ubPanelSlot].merc;
 }
@@ -2651,7 +2653,7 @@ static void RemovePlayerFromInterfaceTeamSlot(TeamPanelSlot &tp) {
 
 void RenderTownIDString() {
   wchar_t zTownIDString[80];
-  INT16 sFontX, sFontY;
+  int16_t sFontX, sFontY;
 
   // Render town, position
   SetFontAttributes(COMPFONT, 183);
@@ -2671,7 +2673,7 @@ void CheckForAndAddMercToTeamPanel(SOLDIERTYPE *const s) {
   if (s->sSectorX == gWorldSectorX && s->sSectorY == gWorldSectorY &&
       s->bSectorZ == gbWorldSectorZ && !s->fBetweenSectors && s->bInSector) {
     // IF on duty....
-    INT32 const cur_squad = CurrentSquad();
+    int32_t const cur_squad = CurrentSquad();
     if (s->bAssignment == cur_squad || SoldierIsDeadAndWasOnSquad(s, cur_squad)) {
       if (s->bAssignment == ASSIGNMENT_DEAD) s->fUICloseMerc = FALSE;
 
@@ -2717,8 +2719,8 @@ void DisableTacticalTeamPanelButtons(BOOLEAN fDisable) { gfDisableTacticalPanelB
 
 void BeginKeyPanelFromKeyShortcut() {
   SOLDIERTYPE *pSoldier = NULL;
-  INT16 sStartYPosition = 0;
-  INT16 sWidth = 0, sHeight = 0;
+  int16_t sStartYPosition = 0;
+  int16_t sWidth = 0, sHeight = 0;
 
   if (gsCurInterfacePanel != SM_PANEL) {
     return;
@@ -2743,10 +2745,10 @@ void BeginKeyPanelFromKeyShortcut() {
   InitKeyRingPopup(pSoldier, 0, sStartYPosition, sWidth, sHeight);
 }
 
-void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   SOLDIERTYPE *pSoldier = NULL;
-  INT16 sStartYPosition = 0;
-  INT16 sWidth = 0, sHeight = 0;
+  int16_t sStartYPosition = 0;
+  int16_t sWidth = 0, sHeight = 0;
 
   if (guiCurrentScreen == MAP_SCREEN) {
     pSoldier = GetSelectedInfoChar();
@@ -2780,10 +2782,10 @@ void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT32 uiKeyRing;
+void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint32_t uiKeyRing;
   // Copyies of values
-  UINT16 usOldItemIndex;
+  uint16_t usOldItemIndex;
   static BOOLEAN fRightDown = FALSE;
   static BOOLEAN fLeftDown = FALSE;
 
@@ -2823,7 +2825,7 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 
         // Add the item to the Players Offer Area
         // AddItemToPlayersOfferArea( gpSMCurrentMerc->ubProfile, &InvSlot,
-        // (UINT8)uiHandPos );
+        // (uint8_t)uiHandPos );
 
         // Dirty
         fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2843,10 +2845,10 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         SelectSoldier(gpItemPopupSoldier, SELSOLDIER_NONE);
       }
 
-      usOldItemIndex = (UINT16)uiKeyRing;
+      usOldItemIndex = (uint16_t)uiKeyRing;
 
-      BeginKeyRingItemPointer(gpItemPopupSoldier, (UINT8)usOldItemIndex);
-      // BeginItemPointer( gpSMCurrentMerc, (UINT8)uiHandPos );
+      BeginKeyRingItemPointer(gpItemPopupSoldier, (uint8_t)usOldItemIndex);
+      // BeginItemPointer( gpSMCurrentMerc, (uint8_t)uiHandPos );
 
     } else {
       BOOLEAN fOKToGo = FALSE;
@@ -2893,8 +2895,8 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         if (gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER ||
             gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == gpItemPointer->ubKeyID) {
           // Try to place here
-          INT32 const iNumberOfKeysTaken =
-              AddKeysToSlot(*gpItemPopupSoldier, (INT8)uiKeyRing, *gpItemPointer);
+          int32_t const iNumberOfKeysTaken =
+              AddKeysToSlot(*gpItemPopupSoldier, (int8_t)uiKeyRing, *gpItemPointer);
           if (iNumberOfKeysTaken != 0) {
             if (fDeductPoints) {
               // Deduct points
@@ -2909,7 +2911,7 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
             // Dirty
             fInterfacePanelDirty = DIRTYLEVEL2;
 
-            gpItemPointer->ubNumberOfObjects -= (UINT8)iNumberOfKeysTaken;
+            gpItemPointer->ubNumberOfObjects -= (uint8_t)iNumberOfKeysTaken;
 
             // Check if it's the same now!
             if (gpItemPointer->ubNumberOfObjects == 0) {
@@ -2923,11 +2925,11 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
             // Setup a timer....
             // guiMouseOverItemTime = GetJA2Clock( );
             // gfCheckForMouseOverItem = TRUE;
-            // gbCheckForMouseOverItemPos = (INT8)uiHandPos;
+            // gbCheckForMouseOverItemPos = (int8_t)uiHandPos;
           }
         } else {
           // Swap!
-          SwapKeysToSlot(*gpItemPopupSoldier, (INT8)uiKeyRing, *gpItemPointer);
+          SwapKeysToSlot(*gpItemPopupSoldier, (int8_t)uiKeyRing, *gpItemPointer);
 
           if (fDeductPoints) {
             // Deduct points
@@ -2962,10 +2964,10 @@ void KeyRingSlotInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     // Check for # of slots in item
     if (!InItemDescriptionBox()) {
       if (fInMapMode) {
-        // InitKeyItemDescriptionBox(gpItemPopupSoldier, (UINT8)uiKeyRing,
+        // InitKeyItemDescriptionBox(gpItemPopupSoldier, (uint8_t)uiKeyRing,
         // MAP_ITEMDESC_START_X, MAP_ITEMDESC_START_Y);
       } else {
-        InitKeyItemDescriptionBox(gpItemPopupSoldier, (UINT8)uiKeyRing, SM_ITEMDESC_START_X,
+        InitKeyItemDescriptionBox(gpItemPopupSoldier, (uint8_t)uiKeyRing, SM_ITEMDESC_START_X,
                                   SM_ITEMDESC_START_Y);
       }
     }
@@ -3016,7 +3018,7 @@ static bool IsMouseInRegion(MOUSE_REGION const &r) {
 
 static void ConfirmationToDepositMoneyToPlayersAccount(MessageBoxReturnValue);
 
-static void SMInvMoneyButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SMInvMoneyButtonCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason == MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // If the current merc is to far away, dont allow anything to be done
     if (gfSMDisableForItems) return;
@@ -3119,8 +3121,8 @@ void GoToMapScreenFromTactical() {
   gfEnteringMapScreen = TRUE;
 }
 
-void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *pSoldier, UINT32 uiInvPos,
-                                            UINT16 usOldItem, UINT16 usNewItem) {
+void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *pSoldier, uint32_t uiInvPos,
+                                            uint16_t usOldItem, uint16_t usNewItem) {
   // if in attached weapon mode and don't have weapon with GL attached in hand,
   // reset weapon mode
   if (pSoldier->bWeaponMode == WM_ATTACHED &&

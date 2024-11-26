@@ -19,7 +19,7 @@
 
 BOOLEAN gfShowExitGrids = FALSE;
 
-void SetEditorItemsTaskbarMode(UINT16 usNewMode) {
+void SetEditorItemsTaskbarMode(uint16_t usNewMode) {
   UnclickEditorButtons(ITEMS_WEAPONS, ITEMS_KEYS);
   switch (usNewMode) {
     case ITEMS_WEAPONS:
@@ -63,7 +63,7 @@ void SetEditorItemsTaskbarMode(UINT16 usNewMode) {
 
 #define NO_EFFECT 2
 
-void SetEditorBuildingTaskbarMode(UINT16 usNewMode) {
+void SetEditorBuildingTaskbarMode(uint16_t usNewMode) {
   BOOLEAN fNewRoofs, fNewWalls, fNewRoomInfo;
   if (usNewMode == usCurrentMode) {
     ClickEditorButton(usNewMode);
@@ -170,7 +170,7 @@ void SetEditorBuildingTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-void SetEditorTerrainTaskbarMode(UINT16 usNewMode) {
+void SetEditorTerrainTaskbarMode(uint16_t usNewMode) {
   UnclickEditorButton(TERRAIN_FGROUND_TEXTURES);
   UnclickEditorButton(TERRAIN_BGROUND_TEXTURES);
   UnclickEditorButton(TERRAIN_PLACE_CLIFFS);
@@ -232,7 +232,7 @@ void SetEditorTerrainTaskbarMode(UINT16 usNewMode) {
 }
 
 static void ShowExitGrids() {
-  UINT16 i;
+  uint16_t i;
   if (gfShowExitGrids) return;
   gfShowExitGrids = TRUE;
   for (i = 0; i < WORLD_MAX; i++) {
@@ -243,7 +243,7 @@ static void ShowExitGrids() {
 }
 
 void HideExitGrids() {
-  UINT16 i;
+  uint16_t i;
   if (!gfShowExitGrids) return;
   gfShowExitGrids = FALSE;
   for (i = 0; i < WORLD_MAX; i++) {
@@ -260,7 +260,7 @@ void HideExitGrids() {
   }
 }
 
-void SetEditorMapInfoTaskbarMode(UINT16 usNewMode) {
+void SetEditorMapInfoTaskbarMode(uint16_t usNewMode) {
   BOOLEAN fShowExitGrids = FALSE;
   UnclickEditorButton(MAPINFO_ADD_LIGHT1_SOURCE);
   UnclickEditorButton(MAPINFO_DRAW_EXITGRIDS);
@@ -318,7 +318,7 @@ void SetEditorMapInfoTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-void SetEditorSmoothingMode(UINT8 ubNewMode) {
+void SetEditorSmoothingMode(uint8_t ubNewMode) {
   UnclickEditorButtons(MAPINFO_RADIO_NORMAL, MAPINFO_RADIO_CAVES);
   if (iCurrentTaskbar == TASK_BUILDINGS)
     HideEditorButtons(BUILDING_NEW_ROOM, BUILDING_CAVE_DRAWING);

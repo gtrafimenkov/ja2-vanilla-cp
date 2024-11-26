@@ -19,26 +19,28 @@
 #define DEALER_SELLING 1
 
 struct DEALER_POSSIBLE_INV {
-  INT16 sItemIndex;
-  UINT8 ubOptimalNumber;
+  int16_t sItemIndex;
+  uint8_t ubOptimalNumber;
 };
 
-INT8 GetDealersMaxItemAmount(ArmsDealerID, UINT16 usItemIndex);
+int8_t GetDealersMaxItemAmount(ArmsDealerID, uint16_t usItemIndex);
 
 DEALER_POSSIBLE_INV const *GetPointerToDealersPossibleInventory(ArmsDealerID);
 
-UINT8 ChanceOfItemTransaction(ArmsDealerID, UINT16 usItemIndex, BOOLEAN fDealerSelling,
+uint8_t ChanceOfItemTransaction(ArmsDealerID, uint16_t usItemIndex, BOOLEAN fDealerSelling,
+                                BOOLEAN fUsed);
+BOOLEAN ItemTransactionOccurs(ArmsDealerID, uint16_t usItemIndex, BOOLEAN fDealerSelling,
                               BOOLEAN fUsed);
-BOOLEAN ItemTransactionOccurs(ArmsDealerID, UINT16 usItemIndex, BOOLEAN fDealerSelling,
-                              BOOLEAN fUsed);
-UINT8 DetermineInitialInvItems(ArmsDealerID, UINT16 usItemIndex, UINT8 ubChances, BOOLEAN fUsed);
-UINT8 HowManyItemsAreSold(ArmsDealerID, UINT16 usItemIndex, UINT8 ubNumInStock, BOOLEAN fUsed);
-UINT8 HowManyItemsToReorder(UINT8 ubWanted, UINT8 ubStillHave);
+uint8_t DetermineInitialInvItems(ArmsDealerID, uint16_t usItemIndex, uint8_t ubChances,
+                                 BOOLEAN fUsed);
+uint8_t HowManyItemsAreSold(ArmsDealerID, uint16_t usItemIndex, uint8_t ubNumInStock,
+                            BOOLEAN fUsed);
+uint8_t HowManyItemsToReorder(uint8_t ubWanted, uint8_t ubStillHave);
 
 int BobbyRayItemQsortCompare(const void *pArg1, const void *pArg2);
 int ArmsDealerItemQsortCompare(const void *pArg1, const void *pArg2);
-int CompareItemsForSorting(UINT16 usItem1Index, UINT16 usItem2Index, UINT8 ubItem1Quality,
-                           UINT8 ubItem2Quality);
-BOOLEAN CanDealerItemBeSoldUsed(UINT16 usItemIndex);
+int CompareItemsForSorting(uint16_t usItem1Index, uint16_t usItem2Index, uint8_t ubItem1Quality,
+                           uint8_t ubItem2Quality);
+BOOLEAN CanDealerItemBeSoldUsed(uint16_t usItemIndex);
 
 #endif

@@ -32,22 +32,22 @@
 BOOLEAN fReDrawCharProfile = FALSE;
 BOOLEAN fButtonPendingFlag = FALSE;
 
-INT32 iCurrentImpPage = IMP_HOME_PAGE;
-static INT32 iPreviousImpPage = -1;
+int32_t iCurrentImpPage = IMP_HOME_PAGE;
+static int32_t iPreviousImpPage = -1;
 
 // attributes
-INT32 iStrength = 55;
-INT32 iDexterity = 55;
-INT32 iAgility = 55;
-INT32 iWisdom = 55;
-INT32 iLeadership = 55;
-INT32 iHealth = 55;
+int32_t iStrength = 55;
+int32_t iDexterity = 55;
+int32_t iAgility = 55;
+int32_t iWisdom = 55;
+int32_t iLeadership = 55;
+int32_t iHealth = 55;
 
 // skills
-INT32 iMarksmanship = 55;
-INT32 iMedical = 55;
-INT32 iExplosives = 55;
-INT32 iMechanical = 55;
+int32_t iMarksmanship = 55;
+int32_t iMedical = 55;
+int32_t iExplosives = 55;
+int32_t iMechanical = 55;
 
 // gender
 BOOLEAN fCharacterIsMale = TRUE;
@@ -57,14 +57,14 @@ wchar_t pFullName[NAME_LENGTH];
 wchar_t pNickName[NICKNAME_LENGTH];
 
 // skills
-INT32 iSkillA = 0;
-INT32 iSkillB = 0;
+int32_t iSkillA = 0;
+int32_t iSkillB = 0;
 
 // personality
-INT32 iPersonality = 0;
+int32_t iPersonality = 0;
 
 // attitude
-INT32 iAttitude = 0;
+int32_t iAttitude = 0;
 
 // IMP global buttons
 static GUIButtonRef giIMPButton[1];
@@ -72,9 +72,9 @@ static BUTTON_PICS *giIMPButtonImage[1];
 
 // visted subpages
 static BOOLEAN fVisitedIMPSubPages[IMP_NUM_PAGES];
-extern INT32 iCurrentPortrait;
+extern int32_t iCurrentPortrait;
 extern int iCurrentVoices;
-extern INT32 giMaxPersonalityQuizQuestion;
+extern int32_t giMaxPersonalityQuizQuestion;
 extern BOOLEAN fStartOverFlag;
 
 extern void SetAttributes();
@@ -521,7 +521,7 @@ static void RemoveImpGraphics() {
   DeleteAboutUsIndentFrame();
 }
 
-static void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPCancelCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPButtons() {
   // create all the buttons global to the IMP system
@@ -546,7 +546,7 @@ static void DestroyIMPButtons() {
   UnloadButtonImage(giIMPButtonImage[0]);
 }
 
-static void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPCancelCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // back to the main page, otherwise, back to home page
     switch (iCurrentImpPage) {
@@ -590,7 +590,7 @@ static void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 void InitIMPSubPageList() {
-  INT32 iCounter = 0;
+  int32_t iCounter = 0;
 
   for (iCounter = 0; iCounter < IMP_CONFIRM; iCounter++) {
     fVisitedIMPSubPages[iCounter] = FALSE;

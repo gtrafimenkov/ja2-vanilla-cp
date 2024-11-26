@@ -3,6 +3,6 @@
 
 #include "SGP/Types.h"
 
-void LoadItemInfo(UINT16 ubIndex, wchar_t Info[]);
+void LoadItemInfo(uint16_t ubIndex, wchar_t Info[]);
 
 #endif

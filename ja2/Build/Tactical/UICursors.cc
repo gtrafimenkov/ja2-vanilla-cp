@@ -98,7 +98,7 @@ UICursorID GetProperItemCursor(SOLDIERTYPE *const s, GridNo const map_pos,
    * CC has added this attackingWeapon stuff and I need to update it constantly
    * for CTGH algorithms */
   if (gTacticalStatus.ubAttackBusyCount == 0) {
-    UINT16 const in_hand = s->inv[HANDPOS].usItem;
+    uint16_t const in_hand = s->inv[HANDPOS].usItem;
     if (Item[in_hand].usItemClass & IC_WEAPON) s->usAttackingWeapon = in_hand;
   }
 
@@ -198,9 +198,9 @@ static UICursorID HandleActivatedTargetCursor(SOLDIERTYPE *const s, GridNo const
       gfUIDisplayActionPointsInvalid = TRUE;
       max_point_limit_hit = true;
     } else {
-      UINT8 const future_aim = s->bShownAimTime + 2;
+      uint8_t const future_aim = s->bShownAimTime + 2;
       if (future_aim <= REFINE_AIM_5) {
-        INT16 const AP_costs = MinAPsToAttack(s, map_pos, TRUE) + future_aim / 2;
+        int16_t const AP_costs = MinAPsToAttack(s, map_pos, TRUE) + future_aim / 2;
         if (!EnoughPoints(s, AP_costs, 0, FALSE)) {
           enough_points = false;
         }
@@ -226,7 +226,7 @@ static UICursorID HandleActivatedTargetCursor(SOLDIERTYPE *const s, GridNo const
 
   if (recalc) {
     SOLDIERTYPE const *const tgt = gUIFullTarget;
-    UINT8 const chance =
+    uint8_t const chance =
         tgt ? SoldierToSoldierBodyPartChanceToGetThrough(s, tgt, s->bAimShotLocation)
             : SoldierToLocationChanceToGetThrough(s, map_pos, gsInterfaceLevel, s->bTargetCubeLevel,
                                                   0);
@@ -319,7 +319,7 @@ static UICursorID HandleActivatedTargetCursor(SOLDIERTYPE *const s, GridNo const
   }
 
   if (!max_point_limit_hit) {
-    UINT16 const free_cursor_name = gUICursors[cursor].usFreeCursorName;
+    uint16_t const free_cursor_name = gUICursors[cursor].usFreeCursorName;
     RemoveCursorFlags(free_cursor_name, CURSOR_TO_FLASH | CURSOR_TO_PLAY_SOUND);
     if (gfCannotGetThrough) {
       SetCursorSpecialFrame(free_cursor_name, 1);
@@ -406,7 +406,7 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE *const s, BOOLEAN const disp
     if (map_pos == NOWHERE) return;
 
     SOLDIERTYPE *tgt = 0;
-    UINT16 flags;
+    uint16_t flags;
 
     // Determine which body part it's on
     for (LEVELNODE *n = gpWorldLevelData[map_pos].pMercHead; n; n = n->pNext) {
@@ -424,8 +424,8 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE *const s, BOOLEAN const disp
       flags = n->uiAnimHitLocationFlags;
       if (flags & (TILE_FLAG_NORTH_HALF | TILE_FLAG_SOUTH_HALF | TILE_FLAG_WEST_HALF |
                    TILE_FLAG_EAST_HALF | TILE_FLAG_TOP_HALF | TILE_FLAG_BOTTOM_HALF)) {
-        INT16 sCellX;
-        INT16 sCellY;
+        int16_t sCellX;
+        int16_t sCellY;
         GetMouseWorldCoords(&sCellX, &sCellY);
         // We are only interested in the sub-tile coordinates
         sCellX %= CELL_X_SIZE;
@@ -437,8 +437,8 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE *const s, BOOLEAN const disp
         if (flags & TILE_FLAG_EAST_HALF && sCellX <= CELL_X_SIZE / 2) continue;
 
         if (flags & TILE_FLAG_TOP_HALF) {
-          INT16 sScreenX;
-          INT16 sScreenY;
+          int16_t sScreenX;
+          int16_t sScreenY;
           FromCellToScreenCoordinates(sCellX, sCellY, &sScreenX, &sScreenY);
 
           // Check for Below
@@ -446,8 +446,8 @@ static void DetermineCursorBodyLocation(SOLDIERTYPE *const s, BOOLEAN const disp
         }
 
         if (flags & TILE_FLAG_BOTTOM_HALF) {
-          INT16 sScreenX;
-          INT16 sScreenY;
+          int16_t sScreenX;
+          int16_t sScreenY;
           FromCellToScreenCoordinates(sCellX, sCellY, &sScreenX, &sScreenY);
 
           // Check for Below
@@ -537,8 +537,8 @@ static UICursorID HandleKnifeCursor(SOLDIERTYPE *const s, GridNo const map_pos,
         if (s->bShownAimTime == REFINE_KNIFE_1) return KNIFE_HIT_UICURSOR;
       }
 
-      INT8 const future_aim = REFINE_KNIFE_2;
-      INT16 const ap_costs = CalcTotalAPsToAttack(s, map_pos, TRUE, future_aim / 2);
+      int8_t const future_aim = REFINE_KNIFE_2;
+      int16_t const ap_costs = CalcTotalAPsToAttack(s, map_pos, TRUE, future_aim / 2);
       if (!EnoughPoints(s, ap_costs, 0, FALSE)) enough_points = false;
     }
 
@@ -605,8 +605,8 @@ static UICursorID HandlePunchCursor(SOLDIERTYPE *const s, GridNo const map_pos,
         if (s->bShownAimTime == REFINE_PUNCH_1) return ACTION_PUNCH_RED;
       }
 
-      INT8 const future_aim = REFINE_PUNCH_2;
-      INT16 const ap_costs = CalcTotalAPsToAttack(s, map_pos, TRUE, future_aim / 2);
+      int8_t const future_aim = REFINE_PUNCH_2;
+      int16_t const ap_costs = CalcTotalAPsToAttack(s, map_pos, TRUE, future_aim / 2);
       if (!EnoughPoints(s, ap_costs, 0, FALSE)) enough_points = false;
     }
 
@@ -710,8 +710,8 @@ static UICursorID HandleNonActivatedTossCursor(SOLDIERTYPE *const s, GridNo cons
       OBJECTTYPE TempObject = o;
 
       // Do we have a launchable?
-      for (INT8 i = 0; i != MAX_ATTACHMENTS; ++i) {
-        UINT16 const attach_item = o.usAttachItem[i];
+      for (int8_t i = 0; i != MAX_ATTACHMENTS; ++i) {
+        uint16_t const attach_item = o.usAttachItem[i];
         if (attach_item == NOTHING) continue;
         if (!(Item[attach_item].usItemClass & IC_EXPLOSV)) continue;
         CreateItem(attach_item, o.bAttachStatus[i], &TempObject);
@@ -719,14 +719,14 @@ static UICursorID HandleNonActivatedTossCursor(SOLDIERTYPE *const s, GridNo cons
       }
 
       if (s->bWeaponMode == WM_ATTACHED) {
-        INT8 const slot = FindAttachment(&o, UNDER_GLAUNCHER);
+        int8_t const slot = FindAttachment(&o, UNDER_GLAUNCHER);
         if (slot != NO_SLOT) {
           CreateItem(UNDER_GLAUNCHER, o.bAttachStatus[slot], &TempObject);
         }
       }
 
-      INT16 final_grid_no;
-      INT8 level;
+      int16_t final_grid_no;
+      int8_t level;
       bad_ctgh = !CalculateLaunchItemChanceToGetThrough(s, &TempObject, map_pos, gsInterfaceLevel,
                                                         gsInterfaceLevel * 256, &final_grid_no,
                                                         armed, &level, TRUE);
@@ -770,7 +770,7 @@ static UICursorID HandleTinCanCursor(SOLDIERTYPE *const s, GridNo const map_pos,
 
   // Check if a door exists here
   STRUCTURE *structure;
-  INT16 int_tile_grid_no;
+  int16_t int_tile_grid_no;
   LEVELNODE *const int_tile =
       GetCurInteractiveTileGridNoAndStructure(&int_tile_grid_no, &structure);
   return int_tile && structure->fFlags & STRUCTURE_ANYDOOR ? PLACE_TINCAN_GREY_UICURSOR
@@ -874,11 +874,11 @@ void HandleLeftClickCursor(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
-  INT16 sAPCosts;
-  INT8 bFutureAim;
-  INT16 sGridNo;
-  INT8 bTargetLevel;
+void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, int16_t usMapPos) {
+  int16_t sAPCosts;
+  int8_t bFutureAim;
+  int16_t sGridNo;
+  int8_t bTargetLevel;
 
   ItemCursor const ubCursor = GetActionModeCursor(pSoldier);
 
@@ -894,7 +894,7 @@ void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
         // pSoldier->bShownAimTime = REFINE_AIM_BURST;
       } else {
         sGridNo = usMapPos;
-        bTargetLevel = (INT8)gsInterfaceLevel;
+        bTargetLevel = (int8_t)gsInterfaceLevel;
 
         // Look for a target here...
         const SOLDIERTYPE *const tgt = gUIFullTarget;
@@ -908,10 +908,10 @@ void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
           }
         }
 
-        bFutureAim = (INT8)(pSoldier->bShownAimTime + 2);
+        bFutureAim = (int8_t)(pSoldier->bShownAimTime + 2);
 
         if (bFutureAim <= REFINE_AIM_5) {
-          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (int8_t)(bFutureAim / 2));
 
           // Determine if we can afford!
           if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
@@ -942,10 +942,10 @@ void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
 
     case PUNCHCURS:
 
-      bFutureAim = (INT8)(pSoldier->bShownAimTime + REFINE_PUNCH_2);
+      bFutureAim = (int8_t)(pSoldier->bShownAimTime + REFINE_PUNCH_2);
 
       if (bFutureAim <= REFINE_PUNCH_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (int8_t)(bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
@@ -976,10 +976,10 @@ void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
 
     case KNIFECURS:
 
-      bFutureAim = (INT8)(pSoldier->bShownAimTime + REFINE_KNIFE_2);
+      bFutureAim = (int8_t)(pSoldier->bShownAimTime + REFINE_KNIFE_2);
 
       if (bFutureAim <= REFINE_KNIFE_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (int8_t)(bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
@@ -1018,7 +1018,7 @@ void HandleRightClickAdjustCursor(SOLDIERTYPE *pSoldier, INT16 usMapPos) {
 }
 
 ItemCursor GetActionModeCursor(SOLDIERTYPE const *const pSoldier) {
-  UINT16 usInHand;
+  uint16_t usInHand;
 
   // If we are an EPC, do nothing....
   // if ( ( pSoldier->uiStatusFlags & SOLDIER_VEHICLE ) )

@@ -3,21 +3,21 @@
 
 #include "JA2Types.h"
 
-void ReducePointsForFatigue(const SOLDIERTYPE *s, UINT16 *pusPoints);
-extern INT32 GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, INT32 iSkill);
-extern INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bDifficulty);
-extern INT8 CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining);
+void ReducePointsForFatigue(const SOLDIERTYPE *s, uint16_t *pusPoints);
+extern int32_t GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, int32_t iSkill);
+extern int32_t SkillCheck(SOLDIERTYPE *pSoldier, int8_t bReason, int8_t bDifficulty);
+extern int8_t CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining);
 
-INT8 EffectiveStrength(const SOLDIERTYPE *s);
-INT8 EffectiveWisdom(const SOLDIERTYPE *s);
-INT8 EffectiveAgility(const SOLDIERTYPE *s);
-INT8 EffectiveMechanical(const SOLDIERTYPE *s);
-INT8 EffectiveExplosive(const SOLDIERTYPE *s);
-INT8 EffectiveLeadership(const SOLDIERTYPE *s);
-INT8 EffectiveMarksmanship(const SOLDIERTYPE *s);
-INT8 EffectiveDexterity(const SOLDIERTYPE *s);
-INT8 EffectiveExpLevel(const SOLDIERTYPE *s);
-INT8 EffectiveMedical(const SOLDIERTYPE *s);
+int8_t EffectiveStrength(const SOLDIERTYPE *s);
+int8_t EffectiveWisdom(const SOLDIERTYPE *s);
+int8_t EffectiveAgility(const SOLDIERTYPE *s);
+int8_t EffectiveMechanical(const SOLDIERTYPE *s);
+int8_t EffectiveExplosive(const SOLDIERTYPE *s);
+int8_t EffectiveLeadership(const SOLDIERTYPE *s);
+int8_t EffectiveMarksmanship(const SOLDIERTYPE *s);
+int8_t EffectiveDexterity(const SOLDIERTYPE *s);
+int8_t EffectiveExpLevel(const SOLDIERTYPE *s);
+int8_t EffectiveMedical(const SOLDIERTYPE *s);
 
 enum SkillChecks {
   NO_CHECK = 0,

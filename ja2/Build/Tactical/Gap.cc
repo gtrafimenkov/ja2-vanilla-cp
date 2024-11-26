@@ -26,11 +26,11 @@ static void AudioGapListInit(const char *zSoundFile, AudioGapList *pGapList) {
 
     // gap file exists
     // now read in the AUDIO_GAPs
-    const UINT32 size = FileGetSize(f);
+    const uint32_t size = FileGetSize(f);
 
-    const UINT32 count = size / 8;
+    const uint32_t count = size / 8;
     if (count > 0) {
-      BYTE *data = MALLOCN(BYTE, size);
+      uint8_t *data = MALLOCN(uint8_t, size);
       FileRead(f, data, size);
 
       AUDIO_GAP *const gaps = MALLOCN(AUDIO_GAP, count);
@@ -38,10 +38,10 @@ static void AudioGapListInit(const char *zSoundFile, AudioGapList *pGapList) {
       pGapList->gaps = gaps;
       pGapList->end = gaps + count;
 
-      const BYTE *d = data;
-      for (UINT32 i = 0; i < count; ++i) {
-        UINT32 start;
-        UINT32 end;
+      const uint8_t *d = data;
+      for (uint32_t i = 0; i < count; ++i) {
+        uint32_t start;
+        uint32_t end;
 
         EXTR_U32(d, start);
         EXTR_U32(d, end);
@@ -72,7 +72,7 @@ void AudioGapListDone(AudioGapList *pGapList) {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Audio Gap List Deleted");
 }
 
-BOOLEAN PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList) {
+BOOLEAN PollAudioGap(uint32_t uiSampleNum, AudioGapList *pGapList) {
   /* This procedure will access the AudioGapList pertaining to the .wav about
    * to be played and returns whether there is a gap currently.  This is done
    * by going to the current AUDIO_GAP element in the AudioGapList, comparing
@@ -89,7 +89,7 @@ BOOLEAN PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList) {
   const AUDIO_GAP *i = pGapList->gaps;
   if (i == NULL) return FALSE;
 
-  const UINT32 time = SoundGetPosition(uiSampleNum);
+  const uint32_t time = SoundGetPosition(uiSampleNum);
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Sound Sample Time is %d", time));
 
   // Check to see if we have fallen behind.  If so, catch up
@@ -108,11 +108,11 @@ BOOLEAN PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList) {
   }
 }
 
-UINT32 PlayJA2GapSample(const char *zSoundFile, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan,
-                        AudioGapList *pData) {
+uint32_t PlayJA2GapSample(const char *zSoundFile, uint32_t ubVolume, uint32_t ubLoops,
+                          uint32_t uiPan, AudioGapList *pData) {
   // Setup Gap Detection, if it is not null
   if (pData != NULL) AudioGapListInit(zSoundFile, pData);
 
-  const UINT32 vol = CalculateSpeechVolume(ubVolume);
+  const uint32_t vol = CalculateSpeechVolume(ubVolume);
   return SoundPlayStreamedFile(zSoundFile, vol, uiPan, ubLoops, NULL, NULL);
 }

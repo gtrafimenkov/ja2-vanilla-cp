@@ -20,7 +20,8 @@
 
 UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoTail = NULL;
 
-static UNDERGROUND_SECTORINFO *NewUndergroundNode(UINT8 const x, UINT8 const y, UINT8 const z) {
+static UNDERGROUND_SECTORINFO *NewUndergroundNode(uint8_t const x, uint8_t const y,
+                                                  uint8_t const z) {
   UNDERGROUND_SECTORINFO *const u = MALLOCZ(UNDERGROUND_SECTORINFO);
   u->ubSectorX = x;
   u->ubSectorY = y;
@@ -114,30 +115,30 @@ void BuildUndergroundSectorInfoList() {
   }
   // J9 feeding zone
   curr = NewUndergroundNode(9, 10, 2);
-  curr->ubNumCreatures = (UINT8)(2 + gGameOptions.ubDifficultyLevel * 2 + Random(2));
+  curr->ubNumCreatures = (uint8_t)(2 + gGameOptions.ubDifficultyLevel * 2 + Random(2));
 
   // K4
   curr = NewUndergroundNode(4, 11, 1);
-  curr->ubNumTroops = (UINT8)(6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
-  curr->ubNumElites = (UINT8)(4 + gGameOptions.ubDifficultyLevel + Random(2));
+  curr->ubNumTroops = (uint8_t)(6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
+  curr->ubNumElites = (uint8_t)(4 + gGameOptions.ubDifficultyLevel + Random(2));
 
   // O3
   curr = NewUndergroundNode(3, 15, 1);
-  curr->ubNumTroops = (UINT8)(6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
-  curr->ubNumElites = (UINT8)(4 + gGameOptions.ubDifficultyLevel + Random(2));
+  curr->ubNumTroops = (uint8_t)(6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
+  curr->ubNumElites = (uint8_t)(4 + gGameOptions.ubDifficultyLevel + Random(2));
   curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
 
   // P3
   curr = NewUndergroundNode(3, 16, 1);
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
-      curr->ubNumElites = (UINT8)(8 + Random(3));
+      curr->ubNumElites = (uint8_t)(8 + Random(3));
       break;
     case DIF_LEVEL_MEDIUM:
-      curr->ubNumElites = (UINT8)(10 + Random(5));
+      curr->ubNumElites = (uint8_t)(10 + Random(5));
       break;
     case DIF_LEVEL_HARD:
-      curr->ubNumElites = (UINT8)(14 + Random(6));
+      curr->ubNumElites = (uint8_t)(14 + Random(6));
       break;
   }
   curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;

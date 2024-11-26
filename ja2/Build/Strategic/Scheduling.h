@@ -40,32 +40,32 @@ enum {
 
 struct SCHEDULENODE {
   SCHEDULENODE *next;
-  UINT16 usTime[MAX_SCHEDULE_ACTIONS];   // converted to minutes 12:30PM would be
-                                         // 12*60 + 30 = 750
-  UINT16 usData1[MAX_SCHEDULE_ACTIONS];  // typically the gridno, but depends on
-                                         // the action
-  UINT16 usData2[MAX_SCHEDULE_ACTIONS];  // secondary information, not used by
-                                         // most actions
-  UINT8 ubAction[MAX_SCHEDULE_ACTIONS];
-  UINT8 ubScheduleID;
-  UINT16 usFlags;
+  uint16_t usTime[MAX_SCHEDULE_ACTIONS];   // converted to minutes 12:30PM would be
+                                           // 12*60 + 30 = 750
+  uint16_t usData1[MAX_SCHEDULE_ACTIONS];  // typically the gridno, but depends on
+                                           // the action
+  uint16_t usData2[MAX_SCHEDULE_ACTIONS];  // secondary information, not used by
+                                           // most actions
+  uint8_t ubAction[MAX_SCHEDULE_ACTIONS];
+  uint8_t ubScheduleID;
+  uint16_t usFlags;
   SOLDIERTYPE *soldier;
 };
 
-extern UINT8 gubScheduleID;
+extern uint8_t gubScheduleID;
 extern SCHEDULENODE *gpScheduleList;
 
 // Access functions
-SCHEDULENODE *GetSchedule(UINT8 ubScheduleID);
+SCHEDULENODE *GetSchedule(uint8_t ubScheduleID);
 
 // Removes all schedules from the event list, and cleans out the list.
 void DestroyAllSchedules();
 void DestroyAllSchedulesWithoutDestroyingEvents();
 
 // This is the callback whenever a schedule is processed
-void ProcessTacticalSchedule(UINT8 ubScheduleID);
+void ProcessTacticalSchedule(uint8_t ubScheduleID);
 
-void DeleteSchedule(UINT8 ubScheduleID);
+void DeleteSchedule(uint8_t ubScheduleID);
 
 void LoadSchedules(HWFILE);
 void LoadSchedulesFromSave(HWFILE);
@@ -92,10 +92,10 @@ void PrepareSchedulesForEditorExit();
 // SOLDIERINITNODE->ubScheduleID's.
 void OptimizeSchedules();
 
-BOOLEAN ExtractScheduleDoorLockAndUnlockInfo(SOLDIERTYPE *pSoldier, UINT32 *puiOpeningTime,
-                                             UINT32 *puiClosingTime);
+BOOLEAN ExtractScheduleDoorLockAndUnlockInfo(SOLDIERTYPE *pSoldier, uint32_t *puiOpeningTime,
+                                             uint32_t *puiClosingTime);
 
-BOOLEAN BumpAnyExistingMerc(INT16 sGridNo);
+BOOLEAN BumpAnyExistingMerc(int16_t sGridNo);
 
 /* used to fix a bug in the editor where the schedules were reversed.  Because
  * only some maps were effected, this feature was required. */

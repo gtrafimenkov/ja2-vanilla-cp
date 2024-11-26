@@ -58,7 +58,7 @@ void LoadCarPortraitValues() {
       INTERFACEDIR "/jeep.sti"};
 
   if (giCarPortraits[0]) return;
-  for (INT32 i = 0; i != NUMBER_CAR_PORTRAITS; ++i) {
+  for (int32_t i = 0; i != NUMBER_CAR_PORTRAITS; ++i) {
     giCarPortraits[i] = AddVideoObjectFromFile(pbCarPortraitFileNames[i]);
   }
 }
@@ -67,22 +67,22 @@ void LoadCarPortraitValues() {
 void UnLoadCarPortraits() {
   // car protraits loaded?
   if (!giCarPortraits[0]) return;
-  for (INT32 i = 0; i != NUMBER_CAR_PORTRAITS; ++i) {
+  for (int32_t i = 0; i != NUMBER_CAR_PORTRAITS; ++i) {
     DeleteVideoObject(giCarPortraits[i]);
     giCarPortraits[i] = 0;
   }
 }
 
-static void DrawBar(UINT32 const XPos, UINT32 const YPos, UINT32 const Height, UINT16 const Color,
-                    UINT16 const ShadowColor, UINT16 *const DestBuf) {
+static void DrawBar(uint32_t const XPos, uint32_t const YPos, uint32_t const Height,
+                    uint16_t const Color, uint16_t const ShadowColor, uint16_t *const DestBuf) {
   LineDraw(TRUE, XPos + 0, YPos, XPos + 0, YPos - Height, ShadowColor, DestBuf);
   LineDraw(TRUE, XPos + 1, YPos, XPos + 1, YPos - Height, Color, DestBuf);
   LineDraw(TRUE, XPos + 2, YPos, XPos + 2, YPos - Height, ShadowColor, DestBuf);
 }
 
-static void DrawLifeUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 YPos,
-                          UINT32 const MaxHeight, UINT16 *const pDestBuf) {
-  UINT32 Height;
+static void DrawLifeUIBar(SOLDIERTYPE const &s, uint32_t const XPos, uint32_t YPos,
+                          uint32_t const MaxHeight, uint16_t *const pDestBuf) {
+  uint32_t Height;
 
   // FIRST DO std::max LIFE
   Height = MaxHeight * s.bLife / 100;
@@ -90,7 +90,7 @@ static void DrawLifeUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 YPos,
 
   // NOW DO BANDAGE
   // Calculate bandage
-  UINT32 Bandage = s.bLifeMax - s.bLife - s.bBleeding;
+  uint32_t Bandage = s.bLifeMax - s.bLife - s.bBleeding;
   if (Bandage != 0) {
     YPos -= Height;
     Height = MaxHeight * Bandage / 100;
@@ -107,9 +107,9 @@ static void DrawLifeUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 YPos,
   }
 }
 
-static void DrawBreathUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 const sYPos,
-                            UINT32 const MaxHeight, UINT16 *const pDestBuf) {
-  UINT32 Height;
+static void DrawBreathUIBar(SOLDIERTYPE const &s, uint32_t const XPos, uint32_t const sYPos,
+                            uint32_t const MaxHeight, uint16_t *const pDestBuf) {
+  uint32_t Height;
 
   if (s.bBreathMax <= 97) {
     Height = MaxHeight * (s.bBreathMax + 3) / 100;
@@ -128,19 +128,19 @@ static void DrawBreathUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 cons
           Get16BPPColor(CURR_BREATH_BAR_SHADOW), pDestBuf);
 }
 
-static void DrawMoraleUIBar(SOLDIERTYPE const &s, UINT32 const XPos, UINT32 const YPos,
-                            UINT32 const MaxHeight, UINT16 *const pDestBuf) {
-  UINT32 const Height = MaxHeight * s.bMorale / 100;
+static void DrawMoraleUIBar(SOLDIERTYPE const &s, uint32_t const XPos, uint32_t const YPos,
+                            uint32_t const MaxHeight, uint16_t *const pDestBuf) {
+  uint32_t const Height = MaxHeight * s.bMorale / 100;
   DrawBar(XPos, YPos, Height, Get16BPPColor(MORALE_BAR), Get16BPPColor(MORALE_BAR_SHADOW),
           pDestBuf);
 }
 
-void DrawSoldierUIBars(SOLDIERTYPE const &s, INT16 const sXPos, INT16 const sYPos,
+void DrawSoldierUIBars(SOLDIERTYPE const &s, int16_t const sXPos, int16_t const sYPos,
                        BOOLEAN const fErase, SGPVSurface *const uiBuffer) {
-  const UINT32 BarWidth = 3;
-  const UINT32 BarHeight = 42;
-  const UINT32 BreathOff = 6;
-  const UINT32 MoraleOff = 12;
+  const uint32_t BarWidth = 3;
+  const uint32_t BarHeight = 42;
+  const uint32_t BreathOff = 6;
+  const uint32_t MoraleOff = 12;
 
   // Erase what was there
   if (fErase) {
@@ -152,7 +152,7 @@ void DrawSoldierUIBars(SOLDIERTYPE const &s, INT16 const sXPos, INT16 const sYPo
   if (!(s.uiStatusFlags & SOLDIER_ROBOT)) {
     // DO std::max BREATH
     // brown guy
-    UINT16 Region;
+    uint16_t Region;
     if (guiCurrentScreen != MAP_SCREEN && GetSelectedMan() == &s &&
         gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(&s)) {
       Region = 1;  // gold, the second entry in the .sti
@@ -165,7 +165,7 @@ void DrawSoldierUIBars(SOLDIERTYPE const &s, INT16 const sXPos, INT16 const sYPo
 
   SGPVSurface::Lock l(uiBuffer);
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
 
   DrawLifeUIBar(s, sXPos, sYPos, BarHeight, pDestBuf);
   if (!(s.uiStatusFlags & SOLDIER_ROBOT)) {
@@ -176,10 +176,10 @@ void DrawSoldierUIBars(SOLDIERTYPE const &s, INT16 const sXPos, INT16 const sYPo
   }
 }
 
-void DrawItemUIBarEx(OBJECTTYPE const &o, const UINT8 ubStatus, const INT16 x, const INT16 y,
-                     INT16 max_h, const INT16 sColor1, const INT16 sColor2,
+void DrawItemUIBarEx(OBJECTTYPE const &o, const uint8_t ubStatus, const int16_t x, const int16_t y,
+                     int16_t max_h, const int16_t sColor1, const int16_t sColor2,
                      SGPVSurface *const uiBuffer) {
-  INT16 value;
+  int16_t value;
   // Adjust for ammo, other things
   INVTYPE const &item = Item[o.usItem];
   if (ubStatus >= DRAW_ITEM_STATUS_ATTACHMENT1) {
@@ -196,10 +196,10 @@ void DrawItemUIBarEx(OBJECTTYPE const &o, const UINT8 ubStatus, const INT16 x, c
   {
     SGPVSurface::Lock l(uiBuffer);
     SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    UINT16 *const pDestBuf = l.Buffer<UINT16>();
+    uint16_t *const pDestBuf = l.Buffer<uint16_t>();
 
     --max_h;  // LineDraw() includes the end point
-    const INT h = max_h * value / 100;
+    const int32_t h = max_h * value / 100;
     LineDraw(TRUE, x, y, x, y - h, sColor1, pDestBuf);
     LineDraw(TRUE, x + 1, y, x + 1, y - h, sColor2, pDestBuf);
   }
@@ -211,10 +211,10 @@ void DrawItemUIBarEx(OBJECTTYPE const &o, const UINT8 ubStatus, const INT16 x, c
   }
 }
 
-void RenderSoldierFace(SOLDIERTYPE const &s, INT16 const sFaceX, INT16 const sFaceY) {
+void RenderSoldierFace(SOLDIERTYPE const &s, int16_t const sFaceX, int16_t const sFaceY) {
   if (s.uiStatusFlags & SOLDIER_VEHICLE) {
     // just draw the vehicle
-    const UINT8 vehicle_type = pVehicleList[s.bVehicleID].ubVehicleType;
+    const uint8_t vehicle_type = pVehicleList[s.bVehicleID].ubVehicleType;
     BltVideoObject(guiSAVEBUFFER, giCarPortraits[vehicle_type], 0, sFaceX, sFaceY);
     RestoreExternBackgroundRect(sFaceX, sFaceY, FACE_WIDTH, FACE_HEIGHT);
   } else if (s.face->uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE)  // OK, check if this face actually

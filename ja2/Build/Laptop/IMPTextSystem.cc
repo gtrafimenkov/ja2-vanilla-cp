@@ -21,16 +21,16 @@
 #define IMP_IDENT_WIDTH 96
 
 // the length of persona questions
-static const INT32 iIMPQuestionLengths[25] = {
+static const int32_t iIMPQuestionLengths[25] = {
     7, 5, 5, 6, 5, 6, 5, 5, 5, 5, 6, 9, 5, 5, 5, 5, 5, 5, 5, 5, 7, 10, 6, 5, 5,
 };
 
 #define QTN_FIRST_COLUMN_X 80
 #define QTN_SECOND_COLUMN_X 320
 
-static void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLength,
-                                  INT16 sIMPTextRecordNumber, Font const font, UINT8 ubColor,
-                                  BOOLEAN fShadow, UINT32 uiFlags) {
+static void LoadAndDisplayIMPText(int16_t sStartX, int16_t sStartY, int16_t sLineLength,
+                                  int16_t sIMPTextRecordNumber, Font const font, uint8_t ubColor,
+                                  BOOLEAN fShadow, uint32_t uiFlags) {
   // this procedure will load and display to the screen starting at postion X, Y
   // relative to the start of the laptop screen it will access record
   // sIMPTextRecordNumber and go until all records following it but before the
@@ -53,7 +53,7 @@ static void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLengt
 static void PrintIMPPersonalityQuizQuestionAndAnswers();
 
 void PrintImpText() {
-  INT16 sWidth = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
+  int16_t sWidth = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
 
   // looks at current page and prints text needed
   switch (iCurrentImpPage) {
@@ -110,9 +110,9 @@ void PrintImpText() {
                             FONT14ARIAL, FONT_WHITE, TRUE, CENTER_JUSTIFIED);
 
       // set up for IMP text for title box area
-      UINT16 const x = LAPTOP_SCREEN_UL_X + 173;
-      UINT16 const y = LAPTOP_SCREEN_WEB_UL_Y + 91;
-      UINT16 const w = 329 - 173;
+      uint16_t const x = LAPTOP_SCREEN_UL_X + 173;
+      uint16_t const y = LAPTOP_SCREEN_WEB_UL_Y + 91;
+      uint16_t const w = 329 - 173;
       switch (iCurrentProfileMode) {
         case 0:
           LoadAndDisplayIMPText(x, y, w, IMP_MAIN_2, FONT10ARIAL, 142, TRUE, 0);
@@ -311,17 +311,17 @@ void PrintImpText() {
   }
 }
 
-static void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset);
+static void OffSetQuestionForFemaleSpecificQuestions(int32_t *iCurrentOffset);
 
 static void PrintIMPPersonalityQuizQuestionAndAnswers() {
   if (giCurrentPersonalityQuizQuestion < 0) {
     return;
   }
 
-  INT32 iOffset = 0;
+  int32_t iOffset = 0;
 
   // how far into text is the question?
-  for (INT32 iCounter = 0; iCounter < giCurrentPersonalityQuizQuestion; iCounter++) {
+  for (int32_t iCounter = 0; iCounter < giCurrentPersonalityQuizQuestion; iCounter++) {
     // incrment until question is found
     iOffset += iIMPQuestionLengths[iCounter];
   }
@@ -332,7 +332,7 @@ static void PrintIMPPersonalityQuizQuestionAndAnswers() {
   }
 
   // how many answers are there?
-  INT32 n = iIMPQuestionLengths[giCurrentPersonalityQuizQuestion];
+  int32_t n = iIMPQuestionLengths[giCurrentPersonalityQuizQuestion];
 
   // question is at IMP_QUESTION_1 + iOffset and there are n - 1 answers
   // afterwards
@@ -341,20 +341,20 @@ static void PrintIMPPersonalityQuizQuestionAndAnswers() {
                         IMP_QUESTION_1 + iOffset, FONT10ARIAL, FONT_WHITE, TRUE, LEFT_JUSTIFIED);
 
   // use extra wide columns for 4 or less answers
-  INT16 w = (n - 1 <= 4 ? 390 : 160);
+  int16_t w = (n - 1 <= 4 ? 390 : 160);
 
   // answers
-  for (INT32 i = 0; i < n - 1; ++i) {
-    INT16 x = LAPTOP_SCREEN_UL_X + (i < 4 ? QTN_FIRST_COLUMN_X : QTN_SECOND_COLUMN_X);
-    INT16 y = LAPTOP_SCREEN_WEB_UL_Y + 100 + 50 * (i % 4);
+  for (int32_t i = 0; i < n - 1; ++i) {
+    int16_t x = LAPTOP_SCREEN_UL_X + (i < 4 ? QTN_FIRST_COLUMN_X : QTN_SECOND_COLUMN_X);
+    int16_t y = LAPTOP_SCREEN_WEB_UL_Y + 100 + 50 * (i % 4);
     LoadAndDisplayIMPText(x, y, w, IMP_QUESTION_1 + iOffset + 1 + i, FONT10ARIAL, 142, TRUE,
                           LEFT_JUSTIFIED);
   }
 }
 
-static void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset) {
+static void OffSetQuestionForFemaleSpecificQuestions(int32_t *iCurrentOffset) {
   // find the extra
-  INT32 iExtraOffSet = 0;
+  int32_t iExtraOffSet = 0;
   switch (giCurrentPersonalityQuizQuestion) {
     case 13:
       iExtraOffSet += iIMPQuestionLengths[9]; /* FALLTHROUGH */

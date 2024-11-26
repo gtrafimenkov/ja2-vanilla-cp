@@ -37,41 +37,41 @@
 #define AUX_USES_LAND_Z 0x20
 
 struct AuxObjectData {
-  UINT8 ubWallOrientation;
-  UINT8 ubNumberOfTiles;
-  UINT16 usTileLocIndex;
-  UINT8 ubUnused1[3];  // XXX HACK000B
-  UINT8 ubCurrentFrame;
-  UINT8 ubNumberOfFrames;
-  UINT8 fFlags;
-  UINT8 ubUnused[6];  // XXX HACK000B
+  uint8_t ubWallOrientation;
+  uint8_t ubNumberOfTiles;
+  uint16_t usTileLocIndex;
+  uint8_t ubUnused1[3];  // XXX HACK000B
+  uint8_t ubCurrentFrame;
+  uint8_t ubNumberOfFrames;
+  uint8_t fFlags;
+  uint8_t ubUnused[6];  // XXX HACK000B
 };
 
 struct RelTileLoc {
-  INT8 bTileOffsetX;
-  INT8 bTileOffsetY;
+  int8_t bTileOffsetX;
+  int8_t bTileOffsetY;
 };  // relative tile location
 
 // TRLE subimage structure, mirroring that of ST(C)I
 struct ETRLEObject {
-  UINT32 uiDataOffset;
-  UINT32 uiDataLength;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
+  uint32_t uiDataOffset;
+  uint32_t uiDataLength;
+  int16_t sOffsetX;
+  int16_t sOffsetY;
+  uint16_t usHeight;
+  uint16_t usWidth;
 };
 
 struct ETRLEData {
-  PTR pPixData;
-  UINT32 uiSizePixData;
+  void *pPixData;
+  uint32_t uiSizePixData;
   ETRLEObject *pETRLEObject;
-  UINT16 usNumberOfObjects;
+  uint16_t usNumberOfObjects;
 };
 
 // Image header structure
 struct SGPImage {
-  SGPImage(UINT16 const w, UINT16 const h, UINT8 const bpp)
+  SGPImage(uint16_t const w, uint16_t const h, uint8_t const bpp)
       : usWidth(w),
         usHeight(h),
         ubBitDepth(bpp),
@@ -80,30 +80,31 @@ struct SGPImage {
         uiSizePixData(),
         usNumberOfObjects() {}
 
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT8 ubBitDepth;
-  UINT16 fFlags;
+  uint16_t usWidth;
+  uint16_t usHeight;
+  uint8_t ubBitDepth;
+  uint16_t fFlags;
   SGP::Buffer<SGPPaletteEntry> pPalette;
-  SGP::Buffer<UINT16> pui16BPPPalette;
-  SGP::Buffer<UINT8> pAppData;
-  UINT32 uiAppDataSize;
-  SGP::Buffer<UINT8> pImageData;
-  UINT32 uiSizePixData;
+  SGP::Buffer<uint16_t> pui16BPPPalette;
+  SGP::Buffer<uint8_t> pAppData;
+  uint32_t uiAppDataSize;
+  SGP::Buffer<uint8_t> pImageData;
+  uint32_t uiSizePixData;
   SGP::Buffer<ETRLEObject> pETRLEObject;
-  UINT16 usNumberOfObjects;
+  uint16_t usNumberOfObjects;
 };
 
-#define SGPGetRValue(rgb) ((BYTE)(rgb))
-#define SGPGetBValue(rgb) ((BYTE)((rgb) >> 16))
-#define SGPGetGValue(rgb) ((BYTE)(((UINT16)(rgb)) >> 8))
+#define SGPGetRValue(rgb) ((uint8_t)(rgb))
+#define SGPGetBValue(rgb) ((uint8_t)((rgb) >> 16))
+#define SGPGetGValue(rgb) ((uint8_t)(((uint16_t)(rgb)) >> 8))
 
-SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
+SGPImage *CreateImage(const char *ImageFile, uint16_t fContents);
 
 // This function will run the appropriate copy function based on the type of
 // SGPImage object
-BOOLEAN CopyImageToBuffer(SGPImage const *, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth,
-                          UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPBox const *src_rect);
+BOOLEAN CopyImageToBuffer(SGPImage const *, uint32_t fBufferType, uint8_t *pDestBuf,
+                          uint16_t usDestWidth, uint16_t usDestHeight, uint16_t usX, uint16_t usY,
+                          SGPBox const *src_rect);
 
 // This function will create a buffer in memory of ETRLE data, excluding palette
 void GetETRLEImageData(SGPImage const *, ETRLEData *);
@@ -111,24 +112,24 @@ void GetETRLEImageData(SGPImage const *, ETRLEData *);
 // UTILITY FUNCTIONS
 
 // Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
-UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
-                                 UINT32 bscale, BOOLEAN mono);
-UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette);
-UINT16 Get16BPPColor(UINT32 RGBValue);
-UINT32 GetRGBColor(UINT16 Value16BPP);
+uint16_t *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, uint32_t rscale,
+                                   uint32_t gscale, uint32_t bscale, BOOLEAN mono);
+uint16_t *Create16BPPPalette(const SGPPaletteEntry *pPalette);
+uint16_t Get16BPPColor(uint32_t RGBValue);
+uint32_t GetRGBColor(uint16_t Value16BPP);
 
-extern UINT16 gusRedMask;
-extern UINT16 gusGreenMask;
-extern UINT16 gusBlueMask;
-extern INT16 gusRedShift;
-extern INT16 gusBlueShift;
-extern INT16 gusGreenShift;
+extern uint16_t gusRedMask;
+extern uint16_t gusGreenMask;
+extern uint16_t gusBlueMask;
+extern int16_t gusRedShift;
+extern int16_t gusBlueShift;
+extern int16_t gusGreenShift;
 
 // used to convert 565 RGB data into different bit-formats
-void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565ToAny(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
+void ConvertRGBDistribution565To555(uint16_t *p16BPPData, uint32_t uiNumberOfPixels);
+void ConvertRGBDistribution565To655(uint16_t *p16BPPData, uint32_t uiNumberOfPixels);
+void ConvertRGBDistribution565To556(uint16_t *p16BPPData, uint32_t uiNumberOfPixels);
+void ConvertRGBDistribution565ToAny(uint16_t *p16BPPData, uint32_t uiNumberOfPixels);
 
 typedef SGP::AutoPtr<SGPImage> AutoSGPImage;
 

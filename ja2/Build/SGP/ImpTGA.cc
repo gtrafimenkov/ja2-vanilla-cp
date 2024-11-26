@@ -10,19 +10,20 @@
 #include "SGP/MemMan.h"
 #include "SGP/Types.h"
 
-static SGPImage *ReadRLEColMapImage(HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);
-static SGPImage *ReadRLERGBImage(HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);
-static SGPImage *ReadUncompColMapImage(HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);
-static SGPImage *ReadUncompRGBImage(HWFILE, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents);
+static SGPImage *ReadRLEColMapImage(HWFILE, uint8_t uiImgID, uint8_t uiColMap, uint16_t fContents);
+static SGPImage *ReadRLERGBImage(HWFILE, uint8_t uiImgID, uint8_t uiColMap, uint16_t fContents);
+static SGPImage *ReadUncompColMapImage(HWFILE, uint8_t uiImgID, uint8_t uiColMap,
+                                       uint16_t fContents);
+static SGPImage *ReadUncompRGBImage(HWFILE, uint8_t uiImgID, uint8_t uiColMap, uint16_t fContents);
 
-SGPImage *LoadTGAFileToImage(char const *const filename, UINT16 const fContents) {
-  UINT8 uiImgID, uiColMap, uiType;
+SGPImage *LoadTGAFileToImage(char const *const filename, uint16_t const fContents) {
+  uint8_t uiImgID, uiColMap, uiType;
 
   AutoSGPFile hFile(FileMan::openForReadingSmart(filename, true));
 
-  FileRead(hFile, &uiImgID, sizeof(UINT8));
-  FileRead(hFile, &uiColMap, sizeof(UINT8));
-  FileRead(hFile, &uiType, sizeof(UINT8));
+  FileRead(hFile, &uiImgID, sizeof(uint8_t));
+  FileRead(hFile, &uiColMap, sizeof(uint8_t));
+  FileRead(hFile, &uiType, sizeof(uint8_t));
 
   switch (uiType) {
     case 1:
@@ -38,22 +39,22 @@ SGPImage *LoadTGAFileToImage(char const *const filename, UINT16 const fContents)
   }
 }
 
-static SGPImage *ReadUncompColMapImage(HWFILE const hFile, UINT8 const uiImgID,
-                                       UINT8 const uiColMap, UINT16 const fContents) {
+static SGPImage *ReadUncompColMapImage(HWFILE const hFile, uint8_t const uiImgID,
+                                       uint8_t const uiColMap, uint16_t const fContents) {
   throw std::runtime_error("TGA format 1 loading is unimplemented");
 }
 
-static SGPImage *ReadUncompRGBImage(HWFILE const f, UINT8 const uiImgID, UINT8 const uiColMap,
-                                    UINT16 const contents) {
-  UINT16 uiColMapLength;
-  UINT16 uiWidth;
-  UINT16 uiHeight;
-  UINT8 uiImagePixelSize;
+static SGPImage *ReadUncompRGBImage(HWFILE const f, uint8_t const uiImgID, uint8_t const uiColMap,
+                                    uint16_t const contents) {
+  uint16_t uiColMapLength;
+  uint16_t uiWidth;
+  uint16_t uiHeight;
+  uint8_t uiImagePixelSize;
 
-  BYTE data[15];
+  uint8_t data[15];
   FileRead(f, data, sizeof(data));
 
-  BYTE const *d = data;
+  uint8_t const *d = data;
   EXTR_SKIP(d, 2)  // colour map origin
   EXTR_U16(d, uiColMapLength)
   EXTR_SKIP(d, 5)        // colour map entry size, x origin, y origin
@@ -75,17 +76,18 @@ static SGPImage *ReadUncompRGBImage(HWFILE const f, UINT8 const uiImgID, UINT8 c
 
   if (contents & IMAGE_BITMAPDATA) {
     if (uiImagePixelSize == 16) {
-      UINT16 *const img_data = (UINT16 *)(UINT8 *)img->pImageData.Allocate(uiWidth * uiHeight * 2);
+      uint16_t *const img_data =
+          (uint16_t *)(uint8_t *)img->pImageData.Allocate(uiWidth * uiHeight * 2);
       // Data is stored top-bottom - reverse for SGPImage format
       for (size_t y = uiHeight; y != 0;) {
         FileRead(f, &img_data[uiWidth * --y], uiWidth * 2);
       }
     } else if (uiImagePixelSize == 24) {
-      UINT8 *const img_data = img->pImageData.Allocate(uiWidth * uiHeight * 3);
+      uint8_t *const img_data = img->pImageData.Allocate(uiWidth * uiHeight * 3);
       for (size_t y = uiHeight; y != 0;) {
-        UINT8 *const line = &img_data[uiWidth * 3 * --y];
-        for (UINT32 x = 0; x < uiWidth; ++x) {
-          UINT8 bgr[3];
+        uint8_t *const line = &img_data[uiWidth * 3 * --y];
+        for (uint32_t x = 0; x < uiWidth; ++x) {
+          uint8_t bgr[3];
           FileRead(f, bgr, sizeof(bgr));
           line[x * 3] = bgr[2];
           line[x * 3 + 1] = bgr[1];
@@ -101,12 +103,12 @@ static SGPImage *ReadUncompRGBImage(HWFILE const f, UINT8 const uiImgID, UINT8 c
   return img.Release();
 }
 
-static SGPImage *ReadRLEColMapImage(HWFILE const hFile, UINT8 const uiImgID, UINT8 const uiColMap,
-                                    UINT16 const fContents) {
+static SGPImage *ReadRLEColMapImage(HWFILE const hFile, uint8_t const uiImgID,
+                                    uint8_t const uiColMap, uint16_t const fContents) {
   throw std::runtime_error("TGA format 9 loading is unimplemented");
 }
 
-static SGPImage *ReadRLERGBImage(HWFILE const hFile, UINT8 const uiImgID, UINT8 const uiColMap,
-                                 UINT16 const fContents) {
+static SGPImage *ReadRLERGBImage(HWFILE const hFile, uint8_t const uiImgID, uint8_t const uiColMap,
+                                 uint16_t const fContents) {
   throw std::runtime_error("TGA format 10 loading is unimplemented");
 }

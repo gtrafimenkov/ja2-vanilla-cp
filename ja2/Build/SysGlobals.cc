@@ -14,10 +14,10 @@ char g_filename[200];
 char gubErrorText[200];
 BOOLEAN gfEditMode = FALSE;
 BOOLEAN fFirstTimeInGameScreen = TRUE;
-INT8 gbFPSDisplay = SHOW_MIN_FPS;
+int8_t gbFPSDisplay = SHOW_MIN_FPS;
 BOOLEAN gfGlobalError = FALSE;
 
-UINT32 guiGameCycleCounter = 0;
+uint32_t guiGameCycleCounter = 0;
 
 void SET_ERROR(char const *const String, ...) {
   va_list ArgPtr;

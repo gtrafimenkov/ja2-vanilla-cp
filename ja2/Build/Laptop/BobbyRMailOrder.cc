@@ -38,9 +38,9 @@
 #include "Utils/WordWrap.h"
 
 struct BobbyROrderLocationStruct {
-  UINT16 usOverNightExpress;
-  UINT16 us2DaysService;
-  UINT16 usStandardService;
+  uint16_t usOverNightExpress;
+  uint16_t us2DaysService;
+  uint16_t usStandardService;
 };
 
 BobbyROrderLocationStruct BobbyROrderLocations[pDeliveryLocationStrings_SIZE] = {
@@ -217,9 +217,9 @@ enum {
 #define BOBBYR_PACKAXGE_WEIGHT_Y LAPTOP_SCREEN_WEB_UL_Y + 249
 #define BOBBYR_PACKAXGE_WEIGHT_WIDTH 188
 
-UINT16 gShippingSpeedAreas[] = {585, 218 + LAPTOP_SCREEN_WEB_DELTA_Y,
-                                585, 238 + LAPTOP_SCREEN_WEB_DELTA_Y,
-                                585, 258 + LAPTOP_SCREEN_WEB_DELTA_Y};
+uint16_t gShippingSpeedAreas[] = {585, 218 + LAPTOP_SCREEN_WEB_DELTA_Y,
+                                  585, 238 + LAPTOP_SCREEN_WEB_DELTA_Y,
+                                  585, 258 + LAPTOP_SCREEN_WEB_DELTA_Y};
 
 // Identifier for the images
 static SGPVObject *guiBobbyRayTitle;
@@ -235,52 +235,52 @@ static SGPVObject *guiPackageWeightImage;
 
 static BOOLEAN gfReDrawBobbyOrder = FALSE;
 
-static INT32 giGrandTotal;
-static UINT32 guiShippingCost;
-static UINT32 guiSubTotal;
+static int32_t giGrandTotal;
+static uint32_t guiShippingCost;
+static uint32_t guiSubTotal;
 
-static UINT8 gubSelectedLight;
+static uint8_t gubSelectedLight;
 
 static BOOLEAN gfDrawConfirmOrderGrpahic;
 static BOOLEAN gfDestroyConfirmGrphiArea;
 
 static BOOLEAN gfCanAcceptOrder;
 
-static UINT8 gubDropDownAction;
-static INT8 gbSelectedCity = -1;  // keeps track of the currently selected city
-static UINT8 gubCityAtTopOfList;
+static uint8_t gubDropDownAction;
+static int8_t gbSelectedCity = -1;  // keeps track of the currently selected city
+static uint8_t gubCityAtTopOfList;
 
 static BOOLEAN gfRemoveItemsFromStock = FALSE;
 
 NewBobbyRayOrderStruct *gpNewBobbyrShipments;
-INT32 giNumberOfNewBobbyRShipment;
+int32_t giNumberOfNewBobbyRShipment;
 
 //
 // Buttons
 //
 
 // Clear Order Button
-static void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRClearOrderImage;
 static GUIButtonRef guiBobbyRClearOrder;
 
 // Accept Order Button
-static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRAcceptOrderImage;
 static GUIButtonRef guiBobbyRAcceptOrder;
 
 // Back Button
-static void BtnBobbyRBackCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRBackCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRBackImage;
 static GUIButtonRef guiBobbyRBack;
 
 // Home Button
-static void BtnBobbyRHomeCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRHomeCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiBobbyRHomeImage;
 static GUIButtonRef guiBobbyRHome;
 
 // Goto Shipment Page Button
-static void BtnBobbyRGotoShipmentPageCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnBobbyRGotoShipmentPageCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *giBobbyRGotoShipmentPageImage;
 static GUIButtonRef guiBobbyRGotoShipmentPage;
 
@@ -315,9 +315,9 @@ void GameInitBobbyRMailOrder() {
   giNumberOfNewBobbyRShipment = 0;
 }
 
-static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const INT16 x,
-                               const INT16 y, const GUI_CALLBACK click) {
-  const INT16 shadow_col = BOBBYR_GUNS_SHADOW_COLOR;
+static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text, const int16_t x,
+                               const int16_t y, const GUI_CALLBACK click) {
+  const int16_t shadow_col = BOBBYR_GUNS_SHADOW_COLOR;
   GUIButtonRef const btn = CreateIconAndTextButton(
       img, text, BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, shadow_col,
       BOBBYR_GUNS_TEXT_COLOR_OFF, shadow_col, x, y, MSYS_PRIORITY_HIGH, click);
@@ -325,13 +325,13 @@ static GUIButtonRef MakeButton(BUTTON_PICS *const img, const wchar_t *const text
   return btn;
 }
 
-static void SelectActivateCityDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectCloseDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectShippingSpeedRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectActivateCityDroDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectCloseDroDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectShippingSpeedRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterBobbyRMailOrder() {
-  UINT16 i;
+  uint16_t i;
 
   gfReDrawBobbyOrder = FALSE;
   gfDrawConfirmOrderGrpahic = FALSE;
@@ -410,8 +410,8 @@ void EnterBobbyRMailOrder() {
   for (i = 0; i < 3; i++) {
     MSYS_DefineRegion(&gSelectedShippingSpeedRegion[i], gShippingSpeedAreas[i * 2],
                       gShippingSpeedAreas[i * 2 + 1],
-                      (UINT16)(gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH),
-                      (UINT16)(gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT),
+                      (uint16_t)(gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH),
+                      (uint16_t)(gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT),
                       MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK,
                       SelectShippingSpeedRegionCallBack);
     MSYS_SetRegionUserData(&gSelectedShippingSpeedRegion[i], 0, i);
@@ -447,11 +447,11 @@ void EnterBobbyRMailOrder() {
   RenderBobbyRMailOrder();
 }
 
-static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction);
+static void CreateDestroyBobbyRDropDown(uint8_t ubDropDownAction);
 static void RemovePurchasedItemsFromBobbyRayInventory();
 
 void ExitBobbyRMailOrder() {
-  UINT16 i;
+  uint16_t i;
 
   // if we are to remove the items from stock
   if (gfRemoveItemsFromStock) {
@@ -538,11 +538,11 @@ void HandleBobbyRMailOrder() {
 
 static void DisplayPackageWeight();
 static void DisplayShippingLocationCity();
-static void DrawShippingSpeedLights(UINT8 ubSelected);
+static void DrawShippingSpeedLights(uint8_t ubSelected);
 
 void RenderBobbyRMailOrder() {
-  UINT16 usPosY;
-  UINT16 usHeight;  // usWidth,
+  uint16_t usPosY;
+  uint16_t usHeight;  // usWidth,
   wchar_t sTemp[128];
 
   DrawBobbyRWoodBackground();
@@ -630,7 +630,7 @@ void RenderBobbyRMailOrder() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     memset(&BobbyRayPurchases, 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
     gubSelectedLight = 0;
@@ -648,7 +648,7 @@ static void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, INT32 reason) {
 
 static void ConfirmBobbyRPurchaseMessageBoxCallBack(MessageBoxReturnValue);
 
-static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (guiSubTotal && gfCanAcceptOrder) {
       // if the player doesnt have enough money
@@ -676,10 +676,10 @@ static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason) {
                                         {
         //					BobbyRayOrderStruct
         *pBobbyRayPurchase;
-        //					UINT32	uiResetTimeSec;
-                                                UINT8	i, ubCount;
-                                                UINT8	cnt;
-                                                INT8		bDaysAhead;
+        //					uint32_t	uiResetTimeSec;
+                                                uint8_t	i, ubCount;
+                                                uint8_t	cnt;
+                                                int8_t		bDaysAhead;
 
                                                 //if we need to add more array
         elements for the Order Array if(
@@ -761,7 +761,7 @@ static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason) {
                                                 if (GetProfile(SAL)->bLife == 0)
                                                 {
                                                         // Sal is dead, so Pablo
-        is dead, so the airport is badly run bDaysAhead += (UINT8) Random( 5 ) +
+        is dead, so the airport is badly run bDaysAhead += (uint8_t) Random( 5 ) +
         1;
                                                 }
 
@@ -794,17 +794,17 @@ static void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, UINT16 usGridX,
-                                 UINT16 usGridY, INT32 iOrderNum);
+static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, int32_t iSubTotal, uint16_t usGridX,
+                                 uint16_t usGridY, int32_t iOrderNum);
 
-void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 usGridY,
+void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, uint16_t usGridX, uint16_t usGridY,
                            BobbyRayPurchaseStruct *pBobbyRayPurchase, BOOLEAN fJustDisplayTitles,
-                           INT32 iOrderNum) {
-  UINT16 i;
+                           int32_t iOrderNum) {
+  uint16_t i;
   wchar_t sTemp[20];
-  UINT16 usPosY;
-  UINT32 uiStartLoc = 0;
-  UINT32 uiTotal;
+  uint16_t usPosY;
+  uint32_t uiStartLoc = 0;
+  uint32_t uiTotal;
 
   // Output the qty
   DrawTextToScreen(BobbyROrderFormText[BOBBYR_QTY], usGridX + BOBBYR_GRID_FIRST_COLUMN_X,
@@ -858,7 +858,7 @@ void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 
     return;
   }
 
-  INT32 iSubTotal = 0;  // XXX HACK000E
+  int32_t iSubTotal = 0;  // XXX HACK000E
   if (fCalledFromOrderPage) {
     guiSubTotal = 0;
     giGrandTotal = 0;
@@ -890,7 +890,7 @@ void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 
       // weight
       swprintf(sTemp, lengthof(sTemp), L"%3.1f",
                GetWeightBasedOnMetricOption(Item[pBobbyRayPurchase[i].usItemIndex].ubWeight) /
-                   (FLOAT)(10.0) * pBobbyRayPurchase[i].ubNumberPurchased);
+                   (float)(10.0) * pBobbyRayPurchase[i].ubNumberPurchased);
       DrawTextToScreen(sTemp, usGridX + BOBBYR_GRID_SECOND_COLUMN_X - 2, usPosY,
                        BOBBYR_GRID_SECOND_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT,
                        BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
@@ -953,13 +953,13 @@ void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 
   DisplayShippingCosts(fCalledFromOrderPage, iSubTotal, usGridX, usGridY, iOrderNum);
 }
 
-static UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService);
+static uint32_t CalcCostFromWeightOfPackage(uint8_t ubTypeOfService);
 
-static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, UINT16 usGridX,
-                                 UINT16 usGridY, INT32 iOrderNum) {
+static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, int32_t iSubTotal, uint16_t usGridX,
+                                 uint16_t usGridY, int32_t iOrderNum) {
   wchar_t sTemp[20];
-  INT32 iShippingCost = 0;
-  //	INT32 iTotal;
+  int32_t iShippingCost = 0;
+  //	int32_t iTotal;
 
   if (fCalledFromOrderPage) {
     iSubTotal = guiSubTotal;
@@ -974,7 +974,7 @@ static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, 
 
     iShippingCost = guiShippingCost;
   } else {
-    UINT16 usStandardCost;
+    uint16_t usStandardCost;
 
     switch (gpNewBobbyrShipments[iOrderNum].ubDeliveryMethod) {
       case 0:
@@ -995,8 +995,8 @@ static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, 
     }
 
     iShippingCost =
-        (INT32)((gpNewBobbyrShipments[iOrderNum].uiPackageWeight / (FLOAT)10) * usStandardCost +
-                .5);
+        (int32_t)((gpNewBobbyrShipments[iOrderNum].uiPackageWeight / (float)10) * usStandardCost +
+                  .5);
   }
 
   // erase the old area
@@ -1033,27 +1033,27 @@ static void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, 
   InvalidateRegion(333, 326, 374, 400);
 }
 
-static void BtnBobbyRBackCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRBackCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = guiLastBobbyRayPage;
   }
 }
 
-static void BtnBobbyRHomeCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRHomeCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
   }
 }
 
-static void SelectShippingSpeedRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectShippingSpeedRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubSelectedLight = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gubSelectedLight = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
     DrawShippingSpeedLights(gubSelectedLight);
     DisplayShippingCosts(TRUE, 0, BOBBYR_ORDERGRID_X, BOBBYR_ORDERGRID_Y, -1);
   }
 }
 
-static void DrawShippingSpeedLights(UINT8 ubSelected) {
+static void DrawShippingSpeedLights(uint8_t ubSelected) {
   if (ubSelected == 0)
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[0], gShippingSpeedAreas[1],
                               gShippingSpeedAreas[0] + SHIPPING_SPEED_LIGHT_WIDTH,
@@ -1090,7 +1090,7 @@ static void DrawShippingSpeedLights(UINT8 ubSelected) {
   InvalidateRegion(585, 218, 594, 287);
 }
 
-static void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Remove the items for Boby Rqys Inventory
     RemovePurchasedItemsFromBobbyRayInventory();
@@ -1116,16 +1116,16 @@ static void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, INT32 iReaso
   }
 }
 
-static void DrawGoldRectangle(INT8 bCityNum);
-static void DrawSelectedCity(UINT8 ubCityNumber);
-static void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
-static void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
-static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-static void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void DrawGoldRectangle(int8_t bCityNum);
+static void DrawSelectedCity(uint8_t ubCityNumber);
+static void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, int32_t reason);
+static void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, int32_t reason);
+static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
+static void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
-static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
-  static UINT16 usHeight;
+static void CreateDestroyBobbyRDropDown(uint8_t ubDropDownAction) {
+  static uint16_t usHeight;
   static BOOLEAN fMouseRegionsCreated = FALSE;
 
   switch (ubDropDownAction) {
@@ -1133,10 +1133,10 @@ static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
     } break;
 
     case BR_DROP_DOWN_CREATE: {
-      UINT8 i;
-      UINT16 usPosX, usPosY, usHeight;
-      UINT16 usTemp;
-      UINT16 usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
+      uint8_t i;
+      uint16_t usPosX, usPosY, usHeight;
+      uint16_t usTemp;
+      uint16_t usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
 
       if (fMouseRegionsCreated) {
         gubDropDownAction = BR_DROP_DOWN_DESTROY;
@@ -1179,16 +1179,16 @@ static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
       usHeight = BOBBYR_SCROLL_AREA_HEIGHT_MINUS_ARROWS / BOBBYR_ORDER_NUM_SHIPPING_CITIES;
       for (i = 0; i < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1; i++) {
         MSYS_DefineRegion(&gSelectedScrollAreaDropDownRegion[i], usPosX, usPosY,
-                          (UINT16)(usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (UINT16)(usPosY + usHeight),
-                          MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN,
-                          SelectScrollAreaDropDownMovementCallBack,
+                          (uint16_t)(usPosX + BOBBYR_SCROLL_ARROW_WIDTH),
+                          (uint16_t)(usPosY + usHeight), MSYS_PRIORITY_HIGH + 1,
+                          CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack,
                           SelectScrollAreaDropDownRegionCallBack);
         MSYS_SetRegionUserData(&gSelectedScrollAreaDropDownRegion[i], 0, i);
         usPosY += usHeight;
       }
       // put the last one down to cover the remaining area
       MSYS_DefineRegion(&gSelectedScrollAreaDropDownRegion[i], usPosX, usPosY,
-                        (UINT16)(usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y,
+                        (uint16_t)(usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y,
                         MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN,
                         SelectScrollAreaDropDownMovementCallBack,
                         SelectScrollAreaDropDownRegionCallBack);
@@ -1202,7 +1202,7 @@ static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
     } break;
 
     case BR_DROP_DOWN_DESTROY: {
-      UINT8 i;
+      uint8_t i;
 
       if (!fMouseRegionsCreated) break;
 
@@ -1246,8 +1246,8 @@ static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
     } break;
 
     case BR_DROP_DOWN_DISPLAY: {
-      UINT8 i;
-      UINT16 usPosY, usPosX;
+      uint8_t i;
+      uint16_t usPosY, usPosX;
 
       // Display the background for the drop down window
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_CITY_START_LOCATION_X,
@@ -1357,9 +1357,9 @@ static void CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction) {
   }
 }
 
-static void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    uint8_t ubSelected = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
     gbSelectedCity = ubSelected + gubCityAtTopOfList;
 
     DrawSelectedCity(gbSelectedCity);
@@ -1368,18 +1368,18 @@ static void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void SelectActivateCityDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectActivateCityDroDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDropDownAction = BR_DROP_DOWN_CREATE;
   }
 }
 
-static void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+static void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX,
                      pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    gbSelectedCity = (UINT8)MSYS_GetRegionUserData(pRegion, 0) + gubCityAtTopOfList;
+    gbSelectedCity = (uint8_t)MSYS_GetRegionUserData(pRegion, 0) + gubCityAtTopOfList;
 
     gubDropDownAction = BR_DROP_DOWN_DISPLAY;
 
@@ -1390,10 +1390,10 @@ static void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) 
 
 static bool IsAnythingPurchasedFromBobbyRayPage();
 
-static void DrawSelectedCity(UINT8 ubCityNumber) {
-  UINT16 usPosY;
-  UINT16 usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
-  UINT8 i;
+static void DrawSelectedCity(uint8_t ubCityNumber) {
+  uint16_t usPosY;
+  uint16_t usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
+  uint8_t i;
 
   // DEBUG: make sure it wont go over array bounds
   if (gubCityAtTopOfList + BOBBYR_NUM_DISPLAYED_CITIES > BOBBYR_ORDER_NUM_SHIPPING_CITIES)
@@ -1438,7 +1438,7 @@ static void DrawSelectedCity(UINT8 ubCityNumber) {
 
 static void DisplayShippingLocationCity() {
   wchar_t sTemp[40];
-  UINT16 usPosY;
+  uint16_t usPosY;
 
   // display the name on the title bar
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X,
@@ -1492,7 +1492,7 @@ static void DisplayShippingLocationCity() {
                    BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
 }
 
-static void SelectCloseDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectCloseDroDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDropDownAction = BR_DROP_DOWN_DESTROY;
   }
@@ -1505,7 +1505,7 @@ static void RemovePurchasedItemsFromBobbyRayInventory() {
     // Is the item used?
     STORE_INVENTORY *inv =
         p.fUsed ? LaptopSaveInfo.BobbyRayUsedInventory : LaptopSaveInfo.BobbyRayInventory;
-    UINT8 &qty = inv[p.usBobbyItemIndex].ubQtyOnHand;
+    uint8_t &qty = inv[p.usBobbyItemIndex].ubQtyOnHand;
     // Remove it from Bobby Rays Inventory
     qty = qty > p.ubNumberPurchased ? qty - p.ubNumberPurchased : 0;
   }
@@ -1519,15 +1519,15 @@ static bool IsAnythingPurchasedFromBobbyRayPage() {
   return false;
 }
 
-static void SelectTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectTitleLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
   }
 }
 
-static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    uint8_t ubCityNum = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
     if (ubCityNum < gbSelectedCity) {
       gbSelectedCity--;
@@ -1542,7 +1542,7 @@ static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 
 
     gubDropDownAction = BR_DROP_DOWN_DISPLAY;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    uint8_t ubCityNum = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
     if (ubCityNum < gbSelectedCity) {
       gbSelectedCity--;
@@ -1562,13 +1562,13 @@ static void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 
   }
 }
 
-static void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+static void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX,
                      pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (gfLeftButtonState) {
-      UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+      uint8_t ubCityNum = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
       if (ubCityNum < gbSelectedCity) {
         gbSelectedCity = ubCityNum;
@@ -1589,9 +1589,9 @@ static void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, INT3
   }
 }
 
-static void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT8 ubUpArrow = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    uint8_t ubUpArrow = (uint8_t)MSYS_GetRegionUserData(pRegion, 0);
 
     if (ubUpArrow) {
       if (gbSelectedCity < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1) {
@@ -1613,11 +1613,11 @@ static void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, I
   }
 }
 
-static void DrawGoldRectangle(INT8 bCityNum) {
-  UINT16 usWidth, usTempHeight, usTempPosY, usHeight;
-  UINT16 usPosX, usPosY;
+static void DrawGoldRectangle(int8_t bCityNum) {
+  uint16_t usWidth, usTempHeight, usTempPosY, usHeight;
+  uint16_t usPosX, usPosY;
 
-  UINT16 temp;
+  uint16_t temp;
 
   if (bCityNum == -1) bCityNum = 0;
 
@@ -1629,9 +1629,9 @@ static void DrawGoldRectangle(INT8 bCityNum) {
 
   usHeight = usTempHeight / (BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1);
 
-  usPosY = usTempPosY + (UINT16)(((BOBBYR_SCROLL_AREA_HEIGHT - 2 * BOBBYR_SCROLL_ARROW_HEIGHT) /
-                                  (FLOAT)(BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1)) *
-                                 bCityNum);
+  usPosY = usTempPosY + (uint16_t)(((BOBBYR_SCROLL_AREA_HEIGHT - 2 * BOBBYR_SCROLL_ARROW_HEIGHT) /
+                                    (float)(BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1)) *
+                                   bCityNum);
 
   temp =
       BOBBYR_SCROLL_AREA_Y + BOBBYR_SCROLL_AREA_HEIGHT - BOBBYR_SCROLL_ARROW_HEIGHT - usHeight - 1;
@@ -1646,7 +1646,7 @@ static void DrawGoldRectangle(INT8 bCityNum) {
 
   // display the line
   SGPVSurface::Lock l(FRAME_BUFFER);
-  UINT16 *const pDestBuf = l.Buffer<UINT16>();
+  uint16_t *const pDestBuf = l.Buffer<uint16_t>();
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   // draw the gold highlite line on the top and left
@@ -1662,12 +1662,12 @@ static void DrawGoldRectangle(INT8 bCityNum) {
            Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
 }
 
-static UINT32 CalcPackageTotalWeight();
+static uint32_t CalcPackageTotalWeight();
 
-static UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService) {
-  UINT32 uiTotalWeight = 0;
-  UINT16 usStandardCost = 0;
-  UINT32 uiTotalCost = 0;
+static uint32_t CalcCostFromWeightOfPackage(uint8_t ubTypeOfService) {
+  uint32_t uiTotalWeight = 0;
+  uint16_t usStandardCost = 0;
+  uint32_t uiTotalCost = 0;
 
   if (gbSelectedCity == -1) {
     // shipping rates unknown until destination selected
@@ -1706,7 +1706,7 @@ static UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService) {
   }
 
   // Get the actual weight ( either in lbs or metric )
-  ///	usStandardCost = (UINT16) GetWeightBasedOnMetricOption( usStandardCost
+  ///	usStandardCost = (uint16_t) GetWeightBasedOnMetricOption( usStandardCost
   ///);
 
   // if the total weight is below a set minimum amount ( 2 kg )
@@ -1715,7 +1715,7 @@ static UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService) {
     uiTotalWeight = MIN_SHIPPING_WEIGHT;
   }
 
-  uiTotalCost = (UINT32)((uiTotalWeight / (FLOAT)10) * usStandardCost + .5);
+  uiTotalCost = (uint32_t)((uiTotalWeight / (float)10) * usStandardCost + .5);
 
   return (uiTotalCost);
 }
@@ -1741,8 +1741,8 @@ static void ShutDownBobbyRNewMailOrders() {
   giNumberOfNewBobbyRShipment = 0;
 }
 
-static INT8 CalculateOrderDelay(UINT8 ubSelectedService) {
-  INT8 bDaysAhead;
+static int8_t CalculateOrderDelay(uint8_t ubSelectedService) {
+  int8_t bDaysAhead;
 
   // get the length of time to receive the shipment
   if (ubSelectedService == 0) {
@@ -1759,24 +1759,24 @@ static INT8 CalculateOrderDelay(UINT8 ubSelectedService) {
     // Sal is dead, so Pablo is dead, so the airport is badly run
     // CJC comment: this seems really extreme!! maybe delay by 1 day randomly
     // but that's it!
-    bDaysAhead += (UINT8)Random(5) + 1;
+    bDaysAhead += (uint8_t)Random(5) + 1;
   }
 
   return (bDaysAhead);
 }
 
-static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, UINT8 ubDeliveryLoc,
-                                 UINT8 ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR,
-                                 UINT32 uiPackageWeight);
+static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, uint8_t ubDeliveryLoc,
+                                 uint8_t ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR,
+                                 uint32_t uiPackageWeight);
 
 static void PurchaseBobbyOrder() {
   // if the shipment is going to Drassen, add the inventory
   if (gbSelectedCity == BR_DRASSEN || gbSelectedCity == BR_MEDUNA) {
     //					BobbyRayOrderStruct *pBobbyRayPurchase;
-    //					UINT32	uiResetTimeSec;
-    //		UINT8	i, ubCount;
-    //		UINT8	cnt;
-    //		INT8		bDaysAhead;
+    //					uint32_t	uiResetTimeSec;
+    //		uint8_t	i, ubCount;
+    //		uint8_t	cnt;
+    //		int8_t		bDaysAhead;
 
     /*
                     //if we need to add more array elements for the Order Array
@@ -1859,8 +1859,8 @@ static void PurchaseBobbyOrder() {
 
 void AddJohnsGunShipment() {
   BobbyRayPurchaseStruct Temp[MAX_PURCHASE_AMOUNT];
-  //	UINT8	cnt;
-  INT8 bDaysAhead;
+  //	uint8_t	cnt;
+  int8_t bDaysAhead;
 
   // clear out the memory
   memset(Temp, 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
@@ -1940,8 +1940,8 @@ void EnterInitBobbyRayOrder() {
   gubDropDownAction = BR_DROP_DOWN_DESTROY;
 }
 
-static UINT32 CalcPackageTotalWeight() {
-  UINT32 mass = 0;
+static uint32_t CalcPackageTotalWeight() {
+  uint32_t mass = 0;
   FOR_EACH(BobbyRayPurchaseStruct const, i, BobbyRayPurchases) {
     BobbyRayPurchaseStruct const &p = *i;
     if (p.ubNumberPurchased == 0) continue;
@@ -1952,8 +1952,8 @@ static UINT32 CalcPackageTotalWeight() {
 
 static void DisplayPackageWeight() {
   wchar_t zTemp[32];
-  UINT32 uiTotalWeight = CalcPackageTotalWeight();
-  //	FLOAT			fWeight = (FLOAT)(uiTotalWeight / 10.0);
+  uint32_t uiTotalWeight = CalcPackageTotalWeight();
+  //	float			fWeight = (float)(uiTotalWeight / 10.0);
 
   // Display the 'Package Weight' text
   DrawTextToScreen(BobbyROrderFormText[BOBBYR_PACKAGE_WEIGHT], BOBBYR_PACKAXGE_WEIGHT_X + 8,
@@ -1971,7 +1971,7 @@ static void DisplayPackageWeight() {
                    BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, RIGHT_JUSTIFIED);
 }
 
-static void BtnBobbyRGotoShipmentPageCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnBobbyRGotoShipmentPageCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_BOBBYR_SHIPMENTS;
   }
@@ -1984,7 +1984,7 @@ void CreateBobbyRayOrderTitle() {
   // the link to home page from the title
   MSYS_DefineRegion(&gSelectedTitleLinkRegion, BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y,
                     (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH),
-                    (UINT16)(BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT),
+                    (uint16_t)(BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT),
                     MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK,
                     SelectTitleLinkRegionCallBack);
 }
@@ -1999,15 +1999,15 @@ void DrawBobbyROrderTitle() {
                  BOBBYR_BOBBY_RAY_TITLE_Y);
 }
 
-static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, UINT8 ubDeliveryLoc,
-                                 UINT8 ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR,
-                                 UINT32 uiPackageWeight) {
-  INT32 iCnt;
-  INT32 iFoundSpot = -1;
-  UINT8 ubItemCount = 0;
-  UINT8 i;
-  INT8 bDaysAhead = 0;
-  //	UINT32	uiPackageWeight;
+static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, uint8_t ubDeliveryLoc,
+                                 uint8_t ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR,
+                                 uint32_t uiPackageWeight) {
+  int32_t iCnt;
+  int32_t iFoundSpot = -1;
+  uint8_t ubItemCount = 0;
+  uint8_t i;
+  int8_t bDaysAhead = 0;
+  //	uint32_t	uiPackageWeight;
   //	gpNewBobbyrShipments = NULL;
   //	giNumberOfNewBobbyRShipment = 0;
 
@@ -2079,9 +2079,9 @@ static void AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, UINT8 
   AddFutureDayStrategicEvent(EVENT_BOBBYRAY_PURCHASE, (8 + Random(4)) * 60, iFoundSpot, bDaysAhead);
 }
 
-UINT16 CountNumberOfBobbyPurchasesThatAreInTransit() {
-  UINT16 usItemCount = 0;
-  INT32 iCnt;
+uint16_t CountNumberOfBobbyPurchasesThatAreInTransit() {
+  uint16_t usItemCount = 0;
+  int32_t iCnt;
 
   for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
     if (gpNewBobbyrShipments[iCnt].fActive) {
@@ -2093,10 +2093,10 @@ UINT16 CountNumberOfBobbyPurchasesThatAreInTransit() {
 }
 
 void NewWayOfSavingBobbyRMailOrdersToSaveGameFile(HWFILE const hFile) {
-  INT32 iCnt;
+  int32_t iCnt;
 
   // Write the number of orders
-  FileWrite(hFile, &giNumberOfNewBobbyRShipment, sizeof(INT32));
+  FileWrite(hFile, &giNumberOfNewBobbyRShipment, sizeof(int32_t));
 
   // loop through and save all the mail order slots
   for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
@@ -2106,13 +2106,13 @@ void NewWayOfSavingBobbyRMailOrdersToSaveGameFile(HWFILE const hFile) {
 }
 
 void NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(HWFILE const hFile) {
-  INT32 iCnt;
+  int32_t iCnt;
 
   // clear out the old list
   ShutDownBobbyRNewMailOrders();
 
   // Read the number of orders
-  FileRead(hFile, &giNumberOfNewBobbyRShipment, sizeof(INT32));
+  FileRead(hFile, &giNumberOfNewBobbyRShipment, sizeof(int32_t));
 
   if (giNumberOfNewBobbyRShipment == 0) {
     gpNewBobbyrShipments = NULL;

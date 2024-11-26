@@ -248,27 +248,28 @@ number
 #define LOYALTY_OK_THRESHOLD 50
 #define LOYALTY_HIGH_THRESHOLD 80
 
-extern UINT8 gubQuest[MAX_QUESTS];
-extern UINT8 gubFact[NUM_FACTS];
+extern uint8_t gubQuest[MAX_QUESTS];
+extern uint8_t gubFact[NUM_FACTS];
 
 extern void SetFactTrue(Fact);
 extern void SetFactFalse(Fact);
-extern BOOLEAN CheckFact(Fact, UINT8 ubProfileID);
+extern BOOLEAN CheckFact(Fact, uint8_t ubProfileID);
 
-extern void StartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY);
-extern void EndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY);
+extern void StartQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY);
+extern void EndQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY);
 
-extern void InternalStartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY,
+extern void InternalStartQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY,
                                BOOLEAN fUpdateHistory);
-extern void InternalEndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUpdateHistory);
+extern void InternalEndQuest(uint8_t ubQuest, int16_t sSectorX, int16_t sSectorY,
+                             BOOLEAN fUpdateHistory);
 
-extern void CheckForQuests(UINT32 uiDay);
+extern void CheckForQuests(uint32_t uiDay);
 
 void InitQuestEngine();
 
 void LoadQuestInfoFromSavedGameFile(HWFILE);
 void SaveQuestInfoToSavedGameFile(HWFILE);
 
-BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID);
+BOOLEAN NPCInRoom(uint8_t ubProfileID, uint8_t ubRoomID);
 
 #endif

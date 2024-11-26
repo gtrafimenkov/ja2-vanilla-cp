@@ -9,8 +9,8 @@
 #include "Tactical/Overhead.h"
 #include "Tactical/TacticalSave.h"
 
-static UINT32 MercChecksum(SOLDIERTYPE const &s) {
-  UINT32 sum = 1;
+static uint32_t MercChecksum(SOLDIERTYPE const &s) {
+  uint32_t sum = 1;
 
   sum += 1 + s.bLife;
   sum *= 1 + s.bLifeMax;
@@ -32,10 +32,10 @@ static UINT32 MercChecksum(SOLDIERTYPE const &s) {
   return sum;
 }
 
-void ExtractSoldierType(const BYTE *const data, SOLDIERTYPE *const s, bool stracLinuxFormat) {
+void ExtractSoldierType(const uint8_t *const data, SOLDIERTYPE *const s, bool stracLinuxFormat) {
   memset(s, 0, sizeof(*s));
 
-  const BYTE *d = data;
+  const uint8_t *d = data;
   EXTR_U8(d, s->ubID)
   EXTR_SKIP(d, 1)
   EXTR_U8(d, s->ubBodyType)
@@ -478,7 +478,7 @@ void ExtractSoldierType(const BYTE *const data, SOLDIERTYPE *const s, bool strac
   EXTR_BOOL(d, s->fMuzzleFlash)
   EXTR_SOLDIER(d, s->CTGTTarget)
   EXTR_I32(d, s->PanelAnimateCounter)
-  UINT32 checksum;
+  uint32_t checksum;
   EXTR_U32(d, checksum)
   EXTR_I8(d, s->bCurrentCivQuote)
   EXTR_I8(d, s->bCurrentCivQuoteDelta)
@@ -534,8 +534,8 @@ void ExtractSoldierType(const BYTE *const data, SOLDIERTYPE *const s, bool strac
   }
 }
 
-void InjectSoldierType(BYTE *const data, const SOLDIERTYPE *const s) {
-  BYTE *d = data;
+void InjectSoldierType(uint8_t *const data, const SOLDIERTYPE *const s) {
+  uint8_t *d = data;
   INJ_U8(d, s->ubID)
   INJ_SKIP(d, 1)
   INJ_U8(d, s->ubBodyType)
@@ -969,7 +969,7 @@ void InjectSoldierType(BYTE *const data, const SOLDIERTYPE *const s) {
   INJ_BOOL(d, s->fMuzzleFlash)
   INJ_SOLDIER(d, s->CTGTTarget)
   INJ_I32(d, s->PanelAnimateCounter)
-  UINT32 const checksum = MercChecksum(*s);
+  uint32_t const checksum = MercChecksum(*s);
   INJ_U32(d, checksum)
   INJ_I8(d, s->bCurrentCivQuote)
   INJ_I8(d, s->bCurrentCivQuoteDelta)

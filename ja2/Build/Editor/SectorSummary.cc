@@ -74,20 +74,20 @@ static const wchar_t *const gszVersionType[5] = {L"Pre-Alpha", L"Alpha", L"Demo"
 #define ALTERNATE_B3_MASK 0x80
 #define ALTERNATE_LEVELS_MASK 0xf0
 
-static INT32 giCurrLevel;
+static int32_t giCurrLevel;
 
 static BOOLEAN gfOutdatedDenied;
-static UINT16 gusNumEntriesWithOutdatedOrNoSummaryInfo;
+static uint16_t gusNumEntriesWithOutdatedOrNoSummaryInfo;
 
 BOOLEAN gfUpdatingNow;
-static UINT16 gusTotal;
-static UINT16 gusCurrent;
+static uint16_t gusTotal;
+static uint16_t gusCurrent;
 
 BOOLEAN gfMustForceUpdateAllMaps = FALSE;
-static UINT16 gusNumberOfMapsToBeForceUpdated = 0;
+static uint16_t gusNumberOfMapsToBeForceUpdated = 0;
 BOOLEAN gfMajorUpdate = FALSE;
 
-static INT32 giCurrentViewLevel = ALL_LEVELS_MASK;
+static int32_t giCurrentViewLevel = ALL_LEVELS_MASK;
 
 static BOOLEAN gbSectorLevels[16][16];
 static BOOLEAN gfGlobalSummaryLoaded = FALSE;
@@ -97,7 +97,7 @@ static SUMMARYFILE *gpCurrentSectorSummary;
 
 static MOUSE_REGION MapRegion;
 
-extern INT8 gbMercSlotTypes[9];
+extern int8_t gbMercSlotTypes[9];
 
 // Set if there is an existing global summary.  The first time this is run on
 // your computer, it will not exist, and will have to be generated before this
@@ -142,16 +142,16 @@ enum {
   ITEMMODE_REAL,
   ITEMMODE_ENEMY,
 };
-static UINT8 gubSummaryItemMode = ITEMMODE_SCIFI;
+static uint8_t gubSummaryItemMode = ITEMMODE_SCIFI;
 
 static BOOLEAN gfItemDetailsMode = FALSE;
 
 static WORLDITEM *gpWorldItemsSummaryArray = 0;
-static UINT16 gusWorldItemsSummaryArraySize = 0;
+static uint16_t gusWorldItemsSummaryArraySize = 0;
 static OBJECTTYPE *gpPEnemyItemsSummaryArray = 0;
-static UINT16 gusPEnemyItemsSummaryArraySize = 0;
+static uint16_t gusPEnemyItemsSummaryArraySize = 0;
 static OBJECTTYPE *gpNEnemyItemsSummaryArray = 0;
-static UINT16 gusNEnemyItemsSummaryArraySize = 0;
+static uint16_t gusNEnemyItemsSummaryArraySize = 0;
 
 static BOOLEAN gfSetupItemDetailsMode = TRUE;
 
@@ -161,7 +161,7 @@ static BOOLEAN gfSetupItemDetailsMode = TRUE;
 // These states are not persistant, which forces the user to check the box before
 // saving.
 enum { INACTIVE, READONLY, OVERWRITE };
-static UINT8 gubOverrideStatus;
+static uint8_t gubOverrideStatus;
 // Set when the a new sector/level is selected, forcing the user to reselect the
 // override status.
 static BOOLEAN gfOverrideDirty;
@@ -169,20 +169,20 @@ static BOOLEAN gfOverrideDirty;
 static BOOLEAN gfOverride;
 
 // The sector coordinates of the map currently loaded in memory (blue)
-static INT16 gsSectorX;
-static INT16 gsSectorY;
+static int16_t gsSectorX;
+static int16_t gsSectorY;
 // The layer of the sector that is currently loaded in memory.
-static INT32 gsSectorLayer;
+static int32_t gsSectorLayer;
 // The sector coordinates of the mouse position (yellow)
-static INT16 gsHiSectorX;
-static INT16 gsHiSectorY;
+static int16_t gsHiSectorX;
+static int16_t gsHiSectorY;
 // The sector coordinates of the selected sector (red)
-static INT16 gsSelSectorX;
-static INT16 gsSelSectorY;
+static int16_t gsSelSectorX;
+static int16_t gsSelSectorY;
 
 // Used to determine how long the F5 key has been held down for to determine
 // whether or not the summary is going to be persistant or not.
-static UINT32 giInitTimer;
+static uint32_t giInitTimer;
 
 static wchar_t gszFilename[40];
 static wchar_t gszTempFilename[21];
@@ -210,7 +210,7 @@ enum {
 };
 static GUIButtonRef iSummaryButton[NUM_SUMMARY_BUTTONS];
 
-static GUIButtonRef MakeCheckBox(INT16 const x, INT16 const y, GUI_CALLBACK const click,
+static GUIButtonRef MakeCheckBox(int16_t const x, int16_t const y, GUI_CALLBACK const click,
                                  bool const checked = false) {
   GUIButtonRef const b =
       CreateCheckBoxButton(x, y, EDITORDIR "/smcheckbox.sti", MSYS_PRIORITY_HIGH, click);
@@ -218,29 +218,29 @@ static GUIButtonRef MakeCheckBox(INT16 const x, INT16 const y, GUI_CALLBACK cons
   return b;
 }
 
-static GUIButtonRef MakeRadioButton(INT16 const x, INT16 const y, GUI_CALLBACK const click) {
+static GUIButtonRef MakeRadioButton(int16_t const x, int16_t const y, GUI_CALLBACK const click) {
   return CreateCheckBoxButton(x, y, EDITORDIR "/radiobutton.sti", MSYS_PRIORITY_HIGH, click);
 }
 
 static void LoadGlobalSummary();
-static void MapClickCallback(MOUSE_REGION *reg, INT32 reason);
-static void MapMoveCallback(MOUSE_REGION *reg, INT32 reason);
+static void MapClickCallback(MOUSE_REGION *reg, int32_t reason);
+static void MapMoveCallback(MOUSE_REGION *reg, int32_t reason);
 static void ReleaseSummaryWindow();
-static void SummaryEnemyCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryLoadMapCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryOkayCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryOverrideCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryRealCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummarySaveMapCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummarySciFiCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryToggleAlternateCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryToggleGridCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryToggleLevelCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryToggleProgressCallback(GUI_BUTTON *btn, INT32 reason);
-static void SummaryUpdateCallback(GUI_BUTTON *btn, INT32 reason);
+static void SummaryEnemyCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryLoadMapCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryOkayCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryOverrideCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryRealCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummarySaveMapCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummarySciFiCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryToggleAlternateCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryToggleGridCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryToggleLevelCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryToggleProgressCallback(GUI_BUTTON *btn, int32_t reason);
+static void SummaryUpdateCallback(GUI_BUTTON *btn, int32_t reason);
 
 void CreateSummaryWindow() {
-  INT32 i;
+  int32_t i;
 
   if (!gfGlobalSummaryLoaded) {
     LoadGlobalSummary();
@@ -379,8 +379,8 @@ void AutoLoadMap() {
 }
 
 static void ReleaseSummaryWindow() {
-  INT32 i;
-  UINT32 uiCurrTimer;
+  int32_t i;
+  uint32_t uiCurrTimer;
   if (!gfSummaryWindowActive || gfPersistantSummary) return;
   uiCurrTimer = GetJA2Clock();
   if (!gfWorldLoaded || uiCurrTimer - giInitTimer < 400) {  // make window persistant
@@ -423,12 +423,12 @@ void DestroySummaryWindow() {
 }
 
 static void RenderSectorInformation() {
-  // UINT16 str[ 100 ];
+  // uint16_t str[ 100 ];
   MAPCREATE_STRUCT *m;
   SUMMARYFILE *s;
-  UINT8 ePoints = 0;
-  UINT16 usLine = 35;
-  INT32 iOverall;
+  uint8_t ePoints = 0;
+  uint16_t usLine = 35;
+  int32_t iOverall;
 
   s = gpCurrentSectorSummary;
   m = &gpCurrentSectorSummary->MapInfo;
@@ -444,13 +444,13 @@ static void RenderSectorInformation() {
   mprintf(10, 32, L"Tileset:  %ls", gTilesets[s->ubTilesetID].zName);
   if (m->ubMapVersion < 10) SetFontForeground(FONT_RED);
   mprintf(10, 42, L"Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion,
-          (INT32)s->dMajorMapVersion, m->ubMapVersion);
+          (int32_t)s->dMajorMapVersion, m->ubMapVersion);
   SetFontForeground(FONT_GRAY2);
   mprintf(10, 55, L"Number of items:  %d", s->usNumItems);
   mprintf(10, 65, L"Number of lights:  %d", s->usNumLights);
   mprintf(10, 75, L"Number of entry points:  %d", ePoints);
   if (ePoints) {
-    INT32 x;
+    int32_t x;
     x = 140;
     MPrint(x, 75, L"(");
     x += StringPixLength(L"(", FONT10ARIAL) + 2;
@@ -520,8 +520,8 @@ static void RenderSectorInformation() {
       SetFontForeground(FONT_RED);
       mprintf(10, 265, L"Too many exit grid destinations (more than 4)...");
     } else {
-      UINT8 i;
-      UINT8 ubNumInvalid = 0;
+      uint8_t i;
+      uint8_t ubNumInvalid = 0;
       for (i = 0; i < 4; i++) {
         if (s->fInvalidDest[i]) ubNumInvalid++;
       }
@@ -599,13 +599,14 @@ static void RenderSectorInformation() {
 
 // 2)  CODE TRIGGER/ACTION NAMES
 static void RenderItemDetails() {
-  FLOAT dAvgExistChance, dAvgStatus;
+  float dAvgExistChance, dAvgStatus;
   OBJECTTYPE *pItem;
-  INT32 index, i;
-  UINT32 uiQuantity, uiExistChance, uiStatus;
-  UINT32 uiTriggerQuantity[8], uiActionQuantity[8], uiTriggerExistChance[8], uiActionExistChance[8];
-  UINT32 xp, yp;
-  INT8 bFreqIndex;
+  int32_t index, i;
+  uint32_t uiQuantity, uiExistChance, uiStatus;
+  uint32_t uiTriggerQuantity[8], uiActionQuantity[8], uiTriggerExistChance[8],
+      uiActionExistChance[8];
+  uint32_t xp, yp;
+  int8_t bFreqIndex;
   SetFontAttributes(FONT10ARIAL, FONT_GRAY2);
   MPrint(364, 49, L"R");
   MPrint(390, 49, L"S");
@@ -679,8 +680,8 @@ static void RenderItemDetails() {
         else
           SetFontForeground(FONT_GRAY2);
         // calc averages
-        dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-        dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+        dAvgExistChance = (float)(uiExistChance / 100.0);
+        dAvgStatus = uiStatus / (float)uiQuantity;
         // Display stats.
         MPrint(xp, yp, ShortItemNames[index]);
         mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
@@ -737,12 +738,12 @@ static void RenderItemDetails() {
             abort();  // HACK000E
         }
         if (i < 7) {
-          dAvgExistChance = (FLOAT)(uiTriggerExistChance[i] / 100.0);
-          dAvgStatus = (FLOAT)(uiActionExistChance[i] / 100.0);
+          dAvgExistChance = (float)(uiTriggerExistChance[i] / 100.0);
+          dAvgStatus = (float)(uiActionExistChance[i] / 100.0);
           mprintf(xp, yp, L"%ls:  %3.02f trigger(s), %3.02f action(s)", Type, dAvgExistChance,
                   dAvgStatus);
         } else {
-          dAvgExistChance = (FLOAT)(uiActionExistChance[i] / 100.0);
+          dAvgExistChance = (float)(uiActionExistChance[i] / 100.0);
           mprintf(xp, yp, L"%ls:  %3.02f", Type, dAvgExistChance);
         }
         yp += 10;
@@ -786,8 +787,8 @@ static void RenderItemDetails() {
           else
             SetFontForeground(FONT_GRAY2);
           // calc averages
-          dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-          dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+          dAvgExistChance = (float)(uiExistChance / 100.0);
+          dAvgStatus = uiStatus / (float)uiQuantity;
           // Display stats.
           MPrint(xp, yp, ShortItemNames[index]);
           mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
@@ -844,8 +845,8 @@ static void RenderItemDetails() {
         else
           SetFontForeground(FONT_GRAY2);
         // calc averages
-        dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-        dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+        dAvgExistChance = (float)(uiExistChance / 100.0);
+        dAvgStatus = uiStatus / (float)uiQuantity;
         // Display stats.
         MPrint(xp, yp, ShortItemNames[index]);
         mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
@@ -875,7 +876,7 @@ static void SetupItemDetailsMode(BOOLEAN fAllowRecursion);
 
 void RenderSummaryWindow() {
   SGPRect ClipRect;
-  INT32 i, x, y;
+  int32_t i, x, y;
   if ((GetActiveFieldID() == 1) != gfTempFile) {
     gfTempFile ^= 1;
     SetInputFieldStringWith16BitString(1, L"");
@@ -1105,7 +1106,7 @@ void RenderSummaryWindow() {
             }
           } else {
             SetFontForeground(FONT_RED);
-            INT32 const y = (gfItemDetailsMode ? 5 : 20);
+            int32_t const y = (gfItemDetailsMode ? 5 : 20);
             mprintf(10, y, L"Summary Information for sector %ls", str);
             MPrint(10, y + 10, L"does not exist.");
             ShowButton(iSummaryButton[SUMMARY_UPDATE]);
@@ -1216,7 +1217,7 @@ void RenderSummaryWindow() {
     {
       SGPVSurface::Lock l(FRAME_BUFFER);
       SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      RectangleDraw(TRUE, 350, 15, 405, 28, 0, l.Buffer<UINT16>());
+      RectangleDraw(TRUE, 350, 15, 405, 28, 0, l.Buffer<uint16_t>());
     }
     FRAME_BUFFER->ShadowRectUsingLowPercentTable(351, 16, 404, 27);
     if (gpCurrentSectorSummary)
@@ -1232,7 +1233,7 @@ void RenderSummaryWindow() {
     {
       SGPVSurface::Lock l(FRAME_BUFFER);
       SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      RectangleDraw(TRUE, 350, 30, 405, 43, 0, l.Buffer<UINT16>());
+      RectangleDraw(TRUE, 350, 30, 405, 43, 0, l.Buffer<uint16_t>());
     }
     if (gpCurrentSectorSummary)
     /*&& gpCurrentSectorSummary->usNumItems ||
@@ -1265,21 +1266,21 @@ void RenderSummaryWindow() {
       mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT)) / 2, MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
-      UINT16 pos;
+      uint16_t pos;
       SGPVSurface::Lock l(FRAME_BUFFER);
-      UINT16 *const pDestBuf = l.Buffer<UINT16>();
+      uint16_t *const pDestBuf = l.Buffer<uint16_t>();
       SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
       for (i = 1; i <= 15; i++) {
         // draw vertical lines
-        pos = (UINT16)(i * 13 + MAP_LEFT);
+        pos = (uint16_t)(i * 13 + MAP_LEFT);
         LineDraw(TRUE, pos, MAP_TOP, pos, MAP_BOTTOM - 1, 0, pDestBuf);
         // draw horizontal lines
-        pos = (UINT16)(i * 13 + MAP_TOP);
+        pos = (uint16_t)(i * 13 + MAP_TOP);
         LineDraw(TRUE, MAP_LEFT, pos, MAP_RIGHT - 1, pos, 0, pDestBuf);
       }
     }
     if (gfRenderProgress) {
-      UINT8 ubNumUndergroundLevels;
+      uint8_t ubNumUndergroundLevels;
       for (y = 0; y < 16; y++) {
         ClipRect.iTop = MAP_TOP + y * 13;
         ClipRect.iBottom = ClipRect.iTop + 12;
@@ -1342,7 +1343,7 @@ void RenderSummaryWindow() {
 
   if (gfGlobalSummaryExists) {
     SGPVSurface::Lock l(FRAME_BUFFER);
-    UINT16 *const pDestBuf = l.Buffer<UINT16>();
+    uint16_t *const pDestBuf = l.Buffer<uint16_t>();
     SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     // Render the grid for the map currently residing in memory (blue).
     if (gfWorldLoaded && !gfTempFile && gsSectorX) {
@@ -1391,7 +1392,7 @@ void RenderSummaryWindow() {
 void UpdateSectorSummary(const wchar_t *gszFilename, BOOLEAN fUpdate) {
   wchar_t str[50];
   const wchar_t *ptr;
-  INT16 x, y;
+  int16_t x, y;
 
   gfRenderSummary = TRUE;
   // Extract the sector
@@ -1484,27 +1485,27 @@ void UpdateSectorSummary(const wchar_t *gszFilename, BOOLEAN fUpdate) {
     else
       szCoord[2] = '\0';
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
-    EvaluateWorld(szCoord, (UINT8)giCurrLevel);
+    EvaluateWorld(szCoord, (uint8_t)giCurrLevel);
 
     RemoveProgressBar(0);
   } else
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 }
 
-static void SummaryOkayCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryOkayCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DestroySummaryWindow();
   }
 }
 
-static void SummaryToggleGridCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryToggleGridCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderGrid = btn->Clicked();
     gfRenderMap = TRUE;
   }
 }
 
-static void SummaryToggleAlternateCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryToggleAlternateCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->Clicked()) {
       giCurrentViewLevel <<= 4;
@@ -1517,7 +1518,7 @@ static void SummaryToggleAlternateCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummarySciFiCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummarySciFiCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iSummaryButton[SUMMARY_SCIFI]->uiFlags |= BUTTON_CLICKED_ON | BUTTON_DIRTY;
     iSummaryButton[SUMMARY_REAL]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1529,7 +1530,7 @@ static void SummarySciFiCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummaryRealCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryRealCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iSummaryButton[SUMMARY_SCIFI]->uiFlags &= ~BUTTON_CLICKED_ON;
     iSummaryButton[SUMMARY_SCIFI]->uiFlags |= BUTTON_DIRTY;
@@ -1541,7 +1542,7 @@ static void SummaryRealCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummaryEnemyCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryEnemyCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iSummaryButton[SUMMARY_SCIFI]->uiFlags &= ~BUTTON_CLICKED_ON;
     iSummaryButton[SUMMARY_SCIFI]->uiFlags |= BUTTON_DIRTY;
@@ -1553,7 +1554,7 @@ static void SummaryEnemyCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummaryToggleProgressCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryToggleProgressCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderProgress = btn->Clicked();
     gfRenderMap = TRUE;
@@ -1675,8 +1676,8 @@ static void CreateGlobalSummary() {
   DebugMsg(TOPIC_JA2EDITOR, DBG_LEVEL_1, "GlobalSummary Information generated successfully.");
 }
 
-static void MapMoveCallback(MOUSE_REGION *reg, INT32 reason) {
-  static INT16 gsPrevX = 0, gsPrevY = 0;
+static void MapMoveCallback(MOUSE_REGION *reg, int32_t reason) {
+  static int16_t gsPrevX = 0, gsPrevY = 0;
   // calc current sector highlighted.
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gsPrevX = gsHiSectorX = 0;
@@ -1693,8 +1694,8 @@ static void MapMoveCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static void MapClickCallback(MOUSE_REGION *reg, INT32 reason) {
-  static INT16 sLastX = -1, sLastY = -1;
+static void MapClickCallback(MOUSE_REGION *reg, int32_t reason) {
+  static int16_t sLastX = -1, sLastY = -1;
   // calc current sector selected.
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1) {
@@ -1776,8 +1777,8 @@ static void MapClickCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static void SummaryToggleLevelCallback(GUI_BUTTON *btn, INT32 reason) {
-  INT8 i;
+static void SummaryToggleLevelCallback(GUI_BUTTON *btn, int32_t reason) {
+  int8_t i;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1) SelectNextField();
     gfRenderSummary = TRUE;
@@ -1808,7 +1809,7 @@ static void SummaryToggleLevelCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummaryLoadMapCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryLoadMapCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     const wchar_t *ptr;
     wchar_t str[50];
@@ -1853,7 +1854,7 @@ static void SummaryLoadMapCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummarySaveMapCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummarySaveMapCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderSummary = TRUE;
     if (gubOverrideStatus == INACTIVE || gfOverride) {
@@ -1873,7 +1874,7 @@ static void SummarySaveMapCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void SummaryOverrideCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryOverrideCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfOverride ^= TRUE;
     gfRenderSummary = TRUE;
@@ -1896,7 +1897,7 @@ static void CalculateOverrideStatus() {
   } else
     sprintf(szFilename, MAPSDIR "/%ls", gszFilename);
   swprintf(gszDisplayName, lengthof(gszDisplayName), L"%hs", szFilename + 5);
-  const UINT32 attr = FileGetAttributes(szFilename);
+  const uint32_t attr = FileGetAttributes(szFilename);
   if (attr != FILE_ATTR_ERROR) {
     if (gfWorldLoaded) {
       gubOverrideStatus = (attr & FILE_ATTR_READONLY ? READONLY : OVERWRITE);
@@ -1912,12 +1913,12 @@ static void CalculateOverrideStatus() {
   }
 }
 
-static BOOLEAN LoadSummary(const INT32 x, const INT32 y, const UINT8 level,
+static BOOLEAN LoadSummary(const int32_t x, const int32_t y, const uint8_t level,
                            const char *const suffix) {
   char summary_filename[40];
   sprintf(summary_filename, DEVINFO_DIR "/%c%d%s.sum", 'A' + y, x + 1, suffix);
 
-  FLOAT dMajorMapVersion;
+  float dMajorMapVersion;
   {
     char filename[40];
     sprintf(filename, MAPSDIR "/%c%d%s.dat", 'A' + y, x + 1, suffix);
@@ -1929,7 +1930,7 @@ static BOOLEAN LoadSummary(const INT32 x, const INT32 y, const UINT8 level,
       return FALSE;
     }
 
-    FileRead(f_map, &dMajorMapVersion, sizeof(FLOAT));
+    FileRead(f_map, &dMajorMapVersion, sizeof(float));
   }
 
   FILE *const f_sum = fopen(summary_filename, "rb");
@@ -1978,8 +1979,8 @@ static void LoadGlobalSummary() {
    * to load summaries for those maps.  If the summary information isn't found,
    * then the occurrences are recorded and reported to the user when finished to
    * give the option to generate them. */
-  for (INT32 y = 0; y < 16; ++y) {
-    for (INT32 x = 0; x < 16; ++x) {
+  for (int32_t y = 0; y < 16; ++y) {
+    for (int32_t x = 0; x < 16; ++x) {
       BOOLEAN sector_levels = 0;
       if (LoadSummary(x, y, 0, "")) sector_levels |= GROUND_LEVEL_MASK;        // main ground level
       if (LoadSummary(x, y, 1, "_b1")) sector_levels |= BASEMENT1_LEVEL_MASK;  // main B1 level
@@ -2006,7 +2007,7 @@ static void LoadGlobalSummary() {
 
 static void UpdateMasterProgress();
 
-void WriteSectorSummaryUpdate(const char *const filename, const UINT8 ubLevel,
+void WriteSectorSummaryUpdate(const char *const filename, const uint8_t ubLevel,
                               SUMMARYFILE *const sf) {
   const char *const ext = strstr(filename, ".dat");
   AssertMsg(ext, "Illegal sector summary filename.");
@@ -2024,13 +2025,13 @@ void WriteSectorSummaryUpdate(const char *const filename, const UINT8 ubLevel,
   UpdateMasterProgress();
 
   // Extract the sector information out of the filename.
-  INT8 y;
+  int8_t y;
   if (filename[0] >= 'a')
     y = filename[0] - 'a';
   else
     y = filename[0] - 'A';
 
-  INT8 x;
+  int8_t x;
   if (filename[2] < '0' || filename[2] > '9')
     x = filename[1] - '0' - 1;
   else
@@ -2047,15 +2048,15 @@ static void UpdateMasterProgress() {
     gusCurrent++;
     MasterEnd = (gusCurrent / (double)gusTotal) * 100.0;
     if (gfMajorUpdate) {
-      SetRelativeStartAndEndPercentage(2, (UINT16)MasterStart, (UINT16)MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(2, (uint16_t)MasterStart, (uint16_t)MasterEnd, NULL);
       RenderProgressBar(2, 0);
     } else
-      SetRelativeStartAndEndPercentage(1, (UINT16)MasterStart, (UINT16)MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(1, (uint16_t)MasterStart, (uint16_t)MasterEnd, NULL);
   }
 }
 
-static void ReportError(const char *pSector, UINT8 ubLevel) {
-  static INT32 yp = 180;
+static void ReportError(const char *pSector, uint8_t ubLevel) {
+  static int32_t yp = 180;
   wchar_t str[40];
   wchar_t temp[10];
 
@@ -2071,7 +2072,7 @@ static void ReportError(const char *pSector, UINT8 ubLevel) {
 }
 
 static void RegenerateSummaryInfoForAllOutdatedMaps() {
-  INT32 x, y;
+  int32_t x, y;
   SUMMARYFILE *pSF;
   // CreateProgressBar(0, 20, 120, 280, 12); //slave (individual)
   // CreateProgressBar(1, 20, 100, 280, 12); //master (total)
@@ -2136,7 +2137,7 @@ static void RegenerateSummaryInfoForAllOutdatedMaps() {
   gfUpdatingNow = FALSE;
 }
 
-static void SummaryUpdateCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SummaryUpdateCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CreateProgressBar(0, 20, 100, 280, 12);  // slave (individual)
     DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
@@ -2150,7 +2151,7 @@ static void SummaryUpdateCallback(GUI_BUTTON *btn, INT32 reason) {
 
     char str[40];
     sprintf(str, "%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
-    EvaluateWorld(str, (UINT8)giCurrLevel);
+    EvaluateWorld(str, (uint8_t)giCurrLevel);
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
 
@@ -2171,7 +2172,7 @@ static void ExtractTempFilename() {
 }
 
 void ApologizeOverrideAndForceUpdateEverything() {
-  INT32 x, y;
+  int32_t x, y;
   wchar_t str[50];
   SUMMARYFILE *pSF;
   // Create one huge assed button
@@ -2283,12 +2284,12 @@ void ApologizeOverrideAndForceUpdateEverything() {
 }
 
 static void SetupItemDetailsMode(BOOLEAN fAllowRecursion) {
-  UINT32 uiNumItems;
+  uint32_t uiNumItems;
   SOLDIERCREATE_STRUCT priority;
-  INT32 i, j;
-  UINT16 usNumItems;
+  int32_t i, j;
+  uint16_t usNumItems;
   OBJECTTYPE *pItem;
-  UINT16 usPEnemyIndex, usNEnemyIndex;
+  uint16_t usPEnemyIndex, usNEnemyIndex;
 
   // Clear memory for all the item summaries loaded
   if (gpWorldItemsSummaryArray) {

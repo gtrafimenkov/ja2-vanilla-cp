@@ -38,10 +38,10 @@ BOOLEAN fFinishedCharGeneration = FALSE;
 
 // image handle
 SGPVObject *guiCHARACTERPORTRAIT;
-extern INT32 iCurrentVoices;
+extern int32_t iCurrentVoices;
 
-extern void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
-extern void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
+extern void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, int32_t reason);
+extern void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPFinishButtons();
 static void LoadCharacterPortrait();
@@ -87,12 +87,12 @@ void ExitIMPFinish() {
 
 void HandleIMPFinish() {}
 
-static void MakeButton(UINT idx, const char *img_file, const wchar_t *text, INT16 x, INT16 y,
-                       GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const char *img_file, const wchar_t *text, int16_t x,
+                       int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(img_file, 0, 1);
   giIMPFinishButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -100,15 +100,15 @@ static void MakeButton(UINT idx, const char *img_file, const wchar_t *text, INT1
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPFinishButtons() {
   // this function will create the buttons needed for th IMP about us page
-  const INT16 dx = LAPTOP_SCREEN_UL_X;
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dx = LAPTOP_SCREEN_UL_X;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
 
   // the start over button button
   MakeButton(0, LAPTOPDIR "/button_2.sti", pImpButtonText[7], dx + 136, dy + 174,
@@ -171,14 +171,14 @@ static void DeleteIMPFinishButtons() {
 
 static void FinishMessageBoxCallBack(MessageBoxReturnValue);
 
-static void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO,
                        FinishMessageBoxCallBack);
   }
 }
 
-static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_CONFIRM;
@@ -190,13 +190,13 @@ static void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
   static BOOLEAN fAnimateFlag = FALSE;
-  static UINT32 uiBaseTime = 0;
+  static uint32_t uiBaseTime = 0;
   static BOOLEAN fState = 0;
 
-  INT32 iDifference = 0;
+  int32_t iDifference = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     uiBaseTime = GetJA2Clock();
@@ -221,7 +221,7 @@ static void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, int32_t reason) {
   // btn callback for Main Page Begin Profiling
 
   // if not this far in char generation, don't alot ANY action
@@ -239,7 +239,7 @@ static void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
 
 static void RenderCharFullName() {
   wchar_t sString[64];
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   // render the characters full name
   SetFontAttributes(FONT14ARIAL, FONT_WHITE);

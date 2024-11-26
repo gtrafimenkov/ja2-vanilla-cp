@@ -19,15 +19,15 @@ void ShowLightPositionHandles();
 extern void ShowCurrentDrawingMode();
 
 // Create and place a light of selected radius into the world.
-BOOLEAN PlaceLight(INT16 radius, GridNo pos);
+BOOLEAN PlaceLight(int16_t radius, GridNo pos);
 
 BOOLEAN RemoveLight(GridNo pos);
 extern BOOLEAN gfMercResetUponEditorEntry;
 
 // These go together.  The taskbar has a specific color scheme.
-extern UINT16 gusEditorTaskbarColor;
-extern UINT16 gusEditorTaskbarHiColor;
-extern UINT16 gusEditorTaskbarLoColor;
+extern uint16_t gusEditorTaskbarColor;
+extern uint16_t gusEditorTaskbarHiColor;
+extern uint16_t gusEditorTaskbarLoColor;
 
 extern TaskMode iOldTaskMode;
 extern TaskMode iCurrentTaskbar;

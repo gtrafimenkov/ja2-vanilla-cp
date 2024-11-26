@@ -27,7 +27,8 @@ void RenderInsurance();
 void InitInsuranceDefaults();
 void DisplayInsuranceDefaults();
 void RemoveInsuranceDefaults();
-void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY);
-void GetInsuranceText(UINT8 ubNumber, wchar_t *pString);
+void DisplaySmallRedLineWithShadow(uint16_t usStartX, uint16_t usStartY, uint16_t EndX,
+                                   uint16_t EndY);
+void GetInsuranceText(uint8_t ubNumber, wchar_t *pString);
 
 #endif

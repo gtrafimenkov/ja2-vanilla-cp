@@ -59,7 +59,7 @@ enum {
   SMKINTRO_LAST_END_GAME,
 };
 
-static INT32 giCurrentIntroBeingPlayed = SMKINTRO_NO_VIDEO;
+static int32_t giCurrentIntroBeingPlayed = SMKINTRO_NO_VIDEO;
 
 static char const *const gpzSmackerFileNames[] = {
     // begining of the game
@@ -81,7 +81,7 @@ static char const *const gpzSmackerFileNames[] = {
 
 // enums used for when the intro screen can come up, either begining game intro,
 // or end game cinematic
-static INT8 gbIntroScreenMode = -1;
+static int8_t gbIntroScreenMode = -1;
 
 static void EnterIntroScreen();
 static void ExitIntroScreen();
@@ -113,12 +113,12 @@ ScreenID IntroScreenHandle() {
   return (guiIntroExitScreen);
 }
 
-static INT32 GetNextIntroVideo(UINT32 uiCurrentVideo);
+static int32_t GetNextIntroVideo(uint32_t uiCurrentVideo);
 static void PrepareToExitIntroScreen();
-static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay);
+static void StartPlayingIntroFlic(int32_t iIndexOfFlicToPlay);
 
 static void EnterIntroScreen() {
-  INT32 iFirstVideoID = -1;
+  int32_t iFirstVideoID = -1;
 
   ClearMainMenu();
 
@@ -160,7 +160,7 @@ static void HandleIntroScreen() {
 
   // if the flic is not playing
   if (!fFlicStillPlaying) {
-    INT32 iNextVideoToPlay = -1;
+    int32_t iNextVideoToPlay = -1;
 
     iNextVideoToPlay = GetNextIntroVideo(giCurrentIntroBeingPlayed);
 
@@ -226,8 +226,8 @@ static void PrepareToExitIntroScreen() {
   gfIntroScreenExit = TRUE;
 }
 
-static INT32 GetNextIntroVideo(UINT32 uiCurrentVideo) {
-  INT32 iStringToUse = -1;
+static int32_t GetNextIntroVideo(uint32_t uiCurrentVideo) {
+  int32_t iStringToUse = -1;
 
   // switch on whether it is the beginging or the end game video
   switch (gbIntroScreenMode) {
@@ -296,7 +296,7 @@ static INT32 GetNextIntroVideo(UINT32 uiCurrentVideo) {
   return (iStringToUse);
 }
 
-static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay) {
+static void StartPlayingIntroFlic(int32_t iIndexOfFlicToPlay) {
   if (iIndexOfFlicToPlay != -1) {
     // start playing a flic
     gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, TRUE);
@@ -311,7 +311,7 @@ static void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay) {
   }
 }
 
-void SetIntroType(INT8 bIntroType) {
+void SetIntroType(int8_t bIntroType) {
   if (bIntroType == INTRO_BEGINING) {
     gbIntroScreenMode = INTRO_BEGINING;
   } else if (bIntroType == INTRO_ENDING) {

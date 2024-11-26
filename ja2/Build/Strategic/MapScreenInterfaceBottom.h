@@ -53,10 +53,10 @@ void RequestTriggerExitFromMapscreen(ExitToWhere);
 BOOLEAN AllowedToExitFromMapscreenTo(ExitToWhere);
 void HandleExitsFromMapScreen();
 
-void MapScreenMsgScrollDown(UINT8 ubLinesDown);
-void MapScreenMsgScrollUp(UINT8 ubLinesUp);
+void MapScreenMsgScrollDown(uint8_t ubLinesDown);
+void MapScreenMsgScrollUp(uint8_t ubLinesUp);
 
-void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex);
+void ChangeCurrentMapscreenMessageIndex(uint8_t ubNewMessageIndex);
 void MoveToEndOfMapScreenMessageList();
 
 // the dirty state of the mapscreen interface bottom

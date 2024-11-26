@@ -15,16 +15,16 @@
 
 enum DisqualificationReasons { BOXER_OUT_OF_RING, NON_BOXER_IN_RING, BAD_ATTACK };
 
-extern INT16 gsBoxerGridNo[NUM_BOXERS];
+extern int16_t gsBoxerGridNo[NUM_BOXERS];
 extern SOLDIERTYPE *gBoxer[NUM_BOXERS];
 extern BOOLEAN gfBoxerFought[NUM_BOXERS];
-extern INT8 gbBoxingState;
+extern int8_t gbBoxingState;
 extern BOOLEAN gfLastBoxingMatchWonByPlayer;
-extern UINT8 gubBoxingMatchesWon;
-extern UINT8 gubBoxersRests;
+extern uint8_t gubBoxingMatchesWon;
+extern uint8_t gubBoxersRests;
 extern BOOLEAN gfBoxersResting;
 
-extern void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, INT8 bReason);
+extern void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, int8_t bReason);
 bool CheckOnBoxers();
 extern void EndBoxingMatch(SOLDIERTYPE *pLoser);
 bool BoxerAvailable();
@@ -32,9 +32,9 @@ extern BOOLEAN AnotherFightPossible();
 extern void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSolier);
 extern void BoxingMovementCheck(SOLDIERTYPE *pSoldier);
 extern void ExitBoxing();
-extern void SetBoxingState(INT8 bNewState);
+extern void SetBoxingState(int8_t bNewState);
 bool BoxerExists();
-extern UINT8 CountPeopleInBoxingRing();
+extern uint8_t CountPeopleInBoxingRing();
 extern void ClearAllBoxerFlags();
 
 #endif

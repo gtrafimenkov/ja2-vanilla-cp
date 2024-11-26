@@ -35,12 +35,12 @@ extern SGPVSurface *ButtonDestBuffer;
 struct GUI_BUTTON;
 
 // GUI_BUTTON callback function type
-typedef void (*GUI_CALLBACK)(GUI_BUTTON *, INT32);
+typedef void (*GUI_CALLBACK)(GUI_BUTTON *, int32_t);
 
 // GUI_BUTTON structure definitions.
 struct GUI_BUTTON {
-  GUI_BUTTON(UINT32 flags, INT16 left, INT16 top, INT16 width, INT16 height, INT8 priority,
-             GUI_CALLBACK click, GUI_CALLBACK move);
+  GUI_BUTTON(uint32_t flags, int16_t left, int16_t top, int16_t width, int16_t height,
+             int8_t priority, GUI_CALLBACK click, GUI_CALLBACK move);
   ~GUI_BUTTON();
 
   bool Clicked() const { return uiFlags & BUTTON_CLICKED_ON; }
@@ -56,18 +56,18 @@ struct GUI_BUTTON {
   // Draw the button on the screen.
   void Draw();
 
-  void SpecifyDownTextColors(INT16 fore_colour_down, INT16 shadow_colour_down);
-  void SpecifyHilitedTextColors(INT16 fore_colour_highlighted, INT16 shadow_colour_highlighted);
+  void SpecifyDownTextColors(int16_t fore_colour_down, int16_t shadow_colour_down);
+  void SpecifyHilitedTextColors(int16_t fore_colour_highlighted, int16_t shadow_colour_highlighted);
 
   enum Justification { TEXT_LEFT = -1, TEXT_CENTER = 0, TEXT_RIGHT = 1 };
   void SpecifyTextJustification(Justification);
 
   void SpecifyText(wchar_t const *text);
-  void SpecifyGeneralTextAttributes(wchar_t const *string, Font, INT16 fore_colour,
-                                    INT16 shadow_colour);
-  void SpecifyTextOffsets(INT8 text_x_offset, INT8 text_y_offset, BOOLEAN shift_text);
-  void SpecifyTextSubOffsets(INT8 text_x_offset, INT8 text_y_offset, BOOLEAN shift_text);
-  void SpecifyTextWrappedWidth(INT16 wrapped_width);
+  void SpecifyGeneralTextAttributes(wchar_t const *string, Font, int16_t fore_colour,
+                                    int16_t shadow_colour);
+  void SpecifyTextOffsets(int8_t text_x_offset, int8_t text_y_offset, BOOLEAN shift_text);
+  void SpecifyTextSubOffsets(int8_t text_x_offset, int8_t text_y_offset, BOOLEAN shift_text);
+  void SpecifyTextWrappedWidth(int16_t wrapped_width);
 
   void AllowDisabledFastHelp();
 
@@ -84,29 +84,29 @@ struct GUI_BUTTON {
    * If fShiftImage is true, then the image will shift down one pixel and right
    * one pixel just like the text does.
    */
-  void SpecifyIcon(SGPVObject const *icon, UINT16 usVideoObjectIndex, INT8 bXOffset, INT8 bYOffset,
-                   BOOLEAN fShiftImage);
+  void SpecifyIcon(SGPVObject const *icon, uint16_t usVideoObjectIndex, int8_t bXOffset,
+                   int8_t bYOffset, BOOLEAN fShiftImage);
 
   // will simply set the cursor for the mouse region the button occupies
-  void SetCursor(UINT16 const cursor) { Area.ChangeCursor(cursor); }
+  void SetCursor(uint16_t const cursor) { Area.ChangeCursor(cursor); }
 
   void DrawCheckBoxOnOff(BOOLEAN on);
 
   // Coordinates where button is on the screen
-  INT16 X() const { return Area.RegionTopLeftX; }
-  INT16 Y() const { return Area.RegionTopLeftY; }
-  INT16 W() const { return Area.RegionBottomRightX - Area.RegionTopLeftX; }
-  INT16 H() const { return Area.RegionBottomRightY - Area.RegionTopLeftY; }
-  INT16 BottomRightX() const { return Area.RegionBottomRightX; }
-  INT16 BottomRightY() const { return Area.RegionBottomRightY; }
+  int16_t X() const { return Area.RegionTopLeftX; }
+  int16_t Y() const { return Area.RegionTopLeftY; }
+  int16_t W() const { return Area.RegionBottomRightX - Area.RegionTopLeftX; }
+  int16_t H() const { return Area.RegionBottomRightY - Area.RegionTopLeftY; }
+  int16_t BottomRightX() const { return Area.RegionBottomRightX; }
+  int16_t BottomRightY() const { return Area.RegionBottomRightY; }
 
-  INT16 MouseX() const { return Area.MouseXPos; }
-  INT16 MouseY() const { return Area.MouseYPos; }
-  INT16 RelativeX() const { return Area.RelativeXPos; }
-  INT16 RelativeY() const { return Area.RelativeYPos; }
+  int16_t MouseX() const { return Area.MouseXPos; }
+  int16_t MouseY() const { return Area.MouseYPos; }
+  int16_t RelativeX() const { return Area.RelativeXPos; }
+  int16_t RelativeY() const { return Area.RelativeYPos; }
 
-  INT32 GetUserData() const { return User.Data; }
-  void SetUserData(INT32 const data) { User.Data = data; }
+  int32_t GetUserData() const { return User.Data; }
+  void SetUserData(int32_t const data) { User.Data = data; }
 
   template <typename T>
   T *GetUserPtr() const {
@@ -114,49 +114,49 @@ struct GUI_BUTTON {
   }
   void SetUserPtr(void *const p) { User.Ptr = p; }
 
-  INT32 IDNum;                 // ID Number, contains it's own button number
+  int32_t IDNum;               // ID Number, contains it's own button number
   BUTTON_PICS *image;          // Image to use (see DOCs for details)
   MouseRegion Area;            // Mouse System's mouse region to use for this button
   GUI_CALLBACK ClickCallback;  // Button Callback when button is clicked
   GUI_CALLBACK MoveCallback;   // Button Callback when mouse moved on this region
-  UINT32 uiFlags;              // Button state flags etc.( 32-bit )
-  UINT32 uiOldFlags;           // Old flags from previous render loop
+  uint32_t uiFlags;            // Button state flags etc.( 32-bit )
+  uint32_t uiOldFlags;         // Old flags from previous render loop
   union                        // Place holder for user data etc.
   {
-    INT32 Data;
+    int32_t Data;
     void *Ptr;
   } User;
-  INT8 bDisabledStyle;  // Button disabled style
+  int8_t bDisabledStyle;  // Button disabled style
 
   // For buttons with text
-  wchar_t *string;   // the string
-  Font usFont;       // font for text
-  INT16 sForeColor;  // text colors if there is text
-  INT16 sShadowColor;
-  INT16 sForeColorDown;  // text colors when button is down (optional)
-  INT16 sShadowColorDown;
-  INT16 sForeColorHilited;  // text colors when button is down (optional)
-  INT16 sShadowColorHilited;
-  INT8 bJustification;  // BUTTON_TEXT_LEFT, BUTTON_TEXT_CENTER, BUTTON_TEXT_RIGHT
-  INT8 bTextXOffset;
-  INT8 bTextYOffset;
-  INT8 bTextXSubOffSet;
-  INT8 bTextYSubOffSet;
+  wchar_t *string;     // the string
+  Font usFont;         // font for text
+  int16_t sForeColor;  // text colors if there is text
+  int16_t sShadowColor;
+  int16_t sForeColorDown;  // text colors when button is down (optional)
+  int16_t sShadowColorDown;
+  int16_t sForeColorHilited;  // text colors when button is down (optional)
+  int16_t sShadowColorHilited;
+  int8_t bJustification;  // BUTTON_TEXT_LEFT, BUTTON_TEXT_CENTER, BUTTON_TEXT_RIGHT
+  int8_t bTextXOffset;
+  int8_t bTextYOffset;
+  int8_t bTextXSubOffSet;
+  int8_t bTextYSubOffSet;
   BOOLEAN fShiftText;
-  INT16 sWrappedWidth;
+  int16_t sWrappedWidth;
 
   // For buttons with icons (don't confuse this with quickbuttons which have up
   // to 5 states)
   const SGPVObject *icon;
-  INT16 usIconIndex;
-  INT8 bIconXOffset;  // -1 means horizontally centered
-  INT8 bIconYOffset;  // -1 means vertically centered
+  int16_t usIconIndex;
+  int8_t bIconXOffset;  // -1 means horizontally centered
+  int8_t bIconYOffset;  // -1 means vertically centered
   BOOLEAN
   fShiftImage;  // if true, icon is shifted +1,+1 when button state is down.
 
-  UINT8 ubToggleButtonActivated;
+  uint8_t ubToggleButtonActivated;
 
-  UINT8 ubSoundSchemeID;
+  uint8_t ubSoundSchemeID;
 };
 
 extern GUI_BUTTON *ButtonList[MAX_BUTTONS];  // Button System's Main Button List
@@ -169,14 +169,14 @@ class GUIButtonRef {
 
   void Reset() { btn_id_ = 0; }
 
-  INT32 ID() const { return btn_id_; }
+  int32_t ID() const { return btn_id_; }
 
   GUI_BUTTON *operator->() const { return ButtonList[btn_id_]; }
 
   operator GUI_BUTTON *() const { return ButtonList[btn_id_]; }
 
  private:
-  INT32 btn_id_;
+  int32_t btn_id_;
 };
 
 /* Initializes the GUI button system for use. Must be called before using any
@@ -198,22 +198,22 @@ void RenderButtonsFastHelp();
 #endif
 
 // Loads an image file for use as a button icon.
-INT16 LoadGenericButtonIcon(const char *filename);
+int16_t LoadGenericButtonIcon(const char *filename);
 
 // Removes a button icon graphic from the system
-void UnloadGenericButtonIcon(INT16 GenImg);
+void UnloadGenericButtonIcon(int16_t GenImg);
 
 // Load images for use with QuickButtons.
-BUTTON_PICS *LoadButtonImage(const char *filename, INT32 Grayed, INT32 OffNormal, INT32 OffHilite,
-                             INT32 OnNormal, INT32 OnHilite);
-BUTTON_PICS *LoadButtonImage(char const *filename, INT32 off_normal, INT32 on_normal);
+BUTTON_PICS *LoadButtonImage(const char *filename, int32_t Grayed, int32_t OffNormal,
+                             int32_t OffHilite, int32_t OnNormal, int32_t OnHilite);
+BUTTON_PICS *LoadButtonImage(char const *filename, int32_t off_normal, int32_t on_normal);
 
 /* Uses a previously loaded quick button image for use with QuickButtons.  The
  * function simply duplicates the vobj!
  */
-BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *LoadedImg, INT32 Grayed, INT32 OffNormal,
-                                  INT32 OffHilite, INT32 OnNormal, INT32 OnHilite);
-BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *img, INT32 off_normal, INT32 on_normal);
+BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *LoadedImg, int32_t Grayed, int32_t OffNormal,
+                                  int32_t OffHilite, int32_t OnNormal, int32_t OnHilite);
+BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *img, int32_t off_normal, int32_t on_normal);
 
 // Removes a QuickButton image from the system.
 void UnloadButtonImage(BUTTON_PICS *);
@@ -245,46 +245,46 @@ extern BOOLEAN gfRenderHilights;
  * They cannot be re-sized, nor can the graphic be changed.  Providing you have
  * allocated your own image, this is a somewhat simplified function.
  */
-GUIButtonRef QuickCreateButton(BUTTON_PICS *image, INT16 x, INT16 y, INT16 priority,
+GUIButtonRef QuickCreateButton(BUTTON_PICS *image, int16_t x, int16_t y, int16_t priority,
                                GUI_CALLBACK click);
-GUIButtonRef QuickCreateButtonNoMove(BUTTON_PICS *image, INT16 x, INT16 y, INT16 priority,
+GUIButtonRef QuickCreateButtonNoMove(BUTTON_PICS *image, int16_t x, int16_t y, int16_t priority,
                                      GUI_CALLBACK click);
-GUIButtonRef QuickCreateButtonToggle(BUTTON_PICS *image, INT16 x, INT16 y, INT16 priority,
+GUIButtonRef QuickCreateButtonToggle(BUTTON_PICS *image, int16_t x, int16_t y, int16_t priority,
                                      GUI_CALLBACK click);
 
-GUIButtonRef QuickCreateButtonImg(const char *gfx, INT32 grayed, INT32 off_normal, INT32 off_hilite,
-                                  INT32 on_normal, INT32 on_hilite, INT16 x, INT16 y,
-                                  INT16 priority, GUI_CALLBACK click);
-GUIButtonRef QuickCreateButtonImg(const char *gfx, INT32 off_normal, INT32 on_normal, INT16 x,
-                                  INT16 y, INT16 priority, GUI_CALLBACK click);
+GUIButtonRef QuickCreateButtonImg(const char *gfx, int32_t grayed, int32_t off_normal,
+                                  int32_t off_hilite, int32_t on_normal, int32_t on_hilite,
+                                  int16_t x, int16_t y, int16_t priority, GUI_CALLBACK click);
+GUIButtonRef QuickCreateButtonImg(const char *gfx, int32_t off_normal, int32_t on_normal, int16_t x,
+                                  int16_t y, int16_t priority, GUI_CALLBACK click);
 
-GUIButtonRef CreateCheckBoxButton(INT16 x, INT16 y, const char *filename, INT16 Priority,
+GUIButtonRef CreateCheckBoxButton(int16_t x, int16_t y, const char *filename, int16_t Priority,
                                   GUI_CALLBACK ClickCallback);
 
 // Creates an Iconic type button.
-GUIButtonRef CreateIconButton(INT16 Icon, INT16 IconIndex, INT16 xloc, INT16 yloc, INT16 w, INT16 h,
-                              INT16 Priority, GUI_CALLBACK ClickCallback);
+GUIButtonRef CreateIconButton(int16_t Icon, int16_t IconIndex, int16_t xloc, int16_t yloc,
+                              int16_t w, int16_t h, int16_t Priority, GUI_CALLBACK ClickCallback);
 
 /* Creates a button like HotSpot. HotSpots have no graphics associated with
  * them.
  */
-GUIButtonRef CreateHotSpot(INT16 xloc, INT16 yloc, INT16 Width, INT16 Height, INT16 Priority,
-                           GUI_CALLBACK ClickCallback);
+GUIButtonRef CreateHotSpot(int16_t xloc, int16_t yloc, int16_t Width, int16_t Height,
+                           int16_t Priority, GUI_CALLBACK ClickCallback);
 
 // Creates a generic button with text on it.
-GUIButtonRef CreateTextButton(const wchar_t *string, Font, INT16 sForeColor, INT16 sShadowColor,
-                              INT16 xloc, INT16 yloc, INT16 w, INT16 h, INT16 Priority,
+GUIButtonRef CreateTextButton(const wchar_t *string, Font, int16_t sForeColor, int16_t sShadowColor,
+                              int16_t xloc, int16_t yloc, int16_t w, int16_t h, int16_t Priority,
                               GUI_CALLBACK ClickCallback);
 
 GUIButtonRef CreateIconAndTextButton(BUTTON_PICS *Image, const wchar_t *string, Font,
-                                     INT16 sForeColor, INT16 sShadowColor, INT16 sForeColorDown,
-                                     INT16 sShadowColorDown, INT16 xloc, INT16 yloc, INT16 Priority,
-                                     GUI_CALLBACK ClickCallback);
+                                     int16_t sForeColor, int16_t sShadowColor,
+                                     int16_t sForeColorDown, int16_t sShadowColorDown, int16_t xloc,
+                                     int16_t yloc, int16_t Priority, GUI_CALLBACK ClickCallback);
 
 /* This is technically not a clickable button, but just a label with text. It is
  * implemented as button */
-GUIButtonRef CreateLabel(const wchar_t *text, Font, INT16 forecolor, INT16 shadowcolor, INT16 x,
-                         INT16 y, INT16 w, INT16 h, INT16 priority);
+GUIButtonRef CreateLabel(const wchar_t *text, Font, int16_t forecolor, int16_t shadowcolor,
+                         int16_t x, int16_t y, int16_t w, int16_t h, int16_t priority);
 
 void MarkAButtonDirty(GUIButtonRef);    // will mark only selected button dirty
 void MarkButtonsDirty();                // Function to mark buttons dirty ( all will redraw
@@ -295,13 +295,13 @@ void ForceButtonUnDirty(GUIButtonRef);  // forces button undirty no matter the
                                         // reason, only lasts one frame
 
 struct ButtonDimensions {
-  UINT32 w;
-  UINT32 h;
+  uint32_t w;
+  uint32_t h;
 };
 
 const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *);
 
-UINT16 GetGenericButtonFillColor();
+uint16_t GetGenericButtonFillColor();
 
 void ReleaseAnchorMode();
 

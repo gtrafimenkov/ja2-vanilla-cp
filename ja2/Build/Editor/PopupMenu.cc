@@ -47,35 +47,35 @@
  * menu */
 struct CurrentPopupMenuInformation {
   PopupMenuID ubPopupMenuID;
-  UINT8 ubSelectedIndex;  // current popup menu index hilited.
-  UINT8 ubNumEntries;
-  UINT8 ubColumns;
-  UINT8 ubMaxEntriesPerColumn;
-  UINT8 ubColumnWidth[MAX_COLUMNS];
-  UINT8 ubActiveType;
+  uint8_t ubSelectedIndex;  // current popup menu index hilited.
+  uint8_t ubNumEntries;
+  uint8_t ubColumns;
+  uint8_t ubMaxEntriesPerColumn;
+  uint8_t ubColumnWidth[MAX_COLUMNS];
+  uint8_t ubActiveType;
   Font usFont;
   BOOLEAN fActive;
   BOOLEAN fUseKeyboardInfoUntilMouseMoves;
-  UINT16 usLeft;  // popup region coords.
-  UINT16 usTop;
-  UINT16 usRight;
-  UINT16 usBottom;
-  UINT16 usLastMouseX;
-  UINT16 usLastMouseY;
+  uint16_t usLeft;  // popup region coords.
+  uint16_t usTop;
+  uint16_t usRight;
+  uint16_t usBottom;
+  uint16_t usLastMouseX;
+  uint16_t usLastMouseY;
 };
 
 static CurrentPopupMenuInformation gPopup;
 
 static MOUSE_REGION popupRegion;
 
-static UINT16 gusEntryHeight;
+static uint16_t gusEntryHeight;
 static BOOLEAN fWaitingForLButtonRelease = FALSE;
 
 extern const wchar_t *gszScheduleActions[NUM_SCHEDULE_ACTIONS];
 
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
-static const wchar_t *GetPopupMenuString(UINT8 ubIndex) {
+static const wchar_t *GetPopupMenuString(uint8_t ubIndex) {
   switch (gPopup.ubPopupMenuID) {
     case CHANGETSET_POPUP:  // tile sets
       return gTilesets[ubIndex].zName;
@@ -114,13 +114,13 @@ Returns 0 if nothing in menu was selected, else
 returns the menu entry number starting from 1.
 */
 void InitPopupMenu(GUIButtonRef const button, PopupMenuID const ubPopupMenuID,
-                   UINT8 const ubDirection) {
-  UINT16 usX, usY;  // HACK000E
-  UINT16 usMenuHeight;
-  UINT16 usMenuWidth = 0;
-  UINT16 usCurrStrWidth;
-  UINT8 ubColumn, ubEntry;
-  UINT8 ubCounter;
+                   uint8_t const ubDirection) {
+  uint16_t usX, usY;  // HACK000E
+  uint16_t usMenuHeight;
+  uint16_t usMenuWidth = 0;
+  uint16_t usCurrStrWidth;
+  uint8_t ubColumn, ubEntry;
+  uint8_t ubCounter;
   // calculate the location of the menu based on the button position.
   // This also calculates the menu's direction based on position.
 
@@ -211,7 +211,7 @@ void InitPopupMenu(GUIButtonRef const button, PopupMenuID const ubPopupMenuID,
         break;  // done (don't want to process undefined entries...)
       usCurrStrWidth = 16 + StringPixLength(GetPopupMenuString(ubCounter), gPopup.usFont);
       if (usCurrStrWidth > gPopup.ubColumnWidth[ubColumn]) {
-        gPopup.ubColumnWidth[ubColumn] = (UINT8)usCurrStrWidth;
+        gPopup.ubColumnWidth[ubColumn] = (uint8_t)usCurrStrWidth;
       }
       ubCounter++;
     }
@@ -260,14 +260,14 @@ static void RenderPopupMenu() {
 
   {
     SGPVSurface::Lock l(FRAME_BUFFER);
-    UINT16 *const pDestBuf = l.Buffer<UINT16>();
-    UINT32 const pitch = l.Pitch();
+    uint16_t *const pDestBuf = l.Buffer<uint16_t>();
+    uint32_t const pitch = l.Pitch();
     SetClippingRegionAndImageWidth(pitch, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    UINT16 const line_colour = Get16BPPColor(FROMRGB(64, 64, 64));
+    uint16_t const line_colour = Get16BPPColor(FROMRGB(64, 64, 64));
     RectangleDraw(TRUE, p.usLeft, p.usTop, p.usRight - 1, p.usBottom - 1, line_colour, pDestBuf);
     // Draw a vertical line between each column
-    UINT16 x = p.usLeft;
-    for (UINT8 column = 1; column < p.ubColumns; ++column) {
+    uint16_t x = p.usLeft;
+    for (uint8_t column = 1; column < p.ubColumns; ++column) {
       x += p.ubColumnWidth[column - 1];
       LineDraw(TRUE, x, p.usTop, x, p.usBottom, line_colour, pDestBuf);
     }
@@ -278,25 +278,25 @@ static void RenderPopupMenu() {
   SetFont(font);
   SetFontBackground(FONT_MCOLOR_BLACK);
 
-  UINT8 const n_rows = p.ubMaxEntriesPerColumn;
-  UINT8 const n_entries = p.ubNumEntries;
-  UINT8 const selected = p.ubSelectedIndex - 1;
-  UINT8 entry = 0;
-  UINT16 dx = p.usLeft;
-  UINT16 const dy = p.usTop + 1;
-  UINT16 const h = gusEntryHeight;
-  for (UINT8 column = 0;; ++column) {
-    UINT8 const w = p.ubColumnWidth[column];
-    for (UINT8 row = 0; row != n_rows; ++entry, ++row) {
+  uint8_t const n_rows = p.ubMaxEntriesPerColumn;
+  uint8_t const n_entries = p.ubNumEntries;
+  uint8_t const selected = p.ubSelectedIndex - 1;
+  uint8_t entry = 0;
+  uint16_t dx = p.usLeft;
+  uint16_t const dy = p.usTop + 1;
+  uint16_t const h = gusEntryHeight;
+  for (uint8_t column = 0;; ++column) {
+    uint8_t const w = p.ubColumnWidth[column];
+    for (uint8_t row = 0; row != n_rows; ++entry, ++row) {
       if (entry >= n_entries) return;  // done
 
       SetFontForeground(entry == selected ? FONT_MCOLOR_LTBLUE : FONT_MCOLOR_WHITE);
 
       wchar_t const *const str = GetPopupMenuString(entry);
-      UINT16 const str_w = StringPixLength(str, font);
+      uint16_t const str_w = StringPixLength(str, font);
       // Horizontally center the string inside the popup menu
-      UINT16 const x = dx + (w - str_w) / 2;
-      UINT16 const y = dy + row * h;
+      uint16_t const x = dx + (w - str_w) / 2;
+      uint16_t const y = dy + row * h;
       MPrint(x, y, str);
     }
     dx += w;
@@ -306,10 +306,10 @@ static void RenderPopupMenu() {
 // This private function of PopupMenuHandle determines which menu entry
 // is highlighted based on the mouse cursor position.  Returns 0 if the
 // mouse is out of the menu region.
-static UINT8 GetPopupIndexFromMousePosition() {
-  UINT8 ubNumEntriesDown;
-  UINT16 usRelX;
-  UINT8 ubCount;
+static uint8_t GetPopupIndexFromMousePosition() {
+  uint8_t ubNumEntriesDown;
+  uint16_t usRelX;
+  uint8_t ubCount;
   if (gusMouseXPos >= gPopup.usLeft && gusMouseXPos <= gPopup.usRight &&
       gusMouseYPos > gPopup.usTop             // one pixel gap on top ignored
       && gusMouseYPos < gPopup.usBottom - 2)  // two pixel gap on bottom ignored
@@ -441,16 +441,16 @@ static void ProcessPopupMenuSelection() {
       InitJA2SelectionWindow();
       break;
     case CHANGECIVGROUP_POPUP:
-      ChangeCivGroup((UINT8)(gPopup.ubSelectedIndex - 1));
+      ChangeCivGroup((uint8_t)(gPopup.ubSelectedIndex - 1));
       break;
     case SCHEDULEACTION_POPUP:
-      UpdateScheduleAction((UINT8)(gPopup.ubSelectedIndex - 1));
+      UpdateScheduleAction((uint8_t)(gPopup.ubSelectedIndex - 1));
       break;
     case ACTIONITEM_POPUP:
-      UpdateActionItem((UINT8)(gPopup.ubSelectedIndex - 1));
+      UpdateActionItem((uint8_t)(gPopup.ubSelectedIndex - 1));
       break;
     case OWNERSHIPGROUP_POPUP:
-      SetOwnershipGroup((UINT8)(gPopup.ubSelectedIndex - 1));
+      SetOwnershipGroup((uint8_t)(gPopup.ubSelectedIndex - 1));
       break;
   }
 }

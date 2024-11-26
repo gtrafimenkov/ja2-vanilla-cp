@@ -52,7 +52,7 @@
 #include "Utils/WordWrap.h"
 
 // editor icon storage vars
-INT32 giEditMercDirectionIcons[2];
+int32_t giEditMercDirectionIcons[2];
 SGPVObject *guiMercInventoryPanel;
 SGPVObject *guiOmertaMap;
 SGPVSurface *guiMercInvPanelBuffers[9];
@@ -66,7 +66,7 @@ static MOUSE_REGION ItemsRegion;
 static MOUSE_REGION MercRegion;
 static MOUSE_REGION EditorRegion;
 
-void EnableEditorRegion(INT8 bRegionID) {
+void EnableEditorRegion(int8_t bRegionID) {
   switch (bRegionID) {
     case BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -88,7 +88,7 @@ void EnableEditorRegion(INT8 bRegionID) {
   }
 }
 
-void DisableEditorRegion(INT8 bRegionID) {
+void DisableEditorRegion(int8_t bRegionID) {
   switch (bRegionID) {
     case BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -110,7 +110,7 @@ void DisableEditorRegion(INT8 bRegionID) {
 }
 
 static void RemoveEditorRegions() {
-  INT32 x;
+  int32_t x;
   MSYS_RemoveRegion(&EditorRegion);
   for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     MSYS_RemoveRegion(&TerrainTileButtonRegion[x]);
@@ -128,9 +128,9 @@ static void InitEditorRegions() {
                     MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   // Create the regions for the terrain tile selections.
-  UINT16 x = 261;
-  UINT16 const y = 369;
-  INT32 idx = 0;
+  uint16_t x = 261;
+  uint16_t const y = 369;
+  int32_t idx = 0;
   FOR_EACHX(MOUSE_REGION, i, TerrainTileButtonRegion, x += 42) {
     MOUSE_REGION &r = *i;
     MSYS_DefineRegion(&r, x, y, x + 42, y + 22, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK,
@@ -169,12 +169,12 @@ static void DeleteEditorImages() {
   DeleteVideoObject(guiMercInventoryPanel);
   DeleteVideoObject(guiOmertaMap);
   // The merc directional buttons
-  UnloadGenericButtonIcon((INT16)giEditMercDirectionIcons[0]);
-  UnloadGenericButtonIcon((INT16)giEditMercDirectionIcons[1]);
+  UnloadGenericButtonIcon((int16_t)giEditMercDirectionIcons[0]);
+  UnloadGenericButtonIcon((int16_t)giEditMercDirectionIcons[1]);
 }
 
 static void CreateEditorBuffers() {
-  INT32 i;
+  int32_t i;
 
   // create buffer for the transition slot for merc items.  This slot contains
   // the newly selected item graphic in it's inventory size version.  This buffer
@@ -191,7 +191,7 @@ static void CreateEditorBuffers() {
 }
 
 static void DeleteEditorBuffers() {
-  INT32 i;
+  int32_t i;
   DeleteVideoSurface(guiMercTempBuffer);
   for (i = 0; i < 9; i++) {
     DeleteVideoSurface(guiMercInvPanelBuffers[i]);
@@ -224,7 +224,7 @@ static void ShowEditorToolbar(TaskMode const iNewTaskMode) {
 }
 
 static void HideEditorToolbar(TaskMode const iOldTaskMode) {
-  INT32 i, iStart, iEnd;
+  int32_t i, iStart, iEnd;
   switch (iOldTaskMode) {
     case TASK_TERRAIN:
       iStart = FIRST_TERRAIN_BUTTON;
@@ -390,7 +390,7 @@ void DoTaskbar() {
 void DisableEditorTaskbar() { FOR_EACH(GUIButtonRef, i, iEditorButton) DisableButton(*i); }
 
 void EnableEditorTaskbar() {
-  INT32 x;
+  int32_t x;
 
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++) EnableButton(iEditorButton[x]);
   // Keep permanent buttons disabled.
@@ -406,10 +406,10 @@ void EnableEditorTaskbar() {
 // A specialized mprint function that'll restore the editor panel underneath the
 // string before rendering the string.  This is obviously only useful for
 // drawing text in the editor taskbar.
-void mprintfEditor(INT16 x, INT16 y, const wchar_t *pFontString, ...) {
+void mprintfEditor(int16_t x, int16_t y, const wchar_t *pFontString, ...) {
   va_list argptr;
   wchar_t string[512];
-  UINT16 uiStringLength, uiStringHeight;
+  uint16_t uiStringLength, uiStringHeight;
 
   Assert(pFontString != NULL);
 
@@ -421,11 +421,11 @@ void mprintfEditor(INT16 x, INT16 y, const wchar_t *pFontString, ...) {
   uiStringLength = StringPixLength(string, FontDefault);
   uiStringHeight = GetFontHeight(FontDefault);
 
-  ClearTaskbarRegion(x, y, (INT16)(x + uiStringLength), (INT16)(y + uiStringHeight));
+  ClearTaskbarRegion(x, y, (int16_t)(x + uiStringLength), (int16_t)(y + uiStringHeight));
   MPrint(x, TASKBAR_Y + y, string);
 }
 
-void ClearTaskbarRegion(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
+void ClearTaskbarRegion(int16_t sLeft, int16_t sTop, int16_t sRight, int16_t sBottom) {
   sTop += TASKBAR_Y;
   sBottom += TASKBAR_Y;
   ColorFillVideoSurfaceArea(ButtonDestBuffer, sLeft, sTop, sRight, sBottom, gusEditorTaskbarColor);
@@ -454,10 +454,10 @@ void ClearTaskbarRegion(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
 // This is a new function which duplicates the older "yellow info boxes" that
 // are common throughout the editor.  This draws the yellow box with the
 // indentation look.
-void DrawEditorInfoBox(const wchar_t *str, Font const font, UINT16 x, UINT16 y, UINT16 w,
-                       UINT16 h) {
-  UINT16 usFillColorDark, usFillColorLight, usFillColorBack;
-  UINT16 x2, y2;
+void DrawEditorInfoBox(const wchar_t *str, Font const font, uint16_t x, uint16_t y, uint16_t w,
+                       uint16_t h) {
+  uint16_t usFillColorDark, usFillColorLight, usFillColorBack;
+  uint16_t x2, y2;
 
   y += TASKBAR_Y;
   x2 = x + w;
@@ -471,7 +471,7 @@ void DrawEditorInfoBox(const wchar_t *str, Font const font, UINT16 x, UINT16 y, 
   ColorFillVideoSurfaceArea(ButtonDestBuffer, x + 1, y + 1, x2, y2, usFillColorLight);
   ColorFillVideoSurfaceArea(ButtonDestBuffer, x + 1, y + 1, x2 - 1, y2 - 1, usFillColorBack);
 
-  UINT16 const usStrWidth = StringPixLength(str, font);
+  uint16_t const usStrWidth = StringPixLength(str, font);
   if (usStrWidth > w) {  // the string is too long, so use the wrapped method
     y += 1;
     DisplayWrappedString(x, y, w, 2, font, FONT_BLACK, str, FONT_BLACK,
@@ -486,28 +486,28 @@ void DrawEditorInfoBox(const wchar_t *str, Font const font, UINT16 x, UINT16 y, 
   InvalidateRegion(x, y, x2, y2);
 }
 
-void ClickEditorButton(INT32 iEditorButtonID) {
+void ClickEditorButton(int32_t iEditorButtonID) {
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS) return;
   GUIButtonRef const b = iEditorButton[iEditorButtonID];
   if (b) b->uiFlags |= BUTTON_CLICKED_ON;
 }
 
-void UnclickEditorButton(INT32 iEditorButtonID) {
+void UnclickEditorButton(int32_t iEditorButtonID) {
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS) return;
   GUIButtonRef const b = iEditorButton[iEditorButtonID];
   if (b) b->uiFlags &= ~BUTTON_CLICKED_ON;
 }
 
-void HideEditorButton(INT32 iEditorButtonID) { HideButton(iEditorButton[iEditorButtonID]); }
+void HideEditorButton(int32_t iEditorButtonID) { HideButton(iEditorButton[iEditorButtonID]); }
 
-void ShowEditorButton(INT32 iEditorButtonID) { ShowButton(iEditorButton[iEditorButtonID]); }
+void ShowEditorButton(int32_t iEditorButtonID) { ShowButton(iEditorButton[iEditorButtonID]); }
 
-void DisableEditorButton(INT32 iEditorButtonID) { DisableButton(iEditorButton[iEditorButtonID]); }
+void DisableEditorButton(int32_t iEditorButtonID) { DisableButton(iEditorButton[iEditorButtonID]); }
 
-void EnableEditorButton(INT32 iEditorButtonID) { EnableButton(iEditorButton[iEditorButtonID]); }
+void EnableEditorButton(int32_t iEditorButtonID) { EnableButton(iEditorButton[iEditorButtonID]); }
 
-void UnclickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
-  INT32 i;
+void UnclickEditorButtons(int32_t iFirstEditorButtonID, int32_t iLastEditorButtonID) {
+  int32_t i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
     GUIButtonRef const b = iEditorButton[i];
     Assert(b);
@@ -515,30 +515,30 @@ void UnclickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID)
   }
 }
 
-void HideEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
-  INT32 i;
+void HideEditorButtons(int32_t iFirstEditorButtonID, int32_t iLastEditorButtonID) {
+  int32_t i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) HideButton(iEditorButton[i]);
 }
 
-void ShowEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
-  INT32 i;
+void ShowEditorButtons(int32_t iFirstEditorButtonID, int32_t iLastEditorButtonID) {
+  int32_t i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) ShowButton(iEditorButton[i]);
 }
 
-void DisableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
-  INT32 i;
+void DisableEditorButtons(int32_t iFirstEditorButtonID, int32_t iLastEditorButtonID) {
+  int32_t i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) DisableButton(iEditorButton[i]);
 }
 
-void EnableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
-  INT32 i;
+void EnableEditorButtons(int32_t iFirstEditorButtonID, int32_t iLastEditorButtonID) {
+  int32_t i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) EnableButton(iEditorButton[i]);
 }
 
-static void RenderEntryPoint(INT16 const gridno, wchar_t const *const label) {
+static void RenderEntryPoint(int16_t const gridno, wchar_t const *const label) {
   if (gridno == -1) return;
-  INT16 x;
-  INT16 y;
+  int16_t x;
+  int16_t y;
   GetGridNoScreenPos(gridno, 0, &x, &y);
   if (x < -40 || SCREEN_WIDTH <= x || y < -20 || TASKBAR_Y - 20 <= y) return;
   DisplayWrappedString(x, y - 5, 40, 2, FONT10ARIAL, FONT_YELLOW, label, FONT_BLACK,
@@ -558,13 +558,13 @@ static void RenderMapEntryPointsAndLights() {
 
   // Do the lights now.
   CFOR_EACH_LIGHT_SPRITE(l) {
-    INT16 x;
-    INT16 y;
-    INT16 const gridno = l->iY * WORLD_COLS + l->iX;
+    int16_t x;
+    int16_t y;
+    int16_t const gridno = l->iY * WORLD_COLS + l->iX;
     GetGridNoScreenPos(gridno, 0, &x, &y);
     if (x < -40 || SCREEN_WIDTH <= x || y < -50 || TASKBAR_Y - 60 <= y) continue;
 
-    UINT8 colour;
+    uint8_t colour;
     wchar_t const *text;
     if (l->uiFlags & LIGHT_PRIMETIME) {
       colour = FONT_ORANGE;
@@ -619,11 +619,11 @@ static void RenderDoorLockInfo() {
   FOR_EACH_DOOR(i) {
     DOOR const &d = *i;
 
-    INT16 screen_x;
-    INT16 screen_y;
+    int16_t screen_x;
+    int16_t screen_y;
     GetGridNoScreenPos(d.sGridNo, 0, &screen_x, &screen_y);
-    INT16 const x = screen_x;
-    INT16 const y = screen_y;
+    int16_t const x = screen_x;
+    int16_t const y = screen_y;
     if (y > 390) continue;
 
     if (d.ubLockID != 255)
@@ -667,15 +667,15 @@ static void RenderDoorLockInfo() {
 }
 
 static void RenderSelectedItemBlownUp() {
-  INT16 screen_x;
-  INT16 screen_y;
+  int16_t screen_x;
+  int16_t screen_y;
   GetGridNoScreenPos(gsItemGridNo, 0, &screen_x, &screen_y);
   if (screen_y > 340) return;
 
   OBJECTTYPE const &o = *gpItem;
   INVTYPE const &item = Item[o.usItem];
-  INT16 x;
-  INT16 y;
+  int16_t x;
+  int16_t y;
 
   // Display the enlarged item graphic
   SGPVObject const &vo = GetInterfaceGraphicForItem(item);
@@ -712,7 +712,7 @@ static void RenderSelectedItemBlownUp() {
   }
 
   // Count the number of items in the current pool, and display that.
-  INT32 n = 0;
+  int32_t n = 0;
   for (ITEM_POOL const *i = GetItemPool(gsItemGridNo, 0); i; i = i->pNext) {
     ++n;
   }

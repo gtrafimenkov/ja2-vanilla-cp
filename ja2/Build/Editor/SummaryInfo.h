@@ -9,84 +9,84 @@
 #define MINIMUMVERSION 7
 
 struct TEAMSUMMARY {
-  UINT8 ubTotal;
-  UINT8 ubDetailed;
-  UINT8 ubProfile;
-  UINT8 ubExistance;
-  UINT8 ubNumAnimals;
-  UINT8 ubBadA, ubPoorA, ubAvgA, ubGoodA, ubGreatA;  // attributes
-  UINT8 ubBadE, ubPoorE, ubAvgE, ubGoodE, ubGreatE;  // equipment
+  uint8_t ubTotal;
+  uint8_t ubDetailed;
+  uint8_t ubProfile;
+  uint8_t ubExistance;
+  uint8_t ubNumAnimals;
+  uint8_t ubBadA, ubPoorA, ubAvgA, ubGoodA, ubGreatA;  // attributes
+  uint8_t ubBadE, ubPoorE, ubAvgE, ubGoodE, ubGreatE;  // equipment
 };  // 15 bytes
 
 struct SUMMARYFILE {
   // start version 1
-  UINT8 ubSummaryVersion;
-  UINT8 ubSpecial;
-  UINT16 usNumItems;
-  UINT16 usNumLights;
+  uint8_t ubSummaryVersion;
+  uint8_t ubSpecial;
+  uint16_t usNumItems;
+  uint16_t usNumLights;
   MAPCREATE_STRUCT MapInfo;
   TEAMSUMMARY EnemyTeam;
   TEAMSUMMARY CreatureTeam;
   TEAMSUMMARY RebelTeam;
   TEAMSUMMARY CivTeam;
-  UINT8 ubNumDoors;
-  UINT8 ubNumDoorsLocked;
-  UINT8 ubNumDoorsTrapped;
-  UINT8 ubNumDoorsLockedAndTrapped;
+  uint8_t ubNumDoors;
+  uint8_t ubNumDoorsLocked;
+  uint8_t ubNumDoorsTrapped;
+  uint8_t ubNumDoorsLockedAndTrapped;
   // start version 2
-  UINT8 ubTilesetID;
-  UINT8 ubNumRooms;
+  uint8_t ubTilesetID;
+  uint8_t ubNumRooms;
   // start version	3
-  UINT8 ubNumElites;
-  UINT8 ubNumAdmins;
-  UINT8 ubNumTroops;
+  uint8_t ubNumElites;
+  uint8_t ubNumAdmins;
+  uint8_t ubNumTroops;
   // start version 4
-  UINT8 ubEliteDetailed;
-  UINT8 ubAdminDetailed;
-  UINT8 ubTroopDetailed;
+  uint8_t ubEliteDetailed;
+  uint8_t ubAdminDetailed;
+  uint8_t ubTroopDetailed;
   // start version 5
-  UINT8 ubEliteProfile;
-  UINT8 ubAdminProfile;
-  UINT8 ubTroopProfile;
+  uint8_t ubEliteProfile;
+  uint8_t ubAdminProfile;
+  uint8_t ubTroopProfile;
   // start version 6
-  UINT8 ubEliteExistance;
-  UINT8 ubAdminExistance;
-  UINT8 ubTroopExistance;
+  uint8_t ubEliteExistance;
+  uint8_t ubAdminExistance;
+  uint8_t ubTroopExistance;
   // start version 7
-  FLOAT dMajorMapVersion;
+  float dMajorMapVersion;
   // start version 8
-  UINT8 ubCivSchedules;
+  uint8_t ubCivSchedules;
   // start version 9
-  UINT8 ubCivCows;
-  UINT8 ubCivBloodcats;
+  uint8_t ubCivCows;
+  uint8_t ubCivBloodcats;
   //																//-----
   //	190
   // start version 10
   EXITGRID ExitGrid[4];           // 5*4 //	 20
-  UINT16 usExitGridSize[4];       // 2*4 //    8
+  uint16_t usExitGridSize[4];     // 2*4 //    8
   BOOLEAN fInvalidDest[4];        //    4
-  UINT8 ubNumExitGridDests;       //		1
+  uint8_t ubNumExitGridDests;     //		1
   BOOLEAN fTooManyExitGridDests;  //		1
   //																//-----
   //																//
   // 224 start version 11
-  UINT8 ubEnemiesReqWaypoints;  //		1
+  uint8_t ubEnemiesReqWaypoints;  //		1
   //																//-----
   //																		225
   // start version 12
-  UINT16 usWarningRoomNums;  //    2
-                             //	227
+  uint16_t usWarningRoomNums;  //    2
+                               //	227
   // start version 13
-  UINT8 ubEnemiesHaveWaypoints;  //		1
-  UINT32 uiNumItemsPosition;     //		4
-                                 //-----
-                                 //	232
+  uint8_t ubEnemiesHaveWaypoints;  //		1
+  uint32_t uiNumItemsPosition;     //		4
+                                   //-----
+                                   //	232
   // start version 14
-  UINT32 uiEnemyPlacementPosition;  //		4
-                                    //-----
-                                    //	236
+  uint32_t uiEnemyPlacementPosition;  //		4
+                                      //-----
+                                      //	236
 
-  UINT8 ubPadding
+  uint8_t ubPadding
       [164];  //	164 // XXX HACK000B
               //																//-----
               //																		400
@@ -95,8 +95,8 @@ struct SUMMARYFILE {
 
 extern BOOLEAN gfAutoLoadA9;
 
-extern BOOLEAN EvaluateWorld(const char *pSector, UINT8 ubLevel);
-void WriteSectorSummaryUpdate(const char *filename, UINT8 ubLevel, SUMMARYFILE *);
+extern BOOLEAN EvaluateWorld(const char *pSector, uint8_t ubLevel);
+void WriteSectorSummaryUpdate(const char *filename, uint8_t ubLevel, SUMMARYFILE *);
 
 extern BOOLEAN gfMustForceUpdateAllMaps;
 extern BOOLEAN gfMajorUpdate;

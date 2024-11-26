@@ -4,14 +4,14 @@
 #include "JA2Types.h"
 #include "SGP/Types.h"
 
-BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo);
+BOOLEAN DoesO3SectorStatueExistHere(int16_t sGridNo);
 void ChangeO3SectorStatue(BOOLEAN fFromExplosion);
 
-void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
+void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel);
 
 void EndQueenDeathEndgameBeginEndCimenatic();
 void EndQueenDeathEndgame();
 
-void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
+void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, int16_t sGridNo, int8_t bLevel);
 
 #endif

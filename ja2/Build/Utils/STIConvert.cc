@@ -52,36 +52,37 @@
 
 // #define JA2_OBJECT_DATA_SIZE	16
 
-static void ConvertRGBDistribution555To565(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+static void ConvertRGBDistribution555To565(uint16_t *p16BPPData, uint32_t uiNumberOfPixels) {
+  for (uint16_t *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
     *Px = ((*Px << 1) & ~0x003F) | (*Px & 0x001F);
   }
 }
 
-static BOOLEAN ConvertToETRLE(UINT8 **ppDest, UINT32 *puiDestLen, STCISubImage **ppSubImageBuffer,
-                              UINT16 *pusNumberOfSubImages, UINT8 *p8BPPBuffer, UINT16 usWidth,
-                              UINT16 usHeight, UINT32 fFlags);
+static BOOLEAN ConvertToETRLE(uint8_t **ppDest, uint32_t *puiDestLen,
+                              STCISubImage **ppSubImageBuffer, uint16_t *pusNumberOfSubImages,
+                              uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
+                              uint32_t fFlags);
 
-void WriteSTIFile(UINT8 *const pData, SGPPaletteEntry *const pPalette, const INT16 sWidth,
-                  const INT16 sHeight, const char *const cOutputName, const UINT32 fFlags,
-                  const UINT32 uiAppDataSize) {
+void WriteSTIFile(uint8_t *const pData, SGPPaletteEntry *const pPalette, const int16_t sWidth,
+                  const int16_t sHeight, const char *const cOutputName, const uint32_t fFlags,
+                  const uint32_t uiAppDataSize) {
   FILE *pOutput;
 
-  UINT32 uiOriginalSize;
-  UINT8 *pOutputBuffer = NULL;
-  UINT32 uiCompressedSize;
+  uint32_t uiOriginalSize;
+  uint8_t *pOutputBuffer = NULL;
+  uint32_t uiCompressedSize;
 
   STCIHeader Header;
-  UINT32 uiLoop;
+  uint32_t uiLoop;
 
   SGPPaletteEntry *pSGPPaletteEntry;
   STCIPaletteElement STCIPaletteEntry;
 
   STCISubImage *pSubImageBuffer;
-  UINT16 usNumberOfSubImages;
-  UINT32 uiSubImageBufferSize = 0;
+  uint16_t usNumberOfSubImages;
+  uint32_t uiSubImageBufferSize = 0;
 
-  // UINT16							usLoop;
+  // uint16_t							usLoop;
 
   memset(&Header, 0, sizeof(Header));
 
@@ -110,7 +111,7 @@ void WriteSTIFile(UINT8 *const pData, SGPPaletteEntry *const pPalette, const INT
   if ((Header.fFlags & STCI_INDEXED) && (fFlags & CONVERT_ETRLE_COMPRESS)) {
     ConvertToETRLE(&pOutputBuffer, &uiCompressedSize, &pSubImageBuffer, &usNumberOfSubImages, pData,
                    sWidth, sHeight, fFlags);
-    uiSubImageBufferSize = (UINT32)usNumberOfSubImages * sizeof(STCISubImage);
+    uiSubImageBufferSize = (uint32_t)usNumberOfSubImages * sizeof(STCISubImage);
 
     Header.Indexed.usNumberOfSubImages = usNumberOfSubImages;
     Header.uiStoredSize = uiCompressedSize;
@@ -168,38 +169,39 @@ void WriteSTIFile(UINT8 *const pData, SGPPaletteEntry *const pPalette, const INT
 #define TCI 0x00
 #define WI 0xFF
 
-static BOOLEAN DetermineSubImageSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight,
+static BOOLEAN DetermineSubImageSize(uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
                                      STCISubImage *pSubImage);
-static BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight,
+static BOOLEAN DetermineSubImageUsedSize(uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
                                          STCISubImage *pSubImage);
-static UINT32 ETRLECompressSubImage(UINT8 *pDest, UINT32 uiDestLen, UINT8 *p8BPPBuffer,
-                                    UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-static BOOLEAN GoPastWall(INT16 *psNewX, INT16 *psNewY, UINT16 usWidth, UINT16 usHeight,
-                          UINT8 *pCurrent, INT16 sCurrX, INT16 sCurrY);
-static BOOLEAN GoToNextSubImage(INT16 *psNewX, INT16 *psNewY, UINT8 *p8BPPBuffer, UINT16 usWidth,
-                                UINT16 usHeight, INT16 sOrigX, INT16 sOrigY);
+static uint32_t ETRLECompressSubImage(uint8_t *pDest, uint32_t uiDestLen, uint8_t *p8BPPBuffer,
+                                      uint16_t usWidth, uint16_t usHeight, STCISubImage *pSubImage);
+static BOOLEAN GoPastWall(int16_t *psNewX, int16_t *psNewY, uint16_t usWidth, uint16_t usHeight,
+                          uint8_t *pCurrent, int16_t sCurrX, int16_t sCurrY);
+static BOOLEAN GoToNextSubImage(int16_t *psNewX, int16_t *psNewY, uint8_t *p8BPPBuffer,
+                                uint16_t usWidth, uint16_t usHeight, int16_t sOrigX,
+                                int16_t sOrigY);
 
-static BOOLEAN ConvertToETRLE(UINT8 **const ppDest, UINT32 *const puiDestLen,
+static BOOLEAN ConvertToETRLE(uint8_t **const ppDest, uint32_t *const puiDestLen,
                               STCISubImage **const ppSubImageBuffer,
-                              UINT16 *const pusNumberOfSubImages, UINT8 *const p8BPPBuffer,
-                              const UINT16 usWidth, const UINT16 usHeight,
-                              const UINT32 fFlags) try {
-  INT16 sCurrX;
-  INT16 sCurrY;
-  INT16 sNextX;
-  INT16 sNextY;
-  UINT8 *pOutputNext;
+                              uint16_t *const pusNumberOfSubImages, uint8_t *const p8BPPBuffer,
+                              const uint16_t usWidth, const uint16_t usHeight,
+                              const uint32_t fFlags) try {
+  int16_t sCurrX;
+  int16_t sCurrY;
+  int16_t sNextX;
+  int16_t sNextY;
+  uint8_t *pOutputNext;
   BOOLEAN fContinue = TRUE;
   BOOLEAN fOk = TRUE;
   BOOLEAN fStore;
   BOOLEAN fNextExists;
   STCISubImage TempSubImage;
-  UINT32 uiSubImageCompressedSize;
-  UINT32 uiSpaceLeft;
+  uint32_t uiSubImageCompressedSize;
+  uint32_t uiSpaceLeft;
 
   // worst-case situation	estimate
-  uiSpaceLeft = (UINT32)usWidth * (UINT32)usHeight * 3;
-  SGP::Buffer<UINT8> dest(uiSpaceLeft);
+  uiSpaceLeft = (uint32_t)usWidth * (uint32_t)usHeight * 3;
+  SGP::Buffer<uint8_t> dest(uiSpaceLeft);
   *puiDestLen = uiSpaceLeft;
 
   pOutputNext = dest;
@@ -319,17 +321,19 @@ static BOOLEAN ConvertToETRLE(UINT8 **const ppDest, UINT32 *const puiDestLen,
   return FALSE;
 }
 
-static BOOLEAN DetermineOffset(UINT32 *puiOffset, UINT16 usWidth, UINT16 usHeight, INT16 sX,
-                               INT16 sY);
-static UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource, UINT32 uiSourceLen);
+static BOOLEAN DetermineOffset(uint32_t *puiOffset, uint16_t usWidth, uint16_t usHeight, int16_t sX,
+                               int16_t sY);
+static uint32_t ETRLECompress(uint8_t *pDest, uint32_t uiDestLen, uint8_t *pSource,
+                              uint32_t uiSourceLen);
 
-static UINT32 ETRLECompressSubImage(UINT8 *pDest, UINT32 uiDestLen, UINT8 *p8BPPBuffer,
-                                    UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage) {
-  UINT16 usLoop;
-  UINT32 uiScanLineCompressedSize;
-  UINT32 uiSpaceLeft = uiDestLen;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
+static uint32_t ETRLECompressSubImage(uint8_t *pDest, uint32_t uiDestLen, uint8_t *p8BPPBuffer,
+                                      uint16_t usWidth, uint16_t usHeight,
+                                      STCISubImage *pSubImage) {
+  uint16_t usLoop;
+  uint32_t uiScanLineCompressedSize;
+  uint32_t uiSpaceLeft = uiDestLen;
+  uint32_t uiOffset;
+  uint8_t *pCurrent;
 
   CHECKF(DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, pSubImage->sOffsetY));
   pCurrent = p8BPPBuffer + uiOffset;
@@ -348,11 +352,11 @@ static UINT32 ETRLECompressSubImage(UINT8 *pDest, UINT32 uiDestLen, UINT8 *p8BPP
   return (uiDestLen - uiSpaceLeft);
 }
 
-static UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource,
-                            UINT32 uiSourceLen) {  // Compress a buffer (a scanline) into ETRLE
-                                                   // format, which is a series of runs. Each
-                                                   // run starts with a byte whose high bit is
-                                                   // 1 if the run is compressed, 0 otherwise.
+static uint32_t ETRLECompress(uint8_t *pDest, uint32_t uiDestLen, uint8_t *pSource,
+                              uint32_t uiSourceLen) {  // Compress a buffer (a scanline) into ETRLE
+                                                       // format, which is a series of runs. Each
+                                                       // run starts with a byte whose high bit is
+                                                       // 1 if the run is compressed, 0 otherwise.
   // The lower seven bits of that byte indicate the length of the run
 
   // ETRLECompress returns the number of bytes used by the compressed buffer, or
@@ -360,12 +364,12 @@ static UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource,
 
   // uiSourceLoc keeps track of our current position in the
   // source
-  UINT32 uiSourceLoc = 0;
+  uint32_t uiSourceLoc = 0;
   // uiCurrentSourceLoc is used to look ahead in the source to
   // determine the length of runs
-  UINT32 uiCurrentSourceLoc = 0;
-  UINT32 uiDestLoc = 0;
-  UINT8 ubLength = 0;
+  uint32_t uiCurrentSourceLoc = 0;
+  uint32_t uiDestLoc = 0;
+  uint8_t ubLength = 0;
 
   while (uiSourceLoc < uiSourceLen && uiDestLoc < uiDestLen) {
     if (pSource[uiSourceLoc] == TCI) {  // transparent run - determine its length
@@ -411,20 +415,20 @@ static UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource,
   }
 }
 
-static BOOLEAN DetermineOffset(UINT32 *puiOffset, UINT16 usWidth, UINT16 usHeight, INT16 sX,
-                               INT16 sY) {
+static BOOLEAN DetermineOffset(uint32_t *puiOffset, uint16_t usWidth, uint16_t usHeight, int16_t sX,
+                               int16_t sY) {
   if (sX < 0 || sY < 0) {
     return (FALSE);
   }
-  *puiOffset = (UINT32)sY * (UINT32)usWidth + (UINT32)sX;
-  if (*puiOffset >= (UINT32)usWidth * (UINT32)usHeight) {
+  *puiOffset = (uint32_t)sY * (uint32_t)usWidth + (uint32_t)sX;
+  if (*puiOffset >= (uint32_t)usWidth * (uint32_t)usHeight) {
     return (FALSE);
   }
   return (TRUE);
 }
 
-static BOOLEAN GoPastWall(INT16 *psNewX, INT16 *psNewY, UINT16 usWidth, UINT16 usHeight,
-                          UINT8 *pCurrent, INT16 sCurrX, INT16 sCurrY) {
+static BOOLEAN GoPastWall(int16_t *psNewX, int16_t *psNewY, uint16_t usWidth, uint16_t usHeight,
+                          uint8_t *pCurrent, int16_t sCurrX, int16_t sCurrY) {
   // If the current pixel is a wall, we assume that it is on a horizontal wall
   // and search right, wrapping around the end of scanlines, until we find
   // non-wall data.
@@ -447,13 +451,14 @@ static BOOLEAN GoPastWall(INT16 *psNewX, INT16 *psNewY, UINT16 usWidth, UINT16 u
 }
 
 static BOOLEAN GoToNextSubImage(
-    INT16 *psNewX, INT16 *psNewY, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, INT16 sOrigX,
-    INT16 sOrigY) {  // return the coordinates of the next subimage in the image
+    int16_t *psNewX, int16_t *psNewY, uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
+    int16_t sOrigX,
+    int16_t sOrigY) {  // return the coordinates of the next subimage in the image
   // (either to the right, or the first of the next row down
-  INT16 sCurrX = sOrigX;
-  INT16 sCurrY = sOrigY;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
+  int16_t sCurrX = sOrigX;
+  int16_t sCurrY = sOrigY;
+  uint32_t uiOffset;
+  uint8_t *pCurrent;
   BOOLEAN fFound = TRUE;
 
   CHECKF(DetermineOffset(&uiOffset, usWidth, usHeight, sCurrX, sCurrY));
@@ -512,12 +517,12 @@ static BOOLEAN GoToNextSubImage(
   }
 }
 
-static BOOLEAN DetermineSubImageSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight,
+static BOOLEAN DetermineSubImageSize(uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
                                      STCISubImage *pSubImage) {
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  INT16 sCurrX = pSubImage->sOffsetX;
-  INT16 sCurrY = pSubImage->sOffsetY;
+  uint32_t uiOffset;
+  uint8_t *pCurrent;
+  int16_t sCurrX = pSubImage->sOffsetX;
+  int16_t sCurrY = pSubImage->sOffsetY;
 
   if (!DetermineOffset(&uiOffset, usWidth, usHeight, sCurrX, sCurrY)) {
     return (FALSE);
@@ -542,20 +547,20 @@ static BOOLEAN DetermineSubImageSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 
   return (TRUE);
 }
 
-static BOOLEAN CheckForDataInCols(INT16 *psXValue, INT16 sXIncrement, UINT8 *p8BPPBuffer,
-                                  UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-static BOOLEAN CheckForDataInRows(INT16 *psYValue, INT16 sYIncrement, UINT8 *p8BPPBuffer,
-                                  UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
+static BOOLEAN CheckForDataInCols(int16_t *psXValue, int16_t sXIncrement, uint8_t *p8BPPBuffer,
+                                  uint16_t usWidth, uint16_t usHeight, STCISubImage *pSubImage);
+static BOOLEAN CheckForDataInRows(int16_t *psYValue, int16_t sYIncrement, uint8_t *p8BPPBuffer,
+                                  uint16_t usWidth, uint16_t usHeight, STCISubImage *pSubImage);
 
-static BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight,
+static BOOLEAN DetermineSubImageUsedSize(uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
                                          STCISubImage *pSubImage) {
-  INT16 sNewValue;
+  int16_t sNewValue;
   // to do our search loops properly, we can't change the height and width of
   // the subimages until we're done all of our shrinks
-  UINT16 usNewHeight;
-  UINT16 usNewWidth;
-  UINT16 usNewX;
-  UINT16 usNewY;
+  uint16_t usNewHeight;
+  uint16_t usNewWidth;
+  uint16_t usNewX;
+  uint16_t usNewY;
 
   // shrink from the top
   if (CheckForDataInRows(&sNewValue, 1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
@@ -565,7 +570,7 @@ static BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UIN
   }
   // shrink from the bottom
   if (CheckForDataInRows(&sNewValue, -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
-    usNewHeight = (UINT16)sNewValue - usNewY + 1;
+    usNewHeight = (uint16_t)sNewValue - usNewY + 1;
   } else {
     return (FALSE);
   }
@@ -577,7 +582,7 @@ static BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UIN
   }
   // shrink from the right
   if (CheckForDataInCols(&sNewValue, -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
-    usNewWidth = (UINT16)sNewValue - usNewX + 1;
+    usNewWidth = (uint16_t)sNewValue - usNewX + 1;
   } else {
     return (FALSE);
   }
@@ -588,25 +593,26 @@ static BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UIN
   return (TRUE);
 }
 
-static UINT8 *CheckForDataInRowOrColumn(UINT8 *pPixel, UINT16 usIncrement, UINT16 usNumberOfPixels);
+static uint8_t *CheckForDataInRowOrColumn(uint8_t *pPixel, uint16_t usIncrement,
+                                          uint16_t usNumberOfPixels);
 
-static BOOLEAN CheckForDataInRows(INT16 *psYValue, INT16 sYIncrement, UINT8 *p8BPPBuffer,
-                                  UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage) {
-  INT16 sCurrY;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  UINT16 usLoop;
+static BOOLEAN CheckForDataInRows(int16_t *psYValue, int16_t sYIncrement, uint8_t *p8BPPBuffer,
+                                  uint16_t usWidth, uint16_t usHeight, STCISubImage *pSubImage) {
+  int16_t sCurrY;
+  uint32_t uiOffset;
+  uint8_t *pCurrent;
+  uint16_t usLoop;
 
   if (sYIncrement == 1) {
     sCurrY = pSubImage->sOffsetY;
   } else if (sYIncrement == -1) {
-    sCurrY = pSubImage->sOffsetY + (INT16)pSubImage->usHeight - 1;
+    sCurrY = pSubImage->sOffsetY + (int16_t)pSubImage->usHeight - 1;
   } else {
     // invalid value!
     return (FALSE);
   }
   for (usLoop = 0; usLoop < pSubImage->usHeight; usLoop++) {
-    if (!DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, (INT16)sCurrY)) {
+    if (!DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, (int16_t)sCurrY)) {
       return (FALSE);
     }
     pCurrent = p8BPPBuffer + uiOffset;
@@ -621,23 +627,23 @@ static BOOLEAN CheckForDataInRows(INT16 *psYValue, INT16 sYIncrement, UINT8 *p8B
   return (FALSE);
 }
 
-static BOOLEAN CheckForDataInCols(INT16 *psXValue, INT16 sXIncrement, UINT8 *p8BPPBuffer,
-                                  UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage) {
-  INT16 sCurrX;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  UINT16 usLoop;
+static BOOLEAN CheckForDataInCols(int16_t *psXValue, int16_t sXIncrement, uint8_t *p8BPPBuffer,
+                                  uint16_t usWidth, uint16_t usHeight, STCISubImage *pSubImage) {
+  int16_t sCurrX;
+  uint32_t uiOffset;
+  uint8_t *pCurrent;
+  uint16_t usLoop;
 
   if (sXIncrement == 1) {
     sCurrX = pSubImage->sOffsetX;
   } else if (sXIncrement == -1) {
-    sCurrX = pSubImage->sOffsetX + (INT16)pSubImage->usWidth - 1;
+    sCurrX = pSubImage->sOffsetX + (int16_t)pSubImage->usWidth - 1;
   } else {
     // invalid value!
     return (FALSE);
   }
   for (usLoop = 0; usLoop < pSubImage->usWidth; usLoop++) {
-    if (!DetermineOffset(&uiOffset, usWidth, usHeight, (UINT16)sCurrX, pSubImage->sOffsetY)) {
+    if (!DetermineOffset(&uiOffset, usWidth, usHeight, (uint16_t)sCurrX, pSubImage->sOffsetY)) {
       return (FALSE);
     }
     pCurrent = p8BPPBuffer + uiOffset;
@@ -652,12 +658,12 @@ static BOOLEAN CheckForDataInCols(INT16 *psXValue, INT16 sXIncrement, UINT8 *p8B
   return (FALSE);
 }
 
-static UINT8 *CheckForDataInRowOrColumn(UINT8 *pPixel, UINT16 usIncrement,
-                                        UINT16 usNumberOfPixels) {
+static uint8_t *CheckForDataInRowOrColumn(uint8_t *pPixel, uint16_t usIncrement,
+                                          uint16_t usNumberOfPixels) {
   // This function, passed the right increment value, can scan either across or
   // down an image to find a non-transparent pixel
 
-  UINT16 usLoop;
+  uint16_t usLoop;
 
   for (usLoop = 0; usLoop < usNumberOfPixels; usLoop++) {
     if (*pPixel != TCI) {

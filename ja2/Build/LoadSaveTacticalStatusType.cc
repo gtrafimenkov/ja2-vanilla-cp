@@ -8,13 +8,13 @@
 #include "Tactical/Overhead.h"
 
 void ExtractTacticalStatusTypeFromFile(HWFILE const f, bool stracLinuxFormat) {
-  UINT32 dataSize =
+  uint32_t dataSize =
       stracLinuxFormat ? TACTICAL_STATUS_TYPE_SIZE_STRAC_LINUX : TACTICAL_STATUS_TYPE_SIZE;
-  std::vector<BYTE> data(dataSize);
+  std::vector<uint8_t> data(dataSize);
   FileRead(f, data.data(), dataSize);
 
   TacticalStatusType *const s = &gTacticalStatus;
-  const BYTE *d = data.data();
+  const uint8_t *d = data.data();
   EXTR_U32(d, s->uiFlags)
   FOR_EACH(TacticalTeamType, t, s->Team){
       EXTR_U8(d, t->bFirstID) EXTR_U8(d, t->bLastID) EXTR_SKIP(d, 2) EXTR_U32(d, t->RadarColor)
@@ -106,8 +106,8 @@ void ExtractTacticalStatusTypeFromFile(HWFILE const f, bool stracLinuxFormat) {
 }
 
 void InjectTacticalStatusTypeIntoFile(HWFILE const f) {
-  BYTE data[316];
-  BYTE *d = data;
+  uint8_t data[316];
+  uint8_t *d = data;
   TacticalStatusType *const s = &gTacticalStatus;
   INJ_U32(d, s->uiFlags)
   FOR_EACH(TacticalTeamType const, t, s->Team){

@@ -68,7 +68,7 @@
 static SGPVObject *guiMercOrderGrid;
 static SGPVObject *guiAccountNumberGrid;
 
-INT32 giMercTotalContractCharge;
+int32_t giMercTotalContractCharge;
 
 BOOLEAN gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
 
@@ -79,8 +79,8 @@ GUIButtonRef guiMercAuthorizeBoxButton;
 // The Back button
 GUIButtonRef guiMercBackBoxButton;
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click) {
-  const INT16 shadow_col = DEFAULT_SHADOW;
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t x, GUI_CALLBACK click) {
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn = CreateIconAndTextButton(
       guiMercAuthorizeButtonImage, text, FONT12ARIAL, MERC_BUTTON_UP_COLOR, shadow_col,
       MERC_BUTTON_DOWN_COLOR, shadow_col, x, MERC_AC_BUTTON_Y, MSYS_PRIORITY_HIGH, click);
@@ -88,8 +88,8 @@ static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click)
   return btn;
 }
 
-static void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnMercBackButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
 void EnterMercsAccount() {
   InitMercBackGround();
@@ -189,7 +189,7 @@ void RenderMercsAccount() {
 
 static void MercAuthorizePaymentMessageBoxCallBack(MessageBoxReturnValue);
 
-static void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     wchar_t wzAuthorizeString[512];
     wchar_t wzDollarAmount[128];
@@ -205,7 +205,7 @@ static void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnMercBackButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_MERC;
     gubArrivedFromMercSubSite = MERC_CAME_FROM_ACCOUNTS_PAGE;
@@ -213,11 +213,11 @@ static void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 static void DisplayHiredMercs() {
-  UINT16 usPosY;
-  UINT32 uiContractCharge;
+  uint16_t usPosY;
+  uint32_t uiContractCharge;
   wchar_t sTemp[20];
-  UINT8 i;
-  UINT8 ubFontColor;
+  uint8_t i;
+  uint8_t ubFontColor;
 
   giMercTotalContractCharge = 0;
 
@@ -276,14 +276,14 @@ static void DisplayHiredMercs() {
 
 static void SettleMercAccounts() {
   //	SOLDIERTYPE *pSoldier;
-  INT16 i;
-  UINT8 ubMercID;
-  INT32 iPartialPayment = 0;
-  INT32 iContractCharge = 0;
+  int16_t i;
+  uint8_t ubMercID;
+  int32_t iPartialPayment = 0;
+  int32_t iContractCharge = 0;
 
   // loop through all the MERC mercs the player has on the team
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
-    ubMercID = GetMercIDFromMERCArray((UINT8)i);
+    ubMercID = GetMercIDFromMERCArray((uint8_t)i);
 
     // if the merc is on the team, or does the player owe money for a fired merc
     if (IsMercOnTeam(ubMercID) || (gMercProfiles[ubMercID].iMercMercContractLength != 0)) {
@@ -346,13 +346,13 @@ static void SettleMercAccounts() {
   mercs contract if( LaptopSaveInfo.iCurrentBalance < giMercTotalContractCharge
   )
           {
-                  INT32	iPartialPayment=0;
-                  INT32	iContractCharge=0;
+                  int32_t	iPartialPayment=0;
+                  int32_t	iContractCharge=0;
 
                   //try to make a partial payment by looping through all the
   mercs and settling them 1 at a time for(i=0; i<NUMBER_OF_MERCS; i++)
                   {
-                          ubMercID = GetMercIDFromMERCArray( (UINT8) i );
+                          ubMercID = GetMercIDFromMERCArray( (uint8_t) i );
 
                           //if the merc is on the team
                           if( IsMercOnTeam( ubMercID ) )
@@ -414,7 +414,7 @@ static void SettleMercAccounts() {
           //reset all the mercs time
           for(i=0; i<NUMBER_OF_MERCS; i++)
           {
-                  ubMercID = GetMercIDFromMERCArray( (UINT8) i );
+                  ubMercID = GetMercIDFromMERCArray( (uint8_t) i );
 
                   if( IsMercOnTeam( ubMercID ) )
                   {
@@ -444,10 +444,10 @@ static void MercAuthorizePaymentMessageBoxCallBack(MessageBoxReturnValue const b
   }
 }
 
-UINT32 CalculateHowMuchPlayerOwesSpeck() {
-  UINT8 i = 0;
-  UINT32 uiContractCharge = 0;
-  UINT16 usMercID;
+uint32_t CalculateHowMuchPlayerOwesSpeck() {
+  uint8_t i = 0;
+  uint32_t uiContractCharge = 0;
+  uint16_t usMercID;
 
   for (i = 0; i < 10; i++) {
     // if it larry Roach burn advance.  ( cause larry is in twice, a sober larry
@@ -455,7 +455,7 @@ UINT32 CalculateHowMuchPlayerOwesSpeck() {
     if (i == MERC_LARRY_ROACHBURN) continue;
 
     usMercID = GetMercIDFromMERCArray(i);
-    // if( IsMercOnTeam( (UINT8)usMercID ) )
+    // if( IsMercOnTeam( (uint8_t)usMercID ) )
     {
       // Calc salary for the # of days the merc has worked since last paid
       uiContractCharge +=

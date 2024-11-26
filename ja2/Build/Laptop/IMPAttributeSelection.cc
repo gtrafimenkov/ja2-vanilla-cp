@@ -43,22 +43,22 @@ enum {
 };
 
 // the skills as they stand
-static INT32 iCurrentStrength = 55;
-static INT32 iCurrentAgility = 55;
-static INT32 iCurrentDexterity = 55;
-static INT32 iCurrentHealth = 55;
-static INT32 iCurrentLeaderShip = 55;
-static INT32 iCurrentWisdom = 55;
-static INT32 iCurrentMarkmanship = 55;
-static INT32 iCurrentMechanical = 55;
-static INT32 iCurrentMedical = 55;
-static INT32 iCurrentExplosives = 55;
+static int32_t iCurrentStrength = 55;
+static int32_t iCurrentAgility = 55;
+static int32_t iCurrentDexterity = 55;
+static int32_t iCurrentHealth = 55;
+static int32_t iCurrentLeaderShip = 55;
+static int32_t iCurrentWisdom = 55;
+static int32_t iCurrentMarkmanship = 55;
+static int32_t iCurrentMechanical = 55;
+static int32_t iCurrentMedical = 55;
+static int32_t iCurrentExplosives = 55;
 
 // which stat is message about stat at zero about
-static INT32 iCurrentStatAtZero = 0;
+static int32_t iCurrentStatAtZero = 0;
 
 // total number of bonus points
-static INT32 iCurrentBonusPoints = 40;
+static int32_t iCurrentBonusPoints = 40;
 
 // diplsay the 0 skill point warning..if skill set to 0, warn character
 static BOOLEAN fSkillAtZeroWarning = FALSE;
@@ -85,12 +85,12 @@ static MOUSE_REGION pSliderRegions[10];
 
 // The currently "anchored scroll bar"
 static MOUSE_REGION *gpCurrentScrollBox = NULL;
-static INT32 giCurrentlySelectedStat = -1;
+static int32_t giCurrentlySelectedStat = -1;
 
 // has any of the sliding bars moved?...for re-rendering puposes
 static BOOLEAN fHasAnySlidingBarMoved = FALSE;
 
-static INT32 uiBarToReRender = -1;
+static int32_t uiBarToReRender = -1;
 
 // are we actually coming back to edit, or are we restarting?
 BOOLEAN fReturnStatus = FALSE;
@@ -154,9 +154,9 @@ void ExitIMPAttributeSelection() {
   fReturnStatus = FALSE;
 }
 
-static void DecrementStat(INT32 iStatToDecrement);
-static INT32 GetCurrentAttributeValue(INT32 iAttribute);
-static void IncrementStat(INT32 iStatToIncrement);
+static void DecrementStat(int32_t iStatToDecrement);
+static int32_t GetCurrentAttributeValue(int32_t iAttribute);
+static void IncrementStat(int32_t iStatToIncrement);
 static void ProcessAttributes();
 static void StatAtZeroBoxCallBack(MessageBoxReturnValue);
 
@@ -176,9 +176,9 @@ void HandleIMPAttributeSelection() {
       IncrementStat(giCurrentlySelectedStat);
     } else {
       // get old stat value
-      INT32 iCurrentAttributeValue = GetCurrentAttributeValue(giCurrentlySelectedStat);
-      INT32 sNewX = gusMouseXPos - (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
-      INT32 iNewValue = sNewX * 50 / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
+      int32_t iCurrentAttributeValue = GetCurrentAttributeValue(giCurrentlySelectedStat);
+      int32_t sNewX = gusMouseXPos - (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
+      int32_t iNewValue = sNewX * 50 / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
 
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
@@ -189,12 +189,12 @@ void HandleIMPAttributeSelection() {
       // change is enough
       if (iNewValue - iCurrentAttributeValue > 0) {
         // positive, increment stat
-        for (INT32 i = iNewValue - iCurrentAttributeValue; i > 0; --i) {
+        for (int32_t i = iNewValue - iCurrentAttributeValue; i > 0; --i) {
           IncrementStat(giCurrentlySelectedStat);
         }
       } else {
         // negative, decrement stat
-        for (INT32 i = iCurrentAttributeValue - iNewValue; i > 0; --i) {
+        for (int32_t i = iCurrentAttributeValue - iNewValue; i > 0; --i) {
           DecrementStat(giCurrentlySelectedStat);
         }
       }
@@ -263,11 +263,11 @@ static void ProcessAttributes() {
   if (iCurrentHealth > 85) iCurrentHealth = 85;
 }
 
-static void IncrementStat(INT32 iStatToIncrement) {
+static void IncrementStat(int32_t iStatToIncrement) {
   // review mode, do not allow changes
   if (fReviewStats) return;
 
-  INT32 *val = NULL;
+  int32_t *val = NULL;
   switch (iStatToIncrement) {
     case STRENGTH_ATTRIBUTE:
       val = &iCurrentStrength;
@@ -315,12 +315,12 @@ static void IncrementStat(INT32 iStatToIncrement) {
   }
 }
 
-static void DecrementStat(INT32 iStatToDecrement) {
+static void DecrementStat(int32_t iStatToDecrement) {
   // review mode, do not allow changes
   if (fReviewStats) return;
 
   BOOLEAN may_be_zero = FALSE;
-  INT32 *val = NULL;
+  int32_t *val = NULL;
   switch (iStatToDecrement) {
     case STRENGTH_ATTRIBUTE:
       val = &iCurrentStrength;
@@ -369,7 +369,7 @@ static void DecrementStat(INT32 iStatToDecrement) {
   }
 }
 
-static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPAttributeSelectionButtons() {
   // the finished button
@@ -387,7 +387,7 @@ static void DestroyIMPAttributeSelectionButtons() {
   UnloadButtonImage(giIMPAttributeSelectionButtonImage[0]);
 }
 
-static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // are we done diting, or just reviewing the stats?
     if (fReviewStats) {
@@ -405,12 +405,12 @@ void RenderAttributeBoxes() {
   SetFontAttributes(FONT10ARIAL, FONT_WHITE, NO_SHADOW);
 
   // run through and render each slider bar
-  for (INT32 i = HEALTH_ATTRIBUTE; i <= MECHANICAL_SKILL; ++i) {
-    INT32 val = GetCurrentAttributeValue(i);
+  for (int32_t i = HEALTH_ATTRIBUTE; i <= MECHANICAL_SKILL; ++i) {
+    int32_t val = GetCurrentAttributeValue(i);
 
     // Compensate for zeroed skills: x pos is at least 0
-    INT16 sX = std::max(0, val - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50;
-    INT16 sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * i;
+    int16_t sX = std::max(0, val - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50;
+    int16_t sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * i;
 
     sX += SKILL_SLIDE_START_X;
     RenderSliderBar(sX, sY);
@@ -423,8 +423,8 @@ void RenderAttributeBoxes() {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateAttributeSliderButtons() {
   // Create the buttons for the attribute slider
@@ -434,8 +434,8 @@ static void CreateAttributeSliderButtons() {
   giIMPAttributeSelectionSliderButtonImage[1] =
       LoadButtonImage(LAPTOPDIR "/attributearrows.sti", 3, 4);
 
-  for (INT32 iCounter = 0; iCounter < 20; iCounter += 2) {
-    const INT16 y = LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20);
+  for (int32_t iCounter = 0; iCounter < 20; iCounter += 2) {
+    const int16_t y = LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20);
     // left/right buttons - decrement/increment stat
     giIMPAttributeSelectionSliderButton[iCounter] =
         QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[0], LAPTOP_SCREEN_UL_X + 163, y,
@@ -460,39 +460,39 @@ static void DestroyAttributeSliderButtons() {
   UnloadButtonImage(giIMPAttributeSelectionSliderButtonImage[0]);
   UnloadButtonImage(giIMPAttributeSelectionSliderButtonImage[1]);
 
-  for (INT32 iCounter = 0; iCounter < 20; iCounter++) {
+  for (int32_t iCounter = 0; iCounter < 20; iCounter++) {
     // get rid of button
     RemoveButton(giIMPAttributeSelectionSliderButton[iCounter]);
   }
 }
 
-static void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN || reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    INT32 const iValue = btn->GetUserData();
+    int32_t const iValue = btn->GetUserData();
     DecrementStat(iValue);
     fHasAnySlidingBarMoved = TRUE;
     uiBarToReRender = iValue;
   }
 }
 
-static void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN || reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    INT32 const iValue = btn->GetUserData();
+    int32_t const iValue = btn->GetUserData();
     IncrementStat(iValue);
     fHasAnySlidingBarMoved = TRUE;
     uiBarToReRender = iValue;
   }
 }
 
-static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateSlideRegionMouseRegions() {
   /* Create the mouse regions on the sliding area, that, if the player clicks
    * on, the bar will automatically jump to */
-  for (UINT32 i = 0; i != lengthof(pSliderRegions); ++i) {
+  for (uint32_t i = 0; i != lengthof(pSliderRegions); ++i) {
     MOUSE_REGION &r = pSliderRegions[i];
-    UINT16 const x = LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X;
-    UINT16 const y = LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + i * SKILL_SLIDE_HEIGHT;
+    uint16_t const x = LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X;
+    uint16_t const y = LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + i * SKILL_SLIDE_HEIGHT;
     MSYS_DefineRegion(&r, x, y, x + BAR_WIDTH, y + 15, MSYS_PRIORITY_HIGH + 2, CURSOR_WWW,
                       MSYS_NO_CALLBACK, SliderRegionButtonCallback);
     MSYS_SetRegionUserData(&r, 0, i);
@@ -504,9 +504,9 @@ static void DestroySlideRegionMouseRegions() {  // Destroy the regions used for
   FOR_EACH(MOUSE_REGION, i, pSliderRegions) MSYS_RemoveRegion(&*i);
 }
 
-static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
-  static INT16 sOldX = -1;
-  static INT32 iAttribute = -1;
+static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, int32_t iReason) {
+  static int16_t sOldX = -1;
+  static int32_t iAttribute = -1;
 
   // if we already have an anchored slider bar
   if (gpCurrentScrollBox != pRegion && gpCurrentScrollBox != NULL) return;
@@ -528,7 +528,7 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     gpCurrentScrollBox = pRegion;
 
     // get new attribute value x
-    INT16 sNewX = pRegion->MouseXPos;
+    int16_t sNewX = pRegion->MouseXPos;
 
     // sOldX has been reset, set to sNewX
     if (sOldX == -1) {
@@ -538,9 +538,9 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     // check against old x
     if (sNewX != sOldX) {
       // get old stat value
-      const INT32 iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+      const int32_t iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
       sNewX -= SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
-      INT32 iNewValue = (sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
+      int32_t iNewValue = (sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
 
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
@@ -551,12 +551,12 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
       // change is enough
       if (iNewValue - iCurrentAttributeValue > 0) {
         // positive, increment stat
-        for (INT32 iCounter = iNewValue - iCurrentAttributeValue; iCounter > 0; iCounter--) {
+        for (int32_t iCounter = iNewValue - iCurrentAttributeValue; iCounter > 0; iCounter--) {
           IncrementStat(iAttribute);
         }
       } else {
         // negative, decrement stat
-        for (INT32 iCounter = iCurrentAttributeValue - iNewValue; iCounter > 0; iCounter--) {
+        for (int32_t iCounter = iCurrentAttributeValue - iNewValue; iCounter > 0; iCounter--) {
           DecrementStat(iAttribute);
         }
       }
@@ -571,7 +571,7 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     }
 
     // get mouse XY
-    const INT16 sX = pRegion->MouseXPos;
+    const int16_t sX = pRegion->MouseXPos;
 
     // which region are we in?
 
@@ -580,26 +580,26 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     uiBarToReRender = iAttribute;
 
     // get value of attribute
-    const INT32 iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+    const int32_t iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
     // set the new attribute value based on position of mouse click, include
     // screen resolution
-    INT32 iNewAttributeValue = (sX - SKILL_SLIDE_START_X) * 50 / BASE_SKILL_PIXEL_UNIT_SIZE;
+    int32_t iNewAttributeValue = (sX - SKILL_SLIDE_START_X) * 50 / BASE_SKILL_PIXEL_UNIT_SIZE;
 
     // too high, reset to 85
     if (iNewAttributeValue > 85) iNewAttributeValue = 85;
 
     // get the delta
-    const INT32 iAttributeDelta = iCurrentAttributeValue - iNewAttributeValue;
+    const int32_t iAttributeDelta = iCurrentAttributeValue - iNewAttributeValue;
 
     // check if increment or decrement
     if (iAttributeDelta > 0) {
       // decrement
-      for (INT32 iCounter = 0; iCounter < iAttributeDelta; iCounter++) {
+      for (int32_t iCounter = 0; iCounter < iAttributeDelta; iCounter++) {
         DecrementStat(iAttribute);
       }
     } else {
       // increment attribute
-      for (INT32 iCounter = iAttributeDelta; iCounter < 0; iCounter++) {
+      for (int32_t iCounter = iAttributeDelta; iCounter < 0; iCounter++) {
         if (iCurrentAttributeValue == 0) iCounter = 0;
         IncrementStat(iAttribute);
       }
@@ -609,18 +609,18 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     fHasAnySlidingBarMoved = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // get mouse positions
-    const INT16 sX = pRegion->MouseXPos;
+    const int16_t sX = pRegion->MouseXPos;
 
     // get attribute
     iAttribute = MSYS_GetRegionUserData(pRegion, 0);
     uiBarToReRender = iAttribute;
 
     // get value of attribute
-    const INT32 iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+    const int32_t iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
 
     // get the boxes bounding x
-    INT16 sNewX = (iCurrentAttributeValue - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50 +
-                  SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
+    int16_t sNewX = (iCurrentAttributeValue - 35) * BASE_SKILL_PIXEL_UNIT_SIZE / 50 +
+                    SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
 
     // the sNewX is below 0, reset to zero
     if (sNewX < 0) sNewX = 0;
@@ -636,8 +636,8 @@ static void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 }
 
 // Get the value of the attribute that was passed
-static INT32 GetCurrentAttributeValue(INT32 attribute) {
-  INT32 val = 0;
+static int32_t GetCurrentAttributeValue(int32_t attribute) {
+  int32_t val = 0;
   switch (attribute) {
     case HEALTH_ATTRIBUTE:
       val = iCurrentHealth;

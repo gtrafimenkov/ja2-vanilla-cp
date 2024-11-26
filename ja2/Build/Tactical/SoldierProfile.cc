@@ -53,7 +53,7 @@ BOOLEAN gfPotentialTeamChangeDuringDeath = FALSE;
 
 MERCPROFILESTRUCT gMercProfiles[NUM_PROFILES];
 
-INT8 gbSkillTraitBonus[NUM_SKILLTRAITS] = {
+int8_t gbSkillTraitBonus[NUM_SKILLTRAITS] = {
     0,   // NO_SKILLTRAIT
     25,  // LOCKPICKING
     15,  // HANDTOHAND
@@ -72,11 +72,11 @@ INT8 gbSkillTraitBonus[NUM_SKILLTRAITS] = {
     0,   // CAMOUFLAGED
 };
 
-UINT8 gubNumTerrorists = 0;
+uint8_t gubNumTerrorists = 0;
 
 struct TerroristInfo {
   ProfileID profile;
-  UINT8 sectors[5];
+  uint8_t sectors[5];
 };
 
 static TerroristInfo const g_terrorist_infos[] = {
@@ -88,11 +88,11 @@ static TerroristInfo const g_terrorist_infos[] = {
     T_REX,    {SEC_F9, SEC_H14, SEC_H2, SEC_G1, SEC_B2}    // Rexall
 };
 
-INT16 gsRobotGridNo;
+int16_t gsRobotGridNo;
 
 struct AssassinInfo {
   ProfileID profile;
-  UINT8 towns[5];
+  uint8_t towns[5];
 };
 
 static AssassinInfo const g_assassin_info[] = {{JIM, {CAMBRIA, DRASSEN, ALMA, BALIME, GRUMM}},
@@ -102,7 +102,7 @@ static AssassinInfo const g_assassin_info[] = {{JIM, {CAMBRIA, DRASSEN, ALMA, BA
                                                {OLGA, {CHITZENA, OMERTA, CAMBRIA, ALMA, GRUMM}},
                                                {TYRONE, {CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN}}};
 
-static INT16 CalcMedicalDeposit(MERCPROFILESTRUCT const &);
+static int16_t CalcMedicalDeposit(MERCPROFILESTRUCT const &);
 static void DecideActiveTerrorists();
 static void StartSomeMercsOnAssignment();
 
@@ -110,7 +110,7 @@ void LoadMercProfiles() {
   {
     AutoSGPFile f(FileMan::openForReadingSmart(BINARYDATADIR "/prof.dat", true));
     LoadRawMercProfiles(f, NUM_PROFILES, gMercProfiles, getDataFilesEncodingCorrector());
-    for (UINT32 i = 0; i != NUM_PROFILES; ++i) {
+    for (uint32_t i = 0; i != NUM_PROFILES; ++i) {
       MERCPROFILESTRUCT &p = gMercProfiles[i];
 
       // If the dialogue exists for the merc, allow the merc to be hired
@@ -124,20 +124,20 @@ void LoadMercProfiles() {
 
       if (!gGameOptions.fGunNut) {
         // CJC: replace guns in profile if they aren't available
-        FOR_EACH(UINT16, k, p.inv) {
-          UINT16 const item = *k;
+        FOR_EACH(uint16_t, k, p.inv) {
+          uint16_t const item = *k;
           if (!(Item[item].usItemClass & IC_GUN) || !ExtendedGunListGun(item)) continue;
 
-          UINT16 const new_gun = StandardGunListReplacement(item);
+          uint16_t const new_gun = StandardGunListReplacement(item);
           if (new_gun == NOTHING) continue;
 
           *k = new_gun;
 
           // Search through inventory and replace ammo accordingly
-          FOR_EACH(UINT16, l, p.inv) {
-            UINT16 const ammo = *l;
+          FOR_EACH(uint16_t, l, p.inv) {
+            uint16_t const ammo = *l;
             if (!(Item[ammo].usItemClass & IC_AMMO)) continue;
-            UINT16 const new_ammo = FindReplacementMagazineIfNecessary(item, ammo, new_gun);
+            uint16_t const new_ammo = FindReplacementMagazineIfNecessary(item, ammo, new_gun);
             if (new_ammo == NOTHING) continue;
             // Found a new magazine, replace
             *l = new_ammo;
@@ -150,8 +150,8 @@ void LoadMercProfiles() {
       p.bMainGunAttractiveness = -1;
       p.bArmourAttractiveness = -1;
       p.usOptionalGearCost = 0;
-      FOR_EACH(UINT16 const, k, p.inv) {
-        UINT16 const item_id = *k;
+      FOR_EACH(uint16_t const, k, p.inv) {
+        uint16_t const item_id = *k;
         if (item_id == NOTHING) continue;
         INVTYPE const &item = Item[item_id];
 
@@ -198,7 +198,7 @@ static void DecideActiveTerrorists() {
    * EASY:    3,  9%    4, 42%    5, 49%
    * MEDIUM:  3, 25%    4, 50%    5, 25%
    * HARD:    3, 49%    4, 42%    5,  9% */
-  UINT32 chance;
+  uint32_t chance;
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
       chance = 70;
@@ -210,13 +210,13 @@ static void DecideActiveTerrorists() {
       chance = 30;
       break;
   }
-  UINT8 n_additional_terrorists = 2;  // Add at least 2 more.
-  for (UINT8 n = MAX_ADDITIONAL_TERRORISTS - n_additional_terrorists; n != 0; --n) {
+  uint8_t n_additional_terrorists = 2;  // Add at least 2 more.
+  for (uint8_t n = MAX_ADDITIONAL_TERRORISTS - n_additional_terrorists; n != 0; --n) {
     if (Chance(chance)) ++n_additional_terrorists;
   }
 
-  UINT8 terrorist_placement[MAX_ADDITIONAL_TERRORISTS];
-  for (UINT8 n_terrorists_added = 0; n_terrorists_added != n_additional_terrorists;) {
+  uint8_t terrorist_placement[MAX_ADDITIONAL_TERRORISTS];
+  for (uint8_t n_terrorists_added = 0; n_terrorists_added != n_additional_terrorists;) {
     FOR_EACH(TerroristInfo const, i, g_terrorist_infos) {
       if (n_terrorists_added == n_additional_terrorists) break;
 
@@ -232,8 +232,8 @@ static void DecideActiveTerrorists() {
        * terrorist */
     pick_sector:
       // Pick a random spot, see if it's already been used by another terrorist.
-      UINT8 const sector = t.sectors[Random(lengthof(t.sectors))];
-      for (UINT8 k = 0; k != n_terrorists_added; ++k) {
+      uint8_t const sector = t.sectors[Random(lengthof(t.sectors))];
+      for (uint8_t k = 0; k != n_terrorists_added; ++k) {
         if (terrorist_placement[k] == sector) goto pick_sector;
       }
 
@@ -252,7 +252,7 @@ static void DecideActiveTerrorists() {
 }
 
 void MakeRemainingTerroristsTougher() {
-  UINT8 n_remaining_terrorists = 0;
+  uint8_t n_remaining_terrorists = 0;
   FOR_EACH(TerroristInfo const, i, g_terrorist_infos) {
     ProfileID const pid = i->profile;
     MERCPROFILESTRUCT const &p = GetProfile(pid);
@@ -262,7 +262,8 @@ void MakeRemainingTerroristsTougher() {
     ++n_remaining_terrorists;
   }
 
-  UINT8 remaining_difficulty = 60 / gubNumTerrorists * (gubNumTerrorists - n_remaining_terrorists);
+  uint8_t remaining_difficulty =
+      60 / gubNumTerrorists * (gubNumTerrorists - n_remaining_terrorists);
 
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_MEDIUM:
@@ -275,8 +276,8 @@ void MakeRemainingTerroristsTougher() {
       break;
   }
 
-  UINT16 old_item;
-  UINT16 new_item;
+  uint16_t old_item;
+  uint16_t new_item;
   if (remaining_difficulty < 14) {  // nothing
     return;
   } else if (remaining_difficulty < 28) {  // mini grenade
@@ -317,8 +318,8 @@ void MakeRemainingTerroristsTougher() {
 
 void DecideOnAssassin() {
   ProfileID assassins[lengthof(g_assassin_info)];
-  UINT8 n = 0;
-  UINT8 const town = GetTownIdForSector(SECTOR(gWorldSectorX, gWorldSectorY));
+  uint8_t n = 0;
+  uint8_t const town = GetTownIdForSector(SECTOR(gWorldSectorX, gWorldSectorY));
   FOR_EACH(AssassinInfo const, i, g_assassin_info) {
     AssassinInfo const a = *i;
     MERCPROFILESTRUCT const &p = GetProfile(a.profile);
@@ -326,7 +327,7 @@ void DecideOnAssassin() {
     if (p.bMercStatus == MERC_IS_DEAD) continue;
     if (p.sSectorX != 0 || p.sSectorY != 0) continue;
     // Check this merc to see if the town is a possibility.
-    FOR_EACH(UINT8 const, k, a.towns) {
+    FOR_EACH(uint8_t const, k, a.towns) {
       if (*k != town) continue;
       assassins[n++] = a.profile;
       break;
@@ -342,14 +343,14 @@ void DecideOnAssassin() {
 }
 
 void MakeRemainingAssassinsTougher() {
-  UINT8 n_remaining_assassins = 0;
+  uint8_t n_remaining_assassins = 0;
   FOR_EACH(AssassinInfo const, i, g_assassin_info) {
     if (GetProfile(i->profile).bMercStatus == MERC_IS_DEAD) continue;
     ++n_remaining_assassins;
   }
 
   size_t const n_assassins = lengthof(g_assassin_info);
-  UINT8 difficulty = 60 / n_assassins * (n_assassins - n_remaining_assassins);
+  uint8_t difficulty = 60 / n_assassins * (n_assassins - n_remaining_assassins);
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_MEDIUM:
       difficulty = difficulty * 13 / 10;
@@ -361,8 +362,8 @@ void MakeRemainingAssassinsTougher() {
       break;
   }
 
-  UINT16 new_item;
-  UINT16 old_item;
+  uint16_t new_item;
+  uint16_t old_item;
   if (difficulty < 14) {  // Nothing
     return;
   } else if (difficulty < 28) {  // Mini grenade
@@ -395,8 +396,8 @@ void MakeRemainingAssassinsTougher() {
 }
 
 static void StartSomeMercsOnAssignment() {
-  UINT32 uiCnt;
-  UINT32 uiChance;
+  uint32_t uiCnt;
+  uint32_t uiChance;
 
   // some randomly picked A.I.M. mercs will start off "on assignment" at the
   // beginning of each new game
@@ -419,8 +420,8 @@ static void StartSomeMercsOnAssignment() {
   }
 }
 
-void SetProfileFaceData(ProfileID const pid, UINT8 const face_idx, UINT16 const eyes_x,
-                        UINT16 const eyes_y, UINT16 const mouth_x, UINT16 const mouth_y) {
+void SetProfileFaceData(ProfileID const pid, uint8_t const face_idx, uint16_t const eyes_x,
+                        uint16_t const eyes_y, uint16_t const mouth_x, uint16_t const mouth_y) {
   MERCPROFILESTRUCT &p = GetProfile(pid);
   p.ubFaceIndex = face_idx;
   p.usEyesX = eyes_x;
@@ -429,9 +430,9 @@ void SetProfileFaceData(ProfileID const pid, UINT8 const face_idx, UINT16 const 
   p.usMouthY = mouth_y;
 }
 
-static UINT16 CalcCompetence(MERCPROFILESTRUCT const &p) {
-  UINT32 uiStats, uiSkills, uiActionPoints, uiSpecialSkills;
-  UINT16 usCompetence;
+static uint16_t CalcCompetence(MERCPROFILESTRUCT const &p) {
+  uint32_t uiStats, uiSkills, uiActionPoints, uiSpecialSkills;
+  uint16_t usCompetence;
 
   // count life twice 'cause it's also hit points
   // mental skills are halved 'cause they're actually not that important within
@@ -442,9 +443,9 @@ static UINT16 CalcCompetence(MERCPROFILESTRUCT const &p) {
 
   // marksmanship is very important, count it double
   uiSkills =
-      (UINT32)((2 * (pow((double)p.bMarksmanship, 3) / 10000)) +
-               1.5 * (pow((double)p.bMedical, 3) / 10000) +
-               (pow((double)p.bMechanical, 3) / 10000) + (pow((double)p.bExplosive, 3) / 10000));
+      (uint32_t)((2 * (pow((double)p.bMarksmanship, 3) / 10000)) +
+                 1.5 * (pow((double)p.bMedical, 3) / 10000) +
+                 (pow((double)p.bMechanical, 3) / 10000) + (pow((double)p.bExplosive, 3) / 10000));
 
   // action points
   uiActionPoints =
@@ -453,16 +454,16 @@ static UINT16 CalcCompetence(MERCPROFILESTRUCT const &p) {
   // count how many he has, don't care what they are
   uiSpecialSkills = ((p.bSkillTrait != 0) ? 1 : 0) + ((p.bSkillTrait2 != 0) ? 1 : 0);
 
-  usCompetence = (UINT16)((pow(p.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) *
-                           (1 + (0.05 * (FLOAT)uiSpecialSkills))) /
-                          1000);
+  usCompetence = (uint16_t)((pow(p.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) *
+                             (1 + (0.05 * (float)uiSpecialSkills))) /
+                            1000);
 
   // this currently varies from about 10 (Flo) to 1200 (Gus)
   return (usCompetence);
 }
 
-static INT16 CalcMedicalDeposit(MERCPROFILESTRUCT const &p) {
-  UINT16 usDeposit;
+static int16_t CalcMedicalDeposit(MERCPROFILESTRUCT const &p) {
+  uint16_t usDeposit;
 
   // this rounds off to the nearest hundred
   usDeposit = (5 * CalcCompetence(p) + 50) / 100 * 100;
@@ -484,7 +485,7 @@ SOLDIERTYPE *FindSoldierByProfileIDOnPlayerTeam(const ProfileID pid) {
   return NULL;
 }
 
-SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *const old_s, UINT8 const team) {
+SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *const old_s, uint8_t const team) {
   if (gfInTalkPanel) DeleteTalkingMenu();
 
   GridNo const old_gridno = old_s->sGridNo;
@@ -538,7 +539,7 @@ SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *const old_s, UINT8 const team) {
   if (team == OUR_TEAM) new_s->bVisible = 1;
 
   // Copy over any items.
-  for (UINT32 i = 0; i != NUM_INV_SLOTS; ++i) {
+  for (uint32_t i = 0; i != NUM_INV_SLOTS; ++i) {
     new_s->inv[i] = old_s->inv[i];
   }
 
@@ -561,7 +562,7 @@ SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *const old_s, UINT8 const team) {
   }
 
   if (new_s->ubProfile != NO_PROFILE) {
-    UINT8 &misc_flags = GetProfile(new_s->ubProfile).ubMiscFlags;
+    uint8_t &misc_flags = GetProfile(new_s->ubProfile).ubMiscFlags;
     misc_flags = team == OUR_TEAM ? misc_flags | PROFILE_MISC_FLAG_RECRUITED
                                   : misc_flags & ~PROFILE_MISC_FLAG_RECRUITED;
   }
@@ -569,7 +570,7 @@ SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *const old_s, UINT8 const team) {
   return new_s;
 }
 
-BOOLEAN RecruitRPC(UINT8 ubCharNum) {
+BOOLEAN RecruitRPC(uint8_t ubCharNum) {
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubCharNum);
   if (!pSoldier) {
     return (FALSE);
@@ -604,7 +605,7 @@ BOOLEAN RecruitRPC(UINT8 ubCharNum) {
 
   if (pNewSoldier->inv[HANDPOS].usItem == NOTHING) {
     // empty handed - swap in first available weapon
-    INT8 bSlot;
+    int8_t bSlot;
 
     bSlot = FindObjClass(pNewSoldier, IC_WEAPON);
     if (bSlot != NO_SLOT) {
@@ -642,7 +643,7 @@ BOOLEAN RecruitRPC(UINT8 ubCharNum) {
   return (TRUE);
 }
 
-BOOLEAN RecruitEPC(UINT8 ubCharNum) {
+BOOLEAN RecruitEPC(uint8_t ubCharNum) {
   SOLDIERTYPE *const pSoldier = FindSoldierByProfileID(ubCharNum);
   if (!pSoldier) {
     return (FALSE);
@@ -717,8 +718,8 @@ BOOLEAN UnRecruitEPC(ProfileID const pid) {
   return TRUE;
 }
 
-INT8 WhichBuddy(UINT8 ubCharNum, UINT8 ubBuddy) {
-  INT8 bLoop;
+int8_t WhichBuddy(uint8_t ubCharNum, uint8_t ubBuddy) {
+  int8_t bLoop;
 
   MERCPROFILESTRUCT const &p = GetProfile(ubCharNum);
 
@@ -730,8 +731,8 @@ INT8 WhichBuddy(UINT8 ubCharNum, UINT8 ubBuddy) {
   return (-1);
 }
 
-INT8 WhichHated(UINT8 ubCharNum, UINT8 ubHated) {
-  INT8 bLoop;
+int8_t WhichHated(uint8_t ubCharNum, uint8_t ubHated) {
+  int8_t bLoop;
 
   MERCPROFILESTRUCT const &p = GetProfile(ubCharNum);
 
@@ -743,9 +744,9 @@ INT8 WhichHated(UINT8 ubCharNum, UINT8 ubHated) {
   return (-1);
 }
 
-INT8 GetFirstBuddyOnTeam(MERCPROFILESTRUCT const &p) {
-  for (INT i = 0; i != 3; ++i) {
-    INT8 const buddy = p.bBuddy[i];
+int8_t GetFirstBuddyOnTeam(MERCPROFILESTRUCT const &p) {
+  for (int32_t i = 0; i != 3; ++i) {
+    int8_t const buddy = p.bBuddy[i];
     if (buddy < 0) continue;
     if (!IsMercOnTeam(buddy)) continue;
     if (IsMercDead(GetProfile(buddy))) continue;
@@ -761,7 +762,7 @@ bool IsProfileATerrorist(ProfileID const pid) {
   return false;
 }
 
-BOOLEAN IsProfileAHeadMiner(UINT8 ubProfile) {
+BOOLEAN IsProfileAHeadMiner(uint8_t ubProfile) {
   switch (ubProfile) {
     case FRED:
     case MATT:
@@ -908,8 +909,8 @@ SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *const s) {
   return s;
 }
 
-BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
-  UINT8 ubRoomInfo;
+BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, int16_t sGridNo) {
+  uint8_t ubRoomInfo;
 
   // Get room info
   ubRoomInfo = gubWorldRoomInfo[sGridNo];

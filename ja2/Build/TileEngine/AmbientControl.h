@@ -3,13 +3,13 @@
 
 #include "TileEngine/AmbientTypes.h"
 
-void HandleNewSectorAmbience(UINT8 ubAmbientID);
-UINT32 SetupNewAmbientSound(UINT32 uiAmbientID);
+void HandleNewSectorAmbience(uint8_t ubAmbientID);
+uint32_t SetupNewAmbientSound(uint32_t uiAmbientID);
 
 void StopAmbients();
 void DeleteAllAmbients();
 
 extern AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
-extern INT16 gsNumAmbData;
+extern int16_t gsNumAmbData;
 
 #endif

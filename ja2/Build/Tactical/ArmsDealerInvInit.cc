@@ -17,8 +17,8 @@
 #include "Tactical/Weapons.h"
 
 struct ITEM_SORT_ENTRY {
-  UINT32 uiItemClass;
-  UINT8 ubWeaponClass;
+  uint32_t uiItemClass;
+  uint8_t ubWeaponClass;
   BOOLEAN fAllowUsed;
 };
 
@@ -564,14 +564,14 @@ static DEALER_POSSIBLE_INV const gFredoInventory[] = {
     {LAST_DEALER_ITEM, NO_DEALER_ITEM},  // Last One
 };
 
-static INT8 GetMaxItemAmount(DEALER_POSSIBLE_INV const *, UINT16 usItemIndex);
+static int8_t GetMaxItemAmount(DEALER_POSSIBLE_INV const *, uint16_t usItemIndex);
 
-INT8 GetDealersMaxItemAmount(ArmsDealerID const ubDealerID, UINT16 const usItemIndex) {
+int8_t GetDealersMaxItemAmount(ArmsDealerID const ubDealerID, uint16_t const usItemIndex) {
   return GetMaxItemAmount(GetPointerToDealersPossibleInventory(ubDealerID), usItemIndex);
 }
 
-static INT8 GetMaxItemAmount(DEALER_POSSIBLE_INV const *const pInv, UINT16 const usItemIndex) {
-  UINT16 usCnt = 0;
+static int8_t GetMaxItemAmount(DEALER_POSSIBLE_INV const *const pInv, uint16_t const usItemIndex) {
+  uint16_t usCnt = 0;
 
   // loop through the array until a the LAST_DEALER_ITEM is hit
   while (pInv[usCnt].sItemIndex != LAST_DEALER_ITEM) {
@@ -630,10 +630,10 @@ DEALER_POSSIBLE_INV const *GetPointerToDealersPossibleInventory(ArmsDealerID con
   }
 }
 
-static UINT8 GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer,
-                                          UINT16 const usItemIndex) {
-  UINT8 ubItemCoolness;
-  UINT8 ubMinCoolness, ubMaxCoolness;
+static uint8_t GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer,
+                                            uint16_t const usItemIndex) {
+  uint8_t ubItemCoolness;
+  uint8_t ubMinCoolness, ubMaxCoolness;
 
   // item suitability varies with the player's maximum progress through the
   // game.  The farther he gets, the better items we make available.  Weak items
@@ -746,10 +746,10 @@ static UINT8 GetCurrentSuitabilityForItem(ArmsDealerID const bArmsDealer,
   return (ITEM_SUITABILITY_LOW);
 }
 
-UINT8 ChanceOfItemTransaction(ArmsDealerID const bArmsDealer, UINT16 const usItemIndex,
-                              BOOLEAN const fDealerIsSelling, BOOLEAN const fUsed) {
-  UINT8 ubItemCoolness;
-  UINT8 ubChance = 0;
+uint8_t ChanceOfItemTransaction(ArmsDealerID const bArmsDealer, uint16_t const usItemIndex,
+                                BOOLEAN const fDealerIsSelling, BOOLEAN const fUsed) {
+  uint8_t ubItemCoolness;
+  uint8_t ubChance = 0;
 
   // make sure dealers don't carry used items that they shouldn't
   if (fUsed && !fDealerIsSelling && !CanDealerItemBeSoldUsed(usItemIndex)) return (0);
@@ -819,10 +819,10 @@ UINT8 ChanceOfItemTransaction(ArmsDealerID const bArmsDealer, UINT16 const usIte
   return (ubChance);
 }
 
-BOOLEAN ItemTransactionOccurs(ArmsDealerID const bArmsDealer, UINT16 const usItemIndex,
+BOOLEAN ItemTransactionOccurs(ArmsDealerID const bArmsDealer, uint16_t const usItemIndex,
                               BOOLEAN const fDealerIsSelling, BOOLEAN const fUsed) {
-  UINT8 ubChance;
-  INT16 sInventorySlot;
+  uint8_t ubChance;
+  int16_t sInventorySlot;
 
   ubChance = ChanceOfItemTransaction(bArmsDealer, usItemIndex, fDealerIsSelling, fUsed);
 
@@ -852,10 +852,10 @@ BOOLEAN ItemTransactionOccurs(ArmsDealerID const bArmsDealer, UINT16 const usIte
   }
 }
 
-UINT8 DetermineInitialInvItems(ArmsDealerID const bArmsDealerID, UINT16 const usItemIndex,
-                               UINT8 const ubChances, BOOLEAN const fUsed) {
-  UINT8 ubNumBought;
-  UINT8 ubCnt;
+uint8_t DetermineInitialInvItems(ArmsDealerID const bArmsDealerID, uint16_t const usItemIndex,
+                                 uint8_t const ubChances, BOOLEAN const fUsed) {
+  uint8_t ubNumBought;
+  uint8_t ubCnt;
 
   // initial inventory is now rolled for one item at a time, instead of one type
   // at a time, to improve variety
@@ -869,10 +869,10 @@ UINT8 DetermineInitialInvItems(ArmsDealerID const bArmsDealerID, UINT16 const us
   return (ubNumBought);
 }
 
-UINT8 HowManyItemsAreSold(ArmsDealerID const bArmsDealerID, UINT16 const usItemIndex,
-                          UINT8 const ubNumInStock, BOOLEAN const fUsed) {
-  UINT8 ubNumSold;
-  UINT8 ubCnt;
+uint8_t HowManyItemsAreSold(ArmsDealerID const bArmsDealerID, uint16_t const usItemIndex,
+                            uint8_t const ubNumInStock, BOOLEAN const fUsed) {
+  uint8_t ubNumSold;
+  uint8_t ubCnt;
 
   // items are now virtually "sold" one at a time
   ubNumSold = 0;
@@ -885,8 +885,8 @@ UINT8 HowManyItemsAreSold(ArmsDealerID const bArmsDealerID, UINT16 const usItemI
   return (ubNumSold);
 }
 
-UINT8 HowManyItemsToReorder(UINT8 ubWanted, UINT8 ubStillHave) {
-  UINT8 ubNumReordered;
+uint8_t HowManyItemsToReorder(uint8_t ubWanted, uint8_t ubStillHave) {
+  uint8_t ubNumReordered;
 
   Assert(ubStillHave <= ubWanted);
 
@@ -907,10 +907,10 @@ UINT8 HowManyItemsToReorder(UINT8 ubWanted, UINT8 ubStillHave) {
 }
 
 int BobbyRayItemQsortCompare(const void *pArg1, const void *pArg2) {
-  UINT16 usItem1Index;
-  UINT16 usItem2Index;
-  UINT8 ubItem1Quality;
-  UINT8 ubItem2Quality;
+  uint16_t usItem1Index;
+  uint16_t usItem2Index;
+  uint8_t ubItem1Quality;
+  uint8_t ubItem2Quality;
 
   usItem1Index = ((STORE_INVENTORY *)pArg1)->usItemIndex;
   usItem2Index = ((STORE_INVENTORY *)pArg2)->usItemIndex;
@@ -922,10 +922,10 @@ int BobbyRayItemQsortCompare(const void *pArg1, const void *pArg2) {
 }
 
 int ArmsDealerItemQsortCompare(const void *pArg1, const void *pArg2) {
-  UINT16 usItem1Index;
-  UINT16 usItem2Index;
-  UINT8 ubItem1Quality;
-  UINT8 ubItem2Quality;
+  uint16_t usItem1Index;
+  uint16_t usItem2Index;
+  uint8_t ubItem1Quality;
+  uint8_t ubItem2Quality;
 
   usItem1Index = ((INVENTORY_IN_SLOT *)pArg1)->sItemIndex;
   usItem2Index = ((INVENTORY_IN_SLOT *)pArg2)->sItemIndex;
@@ -936,13 +936,13 @@ int ArmsDealerItemQsortCompare(const void *pArg1, const void *pArg2) {
   return (CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality));
 }
 
-static UINT8 GetDealerItemCategoryNumber(UINT16 usItemIndex);
+static uint8_t GetDealerItemCategoryNumber(uint16_t usItemIndex);
 
-int CompareItemsForSorting(UINT16 const item_index1, UINT16 const item_index2,
-                           UINT8 const item_quality1, UINT8 const item_quality2) {
+int CompareItemsForSorting(uint16_t const item_index1, uint16_t const item_index2,
+                           uint8_t const item_quality1, uint8_t const item_quality2) {
   // lower category first
-  UINT8 const category1 = GetDealerItemCategoryNumber(item_index1);
-  UINT8 const category2 = GetDealerItemCategoryNumber(item_index2);
+  uint8_t const category1 = GetDealerItemCategoryNumber(item_index1);
+  uint8_t const category2 = GetDealerItemCategoryNumber(item_index2);
   if (category1 < category2) return -1;
   if (category1 > category2) return 1;
 
@@ -958,23 +958,23 @@ int CompareItemsForSorting(UINT16 const item_index1, UINT16 const item_index2,
     if (calibre1 < calibre2) return 1;
 
     // the same caliber - compare size of magazine
-    UINT8 const mag_size1 = Magazine[item1.ubClassIndex].ubMagSize;
-    UINT8 const mag_size2 = Magazine[item2.ubClassIndex].ubMagSize;
+    uint8_t const mag_size1 = Magazine[item1.ubClassIndex].ubMagSize;
+    uint8_t const mag_size2 = Magazine[item2.ubClassIndex].ubMagSize;
     if (mag_size1 > mag_size2) return -1;
     if (mag_size1 < mag_size2) return 1;
   } else {
     // items other than ammo are compared on coolness first
     // higher coolness first
-    UINT8 const coolness1 = item1.ubCoolness;
-    UINT8 const coolness2 = item2.ubCoolness;
+    uint8_t const coolness1 = item1.ubCoolness;
+    uint8_t const coolness2 = item2.ubCoolness;
     if (coolness1 > coolness2) return -1;
     if (coolness1 < coolness2) return 1;
   }
 
   // the same coolness/caliber - compare base prices then
   // higher price first
-  UINT16 const price1 = item1.usPrice;
-  UINT16 const price2 = item2.usPrice;
+  uint16_t const price1 = item1.usPrice;
+  uint16_t const price2 = item2.usPrice;
   if (price1 > price2) return -1;
   if (price1 < price2) return 1;
 
@@ -994,15 +994,15 @@ int CompareItemsForSorting(UINT16 const item_index1, UINT16 const item_index2,
   return 0;
 }
 
-static UINT8 GetDealerItemCategoryNumber(UINT16 const usItemIndex) {
-  UINT32 const item_class = Item[usItemIndex].usItemClass;
+static uint8_t GetDealerItemCategoryNumber(uint16_t const usItemIndex) {
+  uint32_t const item_class = Item[usItemIndex].usItemClass;
 
   // If it's not a weapon, set no weapon class, as this won't be needed
-  UINT8 const weapon_class =
+  uint8_t const weapon_class =
       usItemIndex < MAX_WEAPONS ? Weapon[usItemIndex].ubWeaponClass : NOGUNCLASS;
 
   // search table until end-of-list marker is encountered
-  for (UINT8 category = 0;; ++category) {
+  for (uint8_t category = 0;; ++category) {
     ITEM_SORT_ENTRY const &ise = DealerItemSortInfo[category];
     if (ise.uiItemClass == IC_NONE) break;
 
@@ -1017,7 +1017,7 @@ static UINT8 GetDealerItemCategoryNumber(UINT16 const usItemIndex) {
   return 0;
 }
 
-BOOLEAN CanDealerItemBeSoldUsed(UINT16 usItemIndex) {
+BOOLEAN CanDealerItemBeSoldUsed(uint16_t usItemIndex) {
   if (!(Item[usItemIndex].fFlags & ITEM_DAMAGEABLE)) return (FALSE);
 
   // certain items, although they're damagable, shouldn't be sold in a used

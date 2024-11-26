@@ -15,6 +15,6 @@ extern const char g_version_number[16];
 // version whenever 	you will invalidate the saved game file
 //
 
-extern const UINT32 guiSavedGameVersion;
+extern const uint32_t guiSavedGameVersion;
 
 #endif

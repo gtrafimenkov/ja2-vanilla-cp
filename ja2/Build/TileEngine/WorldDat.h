@@ -9,8 +9,8 @@ typedef void (*TILESET_CALLBACK)();
 
 struct TILESET {
   wchar_t zName[32];
-  CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
-  UINT8 ubAmbientID;
+  char TileSurfaceFilenames[NUMBEROFTILETYPES][32];
+  uint8_t ubAmbientID;
   TILESET_CALLBACK MovementCostFnc;
 };
 

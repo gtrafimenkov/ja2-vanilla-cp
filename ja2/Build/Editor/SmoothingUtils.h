@@ -37,22 +37,22 @@ enum {
 };
 
 // in newsmooth.c
-extern void EraseWalls(UINT32 iMapIndex);
-extern void BuildWallPiece(UINT32 iMapIndex, UINT8 ubWallPiece, UINT16 usWallType);
+extern void EraseWalls(uint32_t iMapIndex);
+extern void BuildWallPiece(uint32_t iMapIndex, uint8_t ubWallPiece, uint16_t usWallType);
 // in Smoothing Utils
-void RestoreWalls(UINT32 map_idx);
-UINT16 SearchForRoofType(UINT32 iMapIndex);
-UINT16 SearchForWallType(UINT32 iMapIndex);
-bool BuildingAtGridNo(UINT32 map_idx);
-LEVELNODE *GetHorizontalWall(UINT32 map_idx);
-LEVELNODE *GetVerticalWall(UINT32 map_idx);
-UINT16 GetHorizontalWallType(UINT32 iMapIndex);
-UINT16 GetVerticalWallType(UINT32 iMapIndex);
-void EraseHorizontalWall(UINT32 iMapIndex);
-void EraseVerticalWall(UINT32 iMapIndex);
-void ChangeVerticalWall(UINT32 iMapIndex, UINT16 usNewPiece);
-bool ValidDecalPlacement(UINT32 map_idx);
+void RestoreWalls(uint32_t map_idx);
+uint16_t SearchForRoofType(uint32_t iMapIndex);
+uint16_t SearchForWallType(uint32_t iMapIndex);
+bool BuildingAtGridNo(uint32_t map_idx);
+LEVELNODE *GetHorizontalWall(uint32_t map_idx);
+LEVELNODE *GetVerticalWall(uint32_t map_idx);
+uint16_t GetHorizontalWallType(uint32_t iMapIndex);
+uint16_t GetVerticalWallType(uint32_t iMapIndex);
+void EraseHorizontalWall(uint32_t iMapIndex);
+void EraseVerticalWall(uint32_t iMapIndex);
+void ChangeVerticalWall(uint32_t iMapIndex, uint16_t usNewPiece);
+bool ValidDecalPlacement(uint32_t map_idx);
 
-UINT16 GetWallType(LEVELNODE const *wall, UINT32 map_idx);
+uint16_t GetWallType(LEVELNODE const *wall, uint32_t map_idx);
 
 #endif

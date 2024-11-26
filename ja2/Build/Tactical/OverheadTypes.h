@@ -158,16 +158,16 @@ ENUM_BITSET(SightFlags)
 #define SIDE_RATIO 0.571
 // CJC: Changed SBEHIND_RATIO (side-behind ratio) to be 0 to make stealth
 // attacks easier Changed on September 21, 1998
-//#define SBEHIND_RATIO		0.142
+// #define SBEHIND_RATIO		0.142
 #define SBEHIND_RATIO 0
 #define BEHIND_RATIO 0
 
 // looking distance defines
-#define BEHIND (INT8)(BEHIND_RATIO * STRAIGHT_RANGE)
-#define SBEHIND (INT8)(SBEHIND_RATIO * STRAIGHT_RANGE)
-#define SIDE (INT8)(SIDE_RATIO * STRAIGHT_RANGE)
-#define ANGLE (INT8)(ANGLE_RATIO * STRAIGHT_RANGE)
-#define STRAIGHT (INT8)(STRAIGHT_RATIO * STRAIGHT_RANGE)
+#define BEHIND (int8_t)(BEHIND_RATIO * STRAIGHT_RANGE)
+#define SBEHIND (int8_t)(SBEHIND_RATIO * STRAIGHT_RANGE)
+#define SIDE (int8_t)(SIDE_RATIO * STRAIGHT_RANGE)
+#define ANGLE (int8_t)(ANGLE_RATIO * STRAIGHT_RANGE)
+#define STRAIGHT (int8_t)(STRAIGHT_RATIO * STRAIGHT_RANGE)
 
 // opplist value constants
 #define HEARD_3_TURNS_AGO -4
@@ -270,7 +270,7 @@ extern const wchar_t *gszCivGroupNames[NUM_CIV_GROUPS];
 
 // PALETTE SUBSITUTION TYPES
 
-typedef CHAR8 PaletteRepID[30];
+typedef char PaletteRepID[30];
 
 // MACROS
 // This will set an animation ID

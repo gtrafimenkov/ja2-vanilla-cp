@@ -6,7 +6,7 @@
 #include "TileEngine/PhysMath.h"
 #include "TileEngine/WorldDef.h"
 
-extern UINT32 guiNumObjectSlots;
+extern uint32_t guiNumObjectSlots;
 
 struct REAL_OBJECT {
   BOOLEAN fAllocated;
@@ -33,24 +33,24 @@ struct REAL_OBJECT {
   vector_3 CollisionVelocity;
   real CollisionElasticity;
 
-  INT16 sGridNo;
+  int16_t sGridNo;
   LEVELNODE *pNode;
   LEVELNODE *pShadow;
 
-  INT16 sConsecutiveCollisions;
-  INT16 sConsecutiveZeroVelocityCollisions;
-  INT32 iOldCollisionCode;
+  int16_t sConsecutiveCollisions;
+  int16_t sConsecutiveZeroVelocityCollisions;
+  int32_t iOldCollisionCode;
 
-  FLOAT dLifeLength;
-  FLOAT dLifeSpan;
+  float dLifeLength;
+  float dLifeSpan;
   OBJECTTYPE Obj;
   SOLDIERTYPE *owner;
-  INT16 sFirstGridNo;
+  int16_t sFirstGridNo;
   BOOLEAN fFirstTimeMoved;
-  UINT8 ubActionCode;
+  uint8_t ubActionCode;
   SOLDIERTYPE *target;
   BOOLEAN fDropItem;
-  UINT32 uiNumTilesMoved;
+  uint32_t uiNumTilesMoved;
   BOOLEAN fCatchGood;
   BOOLEAN fAttemptedCatch;
   BOOLEAN fCatchAnimOn;
@@ -59,25 +59,25 @@ struct REAL_OBJECT {
   vector_3 EndedWithCollisionPosition;
   BOOLEAN fHaveHitGround;
   BOOLEAN fPotentialForDebug;
-  INT16 sLevelNodeGridNo;
-  INT32 iSoundID;
-  UINT8 ubLastTargetTakenDamage;
+  int16_t sLevelNodeGridNo;
+  int32_t iSoundID;
+  uint8_t ubLastTargetTakenDamage;
 };
 
 // OBJECT LIST STUFF
 REAL_OBJECT *CreatePhysicalObject(const OBJECTTYPE *pGameObj, real dLifeLength, real xPos,
                                   real yPos, real zPos, real xForce, real yForce, real zForce,
-                                  SOLDIERTYPE *owner, UINT8 ubActionCode, SOLDIERTYPE *target);
+                                  SOLDIERTYPE *owner, uint8_t ubActionCode, SOLDIERTYPE *target);
 void RemoveAllPhysicsObjects();
 
 BOOLEAN CalculateLaunchItemChanceToGetThrough(const SOLDIERTYPE *pSoldier, const OBJECTTYPE *pItem,
-                                              INT16 sGridNo, UINT8 ubLevel, INT16 sEndZ,
-                                              INT16 *psFinalGridNo, BOOLEAN fArmed, INT8 *pbLevel,
-                                              BOOLEAN fFromUI);
+                                              int16_t sGridNo, uint8_t ubLevel, int16_t sEndZ,
+                                              int16_t *psFinalGridNo, BOOLEAN fArmed,
+                                              int8_t *pbLevel, BOOLEAN fFromUI);
 
-void CalculateLaunchItemParamsForThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubLevel,
-                                       INT16 sZPos, OBJECTTYPE *pItem, INT8 bMissBy,
-                                       UINT8 ubActionCode, SOLDIERTYPE *target);
+void CalculateLaunchItemParamsForThrow(SOLDIERTYPE *pSoldier, int16_t sGridNo, uint8_t ubLevel,
+                                       int16_t sZPos, OBJECTTYPE *pItem, int8_t bMissBy,
+                                       uint8_t ubActionCode, SOLDIERTYPE *target);
 
 // SIMULATE WORLD
 void SimulateWorld();

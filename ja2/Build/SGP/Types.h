@@ -23,30 +23,10 @@ static inline void Swap(T &a, T &b) {
   b = t;
 }
 
-typedef int32_t INT;
-typedef int32_t INT32;
-typedef uint32_t UINT;
-typedef uint32_t UINT32;
-
-// integers
-typedef uint8_t UINT8;
-typedef int8_t INT8;
-typedef uint16_t UINT16;
-typedef int16_t INT16;
-// floats
-typedef float FLOAT;
-typedef double DOUBLE;
-// strings
-typedef char CHAR8;
-
-// other
 typedef unsigned char BOOLEAN;
-typedef void *PTR;
-typedef UINT8 BYTE;
-typedef CHAR8 STRING512[512];
+typedef char STRING512[512];
 
-#define SGPFILENAME_LEN 100
-typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
+typedef char SGPFILENAME[100];
 
 #ifndef TRUE
 #define TRUE 1
@@ -79,12 +59,12 @@ struct SGPBox {
 };
 
 struct SGPRect {
-  INT32 iLeft;
-  INT32 iTop;
-  INT32 iRight;
-  INT32 iBottom;
+  int32_t iLeft;
+  int32_t iTop;
+  int32_t iRight;
+  int32_t iBottom;
 
-  void set(INT32 left, INT32 top, INT32 right, INT32 bottom) {
+  void set(int32_t left, int32_t top, int32_t right, int32_t bottom) {
     iLeft = left;
     iTop = top;
     iRight = right;
@@ -93,10 +73,10 @@ struct SGPRect {
 };
 
 struct SGPPoint {
-  INT32 iX;
-  INT32 iY;
+  int32_t iX;
+  int32_t iY;
 
-  void set(INT32 x, INT32 y) {
+  void set(int32_t x, int32_t y) {
     iX = x;
     iY = y;
   }
@@ -105,7 +85,7 @@ struct SGPPoint {
 struct SDL_Color;
 typedef SDL_Color SGPPaletteEntry;
 
-typedef UINT32 COLORVAL;
+typedef uint32_t COLORVAL;
 
 struct AuxObjectData;
 struct ETRLEObject;
@@ -123,7 +103,7 @@ struct BUTTON_PICS;
 struct SGPFile;
 typedef SGPFile *HWFILE;
 
-#define SGP_TRANSPARENT ((UINT16)0)
+#define SGP_TRANSPARENT ((uint16_t)0)
 
 #ifdef __cplusplus
 #define ENUM_BITSET(type)                                                                \

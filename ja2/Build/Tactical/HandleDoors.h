@@ -15,16 +15,16 @@ enum HandleDoor {
   HANDLE_DOOR_CROWBAR = 9
 };
 
-BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure);
+BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, int16_t sGridNo, STRUCTURE *pStructure);
 
-void InteractWithOpenableStruct(SOLDIERTYPE &, STRUCTURE &, UINT8 direction);
+void InteractWithOpenableStruct(SOLDIERTYPE &, STRUCTURE &, uint8_t direction);
 
 void InteractWithClosedDoor(SOLDIERTYPE *, HandleDoor);
 
-void SetDoorString(INT16 sGridNo);
+void SetDoorString(int16_t sGridNo);
 
-void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fNoAnimations);
+void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, int16_t sGridNo, BOOLEAN fNoAnimations);
 
-UINT16 GetAnimStateForInteraction(SOLDIERTYPE const &, BOOLEAN door, UINT16 anim_state);
+uint16_t GetAnimStateForInteraction(SOLDIERTYPE const &, BOOLEAN door, uint16_t anim_state);
 
 #endif

@@ -396,43 +396,45 @@ enum AmbientSoundID {
 typedef void (*SOUND_STOP_CALLBACK)(void *pData);
 
 void ShutdownJA2Sound();
-UINT32 PlayJA2Sample(SoundID, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-UINT32 PlayJA2StreamingSample(SoundID, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
+uint32_t PlayJA2Sample(SoundID, uint32_t ubVolume, uint32_t ubLoops, uint32_t uiPan);
+uint32_t PlayJA2StreamingSample(SoundID, uint32_t ubVolume, uint32_t ubLoops, uint32_t uiPan);
 
-UINT32 PlayJA2SampleFromFile(const char *szFileName, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-UINT32 PlayJA2StreamingSampleFromFile(const char *szFileName, UINT32 ubVolume, UINT32 ubLoops,
-                                      UINT32 uiPan, SOUND_STOP_CALLBACK EndsCallback);
+uint32_t PlayJA2SampleFromFile(const char *szFileName, uint32_t ubVolume, uint32_t ubLoops,
+                               uint32_t uiPan);
+uint32_t PlayJA2StreamingSampleFromFile(const char *szFileName, uint32_t ubVolume, uint32_t ubLoops,
+                                        uint32_t uiPan, SOUND_STOP_CALLBACK EndsCallback);
 
-UINT32 PlayJA2Ambient(AmbientSoundID, UINT32 ubVolume, UINT32 ubLoops);
+uint32_t PlayJA2Ambient(AmbientSoundID, uint32_t ubVolume, uint32_t ubLoops);
 
-UINT32 PlayLocationJA2SampleFromFile(UINT16 grid_no, const char *filename, UINT32 base_vol,
-                                     UINT32 loops);
+uint32_t PlayLocationJA2SampleFromFile(uint16_t grid_no, const char *filename, uint32_t base_vol,
+                                       uint32_t loops);
 
-UINT32 PlayLocationJA2Sample(UINT16 grid_no, SoundID, UINT32 base_vol, UINT32 loops);
-UINT32 PlayLocationJA2StreamingSample(UINT16 grid_no, SoundID, UINT32 base_vol, UINT32 loops);
-UINT32 PlaySoldierJA2Sample(SOLDIERTYPE const *s, SoundID, UINT32 base_vol, UINT32 ubLoops,
-                            BOOLEAN fCheck);
+uint32_t PlayLocationJA2Sample(uint16_t grid_no, SoundID, uint32_t base_vol, uint32_t loops);
+uint32_t PlayLocationJA2StreamingSample(uint16_t grid_no, SoundID, uint32_t base_vol,
+                                        uint32_t loops);
+uint32_t PlaySoldierJA2Sample(SOLDIERTYPE const *s, SoundID, uint32_t base_vol, uint32_t ubLoops,
+                              BOOLEAN fCheck);
 
-UINT32 GetSoundEffectsVolume();
-void SetSoundEffectsVolume(UINT32 uiNewVolume);
+uint32_t GetSoundEffectsVolume();
+void SetSoundEffectsVolume(uint32_t uiNewVolume);
 
-UINT32 GetSpeechVolume();
-void SetSpeechVolume(UINT32 uiNewVolume);
+uint32_t GetSpeechVolume();
+void SetSpeechVolume(uint32_t uiNewVolume);
 
 // Calculates a volume based on the current Speech Volume level
-UINT32 CalculateSpeechVolume(UINT32 uiVolume);
+uint32_t CalculateSpeechVolume(uint32_t uiVolume);
 
 // Calculates a volume based on the current Sound Effects Volume level
-UINT32 CalculateSoundEffectsVolume(UINT32 uiVolume);
+uint32_t CalculateSoundEffectsVolume(uint32_t uiVolume);
 
-INT8 SoundDir(INT16 sGridNo);
-INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo);
+int8_t SoundDir(int16_t sGridNo);
+int8_t SoundVolume(int8_t bInitialVolume, int16_t sGridNo);
 
-INT32 NewPositionSnd(INT16 sGridNo, SOLDIERTYPE const *SoundSource, SoundID);
-void DeletePositionSnd(INT32 iPositionSndIndex);
+int32_t NewPositionSnd(int16_t sGridNo, SOLDIERTYPE const *SoundSource, SoundID);
+void DeletePositionSnd(int32_t iPositionSndIndex);
 void SetPositionSndsActive();
 void SetPositionSndsInActive();
 void SetPositionSndsVolumeAndPanning();
-void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo);
+void SetPositionSndGridNo(int32_t iPositionSndIndex, int16_t sGridNo);
 
 #endif

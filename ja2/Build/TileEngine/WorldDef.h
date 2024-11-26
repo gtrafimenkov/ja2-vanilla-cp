@@ -100,21 +100,21 @@ struct LEVELNODE {
   LEVELNODE *pNext;
   LevelnodeFlags uiFlags;
 
-  UINT8 ubSumLights;  // LIGHTING INFO
-  UINT8 ubMaxLights;  // std::max LIGHTING INFO
+  uint8_t ubSumLights;  // LIGHTING INFO
+  uint8_t ubMaxLights;  // std::max LIGHTING INFO
 
   union {
     LEVELNODE *pPrevNode;       // FOR LAND, GOING BACKWARDS POINTER
     STRUCTURE *pStructureData;  // STRUCTURE DATA
-    INT32 uiAPCost;             // FOR AP DISPLAY
-    INT32 iExitGridInfo;
+    int32_t uiAPCost;           // FOR AP DISPLAY
+    int32_t iExitGridInfo;
   };  // ( 4 byte union )
 
   union {
     struct {
-      UINT16 usIndex;       // TILE DATABASE INDEX
-      INT16 sCurrentFrame;  // Stuff for animated tiles for a given tile location
-                            // ( doors, etc )
+      uint16_t usIndex;       // TILE DATABASE INDEX
+      int16_t sCurrentFrame;  // Stuff for animated tiles for a given tile location
+                              // ( doors, etc )
     };
 
     SOLDIERTYPE *pSoldier;  // POINTER TO SOLDIER
@@ -124,14 +124,14 @@ struct LEVELNODE {
   union {
     // Some levelnodes can specify relative X and Y values!
     struct {
-      INT16 sRelativeX;  // Relative position values
-      INT16 sRelativeY;  // Relative position values
+      int16_t sRelativeX;  // Relative position values
+      int16_t sRelativeY;  // Relative position values
     };
 
     struct {
-      UINT32 uiAnimHitLocationFlags;  // Animation profile flags for soldier
-                                      // placeholders ( prone merc hit location
-                                      // values )
+      uint32_t uiAnimHitLocationFlags;  // Animation profile flags for soldier
+                                        // placeholders ( prone merc hit location
+                                        // values )
     };
 
     // Some can contains index values into animated tile data
@@ -145,10 +145,10 @@ struct LEVELNODE {
     };
   };
 
-  INT16 sRelativeZ;           // Relative position values
-  UINT8 ubShadeLevel;         // LIGHTING INFO
-  UINT8 ubNaturalShadeLevel;  // LIGHTING INFO
-  UINT8 ubFakeShadeLevel;     // LIGHTING INFO
+  int16_t sRelativeZ;           // Relative position values
+  uint8_t ubShadeLevel;         // LIGHTING INFO
+  uint8_t ubNaturalShadeLevel;  // LIGHTING INFO
+  uint8_t ubFakeShadeLevel;     // LIGHTING INFO
 };
 
 #define LAND_START_INDEX 1
@@ -187,15 +187,15 @@ struct MAP_ELEMENT {
   STRUCTURE *pStructureHead;
   STRUCTURE *pStructureTail;
 
-  UINT16 uiFlags;
-  UINT8 ubExtFlags[2];
-  UINT8 sHeight;
-  UINT8 ubAdjacentSoldierCnt;
-  UINT8 ubTerrainID;
+  uint16_t uiFlags;
+  uint8_t ubExtFlags[2];
+  uint8_t sHeight;
+  uint8_t ubAdjacentSoldierCnt;
+  uint8_t ubTerrainID;
 
-  UINT8 ubReservedSoldierID;
-  UINT8 ubBloodInfo;
-  UINT8 ubSmellInfo;
+  uint8_t ubReservedSoldierID;
+  uint8_t ubBloodInfo;
+  uint8_t ubSmellInfo;
 };
 
 // World Data
@@ -206,14 +206,14 @@ extern MAP_ELEMENT *gpWorldLevelData;
        iter != iter##__end; ++iter)
 
 // World Movement Costs
-extern UINT8 gubWorldMovementCosts[WORLD_MAX][MAXDIR][2];
+extern uint8_t gubWorldMovementCosts[WORLD_MAX][MAXDIR][2];
 
 extern TileSetID giCurrentTilesetID;
 
-extern INT16 gsRecompileAreaTop;
-extern INT16 gsRecompileAreaLeft;
-extern INT16 gsRecompileAreaRight;
-extern INT16 gsRecompileAreaBottom;
+extern int16_t gsRecompileAreaTop;
+extern int16_t gsRecompileAreaLeft;
+extern int16_t gsRecompileAreaRight;
+extern int16_t gsRecompileAreaBottom;
 
 void InitializeWorld();
 void DeinitializeWorld();
@@ -230,8 +230,8 @@ BOOLEAN SaveWorld(const char *puiFilename);
 
 void LoadWorld(char const *filename);
 void CompileWorldMovementCosts();
-void RecompileLocalMovementCosts(INT16 sCentreGridNo);
-void RecompileLocalMovementCostsFromRadius(INT16 sCentreGridNo, INT8 bRadius);
+void RecompileLocalMovementCosts(int16_t sCentreGridNo);
+void RecompileLocalMovementCostsFromRadius(int16_t sCentreGridNo, int8_t bRadius);
 
 void LoadMapTileset(TileSetID);
 
@@ -239,14 +239,14 @@ void CalculateWorldWireFrameTiles(BOOLEAN fForce);
 
 void ReloadTileset(TileSetID);
 
-bool FloorAtGridNo(UINT32 map_idx);
-BOOLEAN DoorAtGridNo(UINT32 iMapIndex);
-BOOLEAN GridNoIndoors(UINT32 iMapIndex);
+bool FloorAtGridNo(uint32_t map_idx);
+BOOLEAN DoorAtGridNo(uint32_t iMapIndex);
+BOOLEAN GridNoIndoors(uint32_t iMapIndex);
 
-BOOLEAN OpenableAtGridNo(UINT32 iMapIndex);
+BOOLEAN OpenableAtGridNo(uint32_t iMapIndex);
 
 void RecompileLocalMovementCostsInAreaWithFlags();
-void AddTileToRecompileArea(INT16 sGridNo);
+void AddTileToRecompileArea(int16_t sGridNo);
 
 void InitLoadedWorld();
 
@@ -256,6 +256,6 @@ void FreeLevelNodeList(LEVELNODE **const head);
 
 void SetAllNewTileSurfacesLoaded(BOOLEAN fNew);
 
-void RecompileLocalMovementCostsForWall(INT16 sGridNo, UINT8 ubOrientation);
+void RecompileLocalMovementCostsForWall(int16_t sGridNo, uint8_t ubOrientation);
 
 #endif

@@ -43,8 +43,8 @@ static void HandleSoldierDeadComments(SOLDIERTYPE const *const dead) {
   FOR_EACH_IN_TEAM(s, dead->bTeam) {
     if (s->bLife < OKLIFE) continue;
 
-    UINT16 quote_num;
-    INT8 const buddy_idx = WhichBuddy(s->ubProfile, dead->ubProfile);
+    uint16_t quote_num;
+    int8_t const buddy_idx = WhichBuddy(s->ubProfile, dead->ubProfile);
     switch (buddy_idx) {
       case 0:
         quote_num = QUOTE_BUDDY_ONE_KILLED;

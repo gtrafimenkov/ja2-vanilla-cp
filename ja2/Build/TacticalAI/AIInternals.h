@@ -73,31 +73,31 @@ enum { URGENCY_LOW = 0, URGENCY_MED, URGENCY_HIGH, NUM_URGENCY_STATES };
 
 struct THREATTYPE {
   SOLDIERTYPE *pOpponent;
-  INT16 sGridNo;
-  INT32 iValue;
-  INT32 iAPs;
-  INT32 iCertainty;
-  INT32 iOrigRange;
+  int16_t sGridNo;
+  int32_t iValue;
+  int32_t iAPs;
+  int32_t iCertainty;
+  int32_t iOrigRange;
 };
 
 // define for bAimTime for bursting
 #define BURSTING 5
 
 struct ATTACKTYPE {
-  SOLDIERTYPE *opponent;      // which soldier is the victim?
-  UINT8 ubPossible;           // is this attack form possible?  T/F
-  UINT8 ubAimTime;            // how many extra APs to spend on aiming
-  UINT8 ubChanceToReallyHit;  // chance to hit * chance to get through cover
-  INT32 iAttackValue;         // relative worthiness of this type of attack
-  INT16 sTarget;              // target gridno of this attack
-  INT8 bTargetLevel;          // target level of this attack
-  UINT8 ubAPCost;             // how many APs the attack will use up
-  INT8 bWeaponIn;             // the inv slot of the weapon in question
+  SOLDIERTYPE *opponent;        // which soldier is the victim?
+  uint8_t ubPossible;           // is this attack form possible?  T/F
+  uint8_t ubAimTime;            // how many extra APs to spend on aiming
+  uint8_t ubChanceToReallyHit;  // chance to hit * chance to get through cover
+  int32_t iAttackValue;         // relative worthiness of this type of attack
+  int16_t sTarget;              // target gridno of this attack
+  int8_t bTargetLevel;          // target level of this attack
+  uint8_t ubAPCost;             // how many APs the attack will use up
+  int8_t bWeaponIn;             // the inv slot of the weapon in question
 };
 
 extern THREATTYPE Threat[MAXMERCS];
 extern int ThreatPercent[10];
-extern UINT8 SkipCoverCheck;
+extern uint8_t SkipCoverCheck;
 
 enum ItemSearchReason { SEARCH_GENERAL_ITEMS, SEARCH_AMMO, SEARCH_WEAPONS };
 
@@ -107,43 +107,43 @@ enum ItemSearchReason { SEARCH_GENERAL_ITEMS, SEARCH_AMMO, SEARCH_WEAPONS };
 
 #define STOPSHORTDIST 5
 
-INT16 AdvanceToFiringRange(SOLDIERTYPE *pSoldier, INT16 sClosestOpponent);
+int16_t AdvanceToFiringRange(SOLDIERTYPE *pSoldier, int16_t sClosestOpponent);
 
 void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot);
 void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAttack);
 void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab);
 
-INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLevel);
-INT32 CalcManThreatValue(SOLDIERTYPE *pSoldier, INT16 sMyGrid, UINT8 ubReduceForCover,
-                         SOLDIERTYPE *pMe);
-INT8 CanNPCAttack(SOLDIERTYPE *pSoldier);
+int16_t CalcSpreadBurst(SOLDIERTYPE *pSoldier, int16_t sFirstTarget, int8_t bTargetLevel);
+int32_t CalcManThreatValue(SOLDIERTYPE *pSoldier, int16_t sMyGrid, uint8_t ubReduceForCover,
+                           SOLDIERTYPE *pMe);
+int8_t CanNPCAttack(SOLDIERTYPE *pSoldier);
 void CheckIfTossPossible(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow);
-BOOLEAN ClimbingNecessary(SOLDIERTYPE *pSoldier, INT16 sDestGridNo, INT8 bDestLevel);
-INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier);
-INT16 ClosestReachableDisturbance(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK,
-                                  BOOLEAN *pfChangeLevel);
-INT16 ClosestReachableFriendInTrouble(SOLDIERTYPE *pSoldier, BOOLEAN *pfClimbingNecessary);
-INT16 ClosestSeenOpponent(SOLDIERTYPE *pSoldier, INT16 *psGridNo, INT8 *pbLevel);
+BOOLEAN ClimbingNecessary(SOLDIERTYPE *pSoldier, int16_t sDestGridNo, int8_t bDestLevel);
+int8_t ClosestPanicTrigger(SOLDIERTYPE *pSoldier);
+int16_t ClosestReachableDisturbance(SOLDIERTYPE *pSoldier, uint8_t ubUnconsciousOK,
+                                    BOOLEAN *pfChangeLevel);
+int16_t ClosestReachableFriendInTrouble(SOLDIERTYPE *pSoldier, BOOLEAN *pfClimbingNecessary);
+int16_t ClosestSeenOpponent(SOLDIERTYPE *pSoldier, int16_t *psGridNo, int8_t *pbLevel);
 void CreatureCall(SOLDIERTYPE *pCaller);
-INT8 CreatureDecideAction(SOLDIERTYPE *pCreature);
+int8_t CreatureDecideAction(SOLDIERTYPE *pCreature);
 void CreatureDecideAlertStatus(SOLDIERTYPE *pCreature);
-INT8 CrowDecideAction(SOLDIERTYPE *pSoldier);
+int8_t CrowDecideAction(SOLDIERTYPE *pSoldier);
 void DecideAlertStatus(SOLDIERTYPE *pSoldier);
-INT8 DecideAutoBandage(SOLDIERTYPE *pSoldier);
-UINT16 DetermineMovementMode(SOLDIERTYPE *pSoldier, INT8 bAction);
+int8_t DecideAutoBandage(SOLDIERTYPE *pSoldier);
+uint16_t DetermineMovementMode(SOLDIERTYPE *pSoldier, int8_t bAction);
 
-INT16 EstimatePathCostToLocation(SOLDIERTYPE *pSoldier, INT16 sDestGridNo, INT8 bDestLevel,
-                                 BOOLEAN fAddCostAfterClimbingUp, BOOLEAN *pfClimbingNecessary,
-                                 INT16 *psClimbGridNo);
+int16_t EstimatePathCostToLocation(SOLDIERTYPE *pSoldier, int16_t sDestGridNo, int8_t bDestLevel,
+                                   BOOLEAN fAddCostAfterClimbingUp, BOOLEAN *pfClimbingNecessary,
+                                   int16_t *psClimbGridNo);
 
-bool FindBetterSpotForItem(SOLDIERTYPE &, INT8 slot);
-INT16 FindClosestBoxingRingSpot(SOLDIERTYPE *pSoldier, BOOLEAN fInRing);
-INT16 GetInterveningClimbingLocation(SOLDIERTYPE *pSoldier, INT16 sDestGridNo, INT8 bDestLevel,
-                                     BOOLEAN *pfClimbingNecessary);
-UINT8 GetTraversalQuoteActionID(INT8 bDirection);
-INT16 GoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bAction);
+bool FindBetterSpotForItem(SOLDIERTYPE &, int8_t slot);
+int16_t FindClosestBoxingRingSpot(SOLDIERTYPE *pSoldier, BOOLEAN fInRing);
+int16_t GetInterveningClimbingLocation(SOLDIERTYPE *pSoldier, int16_t sDestGridNo,
+                                       int8_t bDestLevel, BOOLEAN *pfClimbingNecessary);
+uint8_t GetTraversalQuoteActionID(int8_t bDirection);
+int16_t GoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, int16_t sDesGrid, int8_t bAction);
 
-INT8 HeadForTheStairCase(SOLDIERTYPE *pSoldier);
+int8_t HeadForTheStairCase(SOLDIERTYPE *pSoldier);
 
 bool InGas(SOLDIERTYPE const *, GridNo);
 bool InGasOrSmoke(SOLDIERTYPE const *, GridNo);
@@ -151,30 +151,30 @@ bool InWaterGasOrSmoke(SOLDIERTYPE const *, GridNo);
 
 void InitAttackType(ATTACKTYPE *pAttack);
 
-INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bReserveAPs,
-                                       INT8 bAction, INT8 fFlags);
+int16_t InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, int16_t sDesGrid,
+                                         int8_t bReserveAPs, int8_t bAction, int8_t fFlags);
 
-int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, UINT8 ubWaterOK,
-                        UINT8 fFlags);
+int LegalNPCDestination(SOLDIERTYPE *pSoldier, int16_t sGridno, uint8_t ubPathMode,
+                        uint8_t ubWaterOK, uint8_t fFlags);
 void LoadWeaponIfNeeded(SOLDIERTYPE *pSoldier);
-INT16 MostImportantNoiseHeard(SOLDIERTYPE *pSoldier, INT32 *piRetValue,
-                              BOOLEAN *pfClimbingNecessary, BOOLEAN *pfReachable);
+int16_t MostImportantNoiseHeard(SOLDIERTYPE *pSoldier, int32_t *piRetValue,
+                                BOOLEAN *pfClimbingNecessary, BOOLEAN *pfReachable);
 void NPCDoesAct(SOLDIERTYPE *pSoldier);
-INT8 OKToAttack(SOLDIERTYPE *ptr, int target);
+int8_t OKToAttack(SOLDIERTYPE *ptr, int target);
 BOOLEAN NeedToRadioAboutPanicTrigger();
-INT8 PointPatrolAI(SOLDIERTYPE *pSoldier);
+int8_t PointPatrolAI(SOLDIERTYPE *pSoldier);
 void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier);
-INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier);
-INT32 RangeChangeDesire(SOLDIERTYPE *pSoldier);
-UINT16 RealtimeDelay(SOLDIERTYPE *pSoldier);
-void RearrangePocket(SOLDIERTYPE *pSoldier, INT8 bPocket1, INT8 bPocket2, UINT8 bPermanent);
+int8_t RandomPointPatrolAI(SOLDIERTYPE *pSoldier);
+int32_t RangeChangeDesire(SOLDIERTYPE *pSoldier);
+uint16_t RealtimeDelay(SOLDIERTYPE *pSoldier);
+void RearrangePocket(SOLDIERTYPE *pSoldier, int8_t bPocket1, int8_t bPocket2, uint8_t bPermanent);
 void RTHandleAI(SOLDIERTYPE *pSoldier);
-INT8 SearchForItems(SOLDIERTYPE &, ItemSearchReason, UINT16 usItem);
-UINT8 ShootingStanceChange(SOLDIERTYPE *pSoldier, ATTACKTYPE *pAttack, INT8 bDesiredDirection);
-UINT8 StanceChange(SOLDIERTYPE *pSoldier, UINT8 ubAttackAPCost);
-INT16 TrackScent(SOLDIERTYPE *pSoldier);
+int8_t SearchForItems(SOLDIERTYPE &, ItemSearchReason, uint16_t usItem);
+uint8_t ShootingStanceChange(SOLDIERTYPE *pSoldier, ATTACKTYPE *pAttack, int8_t bDesiredDirection);
+uint8_t StanceChange(SOLDIERTYPE *pSoldier, uint8_t ubAttackAPCost);
+int16_t TrackScent(SOLDIERTYPE *pSoldier);
 void RefreshAI(SOLDIERTYPE *pSoldier);
-BOOLEAN InLightAtNight(INT16 sGridNo, INT8 bLevel);
-INT16 FindNearbyDarkerSpot(SOLDIERTYPE *pSoldier);
+BOOLEAN InLightAtNight(int16_t sGridNo, int8_t bLevel);
+int16_t FindNearbyDarkerSpot(SOLDIERTYPE *pSoldier);
 
 BOOLEAN ArmySeesOpponents();

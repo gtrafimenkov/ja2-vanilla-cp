@@ -29,52 +29,52 @@
 // - make sure that everything in this header is nicely aligned
 // - don't exceed the 64-byte maximum
 struct STCIHeader {
-  UINT8 cID[STCI_ID_LEN];
-  UINT32 uiOriginalSize;
-  UINT32 uiStoredSize;  // equal to uiOriginalSize if data uncompressed
-  UINT32 uiTransparentValue;
-  UINT32 fFlags;
-  UINT16 usHeight;
-  UINT16 usWidth;
+  uint8_t cID[STCI_ID_LEN];
+  uint32_t uiOriginalSize;
+  uint32_t uiStoredSize;  // equal to uiOriginalSize if data uncompressed
+  uint32_t uiTransparentValue;
+  uint32_t fFlags;
+  uint16_t usHeight;
+  uint16_t usWidth;
   union {
     struct {
-      UINT32 uiRedMask;
-      UINT32 uiGreenMask;
-      UINT32 uiBlueMask;
-      UINT32 uiAlphaMask;
-      UINT8 ubRedDepth;
-      UINT8 ubGreenDepth;
-      UINT8 ubBlueDepth;
-      UINT8 ubAlphaDepth;
+      uint32_t uiRedMask;
+      uint32_t uiGreenMask;
+      uint32_t uiBlueMask;
+      uint32_t uiAlphaMask;
+      uint8_t ubRedDepth;
+      uint8_t ubGreenDepth;
+      uint8_t ubBlueDepth;
+      uint8_t ubAlphaDepth;
     } RGB;
     struct {  // For indexed files, the palette will contain 3 separate bytes for
               // red, green, and blue
-      UINT32 uiNumberOfColours;
-      UINT16 usNumberOfSubImages;
-      UINT8 ubRedDepth;
-      UINT8 ubGreenDepth;
-      UINT8 ubBlueDepth;
-      UINT8 cIndexedUnused[11];  // XXX HACK000B
+      uint32_t uiNumberOfColours;
+      uint16_t usNumberOfSubImages;
+      uint8_t ubRedDepth;
+      uint8_t ubGreenDepth;
+      uint8_t ubBlueDepth;
+      uint8_t cIndexedUnused[11];  // XXX HACK000B
     } Indexed;
   };
-  UINT8 ubDepth;  // size in bits of one pixel as stored in the file
-  UINT32 uiAppDataSize;
-  UINT8 cUnused[12];  // XXX HACK000B
+  uint8_t ubDepth;  // size in bits of one pixel as stored in the file
+  uint32_t uiAppDataSize;
+  uint8_t cUnused[12];  // XXX HACK000B
 };
 
 struct STCISubImage {
-  UINT32 uiDataOffset;
-  UINT32 uiDataLength;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
+  uint32_t uiDataOffset;
+  uint32_t uiDataLength;
+  int16_t sOffsetX;
+  int16_t sOffsetY;
+  uint16_t usHeight;
+  uint16_t usWidth;
 };
 
 struct STCIPaletteElement {
-  UINT8 ubRed;
-  UINT8 ubGreen;
-  UINT8 ubBlue;
+  uint8_t ubRed;
+  uint8_t ubGreen;
+  uint8_t ubBlue;
 };
 
 #endif

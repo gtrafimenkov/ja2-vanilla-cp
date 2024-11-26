@@ -6,11 +6,11 @@
 
 #define TESTAICONTROL
 
-extern INT8 gubAIPathCosts[19][19];
+extern int8_t gubAIPathCosts[19][19];
 #define AI_PATHCOST_RADIUS 9
 
 extern BOOLEAN gfDisplayCoverValues;
-extern INT16 gsCoverValue[WORLD_MAX];
+extern int16_t gsCoverValue[WORLD_MAX];
 
 // AI actions
 
@@ -124,41 +124,41 @@ enum QuoteActionType {
 #define DIFF_MAX_COVER_RANGE 4
 #define MAX_DIFF_PARMS 5  // how many different difficulty variables?
 
-extern INT8 gbDiff[MAX_DIFF_PARMS][5];
+extern int8_t gbDiff[MAX_DIFF_PARMS][5];
 
 void ActionDone(SOLDIERTYPE *pSoldier);
-INT16 ActionInProgress(SOLDIERTYPE *pSoldier);
+int16_t ActionInProgress(SOLDIERTYPE *pSoldier);
 
-INT8 CalcMorale(SOLDIERTYPE *pSoldier);
+int8_t CalcMorale(SOLDIERTYPE *pSoldier);
 void CallAvailableEnemiesTo(GridNo);
-void CallAvailableKingpinMenTo(INT16 sGridNo);
-void CallAvailableTeamEnemiesTo(GridNo, INT8 team);
-void CallEldinTo(INT16 sGridNo);
+void CallAvailableKingpinMenTo(int16_t sGridNo);
+void CallAvailableTeamEnemiesTo(GridNo, int8_t team);
+void CallEldinTo(int16_t sGridNo);
 void CancelAIAction(SOLDIERTYPE *pSoldier);
 void CheckForChangingOrders(SOLDIERTYPE *pSoldier);
 
-INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier);
+int8_t ClosestPanicTrigger(SOLDIERTYPE *pSoldier);
 
-INT16 ClosestKnownOpponent(SOLDIERTYPE *pSoldier, INT16 *psGridNo, INT8 *pbLevel);
-INT16 ClosestPC(const SOLDIERTYPE *pSoldier, INT16 *psDistance);
+int16_t ClosestKnownOpponent(SOLDIERTYPE *pSoldier, int16_t *psGridNo, int8_t *pbLevel);
+int16_t ClosestPC(const SOLDIERTYPE *pSoldier, int16_t *psDistance);
 BOOLEAN CanAutoBandage(BOOLEAN fDoFullCheck);
 
 #define DebugAI(x) (void)0
 
-INT8 DecideAction(SOLDIERTYPE *pSoldier);
-INT8 DecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK);
+int8_t DecideAction(SOLDIERTYPE *pSoldier);
+int8_t DecideActionRed(SOLDIERTYPE *pSoldier, uint8_t ubUnconsciousOK);
 
-INT16 DistanceToClosestFriend(SOLDIERTYPE *pSoldier);
+int16_t DistanceToClosestFriend(SOLDIERTYPE *pSoldier);
 
 void EndAIDeadlock();
 void EndAIGuysTurn(SOLDIERTYPE &);
 
-INT8 ExecuteAction(SOLDIERTYPE *pSoldier);
+int8_t ExecuteAction(SOLDIERTYPE *pSoldier);
 
-INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *pPercentBetter);
-INT16 FindClosestDoor(SOLDIERTYPE *pSoldier);
-INT16 FindNearbyPointOnEdgeOfMap(SOLDIERTYPE *pSoldier, INT8 *pbDirection);
-INT16 FindNearestEdgePoint(INT16 sGridNo);
+int16_t FindBestNearbyCover(SOLDIERTYPE *pSoldier, int32_t morale, int32_t *pPercentBetter);
+int16_t FindClosestDoor(SOLDIERTYPE *pSoldier);
+int16_t FindNearbyPointOnEdgeOfMap(SOLDIERTYPE *pSoldier, int8_t *pbDirection);
+int16_t FindNearestEdgePoint(int16_t sGridNo);
 
 // Kris:  Added these as I need specific searches on certain sides.
 enum {
@@ -167,12 +167,12 @@ enum {
   SOUTH_EDGEPOINT_SEARCH,
   WEST_EDGEPOINT_SEARCH,
 };
-INT16 FindNearestEdgepointOnSpecifiedEdge(INT16 sGridNo, INT8 bEdgeCode);
+int16_t FindNearestEdgepointOnSpecifiedEdge(int16_t sGridNo, int8_t bEdgeCode);
 
-INT16 FindNearestUngassedLand(SOLDIERTYPE *pSoldier);
-BOOLEAN FindRoofClimbingPoints(SOLDIERTYPE *pSoldier, INT16 sDesiredSpot);
-INT16 FindSpotMaxDistFromOpponents(SOLDIERTYPE *pSoldier);
-INT16 FindSweetCoverSpot(SOLDIERTYPE *pSoldier);
+int16_t FindNearestUngassedLand(SOLDIERTYPE *pSoldier);
+BOOLEAN FindRoofClimbingPoints(SOLDIERTYPE *pSoldier, int16_t sDesiredSpot);
+int16_t FindSpotMaxDistFromOpponents(SOLDIERTYPE *pSoldier);
+int16_t FindSweetCoverSpot(SOLDIERTYPE *pSoldier);
 
 void FreeUpNPCFromAttacking(SOLDIERTYPE *s);
 void FreeUpNPCFromPendingAction(SOLDIERTYPE *pSoldier);
@@ -180,10 +180,10 @@ void FreeUpNPCFromTurning(SOLDIERTYPE *pSoldier);
 void FreeUpNPCFromStanceChange(SOLDIERTYPE *pSoldier);
 void FreeUpNPCFromRoofClimb(SOLDIERTYPE *pSoldier);
 
-UINT8 GetClosestOpponent(SOLDIERTYPE *pSoldier);
+uint8_t GetClosestOpponent(SOLDIERTYPE *pSoldier);
 
 void HandleSoldierAI(SOLDIERTYPE *pSoldier);
-void HandleInitialRedAlert(INT8 bTeam);
+void HandleInitialRedAlert(int8_t bTeam);
 
 void InitPanicSystem();
 bool InWaterOrGas(SOLDIERTYPE const *, GridNo);
@@ -192,26 +192,26 @@ void InitAI();
 
 void MakeClosestEnemyChosenOne();
 
-void NewDest(SOLDIERTYPE *pSoldier, UINT16 sGridno);
+void NewDest(SOLDIERTYPE *pSoldier, uint16_t sGridno);
 
-INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove);
+int8_t PanicAI(SOLDIERTYPE *pSoldier, uint8_t ubCanMove);
 void HaltMoveForSoldierOutOfPoints(SOLDIERTYPE &);
 
-INT16 RandDestWithinRange(SOLDIERTYPE *pSoldier);
-INT16 RandomFriendWithin(SOLDIERTYPE *pSoldier);
-INT16 RoamingRange(SOLDIERTYPE *pSoldier, INT16 *pFromGridno);
+int16_t RandDestWithinRange(SOLDIERTYPE *pSoldier);
+int16_t RandomFriendWithin(SOLDIERTYPE *pSoldier);
+int16_t RoamingRange(SOLDIERTYPE *pSoldier, int16_t *pFromGridno);
 
 void SetNewSituation(SOLDIERTYPE *pSoldier);
 
-UINT8 SoldierDifficultyLevel(SOLDIERTYPE *pSoldier);
+uint8_t SoldierDifficultyLevel(SOLDIERTYPE *pSoldier);
 void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier);
 void StartNPCAI(SOLDIERTYPE &);
 void TempHurt(SOLDIERTYPE *pVictim, SOLDIERTYPE *pAttacker);
-int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno);
+int TryToResumeMovement(SOLDIERTYPE *pSoldier, int16_t sGridno);
 
-BOOLEAN ValidCreatureTurn(SOLDIERTYPE *pCreature, INT8 bNewDirection);
+BOOLEAN ValidCreatureTurn(SOLDIERTYPE *pCreature, int8_t bNewDirection);
 
 bool WearGasMaskIfAvailable(SOLDIERTYPE *);
-INT16 WhatIKnowThatPublicDont(SOLDIERTYPE *pSoldier, UINT8 ubInSightOnly);
+int16_t WhatIKnowThatPublicDont(SOLDIERTYPE *pSoldier, uint8_t ubInSightOnly);
 
 #endif

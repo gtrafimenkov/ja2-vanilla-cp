@@ -41,28 +41,28 @@ BOOLEAN fShowTownInfo = FALSE;
 PopUpBox *ghTownMineBox;
 SGPPoint TownMinePosition = {300, 150};
 
-INT8 bCurrentTownMineSectorX = 0;
-INT8 bCurrentTownMineSectorY = 0;
-INT8 bCurrentTownMineSectorZ = 0;
+int8_t bCurrentTownMineSectorX = 0;
+int8_t bCurrentTownMineSectorY = 0;
+int8_t bCurrentTownMineSectorZ = 0;
 
 // inventory button
 static BUTTON_PICS *guiMapButtonInventoryImage[2];
 static GUIButtonRef guiMapButtonInventory[2];
 
-static UINT16 sTotalButtonWidth = 0;
+static uint16_t sTotalButtonWidth = 0;
 
 // callback to turn on sector invneotry list
-static void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-static void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason);
+static void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, int32_t reason);
+static void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, int32_t reason);
 
-void DisplayTownInfo(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+void DisplayTownInfo(int16_t sMapX, int16_t sMapY, int8_t bMapZ) {
   // will display town info for a particular town
 
   // set current sector
   if ((bCurrentTownMineSectorX != sMapX) || (bCurrentTownMineSectorY != sMapY) ||
       (bCurrentTownMineSectorZ != bMapZ)) {
-    bCurrentTownMineSectorX = (INT8)sMapX;
-    bCurrentTownMineSectorY = (INT8)sMapY;
+    bCurrentTownMineSectorX = (int8_t)sMapX;
+    bCurrentTownMineSectorY = (int8_t)sMapY;
     bCurrentTownMineSectorZ = bMapZ;
   }
 
@@ -75,7 +75,7 @@ static void AddInventoryButtonForMapPopUpBox(const PopUpBox *);
 static void AddItemsInSectorToBox(PopUpBox *);
 static void AddSectorToBox(PopUpBox *);
 static void AddTextToBlankSectorBox(PopUpBox *);
-static void AddTextToMineBox(PopUpBox *, INT8 mine);
+static void AddTextToMineBox(PopUpBox *, int8_t mine);
 static void AddTextToTownBox(PopUpBox *);
 static void MinWidthOfTownMineInfoBox();
 static void PositionTownMineInfoBox(PopUpBox *);
@@ -90,17 +90,17 @@ void CreateDestroyTownInfoBox() {
 
     // decide what kind of text to add to display
     if (bCurrentTownMineSectorZ == 0) {
-      UINT8 const sector = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
+      uint8_t const sector = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
       // only show the mine info when mines button is selected, otherwise we
       // need to see the sector's regular town info
       if (fShowMineFlag) {
-        INT8 const mine = GetMineIndexForSector(sector);
+        int8_t const mine = GetMineIndexForSector(sector);
         if (mine == -1) goto no_mine;
         AddTextToMineBox(box, mine);
       } else {
       no_mine:
         // do we add text for the town box?
-        INT8 const bTownId = GetTownIdForSector(sector);
+        int8_t const bTownId = GetTownIdForSector(sector);
         if (bTownId != BLANK_SECTOR) {
           // add text for town box
           AddTextToTownBox(box);
@@ -157,10 +157,10 @@ void CreateDestroyTownInfoBox() {
 // adds text to town info box
 static void AddTextToTownBox(PopUpBox *const box) {
   wchar_t wString[64];
-  INT16 sMineSector = 0;
+  int16_t sMineSector = 0;
 
-  UINT8 const sector = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
-  UINT8 const ubTownId = GetTownIdForSector(sector);
+  uint8_t const sector = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
+  uint8_t const ubTownId = GetTownIdForSector(sector);
   Assert((ubTownId >= FIRST_TOWN) && (ubTownId < NUM_TOWNS));
 
   const wchar_t *title;
@@ -238,15 +238,15 @@ static void AddTextToTownBox(PopUpBox *const box) {
     // Associated Mine: Sector
     swprintf(wString, lengthof(wString), L"%ls:", pwTownInfoStrings[2]);
     AddMonoString(box, wString);
-    GetShortSectorString((INT16)(sMineSector % MAP_WORLD_X), (INT16)(sMineSector / MAP_WORLD_X),
+    GetShortSectorString((int16_t)(sMineSector % MAP_WORLD_X), (int16_t)(sMineSector / MAP_WORLD_X),
                          wString, lengthof(wString));
     AddSecondColumnMonoString(box, wString);
   }
 }
 
 // adds text to mine info box
-static void AddTextToMineBox(PopUpBox *const box, INT8 const mine) {
-  UINT8 const town = GetTownAssociatedWithMine(mine);
+static void AddTextToMineBox(PopUpBox *const box, int8_t const mine) {
+  uint8_t const town = GetTownAssociatedWithMine(mine);
   MINE_STATUS_TYPE const &status = gMineStatus[mine];
   wchar_t buf[64];
 
@@ -273,14 +273,14 @@ static void AddTextToMineBox(PopUpBox *const box, INT8 const mine) {
     // Current production
     swprintf(buf, lengthof(buf), L"%ls:", pwMineStrings[3]);
     AddMonoString(box, buf);
-    UINT32 const predicted_income = PredictDailyIncomeFromAMine(mine);
+    uint32_t const predicted_income = PredictDailyIncomeFromAMine(mine);
     SPrintMoney(buf, predicted_income);
     AddSecondColumnMonoString(box, buf);
 
     // Potential production
     swprintf(buf, lengthof(buf), L"%ls:", pwMineStrings[4]);
     AddMonoString(box, buf);
-    UINT32 const max_removal = GetMaxDailyRemovalFromMine(mine);
+    uint32_t const max_removal = GetMaxDailyRemovalFromMine(mine);
     SPrintMoney(buf, max_removal);
     AddSecondColumnMonoString(box, buf);
 
@@ -317,7 +317,7 @@ static void AddTextToMineBox(PopUpBox *const box, INT8 const mine) {
 
 // add text to non-town/non-mine the other boxes
 static void AddTextToBlankSectorBox(PopUpBox *const box) {
-  UINT16 usSectorValue = 0;
+  uint16_t usSectorValue = 0;
 
   // get the sector value
   usSectorValue = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
@@ -374,8 +374,8 @@ static void AddSectorToBox(PopUpBox *const box) {
 static void AddCommonInfoToBox(PopUpBox *const box) {
   wchar_t wString[64];
   BOOLEAN fUnknownSAMSite = FALSE;
-  UINT8 ubMilitiaTotal = 0;
-  UINT8 ubNumEnemies;
+  uint8_t ubMilitiaTotal = 0;
+  uint8_t ubNumEnemies;
 
   switch (SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
     case SEC_D2:  // Chitzena SAM
@@ -486,25 +486,26 @@ static void AddItemsInSectorToBox(PopUpBox *const box) {
 // position town/mine info box on the screen
 static void PositionTownMineInfoBox(PopUpBox *const box) {
   // position the box based on x and y of the selected sector
-  INT16 sX = 0;
-  INT16 sY = 0;
+  int16_t sX = 0;
+  int16_t sY = 0;
   GetScreenXYFromMapXY(bCurrentTownMineSectorX, bCurrentTownMineSectorY, &sX, &sY);
   SGPBox const &area = GetBoxArea(box);
 
   // now position box - the x axis
-  INT16 x = sX;
+  int16_t x = sX;
   if (x < MapScreenRect.iLeft) x = MapScreenRect.iLeft + 5;
   if (x + area.w > MapScreenRect.iRight) x = MapScreenRect.iRight - area.w - 5;
 
   // position - the y axis
-  INT16 y = sY;
+  int16_t y = sY;
   if (y < MapScreenRect.iTop) y = MapScreenRect.iTop + 5;
   if (y + area.h > MapScreenRect.iBottom) y = MapScreenRect.iBottom - area.h - 8;
 
   SetBoxXY(box, x, y);
 }
 
-static void MakeButton(UINT idx, const wchar_t *text, INT16 x, INT16 y, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const wchar_t *text, int16_t x, int16_t y,
+                       GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(INTERFACEDIR "/mapinvbtns.sti", idx, idx + 2);
   guiMapButtonInventoryImage[idx] = img;
   GUIButtonRef const btn =
@@ -519,12 +520,12 @@ static void AddInventoryButtonForMapPopUpBox(const PopUpBox *const box) {
 
   // Calculate smily face positions...
   ETRLEObject const &pTrav = uiObject->SubregionProperties(0);
-  INT16 const sWidthA = pTrav.usWidth;
+  int16_t const sWidthA = pTrav.usWidth;
 
   SGPBox const &area = GetBoxArea(box);
-  INT16 const dx = (area.w - sTotalButtonWidth) / 3;
-  INT16 x = area.x + dx;
-  INT16 const y = area.y + area.h - (BOX_BUTTON_HEIGHT + 5);
+  int16_t const dx = (area.w - sTotalButtonWidth) / 3;
+  int16_t x = area.x + dx;
+  int16_t const y = area.y + area.h - (BOX_BUTTON_HEIGHT + 5);
   MakeButton(0, pMapPopUpInventoryText[0], x, y, MapTownMineInventoryButtonCallBack);
 
   x += sWidthA + dx;
@@ -548,7 +549,7 @@ static void RemoveInventoryButtonForMapPopUpBox() {
   UnloadButtonImage(guiMapButtonInventoryImage[1]);
 }
 
-static void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fShowMapInventoryPool = TRUE;
     fMapPanelDirty = TRUE;
@@ -565,7 +566,7 @@ static void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+static void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fMapPanelDirty = TRUE;
     fMapScreenBottomDirty = TRUE;
@@ -578,7 +579,7 @@ static void MinWidthOfTownMineInfoBox() {
   AutoSGPVObject uiObject(AddVideoObjectFromFile(INTERFACEDIR "/mapinvbtns.sti"));
 
   // Calculate smily face positions...
-  INT16 const sWidthA = uiObject->SubregionProperties(0).usWidth;
-  INT16 const sWidthB = uiObject->SubregionProperties(1).usWidth;
+  int16_t const sWidthA = uiObject->SubregionProperties(0).usWidth;
+  int16_t const sWidthB = uiObject->SubregionProperties(1).usWidth;
   sTotalButtonWidth = sWidthA + sWidthB;
 }

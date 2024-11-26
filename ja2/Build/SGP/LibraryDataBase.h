@@ -20,27 +20,27 @@
 
 struct FileHeaderStruct {
   char *pFileName;
-  UINT32 uiFileLength;
-  UINT32 uiFileOffset;
+  uint32_t uiFileLength;
+  uint32_t uiFileOffset;
 };
 
 struct LibraryHeaderStruct {
   char *sLibraryPath;
   FILE *hLibraryHandle;
-  UINT16 usNumberOfEntries;
-  INT32 iNumFilesOpen;
+  uint16_t usNumberOfEntries;
+  int32_t iNumFilesOpen;
   FileHeaderStruct *pFileHeader;
 
   //
   //	Temp:	Total memory used for each library ( all memory allocated
   //
 #ifdef JA2TESTVERSION
-  UINT32 uiTotalMemoryAllocatedForLibrary;
+  uint32_t uiTotalMemoryAllocatedForLibrary;
 #endif
 };
 
 struct LibraryFile {
-  UINT32 uiFilePosInFile;  // current position in the file
+  uint32_t uiFilePosInFile;  // current position in the file
   LibraryHeaderStruct *lib;
   const FileHeaderStruct *pFileHeader;
 };
@@ -52,8 +52,8 @@ bool CheckIfFileExistInLibrary(char const *filename);
 BOOLEAN OpenFileFromLibrary(const char *filename, LibraryFile *);
 /* Close an individual file that is contained in the library */
 void CloseLibraryFile(LibraryFile *);
-BOOLEAN LoadDataFromLibrary(LibraryFile *, void *pData, UINT32 uiBytesToRead);
-BOOLEAN LibraryFileSeek(LibraryFile *, INT32 distance, FileSeekMode);
+BOOLEAN LoadDataFromLibrary(LibraryFile *, void *pData, uint32_t uiBytesToRead);
+BOOLEAN LibraryFileSeek(LibraryFile *, int32_t distance, FileSeekMode);
 
 #if 0
 BOOLEAN GetLibraryFileTime(LibraryFile const*, SGP_FILETIME* pLastWriteTime);

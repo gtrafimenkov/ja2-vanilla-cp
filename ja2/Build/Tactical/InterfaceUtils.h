@@ -9,13 +9,13 @@
 #define DRAW_ITEM_STATUS_ATTACHMENT3 202
 #define DRAW_ITEM_STATUS_ATTACHMENT4 203
 
-void DrawSoldierUIBars(SOLDIERTYPE const &, INT16 sXPos, INT16 sYPos, BOOLEAN fErase,
+void DrawSoldierUIBars(SOLDIERTYPE const &, int16_t sXPos, int16_t sYPos, BOOLEAN fErase,
                        SGPVSurface *buffer);
 
-void DrawItemUIBarEx(OBJECTTYPE const &, UINT8 ubStatus, INT16 sXPos, INT16 sYPos, INT16 sHeight,
-                     INT16 sColor1, INT16 sColor2, SGPVSurface *buffer);
+void DrawItemUIBarEx(OBJECTTYPE const &, uint8_t ubStatus, int16_t sXPos, int16_t sYPos,
+                     int16_t sHeight, int16_t sColor1, int16_t sColor2, SGPVSurface *buffer);
 
-void RenderSoldierFace(SOLDIERTYPE const &, INT16 sFaceX, INT16 sFaceY);
+void RenderSoldierFace(SOLDIERTYPE const &, int16_t sFaceX, int16_t sFaceY);
 
 // load portraits for cars
 void LoadCarPortraitValues();

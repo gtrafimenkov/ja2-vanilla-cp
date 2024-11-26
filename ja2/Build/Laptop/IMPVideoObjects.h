@@ -11,21 +11,21 @@ void RemoveProfileBackGround();
 void LoadProfileBackGround();
 
 // imp symbol
-void RenderIMPSymbol(INT16 sX, INT16 sY);
+void RenderIMPSymbol(int16_t sX, int16_t sY);
 void DeleteIMPSymbol();
 void LoadIMPSymbol();
 
 void LoadBeginIndent();
 void DeleteBeginIndent();
-void RenderBeginIndent(INT16 sX, INT16 sY);
+void RenderBeginIndent(int16_t sX, int16_t sY);
 
 void LoadActivationIndent();
 void DeleteActivationIndent();
-void RenderActivationIndent(INT16 sX, INT16 sY);
+void RenderActivationIndent(int16_t sX, int16_t sY);
 
 void LoadFrontPageIndent();
 void DeleteFrontPageIndent();
-void RenderFrontPageIndent(INT16 sX, INT16 sY);
+void RenderFrontPageIndent(int16_t sX, int16_t sY);
 
 void LoadAnalyse();
 void DeleteAnalyse();
@@ -35,92 +35,92 @@ void DeleteAttributeGraph();
 
 void LoadNameIndent();
 void DeleteNameIndent();
-void RenderNameIndent(INT16 sX, INT16 sY);
+void RenderNameIndent(int16_t sX, int16_t sY);
 
 void LoadNickNameIndent();
 void DeleteNickNameIndent();
-void RenderNickNameIndent(INT16 sX, INT16 sY);
+void RenderNickNameIndent(int16_t sX, int16_t sY);
 
 void LoadGenderIndent();
 void DeleteGenderIndent();
-void RenderGenderIndent(INT16 sX, INT16 sY);
+void RenderGenderIndent(int16_t sX, int16_t sY);
 
 void LoadSmallSilhouette();
 void DeleteSmallSilhouette();
 
 void LoadLargeSilhouette();
 void DeleteLargeSilhouette();
-void RenderLargeSilhouette(INT16 sX, INT16 sY);
+void RenderLargeSilhouette(int16_t sX, int16_t sY);
 
 void LoadAttributeFrame();
 void DeleteAttributeFrame();
-void RenderAttributeFrame(INT16 sX, INT16 sY);
+void RenderAttributeFrame(int16_t sX, int16_t sY);
 
 void LoadSliderBar();
 void DeleteSliderBar();
-void RenderSliderBar(INT16 sX, INT16 sY);
+void RenderSliderBar(int16_t sX, int16_t sY);
 
 void LoadButton2Image();
 void DeleteButton2Image();
-void RenderButton2Image(INT16 sX, INT16 sY);
+void RenderButton2Image(int16_t sX, int16_t sY);
 
 void LoadButton4Image();
 void DeleteButton4Image();
-void RenderButton4Image(INT16 sX, INT16 sY);
+void RenderButton4Image(int16_t sX, int16_t sY);
 
 void LoadPortraitFrame();
 void DeletePortraitFrame();
-void RenderPortraitFrame(INT16 sX, INT16 sY);
+void RenderPortraitFrame(int16_t sX, int16_t sY);
 
 void LoadMainIndentFrame();
 void DeleteMainIndentFrame();
-void RenderMainIndentFrame(INT16 sX, INT16 sY);
+void RenderMainIndentFrame(int16_t sX, int16_t sY);
 
 void LoadQtnLongIndentFrame();
 void DeleteQtnLongIndentFrame();
-void RenderQtnLongIndentFrame(INT16 sX, INT16 sY);
+void RenderQtnLongIndentFrame(int16_t sX, int16_t sY);
 
 void LoadQtnShortIndentFrame();
 void DeleteQtnShortIndentFrame();
-void RenderQtnShortIndentFrame(INT16 sX, INT16 sY);
+void RenderQtnShortIndentFrame(int16_t sX, int16_t sY);
 
 void LoadQtnLongIndentHighFrame();
 void DeleteQtnLongIndentHighFrame();
-void RenderQtnLongIndentHighFrame(INT16 sX, INT16 sY);
+void RenderQtnLongIndentHighFrame(int16_t sX, int16_t sY);
 
 void LoadQtnShortIndentHighFrame();
 void DeleteQtnShortIndentHighFrame();
-void RenderQtnShortIndentHighFrame(INT16 sX, INT16 sY);
+void RenderQtnShortIndentHighFrame(int16_t sX, int16_t sY);
 
 void LoadQtnShort2IndentFrame();
 void DeleteQtnShort2IndentFrame();
-void RenderQtnShort2IndentFrame(INT16 sX, INT16 sY);
+void RenderQtnShort2IndentFrame(int16_t sX, int16_t sY);
 
 void LoadQtnShort2IndentHighFrame();
 void DeleteQtnShort2IndentHighFrame();
-void RenderQtnShort2IndentHighFrame(INT16 sX, INT16 sY);
+void RenderQtnShort2IndentHighFrame(int16_t sX, int16_t sY);
 
 void LoadQtnIndentFrame();
 void DeleteQtnIndentFrame();
-void RenderQtnIndentFrame(INT16 sX, INT16 sY);
+void RenderQtnIndentFrame(int16_t sX, int16_t sY);
 
 void LoadAttrib1IndentFrame();
 void DeleteAttrib1IndentFrame();
-void RenderAttrib1IndentFrame(INT16 sX, INT16 sY);
+void RenderAttrib1IndentFrame(int16_t sX, int16_t sY);
 
 void LoadAttrib2IndentFrame();
 void DeleteAttrib2IndentFrame();
-void RenderAttrib2IndentFrame(INT16 sX, INT16 sY);
+void RenderAttrib2IndentFrame(int16_t sX, int16_t sY);
 
 void LoadAvgMercIndentFrame();
 void DeleteAvgMercIndentFrame();
-void RenderAvgMercIndentFrame(INT16 sX, INT16 sY);
+void RenderAvgMercIndentFrame(int16_t sX, int16_t sY);
 
 void LoadAboutUsIndentFrame();
 void DeleteAboutUsIndentFrame();
-void RenderAboutUsIndentFrame(INT16 sX, INT16 sY);
+void RenderAboutUsIndentFrame(int16_t sX, int16_t sY);
 
-void RenderAttributeFrameForIndex(INT16 sX, INT16 sY, INT32 iIndex);
+void RenderAttributeFrameForIndex(int16_t sX, int16_t sY, int32_t iIndex);
 
 // graphical handles
 

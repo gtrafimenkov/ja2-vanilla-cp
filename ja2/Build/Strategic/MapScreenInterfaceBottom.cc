@@ -111,9 +111,9 @@ static BOOLEAN gfOneFramePauseOnExit = FALSE;
 // exit states
 static ExitToWhere gbExitingMapScreenToWhere = MAP_EXIT_TO_INVALID;
 
-static UINT8 gubFirstMapscreenMessageIndex = 0;
+static uint8_t gubFirstMapscreenMessageIndex = 0;
 
-UINT32 guiCompressionStringBaseTime = 0;
+uint32_t guiCompressionStringBaseTime = 0;
 
 // graphics
 static SGPVObject *guiMAPBOTTOMPANEL;
@@ -130,15 +130,15 @@ static MOUSE_REGION gMapPauseRegion;
 
 static MOUSE_REGION gTimeCompressionMask[3];
 
-static void BtnLaptopCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnTacticalCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnOptionsFromMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnLaptopCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnTacticalCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnOptionsFromMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void LoadMessageSliderBar();
 
@@ -196,7 +196,7 @@ static void EnableDisableMessageScrollButtonsAndRegions();
 
 void RenderMapScreenInterfaceBottom() {
   // will render the map screen bottom interface
-  CHAR8 bFilename[32];
+  char bFilename[32];
 
   // render whole panel
   if (fMapScreenBottomDirty) {
@@ -250,8 +250,9 @@ void RenderMapScreenInterfaceBottom() {
   fMapBottomDirtied = FALSE;
 }
 
-static GUIButtonRef MakeExitButton(const INT32 off, const INT32 on, const INT16 x, const INT16 y,
-                                   const GUI_CALLBACK click, const wchar_t *const help) {
+static GUIButtonRef MakeExitButton(const int32_t off, const int32_t on, const int16_t x,
+                                   const int16_t y, const GUI_CALLBACK click,
+                                   const wchar_t *const help) {
   GUIButtonRef const btn = QuickCreateButtonImg(INTERFACEDIR "/map_border_buttons.sti", off, on, x,
                                                 y, MSYS_PRIORITY_HIGHEST - 1, click);
   btn->SetFastHelpText(help);
@@ -259,8 +260,8 @@ static GUIButtonRef MakeExitButton(const INT32 off, const INT32 on, const INT16 
   return btn;
 }
 
-static GUIButtonRef MakeArrowButton(const INT32 grayed, const INT32 off, const INT32 on,
-                                    const INT16 x, const INT16 y, const GUI_CALLBACK click,
+static GUIButtonRef MakeArrowButton(const int32_t grayed, const int32_t off, const int32_t on,
+                                    const int16_t x, const int16_t y, const GUI_CALLBACK click,
                                     const wchar_t *const help) {
   GUIButtonRef const btn =
       QuickCreateButtonImg(INTERFACEDIR "/map_screen_bottom_arrows.sti", grayed, off, -1, on, -1, x,
@@ -298,7 +299,7 @@ static void DestroyButtonsForMapScreenInterfaceBottom() {
   fMapScreenBottomDirty = TRUE;
 }
 
-static void BtnLaptopCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnLaptopCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // redraw region
     if (btn->Area.uiFlags & MSYS_HAS_BACKRECT) fMapScreenBottomDirty = TRUE;
@@ -307,7 +308,7 @@ static void BtnLaptopCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnTacticalCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnTacticalCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // redraw region
     if (btn->Area.uiFlags & MSYS_HAS_BACKRECT) fMapScreenBottomDirty = TRUE;
@@ -316,7 +317,7 @@ static void BtnTacticalCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnOptionsFromMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOptionsFromMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // redraw region
     if (btn->uiFlags & MSYS_HAS_BACKRECT) fMapScreenBottomDirty = TRUE;
@@ -335,13 +336,13 @@ static void DrawNameOfLoadedSector() {
   GetSectorIDString(sSelMapX, sSelMapY, iCurrentMapSectorZ, buf, lengthof(buf), TRUE);
   ReduceStringLength(buf, lengthof(buf), 80, font);
 
-  INT16 x;
-  INT16 y;
+  int16_t x;
+  int16_t y;
   FindFontCenterCoordinates(548, 426, 80, 16, buf, font, &x, &y);
   MPrint(x, y, buf);
 }
 
-static void CompressModeClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void CompressModeClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & (MSYS_CALLBACK_REASON_RBUTTON_UP | MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if (CommonTimeCompressionChecks()) return;
 
@@ -349,7 +350,7 @@ static void CompressModeClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-static void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (CommonTimeCompressionChecks()) return;
     // redraw region
@@ -362,7 +363,7 @@ static void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, INT32 reason) 
   }
 }
 
-static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (CommonTimeCompressionChecks()) return;
     // redraw region
@@ -375,8 +376,8 @@ static void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, INT32 reason) 
   }
 }
 
-static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
-  static INT32 iLastRepeatScrollTime = 0;
+static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
+  static int32_t iLastRepeatScrollTime = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // redraw region
@@ -407,8 +408,8 @@ static void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
-  static INT32 iLastRepeatScrollTime = 0;
+static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, int32_t reason) {
+  static int32_t iLastRepeatScrollTime = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // redraw region
@@ -440,7 +441,7 @@ static void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 static void EnableDisableMessageScrollButtonsAndRegions() {
-  UINT8 ubNumMessages;
+  uint8_t ubNumMessages;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -469,8 +470,8 @@ static void EnableDisableMessageScrollButtonsAndRegions() {
 }
 
 static void DisplayCompressMode() {
-  INT16 sX, sY;
-  static UINT8 usColor = FONT_LTGREEN;
+  int16_t sX, sY;
+  static uint8_t usColor = FONT_LTGREEN;
 
   // get compress speed
   const wchar_t *Time;  // XXX HACK000E
@@ -520,7 +521,7 @@ static void DeleteMessageSliderBar() {
   DeleteVideoObject(guiSliderBar);
 }
 
-static void MapScreenMessageBoxCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void MapScreenMessageBoxCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     MapScreenMsgScrollUp(3);
   } else if (iReason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -530,23 +531,23 @@ static void MapScreenMessageBoxCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
 
 static MOUSE_REGION MapMessageBoxRegion;
 
-static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateMapScreenBottomMessageScrollBarRegion() {
-  const INT8 prio = MSYS_PRIORITY_NORMAL;
+  const int8_t prio = MSYS_PRIORITY_NORMAL;
   {
-    const UINT16 x = MESSAGE_SCROLL_AREA_START_X;
-    const UINT16 y = MESSAGE_SCROLL_AREA_START_Y;
-    const UINT16 w = MESSAGE_SCROLL_AREA_WIDTH;
-    const UINT16 h = MESSAGE_SCROLL_AREA_HEIGHT;
+    const uint16_t x = MESSAGE_SCROLL_AREA_START_X;
+    const uint16_t y = MESSAGE_SCROLL_AREA_START_Y;
+    const uint16_t w = MESSAGE_SCROLL_AREA_WIDTH;
+    const uint16_t h = MESSAGE_SCROLL_AREA_HEIGHT;
     MSYS_DefineRegion(&gMapMessageScrollBarRegion, x, y, x + w, y + h, prio, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, MapScreenMessageScrollBarCallBack);
   }
   {
-    const UINT16 x = MESSAGE_BOX_X;
-    const UINT16 y = MESSAGE_BOX_Y;
-    const UINT16 w = MESSAGE_BOX_W;
-    const UINT16 h = MESSAGE_BOX_H;
+    const uint16_t x = MESSAGE_BOX_X;
+    const uint16_t y = MESSAGE_BOX_Y;
+    const uint16_t w = MESSAGE_BOX_W;
+    const uint16_t h = MESSAGE_BOX_H;
     MSYS_DefineRegion(&MapMessageBoxRegion, x, y, x + w, y + h, prio, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, MapScreenMessageBoxCallBack);
   }
@@ -557,10 +558,10 @@ static void DeleteMapScreenBottomMessageScrollRegion() {
   MSYS_RemoveRegion(&MapMessageBoxRegion);
 }
 
-static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
-  UINT8 ubDesiredSliderOffset;
-  UINT8 ubDesiredMessageIndex;
-  UINT8 ubNumMessages;
+static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
+  uint8_t ubDesiredSliderOffset;
+  uint8_t ubDesiredMessageIndex;
+  uint8_t ubNumMessages;
 
   if (iReason & (MSYS_CALLBACK_REASON_LBUTTON_DWN | MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
     // how many messages are there?
@@ -569,7 +570,7 @@ static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReas
     // region is supposed to be disabled if there aren't enough messages to
     // scroll.  Formulas assume this
     if (ubNumMessages > MAX_MESSAGES_ON_MAP_BOTTOM) {
-      const UINT8 ubMouseYOffset = pRegion->RelativeYPos;
+      const uint8_t ubMouseYOffset = pRegion->RelativeYPos;
 
       // if clicking in the top 5 pixels of the slider bar
       if (ubMouseYOffset < (SLIDER_HEIGHT / 2)) {
@@ -608,8 +609,8 @@ static void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReas
 
 static void DisplayScrollBarSlider() {
   // will display the scroll bar icon
-  UINT8 ubNumMessages;
-  UINT8 ubSliderOffset;
+  uint8_t ubNumMessages;
+  uint8_t ubSliderOffset;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -769,7 +770,7 @@ BOOLEAN AllowedToTimeCompress() {
 
 static void DisplayCurrentBalanceTitleForMapBottom() {
   const wchar_t *sString;
-  INT16 sFontX, sFontY;
+  int16_t sFontX, sFontY;
 
   SetFontDestBuffer(guiSAVEBUFFER);
   SetFontAttributes(COMPFONT, MAP_BOTTOM_FONT_COLOR);
@@ -788,7 +789,7 @@ static void DisplayCurrentBalanceTitleForMapBottom() {
 static void DisplayCurrentBalanceForMapBottom() {
   // show the current balance for the player on the map panel bottom
   wchar_t sString[128];
-  INT16 sFontX, sFontY;
+  int16_t sFontX, sFontY;
 
   SetFontDestBuffer(FRAME_BUFFER);
   SetFontAttributes(COMPFONT, 183);
@@ -797,7 +798,7 @@ static void DisplayCurrentBalanceForMapBottom() {
   MPrint(sFontX, sFontY, sString);
 }
 
-static void CompressMaskClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void CompressMaskClickCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 void CreateDestroyMouseRegionMasksForTimeCompressionButtons() {
   static bool created = false;
@@ -822,17 +823,17 @@ void CreateDestroyMouseRegionMasksForTimeCompressionButtons() {
   }
 }
 
-static void CompressMaskClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void CompressMaskClickCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     TellPlayerWhyHeCantCompressTime();
   }
 }
 
 static void DisplayProjectedDailyMineIncome() {
-  INT32 iRate = 0;
-  static INT32 iOldRate = -1;
+  int32_t iRate = 0;
+  static int32_t iOldRate = -1;
   wchar_t sString[128];
-  INT16 sFontX, sFontY;
+  int16_t sFontX, sFontY;
 
   // grab the rate from the financial system
   iRate = GetProjectedTotalDailyIncome();
@@ -964,12 +965,12 @@ BOOLEAN AllowedToExitFromMapscreenTo(ExitToWhere const bExitToWhere) {
     if (((gTacticalStatus.uiFlags & INCOMBAT) ||
          (gTacticalStatus.fEnemyInSector) /*|| InAirRaid( )*/) &&
         ((sSelMapX != gWorldSectorX) || (sSelMapY != gWorldSectorY) ||
-         ((UINT8)iCurrentMapSectorZ) != gbWorldSectorZ)) {
+         ((uint8_t)iCurrentMapSectorZ) != gbWorldSectorZ)) {
       return (FALSE);
     }
 
     // must have some mercs there
-    if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ)) {
+    if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (uint8_t)iCurrentMapSectorZ)) {
       return (FALSE);
     }
   }
@@ -1007,7 +1008,7 @@ void HandleExitsFromMapScreen() {
         break;
 
       case MAP_EXIT_TO_TACTICAL:
-        SetCurrentWorldSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ);
+        SetCurrentWorldSector(sSelMapX, sSelMapY, (uint8_t)iCurrentMapSectorZ);
         break;
 
       case MAP_EXIT_TO_OPTIONS:
@@ -1039,8 +1040,8 @@ void HandleExitsFromMapScreen() {
   gbExitingMapScreenToWhere = MAP_EXIT_TO_INVALID;
 }
 
-void MapScreenMsgScrollDown(UINT8 ubLinesDown) {
-  UINT8 ubNumMessages;
+void MapScreenMsgScrollDown(uint8_t ubLinesDown) {
+  uint8_t ubNumMessages;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -1051,24 +1052,24 @@ void MapScreenMsgScrollDown(UINT8 ubLinesDown) {
   }
 
   if (ubLinesDown > 0) {
-    ChangeCurrentMapscreenMessageIndex((UINT8)(gubFirstMapscreenMessageIndex + ubLinesDown));
+    ChangeCurrentMapscreenMessageIndex((uint8_t)(gubFirstMapscreenMessageIndex + ubLinesDown));
   }
 }
 
-void MapScreenMsgScrollUp(UINT8 ubLinesUp) {
+void MapScreenMsgScrollUp(uint8_t ubLinesUp) {
   // check if we can go that far, only go as far as we can
   if (gubFirstMapscreenMessageIndex < ubLinesUp) {
     ubLinesUp = gubFirstMapscreenMessageIndex;
   }
 
   if (ubLinesUp > 0) {
-    ChangeCurrentMapscreenMessageIndex((UINT8)(gubFirstMapscreenMessageIndex - ubLinesUp));
+    ChangeCurrentMapscreenMessageIndex((uint8_t)(gubFirstMapscreenMessageIndex - ubLinesUp));
   }
 }
 
 void MoveToEndOfMapScreenMessageList() {
-  UINT8 ubDesiredMessageIndex;
-  UINT8 ubNumMessages;
+  uint8_t ubDesiredMessageIndex;
+  uint8_t ubNumMessages;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -1077,7 +1078,7 @@ void MoveToEndOfMapScreenMessageList() {
   ChangeCurrentMapscreenMessageIndex(ubDesiredMessageIndex);
 }
 
-void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex) {
+void ChangeCurrentMapscreenMessageIndex(uint8_t ubNewMessageIndex) {
   Assert(ubNewMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM <=
          std::max(MAX_MESSAGES_ON_MAP_BOTTOM, GetRangeOfMapScreenMessages()));
 

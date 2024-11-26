@@ -19,17 +19,17 @@ enum {
 
 // struct for vehicles
 struct VEHICLETYPE {
-  PathSt *pMercPath;      // vehicle's stategic path list
-  UINT8 ubMovementGroup;  // the movement group this vehicle belongs to
-  UINT8 ubVehicleType;    // type of vehicle
-  INT16 sSectorX;         // X position on the Stategic Map
-  INT16 sSectorY;         // Y position on the Stategic Map
-  INT16 sSectorZ;
+  PathSt *pMercPath;        // vehicle's stategic path list
+  uint8_t ubMovementGroup;  // the movement group this vehicle belongs to
+  uint8_t ubVehicleType;    // type of vehicle
+  int16_t sSectorX;         // X position on the Stategic Map
+  int16_t sSectorY;         // Y position on the Stategic Map
+  int16_t sSectorZ;
   BOOLEAN fBetweenSectors;  // between sectors?
-  INT16 sGridNo;            // location in tactical
+  int16_t sGridNo;          // location in tactical
   SOLDIERTYPE *pPassengers[10];
   BOOLEAN fDestroyed;
-  INT32 iMovementSoundID;
+  int32_t iMovementSoundID;
   BOOLEAN fValid;
 };
 
@@ -45,9 +45,9 @@ struct VEHICLETYPE {
 extern VEHICLETYPE *pVehicleList;
 
 // number of vehicles on the list
-extern UINT8 ubNumberOfVehicles;
+extern uint8_t ubNumberOfVehicles;
 
-#define VEHICLE2ID(v) (UINT32)((&(v) - pVehicleList))
+#define VEHICLE2ID(v) (uint32_t)((&(v) - pVehicleList))
 
 #define BASE_FOR_EACH_VEHICLE(type, iter)                                                 \
   for (type *iter = pVehicleList, *const end__##iter = pVehicleList + ubNumberOfVehicles; \
@@ -61,7 +61,7 @@ extern UINT8 ubNumberOfVehicles;
 void SetVehicleValuesIntoSoldierType(SOLDIERTYPE *pVehicle);
 
 // add vehicle to list and return id value
-INT32 AddVehicleToList(INT16 sMapX, INT16 sMapY, INT16 sGridNo, UINT8 ubType);
+int32_t AddVehicleToList(int16_t sMapX, int16_t sMapY, int16_t sGridNo, uint8_t ubType);
 
 // remove this vehicle from the list
 void RemoveVehicleFromList(VEHICLETYPE &);
@@ -79,7 +79,7 @@ bool IsThisVehicleAccessibleToSoldier(SOLDIERTYPE const &, VEHICLETYPE const &);
 BOOLEAN MoveCharactersPathToVehicle(SOLDIERTYPE *pSoldier);
 
 // Return the vehicle, iff the vehicle ID is valid, NULL otherwise
-VEHICLETYPE &GetVehicle(INT32 vehicle_id);
+VEHICLETYPE &GetVehicle(int32_t vehicle_id);
 
 /* Given this grunt, find out if asscoiated vehicle has a mvt group, if so,
  * set this grunts mvt group to the vehicle.  For pathing purposes, will be
@@ -93,14 +93,15 @@ VEHICLETYPE &GetVehicleFromMvtGroup(GROUP const &);
 BOOLEAN KillAllInVehicle(VEHICLETYPE const &);
 
 // grab number of occupants in vehicles
-INT32 GetNumberInVehicle(VEHICLETYPE const &);
+int32_t GetNumberInVehicle(VEHICLETYPE const &);
 
 // grab # in vehicle skipping EPCs (who aren't allowed to drive :-)
-INT32 GetNumberOfNonEPCsInVehicle(INT32 iId);
+int32_t GetNumberOfNonEPCsInVehicle(int32_t iId);
 
 BOOLEAN ExitVehicle(SOLDIERTYPE *pSoldier);
 
-void VehicleTakeDamage(UINT8 ubID, UINT8 ubReason, INT16 sDamage, INT16 sGridNo, SOLDIERTYPE *att);
+void VehicleTakeDamage(uint8_t ubID, uint8_t ubReason, int16_t sDamage, int16_t sGridNo,
+                       SOLDIERTYPE *att);
 
 // the soldiertype containing this tactical incarnation of this vehicle
 SOLDIERTYPE &GetSoldierStructureForVehicle(VEHICLETYPE const &);
@@ -109,20 +110,20 @@ SOLDIERTYPE &GetSoldierStructureForVehicle(VEHICLETYPE const &);
 bool DoesVehicleNeedAnyRepairs(VEHICLETYPE const &);
 
 // repair the vehicle
-INT8 RepairVehicle(VEHICLETYPE const &, INT8 bTotalPts, BOOLEAN *pfNothingToRepair);
+int8_t RepairVehicle(VEHICLETYPE const &, int8_t bTotalPts, BOOLEAN *pfNothingToRepair);
 
 // Save all the vehicle information to the saved game file
 void SaveVehicleInformationToSaveGameFile(HWFILE);
 
 // Load all the vehicle information From the saved game file
-void LoadVehicleInformationFromSavedGameFile(HWFILE, UINT32 uiSavedGameVersion);
+void LoadVehicleInformationFromSavedGameFile(HWFILE, uint32_t uiSavedGameVersion);
 
 // take soldier out of vehicle
 BOOLEAN TakeSoldierOutOfVehicle(SOLDIERTYPE *pSoldier);
 
 bool PutSoldierInVehicle(SOLDIERTYPE &, VEHICLETYPE &);
 
-void SetVehicleSectorValues(VEHICLETYPE &, UINT8 x, UINT8 y);
+void SetVehicleSectorValues(VEHICLETYPE &, uint8_t x, uint8_t y);
 
 void UpdateAllVehiclePassengersGridNo(SOLDIERTYPE *pSoldier);
 
@@ -130,9 +131,9 @@ void LoadVehicleMovementInfoFromSavedGameFile(HWFILE);
 void NewSaveVehicleMovementInfoToSavedGameFile(HWFILE);
 void NewLoadVehicleMovementInfoFromSavedGameFile(HWFILE);
 
-BOOLEAN OKUseVehicle(UINT8 ubProfile);
+BOOLEAN OKUseVehicle(uint8_t ubProfile);
 
-BOOLEAN IsRobotControllerInVehicle(INT32 iId);
+BOOLEAN IsRobotControllerInVehicle(int32_t iId);
 
 void AddVehicleFuelToSave();
 
@@ -140,7 +141,7 @@ bool SoldierMustDriveVehicle(SOLDIERTYPE const &, bool trying_to_travel);
 
 bool IsEnoughSpaceInVehicle(VEHICLETYPE const &);
 
-BOOLEAN IsSoldierInThisVehicleSquad(const SOLDIERTYPE *pSoldier, INT8 bSquadNumber);
+BOOLEAN IsSoldierInThisVehicleSquad(const SOLDIERTYPE *pSoldier, int8_t bSquadNumber);
 
 SOLDIERTYPE *PickRandomPassengerFromVehicle(SOLDIERTYPE *pSoldier);
 
@@ -150,9 +151,9 @@ void SetSoldierExitHelicopterInsertionData(SOLDIERTYPE *);
 
 void HandleVehicleMovementSound(const SOLDIERTYPE *, BOOLEAN fOn);
 
-UINT8 GetVehicleArmourType(UINT8 vehicle_id);
+uint8_t GetVehicleArmourType(uint8_t vehicle_id);
 
-UINT8 GetVehicleSeats(VEHICLETYPE const &);
+uint8_t GetVehicleSeats(VEHICLETYPE const &);
 
 void InitVehicles();
 

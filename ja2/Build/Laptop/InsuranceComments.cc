@@ -37,11 +37,11 @@ static SGPVObject *guiInsCmntBulletImage;
 // link to the varios pages
 static MOUSE_REGION gSelectedInsuranceCommentLinkRegion[3];
 
-static void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
+static void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 void EnterInsuranceComments() {
-  UINT8 i;
-  UINT16 usPosX;
+  uint8_t i;
+  uint16_t usPosX;
 
   InitInsuranceDefaults();
 
@@ -51,7 +51,7 @@ void EnterInsuranceComments() {
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
   for (i = 0; i < 3; i++) {
     MSYS_DefineRegion(&gSelectedInsuranceCommentLinkRegion[i], usPosX, INS_CMNT_LINK_Y - 1,
-                      (UINT16)(usPosX + INS_CMNT_LINK_WIDTH),
+                      (uint16_t)(usPosX + INS_CMNT_LINK_WIDTH),
                       INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, CURSOR_WWW,
                       MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
     MSYS_SetRegionUserData(&gSelectedInsuranceCommentLinkRegion[i], 0, i);
@@ -70,12 +70,12 @@ void ExitInsuranceComments() {
   MSYS_RemoveRegion(&*i);
 }
 
-static void DisplayComment(UINT8 ubCommentorsName, UINT8 ubComment, UINT16 usPosY);
+static void DisplayComment(uint8_t ubCommentorsName, uint8_t ubComment, uint16_t usPosY);
 
 void RenderInsuranceComments() {
   //  HVOBJECT hPixHandle;
   wchar_t sText[800];
-  UINT16 usPosX, usPosY;
+  uint16_t usPosX, usPosY;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -116,7 +116,7 @@ void RenderInsuranceComments() {
                        CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT,
-                                (UINT16)(usPosX + INS_CMNT_LINK_WIDTH),
+                                (uint16_t)(usPosX + INS_CMNT_LINK_WIDTH),
                                 INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
@@ -126,7 +126,7 @@ void RenderInsuranceComments() {
                        INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT,
-                                (UINT16)(usPosX + INS_CMNT_LINK_WIDTH),
+                                (uint16_t)(usPosX + INS_CMNT_LINK_WIDTH),
                                 INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
@@ -136,7 +136,7 @@ void RenderInsuranceComments() {
                        INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT,
-                                (UINT16)(usPosX + INS_CMNT_LINK_WIDTH),
+                                (uint16_t)(usPosX + INS_CMNT_LINK_WIDTH),
                                 INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -146,9 +146,9 @@ void RenderInsuranceComments() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+static void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    uint32_t uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -159,9 +159,9 @@ static void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT3
   }
 }
 
-static void DisplayComment(UINT8 ubCommentorsName, UINT8 ubComment, UINT16 usPosY) {
+static void DisplayComment(uint8_t ubCommentorsName, uint8_t ubComment, uint16_t usPosY) {
   wchar_t sText[800];
-  UINT16 sNumPixels = 0;
+  uint16_t sNumPixels = 0;
 
   BltVideoObject(FRAME_BUFFER, guiInsCmntBulletImage, 0, INS_CMNT_FIRST_BULLET_X, usPosY);
 
@@ -173,8 +173,8 @@ static void DisplayComment(UINT8 ubCommentorsName, UINT8 ubComment, UINT16 usPos
 
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(
-      INS_CMNT_FIRST_BULLET_X + INSURANCE_BULLET_TEXT_OFFSET_X, (UINT16)(usPosY + sNumPixels),
-      INS_CMNT_FIRST_BULLET_X + INS_CMNT_REDLINE_WIDTH, (UINT16)(usPosY + sNumPixels));
+      INS_CMNT_FIRST_BULLET_X + INSURANCE_BULLET_TEXT_OFFSET_X, (uint16_t)(usPosY + sNumPixels),
+      INS_CMNT_FIRST_BULLET_X + INS_CMNT_REDLINE_WIDTH, (uint16_t)(usPosY + sNumPixels));
 
   sNumPixels += 4;
 

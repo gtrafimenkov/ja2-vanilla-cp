@@ -31,11 +31,11 @@
 
 // the financial structure
 struct FinanceUnit {
-  UINT8 ubCode;        // the code index in the finance code table
-  UINT8 ubSecondCode;  // secondary code
-  UINT32 uiDate;       // time in the world in global time
-  INT32 iAmount;       // the amount of the transaction
-  INT32 iBalanceToDate;
+  uint8_t ubCode;        // the code index in the finance code table
+  uint8_t ubSecondCode;  // secondary code
+  uint32_t uiDate;       // time in the world in global time
+  int32_t iAmount;       // the amount of the transaction
+  int32_t iBalanceToDate;
   FinanceUnit *Next;  // next unit in the list
 };
 
@@ -105,13 +105,14 @@ enum {
 #define BTN_Y 53
 
 // sizeof one record
-#define RECORD_SIZE (sizeof(UINT32) + sizeof(INT32) + sizeof(INT32) + sizeof(UINT8) + sizeof(UINT8))
+#define RECORD_SIZE \
+  (sizeof(uint32_t) + sizeof(int32_t) + sizeof(int32_t) + sizeof(uint8_t) + sizeof(uint8_t))
 
 // the financial record list
 static FinanceUnit *pFinanceListHead = NULL;
 
 // current page displayed
-static INT32 iCurrentPage = 0;
+static int32_t iCurrentPage = 0;
 
 // video object id's
 static SGPVObject *guiTITLE;
@@ -124,7 +125,7 @@ static SGPVObject *guiLISTCOLUMNS;
 static BOOLEAN fInFinancialMode = FALSE;
 
 // the last page altogether
-static UINT32 guiLastPageInRecordsList = 0;
+static uint32_t guiLastPageInRecordsList = 0;
 
 // finance screen buttons
 static GUIButtonRef giFinanceButton[4];
@@ -132,8 +133,8 @@ static BUTTON_PICS *giFinanceButtonImage[4];
 static MOUSE_REGION g_scroll_region;
 
 // internal functions
-static void ProcessAndEnterAFinacialRecord(UINT8 ubCode, UINT32 uiDate, INT32 iAmount,
-                                           UINT8 ubSecondCode, INT32 iBalanceToDate);
+static void ProcessAndEnterAFinacialRecord(uint8_t ubCode, uint32_t uiDate, int32_t iAmount,
+                                           uint8_t ubSecondCode, int32_t iBalanceToDate);
 static void LoadFinances();
 static void RemoveFinances();
 static void ClearFinanceList();
@@ -144,13 +145,14 @@ static void GetBalanceFromDisk();
 static void WriteBalanceToDisk();
 static void AppendFinanceToEndOfFile();
 static void SetLastPageInRecords();
-static void LoadInRecords(UINT32 page);
+static void LoadInRecords(uint32_t page);
 
 static void SetFinanceButtonStates();
-static INT32 GetTodaysDebits();
-static INT32 GetYesterdaysDebits();
+static int32_t GetTodaysDebits();
+static int32_t GetYesterdaysDebits();
 
-void AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT32 iAmount) {
+void AddTransactionToPlayersBook(uint8_t ubCode, uint8_t ubSecondCode, uint32_t uiDate,
+                                 int32_t iAmount) {
   // adds transaction to player's book(Financial List)
   // outside of the financial system(the code in this .c file), this is the only
   // function you'll ever need
@@ -199,12 +201,12 @@ void AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate
   fMapScreenBottomDirty = TRUE;
 }
 
-INT32 GetCurrentBalance() {
+int32_t GetCurrentBalance() {
   // get balance to this minute
   return (LaptopSaveInfo.iCurrentBalance);
 }
 
-INT32 GetProjectedTotalDailyIncome() {
+int32_t GetProjectedTotalDailyIncome() {
   // return total  projected income, including what is earned today already
 
   // CJC: I DON'T THINK SO!
@@ -368,7 +370,7 @@ static void DrawAPageOfRecords() {
 
 static void DrawRecordsBackGround() {
   // proceudre will draw the background for the list of financial records
-  INT32 iCounter;
+  int32_t iCounter;
 
   // now the columns
   for (iCounter = 6; iCounter < 35; iCounter++) {
@@ -389,8 +391,8 @@ static void DrawRecordsColumnHeadersText() {
   // write the headers text for each column
   SetFontAttributes(FINANCE_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
-  INT16 usX;
-  INT16 usY;
+  int16_t usX;
+  int16_t usY;
 
   // the date header
   FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, pFinanceHeaders[0],
@@ -420,10 +422,10 @@ static void DrawRecordsColumnHeadersText() {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-static void DrawStringCentered(const INT32 x, const INT32 y, const INT32 w,
+static void DrawStringCentered(const int32_t x, const int32_t y, const int32_t w,
                                const wchar_t *const str) {
-  INT16 sx;
-  INT16 sy;
+  int16_t sx;
+  int16_t sy;
   FindFontCenterCoordinates(x, 0, w, 0, str, FINANCE_TEXT_FONT, &sx, &sy);
   MPrint(sx, y, str);
 }
@@ -437,8 +439,8 @@ static void DrawRecordsText() {
   SetFontShadow(NO_SHADOW);
 
   const FinanceUnit *fu = pFinanceListHead;
-  for (INT32 i = 0; i < NUM_RECORDS_PER_PAGE && fu != NULL; ++i, fu = fu->Next) {
-    const INT32 y = 12 + RECORD_Y + i * (GetFontHeight(FINANCE_TEXT_FONT) + 6);
+  for (int32_t i = 0; i < NUM_RECORDS_PER_PAGE && fu != NULL; ++i, fu = fu->Next) {
+    const int32_t y = 12 + RECORD_Y + i * (GetFontHeight(FINANCE_TEXT_FONT) + 6);
     wchar_t sString[512];
 
     SetFontForeground(FONT_BLACK);
@@ -460,7 +462,7 @@ static void DrawRecordsText() {
     }
 
     // the balance to this point
-    INT32 balance = fu->iBalanceToDate;
+    int32_t balance = fu->iBalanceToDate;
     if (balance >= 0) {
       SetFontForeground(FONT_BLACK);
     } else {
@@ -482,17 +484,17 @@ static void DrawFinanceTitleText() {
   MPrint(TITLE_X, TITLE_Y, pFinanceTitle);
 }
 
-static INT32 GetPreviousDaysIncome();
-static INT32 GetTodaysBalance();
-static INT32 GetTodaysDaysIncome();
-static INT32 GetTodaysOtherDeposits();
-static INT32 GetYesterdaysOtherDeposits();
-static void SPrintMoneyNoDollarOnZero(wchar_t *Str, INT32 Amount);
+static int32_t GetPreviousDaysIncome();
+static int32_t GetTodaysBalance();
+static int32_t GetTodaysDaysIncome();
+static int32_t GetTodaysOtherDeposits();
+static int32_t GetYesterdaysOtherDeposits();
+static void SPrintMoneyNoDollarOnZero(wchar_t *Str, int32_t Amount);
 
 static void DrawSummaryText() {
-  INT16 usX, usY;
+  int16_t usX, usY;
   wchar_t pString[100];
-  INT32 iBalance = 0;
+  int32_t iBalance = 0;
 
   SetFontAttributes(FINANCE_TEXT_FONT, FONT_BLACK, NO_SHADOW);
 
@@ -635,9 +637,9 @@ static void ClearFinanceList() {
   pFinanceListHead = NULL;
 }
 
-static void ProcessAndEnterAFinacialRecord(const UINT8 ubCode, const UINT32 uiDate,
-                                           const INT32 iAmount, const UINT8 ubSecondCode,
-                                           const INT32 iBalanceToDate) {
+static void ProcessAndEnterAFinacialRecord(const uint8_t ubCode, const uint32_t uiDate,
+                                           const int32_t iAmount, const uint8_t ubSecondCode,
+                                           const int32_t iBalanceToDate) {
   FinanceUnit *const fu = MALLOC(FinanceUnit);
   fu->Next = NULL;
   fu->ubCode = ubCode;
@@ -655,7 +657,7 @@ static void ProcessAndEnterAFinacialRecord(const UINT8 ubCode, const UINT32 uiDa
 static void LoadPreviousPage();
 static void LoadNextPage();
 
-static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
+static void ScrollRegionCallback(MOUSE_REGION *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_WHEEL_UP) {
     LoadPreviousPage();
   } else if (reason & MSYS_CALLBACK_REASON_WHEEL_DOWN) {
@@ -663,31 +665,31 @@ static void ScrollRegionCallback(MOUSE_REGION *const, INT32 const reason) {
   }
 }
 
-static void BtnFinanceDisplayPrevPageCallBack(GUI_BUTTON *const, INT32 const reason) {
+static void BtnFinanceDisplayPrevPageCallBack(GUI_BUTTON *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadPreviousPage();
   }
 }
 
-static void BtnFinanceDisplayNextPageCallBack(GUI_BUTTON *const, INT32 const reason) {
+static void BtnFinanceDisplayNextPageCallBack(GUI_BUTTON *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadNextPage();
   }
 }
 
-static void BtnFinanceFirstPageCallBack(GUI_BUTTON *const, INT32 const reason) {
+static void BtnFinanceFirstPageCallBack(GUI_BUTTON *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadInRecords(0);
   }
 }
 
-static void BtnFinanceLastPageCallBack(GUI_BUTTON *const, INT32 const reason) {
+static void BtnFinanceLastPageCallBack(GUI_BUTTON *const, int32_t const reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     LoadInRecords(guiLastPageInRecordsList + 1);
   }
 }
 
-static void MakeButton(size_t const idx, BUTTON_PICS *const img, INT16 const x,
+static void MakeButton(size_t const idx, BUTTON_PICS *const img, int16_t const x,
                        GUI_CALLBACK const callback) {
   giFinanceButtonImage[idx] = img;
   GUIButtonRef const btn = QuickCreateButton(img, x, BTN_Y, MSYS_PRIORITY_HIGHEST - 1, callback);
@@ -705,17 +707,17 @@ static void CreateFinanceButtons() {
   MakeButton(LAST_PAGE_BUTTON, UseLoadedButtonImage(img, 9, 10), LAST_PAGE_X,
              BtnFinanceLastPageCallBack);
 
-  UINT16 const x = TOP_X + 8;
-  UINT16 const y = TOP_Y + 53;
-  UINT16 const w = 482;
-  UINT16 const h = 354;
+  uint16_t const x = TOP_X + 8;
+  uint16_t const y = TOP_Y + 53;
+  uint16_t const w = 482;
+  uint16_t const h = 354;
   MSYS_DefineRegion(&g_scroll_region, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                     MSYS_NO_CALLBACK, ScrollRegionCallback);
 }
 
 static void DestroyFinanceButtons() {
   MSYS_RemoveRegion(&g_scroll_region);
-  for (UINT32 i = 0; i != 4; ++i) {
+  for (uint32_t i = 0; i != 4; ++i) {
     RemoveButton(giFinanceButton[i]);
     UnloadButtonImage(giFinanceButtonImage[i]);
   }
@@ -723,7 +725,7 @@ static void DestroyFinanceButtons() {
 
 static void ProcessTransactionString(wchar_t pString[], const size_t Length,
                                      const FinanceUnit *const f) {
-  UINT8 code = f->ubCode;
+  uint8_t code = f->ubCode;
   switch (code) {
     case DEPOSIT_FROM_SILVER_MINE:
       code = DEPOSIT_FROM_GOLD_MINE;
@@ -763,8 +765,8 @@ static void ProcessTransactionString(wchar_t pString[], const size_t Length,
 
     case TRAIN_TOWN_MILITIA: {
       wchar_t str[128];
-      const UINT8 ubSectorX = SECTORX(f->ubSecondCode);
-      const UINT8 ubSectorY = SECTORY(f->ubSecondCode);
+      const uint8_t ubSectorX = SECTORX(f->ubSecondCode);
+      const uint8_t ubSectorY = SECTORY(f->ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, lengthof(str), TRUE);
       swprintf(pString, Length, pTransactionText[TRAIN_TOWN_MILITIA], str);
       break;
@@ -782,7 +784,7 @@ static void DisplayFinancePageNumberAndDateRange() {
 static void WriteBalanceToDisk() {
   // will write the current balance to disk
   AutoSGPFile hFileHandle(FileMan::openForWriting(FINANCES_DATA_FILE));
-  FileWrite(hFileHandle, &LaptopSaveInfo.iCurrentBalance, sizeof(INT32));
+  FileWrite(hFileHandle, &LaptopSaveInfo.iCurrentBalance, sizeof(int32_t));
 }
 
 static void GetBalanceFromDisk() {
@@ -798,7 +800,7 @@ static void GetBalanceFromDisk() {
   }
 
   // get balance from disk first
-  FileRead(f, &LaptopSaveInfo.iCurrentBalance, sizeof(INT32));
+  FileRead(f, &LaptopSaveInfo.iCurrentBalance, sizeof(int32_t));
 }
 
 // will write the current finance to disk
@@ -806,8 +808,8 @@ static void AppendFinanceToEndOfFile() {
   AutoSGPFile f(FileMan::openForAppend(FINANCES_DATA_FILE));
 
   const FinanceUnit *const fu = pFinanceListHead;
-  BYTE data[FINANCE_RECORD_SIZE];
-  BYTE *d = data;
+  uint8_t data[FINANCE_RECORD_SIZE];
+  uint8_t *d = data;
   INJ_U8(d, fu->ubCode);
   INJ_U8(d, fu->ubSecondCode);
   INJ_U32(d, fu->uiDate);
@@ -822,7 +824,7 @@ static void AppendFinanceToEndOfFile() {
 static void SetLastPageInRecords() {
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  const UINT32 size = FileGetSize(f);
+  const uint32_t size = FileGetSize(f);
 
   if (size < FINANCE_HEADER_SIZE + FINANCE_RECORD_SIZE) {
     guiLastPageInRecordsList = 0;
@@ -844,7 +846,7 @@ static void LoadNextPage() {
 }
 
 // Loads in records belonging to page
-static void LoadInRecords(UINT32 const page) {
+static void LoadInRecords(uint32_t const page) {
   iCurrentPage = page;
   fReDrawScreenFlag = TRUE;
   SetFinanceButtonStates();
@@ -853,11 +855,11 @@ static void LoadInRecords(UINT32 const page) {
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  UINT32 const size = FileGetSize(f);
+  uint32_t const size = FileGetSize(f);
   if (size < FINANCE_HEADER_SIZE) return;
 
-  UINT32 records = (size - FINANCE_HEADER_SIZE) / FINANCE_RECORD_SIZE;
-  UINT32 const skip_records = NUM_RECORDS_PER_PAGE * (page - 1);
+  uint32_t records = (size - FINANCE_HEADER_SIZE) / FINANCE_RECORD_SIZE;
+  uint32_t const skip_records = NUM_RECORDS_PER_PAGE * (page - 1);
   if (records <= skip_records) return;
 
   records -= skip_records;
@@ -865,15 +867,15 @@ static void LoadInRecords(UINT32 const page) {
 
   if (records > NUM_RECORDS_PER_PAGE) records = NUM_RECORDS_PER_PAGE;
   for (; records > 0; --records) {
-    BYTE data[FINANCE_RECORD_SIZE];
+    uint8_t data[FINANCE_RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT8 second_code;
-    UINT32 date;
-    INT32 amount;
-    INT32 balance_to_date;
-    const BYTE *d = data;
+    uint8_t code;
+    uint8_t second_code;
+    uint32_t date;
+    int32_t amount;
+    int32_t balance_to_date;
+    const uint8_t *d = data;
     EXTR_U8(d, code);
     EXTR_U8(d, second_code);
     EXTR_U32(d, date);
@@ -885,7 +887,7 @@ static void LoadInRecords(UINT32 const page) {
   }
 }
 
-static void InternalSPrintMoney(wchar_t *Str, INT32 Amount) {
+static void InternalSPrintMoney(wchar_t *Str, int32_t Amount) {
   if (Amount == 0) {
     *Str++ = L'0';
     *Str = L'\0';
@@ -895,8 +897,8 @@ static void InternalSPrintMoney(wchar_t *Str, INT32 Amount) {
       Amount = -Amount;
     }
 
-    UINT32 Digits = 0;
-    for (INT32 Tmp = Amount; Tmp != 0; Tmp /= 10) ++Digits;
+    uint32_t Digits = 0;
+    for (int32_t Tmp = Amount; Tmp != 0; Tmp /= 10) ++Digits;
     Str += Digits + (Digits - 1) / 3;
     *Str-- = L'\0';
     Digits = 0;
@@ -909,38 +911,38 @@ static void InternalSPrintMoney(wchar_t *Str, INT32 Amount) {
   }
 }
 
-void SPrintMoney(wchar_t *Str, INT32 Amount) {
+void SPrintMoney(wchar_t *Str, int32_t Amount) {
   *Str++ = L'$';
   InternalSPrintMoney(Str, Amount);
 }
 
-static void SPrintMoneyNoDollarOnZero(wchar_t *Str, INT32 Amount) {
+static void SPrintMoneyNoDollarOnZero(wchar_t *Str, int32_t Amount) {
   if (Amount != 0) *Str++ = L'$';
   InternalSPrintMoney(Str, Amount);
 }
 
 // find out what today is, then go back 2 days, get balance for that day
-static INT32 GetPreviousDaysBalance() {
-  const UINT32 date_in_minutes = GetWorldTotalMin() - 60 * 24;
-  const UINT32 date_in_days = date_in_minutes / (24 * 60);
+static int32_t GetPreviousDaysBalance() {
+  const uint32_t date_in_minutes = GetWorldTotalMin() - 60 * 24;
+  const uint32_t date_in_days = date_in_minutes / (24 * 60);
 
   if (date_in_days < 2) return 0;
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 balance = 0;
+  int32_t balance = 0;
   // start at the end, move back until Date / 24 * 60 on the record equals
   // date_in_days - 2 loop, make sure we don't pass beginning of file, if so, we
   // have an error, and check for condifition above
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT32 date;
-    INT32 balance_to_date;
-    const BYTE *d = data;
+    uint32_t date;
+    int32_t balance_to_date;
+    const uint8_t *d = data;
     EXTR_SKIP(d, 2);
     EXTR_U32(d, date);
     EXTR_SKIP(d, 4);
@@ -960,24 +962,24 @@ static INT32 GetPreviousDaysBalance() {
   return balance;
 }
 
-static INT32 GetTodaysBalance() {
-  const UINT32 date_in_minutes = GetWorldTotalMin();
-  const UINT32 date_in_days = date_in_minutes / (24 * 60);
+static int32_t GetTodaysBalance() {
+  const uint32_t date_in_minutes = GetWorldTotalMin();
+  const uint32_t date_in_days = date_in_minutes / (24 * 60);
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 balance = 0;
+  int32_t balance = 0;
   // loop, make sure we don't pass beginning of file, if so, we have an error,
   // and check for condifition above
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT32 date;
-    INT32 balance_to_date;
-    const BYTE *d = data;
+    uint32_t date;
+    int32_t balance_to_date;
+    const uint8_t *d = data;
     EXTR_SKIP(d, 2);
     EXTR_U32(d, date);
     EXTR_SKIP(d, 4);
@@ -996,27 +998,27 @@ static INT32 GetTodaysBalance() {
 
 /* will return the income from the previous day, which is todays starting
  * balance - yesterdays starting balance */
-static INT32 GetPreviousDaysIncome() {
-  const UINT32 date_in_minutes = GetWorldTotalMin();
-  const UINT32 date_in_days = date_in_minutes / (24 * 60);
+static int32_t GetPreviousDaysIncome() {
+  const uint32_t date_in_minutes = GetWorldTotalMin();
+  const uint32_t date_in_days = date_in_minutes / (24 * 60);
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 iTotalPreviousIncome = 0;
+  int32_t iTotalPreviousIncome = 0;
   // start at the end, move back until Date / 24 * 60 on the record is =
   // date_in_days - 2 loop, make sure we don't pass beginning of file, if so, we
   // have an error, and check for condifition above
   BOOLEAN fOkToIncrement = FALSE;
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT32 date;
-    INT32 amount;
-    const BYTE *d = data;
+    uint8_t code;
+    uint32_t date;
+    int32_t amount;
+    const uint8_t *d = data;
     EXTR_U8(d, code);
     EXTR_SKIP(d, 1);
     EXTR_U32(d, date);
@@ -1039,26 +1041,26 @@ static INT32 GetPreviousDaysIncome() {
   return iTotalPreviousIncome;
 }
 
-static INT32 GetTodaysDaysIncome() {
-  const UINT32 date_in_minutes = GetWorldTotalMin();
-  const UINT32 date_in_days = date_in_minutes / (24 * 60);
+static int32_t GetTodaysDaysIncome() {
+  const uint32_t date_in_minutes = GetWorldTotalMin();
+  const uint32_t date_in_days = date_in_minutes / (24 * 60);
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 iTotalIncome = 0;
+  int32_t iTotalIncome = 0;
   // loop, make sure we don't pass beginning of file, if so, we have an error,
   // and check for condifition above
   BOOLEAN fOkToIncrement = FALSE;
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT32 date;
-    INT32 amount;
-    const BYTE *d = data;
+    uint8_t code;
+    uint32_t date;
+    int32_t amount;
+    const uint8_t *d = data;
     EXTR_U8(d, code);
     EXTR_SKIP(d, 1);
     EXTR_U32(d, date);
@@ -1096,26 +1098,26 @@ static void SetFinanceButtonStates() {
 }
 
 // grab todays other deposits
-static INT32 GetTodaysOtherDeposits() {
-  const UINT32 date_in_minutes = GetWorldTotalMin();
-  const UINT32 date_in_days = date_in_minutes / (24 * 60);
+static int32_t GetTodaysOtherDeposits() {
+  const uint32_t date_in_minutes = GetWorldTotalMin();
+  const uint32_t date_in_days = date_in_minutes / (24 * 60);
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 iTotalIncome = 0;
+  int32_t iTotalIncome = 0;
   // loop, make sure we don't pass beginning of file, if so, we have an error,
   // and check for condifition above
   BOOLEAN fOkToIncrement = FALSE;
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT32 date;
-    INT32 amount;
-    const BYTE *d = data;
+    uint8_t code;
+    uint32_t date;
+    int32_t amount;
+    const uint8_t *d = data;
     EXTR_U8(d, code);
     EXTR_SKIP(d, 1);
     EXTR_U32(d, date);
@@ -1140,27 +1142,27 @@ static INT32 GetTodaysOtherDeposits() {
   return iTotalIncome;
 }
 
-static INT32 GetYesterdaysOtherDeposits() {
-  const UINT32 iDateInMinutes = GetWorldTotalMin();
-  const UINT32 date_in_days = iDateInMinutes / (24 * 60);
+static int32_t GetYesterdaysOtherDeposits() {
+  const uint32_t iDateInMinutes = GetWorldTotalMin();
+  const uint32_t date_in_days = iDateInMinutes / (24 * 60);
 
   AutoSGPFile f(FileMan::openForReadingSmart(FINANCES_DATA_FILE, true));
 
-  INT32 iTotalPreviousIncome = 0;
+  int32_t iTotalPreviousIncome = 0;
   // start at the end, move back until Date / 24 * 60 on the record is =
   // date_in_days - 2 loop, make sure we don't pass beginning of file, if so, we
   // have an error, and check for condifition above
   BOOLEAN fOkToIncrement = FALSE;
-  for (INT32 pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
+  for (int32_t pos = FileGetSize(f); pos >= FINANCE_HEADER_SIZE + RECORD_SIZE;) {
     FileSeek(f, pos -= RECORD_SIZE, FILE_SEEK_FROM_START);
 
-    BYTE data[RECORD_SIZE];
+    uint8_t data[RECORD_SIZE];
     FileRead(f, data, sizeof(data));
 
-    UINT8 code;
-    UINT32 date;
-    INT32 amount;
-    const BYTE *d = data;
+    uint8_t code;
+    uint32_t date;
+    int32_t amount;
+    const uint8_t *d = data;
     EXTR_U8(d, code);
     EXTR_SKIP(d, 1);
     EXTR_U32(d, date);
@@ -1184,7 +1186,7 @@ static INT32 GetYesterdaysOtherDeposits() {
   return iTotalPreviousIncome;
 }
 
-static INT32 GetTodaysDebits() {
+static int32_t GetTodaysDebits() {
   // return the expenses for today
 
   // currentbalance - todays balance - Todays income - other deposits
@@ -1193,7 +1195,7 @@ static INT32 GetTodaysDebits() {
           GetTodaysOtherDeposits());
 }
 
-static INT32 GetYesterdaysDebits() {
+static int32_t GetYesterdaysDebits() {
   // return the expenses for yesterday
 
   return (GetTodaysBalance() - GetPreviousDaysBalance() - GetPreviousDaysIncome() -

@@ -9,7 +9,7 @@ extern wchar_t ItemNames[MAXITEMS][80];
 
 extern void LoadAllExternalText();
 extern const wchar_t *GetWeightUnitString();
-extern FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight);
+extern float GetWeightBasedOnMetricOption(uint32_t uiObjectWeight);
 
 #define AmmoCaliber_SIZE 17
 #define BobbyRayAmmoCaliber_SIZE 16

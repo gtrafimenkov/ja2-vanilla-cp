@@ -52,81 +52,83 @@ enum NoiseKind {
 
 #define NUM_WATCHED_LOCS 3
 
-extern INT8 gbPublicOpplist[MAXTEAMS][TOTAL_SOLDIERS];
-extern INT8 gbSeenOpponents[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
-extern INT16 gsLastKnownOppLoc[TOTAL_SOLDIERS][TOTAL_SOLDIERS];  // merc vs. merc
-extern INT8 gbLastKnownOppLevel[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
-extern INT16 gsPublicLastKnownOppLoc[MAXTEAMS][TOTAL_SOLDIERS];  // team vs. merc
-extern INT8 gbPublicLastKnownOppLevel[MAXTEAMS][TOTAL_SOLDIERS];
-extern UINT8 gubPublicNoiseVolume[MAXTEAMS];
-extern INT16 gsPublicNoiseGridno[MAXTEAMS];
-extern INT8 gbPublicNoiseLevel[MAXTEAMS];
-extern UINT8 gubKnowledgeValue[10][10];
-extern INT8 gfKnowAboutOpponents;
+extern int8_t gbPublicOpplist[MAXTEAMS][TOTAL_SOLDIERS];
+extern int8_t gbSeenOpponents[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
+extern int16_t gsLastKnownOppLoc[TOTAL_SOLDIERS][TOTAL_SOLDIERS];  // merc vs. merc
+extern int8_t gbLastKnownOppLevel[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
+extern int16_t gsPublicLastKnownOppLoc[MAXTEAMS][TOTAL_SOLDIERS];  // team vs. merc
+extern int8_t gbPublicLastKnownOppLevel[MAXTEAMS][TOTAL_SOLDIERS];
+extern uint8_t gubPublicNoiseVolume[MAXTEAMS];
+extern int16_t gsPublicNoiseGridno[MAXTEAMS];
+extern int8_t gbPublicNoiseLevel[MAXTEAMS];
+extern uint8_t gubKnowledgeValue[10][10];
+extern int8_t gfKnowAboutOpponents;
 
 extern BOOLEAN gfPlayerTeamSawJoey;
 extern BOOLEAN gfMikeShouldSayHi;
 
-extern INT16 gsWatchedLoc[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-extern INT8 gbWatchedLocLevel[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-extern UINT8 gubWatchedLocPoints[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
+extern int16_t gsWatchedLoc[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
+extern int8_t gbWatchedLocLevel[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
+extern uint8_t gubWatchedLocPoints[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 extern BOOLEAN gfWatchedLocReset[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 
 #define BEST_SIGHTING_ARRAY_SIZE 6
 #define BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL 6
 #define BEST_SIGHTING_ARRAY_SIZE_NONCOMBAT 3
 #define BEST_SIGHTING_ARRAY_SIZE_INCOMBAT 0
-extern UINT8 gubBestToMakeSightingSize;
+extern uint8_t gubBestToMakeSightingSize;
 
-INT16 AdjustMaxSightRangeForEnvEffects(INT8 bLightLevel, INT16 sDistVisible);
+int16_t AdjustMaxSightRangeForEnvEffects(int8_t bLightLevel, int16_t sDistVisible);
 void HandleSight(SOLDIERTYPE &, SightFlags);
-void AllTeamsLookForAll(UINT8 ubAllowInterrupts);
+void AllTeamsLookForAll(uint8_t ubAllowInterrupts);
 void GloballyDecideWhoSeesWho();
-UINT16 GetClosestMerc(UINT16 usSoldierIndex);
-INT16 MaxDistanceVisible();
-INT16 DistanceVisible(const SOLDIERTYPE *pSoldier, INT8 bFacingDir, INT8 bSubjectDir,
-                      INT16 sSubjectGridNo, INT8 bLevel);
+uint16_t GetClosestMerc(uint16_t usSoldierIndex);
+int16_t MaxDistanceVisible();
+int16_t DistanceVisible(const SOLDIERTYPE *pSoldier, int8_t bFacingDir, int8_t bSubjectDir,
+                        int16_t sSubjectGridNo, int8_t bLevel);
 void RecalculateOppCntsDueToNoLongerNeutral(SOLDIERTYPE *pSoldier);
 
 void InitOpponentKnowledgeSystem();
 void InitSoldierOppList(SOLDIERTYPE &);
 void BetweenTurnsVisibilityAdjustments();
 void RemoveManAsTarget(SOLDIERTYPE *pSoldier);
-void RadioSightings(SOLDIERTYPE *pSoldier, SOLDIERTYPE *about, UINT8 ubTeamToRadioTo);
+void RadioSightings(SOLDIERTYPE *pSoldier, SOLDIERTYPE *about, uint8_t ubTeamToRadioTo);
 void DebugSoldierPage1();
 void DebugSoldierPage2();
 void DebugSoldierPage3();
 void DebugSoldierPage4();
 
-UINT8 MovementNoise(SOLDIERTYPE *pSoldier);
-UINT8 DoorOpeningNoise(SOLDIERTYPE *pSoldier);
-void MakeNoise(SOLDIERTYPE *noise_maker, INT16 sGridNo, INT8 bLevel, UINT8 ubVolume, NoiseKind);
-void OurNoise(SOLDIERTYPE *noise_maker, INT16 sGridNo, INT8 bLevel, UINT8 ubVolume, NoiseKind);
+uint8_t MovementNoise(SOLDIERTYPE *pSoldier);
+uint8_t DoorOpeningNoise(SOLDIERTYPE *pSoldier);
+void MakeNoise(SOLDIERTYPE *noise_maker, int16_t sGridNo, int8_t bLevel, uint8_t ubVolume,
+               NoiseKind);
+void OurNoise(SOLDIERTYPE *noise_maker, int16_t sGridNo, int8_t bLevel, uint8_t ubVolume,
+              NoiseKind);
 
-void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType);
+void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, uint8_t ubInterruptType);
 
 void VerifyAndDecayOpplist(SOLDIERTYPE *pSoldier);
 void DecayIndividualOpplist(SOLDIERTYPE *pSoldier);
 void VerifyPublicOpplistDueToDeath(SOLDIERTYPE *pSoldier);
-void NoticeUnseenAttacker(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, INT8 bReason);
+void NoticeUnseenAttacker(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, int8_t bReason);
 
 bool MercSeesCreature(SOLDIERTYPE const &);
 
-INT8 GetWatchedLocPoints(UINT8 ubID, INT16 sGridNo, INT8 bLevel);
-INT8 GetHighestVisibleWatchedLoc(const SOLDIERTYPE *s);
-INT8 GetHighestWatchedLocPoints(const SOLDIERTYPE *s);
+int8_t GetWatchedLocPoints(uint8_t ubID, int16_t sGridNo, int8_t bLevel);
+int8_t GetHighestVisibleWatchedLoc(const SOLDIERTYPE *s);
+int8_t GetHighestWatchedLocPoints(const SOLDIERTYPE *s);
 
 void TurnOffEveryonesMuzzleFlashes();
-void TurnOffTeamsMuzzleFlashes(UINT8 ubTeam);
+void TurnOffTeamsMuzzleFlashes(uint8_t ubTeam);
 void EndMuzzleFlash(SOLDIERTYPE *pSoldier);
-void NonCombatDecayPublicOpplist(UINT32 uiTime);
+void NonCombatDecayPublicOpplist(uint32_t uiTime);
 
 void CheckHostileOrSayQuoteList();
 void InitOpplistForDoorOpening();
 
 void AddToShouldBecomeHostileOrSayQuoteList(SOLDIERTYPE *s);
 
-extern INT8 gbLightSighting[1][16];
+extern int8_t gbLightSighting[1][16];
 
 void CheckForAlertWhenEnemyDies(SOLDIERTYPE *pDyingSoldier);
 
@@ -134,7 +136,7 @@ extern SOLDIERTYPE *gInterruptProvoker;
 
 extern const SOLDIERTYPE *gWhoThrewRock;
 
-void DecayPublicOpplist(INT8 bTeam);
+void DecayPublicOpplist(int8_t bTeam);
 
 void RecalculateOppCntsDueToBecomingNeutral(SOLDIERTYPE *pSoldier);
 

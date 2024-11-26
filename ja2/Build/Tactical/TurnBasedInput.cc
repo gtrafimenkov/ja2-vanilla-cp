@@ -173,7 +173,7 @@ static void QueryTBLeftButton(UIEventKind *const puiNewEvent) {
                     // If we're on terrain,
                     const SOLDIERTYPE *const sel = GetSelectedMan();
                     if (sel != NULL) {
-                      INT8 const bReturnVal = HandleMoveModeInteractiveClick(usMapPos);
+                      int8_t const bReturnVal = HandleMoveModeInteractiveClick(usMapPos);
                       // All's OK for interactive tile?
                       if (bReturnVal == -2) {
                         // Confirm!
@@ -633,7 +633,7 @@ static void QueryTBRightButton(UIEventKind *const puiNewEvent) {
 void GetTBMousePositionInput(UIEventKind *const puiNewEvent) {
   static const SOLDIERTYPE *MoveTargetSoldier = NULL;
 
-  static UINT16 usOldMapPos = 0;
+  static uint16_t usOldMapPos = 0;
   static BOOLEAN fOnValidGuy = FALSE;
 
   const GridNo usMapPos = GetMouseMapPos();
@@ -972,7 +972,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
   }
 }
 
-static void ChangeCurrentSquad(INT32 iSquad);
+static void ChangeCurrentSquad(int32_t iSquad);
 static void ChangeSoldiersBodyType(SoldierBodyType, BOOLEAN fCreateNewPalette);
 static void CreateNextCivType();
 static void CreatePlayerControlledMonster();
@@ -985,7 +985,7 @@ static void HandleItemMenuKeys(InputAtom *, UIEventKind *);
 static void HandleMenuKeys(InputAtom *, UIEventKind *);
 static void HandleOpenDoorMenuKeys(InputAtom *, UIEventKind *);
 static void HandleSectorExitMenuKeys(InputAtom *, UIEventKind *);
-static void HandleSelectMercSlot(UINT8 ubPanelSlot, bool force_select);
+static void HandleSelectMercSlot(uint8_t ubPanelSlot, bool force_select);
 static void HandleStealthChangeFromUIKeys();
 static void HandleTalkingMenuKeys(InputAtom *, UIEventKind *);
 static void ObliterateSector();
@@ -993,7 +993,7 @@ static void RefreshSoldier();
 static void SetBurstMode();
 static void TeleportSelectedSoldier();
 static void TestCapture();
-static void TestMeanWhile(INT32 iID);
+static void TestMeanWhile(int32_t iID);
 static void ToggleCliffDebug();
 static void ToggleTreeTops();
 static void ToggleViewAllItems();
@@ -1003,7 +1003,7 @@ static void ToggleZBuffer();
 
 static void ToggleMapEdgepoints();
 
-static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
+static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
     case SDLK_TAB:
       // Nothing in hand and either not in SM panel, or the matching button is
@@ -1292,7 +1292,7 @@ static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
     case SDLK_F4:
     case SDLK_F5:
     case SDLK_F6: {
-      UINT const idx = key - SDLK_F1;
+      uint32_t const idx = key - SDLK_F1;
       HandleSelectMercSlot(idx, true);
       break;
     }
@@ -1310,7 +1310,7 @@ static void HandleModNone(UINT32 const key, UIEventKind *const new_event) {
   }
 }
 
-static void HandleModShift(UINT32 const key, UIEventKind *const new_event) {
+static void HandleModShift(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
     case SDLK_SPACE:
       // Nothing in hand and either not in SM panel, or the matching button is
@@ -1323,7 +1323,7 @@ static void HandleModShift(UINT32 const key, UIEventKind *const new_event) {
                                                           // be enabled
           if (gsCurInterfacePanel != TEAM_PANEL ||
               iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]->Enabled()) {  // Select next squad
-            INT32 const current_squad = CurrentSquad();
+            int32_t const current_squad = CurrentSquad();
             SOLDIERTYPE *const new_soldier = FindNextActiveSquad(sel);
             if (new_soldier->bAssignment != current_squad) {
               HandleLocateSelectMerc(new_soldier, true);
@@ -1345,14 +1345,14 @@ static void HandleModShift(UINT32 const key, UIEventKind *const new_event) {
     case SDLK_F4:
     case SDLK_F5:
     case SDLK_F6: {
-      UINT const idx = key - SDLK_F1;
+      uint32_t const idx = key - SDLK_F1;
       HandleSelectMercSlot(idx, false);
       break;
     }
   }
 }
 
-static void HandleModCtrl(UINT32 const key, UIEventKind *const new_event) {
+static void HandleModCtrl(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
     case 'c':
       if (CHEATER_CHEAT_LEVEL()) ToggleCliffDebug();
@@ -1451,10 +1451,10 @@ static void HandleModCtrl(UINT32 const key, UIEventKind *const new_event) {
   }
 }
 
-static void HandleModAlt(UINT32 const key, UIEventKind *const new_event) {
+static void HandleModAlt(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
     case '-': {
-      UINT32 const vol = MusicGetVolume();
+      uint32_t const vol = MusicGetVolume();
       MusicSetVolume(vol > 20 ? vol - 20 : 0);
       break;
     }
@@ -1543,7 +1543,7 @@ static void HandleModAlt(UINT32 const key, UIEventKind *const new_event) {
 
     case 'n':
       if (INFORMATION_CHEAT_LEVEL() && gUIFullTarget) {
-        static UINT16 gQuoteNum = 0;
+        static uint16_t gQuoteNum = 0;
         TacticalCharacterDialogue(gUIFullTarget, gQuoteNum++);
       }
       break;
@@ -1845,8 +1845,8 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
       if (InputEvent.usKeyState & ALT_DOWN) {
         if (CHEATER_CHEAT_LEVEL()) {
           static BOOLEAN fShowRoofs = TRUE;
-          INT32 x;
-          UINT16 usType;
+          int32_t x;
+          uint16_t usType;
 
           // Toggle removal of roofs...
           fShowRoofs = !fShowRoofs;
@@ -1869,8 +1869,8 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
     }
 
     if (InputEvent.usEvent == KEY_DOWN) {
-      UINT16 const mod = InputEvent.usKeyState;
-      UINT32 const key = InputEvent.usParam;
+      uint16_t const mod = InputEvent.usKeyState;
+      uint32_t const key = InputEvent.usParam;
 
       if (mod == CTRL_DOWN) {
         if (gubCheatLevel < strlen(getCheatCode())) {
@@ -2112,7 +2112,7 @@ static void CreateRandomItem() {
   OBJECTTYPE Object;
   const GridNo usMapPos = GetMouseMapPos();
   if (usMapPos != NOWHERE) {
-    CreateItem((UINT16)(Random(35) + 1), 100, &Object);
+    CreateItem((uint16_t)(Random(35) + 1), 100, &Object);
     AddItemToPool(usMapPos, &Object, INVISIBLE, 0, 0, 0);
   }
 }
@@ -2132,7 +2132,7 @@ static void CycleSelectedMercsItem() {
   // Cycle selected guy's item...
   SOLDIERTYPE *const tgt = gUIFullTarget;
   if (tgt != NULL) {
-    UINT16 usOldItem = tgt->inv[HANDPOS].usItem;
+    uint16_t usOldItem = tgt->inv[HANDPOS].usItem;
 
     usOldItem++;
 
@@ -2146,7 +2146,7 @@ static void CycleSelectedMercsItem() {
 }
 
 static void ToggleWireFrame() {
-  UINT8 &show_wireframe = gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME];
+  uint8_t &show_wireframe = gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME];
   show_wireframe = !show_wireframe;
   wchar_t const *const msg = show_wireframe ? pMessageStrings[MSG_WIREFRAMES_ADDED]
                                             : pMessageStrings[MSG_WIREFRAMES_REMOVED];
@@ -2219,7 +2219,7 @@ static void TeleportSelectedSoldier() {
 }
 
 static void ToggleTreeTops() {
-  UINT8 &show_trees = gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS];
+  uint8_t &show_trees = gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS];
   show_trees = !show_trees;
   wchar_t const *const msg =
       show_trees ? TacticalStr[SHOWING_TREETOPS_STR] : TacticalStr[REMOVING_TREETOPS_STR];
@@ -2228,7 +2228,7 @@ static void ToggleTreeTops() {
 }
 
 static void ToggleZBuffer() {
-  UINT32 &flags = gTacticalStatus.uiFlags;
+  uint32_t &flags = gTacticalStatus.uiFlags;
   flags ^= SHOW_Z_BUFFER;
   if (!(flags & SHOW_Z_BUFFER)) SetRenderFlags(RENDER_FLAG_FULL);
 }
@@ -2247,7 +2247,7 @@ static void ObliterateSector() {
 }
 
 static void CreateNextCivType() {
-  static INT8 bBodyType = FATCIV;
+  static int8_t bBodyType = FATCIV;
 
   const GridNo usMapPos = GetMouseMapPos();
   if (usMapPos == NOWHERE) return;
@@ -2290,7 +2290,7 @@ static void ToggleCliffDebug() {
 
 static void GrenadeTest1() {
   // Get mousexy
-  INT16 sX, sY;
+  int16_t sX, sY;
   if (GetMouseXY(&sX, &sY)) {
     OBJECTTYPE Object;
     Object.usItem = MUSTARD_GRENADE;
@@ -2303,7 +2303,7 @@ static void GrenadeTest1() {
 
 static void GrenadeTest2() {
   // Get mousexy
-  INT16 sX, sY;
+  int16_t sX, sY;
   if (GetMouseXY(&sX, &sY)) {
     OBJECTTYPE Object;
     Object.usItem = HAND_GRENADE;
@@ -2351,7 +2351,7 @@ static bool CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE &s,
   if (action_pos == NOWHERE) return false;
 
   // Calculate AP costs
-  INT16 const ap_cost =
+  int16_t const ap_cost =
       PlotPath(&s, action_pos, NO_COPYROUTE, FALSE, s.usUIMovementMode, s.bActionPoints);
   if (!EnoughPoints(&s, ap_cost, 0, TRUE)) return false;
 
@@ -2372,7 +2372,7 @@ static bool CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE &s,
   return true;
 }
 
-void HandleHandCursorClick(UINT16 const map_pos, UIEventKind *const new_event) {
+void HandleHandCursorClick(uint16_t const map_pos, UIEventKind *const new_event) {
   SOLDIERTYPE *const s = GetSelectedMan();
   if (!s) return;
 
@@ -2389,7 +2389,7 @@ void HandleHandCursorClick(UINT16 const map_pos, UIEventKind *const new_event) {
     if (action_gridno == -1) action_gridno = adjusted_gridno;
 
     // Steal!
-    INT16 const ap_cost = GetAPsToStealItem(s, action_gridno);
+    int16_t const ap_cost = GetAPsToStealItem(s, action_gridno);
     if (EnoughPoints(s, ap_cost, 0, TRUE)) {
       MercStealFromMerc(s, tgt);
       *new_event = A_CHANGE_TO_MOVE;
@@ -2422,7 +2422,7 @@ void HandleHandCursorClick(UINT16 const map_pos, UIEventKind *const new_event) {
     if (AM_AN_EPC(s)) {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[EPC_CANNOT_DO_THAT]);
     } else if (UIOkForItemPickup(s, action_gridno)) {
-      INT8 const zlevel = GetZLevelOfItemPoolGivenStructure(action_gridno, s->bLevel, structure);
+      int8_t const zlevel = GetZLevelOfItemPoolGivenStructure(action_gridno, s->bLevel, structure);
       SoldierPickupItem(s, -1, action_gridno, zlevel);
       *new_event = A_CHANGE_TO_MOVE;
     }
@@ -2452,7 +2452,7 @@ void HandleHandCursorClick(UINT16 const map_pos, UIEventKind *const new_event) {
   }
 }
 
-INT8 HandleMoveModeInteractiveClick(UINT16 const usMapPos) {
+int8_t HandleMoveModeInteractiveClick(uint16_t const usMapPos) {
   SOLDIERTYPE *const sel = GetSelectedMan();
   if (!sel) return 0;
 
@@ -2482,7 +2482,7 @@ INT8 HandleMoveModeInteractiveClick(UINT16 const usMapPos) {
     return -3;
   }
 
-  INT16 sIntTileGridNo;
+  int16_t sIntTileGridNo;
   STRUCTURE *pStructure;
   LEVELNODE *const pIntTile = GetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure);
   if (!pIntTile) return 0;
@@ -2494,7 +2494,7 @@ INT8 HandleMoveModeInteractiveClick(UINT16 const usMapPos) {
     if (AM_AN_EPC(sel)) {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[EPC_CANNOT_DO_THAT]);
     } else if (UIOkForItemPickup(sel, sIntTileGridNo)) {
-      INT8 const bZLevel = GetLargestZLevelOfItemPool(pItemPool);
+      int8_t const bZLevel = GetLargestZLevelOfItemPool(pItemPool);
       if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
         SetUIBusy(sel);
         if (!(gTacticalStatus.uiFlags & INCOMBAT) && !(gTacticalStatus.uiFlags & TURNBASED)) {
@@ -2506,7 +2506,7 @@ INT8 HandleMoveModeInteractiveClick(UINT16 const usMapPos) {
     }
   }
 
-  INT16 sActionGridNo = FindAdjacentGridEx(sel, sIntTileGridNo, NULL, NULL, FALSE, TRUE);
+  int16_t sActionGridNo = FindAdjacentGridEx(sel, sIntTileGridNo, NULL, NULL, FALSE, TRUE);
   if (sActionGridNo == -1) sActionGridNo = sIntTileGridNo;
 
   // If this is not the same tile as ours, check if we can get to dest!
@@ -2519,7 +2519,7 @@ INT8 HandleMoveModeInteractiveClick(UINT16 const usMapPos) {
 }
 
 BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier) {
-  INT8 bAPs = 0;
+  int8_t bAPs = 0;
 
   // CHECK OUR CURRENT CURSOR...
 
@@ -2553,11 +2553,11 @@ BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-BOOLEAN ConfirmActionCancel(UINT16 const usMapPos, UINT16 const usOldMapPos) {
+BOOLEAN ConfirmActionCancel(uint16_t const usMapPos, uint16_t const usOldMapPos) {
   return usMapPos != usOldMapPos;
 }
 
-static void ChangeCurrentSquad(INT32 iSquad) {
+static void ChangeCurrentSquad(int32_t iSquad) {
   // only allow if nothing in hand and the Change Squad button for whichever
   // panel we're in must be enabled
   if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons &&
@@ -2568,7 +2568,7 @@ static void ChangeCurrentSquad(INT32 iSquad) {
   }
 }
 
-static void HandleSelectMercSlot(UINT8 const ubPanelSlot, bool const force_select) {
+static void HandleSelectMercSlot(uint8_t const ubPanelSlot, bool const force_select) {
   SOLDIERTYPE *const s = GetPlayerFromInterfaceTeamSlot(ubPanelSlot);
   if (s != NULL) {
     HandleLocateSelectMerc(s, force_select);
@@ -2577,9 +2577,9 @@ static void HandleSelectMercSlot(UINT8 const ubPanelSlot, bool const force_selec
   }
 }
 
-static void TestMeanWhile(INT32 iID) {
-  INT16 x;
-  INT16 y;
+static void TestMeanWhile(int32_t iID) {
+  int16_t x;
+  int16_t y;
   if (iID == INTERROGATION) {
     x = 7;
     y = 14;
@@ -2623,7 +2623,7 @@ static void ToggleMapEdgepoints() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight) {
+void HandleStanceChangeFromUIKeys(uint8_t ubAnimHeight) {
   // If we have multiple guys selected, make all change stance!
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -2673,7 +2673,7 @@ static void TestCapture() {
   gStrategicStatus.uiFlags &= ~STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE;
 
   // Loop through sodliers and pick 3 lucky ones
-  UINT32 n = 3;
+  uint32_t n = 3;
   FOR_EACH_IN_TEAM(i, OUR_TEAM) {
     SOLDIERTYPE &s = *i;
     if (s.bLife < OKLIFE) continue;

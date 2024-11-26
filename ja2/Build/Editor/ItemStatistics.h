@@ -14,7 +14,7 @@ extern BOOLEAN gfItemEditingMode;
 // Set if we need to update the panel.
 extern BOOLEAN gfRenderItemStatsPanel;
 
-void SpecifyItemToEdit(OBJECTTYPE *pItem, INT32 iMapIndex);
+void SpecifyItemToEdit(OBJECTTYPE *pItem, int32_t iMapIndex);
 
 void ShowItemStatsPanel();
 void HideItemStatsPanel();
@@ -30,10 +30,10 @@ enum {
   ITEMSTATS_HIDE,
   ITEMSTATS_SHOW,
 };
-void ExecuteItemStatsCmd(UINT8 ubAction);
+void ExecuteItemStatsCmd(uint8_t ubAction);
 
 extern OBJECTTYPE *gpItem;
-extern INT16 gsItemGridNo;
+extern int16_t gsItemGridNo;
 
 // enumerations for all of the different action items.  Used by the popup menu
 // for changing the type of action item.  When modified, an equivalent text array
@@ -79,12 +79,12 @@ extern const wchar_t *gszActionItemDesc[NUM_ACTIONITEMS];
 // Returns a pointer to one of the above string array.
 extern wchar_t const *GetActionItemName(OBJECTTYPE const *);
 // Called by the popup menu, when a selection is made.
-extern void UpdateActionItem(INT8 bActionItemIndex);
+extern void UpdateActionItem(int8_t bActionItemIndex);
 // Changes an action item into the type specified by the ACTIONITEM enumeration.
-extern void ChangeActionItem(OBJECTTYPE *pItem, INT8 bActionItemIndex);
-extern INT8 gbActionItemIndex;
-extern INT8 gbDefaultBombTrapLevel;
+extern void ChangeActionItem(OBJECTTYPE *pItem, int8_t bActionItemIndex);
+extern int8_t gbActionItemIndex;
+extern int8_t gbDefaultBombTrapLevel;
 
-extern void SetOwnershipGroup(UINT8 ubNewGroup);
+extern void SetOwnershipGroup(uint8_t ubNewGroup);
 
 #endif

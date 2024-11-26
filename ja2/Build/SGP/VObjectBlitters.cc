@@ -17,7 +17,7 @@
 
 SGPRect ClippingRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 // 555      565
-UINT32 guiTranslucentMask = 0x3def;  // 0x7bef;		// mask for halving 5,6,5
+uint32_t guiTranslucentMask = 0x3def;  // 0x7bef;		// mask for halving 5,6,5
 
 /* Difference or Zero */
 template <typename T>
@@ -32,62 +32,62 @@ static inline T DoZ(T const a, T const b) {
  * for any non-transparent pixels. The Z-buffer is 16 bit, and must be the same
  * dimensions (including pitch) as the destination.
  * Blits every second pixel ("Translucents"). */
-void Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(UINT16 *const buf,
-                                                     UINT32 const uiDestPitchBYTES,
-                                                     UINT16 *const zbuf, UINT16 const zval,
-                                                     HVOBJECT const hSrcVObject, INT32 const iX,
-                                                     INT32 const iY, UINT16 const usIndex,
+void Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(uint16_t *const buf,
+                                                     uint32_t const uiDestPitchBYTES,
+                                                     uint16_t *const zbuf, uint16_t const zval,
+                                                     HVOBJECT const hSrcVObject, int32_t const iX,
+                                                     int32_t const iY, uint16_t const usIndex,
                                                      SGPRect const *clipregion) {
   Assert(hSrcVObject);
   Assert(buf);
 
   // Get offsets from index into structure.
   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-  INT32 const height = e.usHeight;
-  INT32 const width = e.usWidth;
+  int32_t const height = e.usHeight;
+  int32_t const width = e.usWidth;
 
   // Add to start position of dest buffer.
-  INT32 const x = iX + e.sOffsetX;
-  INT32 const y = iY + e.sOffsetY;
+  int32_t const x = iX + e.sOffsetX;
+  int32_t const y = iY + e.sOffsetY;
 
   if (!clipregion) clipregion = &ClippingRect;
 
   /* Calculate rows hanging off each side of the screen and check if the whole
    * thing is clipped. */
-  INT32 const left_skip = DoZ(clipregion->iLeft, x);
+  int32_t const left_skip = DoZ(clipregion->iLeft, x);
   if (left_skip >= width) return;
-  INT32 top_skip = DoZ(clipregion->iTop, y);
+  int32_t top_skip = DoZ(clipregion->iTop, y);
   if (top_skip >= height) return;
-  INT32 const right_skip = DoZ(x + width, clipregion->iRight);
+  int32_t const right_skip = DoZ(x + width, clipregion->iRight);
   if (right_skip >= width) return;
-  INT32 const bottom_skip = DoZ(y + height, clipregion->iBottom);
+  int32_t const bottom_skip = DoZ(y + height, clipregion->iBottom);
   if (bottom_skip >= height) return;
 
   // Calculate the remaining rows and columns to blit.
-  INT32 const blit_length = (INT32)width - left_skip - right_skip;
-  INT32 blit_height = (INT32)height - top_skip - bottom_skip;
+  int32_t const blit_length = (int32_t)width - left_skip - right_skip;
+  int32_t blit_height = (int32_t)height - top_skip - bottom_skip;
 
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT8 const *src = hSrcVObject->PixData(e);
-  UINT16 *dst = buf + pitch * (y + top_skip) + (x + left_skip);
-  UINT16 const *zdst = zbuf + pitch * (y + top_skip) + (x + left_skip);
-  UINT16 const *const pal = hSrcVObject->CurrentShade();
-  UINT32 line_skip = pitch - blit_length;
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint8_t const *src = hSrcVObject->PixData(e);
+  uint16_t *dst = buf + pitch * (y + top_skip) + (x + left_skip);
+  uint16_t const *zdst = zbuf + pitch * (y + top_skip) + (x + left_skip);
+  uint16_t const *const pal = hSrcVObject->CurrentShade();
+  uint32_t line_skip = pitch - blit_length;
 
 #if 1  // XXX TODO
   for (; top_skip > 0; --top_skip) {
     for (;;) {
-      UINT32 const px_count = *src++;
+      uint32_t const px_count = *src++;
       if (px_count & 0x80) continue;
       if (px_count == 0) break;
       src += px_count;
     }
   }
 
-  UINT32 const translucent_mask = guiTranslucentMask;
+  uint32_t const translucent_mask = guiTranslucentMask;
   do {
-    INT32 ls_count;
-    UINT32 px_count;
+    int32_t ls_count;
+    uint32_t px_count;
     for (ls_count = left_skip; ls_count > 0; ls_count -= px_count) {
       px_count = *src++;
       if (px_count & 0x80) {
@@ -120,7 +120,7 @@ void Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(UINT16 *const buf,
         zdst += px_count;
       } else {  // Blit non-transparent pixels.
       BlitNonTransLoop:
-        UINT32 unblitted = 0;
+        uint32_t unblitted = 0;
         if (px_count > ls_count) {
           unblitted = px_count - ls_count;
           px_count = ls_count;
@@ -141,8 +141,8 @@ void Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(UINT16 *const buf,
     zdst += line_skip;
   } while (--blit_height > 0);
 #else
-  INT32 ls_count;
-  UINT32 unblitted;
+  int32_t ls_count;
+  uint32_t unblitted;
 
   line_skip *= 2;
 
@@ -342,13 +342,13 @@ destination.
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZTranslucent(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                               UINT16 *pZBuffer, UINT16 usZValue,
-                                               HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                               UINT16 usIndex) {
-  UINT32 LineSkip;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
+void Blt8BPPDataTo16BPPBufferTransZTranslucent(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                               uint16_t *pZBuffer, uint16_t usZValue,
+                                               HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                               uint16_t usIndex) {
+  uint32_t LineSkip;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t uiLineFlag;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -356,21 +356,21 @@ void Blt8BPPDataTo16BPPBufferTransZTranslucent(UINT16 *pBuffer, UINT32 uiDestPit
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  // UINT16 const* const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  // uint16_t const* const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
@@ -463,37 +463,38 @@ BlitDone:
  * for any non-transparent pixels. The Z-buffer is 16 bit, and must be the same
  * dimensions (including pitch) as the destination.
  * Blits every second pixel ("Translucents"). */
-void Blt8BPPDataTo16BPPBufferTransZNBTranslucent(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-                                                 UINT16 *const zbuf, UINT16 const zval,
-                                                 HVOBJECT const hSrcVObject, INT32 const iX,
-                                                 INT32 const iY, UINT16 const usIndex) {
+void Blt8BPPDataTo16BPPBufferTransZNBTranslucent(uint16_t *const buf,
+                                                 uint32_t const uiDestPitchBYTES,
+                                                 uint16_t *const zbuf, uint16_t const zval,
+                                                 HVOBJECT const hSrcVObject, int32_t const iX,
+                                                 int32_t const iY, uint16_t const usIndex) {
   Assert(hSrcVObject);
   Assert(buf);
 
   // Get offsets from index into structure.
   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 height = e.usHeight;
-  UINT32 const width = e.usWidth;
+  uint32_t height = e.usHeight;
+  uint32_t const width = e.usWidth;
 
   // Add to start position of dest buffer.
-  INT32 const x = iX + e.sOffsetX;
-  INT32 const y = iY + e.sOffsetY;
+  int32_t const x = iX + e.sOffsetX;
+  int32_t const y = iY + e.sOffsetY;
 
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT8 const *src = hSrcVObject->PixData(e);
-  UINT16 *dst = buf + pitch * y + x;
-  UINT16 const *zdst = zbuf + pitch * y + x;
-  UINT16 const *const pal = hSrcVObject->CurrentShade();
-  UINT32 line_skip = pitch - width;
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint8_t const *src = hSrcVObject->PixData(e);
+  uint16_t *dst = buf + pitch * y + x;
+  uint16_t const *zdst = zbuf + pitch * y + x;
+  uint16_t const *const pal = hSrcVObject->CurrentShade();
+  uint32_t line_skip = pitch - width;
 
 #if 1  // XXX TODO
-  UINT32 const translucent_mask = guiTranslucentMask;
+  uint32_t const translucent_mask = guiTranslucentMask;
   do {
     for (;;) {
-      UINT8 data = *src++;
+      uint8_t data = *src++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -586,11 +587,11 @@ BlitDone:
 #endif
 }
 
-UINT16 *InitZBuffer(const UINT32 width, const UINT32 height) {
-  return MALLOCNZ(UINT16, width * height);
+uint16_t *InitZBuffer(const uint32_t width, const uint32_t height) {
+  return MALLOCNZ(uint16_t, width * height);
 }
 
-void ShutdownZBuffer(UINT16 *const pBuffer) { MemFree(pBuffer); }
+void ShutdownZBuffer(uint16_t *const pBuffer) { MemFree(pBuffer); }
 
 /**********************************************************************************************
  Blt8BPPDataTo16BPPBufferMonoShadowClip
@@ -602,16 +603,16 @@ parameter for the background color is zero, transparency is used for the
 background.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                            HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                            UINT16 usIndex, SGPRect *clipregion,
-                                            UINT16 usForeground, UINT16 usBackground,
-                                            UINT16 usShadow) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferMonoShadowClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                            HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                            uint16_t usIndex, SGPRect *clipregion,
+                                            uint16_t usForeground, uint16_t usBackground,
+                                            uint16_t usShadow) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -619,12 +620,12 @@ void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchB
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -639,27 +640,28 @@ void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchB
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -704,7 +706,7 @@ void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchB
           DestPtr += 2 * PxCount;
         } else {
           while (PxCount-- != 0) {
-            *(UINT16 *)DestPtr = usBackground;
+            *(uint16_t *)DestPtr = usBackground;
             DestPtr += 2;
           }
         }
@@ -721,13 +723,13 @@ void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchB
         do {
           switch (*SrcPtr++) {
             case 0:
-              if (usBackground != 0) *(UINT16 *)DestPtr = usBackground;
+              if (usBackground != 0) *(uint16_t *)DestPtr = usBackground;
               break;
             case 1:
-              if (usShadow != 0) *(UINT16 *)DestPtr = usShadow;
+              if (usShadow != 0) *(uint16_t *)DestPtr = usShadow;
               break;
             default:
-              *(UINT16 *)DestPtr = usForeground;
+              *(uint16_t *)DestPtr = usForeground;
               break;
           }
           DestPtr += 2;
@@ -946,25 +948,25 @@ information for mercs etc. to their unblit buffer, for later reblitting. Does
 NOT clip.
 
 **********************************************************************************************/
-void Blt16BPPTo16BPP(UINT16 *pDest, UINT32 uiDestPitch, UINT16 *pSrc, UINT32 uiSrcPitch,
-                     INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
-                     UINT32 uiWidth, UINT32 uiHeight) {
+void Blt16BPPTo16BPP(uint16_t *pDest, uint32_t uiDestPitch, uint16_t *pSrc, uint32_t uiSrcPitch,
+                     int32_t iDestXPos, int32_t iDestYPos, int32_t iSrcXPos, int32_t iSrcYPos,
+                     uint32_t uiWidth, uint32_t uiHeight) {
 #if 1  // XXX TODO
-  UINT32 i;
+  uint32_t i;
 
   for (i = 0; i < uiHeight; i++) {
-    memcpy((UINT8 *)pDest + uiDestPitch * (iDestYPos + i) + 2 * iDestXPos,
-           (UINT8 *)pSrc + uiSrcPitch * (iSrcYPos + i) + 2 * iSrcXPos, uiWidth * 2);
+    memcpy((uint8_t *)pDest + uiDestPitch * (iDestYPos + i) + 2 * iDestXPos,
+           (uint8_t *)pSrc + uiSrcPitch * (iSrcYPos + i) + 2 * iSrcXPos, uiWidth * 2);
   }
 #else
-  UINT16 *pSrcPtr, *pDestPtr;
-  UINT32 uiLineSkipDest, uiLineSkipSrc;
+  uint16_t *pSrcPtr, *pDestPtr;
+  uint32_t uiLineSkipDest, uiLineSkipSrc;
 
   Assert(pDest != NULL);
   Assert(pSrc != NULL);
 
-  pSrcPtr = (UINT16 *)((UINT8 *)pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
-  pDestPtr = (UINT16 *)((UINT8 *)pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
+  pSrcPtr = (uint16_t *)((uint8_t *)pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
+  pDestPtr = (uint16_t *)((uint8_t *)pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
   uiLineSkipDest = uiDestPitch - (uiWidth * 2);
   uiLineSkipSrc = uiSrcPitch - (uiWidth * 2);
 
@@ -1028,13 +1030,13 @@ destination.
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZPixelateObscured(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                    UINT16 *pZBuffer, UINT16 usZValue,
-                                                    HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                                    UINT16 usIndex) {
-  UINT32 LineSkip;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
+void Blt8BPPDataTo16BPPBufferTransZPixelateObscured(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                                    uint16_t *pZBuffer, uint16_t usZValue,
+                                                    HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                                    uint16_t usIndex) {
+  uint32_t LineSkip;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t uiLineFlag;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1042,28 +1044,28 @@ void Blt8BPPDataTo16BPPBufferTransZPixelateObscured(UINT16 *pBuffer, UINT32 uiDe
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -1072,12 +1074,12 @@ void Blt8BPPDataTo16BPPBufferTransZPixelateObscured(UINT16 *pBuffer, UINT32 uiDe
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
           } else {
             if (uiLineFlag != (((uintptr_t)DestPtr & 2) != 0)) continue;
           }
-          *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr];
+          *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr];
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --data > 0);
       }
     }
@@ -1189,36 +1191,36 @@ BlitDone:
  * pixel, it is written on, and the Z value is updated to the current value, for
  * any non-transparent pixels. The Z-buffer is 16 bit, and must be the same
  * dimensions (including Pitch) as the destination. */
-void Blt8BPPDataTo16BPPBufferTransZ(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-                                    UINT16 *const zbuf, UINT16 const zval,
-                                    HVOBJECT const hSrcVObject, INT32 const iX, INT32 const iY,
-                                    UINT16 const usIndex) {
+void Blt8BPPDataTo16BPPBufferTransZ(uint16_t *const buf, uint32_t const uiDestPitchBYTES,
+                                    uint16_t *const zbuf, uint16_t const zval,
+                                    HVOBJECT const hSrcVObject, int32_t const iX, int32_t const iY,
+                                    uint16_t const usIndex) {
   Assert(hSrcVObject);
   Assert(buf);
 
   // Get offsets from index into structure
   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 height = e.usHeight;
-  UINT32 const width = e.usWidth;
+  uint32_t height = e.usHeight;
+  uint32_t const width = e.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const x = iX + e.sOffsetX;
-  INT32 const y = iY + e.sOffsetY;
+  int32_t const x = iX + e.sOffsetX;
+  int32_t const y = iY + e.sOffsetY;
 
   // Validations
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT8 const *src = hSrcVObject->PixData(e);
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT16 *dst = buf + pitch * y + x;
-  UINT16 *zdst = zbuf + pitch * y + x;
-  UINT16 const *const pal = hSrcVObject->CurrentShade();
-  UINT32 line_skip = pitch - width;
+  uint8_t const *src = hSrcVObject->PixData(e);
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint16_t *dst = buf + pitch * y + x;
+  uint16_t *zdst = zbuf + pitch * y + x;
+  uint16_t const *const pal = hSrcVObject->CurrentShade();
+  uint32_t line_skip = pitch - width;
 
 #if 1  // XXX TODO
   for (;;) {
-    UINT8 data = *src++;
+    uint8_t data = *src++;
     if (data == 0) {
       if (--height == 0) break;
       dst += line_skip;
@@ -1324,11 +1326,11 @@ Z-buffer is 16 bit, and	must be the same dimensions (including Pitch) as the
 destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                      UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                      UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferTransZNB(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                      uint16_t *pZBuffer, uint16_t usZValue, HVOBJECT hSrcVObject,
+                                      int32_t iX, int32_t iY, uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1336,27 +1338,27 @@ void Blt8BPPDataTo16BPPBufferTransZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, 
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -1365,8 +1367,8 @@ void Blt8BPPDataTo16BPPBufferTransZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, 
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr];
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr];
           }
           SrcPtr++;
           DestPtr += 2;
@@ -1459,11 +1461,11 @@ darkened rather than blitted on. The Z-buffer is 16 bit, and	must be the same
 dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                         HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
-                                         const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferTransShadow(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                         HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                         uint16_t usIndex, const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1471,19 +1473,19 @@ void Blt8BPPDataTo16BPPBufferTransShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTE
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -1570,12 +1572,12 @@ darkened rather than blitted on. The Z-buffer is 16 bit, and	must be the same
 dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                          UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                          INT32 iX, INT32 iY, UINT16 usIndex,
-                                          const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferTransShadowZ(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                          uint16_t *pZBuffer, uint16_t usZValue,
+                                          HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                          uint16_t usIndex, const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1583,20 +1585,20 @@ void Blt8BPPDataTo16BPPBufferTransShadowZ(UINT16 *pBuffer, UINT32 uiDestPitchBYT
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -1693,12 +1695,12 @@ blitted on. The Z-buffer is 16 bit, and must be the same dimensions (including
 Pitch) as the destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                            UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                            INT32 iX, INT32 iY, UINT16 usIndex,
-                                            const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferTransShadowZNB(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                            uint16_t *pZBuffer, uint16_t usZValue,
+                                            HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                            uint16_t usIndex, const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1706,26 +1708,26 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchB
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -1734,15 +1736,15 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchB
         ZPtr += 2 * data;
       } else {
         do {
-          UINT8 px = *SrcPtr++;
+          uint8_t px = *SrcPtr++;
 
           if (px == 254) {
-            if (*(UINT16 *)ZPtr < usZValue) {
-              *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+            if (*(uint16_t *)ZPtr < usZValue) {
+              *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
             }
           } else {
-            if (*(UINT16 *)ZPtr <= usZValue) {
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+            if (*(uint16_t *)ZPtr <= usZValue) {
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
           DestPtr += 2;
@@ -1844,13 +1846,14 @@ blitted on. The Z-buffer is 16 bit, and must be the same dimensions (including
 Pitch) as the destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                    UINT16 *pZBuffer, UINT16 usZValue,
-                                                    HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                                    UINT16 usIndex, const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  UINT32 uiLineFlag;
+void Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                                    uint16_t *pZBuffer, uint16_t usZValue,
+                                                    HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                                    uint16_t usIndex,
+                                                    const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  uint32_t uiLineFlag;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1858,27 +1861,27 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(UINT16 *pBuffer, UINT32 uiDe
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -1887,18 +1890,18 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(UINT16 *pBuffer, UINT32 uiDe
         ZPtr += 2 * data;
       } else {
         do {
-          UINT8 px = *SrcPtr++;
+          uint8_t px = *SrcPtr++;
 
           if (px == 254) {
-            if (*(UINT16 *)ZPtr < usZValue) {
-              *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+            if (*(uint16_t *)ZPtr < usZValue) {
+              *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
             }
           } else {
-            if (*(UINT16 *)ZPtr <= usZValue ||
+            if (*(uint16_t *)ZPtr <= usZValue ||
                 uiLineFlag == (((uintptr_t)DestPtr & 2) != 0))  // XXX ugly, can be done better by
                                                                 // just examining every other pixel
             {
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
           DestPtr += 2;
@@ -2026,15 +2029,15 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination. Pixels with a value of 254 are shaded instead of blitted.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                              UINT16 *pZBuffer, UINT16 usZValue,
-                                              HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                              UINT16 usIndex, SGPRect *clipregion,
-                                              const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransShadowZClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                              uint16_t *pZBuffer, uint16_t usZValue,
+                                              HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                              uint16_t usIndex, SGPRect *clipregion,
+                                              const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2042,12 +2045,12 @@ void Blt8BPPDataTo16BPPBufferTransShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitc
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -2062,32 +2065,33 @@ void Blt8BPPDataTo16BPPBufferTransShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitc
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   (void)SrcPtr;
   UNIMPLEMENTED
 #else
-  UINT32 Unblitted;
-  INT32 LSCount;
+  uint32_t Unblitted;
+  int32_t LSCount;
   __asm {
 
 		mov		esi, SrcPtr
@@ -2285,14 +2289,14 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination. Pixels with a value of 254 are shaded instead of blitted.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                             HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                             UINT16 usIndex, SGPRect *clipregion,
-                                             const UINT16 *p16BPPPalette) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransShadowClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                             HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                             uint16_t usIndex, SGPRect *clipregion,
+                                             const uint16_t *p16BPPPalette) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2300,12 +2304,12 @@ void Blt8BPPDataTo16BPPBufferTransShadowClip(UINT16 *pBuffer, UINT32 uiDestPitch
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -2320,31 +2324,32 @@ void Blt8BPPDataTo16BPPBufferTransShadowClip(UINT16 *pBuffer, UINT32 uiDestPitch
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   (void)SrcPtr;
   UNIMPLEMENTED
 #else
-  UINT32 Unblitted;
-  INT32 LSCount;
+  uint32_t Unblitted;
+  int32_t LSCount;
   __asm {
 
 		mov		esi, SrcPtr
@@ -2529,16 +2534,16 @@ dimensions (including Pitch) as the destination. Pixels with a value of	254 are
 shaded instead of blitted. The Z buffer is NOT updated.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                UINT16 *pZBuffer, UINT16 usZValue,
-                                                HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                                UINT16 usIndex, SGPRect *clipregion,
-                                                const UINT16 *p16BPPPalette) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransShadowZNBClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                                uint16_t *pZBuffer, uint16_t usZValue,
+                                                HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                                uint16_t usIndex, SGPRect *clipregion,
+                                                const uint16_t *p16BPPPalette) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2546,12 +2551,12 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPi
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -2566,28 +2571,29 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPi
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -2641,15 +2647,15 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPi
         LSCount -= PxCount;
 
         do {
-          UINT8 px = *SrcPtr++;
+          uint8_t px = *SrcPtr++;
 
           if (px == 254) {
-            if (*(UINT16 *)ZPtr < usZValue) {
-              *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+            if (*(uint16_t *)ZPtr < usZValue) {
+              *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
             }
           } else {
-            if (*(UINT16 *)ZPtr <= usZValue) {
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+            if (*(uint16_t *)ZPtr <= usZValue) {
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
           DestPtr += 2;
@@ -2862,16 +2868,15 @@ dimensions (including Pitch) as the destination. Pixels with a value of	254 are
 shaded instead of blitted. The Z buffer is NOT updated.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                        UINT16 *pZBuffer, UINT16 usZValue,
-                                                        HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                                        UINT16 usIndex, SGPRect *clipregion,
-                                                        const UINT16 *p16BPPPalette) {
-  UINT32 Unblitted, uiLineFlag;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(
+    uint16_t *pBuffer, uint32_t uiDestPitchBYTES, uint16_t *pZBuffer, uint16_t usZValue,
+    HVOBJECT hSrcVObject, int32_t iX, int32_t iY, uint16_t usIndex, SGPRect *clipregion,
+    const uint16_t *p16BPPPalette) {
+  uint32_t Unblitted, uiLineFlag;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2879,12 +2884,12 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(UINT16 *pBuffer, UINT32 
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -2899,30 +2904,31 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(UINT16 *pBuffer, UINT32 
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   uiLineFlag = (iTempY + TopSkip) & 1;
 
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -2976,18 +2982,18 @@ void Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(UINT16 *pBuffer, UINT32 
         LSCount -= PxCount;
 
         do {
-          UINT8 px = *SrcPtr++;
+          uint8_t px = *SrcPtr++;
 
           if (px == 254) {
-            if (*(UINT16 *)ZPtr < usZValue) {
-              *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+            if (*(uint16_t *)ZPtr < usZValue) {
+              *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
             }
           } else {
-            if (*(UINT16 *)ZPtr <= usZValue ||
+            if (*(uint16_t *)ZPtr <= usZValue ||
                 uiLineFlag == (((uintptr_t)DestPtr & 2) != 0))  // XXX ugly, can be done better by
                                                                 // just examining every other pixel
             {
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
           DestPtr += 2;
@@ -3222,11 +3228,11 @@ if the current Z level is equal to higher than what's in the Z buffer at that
 pixel location. It updates the Z buffer with the new Z level.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadowZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                     UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                     UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferShadowZ(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                     uint16_t *pZBuffer, uint16_t usZValue, HVOBJECT hSrcVObject,
+                                     int32_t iX, int32_t iY, uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3234,26 +3240,26 @@ void Blt8BPPDataTo16BPPBufferShadowZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, U
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -3263,9 +3269,9 @@ void Blt8BPPDataTo16BPPBufferShadowZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, U
       } else {
         SrcPtr += data;
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
-            *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
+            *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           }
           DestPtr += 2;
           ZPtr += 2;
@@ -3354,13 +3360,14 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                         UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                         UINT16 usIndex, SGPRect *clipregion) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferShadowZClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                         uint16_t *pZBuffer, uint16_t usZValue,
+                                         HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                         uint16_t usIndex, SGPRect *clipregion) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3368,12 +3375,12 @@ void Blt8BPPDataTo16BPPBufferShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTE
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -3388,28 +3395,29 @@ void Blt8BPPDataTo16BPPBufferShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTE
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -3459,9 +3467,9 @@ void Blt8BPPDataTo16BPPBufferShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTE
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
-            *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
+            *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           }
           DestPtr += 2;
           ZPtr += 2;
@@ -3475,7 +3483,7 @@ void Blt8BPPDataTo16BPPBufferShadowZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTE
     ZPtr += LineSkip;
   } while (--BlitHeight > 0);
 #else
-  UINT32 Unblitted;
+  uint32_t Unblitted;
   __asm {
 
 		mov		esi, SrcPtr
@@ -3660,11 +3668,11 @@ if the current Z level is equal to higher than what's in the Z buffer at that
 pixel location. It does NOT update the Z buffer with the new Z value.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                       UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                       UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferShadowZNB(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                       uint16_t *pZBuffer, uint16_t usZValue, HVOBJECT hSrcVObject,
+                                       int32_t iX, int32_t iY, uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3672,26 +3680,26 @@ void Blt8BPPDataTo16BPPBufferShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -3700,8 +3708,8 @@ void Blt8BPPDataTo16BPPBufferShadowZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           }
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --data > 0);
       }
@@ -3785,15 +3793,15 @@ pixels. The Z-buffer is 16 bit, and	must be the same dimensions (including
 Pitch) as the destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                           UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                           INT32 iX, INT32 iY, UINT16 usIndex,
-                                           SGPRect *clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferShadowZNBClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                           uint16_t *pZBuffer, uint16_t usZValue,
+                                           HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                           uint16_t usIndex, SGPRect *clipregion) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3801,12 +3809,12 @@ void Blt8BPPDataTo16BPPBufferShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBY
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -3821,28 +3829,29 @@ void Blt8BPPDataTo16BPPBufferShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBY
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -3896,8 +3905,8 @@ void Blt8BPPDataTo16BPPBufferShadowZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBY
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           }
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --PxCount > 0);
         SrcPtr += Unblitted;
@@ -4095,14 +4104,15 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                        UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                        UINT16 usIndex, SGPRect *clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransZClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                        uint16_t *pZBuffer, uint16_t usZValue, HVOBJECT hSrcVObject,
+                                        int32_t iX, int32_t iY, uint16_t usIndex,
+                                        SGPRect *clipregion) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4110,12 +4120,12 @@ void Blt8BPPDataTo16BPPBufferTransZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -4130,29 +4140,30 @@ void Blt8BPPDataTo16BPPBufferTransZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -4206,9 +4217,9 @@ void Blt8BPPDataTo16BPPBufferTransZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
-            *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr];
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
+            *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr];
           }
           SrcPtr++;
           DestPtr += 2;
@@ -4411,14 +4422,15 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                          UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                          INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransZNBClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                          uint16_t *pZBuffer, uint16_t usZValue,
+                                          HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                          uint16_t usIndex, SGPRect *clipregion) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4426,12 +4438,12 @@ void Blt8BPPDataTo16BPPBufferTransZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYT
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -4446,29 +4458,30 @@ void Blt8BPPDataTo16BPPBufferTransZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYT
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -4522,8 +4535,8 @@ void Blt8BPPDataTo16BPPBufferTransZNBClip(UINT16 *pBuffer, UINT32 uiDestPitchBYT
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr];
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr];
           }
           SrcPtr++;
           DestPtr += 2;
@@ -4713,9 +4726,9 @@ BlitDone:
 }
 
 /* Blit a subrect from a flat 8 bit surface to a 16-bit buffer. */
-void Blt8BPPDataSubTo16BPPBuffer(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-                                 SGPVSurface *const hSrcVSurface, UINT8 *const pSrcBuffer,
-                                 UINT32 const src_pitch, INT32 const x, INT32 const y,
+void Blt8BPPDataSubTo16BPPBuffer(uint16_t *const buf, uint32_t const uiDestPitchBYTES,
+                                 SGPVSurface *const hSrcVSurface, uint8_t *const pSrcBuffer,
+                                 uint32_t const src_pitch, int32_t const x, int32_t const y,
                                  SGPBox const *const rect) {
   Assert(hSrcVSurface);
   Assert(pSrcBuffer);
@@ -4724,21 +4737,21 @@ void Blt8BPPDataSubTo16BPPBuffer(UINT16 *const buf, UINT32 const uiDestPitchBYTE
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT32 const LeftSkip = rect->x;
-  UINT32 const TopSkip = rect->y * src_pitch;
-  UINT32 const BlitLength = rect->w;
-  UINT32 BlitHeight = rect->h;
-  UINT32 const src_skip = src_pitch - BlitLength;
+  uint32_t const LeftSkip = rect->x;
+  uint32_t const TopSkip = rect->y * src_pitch;
+  uint32_t const BlitLength = rect->w;
+  uint32_t BlitHeight = rect->h;
+  uint32_t const src_skip = src_pitch - BlitLength;
 
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT8 const *src = pSrcBuffer + TopSkip + LeftSkip;
-  UINT16 *dst = buf + pitch * y + x;
-  UINT16 const *const pal = hSrcVSurface->p16BPPPalette;
-  UINT32 line_skip = pitch - BlitLength;
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint8_t const *src = pSrcBuffer + TopSkip + LeftSkip;
+  uint16_t *dst = buf + pitch * y + x;
+  uint16_t const *const pal = hSrcVSurface->p16BPPPalette;
+  uint32_t line_skip = pitch - BlitLength;
 
 #if 1  // XXX TODO
   do {
-    UINT32 w = BlitLength;
+    uint32_t w = BlitLength;
     do {
       *dst++ = pal[*src++];
     } while (--w != 0);
@@ -4792,10 +4805,11 @@ BlitLoop:
         Blits from a flat surface to a 16-bit buffer.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPVSurface *hSrcVSurface,
-                              UINT8 *pSrcBuffer, INT32 iX, INT32 iY) {
-  UINT32 LineSkip;
-  INT32 iTempX, iTempY;
+void Blt8BPPDataTo16BPPBuffer(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                              SGPVSurface *hSrcVSurface, uint8_t *pSrcBuffer, int32_t iX,
+                              int32_t iY) {
+  uint32_t LineSkip;
+  int32_t iTempX, iTempY;
 
   // Assertions
   Assert(hSrcVSurface != NULL);
@@ -4803,8 +4817,8 @@ void Blt8BPPDataTo16BPPBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPVSurf
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  UINT32 const usWidth = hSrcVSurface->Width();
-  UINT32 const usHeight = hSrcVSurface->Height();
+  uint32_t const usWidth = hSrcVSurface->Width();
+  uint32_t const usHeight = hSrcVSurface->Height();
 
   // Add to start position of dest buffer
   iTempX = iX;
@@ -4814,9 +4828,9 @@ void Blt8BPPDataTo16BPPBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPVSurf
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 *SrcPtr = pSrcBuffer;
-  UINT16 *DestPtr = pBuffer + uiDestPitchBYTES / 2 * iTempY + iTempX;
-  UINT16 *p16BPPPalette = hSrcVSurface->p16BPPPalette;
+  uint8_t *SrcPtr = pSrcBuffer;
+  uint16_t *DestPtr = pBuffer + uiDestPitchBYTES / 2 * iTempY + iTempX;
+  uint16_t *p16BPPPalette = hSrcVSurface->p16BPPPalette;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -4829,7 +4843,7 @@ void Blt8BPPDataTo16BPPBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPVSurf
     DestPtr += uiDestPitchBYTES / 2;
   }
 #else
-  UINT32 rows;
+  uint32_t rows;
   __asm {
 
 		mov		esi, SrcPtr  // pointer to current line start address in source
@@ -4933,9 +4947,9 @@ DoneBlit:  // finished blit
  *   left coordinates to the same factor of two.
  * - A rect specifying an odd number of pixels will divide out to an even number
  *   of pixels blitted to the destination. */
-void Blt8BPPDataTo16BPPBufferHalf(UINT16 *const dst_buf, UINT32 const uiDestPitchBYTES,
-                                  SGPVSurface *const src_surface, UINT8 const *const src_buf,
-                                  UINT32 const src_pitch, INT32 const x, INT32 const y,
+void Blt8BPPDataTo16BPPBufferHalf(uint16_t *const dst_buf, uint32_t const uiDestPitchBYTES,
+                                  SGPVSurface *const src_surface, uint8_t const *const src_buf,
+                                  uint32_t const src_pitch, int32_t const x, int32_t const y,
                                   SGPBox const *const rect) {
   Assert(src_surface);
   Assert(src_buf);
@@ -4944,9 +4958,9 @@ void Blt8BPPDataTo16BPPBufferHalf(UINT16 *const dst_buf, UINT32 const uiDestPitc
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT8 const *src = src_buf;
-  UINT32 width;
-  UINT32 height;
+  uint8_t const *src = src_buf;
+  uint32_t width;
+  uint32_t height;
   if (rect) {
     width = rect->w;
     height = rect->h;
@@ -4959,15 +4973,15 @@ void Blt8BPPDataTo16BPPBufferHalf(UINT16 *const dst_buf, UINT32 const uiDestPitc
     height = src_surface->Height();
   }
 
-  UINT16 *dst = dst_buf + uiDestPitchBYTES / 2 * y + x;
-  UINT32 const src_skip = (src_pitch - width / 2) * 2;
-  UINT32 const dst_skip = uiDestPitchBYTES / 2 - width / 2;
-  UINT16 const *const pal = src_surface->p16BPPPalette;
+  uint16_t *dst = dst_buf + uiDestPitchBYTES / 2 * y + x;
+  uint32_t const src_skip = (src_pitch - width / 2) * 2;
+  uint32_t const dst_skip = uiDestPitchBYTES / 2 - width / 2;
+  uint16_t const *const pal = src_surface->p16BPPPalette;
 
 #if 1  // XXX TODO
   height /= 2;
   do {
-    UINT32 w = width / 2;
+    uint32_t w = width / 2;
     do {
       *dst++ = pal[*src];
       src += 2;
@@ -5054,13 +5068,13 @@ previously was always black.  The 3rd assembler line in this function:
 usColor argument.
 
 *********************************************************************************************/
-static void Blt16BPPBufferPixelateRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                SGPRect *area, const UINT8 Pattern[8][8],
-                                                UINT16 usColor) {
-  INT32 width, height;
-  UINT32 LineSkip;
-  UINT16 *DestPtr;
-  INT32 iLeft, iTop, iRight, iBottom;
+static void Blt16BPPBufferPixelateRectWithColor(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                                SGPRect *area, const uint8_t Pattern[8][8],
+                                                uint16_t usColor) {
+  int32_t width, height;
+  uint32_t LineSkip;
+  uint16_t *DestPtr;
+  int32_t iLeft, iTop, iRight, iBottom;
 
   // Assertions
   Assert(pBuffer != NULL);
@@ -5080,10 +5094,10 @@ static void Blt16BPPBufferPixelateRectWithColor(UINT16 *pBuffer, UINT32 uiDestPi
   CHECKV(height >= 1);
 
 #if 1  // XXX TODO
-  UINT32 row = 0;
+  uint32_t row = 0;
   do {
-    UINT32 col = 0;
-    UINT32 w = width;
+    uint32_t col = 0;
+    uint32_t w = width;
 
     do {
       if (Pattern[row][col] != 0) *DestPtr = usColor;
@@ -5130,20 +5144,20 @@ BlitLine2:
 }
 
 // Uses black hatch color
-void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area) {
-  const UINT8 Pattern[8][8] = {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}};
+void Blt16BPPBufferHatchRect(uint16_t *pBuffer, uint32_t uiDestPitchBYTES, SGPRect *area) {
+  const uint8_t Pattern[8][8] = {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                                 {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                                 {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                                 {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}};
   Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 
-void Blt16BPPBufferLooseHatchRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area,
-                                           UINT16 usColor) {
-  const UINT8 Pattern[8][8] = {{1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-                               {0, 0, 1, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-                               {1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-                               {0, 0, 1, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 0}};
+void Blt16BPPBufferLooseHatchRectWithColor(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                           SGPRect *area, uint16_t usColor) {
+  const uint8_t Pattern[8][8] = {{1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
+                                 {0, 0, 1, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
+                                 {1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
+                                 {0, 0, 1, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 0}};
   Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, usColor);
 }
 
@@ -5155,10 +5169,11 @@ using the source image as a mask. Any Non-zero index pixels are used to darken
 destination pixels.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HVOBJECT hSrcVObject,
-                                    INT32 iX, INT32 iY, UINT16 usIndex) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferShadow(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                    HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                    uint16_t usIndex) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5166,25 +5181,25 @@ void Blt8BPPDataTo16BPPBufferShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HV
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -5193,7 +5208,7 @@ void Blt8BPPDataTo16BPPBufferShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HV
       } else {
         SrcPtr += data;
         do {
-          *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           DestPtr += 2;
         } while (--data > 0);
       }
@@ -5303,33 +5318,33 @@ BlitDone:
 
 /* Blit an image into the destination buffer, using an ETRLE brush as a source
  * and a 16-bit buffer as a destination. */
-void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-                                         SGPVObject const *const hSrcVObject, INT32 const iX,
-                                         INT32 const iY, UINT16 const usIndex) {
+void Blt8BPPDataTo16BPPBufferTransparent(uint16_t *const buf, uint32_t const uiDestPitchBYTES,
+                                         SGPVObject const *const hSrcVObject, int32_t const iX,
+                                         int32_t const iY, uint16_t const usIndex) {
   Assert(hSrcVObject);
   Assert(buf);
 
   // Get offsets from index into structure
   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 height = e.usHeight;
-  UINT32 const width = e.usWidth;
+  uint32_t height = e.usHeight;
+  uint32_t const width = e.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const x = iX + e.sOffsetX;
-  INT32 const y = iY + e.sOffsetY;
+  int32_t const x = iX + e.sOffsetX;
+  int32_t const y = iY + e.sOffsetY;
 
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT8 const *src = hSrcVObject->PixData(e);
-  UINT16 *dst = buf + pitch * y + x;
-  UINT16 const *const pal = hSrcVObject->CurrentShade();
-  UINT32 line_skip = pitch - width;
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint8_t const *src = hSrcVObject->PixData(e);
+  uint16_t *dst = buf + pitch * y + x;
+  uint16_t const *const pal = hSrcVObject->CurrentShade();
+  uint32_t line_skip = pitch - width;
 
 #if 1  // XXX TODO
   for (;;) {
-    UINT8 data = *src++;
+    uint8_t data = *src++;
     if (data == 0) {
       if (--height == 0) break;
       dst += line_skip;
@@ -5451,15 +5466,16 @@ BlitDone:
 source, and a 16-bit buffer as a destination. Clips the brush.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                             const SGPVObject *const hSrcVObject, const INT32 iX,
-                                             const INT32 iY, const UINT16 usIndex,
+void Blt8BPPDataTo16BPPBufferTransparentClip(uint16_t *const pBuffer,
+                                             const uint32_t uiDestPitchBYTES,
+                                             const SGPVObject *const hSrcVObject, const int32_t iX,
+                                             const int32_t iY, const uint16_t usIndex,
                                              const SGPRect *const clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  uint32_t Unblitted;
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5467,12 +5483,12 @@ void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -5487,29 +5503,30 @@ void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 LSCount;
-  UINT32 PxCount;
+  uint32_t LSCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -5562,7 +5579,7 @@ void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32
         LSCount -= PxCount;
 
         do {
-          *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr++];
+          *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr++];
           DestPtr += 2;
         } while (--PxCount > 0);
         SrcPtr += Unblitted;
@@ -5796,21 +5813,21 @@ BlitDone:
 TRUE/FALSE.
 
 **********************************************************************************************/
-BOOLEAN BltIsClipped(const SGPVObject *const hSrcVObject, const INT32 iX, const INT32 iY,
-                     const UINT16 usIndex, const SGPRect *const clipregion) {
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+BOOLEAN BltIsClipped(const SGPVObject *const hSrcVObject, const int32_t iX, const int32_t iY,
+                     const uint16_t usIndex, const SGPRect *const clipregion) {
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -5825,13 +5842,14 @@ BOOLEAN BltIsClipped(const SGPVObject *const hSrcVObject, const INT32 iX, const 
   }
 
   // Calculate rows hanging off each side of the screen
-  if (std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth)) return (TRUE);
+  if (std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth)) return (TRUE);
 
-  if (std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth)) return (TRUE);
+  if (std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth))
+    return (TRUE);
 
-  if (std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight)) return (TRUE);
+  if (std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight)) return (TRUE);
 
-  if (std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight))
+  if (std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight))
     return (TRUE);
 
   return (FALSE);
@@ -5845,13 +5863,13 @@ using the source image as a mask. Any Non-zero index pixels are used to darken
 destination pixels. Blitter clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                        HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
-                                        SGPRect *clipregion) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferShadowClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                        HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                        uint16_t usIndex, SGPRect *clipregion) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5859,12 +5877,12 @@ void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -5879,28 +5897,29 @@ void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
-  UINT32 LSCount;
-  UINT32 PxCount;
+  uint32_t LSCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -5949,7 +5968,7 @@ void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
         LSCount -= PxCount;
 
         do {
-          *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+          *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           DestPtr += 2;
         } while (--PxCount > 0);
       }
@@ -5960,7 +5979,7 @@ void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
     DestPtr += LineSkip;
   } while (--BlitHeight > 0);
 #else
-  UINT32 Unblitted;
+  uint32_t Unblitted;
   __asm {
 
 		mov		esi, SrcPtr
@@ -6168,11 +6187,11 @@ BlitDone:
 #endif
 }
 
-void Blt16BPPBufferFilterRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, const UINT16 *filter_table,
-                              SGPRect *area) {
-  INT32 width, height;
-  UINT32 LineSkip;
-  UINT16 *DestPtr;
+void Blt16BPPBufferFilterRect(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                              const uint16_t *filter_table, SGPRect *area) {
+  int32_t width, height;
+  uint32_t LineSkip;
+  uint16_t *DestPtr;
 
   // Assertions
   Assert(pBuffer != NULL);
@@ -6197,13 +6216,13 @@ void Blt16BPPBufferFilterRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, const UI
 
 #if 1  // XXX TODO
   do {
-    UINT32 w = width;
+    uint32_t w = width;
 
     do {
       *DestPtr = filter_table[*DestPtr];
       DestPtr++;
     } while (--w > 0);
-    DestPtr = (UINT16 *)((UINT8 *)DestPtr + LineSkip);
+    DestPtr = (uint16_t *)((uint8_t *)DestPtr + LineSkip);
   } while (--height > 0);
 #else
   __asm {
@@ -6238,21 +6257,21 @@ BlitLine:
 TRUE/FALSE.
 
 **********************************************************************************************/
-CHAR8 BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
-                              SGPRect *clipregion) {
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+char BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, int32_t iX, int32_t iY, uint16_t usIndex,
+                             SGPRect *clipregion) {
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -6267,17 +6286,18 @@ CHAR8 BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 u
   }
 
   // Calculate rows hanging off each side of the screen
-  INT32 gLeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  INT32 gTopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  INT32 gRightSkip = std::min(std::max(ClipX2, iTempX + (INT32)usWidth) - ClipX2, (INT32)usWidth);
-  INT32 gBottomSkip =
-      std::min(std::max(ClipY2, iTempY + (INT32)usHeight) - ClipY2, (INT32)usHeight);
+  int32_t gLeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  int32_t gTopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  int32_t gRightSkip =
+      std::min(std::max(ClipX2, iTempX + (int32_t)usWidth) - ClipX2, (int32_t)usWidth);
+  int32_t gBottomSkip =
+      std::min(std::max(ClipY2, iTempY + (int32_t)usHeight) - ClipY2, (int32_t)usHeight);
 
   // check if whole thing is clipped
-  if ((gLeftSkip >= (INT32)usWidth) || (gRightSkip >= (INT32)usWidth)) return (-1);
+  if ((gLeftSkip >= (int32_t)usWidth) || (gRightSkip >= (int32_t)usWidth)) return (-1);
 
   // check if whole thing is clipped
-  if ((gTopSkip >= (INT32)usHeight) || (gBottomSkip >= (INT32)usHeight)) return (-1);
+  if ((gTopSkip >= (int32_t)usHeight) || (gBottomSkip >= (int32_t)usHeight)) return (-1);
 
   if (gLeftSkip) return (TRUE);
 
@@ -6292,33 +6312,34 @@ CHAR8 BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 u
 
 // ATE New blitter for rendering a differrent color for value 254. Can be
 // transparent if outline is SGP_TRANSPARENT
-void Blt8BPPDataTo16BPPBufferOutline(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-                                     SGPVObject const *const hSrcVObject, INT32 const iX,
-                                     INT32 const iY, UINT16 const usIndex, INT16 const outline) {
+void Blt8BPPDataTo16BPPBufferOutline(uint16_t *const buf, uint32_t const uiDestPitchBYTES,
+                                     SGPVObject const *const hSrcVObject, int32_t const iX,
+                                     int32_t const iY, uint16_t const usIndex,
+                                     int16_t const outline) {
   Assert(hSrcVObject);
   Assert(buf);
 
   // Get offsets from index into structure
   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 height = e.usHeight;
-  UINT32 const width = e.usWidth;
+  uint32_t height = e.usHeight;
+  uint32_t const width = e.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const x = iX + e.sOffsetX;
-  INT32 const y = iY + e.sOffsetY;
+  int32_t const x = iX + e.sOffsetX;
+  int32_t const y = iY + e.sOffsetY;
 
   CHECKV(x >= 0);
   CHECKV(y >= 0);
 
-  UINT8 const *src = hSrcVObject->PixData(e);
-  UINT32 const pitch = uiDestPitchBYTES / 2;
-  UINT16 *dst = buf + pitch * y + x;
-  UINT32 line_skip = pitch - width;
-  UINT16 const *const pal = hSrcVObject->CurrentShade();
+  uint8_t const *src = hSrcVObject->PixData(e);
+  uint32_t const pitch = uiDestPitchBYTES / 2;
+  uint16_t *dst = buf + pitch * y + x;
+  uint32_t line_skip = pitch - width;
+  uint16_t const *const pal = hSrcVObject->CurrentShade();
 
 #if 1  // XXX TODO
   for (;;) {
-    UINT8 data = *src++;
+    uint8_t data = *src++;
     if (data == 0) {
       if (--height == 0) break;
       dst += line_skip;
@@ -6326,7 +6347,7 @@ void Blt8BPPDataTo16BPPBufferOutline(UINT16 *const buf, UINT32 const uiDestPitch
       dst += data & 0x7F;
     } else {
       do {
-        UINT8 const px = *src++;
+        uint8_t const px = *src++;
         if (px != 254) {
           *dst = pal[px];
         } else if (outline != SGP_TRANSPARENT) {
@@ -6412,15 +6433,16 @@ BlitDone:
 
 // ATE New blitter for rendering a differrent color for value 254. Can be
 // transparent if s16BPPColor is SGP_TRANSPARENT
-void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                         const SGPVObject *const hSrcVObject, const INT32 iX,
-                                         const INT32 iY, const UINT16 usIndex,
-                                         const INT16 s16BPPColor, const SGPRect *const clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferOutlineClip(uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES,
+                                         const SGPVObject *const hSrcVObject, const int32_t iX,
+                                         const int32_t iY, const uint16_t usIndex,
+                                         const int16_t s16BPPColor,
+                                         const SGPRect *const clipregion) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6428,12 +6450,12 @@ void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiD
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -6448,28 +6470,29 @@ void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiD
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -6522,12 +6545,12 @@ void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiD
         LSCount -= PxCount;
 
         do {
-          UINT32 src = *SrcPtr++;
+          uint32_t src = *SrcPtr++;
 
           if (src != 254) {
-            *(UINT16 *)DestPtr = p16BPPPalette[src];
+            *(uint16_t *)DestPtr = p16BPPPalette[src];
           } else if (s16BPPColor != SGP_TRANSPARENT) {
-            *(UINT16 *)DestPtr = s16BPPColor;
+            *(uint16_t *)DestPtr = s16BPPColor;
           }
           DestPtr += 2;
         } while (--PxCount > 0);
@@ -6718,17 +6741,17 @@ BlitDone:
 #endif
 }
 
-void Blt8BPPDataTo16BPPBufferOutlineZClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                          UINT16 *const pZBuffer, const UINT16 usZValue,
-                                          const HVOBJECT hSrcVObject, const INT32 iX,
-                                          const INT32 iY, const UINT16 usIndex,
-                                          const INT16 s16BPPColor,
+void Blt8BPPDataTo16BPPBufferOutlineZClip(uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES,
+                                          uint16_t *const pZBuffer, const uint16_t usZValue,
+                                          const HVOBJECT hSrcVObject, const int32_t iX,
+                                          const int32_t iY, const uint16_t usIndex,
+                                          const int16_t s16BPPColor,
                                           const SGPRect *const clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6736,12 +6759,12 @@ void Blt8BPPDataTo16BPPBufferOutlineZClip(UINT16 *const pBuffer, const UINT32 ui
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -6756,30 +6779,31 @@ void Blt8BPPDataTo16BPPBufferOutlineZClip(UINT16 *const pBuffer, const UINT32 ui
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
 
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
 
 #if 1  // XXX TODO
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -6833,14 +6857,14 @@ void Blt8BPPDataTo16BPPBufferOutlineZClip(UINT16 *const pBuffer, const UINT32 ui
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            UINT32 src = *SrcPtr;
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            uint32_t src = *SrcPtr;
 
             if (src != 254) {
-              *(UINT16 *)ZPtr = usZValue;
-              *(UINT16 *)DestPtr = p16BPPPalette[src];
+              *(uint16_t *)ZPtr = usZValue;
+              *(uint16_t *)DestPtr = p16BPPPalette[src];
             } else {
-              *(UINT16 *)DestPtr = s16BPPColor;
+              *(uint16_t *)DestPtr = s16BPPColor;
             }
           }
           SrcPtr++;
@@ -7052,15 +7076,15 @@ BlitDone:
 }
 
 void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(
-    UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES, UINT16 *const pZBuffer,
-    const UINT16 usZValue, const HVOBJECT hSrcVObject, const INT32 iX, const INT32 iY,
-    const UINT16 usIndex, const INT16 s16BPPColor, const SGPRect *const clipregion) {
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT32 uiLineFlag;
+    uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES, uint16_t *const pZBuffer,
+    const uint16_t usZValue, const HVOBJECT hSrcVObject, const int32_t iX, const int32_t iY,
+    const uint16_t usIndex, const int16_t s16BPPColor, const SGPRect *const clipregion) {
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
+  uint32_t uiLineFlag;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7068,12 +7092,12 @@ void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -7088,33 +7112,34 @@ void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
 
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   uiLineFlag = (iTempY & 1);
 
 #if 1  // XXX TODO
   uiLineFlag = (iTempY + TopSkip) & 1;
 
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -7168,21 +7193,21 @@ void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
           } else {
             // XXX original code updates Z value in one of two cases on this
             // path, seems wrong
             if (uiLineFlag != (((uintptr_t)DestPtr & 2) != 0)) continue;
           }
 
-          UINT8 px = *SrcPtr;
+          uint8_t px = *SrcPtr;
           if (px == 254) {
-            *(UINT16 *)DestPtr = s16BPPColor;
+            *(uint16_t *)DestPtr = s16BPPColor;
           } else {
             // XXX original code writes garbage (lower 8 bit are the colour
             // index) into the Z buffer at this point
-            *(UINT16 *)DestPtr = p16BPPPalette[px];
+            *(uint16_t *)DestPtr = p16BPPPalette[px];
           }
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --PxCount > 0);
         SrcPtr += Unblitted;
@@ -7415,11 +7440,11 @@ BlitDone:
 #endif
 }
 
-void Blt8BPPDataTo16BPPBufferOutlineShadow(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                           const SGPVObject *const hSrcVObject, const INT32 iX,
-                                           const INT32 iY, const UINT16 usIndex) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferOutlineShadow(uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES,
+                                           const SGPVObject *const hSrcVObject, const int32_t iX,
+                                           const int32_t iY, const uint16_t usIndex) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7427,25 +7452,25 @@ void Blt8BPPDataTo16BPPBufferOutlineShadow(UINT16 *const pBuffer, const UINT32 u
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -7454,7 +7479,7 @@ void Blt8BPPDataTo16BPPBufferOutlineShadow(UINT16 *const pBuffer, const UINT32 u
       } else {
         do {
           if (*SrcPtr++ != 254) {
-            *(UINT16 *)DestPtr = ShadeTable[*(UINT16 *)DestPtr];
+            *(uint16_t *)DestPtr = ShadeTable[*(uint16_t *)DestPtr];
           }
           DestPtr += 2;
         } while (--data > 0);
@@ -7523,14 +7548,13 @@ BlitDone:
 #endif
 }
 
-void Blt8BPPDataTo16BPPBufferOutlineShadowClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                               const SGPVObject *const hSrcVObject, const INT32 iX,
-                                               const INT32 iY, const UINT16 usIndex,
-                                               const SGPRect *const clipregion) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferOutlineShadowClip(
+    uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES, const SGPVObject *const hSrcVObject,
+    const int32_t iX, const int32_t iY, const uint16_t usIndex, const SGPRect *const clipregion) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7538,12 +7562,12 @@ void Blt8BPPDataTo16BPPBufferOutlineShadowClip(UINT16 *const pBuffer, const UINT
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -7558,30 +7582,31 @@ void Blt8BPPDataTo16BPPBufferOutlineShadowClip(UINT16 *const pBuffer, const UINT
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   (void)SrcPtr;
   UNIMPLEMENTED
 #else
-  UINT32 Unblitted;
+  uint32_t Unblitted;
   __asm {
 
 		mov		esi, SrcPtr
@@ -7795,12 +7820,13 @@ BlitDone:
 #endif
 }
 
-void Blt8BPPDataTo16BPPBufferOutlineZ(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                      UINT16 *const pZBuffer, const UINT16 usZValue,
-                                      const HVOBJECT hSrcVObject, const INT32 iX, const INT32 iY,
-                                      const UINT16 usIndex, const INT16 s16BPPColor) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferOutlineZ(uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES,
+                                      uint16_t *const pZBuffer, const uint16_t usZValue,
+                                      const HVOBJECT hSrcVObject, const int32_t iX,
+                                      const int32_t iY, const uint16_t usIndex,
+                                      const int16_t s16BPPColor) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7808,27 +7834,27 @@ void Blt8BPPDataTo16BPPBufferOutlineZ(UINT16 *const pBuffer, const UINT32 uiDest
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -7837,15 +7863,15 @@ void Blt8BPPDataTo16BPPBufferOutlineZ(UINT16 *const pBuffer, const UINT32 uiDest
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr <= usZValue) {
-            UINT8 px = *SrcPtr;
+          if (*(uint16_t *)ZPtr <= usZValue) {
+            uint8_t px = *SrcPtr;
 
             if (px == 254) {
-              *(UINT16 *)DestPtr = s16BPPColor;
+              *(uint16_t *)DestPtr = s16BPPColor;
             } else {
-              *(UINT16 *)ZPtr = usZValue;  // XXX TODO original code writes garbage into the Z
-                                           // buffer, but comment says don't write at all
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+              *(uint16_t *)ZPtr = usZValue;  // XXX TODO original code writes garbage into the Z
+                                             // buffer, but comment says don't write at all
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
           SrcPtr++;
@@ -7947,15 +7973,13 @@ BlitDone:
 #endif
 }
 
-void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(UINT16 *const pBuffer,
-                                                      const UINT32 uiDestPitchBYTES,
-                                                      UINT16 *const pZBuffer, const UINT16 usZValue,
-                                                      const HVOBJECT hSrcVObject, const INT32 iX,
-                                                      const INT32 iY, const UINT16 usIndex,
-                                                      const INT16 s16BPPColor) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  UINT32 uiLineFlag;
+void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(
+    uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES, uint16_t *const pZBuffer,
+    const uint16_t usZValue, const HVOBJECT hSrcVObject, const int32_t iX, const int32_t iY,
+    const uint16_t usIndex, const int16_t s16BPPColor) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  uint32_t uiLineFlag;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7963,28 +7987,28 @@ void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(UINT16 *const pBuffer,
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -7993,19 +8017,19 @@ void Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(UINT16 *const pBuffer,
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
           } else {
             // XXX original code updates Z value in one of two cases on this
             // path, seems wrong
             if (uiLineFlag != (((uintptr_t)DestPtr & 2) != 0)) continue;
           }
 
-          UINT8 px = *SrcPtr;
+          uint8_t px = *SrcPtr;
           if (px == 254) {
-            *(UINT16 *)DestPtr = s16BPPColor;
+            *(uint16_t *)DestPtr = s16BPPColor;
           } else {
-            *(UINT16 *)DestPtr = p16BPPPalette[px];
+            *(uint16_t *)DestPtr = p16BPPPalette[px];
           }
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --data > 0);
       }
@@ -8127,12 +8151,12 @@ BlitDone:
 }
 
 // This is the same as above, but DONOT WRITE to Z!
-void Blt8BPPDataTo16BPPBufferOutlineZNB(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-                                        UINT16 *const pZBuffer, const UINT16 usZValue,
-                                        const HVOBJECT hSrcVObject, const INT32 iX, const INT32 iY,
-                                        const UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferOutlineZNB(uint16_t *const pBuffer, const uint32_t uiDestPitchBYTES,
+                                        uint16_t *const pZBuffer, const uint16_t usZValue,
+                                        const HVOBJECT hSrcVObject, const int32_t iX,
+                                        const int32_t iY, const uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8140,27 +8164,27 @@ void Blt8BPPDataTo16BPPBufferOutlineZNB(UINT16 *const pBuffer, const UINT32 uiDe
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
   do {
     for (;;) {
-      UINT8 data = *SrcPtr++;
+      uint8_t data = *SrcPtr++;
 
       if (data == 0) break;
       if (data & 0x80) {
@@ -8169,10 +8193,10 @@ void Blt8BPPDataTo16BPPBufferOutlineZNB(UINT16 *const pBuffer, const UINT32 uiDe
         ZPtr += 2 * data;
       } else {
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            UINT8 px = *SrcPtr;
+          if (*(uint16_t *)ZPtr < usZValue) {
+            uint8_t px = *SrcPtr;
             if (px != 254) {
-              *(UINT16 *)DestPtr = p16BPPPalette[px];
+              *(uint16_t *)DestPtr = p16BPPPalette[px];
             }
           }
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --data > 0);
@@ -8279,11 +8303,11 @@ if the current Z level is equal to higher than what's in the Z buffer at that
 pixel location. It updates the Z buffer with the new Z level.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferIntensityZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
-                                        UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                        UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferIntensityZ(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                        uint16_t *pZBuffer, uint16_t usZValue, HVOBJECT hSrcVObject,
+                                        int32_t iX, int32_t iY, uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8291,20 +8315,20 @@ void Blt8BPPDataTo16BPPBufferIntensityZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -8390,14 +8414,14 @@ Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the
 destination.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferIntensityZClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                            UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                            INT32 iX, INT32 iY, UINT16 usIndex,
-                                            SGPRect *clipregion) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferIntensityZClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                            uint16_t *pZBuffer, uint16_t usZValue,
+                                            HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                            uint16_t usIndex, SGPRect *clipregion) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8405,12 +8429,12 @@ void Blt8BPPDataTo16BPPBufferIntensityZClip(UINT16 *pBuffer, UINT32 uiDestPitchB
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -8425,32 +8449,33 @@ void Blt8BPPDataTo16BPPBufferIntensityZClip(UINT16 *pBuffer, UINT32 uiDestPitchB
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   (void)SrcPtr;
   UNIMPLEMENTED
 #else
-  UINT32 Unblitted;
-  INT32 LSCount;
+  uint32_t Unblitted;
+  int32_t LSCount;
   __asm {
 
 		mov		esi, SrcPtr
@@ -8635,11 +8660,12 @@ if the current Z level is equal to higher than what's in the Z buffer at that
 pixel location. It does NOT update the Z buffer with the new Z value.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferIntensityZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                          UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
-                                          INT32 iX, INT32 iY, UINT16 usIndex) {
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferIntensityZNB(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                          uint16_t *pZBuffer, uint16_t usZValue,
+                                          HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                          uint16_t usIndex) {
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8647,20 +8673,20 @@ void Blt8BPPDataTo16BPPBufferIntensityZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYT
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -8740,13 +8766,13 @@ using the source image as a mask. Any Non-zero index pixels are used to darken
 destination pixels. Blitter clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferIntensityClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                           HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
-                                           SGPRect *clipregion) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferIntensityClip(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                           HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                           uint16_t usIndex, SGPRect *clipregion) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8754,12 +8780,12 @@ void Blt8BPPDataTo16BPPBufferIntensityClip(UINT16 *pBuffer, UINT32 uiDestPitchBY
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -8774,30 +8800,31 @@ void Blt8BPPDataTo16BPPBufferIntensityClip(UINT16 *pBuffer, UINT32 uiDestPitchBY
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
 #if 1  // XXX TODO
   (void)SrcPtr;
   UNIMPLEMENTED
 #else
-  UINT32 Unblitted;
+  uint32_t Unblitted;
   __asm {
 
 		mov		esi, SrcPtr
@@ -9013,10 +9040,11 @@ using the source image as a mask. Any Non-zero index pixels are used to darken
 destination pixels.
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferIntensity(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                       HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex) {
-  UINT8 *DestPtr;
-  UINT32 LineSkip;
+void Blt8BPPDataTo16BPPBufferIntensity(uint16_t *pBuffer, uint32_t uiDestPitchBYTES,
+                                       HVOBJECT hSrcVObject, int32_t iX, int32_t iY,
+                                       uint16_t usIndex) {
+  uint8_t *DestPtr;
+  uint32_t LineSkip;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9024,19 +9052,19 @@ void Blt8BPPDataTo16BPPBufferIntensity(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   CHECKV(iTempX >= 0);
   CHECKV(iTempY >= 0);
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (uint8_t *)pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
 #if 1  // XXX TODO
@@ -9157,16 +9185,15 @@ dimensions (including Pitch) as the destination.
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-void Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-                                                        UINT16 *pZBuffer, UINT16 usZValue,
-                                                        HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-                                                        UINT16 usIndex, SGPRect *clipregion) {
-  UINT32 uiLineFlag;
-  UINT32 Unblitted;
-  UINT8 *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+void Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(
+    uint16_t *pBuffer, uint32_t uiDestPitchBYTES, uint16_t *pZBuffer, uint16_t usZValue,
+    HVOBJECT hSrcVObject, int32_t iX, int32_t iY, uint16_t usIndex, SGPRect *clipregion) {
+  uint32_t uiLineFlag;
+  uint32_t Unblitted;
+  uint8_t *DestPtr, *ZPtr;
+  uint32_t LineSkip;
+  int32_t LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  int32_t ClipX1, ClipY1, ClipX2, ClipY2;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9174,12 +9201,12 @@ void Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(UINT16 *pBuffer, UINT32 
 
   // Get Offsets from Index into structure
   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-  UINT32 const usHeight = pTrav.usHeight;
-  UINT32 const usWidth = pTrav.usWidth;
+  uint32_t const usHeight = pTrav.usHeight;
+  uint32_t const usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  INT32 const iTempX = iX + pTrav.sOffsetX;
-  INT32 const iTempY = iY + pTrav.sOffsetY;
+  int32_t const iTempX = iX + pTrav.sOffsetX;
+  int32_t const iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == NULL) {
     ClipX1 = ClippingRect.iLeft;
@@ -9194,32 +9221,33 @@ void Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(UINT16 *pBuffer, UINT32 
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (INT32)usWidth);
-  RightSkip = std::min(std::max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (INT32)usHeight);
-  BottomSkip = std::min(std::max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  LeftSkip = std::min(ClipX1 - std::min(ClipX1, iTempX), (int32_t)usWidth);
+  RightSkip = std::min(std::max(ClipX2, (iTempX + (int32_t)usWidth)) - ClipX2, (int32_t)usWidth);
+  TopSkip = std::min(ClipY1 - std::min(ClipY1, iTempY), (int32_t)usHeight);
+  BottomSkip = std::min(std::max(ClipY2, (iTempY + (int32_t)usHeight)) - ClipY2, (int32_t)usHeight);
 
   // calculate the remaining rows and columns to blit
-  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+  BlitLength = ((int32_t)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((int32_t)usHeight - TopSkip - BottomSkip);
 
   // check if whole thing is clipped
-  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+  if ((LeftSkip >= (int32_t)usWidth) || (RightSkip >= (int32_t)usWidth)) return;
 
   // check if whole thing is clipped
-  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+  if ((TopSkip >= (int32_t)usHeight) || (BottomSkip >= (int32_t)usHeight)) return;
 
-  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = (UINT8 *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  uint8_t const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr =
+      (uint8_t *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  ZPtr = (uint8_t *)pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  uint16_t const *const p16BPPPalette = hSrcVObject->CurrentShade();
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
 #if 1  // XXX TODO
   uiLineFlag = (iTempY + TopSkip) & 1;
 
-  UINT32 PxCount;
+  uint32_t PxCount;
 
   while (TopSkip > 0) {
     for (;;) {
@@ -9273,12 +9301,12 @@ void Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(UINT16 *pBuffer, UINT32 
         LSCount -= PxCount;
 
         do {
-          if (*(UINT16 *)ZPtr < usZValue) {
-            *(UINT16 *)ZPtr = usZValue;
+          if (*(uint16_t *)ZPtr < usZValue) {
+            *(uint16_t *)ZPtr = usZValue;
           } else {
             if (uiLineFlag != (((uintptr_t)DestPtr & 2) != 0)) continue;
           }
-          *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr];
+          *(uint16_t *)DestPtr = p16BPPPalette[*SrcPtr];
         } while (SrcPtr++, DestPtr += 2, ZPtr += 2, --PxCount > 0);
         SrcPtr += Unblitted;
       }

@@ -15,7 +15,7 @@
 static BUTTON_PICS *giIMPAttributeEntranceButtonImage[1];
 static GUIButtonRef giIMPAttributeEntranceButton[1];
 
-static void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPAttributeEntranceButtons();
 
@@ -57,7 +57,7 @@ static void DestroyIMPAttributeEntranceButtons() {
   UnloadButtonImage(giIMPAttributeEntranceButtonImage[0]);
 }
 
-static void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_ATTRIBUTE_PAGE;
     fButtonPendingFlag = TRUE;

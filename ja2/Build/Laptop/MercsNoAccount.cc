@@ -33,16 +33,16 @@
 static SGPVObject *guiNoAccountImage;
 
 // The Open Account Box button
-static void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, int32_t reason);
 static BUTTON_PICS *guiOpenAccountBoxButtonImage;
 GUIButtonRef guiOpenAccountBoxButton;
 
 // The Cancel Account Box button
-static void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, int32_t reason);
 GUIButtonRef guiCancelBoxButton;
 
-static GUIButtonRef MakeButton(const wchar_t *text, INT16 x, GUI_CALLBACK click) {
-  const INT16 shadow_col = DEFAULT_SHADOW;
+static GUIButtonRef MakeButton(const wchar_t *text, int16_t x, GUI_CALLBACK click) {
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn = CreateIconAndTextButton(
       guiOpenAccountBoxButtonImage, text, FONT12ARIAL, MERC_BUTTON_UP_COLOR, shadow_col,
       MERC_BUTTON_DOWN_COLOR, shadow_col, x, MERC_BUTTON_Y, MSYS_PRIORITY_HIGH, click);
@@ -94,7 +94,7 @@ void RenderMercsNoAccount() {
                    LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-static void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // open an account
     LaptopSaveInfo.gubPlayersMercAccountStatus = MERC_ACCOUNT_VALID;
@@ -109,7 +109,7 @@ static void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_MERC;
     gubArrivedFromMercSubSite = MERC_CAME_FROM_ACCOUNTS_PAGE;

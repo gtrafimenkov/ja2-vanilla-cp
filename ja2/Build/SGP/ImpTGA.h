@@ -3,6 +3,6 @@
 
 #include "SGP/Types.h"
 
-SGPImage *LoadTGAFileToImage(char const *filename, UINT16 fContents);
+SGPImage *LoadTGAFileToImage(char const *filename, uint16_t fContents);
 
 #endif

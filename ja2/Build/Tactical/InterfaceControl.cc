@@ -47,9 +47,9 @@
 static SGPRect gOldClippingRect;
 static SGPRect gOldDirtyClippingRect;
 
-static UINT16 gusUICurIntTileEffectIndex;
-static INT16 gsUICurIntTileEffectGridNo;
-static UINT8 gsUICurIntTileOldShade;
+static uint16_t gusUICurIntTileEffectIndex;
+static int16_t gsUICurIntTileEffectGridNo;
+static uint8_t gsUICurIntTileOldShade;
 
 BOOLEAN gfRerenderInterfaceFromHelpText = FALSE;
 
@@ -156,7 +156,7 @@ void SetUpInterface() {
   HandleInterfaceBackgrounds();
 
   switch (gfUIHandleSelection) {
-    UINT16 idx;
+    uint16_t idx;
 
     case NONSELECTED_GUY_SELECTION:
       idx = GOODRING1;
@@ -172,7 +172,8 @@ void SetUpInterface() {
       break;
 
     add_node:
-      LEVELNODE *(&add)(UINT32, UINT16) = gsSelectedLevel == 0 ? AddObjectToHead : AddRoofToHead;
+      LEVELNODE *(&add)(uint32_t, uint16_t) =
+          gsSelectedLevel == 0 ? AddObjectToHead : AddRoofToHead;
       LEVELNODE *const n = add(gsSelectedGridNo, idx);
       n->ubShadeLevel = DEFAULT_SHADE_LEVEL;
       n->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -182,10 +183,10 @@ void SetUpInterface() {
   if (gfUIHandleShowMoveGrid) {
     SOLDIERTYPE const *const sel = GetSelectedMan();
     if (sel && sel->sGridNo != gsUIHandleShowMoveGridLocation) {
-      UINT16 const idx = gfUIHandleShowMoveGrid == 2 ? FIRSTPOINTERS4
-                         : sel->bStealthMode         ? FIRSTPOINTERS9
-                                                     : FIRSTPOINTERS2;
-      LEVELNODE *(&add)(UINT32, UINT16) =
+      uint16_t const idx = gfUIHandleShowMoveGrid == 2 ? FIRSTPOINTERS4
+                           : sel->bStealthMode         ? FIRSTPOINTERS9
+                                                       : FIRSTPOINTERS2;
+      LEVELNODE *(&add)(uint32_t, uint16_t) =
           gsInterfaceLevel == 0 ? AddTopmostToHead : AddOnRoofToHead;
       LEVELNODE *const n = add(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(idx));
       n->ubShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -216,7 +217,7 @@ void ResetInterface() {
 
   if (gfUIHandleSelection) {
     BOOLEAN(&remove)
-    (UINT32, UINT16) = gsSelectedLevel == 0 ? RemoveObject : RemoveRoof;
+    (uint32_t, uint16_t) = gsSelectedLevel == 0 ? RemoveObject : RemoveRoof;
     GridNo const gridno = gsSelectedGridNo;
     remove(gridno, GOODRING1);
     remove(gridno, FIRSTPOINTERS2);
@@ -224,7 +225,7 @@ void ResetInterface() {
 
   if (gfUIHandleShowMoveGrid) {
     BOOLEAN(&remove)
-    (UINT32, UINT16) = gsInterfaceLevel == 0 ? RemoveTopmost : RemoveOnRoof;
+    (uint32_t, uint16_t) = gsInterfaceLevel == 0 ? RemoveTopmost : RemoveOnRoof;
     GridNo const gridno = gsUIHandleShowMoveGridLocation;
     remove(gridno, FIRSTPOINTERS2);
     remove(gridno, FIRSTPOINTERS4);
@@ -249,34 +250,34 @@ void ResetInterface() {
   }
 }
 
-static UINT32 const guiColors[] = {
+static uint32_t const guiColors[] = {
     FROMRGB(198, 163, 0), FROMRGB(185, 150, 0), FROMRGB(172, 136, 0), FROMRGB(159, 123, 0),
     FROMRGB(146, 110, 0), FROMRGB(133, 96, 0),  FROMRGB(120, 83, 0),  FROMRGB(133, 96, 0),
     FROMRGB(146, 110, 0), FROMRGB(159, 123, 0), FROMRGB(172, 136, 0), FROMRGB(185, 150, 0)};
 
 static void RenderRubberBanding() {
-  static INT32 flash_colour = 0;
-  static INT32 time_of_last_update = 0;
+  static int32_t flash_colour = 0;
+  static int32_t time_of_last_update = 0;
 
   if (!gRubberBandActive) return;
 
-  INT16 l = gRubberBandRect.iLeft;
-  INT16 r = gRubberBandRect.iRight;
-  INT16 t = gRubberBandRect.iTop;
-  INT16 b = gRubberBandRect.iBottom;
+  int16_t l = gRubberBandRect.iLeft;
+  int16_t r = gRubberBandRect.iRight;
+  int16_t t = gRubberBandRect.iTop;
+  int16_t b = gRubberBandRect.iBottom;
 
   if (l == r && t == b) return;
 
-  UINT32 const now = GetJA2Clock();
+  uint32_t const now = GetJA2Clock();
   if (now - time_of_last_update > 60) {
     time_of_last_update = now;
     if (++flash_colour == lengthof(guiColors)) flash_colour = 0;
   }
-  UINT16 const colour = Get16BPPColor(guiColors[flash_colour]);
+  uint16_t const colour = Get16BPPColor(guiColors[flash_colour]);
 
   // Draw rectangle.....
   SGPVSurface::Lock lock(FRAME_BUFFER);
-  UINT16 *const pDestBuf = lock.Buffer<UINT16>();
+  uint16_t *const pDestBuf = lock.Buffer<uint16_t>();
   SetClippingRegionAndImageWidth(lock.Pitch(), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y);
 
   if (l != r) {
@@ -344,12 +345,12 @@ void RenderTopmostTacticalInterface() {
     if (s.sGridNo == NOWHERE) continue;
     if (s.bVisible == -1) continue;
 
-    INT16 sMercScreenX;
-    INT16 sMercScreenY;
+    int16_t sMercScreenX;
+    int16_t sMercScreenY;
     GetSoldierTRUEScreenPos(&s, &sMercScreenX, &sMercScreenY);
 
-    INT16 x = sMercScreenX + s.sDamageX;
-    INT16 y = sMercScreenY + s.sDamageY;
+    int16_t x = sMercScreenX + s.sDamageX;
+    int16_t y = sMercScreenY + s.sDamageY;
     if (s.ubBodyType == QUEENMONSTER) {
       x += 25;
       y += 10;
@@ -383,7 +384,7 @@ void RenderTopmostTacticalInterface() {
   SOLDIERTYPE *const sel = GetSelectedMan();
   if (usMapPos != NOWHERE && gfUIOverItemPoolGridNo != NOWHERE && sel) {
     // Check if we are over an item pool
-    INT8 level = sel->bLevel;
+    int8_t level = sel->bLevel;
     ITEM_POOL const *item_pool = GetItemPool(gfUIOverItemPoolGridNo, level);
     if (!item_pool) {
       // ATE: Allow to see list if a different level....
@@ -393,13 +394,13 @@ void RenderTopmostTacticalInterface() {
 
     if (item_pool) {
       STRUCTURE *pStructure;
-      INT16 sIntTileGridNo;
-      INT16 const sActionGridNo =
+      int16_t sIntTileGridNo;
+      int16_t const sActionGridNo =
           ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)
               ? sIntTileGridNo
               : usMapPos;
 
-      INT8 const bZLevel = GetZLevelOfItemPoolGivenStructure(sActionGridNo, level, pStructure);
+      int8_t const bZLevel = GetZLevelOfItemPoolGivenStructure(sActionGridNo, level, pStructure);
       if (AnyItemsVisibleOnLevel(item_pool, bZLevel)) {
         DrawItemPoolList(item_pool, bZLevel, gusMouseXPos, gusMouseYPos);
         // ATE: If over items, remove locator....

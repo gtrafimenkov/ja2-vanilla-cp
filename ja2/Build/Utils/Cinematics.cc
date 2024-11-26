@@ -25,11 +25,11 @@
 struct SMKFLIC {
   HWFILE hFileHandle;
   Smack *SmackerObject;
-  CHAR8 SmackerStatus;
+  char SmackerStatus;
   SDL_Surface *SmackBuffer;
-  UINT32 uiFlags;
-  UINT32 uiLeft;
-  UINT32 uiTop;
+  uint32_t uiFlags;
+  uint32_t uiLeft;
+  uint32_t uiTop;
 };
 
 // SMKFLIC uiFlags
@@ -38,7 +38,7 @@ struct SMKFLIC {
 #define SMK_FLIC_AUTOCLOSE 0x00000008  // Close when done
 
 static SMKFLIC SmkList[4];
-static UINT32 guiSmackPixelFormat = SMACKBUFFER565;
+static uint32_t guiSmackPixelFormat = SMACKBUFFER565;
 
 BOOLEAN SmkPollFlics() {
   BOOLEAN fFlicStatus = FALSE;
@@ -55,7 +55,7 @@ BOOLEAN SmkPollFlics() {
     {
       SGPVSurface::Lock l(FRAME_BUFFER);
       SmackToBuffer(smkobj, i->uiLeft, i->uiTop, l.Pitch(), smkobj->Height, smkobj->Width,
-                    l.Buffer<UINT16>(), guiSmackPixelFormat);
+                    l.Buffer<uint16_t>(), guiSmackPixelFormat);
       SmackDoFrame(smkobj);
     }
 
@@ -89,7 +89,7 @@ void SmkShutdown() {
 
 static SMKFLIC *SmkOpenFlic(const char *filename);
 
-SMKFLIC *SmkPlayFlic(const char *const filename, const UINT32 left, const UINT32 top,
+SMKFLIC *SmkPlayFlic(const char *const filename, const uint32_t left, const uint32_t top,
                      const BOOLEAN auto_close) {
   SMKFLIC *const sf = SmkOpenFlic(filename);
   if (sf == NULL) return NULL;
@@ -160,9 +160,9 @@ static SMKFLIC *SmkGetFreeFlic() {
 }
 
 static void SmkSetupVideo() {
-  UINT32 red;
-  UINT32 green;
-  UINT32 blue;
+  uint32_t red;
+  uint32_t green;
+  uint32_t blue;
   GetPrimaryRGBDistributionMasks(&red, &green, &blue);
   if (red == 0xf800 && green == 0x07e0 && blue == 0x001f) {
     guiSmackPixelFormat = SMACKBUFFER565;

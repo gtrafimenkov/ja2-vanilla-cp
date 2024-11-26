@@ -22,12 +22,12 @@
 #include "Utils/Text.h"
 
 // current and last pages
-INT32 iCurrentVoices = 0;
-static INT32 const iLastVoice = 2;
+int32_t iCurrentVoices = 0;
+static int32_t const iLastVoice = 2;
 
-// INT32 iVoiceId = 0;
+// int32_t iVoiceId = 0;
 
-static UINT32 uiVocVoiceSound = 0;
+static uint32_t uiVocVoiceSound = 0;
 // buttons needed for the IMP Voices screen
 static GUIButtonRef giIMPVoicesButton[3];
 static BUTTON_PICS *giIMPVoicesButtonImage[3];
@@ -121,12 +121,12 @@ static void DecrementVoice() {
   }
 }
 
-static void MakeButton(UINT idx, const char *img_file, INT32 off_normal, INT32 on_normal,
-                       const wchar_t *text, INT16 x, INT16 y, GUI_CALLBACK click) {
+static void MakeButton(uint32_t idx, const char *img_file, int32_t off_normal, int32_t on_normal,
+                       const wchar_t *text, int16_t x, int16_t y, GUI_CALLBACK click) {
   BUTTON_PICS *const img = LoadButtonImage(img_file, off_normal, on_normal);
   giIMPVoicesButtonImage[idx] = img;
-  const INT16 text_col = FONT_WHITE;
-  const INT16 shadow_col = DEFAULT_SHADOW;
+  const int16_t text_col = FONT_WHITE;
+  const int16_t shadow_col = DEFAULT_SHADOW;
   GUIButtonRef const btn =
       CreateIconAndTextButton(img, text, FONT12ARIAL, text_col, shadow_col, text_col, shadow_col, x,
                               y, MSYS_PRIORITY_HIGH, click);
@@ -134,14 +134,14 @@ static void MakeButton(UINT idx, const char *img_file, INT32 off_normal, INT32 o
   btn->SetCursor(CURSOR_WWW);
 }
 
-static void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason);
-static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason);
+static void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, int32_t reason);
+static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, int32_t reason);
 
 static void CreateIMPVoicesButtons() {
   // will create buttons need for the IMP Voices screen
-  const INT16 dx = LAPTOP_SCREEN_UL_X;
-  const INT16 dy = LAPTOP_SCREEN_WEB_UL_Y;
+  const int16_t dx = LAPTOP_SCREEN_UL_X;
+  const int16_t dy = LAPTOP_SCREEN_WEB_UL_Y;
   MakeButton(0, LAPTOPDIR "/voicearrows.sti", 1, 3, pImpButtonText[13], dx + 343, dy + 205,
              BtnIMPVoicesNextCallback);  // Next button
   MakeButton(1, LAPTOPDIR "/voicearrows.sti", 0, 2, pImpButtonText[12], dx + 93, dy + 205,
@@ -166,7 +166,7 @@ static void DestroyIMPVoicesButtons() {
   UnloadButtonImage(giIMPVoicesButtonImage[2]);
 }
 
-static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     IncrementVoice();
     if (SoundIsPlaying(uiVocVoiceSound)) SoundStop(uiVocVoiceSound);
@@ -175,7 +175,7 @@ static void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DecrementVoice();
     if (SoundIsPlaying(uiVocVoiceSound)) SoundStop(uiVocVoiceSound);
@@ -184,7 +184,7 @@ static void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+static void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCurrentImpPage = IMP_MAIN_PAGE;
 
@@ -242,7 +242,7 @@ static void PlayVoice() {
   uiVocVoiceSound = PlayJA2SampleFromFile(filename, MIDVOLUME, 1, MIDDLEPAN);
 }
 
-static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
+static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, int32_t iReason);
 
 static void CreateIMPVoiceMouseRegions() {
   // will create mouse regions needed for the IMP voices page
@@ -257,7 +257,7 @@ static void DestroyIMPVoiceMouseRegions() {
   MSYS_RemoveRegion(&gVoicePortraitRegion);
 }
 
-static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, int32_t iReason) {
   // callback handler for imp portrait region button events
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (!SoundIsPlaying(uiVocVoiceSound)) {
@@ -268,7 +268,7 @@ static void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason
 
 static void RenderVoiceIndex() {
   wchar_t sString[32];
-  INT16 sX, sY;
+  int16_t sX, sY;
 
   // render the voice index value on the the blank portrait
   swprintf(sString, lengthof(sString), L"%ls %d", pIMPVoicesStrings, iCurrentVoices + 1);

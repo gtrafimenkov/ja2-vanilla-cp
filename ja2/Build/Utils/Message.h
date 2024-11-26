@@ -3,7 +3,7 @@
 
 #include "SGP/Types.h"
 
-extern UINT8 gubCurrentMapMessageString;
+extern uint8_t gubCurrentMapMessageString;
 extern BOOLEAN fDisableJustForIan;
 
 #define MSG_INTERFACE 0
@@ -24,18 +24,18 @@ extern BOOLEAN fDisableJustForIan;
 // are we allowed to beep on message scroll in tactical
 extern BOOLEAN fOkToBeepNewMessage;
 
-void ScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
+void ScreenMsg(uint16_t usColor, uint8_t ubPriority, const wchar_t *pStringA, ...);
 
 // same as screen message, but only display to mapscreen message system, not
 // tactical
-void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
+void MapScreenMessage(uint16_t usColor, uint8_t ubPriority, const wchar_t *pStringA, ...);
 
 void ScrollString();
 void DisplayStringsInMapScreenMessageList();
 
 void FreeGlobalMessageList();
 
-UINT8 GetRangeOfMapScreenMessages();
+uint8_t GetRangeOfMapScreenMessages();
 
 void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable);
 
@@ -56,6 +56,6 @@ void UnHideMessagesDuringNPCDialogue();
 void DisableScrollMessages();
 void EnableScrollMessages();
 
-extern UINT8 gubStartOfMapScreenMessageList;
+extern uint8_t gubStartOfMapScreenMessageList;
 
 #endif

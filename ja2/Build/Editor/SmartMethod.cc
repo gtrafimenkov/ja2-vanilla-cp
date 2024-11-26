@@ -6,27 +6,27 @@
 #include "TileEngine/WorldDef.h"  //LEVELNODE def
 #include "TileEngine/WorldMan.h"  //ReplaceStructIndex
 
-UINT8 gubDoorUIValue = 0;
-UINT8 gubWindowUIValue = 0;
-UINT8 gubWallUIValue = FIRSTWALL;
-UINT8 gubBrokenWallUIValue = 0;
+uint8_t gubDoorUIValue = 0;
+uint8_t gubWindowUIValue = 0;
+uint8_t gubWallUIValue = FIRSTWALL;
+uint8_t gubBrokenWallUIValue = 0;
 
-void CalcSmartWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+void CalcSmartWallDefault(uint16_t *pusObjIndex, uint16_t *pusUseIndex) {
   *pusUseIndex = 0;
   *pusObjIndex = gubWallUIValue;
 }
 
-void CalcSmartDoorDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+void CalcSmartDoorDefault(uint16_t *pusObjIndex, uint16_t *pusUseIndex) {
   *pusUseIndex = 4 * (gubDoorUIValue % 2);  // open or closed -- odd or even
   *pusObjIndex = FIRSTDOOR + gubDoorUIValue / 2;
 }
 
-void CalcSmartWindowDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+void CalcSmartWindowDefault(uint16_t *pusObjIndex, uint16_t *pusUseIndex) {
   *pusUseIndex = 44 + gubWindowUIValue;  // first exterior top right oriented window
   *pusObjIndex = FIRSTWALL;
 }
 
-void CalcSmartBrokenWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+void CalcSmartBrokenWallDefault(uint16_t *pusObjIndex, uint16_t *pusUseIndex) {
   switch (gubBrokenWallUIValue) {
     case 0:
     case 1:
@@ -42,11 +42,11 @@ void CalcSmartBrokenWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
   *pusObjIndex = FIRSTWALL;
 }
 
-static UINT16 CalcSmartWindowIndex(UINT16 usWallOrientation) {
-  return (UINT16)(33 + usWallOrientation * 3 + gubWindowUIValue);
+static uint16_t CalcSmartWindowIndex(uint16_t usWallOrientation) {
+  return (uint16_t)(33 + usWallOrientation * 3 + gubWindowUIValue);
 }
 
-static UINT16 CalcSmartDoorIndex(UINT16 usWallOrientation) {
+static uint16_t CalcSmartDoorIndex(uint16_t usWallOrientation) {
   // convert the orientation values as the graphics are in reverse order
   // orientation values:   INSIDE_TOP_LEFT=1,  INSIDE_TOP_RIGHT=2,
   // OUTSIDE_TOP_LEFT=3, OUTSIDE_TOP_RIGHT=4 door graphics order:
@@ -54,12 +54,12 @@ static UINT16 CalcSmartDoorIndex(UINT16 usWallOrientation) {
   // OUTSIDE_TOP_RIGHT=0
   usWallOrientation = (4 - usWallOrientation) * 5;
   // 4 * (gubDoorUIValue%2) evaluates to +4 if the door is open, 0 if closed
-  return (UINT16)(1 + usWallOrientation + 4 * (gubDoorUIValue % 2));
+  return (uint16_t)(1 + usWallOrientation + 4 * (gubDoorUIValue % 2));
 }
 
-static UINT16 CalcSmartDoorType() { return (UINT16)(FIRSTDOOR + gubDoorUIValue / 2); }
+static uint16_t CalcSmartDoorType() { return (uint16_t)(FIRSTDOOR + gubDoorUIValue / 2); }
 
-static UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
+static uint16_t CalcSmartBrokenWallIndex(uint16_t usWallOrientation) {
   if (gubBrokenWallUIValue == 2)  // the hole in the wall
     return 0xffff;
   if (gubBrokenWallUIValue < 2)  // broken walls
@@ -72,7 +72,7 @@ static UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
     // OUTSIDE_TOP_LEFT=0, OUTSIDE_TOP_RIGHT=2
     usWallOrientation = usWallOrientation * 2 + 2;
     usWallOrientation -= usWallOrientation > 6 ? 8 : 0;
-    return (UINT16)(usWallOrientation + 48 + gubBrokenWallUIValue);
+    return (uint16_t)(usWallOrientation + 48 + gubBrokenWallUIValue);
   }
 
   // cracked and smudged walls
@@ -85,7 +85,7 @@ static UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
   usWallOrientation += usWallOrientation > 1 ? 2 : 0;
   usWallOrientation +=
       gubBrokenWallUIValue == 4 ? 2 : 0;  // smudged type which is 2 index values higher.
-  return (UINT16)(usWallOrientation + 57);
+  return (uint16_t)(usWallOrientation + 57);
 }
 
 void IncSmartWallUIValue() { gubWallUIValue += gubWallUIValue < LASTWALL ? 1 : -3; }
@@ -104,22 +104,24 @@ void IncSmartBrokenWallUIValue() { gubBrokenWallUIValue += gubBrokenWallUIValue 
 
 void DecSmartBrokenWallUIValue() { gubBrokenWallUIValue -= gubBrokenWallUIValue > 0 ? 1 : -4; }
 
-BOOLEAN CalcWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UINT16 *pusIndex) {
+BOOLEAN CalcWallInfoUsingSmartMethod(uint32_t iMapIndex, uint16_t *pusWallType,
+                                     uint16_t *pusIndex) {
   return FALSE;
 }
 
-BOOLEAN CalcDoorInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusDoorType, UINT16 *pusIndex) {
+BOOLEAN CalcDoorInfoUsingSmartMethod(uint32_t iMapIndex, uint16_t *pusDoorType,
+                                     uint16_t *pusIndex) {
   LEVELNODE *pWall = NULL;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
     *pusDoorType = CalcSmartDoorType();
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
     *pusDoorType = CalcSmartDoorType();
     return TRUE;
@@ -127,28 +129,29 @@ BOOLEAN CalcDoorInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusDoorType, UINT
   return FALSE;
 }
 
-BOOLEAN CalcWindowInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UINT16 *pusIndex) {
+BOOLEAN CalcWindowInfoUsingSmartMethod(uint32_t iMapIndex, uint16_t *pusWallType,
+                                       uint16_t *pusIndex) {
   LEVELNODE *pWall = NULL;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     *pusWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     *pusWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
   return FALSE;
 }
 
-BOOLEAN CalcBrokenWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType,
-                                           UINT16 *pusIndex) {
+BOOLEAN CalcBrokenWallInfoUsingSmartMethod(uint32_t iMapIndex, uint16_t *pusWallType,
+                                           uint16_t *pusIndex) {
   LEVELNODE *pWall = NULL;
 
   if (gubBrokenWallUIValue == 2)  // the hole in the wall
@@ -161,14 +164,14 @@ BOOLEAN CalcBrokenWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     *pusWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     *pusWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
@@ -201,12 +204,12 @@ BOOLEAN CalcBrokenWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType
 // are two more cases.  When there is a bottom wall in the y+1 position or a
 // right wall in 		the x+1 position.  If there are matching walls, there, then we
 // draw two pieces to connect the current 		gridno with the respective position.
-void PasteSmartWall(UINT32 iMapIndex) {
-  UINT16 usWallType;
+void PasteSmartWall(uint32_t iMapIndex) {
+  uint16_t usWallType;
 
   // These are the counters for the walls of each type
-  UINT16 usNumV[4] = {0, 0, 0, 0};  // vertical wall weights
-  UINT16 usNumH[4] = {0, 0, 0, 0};  // horizontal wall weights
+  uint16_t usNumV[4] = {0, 0, 0, 0};  // vertical wall weights
+  uint16_t usNumH[4] = {0, 0, 0, 0};  // horizontal wall weights
 
   //*A* See above documentation
   if (GetVerticalWall(iMapIndex) && GetHorizontalWall(iMapIndex)) return;
@@ -380,85 +383,85 @@ void PasteSmartWall(UINT32 iMapIndex) {
   // Check for the highest weight value.
 }
 
-void PasteSmartDoor(UINT32 iMapIndex) {
+void PasteSmartDoor(uint32_t iMapIndex) {
   LEVELNODE *pWall = NULL;
-  UINT16 usDoorType;
-  UINT16 usIndex;
+  uint16_t usDoorType;
+  uint16_t usIndex;
 
   if ((pWall = GetVerticalWall(iMapIndex))) {
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartDoorIndex(usWallOrientation);
     usDoorType = CalcSmartDoorType();
     AddToUndoList(iMapIndex);
-    UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usDoorType, usIndex);
+    uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usDoorType, usIndex);
     ReplaceStructIndex(iMapIndex, pWall->usIndex, usTileIndex);
   }
   if ((pWall = GetHorizontalWall(iMapIndex))) {
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartDoorIndex(usWallOrientation);
     usDoorType = CalcSmartDoorType();
     AddToUndoList(iMapIndex);
-    UINT16 usTileIndex = GetTileIndexFromTypeSubIndex(usDoorType, usIndex);
+    uint16_t usTileIndex = GetTileIndexFromTypeSubIndex(usDoorType, usIndex);
     ReplaceStructIndex(iMapIndex, pWall->usIndex, usTileIndex);
   }
 }
 
-void PasteSmartWindow(UINT32 iMapIndex) {
+void PasteSmartWindow(uint32_t iMapIndex) {
   LEVELNODE *pWall = NULL;
-  UINT16 usIndex;
+  uint16_t usIndex;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    UINT16 const usWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t const usWallType = GetWallType(pWall, iMapIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartWindowIndex(usWallOrientation);
     // Calculate the new graphic for the window type selected.
 
     AddToUndoList(iMapIndex);
-    UINT16 usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
+    uint16_t usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
     ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    UINT16 const usWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t const usWallType = GetWallType(pWall, iMapIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartWindowIndex(usWallOrientation);
     // Calculate the new graphic for the window type selected.
     AddToUndoList(iMapIndex);
-    UINT16 usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
+    uint16_t usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
     ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
   }
 }
 
-void PasteSmartBrokenWall(UINT32 iMapIndex) {
+void PasteSmartBrokenWall(uint32_t iMapIndex) {
   LEVELNODE *pWall;
-  UINT16 usIndex;
+  uint16_t usIndex;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    UINT16 const usWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t const usWallType = GetWallType(pWall, iMapIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartBrokenWallIndex(usWallOrientation);
     if (usIndex == 0xffff) {
       AddToUndoList(iMapIndex);
       RemoveStruct(iMapIndex, pWall->usIndex);
     } else {
       AddToUndoList(iMapIndex);
-      UINT16 usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
+      uint16_t usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
       ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
     }
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    UINT16 const usWallType = GetWallType(pWall, iMapIndex);
-    UINT16 usWallOrientation = GetWallOrientation(pWall->usIndex);
+    uint16_t const usWallType = GetWallType(pWall, iMapIndex);
+    uint16_t usWallOrientation = GetWallOrientation(pWall->usIndex);
     usIndex = CalcSmartBrokenWallIndex(usWallOrientation);
     if (usIndex == 0xffff) {
       AddToUndoList(iMapIndex);
       RemoveStruct(iMapIndex, pWall->usIndex);
     } else {
       AddToUndoList(iMapIndex);
-      UINT16 usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
+      uint16_t usNewWallIndex = GetTileIndexFromTypeSubIndex(usWallType, usIndex);
       ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
     }
     // Calculate the new graphic for the window type selected.

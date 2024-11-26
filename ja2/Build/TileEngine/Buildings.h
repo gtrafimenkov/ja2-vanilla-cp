@@ -13,16 +13,16 @@
 #define MAX_BUILDINGS 31
 
 struct BUILDING {
-  INT16 sUpClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
-  INT16 sDownClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
-  UINT8 ubNumClimbSpots;
+  int16_t sUpClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
+  int16_t sDownClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
+  uint8_t ubNumClimbSpots;
 };
 
-extern UINT8 gubBuildingInfo[WORLD_MAX];
+extern uint8_t gubBuildingInfo[WORLD_MAX];
 
-BUILDING *FindBuilding(INT16 sGridNo);
+BUILDING *FindBuilding(int16_t sGridNo);
 void GenerateBuildings();
-INT16 FindClosestClimbPoint(INT16 sStartGridNo, INT16 sDesiredGridNo, BOOLEAN fClimbUp);
-BOOLEAN SameBuilding(INT16 sGridNo1, INT16 sGridNo2);
+int16_t FindClosestClimbPoint(int16_t sStartGridNo, int16_t sDesiredGridNo, BOOLEAN fClimbUp);
+BOOLEAN SameBuilding(int16_t sGridNo1, int16_t sGridNo2);
 
 #endif

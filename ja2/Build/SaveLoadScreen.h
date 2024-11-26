@@ -24,6 +24,6 @@ void DoQuickLoad();
 
 bool AreThereAnySavedGameFiles();
 
-void DeleteSaveGameNumber(UINT8 save_slot_id);
+void DeleteSaveGameNumber(uint8_t save_slot_id);
 
 #endif

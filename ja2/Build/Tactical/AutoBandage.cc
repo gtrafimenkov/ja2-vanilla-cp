@@ -44,7 +44,7 @@
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
 
 static BOOLEAN gfBeginningAutoBandage = FALSE;
-static UINT32 guiAutoBandageSeconds = 0;
+static uint32_t guiAutoBandageSeconds = 0;
 static BOOLEAN fAutoBandageComplete = FALSE;
 static BOOLEAN fEndAutoBandage = FALSE;
 
@@ -362,21 +362,21 @@ static void SetUpAutoBandageUpdatePanel() {
   fAutoBandageComplete = FALSE;
 }
 
-static void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY);
-static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(INT32 iIndex, INT16 sCurrentXPosition,
-                                                         INT16 sCurrentYPosition);
+static void CreateTerminateAutoBandageButton(int16_t sX, int16_t sY);
+static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(int32_t iIndex, int16_t sCurrentXPosition,
+                                                         int16_t sCurrentYPosition);
 
 static void DisplayAutoBandageUpdatePanel() {
-  INT32 iNumberDoctors = 0, iNumberPatients = 0;
-  INT32 iNumberDoctorsHigh = 0, iNumberPatientsHigh = 0;
-  INT32 iNumberDoctorsWide = 0, iNumberPatientsWide = 0;
-  INT32 iTotalPixelsHigh = 0, iTotalPixelsWide = 0;
-  INT32 iCurPixelY = 0;
-  INT16 sXPosition = 0, sYPosition = 0;
-  INT32 iCounterA = 0, iCounterB = 0;
-  INT32 iIndex = 0;
-  INT16 sCurrentXPosition = 0, sCurrentYPosition = 0;
-  INT16 sX = 0, sY = 0;
+  int32_t iNumberDoctors = 0, iNumberPatients = 0;
+  int32_t iNumberDoctorsHigh = 0, iNumberPatientsHigh = 0;
+  int32_t iNumberDoctorsWide = 0, iNumberPatientsWide = 0;
+  int32_t iTotalPixelsHigh = 0, iTotalPixelsWide = 0;
+  int32_t iCurPixelY = 0;
+  int16_t sXPosition = 0, sYPosition = 0;
+  int32_t iCounterA = 0, iCounterB = 0;
+  int32_t iIndex = 0;
+  int16_t sCurrentXPosition = 0, sCurrentYPosition = 0;
+  int16_t sX = 0, sY = 0;
 
   // are even in autobandage mode?
   if (!gTacticalStatus.fAutoBandageMode) {
@@ -620,13 +620,13 @@ static void DisplayAutoBandageUpdatePanel() {
   if (iNumberPatientsWide == 2) {
     BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition - 4,
                    sYPosition + iTotalPixelsHigh);
-    CreateTerminateAutoBandageButton((INT16)(sXPosition),
-                                     (INT16)(sYPosition + iTotalPixelsHigh + 3));
+    CreateTerminateAutoBandageButton((int16_t)(sXPosition),
+                                     (int16_t)(sYPosition + iTotalPixelsHigh + 3));
   } else {
     BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6,
                    sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH - 4, sYPosition + iTotalPixelsHigh);
-    CreateTerminateAutoBandageButton((INT16)(sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH),
-                                     (INT16)(sYPosition + iTotalPixelsHigh + 3));
+    CreateTerminateAutoBandageButton((int16_t)(sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH),
+                                     (int16_t)(sYPosition + iTotalPixelsHigh + 3));
   }
 
   SetFontAttributes(TINYFONT1, FONT_WHITE);
@@ -651,13 +651,13 @@ static void DisplayAutoBandageUpdatePanel() {
   EnableButton(iEndAutoBandageButton[1], !complete);
 
   // now make sure it goes to the screen
-  InvalidateRegion(sXPosition - 4, sYPosition - 18, (INT16)(sXPosition + iTotalPixelsWide + 4),
-                   (INT16)(sYPosition + iTotalPixelsHigh));
+  InvalidateRegion(sXPosition - 4, sYPosition - 18, (int16_t)(sXPosition + iTotalPixelsWide + 4),
+                   (int16_t)(sYPosition + iTotalPixelsHigh));
 }
 
-static void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason);
+static void StopAutoBandageButtonCallback(GUI_BUTTON *btn, int32_t reason);
 
-static void MakeButton(UINT idx, INT16 x, INT16 y, const wchar_t *text) {
+static void MakeButton(uint32_t idx, int16_t x, int16_t y, const wchar_t *text) {
   GUIButtonRef const btn =
       QuickCreateButtonImg(INTERFACEDIR "/group_confirm_tactical.sti", 7, 8, x, y,
                            MSYS_PRIORITY_HIGHEST - 1, StopAutoBandageButtonCallback);
@@ -665,7 +665,7 @@ static void MakeButton(UINT idx, INT16 x, INT16 y, const wchar_t *text) {
   btn->SpecifyGeneralTextAttributes(text, MAP_SCREEN_FONT, FONT_MCOLOR_BLACK, FONT_BLACK);
 }
 
-static void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY) {
+static void CreateTerminateAutoBandageButton(int16_t sX, int16_t sY) {
   // create the kill autobandage button
   if (fAutoEndBandageButtonCreated) {
     // button created, leave
@@ -678,7 +678,7 @@ static void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY) {
   MakeButton(1, sX + 70, sY, zMarksMapScreenText[16]);  // the cancel button
 }
 
-static void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+static void StopAutoBandageButtonCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fEndAutoBandage = TRUE;
   }
@@ -699,8 +699,8 @@ static void DestroyTerminateAutoBandageButton() {
 }
 
 static void AddFacesToAutoBandageBox() {
-  INT32 iCounter = 0;
-  INT32 iNumberOfDoctors = 0;
+  int32_t iCounter = 0;
+  int32_t iNumberOfDoctors = 0;
 
   // reset
   memset(&giAutoBandagesSoldierFaces, 0, sizeof(giAutoBandagesSoldierFaces));
@@ -726,7 +726,7 @@ static void AddFacesToAutoBandageBox() {
 }
 
 static void RemoveFacesForAutoBandage() {
-  INT32 iCounter = 0, iNumberOfDoctors = 0;
+  int32_t iCounter = 0, iNumberOfDoctors = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gdoctor_list[iCounter] != NULL) {
@@ -744,10 +744,10 @@ static void RemoveFacesForAutoBandage() {
   DeleteVideoObject(giMercPanelImage);
 }
 
-static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(INT32 iIndex, INT16 sCurrentXPosition,
-                                                         INT16 sCurrentYPosition) {
-  INT32 iStartY = 0;
-  INT32 iCounter = 0, iIndexCount = 0;
+static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(int32_t iIndex, int16_t sCurrentXPosition,
+                                                         int16_t sCurrentYPosition) {
+  int32_t iStartY = 0;
+  int32_t iCounter = 0, iIndexCount = 0;
 
   // fill the background for the info bars black
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, sCurrentYPosition + 2,

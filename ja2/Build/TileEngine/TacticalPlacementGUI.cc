@@ -50,12 +50,12 @@ struct MERCPLACEMENT {
   SOLDIERTYPE *pSoldier;
   SGPVObject *uiVObjectID;
   MOUSE_REGION region;
-  UINT8 ubStrategicInsertionCode;
+  uint8_t ubStrategicInsertionCode;
   BOOLEAN fPlaced;
 };
 
 static MERCPLACEMENT *gMercPlacement = 0;
-static INT32 giPlacements = 0;
+static int32_t giPlacements = 0;
 
 #define FOR_EACH_MERC_PLACEMENT(iter)                                                            \
   for (MERCPLACEMENT *iter = gMercPlacement, *const iter##__end = gMercPlacement + giPlacements; \
@@ -64,7 +64,7 @@ static INT32 giPlacements = 0;
 enum { DONE_BUTTON, SPREAD_BUTTON, GROUP_BUTTON, CLEAR_BUTTON, NUM_TP_BUTTONS };
 GUIButtonRef iTPButtons[NUM_TP_BUTTONS];
 
-UINT8 gubDefaultButton = CLEAR_BUTTON;
+uint8_t gubDefaultButton = CLEAR_BUTTON;
 BOOLEAN gfTacticalPlacementGUIActive = FALSE;
 BOOLEAN gfTacticalPlacementFirstTime = FALSE;
 BOOLEAN gfEnterTacticalPlacementGUI = FALSE;
@@ -77,12 +77,12 @@ BOOLEAN gfValidLocationsChanged = FALSE;
 BOOLEAN gfValidCursor = FALSE;
 BOOLEAN gfEveryonePlaced = FALSE;
 
-UINT8 gubSelectedGroupID = 0;
-UINT8 gubHilightedGroupID = 0;
-UINT8 gubCursorGroupID = 0;
-INT8 gbSelectedMercID = -1;
-INT8 gbHilightedMercID = -1;
-INT8 gbCursorMercID = -1;
+uint8_t gubSelectedGroupID = 0;
+uint8_t gubHilightedGroupID = 0;
+uint8_t gubCursorGroupID = 0;
+int8_t gbSelectedMercID = -1;
+int8_t gbHilightedMercID = -1;
+int8_t gbCursorMercID = -1;
 SOLDIERTYPE *gpTacticalPlacementSelectedSoldier = NULL;
 SOLDIERTYPE *gpTacticalPlacementHilightedSoldier = NULL;
 
@@ -91,7 +91,7 @@ static bool gfEast;
 static bool gfSouth;
 static bool gfWest;
 
-static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t *text,
+static void MakeButton(uint32_t idx, int16_t y, GUI_CALLBACK click, const wchar_t *text,
                        const wchar_t *help) {
   GUIButtonRef const btn =
       QuickCreateButton(giOverheadButtonImages[idx], 11, y, MSYS_PRIORITY_HIGH, click);
@@ -101,14 +101,14 @@ static void MakeButton(UINT idx, INT16 y, GUI_CALLBACK click, const wchar_t *tex
   btn->SpecifyHilitedTextColors(FONT_WHITE, FONT_NEARBLACK);
 }
 
-static void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
-static void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, INT32 reason);
-static void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
-static void MercClickCallback(MOUSE_REGION *reg, INT32 reason);
-static void MercMoveCallback(MOUSE_REGION *reg, INT32 reason);
+static void ClearPlacementsCallback(GUI_BUTTON *btn, int32_t reason);
+static void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, int32_t reason);
+static void GroupPlacementsCallback(GUI_BUTTON *btn, int32_t reason);
+static void MercClickCallback(MOUSE_REGION *reg, int32_t reason);
+static void MercMoveCallback(MOUSE_REGION *reg, int32_t reason);
 static void PlaceMercs();
-static void SetCursorMerc(INT8 placement);
-static void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
+static void SetCursorMerc(int8_t placement);
+static void SpreadPlacementsCallback(GUI_BUTTON *btn, int32_t reason);
 
 void InitTacticalPlacementGUI() {
   gfTacticalPlacementGUIActive = TRUE;
@@ -173,17 +173,17 @@ void InitTacticalPlacementGUI() {
 
     if (s->ubStrategicInsertionCode == INSERTION_CODE_PRIMARY_EDGEINDEX ||
         s->ubStrategicInsertionCode == INSERTION_CODE_SECONDARY_EDGEINDEX) {
-      s->ubStrategicInsertionCode = (UINT8)s->usStrategicInsertionData;
+      s->ubStrategicInsertionCode = (uint8_t)s->usStrategicInsertionData;
     }
 
-    UINT32 const i = giPlacements++;
+    uint32_t const i = giPlacements++;
     MERCPLACEMENT &m = gMercPlacement[i];
     m.pSoldier = s;
     m.ubStrategicInsertionCode = s->ubStrategicInsertionCode;
     m.fPlaced = FALSE;
     m.uiVObjectID = Load65Portrait(GetProfile(m.pSoldier->ubProfile));
-    INT32 const x = 91 + i / 2 * 54;
-    INT32 const y = 361 + i % 2 * 51;
+    int32_t const x = 91 + i / 2 * 54;
+    int32_t const y = 361 + i % 2 * 51;
     MSYS_DefineRegion(&m.region, x, y, x + 54, y + 62, MSYS_PRIORITY_HIGH, 0, MercMoveCallback,
                       MercClickCallback);
 
@@ -207,7 +207,7 @@ void InitTacticalPlacementGUI() {
 
   if (gubDefaultButton == GROUP_BUTTON) {
     iTPButtons[GROUP_BUTTON]->uiFlags |= BUTTON_CLICKED_ON;
-    for (INT32 i = 0; i != giPlacements; ++i) {
+    for (int32_t i = 0; i != giPlacements; ++i) {
       MERCPLACEMENT const &m = gMercPlacement[i];
       if (m.fPlaced) continue;
       // Found an unplaced merc. Select him.
@@ -220,8 +220,8 @@ void InitTacticalPlacementGUI() {
   }
 }
 
-static void DrawBar(SGPVSurface *const buf, INT32 const x, INT32 const y, INT32 const h,
-                    UINT32 const colour1, UINT32 const colour2) {
+static void DrawBar(SGPVSurface *const buf, int32_t const x, int32_t const y, int32_t const h,
+                    uint32_t const colour1, uint32_t const colour2) {
   ColorFillVideoSurfaceArea(buf, x, y - h, x + 1, y, Get16BPPColor(colour1));
   ColorFillVideoSurfaceArea(buf, x + 1, y - h, x + 2, y, Get16BPPColor(colour2));
 }
@@ -236,8 +236,8 @@ static void RenderTacticalPlacementGUI() {
    * mouse has moved out of its region, then we will clear the hilighted ID, and
    * refresh the display. */
   if (!gfTacticalPlacementGUIDirty && gbHilightedMercID != -1) {
-    INT32 const x = 91 + gbHilightedMercID / 2 * 54;
-    INT32 const y = 361 + gbHilightedMercID % 2 * 51;
+    int32_t const x = 91 + gbHilightedMercID / 2 * 54;
+    int32_t const y = 361 + gbHilightedMercID % 2 * 51;
     if (gusMouseXPos < x || x + 54 < gusMouseXPos || gusMouseYPos < y || y + 62 < gusMouseYPos) {
       gbHilightedMercID = -1;
       gubHilightedGroupID = 0;
@@ -253,10 +253,10 @@ static void RenderTacticalPlacementGUI() {
     InvalidateRegion(0, 0, 320, SCREEN_HEIGHT);
     gfTacticalPlacementGUIDirty = FALSE;
     MarkButtonsDirty();
-    for (INT32 i = 0; i != giPlacements; ++i) {  // Render the mercs
+    for (int32_t i = 0; i != giPlacements; ++i) {  // Render the mercs
       MERCPLACEMENT const &m = gMercPlacement[i];
-      INT32 const x = 95 + i / 2 * 54;
-      INT32 const y = 371 + i % 2 * 51;
+      int32_t const x = 95 + i / 2 * 54;
+      int32_t const y = 371 + i % 2 * 51;
       ColorFillVideoSurfaceArea(buf, x + 36, y + 2, x + 44, y + 30, 0);
       BltVideoObject(buf, giMercPanelImage, 0, x, y);
       BltVideoObject(buf, m.uiVObjectID, 0, x + 2, y + 2);
@@ -291,7 +291,7 @@ static void RenderTacticalPlacementGUI() {
     BlitBufferToBuffer(guiSAVEBUFFER, buf, 4, 4, 636, 320);
     InvalidateRegion(4, 4, 636, 320);
 
-    UINT16 const hatch_colour =
+    uint16_t const hatch_colour =
         DayTime() ? 0 :  // 6AM to 9PM is black
             Get16BPPColor(FROMRGB(63, 31,
                                   31));  // 9PM to 6AM is gray (black is too dark to distinguish)
@@ -318,34 +318,34 @@ static void RenderTacticalPlacementGUI() {
       }
     }
     SGPVSurface::Lock l(buf);
-    UINT16 *const pDestBuf = l.Buffer<UINT16>();
-    UINT32 const uiDestPitchBYTES = l.Pitch();
+    uint16_t *const pDestBuf = l.Buffer<uint16_t>();
+    uint32_t const uiDestPitchBYTES = l.Pitch();
     Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, &clip, hatch_colour);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     RectangleDraw(TRUE, clip.iLeft, clip.iTop, clip.iRight, clip.iBottom, hatch_colour, pDestBuf);
   }
 
   bool const is_group = gubDefaultButton == GROUP_BUTTON;
-  for (INT32 i = 0; i != giPlacements; ++i) {  // Render the merc's names
-    INT32 const x = 95 + i / 2 * 54;
-    INT32 const y = 371 + i % 2 * 51;
+  for (int32_t i = 0; i != giPlacements; ++i) {  // Render the merc's names
+    int32_t const x = 95 + i / 2 * 54;
+    int32_t const y = 371 + i % 2 * 51;
 
     MERCPLACEMENT const &m = gMercPlacement[i];
     SOLDIERTYPE const &s = *m.pSoldier;
-    UINT8 const colour =
+    uint8_t const colour =
         (is_group ? s.ubGroupID == gubSelectedGroupID : i == gbSelectedMercID)     ? FONT_YELLOW
         : (is_group ? s.ubGroupID == gubHilightedGroupID : i == gbHilightedMercID) ? FONT_WHITE
                                                                                    : FONT_GRAY3;
     SetFontAttributes(BLOCKFONT, colour);
-    INT32 const w = StringPixLength(s.name, BLOCKFONT);
-    INT32 const nx = x + (48 - w) / 2;
-    INT32 const ny = y + 33;
+    int32_t const w = StringPixLength(s.name, BLOCKFONT);
+    int32_t const nx = x + (48 - w) / 2;
+    int32_t const ny = y + 33;
     MPrint(nx, ny, s.name);
     InvalidateRegion(nx, ny, nx + w, ny + w);
 
     // Render a question mark over the face, if the merc hasn't yet been placed.
-    INT32 const qx = x + 16;
-    INT32 const qy = y + 14;
+    int32_t const qx = x + 16;
+    int32_t const qy = y + 14;
     if (m.fPlaced) {
       RegisterBackgroundRect(BGND_FLAG_SINGLE, qx, qy, 8, 8);
     } else {
@@ -471,7 +471,7 @@ static void KillTacticalPlacementGUI() {
   DeleteVideoObject(giOverheadPanelImage);
   DeleteVideoObject(giMercPanelImage);
   // Delete buttons
-  for (INT32 i = 0; i < NUM_TP_BUTTONS; ++i) {
+  for (int32_t i = 0; i < NUM_TP_BUTTONS; ++i) {
     UnloadButtonImage(giOverheadButtonImages[i]);
     RemoveButton(iTPButtons[i]);
   }
@@ -543,13 +543,13 @@ static void PlaceMercs() {
   gfTacticalPlacementGUIDirty = TRUE;
 }
 
-static void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, INT32 reason) {
+static void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfKillTacticalGUI = 2;
   }
 }
 
-static void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void SpreadPlacementsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDefaultButton = SPREAD_BUTTON;
     iTPButtons[GROUP_BUTTON]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -561,7 +561,7 @@ static void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void GroupPlacementsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubDefaultButton == GROUP_BUTTON) {
       btn->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -578,7 +578,7 @@ static void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+static void ClearPlacementsCallback(GUI_BUTTON *btn, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTPButtons[GROUP_BUTTON]->uiFlags &= ~BUTTON_CLICKED_ON;
     iTPButtons[GROUP_BUTTON]->uiFlags |= BUTTON_DIRTY;
@@ -587,9 +587,9 @@ static void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-static void MercMoveCallback(MOUSE_REGION *reg, INT32 reason) {
+static void MercMoveCallback(MOUSE_REGION *reg, int32_t reason) {
   if (reg->uiFlags & MSYS_MOUSE_IN_AREA) {
-    INT8 i;
+    int8_t i;
     for (i = 0; i < giPlacements; i++) {
       if (&gMercPlacement[i].region == reg) {
         if (gbHilightedMercID != i) {
@@ -605,9 +605,9 @@ static void MercMoveCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-static void MercClickCallback(MOUSE_REGION *reg, INT32 reason) {
+static void MercClickCallback(MOUSE_REGION *reg, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    INT8 i;
+    int8_t i;
     for (i = 0; i < giPlacements; i++) {
       if (&gMercPlacement[i].region == reg) {
         if (gbSelectedMercID != i) {
@@ -624,16 +624,16 @@ static void MercClickCallback(MOUSE_REGION *reg, INT32 reason) {
 }
 
 static void SelectNextUnplacedUnit() {
-  INT32 i;
+  int32_t i;
   if (gbSelectedMercID == -1) return;
   for (i = gbSelectedMercID; i < giPlacements;
        i++) {                          // go from the currently selected soldier to the end
     if (!gMercPlacement[i].fPlaced) {  // Found an unplaced merc.  Select him.
-      gbSelectedMercID = (INT8)i;
+      gbSelectedMercID = (int8_t)i;
       if (gubDefaultButton == GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier->ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
-      SetCursorMerc((INT8)i);
+      SetCursorMerc((int8_t)i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
     }
@@ -641,11 +641,11 @@ static void SelectNextUnplacedUnit() {
   for (i = 0; i < gbSelectedMercID;
        i++) {                          // go from the beginning to the currently selected soldier
     if (!gMercPlacement[i].fPlaced) {  // Found an unplaced merc.  Select him.
-      gbSelectedMercID = (INT8)i;
+      gbSelectedMercID = (int8_t)i;
       if (gubDefaultButton == GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier->ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
-      SetCursorMerc((INT8)i);
+      SetCursorMerc((int8_t)i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
     }
@@ -664,7 +664,7 @@ static void SelectNextUnplacedUnit() {
 
 static void DialogRemoved(MessageBoxReturnValue);
 
-void HandleTacticalPlacementClicksInOverheadMap(INT32 reason) {
+void HandleTacticalPlacementClicksInOverheadMap(int32_t reason) {
   BOOLEAN fInvalidArea = FALSE;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {  // if we have a selected merc,
                                                    // move him to the new closest
@@ -744,7 +744,7 @@ void HandleTacticalPlacementClicksInOverheadMap(INT32 reason) {
   }
 }
 
-static void SetCursorMerc(INT8 const placement) {
+static void SetCursorMerc(int8_t const placement) {
   if (gbCursorMercID == placement) return;
 
   if (gbCursorMercID == -1 || placement == -1 ||
@@ -782,7 +782,7 @@ static void PutDownMercPiece(MERCPLACEMENT &m) {
   GridNo const gridno = FindGridNoFromSweetSpot(&s, insertion_gridno, 4);
   if (gridno != NOWHERE) {
     EVENT_SetSoldierPositionNoCenter(&s, gridno, SSP_NONE);
-    UINT8 const direction = GetDirectionToGridNoFromGridNo(gridno, CENTER_GRIDNO);
+    uint8_t const direction = GetDirectionToGridNoFromGridNo(gridno, CENTER_GRIDNO);
     EVENT_SetSoldierDirection(&s, direction);
     s.ubInsertionDirection = s.bDirection;
     m.fPlaced = TRUE;

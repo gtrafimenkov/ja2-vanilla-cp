@@ -25,14 +25,14 @@
 
 static ANITILE *pAniTileHead = NULL;
 
-static UINT16 SetFrameByDir(UINT16 frame, const ANITILE *const a) {
+static uint16_t SetFrameByDir(uint16_t frame, const ANITILE *const a) {
   if (a->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME) {
     // Our start frame is actually a direction indicator
-    const UINT8 ubTempDir = OneCDirection(a->v.user.uiData3);
+    const uint8_t ubTempDir = OneCDirection(a->v.user.uiData3);
     frame = a->usNumFrames * ubTempDir;
   } else if (a->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME) {
     // Our start frame is actually a direction indicator
-    const UINT8 ubTempDir = gb4DirectionsFrom8[a->v.user.uiData3];
+    const uint8_t ubTempDir = gb4DirectionsFrom8[a->v.user.uiData3];
     frame = a->usNumFrames * ubTempDir;
   }
   return frame;
@@ -41,10 +41,10 @@ static UINT16 SetFrameByDir(UINT16 frame, const ANITILE *const a) {
 ANITILE *CreateAnimationTile(const ANITILE_PARAMS *const parms) {
   ANITILE *const a = MALLOC(ANITILE);
 
-  INT32 cached_tile = -1;
-  INT16 const gridno = parms->sGridNo;
+  int32_t cached_tile = -1;
+  int16_t const gridno = parms->sGridNo;
   AnimationLevel const ubLevel = parms->ubLevelID;
-  INT16 tile_index = parms->usTileIndex;
+  int16_t tile_index = parms->usTileIndex;
   AnimationFlags const flags = parms->uiFlags;
   LEVELNODE *l = parms->pGivenLevelNode;
   if (flags & ANITILE_EXISTINGTILE) {
@@ -144,7 +144,7 @@ ANITILE *CreateAnimationTile(const ANITILE_PARAMS *const parms) {
   a->ubKeyFrame2 = parms->ubKeyFrame2;
   a->uiKeyFrame2Code = parms->uiKeyFrame2Code;
   a->v = parms->v;
-  const INT16 start_frame = parms->sStartFrame + SetFrameByDir(0, a);
+  const int16_t start_frame = parms->sStartFrame + SetFrameByDir(0, a);
   a->sCurrentFrame = start_frame;
   a->sStartFrame = start_frame;
   a->pNext = pAniTileHead;
@@ -253,7 +253,7 @@ void DeleteAniTile(ANITILE *const a) {
 void UpdateAniTiles() {
   ANITILE *pAniNode = NULL;
   ANITILE *pNode = NULL;
-  UINT32 uiClock = GetJA2Clock();
+  uint32_t uiClock = GetJA2Clock();
 
   // LOOP THROUGH EACH NODE
   pAniNode = pAniTileHead;
@@ -262,7 +262,7 @@ void UpdateAniTiles() {
     pNode = pAniNode;
     pAniNode = pAniNode->pNext;
 
-    if ((uiClock - pNode->uiTimeLastUpdate) > (UINT32)pNode->sDelay &&
+    if ((uiClock - pNode->uiTimeLastUpdate) > (uint32_t)pNode->sDelay &&
         !(pNode->uiFlags & ANITILE_PAUSED)) {
       pNode->uiTimeLastUpdate = GetJA2Clock();
 
@@ -272,7 +272,7 @@ void UpdateAniTiles() {
       }
 
       if (pNode->uiFlags & ANITILE_FORWARD) {
-        const UINT16 usMaxFrames = pNode->usNumFrames + SetFrameByDir(0, pNode);
+        const uint16_t usMaxFrames = pNode->usNumFrames + SetFrameByDir(0, pNode);
         if ((pNode->sCurrentFrame + 1) < usMaxFrames) {
           pNode->sCurrentFrame++;
           pNode->pLevelNode->sCurrentFrame = pNode->sCurrentFrame;
@@ -310,8 +310,8 @@ void UpdateAniTiles() {
               case ANI_KEYFRAME_BEGIN_DAMAGE: {
                 Assert(pNode->uiFlags & ANITILE_EXPLOSION);
                 const EXPLOSIONTYPE *const e = pNode->v.explosion;
-                const UINT16 item = e->usItem;
-                const UINT8 ubExpType = Explosive[Item[item].ubClassIndex].ubType;
+                const uint16_t item = e->usItem;
+                const uint8_t ubExpType = Explosive[Item[item].ubClassIndex].ubType;
 
                 if (ubExpType == EXPLOSV_TEARGAS || ubExpType == EXPLOSV_MUSTGAS ||
                     ubExpType == EXPLOSV_SMOKE) {
@@ -365,7 +365,7 @@ void UpdateAniTiles() {
           }
         }
 
-        const UINT16 usMinFrames = SetFrameByDir(0, pNode);
+        const uint16_t usMinFrames = SetFrameByDir(0, pNode);
         if ((pNode->sCurrentFrame - 1) >= usMinFrames) {
           pNode->sCurrentFrame--;
           pNode->pLevelNode->sCurrentFrame = pNode->sCurrentFrame;
@@ -430,7 +430,7 @@ void UpdateAniTiles() {
   }
 }
 
-ANITILE *GetCachedAniTileOfType(INT16 const sGridNo, UINT8 const ubLevelID,
+ANITILE *GetCachedAniTileOfType(int16_t const sGridNo, uint8_t const ubLevelID,
                                 AnimationFlags const uiFlags) {
   LEVELNODE *n;
   MAP_ELEMENT const &me = gpWorldLevelData[sGridNo];

@@ -265,8 +265,8 @@ void FileClose(const HWFILE f) {
 
 #ifdef JA2TESTVERSION
 #include "Timer_Control.h"
-extern UINT32 uiTotalFileReadTime;
-extern UINT32 uiTotalFileReadCalls;
+extern uint32_t uiTotalFileReadTime;
+extern uint32_t uiTotalFileReadCalls;
 #endif
 
 void FileRead(HWFILE const f, void *const pDest, size_t const uiBytesToRead) {
@@ -274,7 +274,7 @@ void FileRead(HWFILE const f, void *const pDest, size_t const uiBytesToRead) {
   if (f->flags & SGPFILE_REAL) {
     ret = fread(pDest, uiBytesToRead, 1, f->u.file) == 1;
   } else {
-    ret = LoadDataFromLibrary(&f->u.lib, pDest, (UINT32)uiBytesToRead);
+    ret = LoadDataFromLibrary(&f->u.lib, pDest, (uint32_t)uiBytesToRead);
   }
 
   if (!ret) throw std::runtime_error("Reading from file failed");
@@ -286,7 +286,7 @@ void FileWrite(HWFILE const f, void const *const pDest, size_t const uiBytesToWr
     throw std::runtime_error("Writing to file failed");
 }
 
-void FileSeek(HWFILE const f, INT32 distance, FileSeekMode const how) {
+void FileSeek(HWFILE const f, int32_t distance, FileSeekMode const how) {
   bool success;
   if (f->flags & SGPFILE_REAL) {
     int whence;
@@ -309,17 +309,17 @@ void FileSeek(HWFILE const f, INT32 distance, FileSeekMode const how) {
   if (!success) throw std::runtime_error("Seek in file failed");
 }
 
-INT32 FileGetPos(const HWFILE f) {
-  return f->flags & SGPFILE_REAL ? (INT32)ftell(f->u.file) : f->u.lib.uiFilePosInFile;
+int32_t FileGetPos(const HWFILE f) {
+  return f->flags & SGPFILE_REAL ? (int32_t)ftell(f->u.file) : f->u.lib.uiFilePosInFile;
 }
 
-UINT32 FileGetSize(const HWFILE f) {
+uint32_t FileGetSize(const HWFILE f) {
   if (f->flags & SGPFILE_REAL) {
     struct stat sb;
     if (fstat(fileno(f->u.file), &sb) != 0) {
       throw std::runtime_error("Getting file size failed");
     }
-    return (UINT32)sb.st_size;
+    return (uint32_t)sb.st_size;
   } else {
     return f->u.lib.pFileHeader->uiFileLength;
   }
@@ -371,7 +371,7 @@ FileAttributes FileGetAttributes(const char *const filename) {
   if (S_ISDIR(sb.st_mode)) attr |= FILE_ATTR_DIRECTORY;
   if (!(sb.st_mode & S_IWUSR)) attr |= FILE_ATTR_READONLY;
 #else
-  const UINT32 w32attr = GetFileAttributes(filename);
+  const uint32_t w32attr = GetFileAttributes(filename);
   if (w32attr == INVALID_FILE_ATTRIBUTES) return FILE_ATTR_ERROR;
 
   if (w32attr & FILE_ATTRIBUTE_READONLY) attr |= FILE_ATTR_READONLY;
@@ -429,8 +429,8 @@ BOOLEAN GetFileManFileTime(const HWFILE f, SGP_FILETIME *const pCreationTime,
 #endif
 }
 
-INT32 CompareSGPFileTimes(const SGP_FILETIME *const pFirstFileTime,
-                          const SGP_FILETIME *const pSecondFileTime) {
+int32_t CompareSGPFileTimes(const SGP_FILETIME *const pFirstFileTime,
+                            const SGP_FILETIME *const pSecondFileTime) {
 #if 1  // XXX TODO
   UNIMPLEMENTED;
   return 0;
@@ -443,9 +443,9 @@ FILE *GetRealFileHandleFromFileManFileHandle(const HWFILE f) {
   return f->flags & SGPFILE_REAL ? f->u.file : f->u.lib.lib->hLibraryHandle;
 }
 
-static UINT32 GetFreeSpaceOnHardDrive(const char *pzDriveLetter);
+static uint32_t GetFreeSpaceOnHardDrive(const char *pzDriveLetter);
 
-UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
+uint32_t GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
 #if 1  // XXX TODO
   FIXME
   return 1024 * 1024 * 1024;  // XXX TODO return an arbitrary number for now
@@ -459,17 +459,17 @@ UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
 #endif
 }
 
-static UINT32 GetFreeSpaceOnHardDrive(const char *const pzDriveLetter) {
+static uint32_t GetFreeSpaceOnHardDrive(const char *const pzDriveLetter) {
 #if 1  // XXX TODO
   UNIMPLEMENTED
 #else
-  UINT32 uiSectorsPerCluster = 0;
-  UINT32 uiBytesPerSector = 0;
-  UINT32 uiNumberOfFreeClusters = 0;
-  UINT32 uiTotalNumberOfClusters = 0;
+  uint32_t uiSectorsPerCluster = 0;
+  uint32_t uiBytesPerSector = 0;
+  uint32_t uiNumberOfFreeClusters = 0;
+  uint32_t uiTotalNumberOfClusters = 0;
   if (!GetDiskFreeSpace(pzDriveLetter, &uiSectorsPerCluster, &uiBytesPerSector,
                         &uiNumberOfFreeClusters, &uiTotalNumberOfClusters)) {
-    const UINT32 uiLastError = GetLastError();
+    const uint32_t uiLastError = GetLastError();
     char zString[1024];
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
     return TRUE;

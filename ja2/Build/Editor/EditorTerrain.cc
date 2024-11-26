@@ -23,12 +23,12 @@
 #include "Utils/FontControl.h"
 
 BOOLEAN gfShowTerrainTileButtons;
-UINT8 ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];
-UINT16 usTotalWeight;
+uint8_t ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];
+uint16_t usTotalWeight;
 BOOLEAN fPrevShowTerrainTileButtons = TRUE;
 BOOLEAN fUseTerrainWeights = FALSE;
-INT32 TerrainTileSelected = 0, TerrainForegroundTile, TerrainBackgroundTile;
-INT32 TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
+int32_t TerrainTileSelected = 0, TerrainForegroundTile, TerrainBackgroundTile;
+int32_t TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
 
 void EntryInitEditorTerrainInfo() {
   // ResetTerrainTileWeights();
@@ -38,7 +38,7 @@ void EntryInitEditorTerrainInfo() {
 }
 
 void ResetTerrainTileWeights() {
-  INT8 x;
+  int8_t x;
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     ubTerrainTileButtonWeight[x] = 0;
   }
@@ -48,7 +48,7 @@ void ResetTerrainTileWeights() {
 }
 
 void HideTerrainTileButtons() {
-  INT8 x;
+  int8_t x;
   if (gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       DisableEditorRegion(x);
@@ -58,7 +58,7 @@ void HideTerrainTileButtons() {
 }
 
 void ShowTerrainTileButtons() {
-  INT8 x;
+  int8_t x;
   if (!gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       EnableEditorRegion(x);
@@ -70,8 +70,8 @@ void ShowTerrainTileButtons() {
 void RenderTerrainTileButtons() {
   // If needed, display the ground tile images
   if (gfShowTerrainTileButtons) {
-    UINT16 usFillColorDark, usFillColorLight, usFillColorRed;
-    UINT16 x, usX, usX2, usY, usY2;
+    uint16_t usFillColorDark, usFillColorLight, usFillColorRed;
+    uint16_t x, usX, usX2, usY, usY2;
 
     usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
     usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
@@ -108,13 +108,13 @@ void RenderTerrainTileButtons() {
 
 // This callback is used for each of the terrain tile buttons.  The userData[0]
 // field contains the terrain button's index value.
-void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, int32_t reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderTaskbar = TRUE;
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
     if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
       TerrainForegroundTile = TerrainTileSelected;
-      CurrentPaste = (UINT16)TerrainForegroundTile;
+      CurrentPaste = (uint16_t)TerrainForegroundTile;
       // iEditorToolbarState = TBAR_MODE_DRAW;
       if (IsKeyDown(SHIFT)) {
         fUseTerrainWeights = TRUE;
@@ -149,8 +149,8 @@ void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
 }
 
 void ChooseWeightedTerrainTile() {
-  UINT16 x, usWeight;
-  INT16 sRandomNum;
+  uint16_t x, usWeight;
+  int16_t sRandomNum;
   if (!usTotalWeight) {  // Not in the weighted mode.  CurrentPaste will already
                          // contain the selected tile.
     return;
@@ -166,11 +166,11 @@ void ChooseWeightedTerrainTile() {
   }
 }
 
-UINT32 guiSearchType;
-UINT32 count, maxCount = 0, calls = 0;
+uint32_t guiSearchType;
+uint32_t count, maxCount = 0, calls = 0;
 
-static void Fill(INT32 x, INT32 y) {
-  INT32 iMapIndex;
+static void Fill(int32_t x, int32_t y) {
+  int32_t iMapIndex;
 
   count++;
   calls++;
@@ -178,11 +178,11 @@ static void Fill(INT32 x, INT32 y) {
   if (count > maxCount) maxCount = count;
 
   iMapIndex = y * WORLD_COLS + x;
-  if (!GridNoOnVisibleWorldTile((INT16)iMapIndex)) {
+  if (!GridNoOnVisibleWorldTile((int16_t)iMapIndex)) {
     count--;
     return;
   }
-  const UINT32 uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
+  const uint32_t uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
   if (guiSearchType == uiCheckType)
     PasteTextureCommon(iMapIndex);
   else {
@@ -197,15 +197,15 @@ static void Fill(INT32 x, INT32 y) {
   count--;
 }
 
-void TerrainFill(UINT32 iMapIndex) {
-  INT16 sX, sY;
+void TerrainFill(uint32_t iMapIndex) {
+  int16_t sX, sY;
   // determine what we should be looking for to replace...
   guiSearchType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex);
 
   // check terminating conditions
   if (guiSearchType == CurrentPaste) return;
 
-  ConvertGridNoToXY((INT16)iMapIndex, &sX, &sY);
+  ConvertGridNoToXY((int16_t)iMapIndex, &sX, &sY);
 
   count = 0;
 

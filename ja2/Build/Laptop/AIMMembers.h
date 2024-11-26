@@ -8,8 +8,8 @@ void ExitAIMMembers();
 void HandleAIMMembers();
 void RenderAIMMembers();
 
-void DrawNumeralsToScreen(INT32 iNumber, INT8 bWidth, UINT16 usLocX, UINT16 usLocY, Font,
-                          UINT8 ubColor);
+void DrawNumeralsToScreen(int32_t iNumber, int8_t bWidth, uint16_t usLocX, uint16_t usLocY, Font,
+                          uint8_t ubColor);
 
 void DisplayTextForMercFaceVideoPopUp(const wchar_t *pString);
 void EnterInitAimMembers();

@@ -31,8 +31,8 @@ static void RemoveMilitiaFromTactical() {
 
 void PrepareMilitiaForTactical() {
   SECTORINFO *pSector;
-  //	INT32 i;
-  UINT8 ubGreen, ubRegs, ubElites;
+  //	int32_t i;
+  uint8_t ubGreen, ubRegs, ubElites;
   if (gbWorldSectorZ > 0) return;
 
   // Do we have a loaded sector?
@@ -57,8 +57,8 @@ void HandleMilitiaPromotions() {
     if (s.bLife <= 0) continue;
     if (s.ubMilitiaKills == 0) continue;
 
-    UINT8 const militia_rank = SoldierClassToMilitiaRank(s.ubSoldierClass);
-    UINT8 const promotions =
+    uint8_t const militia_rank = SoldierClassToMilitiaRank(s.ubSoldierClass);
+    uint8_t const promotions =
         CheckOneMilitiaForPromotion(gWorldSectorX, gWorldSectorY, militia_rank, s.ubMilitiaKills);
     if (promotions != 0) {
       if (promotions == 2) {
