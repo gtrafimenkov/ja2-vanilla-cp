@@ -2,6 +2,7 @@
 
 #include "FadeScreen.h"
 #include "Intro.h"
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "ScreenIDs.h"
 #include "Strategic/PlayerCommand.h"

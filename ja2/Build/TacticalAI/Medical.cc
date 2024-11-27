@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Types.h"
 #include "Strategic/Assignments.h"
 #include "Tactical/AnimationControl.h"

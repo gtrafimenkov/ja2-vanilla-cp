@@ -5,6 +5,7 @@
 #include <wchar.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Font.h"
 #include "SGP/VSurface.h"

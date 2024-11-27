@@ -4,6 +4,7 @@
 
 #include "Directories.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"

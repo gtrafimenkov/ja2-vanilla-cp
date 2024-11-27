@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Types.h"
 #include "Tactical/AnimationControl.h"

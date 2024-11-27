@@ -7,6 +7,7 @@
 
 #include "Directories.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"

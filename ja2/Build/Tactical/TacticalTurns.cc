@@ -1,6 +1,7 @@
 #include "Tactical/TacticalTurns.h"
 
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "ScreenIDs.h"
 #include "Strategic/GameClock.h"

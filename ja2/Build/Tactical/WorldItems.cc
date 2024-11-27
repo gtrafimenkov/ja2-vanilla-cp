@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

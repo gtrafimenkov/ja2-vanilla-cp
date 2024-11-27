@@ -13,6 +13,7 @@
 #include "Laptop/IMPVideoObjects.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"

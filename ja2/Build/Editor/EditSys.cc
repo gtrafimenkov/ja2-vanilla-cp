@@ -12,6 +12,7 @@
 #include "Editor/SelectWin.h"
 #include "Editor/Smooth.h"
 #include "Editor/SmoothingUtils.h"
+#include "Macro.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
 #include "TileEngine/Environment.h"

@@ -5,6 +5,7 @@
 #include "GameSettings.h"
 #include "Laptop/Finances.h"
 #include "Laptop/History.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"

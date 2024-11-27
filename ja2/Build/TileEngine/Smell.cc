@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "Strategic/GameClock.h"
 #include "Tactical/MapInformation.h"

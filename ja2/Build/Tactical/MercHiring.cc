@@ -8,6 +8,7 @@
 #include "Laptop/History.h"
 #include "Laptop/LaptopSave.h"
 #include "Laptop/Personnel.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/MouseSystem.h"

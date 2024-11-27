@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SGP/Random.h"
 #include "SaveLoadGame.h"

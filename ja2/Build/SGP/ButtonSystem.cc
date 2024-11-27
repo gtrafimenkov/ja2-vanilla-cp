@@ -1,8 +1,8 @@
-// Rewritten mostly by Kris Morness
 #include "SGP/ButtonSystem.h"
 
 #include <stdexcept>
 
+#include "Macro.h"
 #include "SGP/ButtonSoundControl.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"

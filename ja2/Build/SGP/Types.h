@@ -3,19 +3,6 @@
 
 #include <stdint.h>
 
-#ifdef WITH_FIXMES
-#define FIXME fprintf(stderr, "===> %s:%d: %s() FIXME\n", __FILE__, __LINE__, __func__);
-#else
-#define FIXME (void)0;
-#endif
-
-#define lengthof(a) (sizeof(a) / sizeof(a[0]))
-#define endof(a) ((a) + lengthof(a))
-
-#define FOR_EACHX(type, iter, array, x) \
-  for (type *iter = (array); iter != endof((array)); (x), ++iter)
-#define FOR_EACH(type, iter, array) FOR_EACHX(type, iter, (array), (void)0)
-
 template <typename T>
 static inline void Swap(T &a, T &b) {
   T t(a);

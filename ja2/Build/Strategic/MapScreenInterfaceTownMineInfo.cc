@@ -7,6 +7,7 @@
 #include "Directories.h"
 #include "HelpScreen.h"
 #include "Laptop/Finances.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"

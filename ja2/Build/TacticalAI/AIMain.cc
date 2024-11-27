@@ -1,3 +1,4 @@
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "Strategic/QueenCommand.h"
 #include "Strategic/Quests.h"

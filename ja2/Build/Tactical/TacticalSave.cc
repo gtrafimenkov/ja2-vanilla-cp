@@ -4,6 +4,7 @@
 
 #include "Directories.h"
 #include "GameVersion.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"

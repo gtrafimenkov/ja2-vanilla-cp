@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "Editor/EditSys.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"

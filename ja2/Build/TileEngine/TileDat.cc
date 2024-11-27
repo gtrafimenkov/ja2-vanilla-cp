@@ -1,5 +1,6 @@
 #include "TileEngine/TileDat.h"
 
+#include "Macro.h"
 #include "TileEngine/TileDef.h"
 #include "TileEngine/WorldDef.h"
 

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "Tactical/AnimationData.h"
 #include "Tactical/Points.h"

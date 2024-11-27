@@ -5,6 +5,7 @@
 #include <wchar.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/MouseSystem.h"

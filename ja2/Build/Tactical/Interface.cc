@@ -8,6 +8,7 @@
 #include "Directories.h"
 #include "GameSettings.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
 #include "SGP/Debug.h"

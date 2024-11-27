@@ -8,6 +8,7 @@
 #include "Laptop/IMPPortraits.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "Tactical/AnimationData.h"

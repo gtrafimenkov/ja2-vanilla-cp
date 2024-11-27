@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+#include "Macro.h"
 #include "SGP/Container.h"
 #include "SGP/MemMan.h"
 #include "SGP/WCheck.h"

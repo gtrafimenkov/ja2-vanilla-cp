@@ -13,6 +13,7 @@
 #include "Laptop/LaptopSave.h"
 #include "Laptop/Mercs.h"
 #include "Laptop/Personnel.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"

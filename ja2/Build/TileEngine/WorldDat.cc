@@ -5,6 +5,7 @@
 #include <wchar.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SysGlobals.h"
 #include "TileEngine/TileDef.h"

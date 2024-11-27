@@ -13,6 +13,7 @@
 #include "Laptop/Finances.h"
 #include "Laptop/Laptop.h"
 #include "Local.h"
+#include "Macro.h"
 #include "OptionsScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "GameRes.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "Strategic/MapScreenInterfaceMap.h"

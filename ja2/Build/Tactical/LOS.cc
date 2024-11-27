@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "SGP/WCheck.h"

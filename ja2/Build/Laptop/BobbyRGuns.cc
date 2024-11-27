@@ -11,6 +11,7 @@
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
 #include "Laptop/StoreInventory.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"

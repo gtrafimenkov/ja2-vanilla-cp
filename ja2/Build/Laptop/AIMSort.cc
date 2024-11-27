@@ -3,6 +3,7 @@
 #include "Directories.h"
 #include "Laptop/AIM.h"
 #include "Laptop/Laptop.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"

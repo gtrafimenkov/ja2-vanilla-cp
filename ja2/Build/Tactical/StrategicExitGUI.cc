@@ -8,6 +8,7 @@
 #include "FadeScreen.h"
 #include "GameScreen.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"

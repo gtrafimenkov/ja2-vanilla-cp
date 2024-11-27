@@ -7,6 +7,7 @@
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "OptionsScreen.h"
 #include "SGP/CursorControl.h"

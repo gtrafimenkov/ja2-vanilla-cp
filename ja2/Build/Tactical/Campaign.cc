@@ -6,6 +6,7 @@
 
 #include "GameSettings.h"
 #include "Laptop/EMail.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

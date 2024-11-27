@@ -8,6 +8,7 @@
 #include "FadeScreen.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Random.h"
 #include "ScreenIDs.h"

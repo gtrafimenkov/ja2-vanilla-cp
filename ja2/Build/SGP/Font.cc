@@ -5,6 +5,7 @@
 
 #include "GameRes.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"

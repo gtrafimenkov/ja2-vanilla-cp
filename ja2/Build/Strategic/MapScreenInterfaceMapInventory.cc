@@ -5,6 +5,7 @@
 #include <wchar.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Buffer.h"
 #include "SGP/ButtonSystem.h"

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/WCheck.h"
 #include "Tactical/AnimationControl.h"

@@ -5,6 +5,7 @@
 #include "GameSettings.h"
 #include "Intro.h"
 #include "Local.h"
+#include "Macro.h"
 #include "MainMenuScreen.h"
 #include "MessageBoxScreen.h"
 #include "OptionsScreen.h"

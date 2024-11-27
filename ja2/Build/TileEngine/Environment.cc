@@ -4,6 +4,7 @@
 #include "Laptop/BobbyR.h"
 #include "Laptop/InsuranceContract.h"
 #include "Laptop/Mercs.h"
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "SGP/SoundMan.h"
 #include "Strategic/GameClock.h"

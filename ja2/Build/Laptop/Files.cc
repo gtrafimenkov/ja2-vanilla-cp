@@ -2,6 +2,7 @@
 
 #include "Directories.h"
 #include "Laptop/Laptop.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

@@ -6,6 +6,7 @@
 #include "GameRes.h"
 #include "GameVersion.h"
 #include "HelpScreen.h"
+#include "Macro.h"
 #include "OptionsScreen.h"
 #include "SGP/FileMan.h"
 #include "SGP/LibraryDataBase.h"

@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/LoadSaveData.h"
 #include "Tactical/LoadSaveObjectType.h"

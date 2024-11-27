@@ -15,6 +15,7 @@
 #include "Laptop/Finances.h"
 #include "Laptop/LaptopSave.h"
 #include "Local.h"
+#include "Macro.h"
 #include "OptionsScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"

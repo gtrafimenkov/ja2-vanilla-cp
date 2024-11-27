@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "Tactical/AnimationData.h"
 #include "Tactical/Interface.h"

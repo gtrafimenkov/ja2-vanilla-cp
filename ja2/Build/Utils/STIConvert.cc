@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"

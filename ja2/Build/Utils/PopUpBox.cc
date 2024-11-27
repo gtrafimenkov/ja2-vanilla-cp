@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"
 #include "SGP/MemMan.h"

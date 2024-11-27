@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/English.h"
 #include "SGP/Input.h"

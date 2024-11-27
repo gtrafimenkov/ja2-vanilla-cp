@@ -1,3 +1,4 @@
+#include "Macro.h"
 //------------------------------------------------------------------------------
 // Cinematics Module
 //
@@ -6,8 +7,6 @@
 //	Originally by Derek Beland and Bret Rowden.
 //
 //------------------------------------------------------------------------------
-
-#include "Utils/Cinematics.h"
 
 #include <string.h>
 
@@ -21,6 +20,7 @@
 #include "SGP/Types.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
+#include "Utils/Cinematics.h"
 
 struct SMKFLIC {
   HWFILE hFileHandle;

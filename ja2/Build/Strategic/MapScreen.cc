@@ -17,6 +17,7 @@
 #include "Laptop/LaptopSave.h"
 #include "Laptop/Personnel.h"
 #include "Local.h"
+#include "Macro.h"
 #include "OptionsScreen.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"

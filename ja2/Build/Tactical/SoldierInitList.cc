@@ -5,6 +5,7 @@
 
 #include "Directories.h"
 #include "Editor/EditorMercs.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"

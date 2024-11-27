@@ -7,6 +7,7 @@
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
 #include "Laptop/StoreInventory.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"
 #include "SGP/Random.h"

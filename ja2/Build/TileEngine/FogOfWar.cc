@@ -1,5 +1,6 @@
 #include "TileEngine/FogOfWar.h"
 
+#include "Macro.h"
 #include "SGP/Types.h"
 #include "TileEngine/Lighting.h"
 #include "TileEngine/SimpleRenderUtils.h"

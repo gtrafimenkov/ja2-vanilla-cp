@@ -27,8 +27,8 @@ void IncreaseSelectionDensity();
 void DecreaseSelectionDensity();
 void RemoveCursors();
 
-extern wchar_t SelTypeWidth[lengthof("Width: xx")];
-extern const wchar_t *const wszSelType[6];
+extern wchar_t SelTypeWidth[10];
+extern const wchar_t* const wszSelType[6];
 
 extern BOOLEAN gfCurrentSelectionWithRightButton;
 

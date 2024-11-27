@@ -6,6 +6,7 @@
 #include "Laptop/BobbyRMailOrder.h"
 #include "Laptop/History.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SGP/Random.h"
 #include "Strategic/Assignments.h"

@@ -30,7 +30,7 @@ uint16_t gusSavedSelectionType = SMALLSELECTION;
 uint16_t gusSavedBuildingSelectionType = AREASELECTION;
 static int16_t sBadMarker = -1;
 
-wchar_t SelTypeWidth[] = L"Width: xx";
+wchar_t SelTypeWidth[10] = L"Width: xx";
 const wchar_t *const wszSelType[6] = {L"Small",  L"Medium",    L"Large",
                                       L"XLarge", SelTypeWidth, L"Area"};
 

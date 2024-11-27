@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"

@@ -4,6 +4,7 @@
 
 #include "Editor/Smooth.h"
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Font.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

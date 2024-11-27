@@ -1,8 +1,8 @@
-
 #include "Tactical/SoldierAni.h"
 
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <stdexcept>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "Strategic/MapScreen.h"
 #include "Tactical/HandleItems.h"

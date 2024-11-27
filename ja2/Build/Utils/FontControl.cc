@@ -3,6 +3,7 @@
 #include "Directories.h"
 #include "GameRes.h"
 #include "GameState.h"
+#include "Macro.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"

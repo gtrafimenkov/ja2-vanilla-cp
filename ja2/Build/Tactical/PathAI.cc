@@ -1,3 +1,4 @@
+#include "Macro.h"
 /*
         Filename        :       pathai.c
         Author          :       Ray E. Bornert II
@@ -7,8 +8,6 @@
         Author          :       Chris Camfield
         Date            :       1997-NOV
 */
-
-#include "Tactical/PathAI.h"
 
 #include <algorithm>
 #include <string.h>
@@ -25,6 +24,7 @@
 #include "Tactical/Keys.h"
 #include "Tactical/Overhead.h"
 #include "Tactical/OverheadTypes.h"
+#include "Tactical/PathAI.h"
 #include "Tactical/PathAIDebug.h"
 #include "Tactical/Points.h"
 #include "Tactical/SoldierControl.h"

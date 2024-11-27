@@ -13,6 +13,7 @@
 #include "JAScreens.h"
 #include "Laptop/AIMMembers.h"
 #include "Laptop/Mercs.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "SGP/Container.h"
 #include "SGP/Font.h"

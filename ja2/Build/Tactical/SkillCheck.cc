@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "Strategic/StrategicMap.h"
 #include "Tactical/DialogueControl.h"

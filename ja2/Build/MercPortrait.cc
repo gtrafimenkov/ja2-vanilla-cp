@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "Directories.h"
+#include "Macro.h"
 #include "SGP/VObject.h"
 #include "Tactical/SoldierProfileType.h"
 

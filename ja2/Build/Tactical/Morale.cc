@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "Strategic/Assignments.h"
 #include "Strategic/MapScreen.h"

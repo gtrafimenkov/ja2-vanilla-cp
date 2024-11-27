@@ -1,5 +1,6 @@
 #include "Strategic/StrategicMovementCosts.h"
 
+#include "Macro.h"
 #include "Strategic/CampaignTypes.h"
 #include "Strategic/StrategicMovement.h"
 

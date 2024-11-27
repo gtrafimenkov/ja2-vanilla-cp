@@ -11,6 +11,7 @@
 #include "Laptop/FloristGallery.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/LaptopSave.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/English.h"
 #include "SGP/Font.h"

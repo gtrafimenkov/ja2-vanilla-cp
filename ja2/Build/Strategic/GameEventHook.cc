@@ -5,6 +5,7 @@
 #include "Laptop/InsuranceContract.h"
 #include "Laptop/Laptop.h"
 #include "Laptop/Mercs.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "SGP/SoundMan.h"

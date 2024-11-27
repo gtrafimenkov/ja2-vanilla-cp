@@ -7,6 +7,7 @@
 #include "Editor/EditScreen.h"
 #include "GameLoop.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "MessageBoxScreen.h"
 #include "OptionsScreen.h"
 #include "SGP/CursorControl.h"

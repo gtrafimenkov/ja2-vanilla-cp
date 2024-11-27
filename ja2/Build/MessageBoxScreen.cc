@@ -7,6 +7,7 @@
 #include "JAScreens.h"
 #include "Laptop/Laptop.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
 #include "SGP/English.h"

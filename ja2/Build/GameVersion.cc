@@ -1,5 +1,7 @@
 #include "GameVersion.h"
 
+#include "Macro.h"
+
 //
 //	Keeps track of the game version
 //

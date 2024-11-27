@@ -1,3 +1,4 @@
+#include "Macro.h"
 #include "Strategic/Quests.h"
 #include "Tactical/LOS.h"
 #include "Tactical/OppList.h"

@@ -11,6 +11,7 @@
 #include "Laptop/LaptopSave.h"
 #include "Laptop/Mercs.h"
 #include "Laptop/SpeckQuotes.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"

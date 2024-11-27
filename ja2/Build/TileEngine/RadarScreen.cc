@@ -3,6 +3,7 @@
 #include "Directories.h"
 #include "JAScreens.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"
 #include "SGP/HImage.h"

@@ -1,6 +1,7 @@
 #include "Strategic/Strategic.h"
 
 #include "Laptop/Personnel.h"
+#include "Macro.h"
 #include "SGP/Types.h"
 #include "Strategic/Assignments.h"
 #include "Strategic/GameClock.h"

@@ -27,6 +27,7 @@
 #include "LoadSaveTacticalStatusType.h"
 #include "LoadingScreen.h"
 #include "Local.h"
+#include "Macro.h"
 #include "OptionsScreen.h"
 #include "SGP/Buffer.h"
 #include "SGP/Debug.h"

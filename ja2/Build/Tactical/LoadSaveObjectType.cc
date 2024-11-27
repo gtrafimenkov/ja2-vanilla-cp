@@ -1,5 +1,6 @@
 #include "Tactical/LoadSaveObjectType.h"
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/LoadSaveData.h"
 

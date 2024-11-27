@@ -8,6 +8,7 @@
 #include "Laptop/AIM.h"
 #include "Laptop/History.h"
 #include "Laptop/Personnel.h"
+#include "Macro.h"
 #include "SGP/FileMan.h"
 #include "SGP/MouseSystem.h"
 #include "SGP/Random.h"

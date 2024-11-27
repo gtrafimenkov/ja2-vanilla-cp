@@ -4,6 +4,7 @@
 #include "Laptop/Insurance.h"
 #include "Laptop/InsuranceText.h"
 #include "Laptop/Laptop.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"
 #include "SGP/VObject.h"

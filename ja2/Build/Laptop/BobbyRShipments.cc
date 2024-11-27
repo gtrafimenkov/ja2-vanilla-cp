@@ -9,6 +9,7 @@
 #include "Laptop/BobbyRGuns.h"
 #include "Laptop/BobbyRMailOrder.h"
 #include "Laptop/Laptop.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"
 #include "SGP/VObject.h"

@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"

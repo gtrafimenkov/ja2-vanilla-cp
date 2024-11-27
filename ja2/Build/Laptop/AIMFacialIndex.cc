@@ -8,6 +8,7 @@
 #include "Laptop/AIM.h"
 #include "Laptop/AIMSort.h"
 #include "Laptop/Laptop.h"
+#include "Macro.h"
 #include "MercPortrait.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/HImage.h"

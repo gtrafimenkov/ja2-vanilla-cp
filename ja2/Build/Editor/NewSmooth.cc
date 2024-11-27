@@ -6,6 +6,7 @@
 #include "Editor/EditorBuildings.h"
 #include "Editor/EditorUndo.h"
 #include "Editor/SmoothingUtils.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/Random.h"
 #include "TileEngine/Environment.h"

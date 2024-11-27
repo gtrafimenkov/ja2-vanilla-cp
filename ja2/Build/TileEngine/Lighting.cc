@@ -1,3 +1,4 @@
+#include "Macro.h"
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -15,8 +16,6 @@
  * Written by Derek Beland, April 14, 1997
  *
  ***************************************************************************************/
-#include "TileEngine/Lighting.h"
-
 #include <algorithm>
 #include <stdexcept>
 #include <stdio.h>
@@ -40,6 +39,7 @@
 #include "Tactical/StructureWrap.h"
 #include "TileEngine/Environment.h"
 #include "TileEngine/IsometricUtils.h"
+#include "TileEngine/Lighting.h"
 #include "TileEngine/RadarScreen.h"
 #include "TileEngine/RenderDirty.h"
 #include "TileEngine/RenderWorld.h"

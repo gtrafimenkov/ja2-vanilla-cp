@@ -8,6 +8,7 @@
 #include "Directories.h"
 #include "Laptop/Finances.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"

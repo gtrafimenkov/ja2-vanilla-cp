@@ -1,5 +1,6 @@
 #include "Tactical/StructureWrap.h"
 
+#include "Macro.h"
 #include "Strategic/StrategicMap.h"
 #include "Tactical/Overhead.h"
 #include "Tactical/RottingCorpses.h"

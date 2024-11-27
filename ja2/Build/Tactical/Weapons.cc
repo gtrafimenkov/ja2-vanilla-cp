@@ -6,6 +6,7 @@
 
 #include "Directories.h"
 #include "GameSettings.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"

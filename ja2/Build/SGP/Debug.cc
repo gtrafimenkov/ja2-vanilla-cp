@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "Macro.h"
 #include "SGP/Timer.h"
 
 #if defined(SGP_DEBUG) || defined(FORCE_ASSERTS_ON)

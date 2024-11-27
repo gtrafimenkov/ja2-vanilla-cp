@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/LoadSaveData.h"

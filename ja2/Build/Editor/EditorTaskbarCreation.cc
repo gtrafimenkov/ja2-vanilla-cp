@@ -10,6 +10,7 @@
 #include "Editor/EditorMapInfo.h"
 #include "Editor/EditorMercs.h"
 #include "Editor/EditorTaskbarUtils.h"
+#include "Macro.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Font.h"
 #include "Tactical/OverheadTypes.h"

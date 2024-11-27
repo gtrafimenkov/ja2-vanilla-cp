@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "Macro.h"
 #include "SGP/Random.h"
 #include "SGP/Types.h"
 #include "Strategic/StrategicMap.h"
