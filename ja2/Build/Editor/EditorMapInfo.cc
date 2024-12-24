@@ -34,6 +34,9 @@
 #include "Utils/FontControl.h"
 #include "Utils/TextInput.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 INT8 gbDefaultLightType = PRIMETIME_LIGHT;
 
 SGPPaletteEntry gEditorLightColor;

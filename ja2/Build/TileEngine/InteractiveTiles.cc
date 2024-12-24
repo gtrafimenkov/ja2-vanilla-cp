@@ -304,7 +304,7 @@ void LogMouseOverInteractiveTile(INT16 const sGridNo) {
 }
 
 static LEVELNODE *InternalGetCurInteractiveTile(const BOOLEAN fRejectItemsOnTop) {
-  if (_KeyDown(SHIFT)) return NULL;
+  if (IsKeyDown(SHIFT)) return NULL;
   if (!gfOverIntTile) return NULL;
 
   LEVELNODE *n = gpWorldLevelData[gCurIntTile.sGridNo].pStructHead;

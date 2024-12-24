@@ -40,6 +40,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #define OPT_MAIN_FONT FONT12ARIAL
 #define OPT_MAIN_COLOR OPT_BUTTON_ON_COLOR     // FONT_MCOLOR_WHITE
 #define OPT_HIGHLIGHT_COLOR FONT_MCOLOR_WHITE  // FONT_MCOLOR_LTYELLOW

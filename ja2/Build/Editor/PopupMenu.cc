@@ -35,6 +35,8 @@
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
 
+#include "SDL_keycode.h"
+
 #define POPUP_ACTIVETYPE_NOT_YET_DETERMINED 0
 #define POPUP_ACTIVETYPE_PERSISTANT 1
 #define POPUP_ACTIVETYPE_NONPERSISTANT 2

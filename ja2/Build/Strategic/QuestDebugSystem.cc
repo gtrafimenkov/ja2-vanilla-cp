@@ -45,6 +45,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 //#ifdef JA2BETAVERSION
 
 #define QUEST_DEBUG_FILE "QuestDebugRecordLog.txt"

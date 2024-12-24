@@ -41,6 +41,8 @@
 #include "TileEngine/WorldDef.h"
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
+
+#include "SDL_keycode.h"
 extern SOLDIERINITNODE *gpSelected;
 
 // OK, these are values that are calculated in InitRenderParams( ) with normal

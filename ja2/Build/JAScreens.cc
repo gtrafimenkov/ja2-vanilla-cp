@@ -39,6 +39,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/Utilities.h"
 
+#include "SDL_keycode.h"
+
 #define MAX_DEBUG_PAGES 4
 
 // GLOBAL FOR PAL EDITOR

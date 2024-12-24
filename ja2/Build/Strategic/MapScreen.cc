@@ -93,6 +93,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+
 #ifdef JA2TESTVERSION
 #include "Map_Information.h"
 #include "Soldier_Create.h"
@@ -3549,7 +3551,7 @@ static void MAPInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         return;
       }
 
-      if (_KeyDown(CTRL)) {
+      if (IsKeyDown(CTRL)) {
         CleanUpStack(&(pSoldier->inv[uiHandPos]), NULL);
       }
 
@@ -3581,7 +3583,7 @@ static void MAPInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         return;
       }
 
-      if (_KeyDown(CTRL)) {
+      if (IsKeyDown(CTRL)) {
         CleanUpStack(&(pSoldier->inv[uiHandPos]), gpItemPointer);
         if (gpItemPointer->ubNumberOfObjects == 0) {
           MAPEndItemPointer();
@@ -3718,7 +3720,7 @@ static void MAPBeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
     return;
   }
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     // Remove all from soldier's slot
     fOk = RemoveObjectFromSlot(pSoldier, ubHandPos, &gItemPointer);
   } else {
@@ -4600,34 +4602,34 @@ static void PlotTemporaryPaths(void) {
         RestoreClipRegionToFullScreen();
       }
     } else
-        // dest char has been selected,
-        if (bSelectedDestChar != -1) {
-      /*
-                              if( fZoomFlag )
-                              {
-                                      sMapX =  ( INT16 )( ( ( iZoomX ) / (
-         MAP_GRID_X ) ) + sMapX ); sMapX /= 2;
+      // dest char has been selected,
+      if (bSelectedDestChar != -1) {
+        /*
+                                if( fZoomFlag )
+                                {
+                                        sMapX =  ( INT16 )( ( ( iZoomX ) / (
+           MAP_GRID_X ) ) + sMapX ); sMapX /= 2;
 
-                                      sMapY =  ( INT16 )( ( ( iZoomY ) / (
-         MAP_GRID_Y ) ) + sMapY ); sMapY /= 2;
-                              }
-      */
+                                        sMapY =  ( INT16 )( ( ( iZoomY ) / (
+           MAP_GRID_Y ) ) + sMapY ); sMapY /= 2;
+                                }
+        */
 
-      PlotATemporaryPathForCharacter(gCharactersList[bSelectedDestChar].merc, sMapX, sMapY);
+        PlotATemporaryPathForCharacter(gCharactersList[bSelectedDestChar].merc, sMapX, sMapY);
 
-      // check to see if we are drawing path
-      DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInterface(sMapX, sMapY);
+        // check to see if we are drawing path
+        DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInterface(sMapX, sMapY);
 
-      // if we need to draw path, do it
-      if (fDrawTempPath) {
-        // clip region
-        ClipBlitsToMapViewRegion();
-        // blit
-        DisplaySoldierTempPath();
-        // restore
-        RestoreClipRegionToFullScreen();
+        // if we need to draw path, do it
+        if (fDrawTempPath) {
+          // clip region
+          ClipBlitsToMapViewRegion();
+          // blit
+          DisplaySoldierTempPath();
+          // restore
+          RestoreClipRegionToFullScreen();
+        }
       }
-    }
   }
 }
 
@@ -6261,14 +6263,14 @@ static void CancelOrShortenPlottedPath(void) {
 
 static BOOLEAN HandleCtrlOrShiftInTeamPanel(INT8 bCharNumber) {
   // check if shift or ctrl held down, if so, set values in list
-  if (_KeyDown(CTRL)) {
+  if (IsKeyDown(CTRL)) {
     ToggleEntryInSelectedList(bCharNumber);
 
     fTeamPanelDirty = TRUE;
     fCharacterInfoPanelDirty = TRUE;
 
     return (TRUE);
-  } else if (_KeyDown(SHIFT)) {
+  } else if (IsKeyDown(SHIFT)) {
     // build a list from the bSelectedInfoChar To here, reset everyone
 
     // empty the list

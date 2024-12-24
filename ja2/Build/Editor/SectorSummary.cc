@@ -40,6 +40,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+
 #define DEVINFO_DIR "../DevInfo"
 
 #define MAP_SIZE 208

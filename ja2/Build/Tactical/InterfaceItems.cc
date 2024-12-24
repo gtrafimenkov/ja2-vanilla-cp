@@ -1390,7 +1390,7 @@ void CycleItemDescriptionItem() {
   // Make new item....
   usOldItem = gpItemDescSoldier->inv[HANDPOS].usItem;
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     usOldItem--;
 
     if (usOldItem < 0) {
@@ -2410,7 +2410,7 @@ void BeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
 
   memset(&pObject, 0, sizeof(OBJECTTYPE));
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     // Remove all from soldier's slot
     fOk = RemoveObjectFromSlot(pSoldier, ubHandPos, &pObject);
   } else {
@@ -2430,7 +2430,7 @@ void BeginKeyRingItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubKeyRingPosition) {
     return;
   }
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     // Remove all from soldier's slot
     fOk = RemoveKeysFromSlot(pSoldier, ubKeyRingPosition,
                              pSoldier->pKeyRing[ubKeyRingPosition].ubNumber, &gItemPointer);
@@ -3652,7 +3652,7 @@ static void ItemPopupRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
           // pick up stacked item into cursor and try to sell it ( unless CTRL
           // is held down )
-          BeginSkiItemPointer(PLAYERS_INVENTORY, -1, !_KeyDown(CTRL));
+          BeginSkiItemPointer(PLAYERS_INVENTORY, -1, !IsKeyDown(CTRL));
 
           // if we've just removed the last one there
           if (gpItemPopupObject->ubNumberOfObjects == 0) {

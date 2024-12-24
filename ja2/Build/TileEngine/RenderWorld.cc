@@ -38,6 +38,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+
 UINT16 *gpZBuffer = NULL;
 
 static INT16 gsCurrentGlowFrame = 0;
@@ -1749,7 +1751,7 @@ static BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, IN
 }
 
 static UINT ScrollSpeed(void) {
-  UINT speed = 20 << (_KeyDown(SHIFT) ? 2 : gubCurScrollSpeedID);
+  UINT speed = 20 << (IsKeyDown(SHIFT) ? 2 : gubCurScrollSpeedID);
   if (!gfDoVideoScroll) speed *= 2;
   return speed;
 }
@@ -1770,9 +1772,9 @@ void ScrollWorld(void) {
 
   // If in editor, ignore scrolling if any of the shift keys pressed with arrow
   // keys
-  if (gfEditMode && _KeyDown(CTRL)) return;
+  if (gfEditMode && IsKeyDown(CTRL)) return;
 
-  if (_KeyDown(ALT)) return;
+  if (IsKeyDown(ALT)) return;
 
   UINT32 ScrollFlags = 0;
 
@@ -1812,10 +1814,10 @@ void ScrollWorld(void) {
 
     if (!fIgnoreInput) {
       // Check keys
-      if (_KeyDown(SDLK_UP)) ScrollFlags |= SCROLL_UP;
-      if (_KeyDown(SDLK_DOWN)) ScrollFlags |= SCROLL_DOWN;
-      if (_KeyDown(SDLK_RIGHT)) ScrollFlags |= SCROLL_RIGHT;
-      if (_KeyDown(SDLK_LEFT)) ScrollFlags |= SCROLL_LEFT;
+      if (IsKeyDown(SDLK_UP)) ScrollFlags |= SCROLL_UP;
+      if (IsKeyDown(SDLK_DOWN)) ScrollFlags |= SCROLL_DOWN;
+      if (IsKeyDown(SDLK_RIGHT)) ScrollFlags |= SCROLL_RIGHT;
+      if (IsKeyDown(SDLK_LEFT)) ScrollFlags |= SCROLL_LEFT;
 
       // Do mouse - PUT INTO A TIMER!
       // Put a counter on starting from mouse, if we have not started already!
@@ -2078,7 +2080,7 @@ static BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY
   if (!fOutRight && !fOutLeft && !fOutTop && !fOutBottom) fScrollGood = TRUE;
 
   // If in editor, anything goes
-  if (gfEditMode && _KeyDown(SHIFT)) fScrollGood = TRUE;
+  if (gfEditMode && IsKeyDown(SHIFT)) fScrollGood = TRUE;
 
   // Reset some UI flags
   gfUIShowExitEast = FALSE;

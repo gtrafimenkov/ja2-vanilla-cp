@@ -13,6 +13,8 @@
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
 
+#include "SDL_pixels.h"
+
 typedef UINT8 GlyphIdx;
 
 // Destination printing parameters

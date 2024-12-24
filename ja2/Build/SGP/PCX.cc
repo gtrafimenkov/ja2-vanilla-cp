@@ -7,6 +7,8 @@
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
 
+#include "SDL_pixels.h"
+
 struct PcxHeader {
   UINT8 ubManufacturer;
   UINT8 ubVersion;

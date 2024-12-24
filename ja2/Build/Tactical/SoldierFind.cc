@@ -100,7 +100,7 @@ static void GetSoldierScreenRect(const SOLDIERTYPE *pSoldier, SGPRect *pRect);
 
 // This function is called fairly regularly
 SOLDIERTYPE *FindSoldier(GridNo const gridno, UINT32 flags) {
-  if (_KeyDown(SHIFT)) flags = FIND_SOLDIER_GRIDNO;
+  if (IsKeyDown(SHIFT)) flags = FIND_SOLDIER_GRIDNO;
 
   if (flags & FIND_SOLDIER_BEGINSTACK) {
     gSoldierStack.bNum = 0;

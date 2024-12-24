@@ -30,6 +30,9 @@
 #include "TileEngine/WorldMan.h"
 #include "Utils/FontControl.h"
 #include "Utils/Text.h"
+
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
 // to the saved map and the game itself.
 #include "Editor/EditorItems.h"
 #include "Editor/EditorTaskbarUtils.h"

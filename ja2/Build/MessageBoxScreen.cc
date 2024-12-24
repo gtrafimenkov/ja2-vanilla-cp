@@ -27,6 +27,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keycode.h"
+
 #define MSGBOX_DEFAULT_WIDTH 300
 
 #define MSGBOX_BUTTON_WIDTH 61

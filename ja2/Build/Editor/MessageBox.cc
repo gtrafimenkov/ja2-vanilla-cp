@@ -9,6 +9,8 @@
 #include "SGP/Video.h"
 #include "Utils/FontControl.h"
 
+#include "SDL_keycode.h"
+
 GUIButtonRef iMsgBoxBgrnd;
 GUIButtonRef iMsgBoxOk;
 GUIButtonRef iMsgBoxCancel;

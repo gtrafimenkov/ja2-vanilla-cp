@@ -17,6 +17,9 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
+#include "SDL_keyboard.h"
+#include "SDL_keycode.h"
+
 static UINT16 *szClipboard;
 BOOLEAN gfNoScroll = FALSE;
 

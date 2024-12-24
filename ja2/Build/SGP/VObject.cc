@@ -8,6 +8,8 @@
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
 
+#include "SDL_pixels.h"
+
 // ******************************************************************************
 //
 // Video Object SGP Module

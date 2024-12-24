@@ -900,7 +900,7 @@ void RenderPreBattleInterface() {
 static void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL()) {
+      if (IsKeyDown(ALT) && CHEATER_CHEAT_LEVEL()) {
         if (!gfPersistantPBI) {
           return;
         }
@@ -930,7 +930,7 @@ static void PutNonSquadMercsInBattleSectorOnSquads(BOOLEAN fExitVehicles);
 static void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason) {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL()) {
+      if (IsKeyDown(ALT) && CHEATER_CHEAT_LEVEL()) {
         if (!gfPersistantPBI) {
           return;
         }

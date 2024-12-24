@@ -35,6 +35,8 @@
 #include "Utils/PopUpBox.h"
 #include "Utils/Text.h"
 
+#include "SDL_keycode.h"
+
 BOOLEAN gfInSectorExitMenu = FALSE;
 
 struct EXIT_DIALOG_STRUCT {

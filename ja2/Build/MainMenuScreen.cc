@@ -27,7 +27,7 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
-//#define TESTFOREIGNFONTS
+// #define TESTFOREIGNFONTS
 
 // MENU ITEMS
 enum { NEW_GAME, LOAD_GAME, PREFERENCES, CREDITS, QUIT, NUM_MENU_ITEMS };
@@ -201,7 +201,7 @@ static void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
         SetMainMenuExitScreen(GAME_INIT_OPTIONS_SCREEN);
         break;
       case LOAD_GAME:
-        if (_KeyDown(ALT)) gfLoadGameUponEntry = TRUE;
+        if (IsKeyDown(ALT)) gfLoadGameUponEntry = TRUE;
         break;
     }
   }
@@ -218,7 +218,7 @@ static void HandleMainMenuInput(void) {
           */
 
         case 'c':
-          if (_KeyDown(ALT)) gfLoadGameUponEntry = TRUE;
+          if (IsKeyDown(ALT)) gfLoadGameUponEntry = TRUE;
           gbHandledMainMenu = LOAD_GAME;
           break;
 

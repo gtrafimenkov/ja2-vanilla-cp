@@ -44,6 +44,8 @@
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 struct MERCPLACEMENT {
   SOLDIERTYPE *pSoldier;
   SGPVObject *uiVObjectID;

@@ -12,6 +12,8 @@
 #include "SGP/VObject.h"
 #include "SGP/WCheck.h"
 
+#include "SDL_pixels.h"
+
 // This is the color substituted to keep a 24bpp -> 16bpp color
 // from going transparent (0x0000) -- DB
 

@@ -1,6 +1,5 @@
 #include "SGP/SGP.h"
 
-#include <SDL.h>
 #include <exception>
 #include <new>
 
@@ -27,6 +26,9 @@
 #include "SaveLoadGame.h"  // XXX should not be used in SGP
 #include "gtest/gtest.h"
 #include "slog/slog.h"
+
+#include "SDL.h"
+#include "SDL_keycode.h"
 
 #if defined _WIN32
 #define WIN32_LEAN_AND_MEAN

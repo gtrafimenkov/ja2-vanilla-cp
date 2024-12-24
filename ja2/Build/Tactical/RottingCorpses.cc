@@ -43,6 +43,9 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Utilities.h"
 
+#include "SDL_keycode.h"
+#include "SDL_pixels.h"
+
 #define CORPSE_WARNING_MAX 5
 #define CORPSE_WARNING_DIST 5
 

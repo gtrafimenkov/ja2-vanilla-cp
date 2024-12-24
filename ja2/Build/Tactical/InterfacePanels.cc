@@ -1305,7 +1305,7 @@ BOOLEAN HandleNailsVestFetish(const SOLDIERTYPE *const s, const UINT32 uiHandPos
 
 static BOOLEAN UIHandleItemPlacement(UINT8 ubHandPos, UINT16 usOldItemIndex, UINT16 usNewItemIndex,
                                      BOOLEAN fDeductPoints) {
-  if (_KeyDown(CTRL)) {
+  if (IsKeyDown(CTRL)) {
     CleanUpStack(&(gpSMCurrentMerc->inv[ubHandPos]), gpItemPointer);
     if (gpItemPointer->ubNumberOfObjects == 0) {
       EndItemPointer();
@@ -1407,7 +1407,7 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
         return;
       }
 
-      if (_KeyDown(CTRL)) {
+      if (IsKeyDown(CTRL)) {
         CleanUpStack(&(gpSMCurrentMerc->inv[uiHandPos]), NULL);
         return;
       }
@@ -1424,7 +1424,7 @@ static void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
       if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
         // pick up item from regular inventory slot into cursor OR try to sell
         // it ( unless CTRL is held down )
-        BeginSkiItemPointer(PLAYERS_INVENTORY, (INT8)uiHandPos, !_KeyDown(CTRL));
+        BeginSkiItemPointer(PLAYERS_INVENTORY, (INT8)uiHandPos, !IsKeyDown(CTRL));
       }
 
       HandleTacticalEffectsOfEquipmentChange(gpSMCurrentMerc, uiHandPos, usOldItemIndex, NOTHING);
@@ -2321,7 +2321,7 @@ void HandleLocateSelectMerc(SOLDIERTYPE *const s, bool const force_select) {
     return;
   }
 
-  if (_KeyDown(ALT)) {
+  if (IsKeyDown(ALT)) {
     if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
       // Select merc
       SelectSoldier(s, SELSOLDIER_ACKNOWLEDGE | SELSOLDIER_FROM_UI);

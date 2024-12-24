@@ -922,7 +922,7 @@ static ScreenID UIHandleTestHit(UI_EVENT *pUIEvent) {
   if (gUIFullTarget != NULL) {
     SOLDIERTYPE *const tgt = gUIFullTarget;
 
-    if (_KeyDown(SHIFT)) {
+    if (IsKeyDown(SHIFT)) {
       tgt->bBreath -= 30;
       if (tgt->bBreath < 0) tgt->bBreath = 0;
       bDamage = 1;
@@ -2433,11 +2433,11 @@ BOOLEAN HandleUIMovementCursor(SOLDIERTYPE *const pSoldier, MouseMoveState const
 
     if (uiCursorFlags == MOUSE_STATIONARY) {
       // CURSOR IS STATIONARY
-      if (_KeyDown(SHIFT) && !gfPlotNewMovementNOCOST) {
+      if (IsKeyDown(SHIFT) && !gfPlotNewMovementNOCOST) {
         gfPlotNewMovementNOCOST = TRUE;
         gfPlotNewMovement = TRUE;
       }
-      if (!(_KeyDown(SHIFT)) && gfPlotNewMovementNOCOST) {
+      if (!(IsKeyDown(SHIFT)) && gfPlotNewMovementNOCOST) {
         gfPlotNewMovementNOCOST = FALSE;
         gfPlotNewMovement = TRUE;
       }
@@ -2519,7 +2519,7 @@ static INT8 DrawUIMovementPath(SOLDIERTYPE *const pSoldier, UINT16 usMapPos,
   BOOLEAN fPlot;
 
   if (((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED)) ||
-      _KeyDown(SHIFT)) {
+      IsKeyDown(SHIFT)) {
     fPlot = PLOT;
   } else {
     fPlot = NO_PLOT;
@@ -3517,7 +3517,7 @@ static ScreenID UIHandleRubberBandOnTerrain(UI_EVENT *pUIEvent) {
     // Check if this guy is OK to control....
     if (OkControllableMerc(s) &&
         !(s->uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
-      if (!_KeyDown(ALT)) {
+      if (!IsKeyDown(ALT)) {
         s->uiStatusFlags &= ~SOLDIER_MULTI_SELECTED;
       }
 

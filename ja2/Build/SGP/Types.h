@@ -1,7 +1,6 @@
 #ifndef __TYPES_
 #define __TYPES_
 
-#include <SDL_video.h>
 #include <stdint.h>
 #include <stdlib.h>
 

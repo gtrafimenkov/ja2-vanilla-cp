@@ -61,6 +61,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 #define SKI_BUTTON_FONT MILITARYFONT1  // FONT14ARIAL
 #define SKI_BUTTON_COLOR 73
 
@@ -170,13 +172,13 @@
 #define SKI_ITEM_MOVEMENT_AREA_X 85
 #define SKI_ITEM_MOVEMENT_AREA_Y 263
 #define SKI_ITEM_MOVEMENT_AREA_WIDTH (SCREEN_WIDTH - SKI_ITEM_MOVEMENT_AREA_X)
-//#define		SKI_ITEM_MOVEMENT_AREA_WIDTH
-// 448
+// #define		SKI_ITEM_MOVEMENT_AREA_WIDTH
+//  448
 #define SKI_ITEM_MOVEMENT_AREA_HEIGHT 215  // 72
 
 #define SKI_DEALER_OFFER_AREA_Y 148
-//#define		SKI_DEALER_OFFER_AREA_Y
-// 148
+// #define		SKI_DEALER_OFFER_AREA_Y
+//  148
 
 #define SKI_ITEM_NUMBER_TEXT_OFFSET_X 50
 #define SKI_ITEM_NUMBER_TEXT_OFFSET_Y 15
@@ -1246,7 +1248,7 @@ static void SelectDealersInventoryRegionCallBack(MOUSE_REGION *pRegion, INT32 iR
             gpTempDealersInventory[ubSelectedInvSlot].bSlotIdInOtherLocation = ubLocation;
 
             // if the shift key is being pressed, remove them all
-            if (_KeyDown(SHIFT)) {
+            if (IsKeyDown(SHIFT)) {
               gpTempDealersInventory[ubSelectedInvSlot].ItemObject.ubNumberOfObjects = 0;
             } else {
               gpTempDealersInventory[ubSelectedInvSlot].ItemObject.ubNumberOfObjects--;
@@ -1260,7 +1262,7 @@ static void SelectDealersInventoryRegionCallBack(MOUSE_REGION *pRegion, INT32 iR
         UINT8 ubNumToMove;
 
         // if the shift key is being pressed, remove them all
-        if (_KeyDown(SHIFT)) {
+        if (IsKeyDown(SHIFT)) {
           ubNumToMove = gpTempDealersInventory[ubSelectedInvSlot].ItemObject.ubNumberOfObjects;
         } else {
           ubNumToMove = 1;
@@ -1476,7 +1478,7 @@ static void SelectDealersOfferSlotsRegionCallBack(MOUSE_REGION *pRegion, INT32 i
       } else  // non-repairman
       {
         // if the shift key is being pressed, remove them all
-        if (_KeyDown(SHIFT) || a->ItemObject.ubNumberOfObjects == 1) {
+        if (IsKeyDown(SHIFT) || a->ItemObject.ubNumberOfObjects == 1) {
           RemoveItemFromArmsDealerOfferArea(ubSelectedInvSlot,
                                             TRUE);  // a->bSlotIdInOtherLocation
         } else  // multiple items there, SHIFT isn't being pressed
@@ -1658,7 +1660,6 @@ static void InitializeShopKeeper(BOOLEAN fResetPage) {
       else
         gSelectArmsDealerInfo.ubCurrentPage = 1;
     }
-
 // or if the current page will be an invalid page ( before the first, and after
 // the last )
 #if 0 /* XXX unsigned */
@@ -2271,19 +2272,21 @@ static UINT32 CalcShopKeeperItemPrice(BOOLEAN fDealerSelling, BOOLEAN fUnitPrice
         // if it's regular ammo
         if (Item[pItemObject->usGunAmmoItem].usItemClass == IC_AMMO) {
           // add value of its remaining ammo
-          uiUnitPrice += (UINT32)(
-              CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem,
-                                      fDealerSelling) *
-              ItemConditionModifier(pItemObject->usGunAmmoItem, pItemObject->ubGunShotsLeft) *
-              dModifier);
+          uiUnitPrice +=
+              (UINT32)(CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem,
+                                               fDealerSelling) *
+                       ItemConditionModifier(pItemObject->usGunAmmoItem,
+                                             pItemObject->ubGunShotsLeft) *
+                       dModifier);
         } else  // assume it's attached ammo (mortar shells, grenades)
         {
           // add its value (uses normal status 0-100)
-          uiUnitPrice += (UINT32)(
-              CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem,
-                                      fDealerSelling) *
-              ItemConditionModifier(pItemObject->usGunAmmoItem, pItemObject->bGunAmmoStatus) *
-              dModifier);
+          uiUnitPrice +=
+              (UINT32)(CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem,
+                                               fDealerSelling) *
+                       ItemConditionModifier(pItemObject->usGunAmmoItem,
+                                             pItemObject->bGunAmmoStatus) *
+                       dModifier);
         }
       }
 
@@ -2499,7 +2502,7 @@ static INT8 AddItemToArmsDealerOfferArea(const INVENTORY_IN_SLOT *pInvSlot,
       *a = *pInvSlot;
 
       // if the shift key is being pressed, add them all
-      if (_KeyDown(SHIFT)) {
+      if (IsKeyDown(SHIFT)) {
         a->ItemObject.ubNumberOfObjects = pInvSlot->ItemObject.ubNumberOfObjects;
       } else if (pInvSlot->ItemObject.ubNumberOfObjects > 1) {
         // If there was more then 1 item, reduce it to only 1 item moved

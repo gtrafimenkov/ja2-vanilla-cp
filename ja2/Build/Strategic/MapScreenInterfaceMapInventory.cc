@@ -715,7 +715,7 @@ static void BeginInventoryPoolPtr(OBJECTTYPE *pInventorySlot) {
 
   // if shift key get all
 
-  if (_KeyDown(SHIFT)) {
+  if (IsKeyDown(SHIFT)) {
     // Remove all from soldier's slot
     fOk = RemoveObjectFromStashSlot(pInventorySlot, &gItemPointer);
   } else {

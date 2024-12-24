@@ -87,6 +87,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 
+#include "SDL_keycode.h"
+
 // laptop programs
 enum {
   LAPTOP_PROGRAM_MAILER,
