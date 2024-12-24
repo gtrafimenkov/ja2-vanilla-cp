@@ -14,8 +14,8 @@ IncludeCategories:
   - Regex:           '^<'
     Priority:        10
 
-  - Regex:           '.*'
-    Priority:        30
-
   - Regex:           '"SDL.*[.]h"'
     Priority:        60
+
+  - Regex:           '.*'
+    Priority:        30
