@@ -28,12 +28,8 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compile_options(/wd4200) # nonstandard extension used: zero-sized array in struct/union
     add_compile_options(/wd4244) # conversion from 'type1' to 'type2', possible loss of data
     add_compile_options(/wd4267) # conversion from 'size_t' to 'type', possible loss of data
-    # add_compile_options(/wd4800)
-    # add_compile_options(/D_CRT_SECURE_NO_WARNINGS)
     add_compile_options(/wd4996) # deprecated stuff in utf8cpp library
-    message(STATUS "Compiler: YYY")
 endif()
-
 
 add_subdirectory(libs/sdl2 EXCLUDE_FROM_ALL)
 add_subdirectory(libs/googletest)

@@ -85,6 +85,20 @@ def get_debug_build_exe():
     return "build/ja2vcp"
 
 
+def test_debug():
+    if platform.system() == "Windows":
+        subprocess.run(["build/Debug/ja2vcp.exe", "--unittests"])
+    else:
+        subprocess.run(["./build/ja2vcp", "--unittests"])
+
+
+def test_release():
+    if platform.system() == "Windows":
+        subprocess.run(["build/Release/ja2vcp.exe", "--unittests"])
+    else:
+        subprocess.run(["./build-release/ja2vcp", "--unittests"])
+
+
 def run_command(command):
     if command in ["build", "build-debug"]:
         if platform.system() == "Windows":
@@ -122,6 +136,12 @@ def run_command(command):
 
     elif command == "run":
         subprocess.run([get_debug_build_exe()])
+
+    elif command == "test-debug":
+        test_debug()
+
+    elif command == "test-release":
+        test_release()
 
     else:
         print(f"Unknown command {command}", file=sys.stderr)

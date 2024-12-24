@@ -5,11 +5,41 @@
   "tasks": [
     {
       "label": "build",
-      "type": "shell",
-      "command": "make -C build",
-      "problemMatcher": [
-        "$gcc"
-      ]
+      "type": "process",
+      "command": "python",
+      "args": [
+        "xx.py",
+        "build"
+      ],
+      "group": {
+        "kind": "build"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "test",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "xx.py",
+        "test-debug"
+      ],
+      "group": {
+        "kind": "build"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "clean",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "xx.py",
+        "clean"
+      ],
+      "group": {
+        "kind": "build"
+      }
     }
   ]
 }
