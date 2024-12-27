@@ -1,6 +1,8 @@
 #ifndef __TILE_CACHE_H
 #define __TILE_CACHE_H
 
+#include <stdlib.h>
+
 #include "JA2Types.h"
 
 #define TILE_CACHE_START_INDEX 36000

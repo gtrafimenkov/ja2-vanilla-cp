@@ -1,5 +1,7 @@
 #include "Editor/NewSmooth.h"
 
+#include <stdlib.h>
+
 #include "Editor/EditSys.h"
 #include "Editor/EditorBuildings.h"
 #include "Editor/EditorUndo.h"

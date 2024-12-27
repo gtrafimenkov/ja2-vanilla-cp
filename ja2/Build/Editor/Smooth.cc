@@ -1,5 +1,7 @@
 #include "Editor/Smooth.h"
 
+#include <stdlib.h>
+
 #include "Editor/EditScreen.h"
 #include "Editor/EditorUndo.h"
 #include "Tactical/StructureWrap.h"

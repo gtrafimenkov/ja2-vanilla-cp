@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "SGP/Debug.h"
 #include "Strategic/StrategicPathing.h"
 #include "Tactical/AnimationControl.h"

@@ -1,5 +1,7 @@
 #include "TileEngine/AmbientControl.h"
 
+#include <cstring>
+
 #include "Directories.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"

@@ -1,6 +1,8 @@
 #ifndef __WORDWRAP_H_
 #define __WORDWRAP_H_
 
+#include <stdlib.h>
+
 #include "SGP/Types.h"
 
 // Flags for DrawTextToScreen()

@@ -1,6 +1,8 @@
 #ifndef __WORLD_ITEMS
 #define __WORLD_ITEMS
 
+#include <stdlib.h>
+
 #include "SGP/Debug.h"
 #include "Tactical/ItemTypes.h"
 

@@ -1,5 +1,6 @@
 #include "Utils/EventPump.h"
 
+#include <cstring>
 #include <stdexcept>
 
 #include "SGP/Debug.h"

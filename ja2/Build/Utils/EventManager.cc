@@ -1,5 +1,7 @@
 #include "Utils/EventManager.h"
 
+#include <cstring>
+
 #include "SGP/Container.h"
 #include "SGP/MemMan.h"
 #include "SGP/WCheck.h"

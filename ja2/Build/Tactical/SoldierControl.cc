@@ -4,6 +4,7 @@
 
 #include "GameSettings.h"
 #include "JAScreens.h"
+#include "Macro.h"
 #include "SGP/English.h"
 #include "SGP/FileMan.h"
 #include "SGP/Random.h"

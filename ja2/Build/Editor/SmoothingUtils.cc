@@ -1,5 +1,7 @@
 #include "Editor/SmoothingUtils.h"
 
+#include <stdlib.h>
+
 #include "Editor/EditSys.h"
 #include "Editor/EditorDefines.h"
 #include "Editor/EditorUndo.h"

@@ -3,6 +3,9 @@
 
 // header file to track the information a player 'knows' about a sector, which
 // may in fact not be true
+
+#include <stdlib.h>
+
 #include "Strategic/StrategicMovement.h"
 
 // build main facilities strings for sector

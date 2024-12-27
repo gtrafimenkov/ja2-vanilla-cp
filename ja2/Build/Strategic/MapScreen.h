@@ -1,6 +1,8 @@
 #ifndef __MAPSCREEN_H
 #define __MAPSCREEN_H
 
+#include <stdlib.h>
+
 #include "JA2Types.h"
 #include "MessageBoxScreen.h"
 #include "SGP/ButtonSystem.h"

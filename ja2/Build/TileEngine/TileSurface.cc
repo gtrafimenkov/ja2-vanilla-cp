@@ -1,5 +1,6 @@
 #include "TileEngine/TileSurface.h"
 
+#include <cstring>
 #include <stdexcept>
 
 #include "Editor/Smooth.h"

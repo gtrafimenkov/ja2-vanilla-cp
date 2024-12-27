@@ -1,6 +1,7 @@
 #include "TileEngine/RenderDirty.h"
 
 #include <algorithm>
+#include <cstring>
 #include <stdarg.h>
 #include <stdexcept>
 #include <vector>

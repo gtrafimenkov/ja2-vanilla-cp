@@ -1,8 +1,9 @@
 #include "Tactical/SoldierCreate.h"
 
 #include <algorithm>
+#include <cstring>
 #include <math.h>
-#include <string.h>
+#include <wchar.h>
 
 #include "Editor/EditorMercs.h"
 #include "GameSettings.h"

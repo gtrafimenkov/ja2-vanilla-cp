@@ -1,6 +1,8 @@
 #ifndef __INTERFACE_ITEMS_H
 #define __INTERFACE_ITEMS_H
 
+#include <stdlib.h>
+
 #include "SGP/ButtonSystem.h"
 #include "SGP/MouseSystem.h"
 #include "Tactical/Interface.h"

@@ -1,5 +1,6 @@
 #include "TileEngine/TileCache.h"
 
+#include <cstring>
 #include <stdexcept>
 #include <vector>
 

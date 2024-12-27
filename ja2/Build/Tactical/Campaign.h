@@ -1,6 +1,8 @@
 #ifndef __CAMPAIGN_H
 #define __CAMPAIGN_H
 
+#include <stdlib.h>
+
 #include "JA2Types.h"
 #include "Tactical/SoldierProfileType.h"
 
