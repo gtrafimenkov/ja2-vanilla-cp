@@ -1,5 +1,8 @@
-﻿#include "Utils/Text.h"
+// This is not free software.
+// This file contains code derived from the code released under the terms
+// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
+#include "Utils/Text.h"
 #include "gtest/gtest.h"
 
 /*
@@ -276,12 +279,12 @@ static const wchar_t *s_rus_pAssignmentStrings[pAssignmentStrings_SIZE] = {
     L"Отряд 15",  L"Отряд 16", L"Отряд 17", L"Отряд 18", L"Отряд 19", L"Отряд 20",
     L"На службе",  // on active duty
     L"Доктор",     // оказывает медпомощь
-    L"Пациент",    //принимает медпомощь
+    L"Пациент",    // принимает медпомощь
     L"Транспорт",  // in a vehicle
-    L"В пути",     //транзитом - сокращение
+    L"В пути",     // транзитом - сокращение
     L"Ремонт",     // ремонтируются
     L"Практика",   // тренируются
-    L"Ополчение",  //готовят восстание среди горожан
+    L"Ополчение",  // готовят восстание среди горожан
     L"Тренер",     // training a teammate
     L"Ученик",     // being trained by someone else
     L"Труп",       // мертв
@@ -303,14 +306,14 @@ static const wchar_t *s_rus_pMilitiaButtonString[pMilitiaButtonString_SIZE] = {
 };
 
 static const wchar_t *s_rus_pConditionStrings[pConditionStrings_SIZE] = {
-    L"Отлично",     //состояние солдата..отличное здоровье
-    L"Хорошо",      //хорошее здоровье
-    L"Норма",       //нормальное здоровье
-    L"Ранение",     //раны
+    L"Отлично",     // состояние солдата..отличное здоровье
+    L"Хорошо",      // хорошее здоровье
+    L"Норма",       // нормальное здоровье
+    L"Ранение",     // раны
     L"Без сил",     // усталый
     L"Кровоточит",  // истекает кровью
     L"Без созн.",   // в обмороке
-    L"Умирает",     //умирает
+    L"Умирает",     // умирает
     L"Труп",        // мертв
 };
 

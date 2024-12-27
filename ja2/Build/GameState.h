@@ -1,3 +1,7 @@
+// This is not free software.
+// This file contains code derived from the code released under the terms
+// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
+
 #pragma once
 
 enum GameMode { GAME_MODE_GAME, GAME_MODE_EDITOR, GAME_MODE_EDITOR_AUTO, GAME_MODE_END };

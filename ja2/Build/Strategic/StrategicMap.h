@@ -1,3 +1,7 @@
+// This is not free software.
+// This file contains code derived from the code released under the terms
+// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
+
 #ifndef __STRATMAP_H
 #define __STRATMAP_H
 // this file is for manipulation of the strategic map structure
