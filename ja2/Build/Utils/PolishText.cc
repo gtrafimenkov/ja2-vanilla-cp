@@ -3423,9 +3423,9 @@ LanguageRes g_LanguageResPolish = {
 #define ARR_SIZE(x) (sizeof(x) / sizeof(x[0]))
 TEST(WideStringEncodingTest, PolishTextFile) {
   // This test checks that the wide string literals in this file are correctly
-  // interpreted by the compiler.  Visual Studio requires BOM (byte-order mark)
-  // to correctly identify file encoding.  Failed test means that the compiler
-  // cannot correctly interpret the string literals.
+  // interpreted by the compiler.
+  // Make sure the file is in utf-8 encoding (done using .editorconfig) and
+  // the project is compiled with /utf-8 option (for Visual Studio).
   const wchar_t str[] = L"тест";
   ASSERT_EQ(ARR_SIZE(str), 5) << "Compiler cannot correctly interpret wide string literals";
   EXPECT_EQ(str[0], 0x0442);
