@@ -21,28 +21,36 @@ Hence, the rules:
 
 This project is only for maintaining the vanilla game.
 
-## How to build
+## Project structure
 
 ```
-cmake -B build
-cmake --build build --parallel
+ja2                - game sources
+libs               - third-party libraries
+```
+
+## Build requirements
+
+- CMake
+- GCC or Clang for Linux
+- Visual Studio Community 2022 for Windows
+
+## How to build, test, and run
+
+```
+python xx.py build-debug test-debug copy-data run
 ```
 
 ## How to play the game
 
 - install the original version of the game (from the original game CDs, Steam, gog.com, etc.)
-- copy the builded binary to the game directory alongside the original ja2.exe
-- launch the builded binary
-- use Alt-Enter to switch to the full screen mode
+- `python xx.py build-debug test-debug`
+- `python xx.py copy-data run` or copy `build/Debug/ja2vcp.exe` to the game directory
+   alongside the original ja2.exe and run `ja2vcp.exe`
 
-## Playthroughs
-
-- Novice difficulty, Realistic mode: https://www.youtube.com/playlist?list=PL8iRB1T52TXuVmf0s-tnJKhS3smpFTXKy
+The game is tested on Windows 10.
 
 ## License
 
-- the original Jagged Alliance 2 source codes were released by Strategy First Inc. in
-  2004 under Source Code License Agreement ("SFI-SCLA").  See [SFI-SCLA](SFI-SCLA.txt)
-- changes since `commit 8287b98` are released to the public domain, but only changes
-  themselves.  The whole work is still subject to SFI-SCLA
-- all libraries in `libs` have their own licenses
+This is not open source as defined by [The Open Source Definition](https://opensource.org/osd/).
+The original JA2 sources were released under the terms of [SFI-SCLA](SFI-SCLA.txt) license.
+Please read it carefully and make your own mind regarding this.
