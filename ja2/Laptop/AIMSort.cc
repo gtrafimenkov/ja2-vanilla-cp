@@ -88,22 +88,14 @@ static void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReaso
 static void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason);
 
 static AIMSortInfo g_aim_sort_info[str_aim_sort_list_SIZE] = {
-    {AIM_SORT_SORT_BY_X + 9, AIM_SORT_SORT_BY_Y + 34, LEFT_JUSTIFIED, 0,
-     SelectPriceBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 9, AIM_SORT_SORT_BY_Y + 47, LEFT_JUSTIFIED, 1,
-     SelectExpBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 9, AIM_SORT_SORT_BY_Y + 60, LEFT_JUSTIFIED, 2,
-     SelectMarkBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 34, LEFT_JUSTIFIED, 3,
-     SelectMedicalBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 47, LEFT_JUSTIFIED, 4,
-     SelectExplosiveBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 60, LEFT_JUSTIFIED, 5,
-     SelectMechanicalBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 4, RIGHT_JUSTIFIED, 6,
-     SelectAscendBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 17, RIGHT_JUSTIFIED, 7,
-     SelectDescendBoxRegionCallBack}};
+    {9, 34, LEFT_JUSTIFIED, 0, SelectPriceBoxRegionCallBack},
+    {9, 47, LEFT_JUSTIFIED, 1, SelectExpBoxRegionCallBack},
+    {9, 60, LEFT_JUSTIFIED, 2, SelectMarkBoxRegionCallBack},
+    {111, 34, LEFT_JUSTIFIED, 3, SelectMedicalBoxRegionCallBack},
+    {111, 47, LEFT_JUSTIFIED, 4, SelectExplosiveBoxRegionCallBack},
+    {111, 60, LEFT_JUSTIFIED, 5, SelectMechanicalBoxRegionCallBack},
+    {172, 4, RIGHT_JUSTIFIED, 6, SelectAscendBoxRegionCallBack},
+    {172, 17, RIGHT_JUSTIFIED, 7, SelectDescendBoxRegionCallBack}};
 
 uint8_t gubCurrentSortMode;
 uint8_t gubCurrentListMode;
@@ -183,9 +175,9 @@ void EnterAimSort() {
 
   FOR_EACH(AIMSortInfo, i, g_aim_sort_info) {
     const uint16_t txt_w = StringPixLength(str_aim_sort_list[i->index], AIM_SORT_FONT_SORT_TEXT);
-    const uint16_t x = i->x - (i->align == LEFT_JUSTIFIED ? 0 : 4 + txt_w);
+    const uint16_t x = AIM_SORT_SORT_BY_X + i->x - (i->align == LEFT_JUSTIFIED ? 0 : 4 + txt_w);
     const uint16_t w = AIM_SORT_CHECKBOX_SIZE + 4 + txt_w;
-    const uint16_t y = i->y;
+    const uint16_t y = AIM_SORT_SORT_BY_Y + i->y;
     const uint16_t h = AIM_SORT_CHECKBOX_SIZE;
     MSYS_DefineRegion(&i->region, x, y, x + w, y + h, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR,
                       MSYS_NO_CALLBACK, i->click);
@@ -240,10 +232,11 @@ void RenderAimSort() {
 
   // Display all the sort by text
   FOR_EACH(AIMSortInfo const, i, g_aim_sort_info) {
-    const uint16_t x = i->x + (i->align == LEFT_JUSTIFIED ? 14 : -AIM_SORT_ASC_DESC_WIDTH - 4);
-    DrawTextToScreen(str_aim_sort_list[i->index], x, i->y + 2, AIM_SORT_ASC_DESC_WIDTH,
-                     AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK,
-                     i->align);
+    const uint16_t x = AIM_SORT_SORT_BY_X + i->x +
+                       (i->align == LEFT_JUSTIFIED ? 14 : -AIM_SORT_ASC_DESC_WIDTH - 4);
+    DrawTextToScreen(str_aim_sort_list[i->index], x, AIM_SORT_SORT_BY_Y + i->y + 2,
+                     AIM_SORT_ASC_DESC_WIDTH, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT,
+                     FONT_MCOLOR_BLACK, i->align);
   }
 
   // Display text for the 3 icons
@@ -336,8 +329,8 @@ static void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, int32_t iReaso
 
 static void DrawSelectLight(const uint8_t ubMode, const uint8_t ubImage) {
   const AIMSortInfo *const asi = &g_aim_sort_info[ubMode];
-  const int32_t x = asi->x;
-  const int32_t y = asi->y;
+  const int32_t x = AIM_SORT_SORT_BY_X + asi->x;
+  const int32_t y = AIM_SORT_SORT_BY_Y + asi->y;
   BltVideoObject(FRAME_BUFFER, guiSelectLight, ubImage, x, y);
   InvalidateRegion(x, y, x + AIM_SORT_CHECKBOX_SIZE, y + AIM_SORT_CHECKBOX_SIZE);
 }
