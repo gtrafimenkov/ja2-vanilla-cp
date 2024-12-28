@@ -316,14 +316,15 @@ void BltStretchVideoSurface(SGPVSurface *const dst, SGPVSurface const *const src
   uint32_t const dx = src_rect->w;
   uint32_t const dy = src_rect->h;
   uint32_t py = 0;
+  // GT: This condition is very strange.
+  // Somehow it is used to to test if transparency color key was configured.
   if (ssurface->flags & SDL_TRUE) {
-    //		const uint16_t key = ssurface->format->colorkey;
-    const uint16_t key = 0;
+    const uint16_t transparency_key = 0;
     for (uint32_t iy = 0; iy < height; ++iy) {
       const uint16_t *s = os;
       uint32_t px = 0;
       for (uint32_t ix = 0; ix < width; ++ix) {
-        if (*s != key) *d = *s;
+        if (*s != transparency_key) *d = *s;
         ++d;
         px += dx;
         for (; px >= width; px -= width) ++s;
