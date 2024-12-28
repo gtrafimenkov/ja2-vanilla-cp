@@ -98,11 +98,11 @@ static AIMSortInfo g_aim_sort_info[str_aim_sort_list_SIZE] = {
      SelectMedicalBoxRegionCallBack},
     {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 47, LEFT_JUSTIFIED, 4,
      SelectExplosiveBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 60, LEFT_JUSTIFIED, 6,
+    {AIM_SORT_SORT_BY_X + 111, AIM_SORT_SORT_BY_Y + 60, LEFT_JUSTIFIED, 5,
      SelectMechanicalBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 4, RIGHT_JUSTIFIED, 7,
+    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 4, RIGHT_JUSTIFIED, 6,
      SelectAscendBoxRegionCallBack},
-    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 17, RIGHT_JUSTIFIED, 8,
+    {AIM_SORT_SORT_BY_X + 172, AIM_SORT_SORT_BY_Y + 17, RIGHT_JUSTIFIED, 7,
      SelectDescendBoxRegionCallBack}};
 
 uint8_t gubCurrentSortMode;
