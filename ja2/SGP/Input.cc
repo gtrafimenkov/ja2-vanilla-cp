@@ -4,6 +4,8 @@
 
 #include "SGP/Input.h"
 
+#include <map>
+
 #include "Local.h"
 #include "Macro.h"
 #include "SGP/English.h"
@@ -16,11 +18,10 @@
 #include "SDL_events.h"
 #include "SDL_keycode.h"
 
-// The gfKeyState table is used to track which of the keys is up or down at any
+// The pressedKeys table is used to track which of the keys is up or down at any
 // one time. This is used while polling the interface.
+static std::map<uint32_t, bool> pressedKeys;  // true = Pressed, false = Not Pressed
 
-BOOLEAN
-gfKeyState[SDL_SCANCODE_TO_KEYCODE(SDL_NUM_SCANCODES)];  // TRUE = Pressed, FALSE = Not Pressed
 static BOOLEAN fCursorWasClipped = FALSE;
 static SGPRect gCursorClipRect;
 
@@ -246,21 +247,19 @@ static void KeyChange(SDL_Keysym const *const key_sym, bool const pressed) {
     case SDLK_KP_ENTER:
       key = SDLK_RETURN;
       break;
-
-    default:
-      if (key >= lengthof(gfKeyState)) return;
-      break;
   }
 
   uint32_t event_type;
-  BOOLEAN &key_state = gfKeyState[key];
+  bool keyPressed = IsKeyDown(key);
   if (pressed) {
-    event_type = key_state ? KEY_REPEAT : KEY_DOWN;
+    // key down
+    event_type = keyPressed ? KEY_REPEAT : KEY_DOWN;
   } else {
-    if (!key_state) return;
+    // key up
+    if (!keyPressed) return;
     event_type = KEY_UP;
   }
-  key_state = pressed;
+  pressedKeys[key] = pressed;
 
   QueueKeyEvent(event_type, key, mod, '\0');
 }
@@ -269,17 +268,17 @@ void KeyDown(const SDL_Keysym *KeySym) {
   switch (KeySym->sym) {
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      gfKeyState[SHIFT] = TRUE;
+      pressedKeys[SHIFT] = true;
       break;
 
     case SDLK_LCTRL:
     case SDLK_RCTRL:
-      gfKeyState[CTRL] = TRUE;
+      pressedKeys[CTRL] = true;
       break;
 
     case SDLK_LALT:
     case SDLK_RALT:
-      gfKeyState[ALT] = TRUE;
+      pressedKeys[ALT] = true;
       break;
 
     case SDLK_PRINTSCREEN:
@@ -296,17 +295,17 @@ void KeyUp(const SDL_Keysym *KeySym) {
   switch (KeySym->sym) {
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      gfKeyState[SHIFT] = FALSE;
+      pressedKeys[SHIFT] = false;
       break;
 
     case SDLK_LCTRL:
     case SDLK_RCTRL:
-      gfKeyState[CTRL] = FALSE;
+      pressedKeys[CTRL] = false;
       break;
 
     case SDLK_LALT:
     case SDLK_RALT:
-      gfKeyState[ALT] = FALSE;
+      pressedKeys[ALT] = false;
       break;
 
     case SDLK_PRINTSCREEN:
@@ -459,4 +458,4 @@ static void HandleSingleClicksAndButtonRepeats() {
   }
 }
 
-BOOLEAN IsKeyDown(int a) { return gfKeyState[a]; }
+BOOLEAN IsKeyDown(int a) { return pressedKeys.count(a) > 0 ? pressedKeys[a] : false; }
