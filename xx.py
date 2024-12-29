@@ -55,8 +55,10 @@ def format_files(files):
 def find_ja2_data_files():
     try_dirs = [
         r"C:\Program Files (x86)\Steam\steamapps\common\Jagged Alliance 2 Gold\Data",
+        "~/.local/share/Steam/steamapps/common/ja2_wildfire/JA2Classic/Game/Data",
     ]
     for d in try_dirs:
+        d = os.path.expanduser(d)
         if os.path.isdir(d):
             return d
     return None
