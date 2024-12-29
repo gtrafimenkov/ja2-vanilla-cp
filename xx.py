@@ -89,43 +89,50 @@ def get_debug_build_exe():
 
 def test_debug():
     if platform.system() == "Windows":
-        subprocess.run(["build/Debug/ja2vcp.exe", "--unittests"])
+        subprocess.run(["build/Debug/ja2vcp.exe", "--unittests"], check=True)
     else:
-        subprocess.run(["./build/ja2vcp", "--unittests"])
+        subprocess.run(["./build/ja2vcp", "--unittests"], check=True)
 
 
 def test_release():
     if platform.system() == "Windows":
-        subprocess.run(["build/Release/ja2vcp.exe", "--unittests"])
+        subprocess.run(["build/Release/ja2vcp.exe", "--unittests"], check=True)
     else:
-        subprocess.run(["./build-release/ja2vcp", "--unittests"])
+        subprocess.run(["./build-release/ja2vcp", "--unittests"], check=True)
 
 
 def run_command(command):
     if command in ["build", "build-debug"]:
         if platform.system() == "Windows":
-            subprocess.run(["cmake", "-B", "build"])
+            subprocess.run(["cmake", "-B", "build"], check=True)
             subprocess.run(
-                ["cmake", "--build", "build", "--parallel", "--config", "Debug"]
+                ["cmake", "--build", "build", "--parallel", "--config", "Debug"],
+                check=True,
             )
         else:
-            subprocess.run(["cmake", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"])
-            subprocess.run(["cmake", "--build", "build", "--parallel"])
+            subprocess.run(
+                ["cmake", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"], check=True
+            )
+            subprocess.run(["cmake", "--build", "build", "--parallel"], check=True)
 
     elif command == "build-release":
         if platform.system() == "Windows":
-            subprocess.run(["cmake", "-B", "build"])
+            subprocess.run(["cmake", "-B", "build"], check=True)
             subprocess.run(
-                ["cmake", "--build", "build", "--parallel", "--config", "Release"]
+                ["cmake", "--build", "build", "--parallel", "--config", "Release"],
+                check=True,
             )
         else:
             subprocess.run(
-                ["cmake", "-B", "build-release", "-DCMAKE_BUILD_TYPE=Release"]
+                ["cmake", "-B", "build-release", "-DCMAKE_BUILD_TYPE=Release"],
+                check=True,
             )
-            subprocess.run(["cmake", "--build", "build-release", "--parallel"])
+            subprocess.run(
+                ["cmake", "--build", "build-release", "--parallel"], check=True
+            )
 
     elif command == "clean":
-        subprocess.run(["git", "clean", "-fdx"])
+        subprocess.run(["git", "clean", "-fdx"], check=True)
 
     elif command == "copy-data":
         dest_dir = os.path.join(get_debug_build_location(), "data")
