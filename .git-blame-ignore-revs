@@ -1,0 +1,6 @@
+# List of revisions to ignore during git blame.
+# Configure git like this:
+#   git config --global blame.ignoreRevsFile .git-blame-ignore-revs
+
+# code formatting
+bf1a1a63d35ff38b3c4778fdb81c226e2b52b151
